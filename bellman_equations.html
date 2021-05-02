@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 5.4.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://cdn.jsdelivr.net'>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>如何使用手机摄像头测量心率 - GoGoGogo!</title>
+
+  
+    <meta name="description" content="在心率管家默默无闻地上线了一年多之后，现在终于打算来好好聊聊关于手机摄像头测量心率的那些事。本文参考了很多前辈的文章，将在文末列出。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="如何使用手机摄像头测量心率">
+<meta property="og:url" content="http://example.com/bellman_equations.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="在心率管家默默无闻地上线了一年多之后，现在终于打算来好好聊聊关于手机摄像头测量心率的那些事。本文参考了很多前辈的文章，将在文末列出。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/pngs/mdp.png">
+<meta property="og:image" content="http://example.com/pngs/policy_1.png">
+<meta property="og:image" content="http://example.com/pngs/policy.png">
+<meta property="og:image" content="http://example.com/pngs/transition_kernel.png">
+<meta property="og:image" content="http://example.com/pngs/bellman-operator.png">
+<meta property="og:image" content="http://example.com/pngs/bellman-opt-operator.png">
+<meta property="og:image" content="http://example.com/pngs/monotonicity.png">
+<meta property="og:image" content="http://example.com/pngs/contraction_mapping.png">
+<meta property="og:image" content="http://example.com/pngs/gamma_contraction.png">
+<meta property="og:image" content="http://example.com/pngs/fixed_point.png">
+<meta property="og:image" content="http://example.com/pngs/bfpt.png">
+<meta property="og:image" content="http://example.com/pngs/unique_fixed_points.png">
+<meta property="og:image" content="http://example.com/pngs/br_1.png">
+<meta property="og:image" content="http://example.com/pngs/br_2.png">
+<meta property="og:image" content="http://example.com/pngs/claim_2.png">
+<meta property="article:published_time" content="2021-05-02T17:29:29.753Z">
+<meta property="article:modified_time" content="2021-05-02T17:29:28.459Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/pngs/mdp.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+</head>
+
+<body>
+  
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left'>
+    
+
+<header class='header'>
+  <div class='logo-wrap'>
+  
+  
+    <a class='title' href='/'>
+      GoGoGogo!
+    </a>
+  
+</div>
+
+  <nav class="menu dis-select"></nav>
+</header>
+
+<div class='widgets'>
+  
+    
+      
+      <div class='widget-wrap' id='markdown'>
+  <div class='widget-header h4 dis-select'>
+    <span class='name'>欢迎</span>
+  </div>
+  <div class='widget-body fs14'>
+    
+      <p>欢迎光临小站，<a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/">Stellar</a> 是一个支持 wiki 的 hexo 主题，适合综合型站点使用。同时也拥有简约而精美的视觉设计和丰富的标签插件，帮助您简单从容地应对各种场合。</p>
+
+    
+  </div>
+</div>
+
+    
+  
+    
+      
+      
+<div class="widget-wrap" id="recent"><div class="widget-header h4 dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><div class="post-title reveal"><div class="cap"><time>2021-05-02</time></div><a href="/2021/05/02/hello-world/">Hello World</a></div></div></div>
+
+    
+  
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+  
+<header class='header mobile-only'>
+  <div class='logo-wrap'>
+  
+  
+    <a class='title' href='/'>
+      GoGoGogo!
+    </a>
+  
+</div>
+
+  <nav class="menu dis-select"></nav>
+</header>
+
+
+
+      
+
+  
+  <div class='bread-nav fs12'>
+  
+      <div id='breadcrumb'>
+        <a class='cap breadcrumb' href='/'>主页</a>
+        <span class="sep"></span>
+        <a class='cap breadcrumb' href='/bellman_equations.html'>如何使用手机摄像头测量心率</a>
+      </div>
+  
+  </div>
+
+
+  <article class='content md page'>
+  <h1 class="article-title"><span>如何使用手机摄像头测量心率</span></h1>
+  
+    <p>在心率管家默默无闻地上线了一年多之后，现在终于打算来好好聊聊关于手机摄像头测量心率的那些事。本文参考了很多前辈的文章，将在文末列出。</p>
+<span id="more"></span>
+
+<h1 id="More-on-Bellman-equations"><a href="#More-on-Bellman-equations" class="headerlink" title="More on Bellman equations"></a>More on Bellman equations</h1><h2 id="MDP"><a href="#MDP" class="headerlink" title="MDP"></a>MDP</h2><p>Define our MDP different from Introduction to RL book:</p>
+<img src='pngs/mdp.png'>
+
+<p>Where $M(X)$ is the space of all probability distributions defined over the state space X</p>
+<p>So we could describe the process as a sequence of state, actions, and rewards:</p>
+<p>$X_0, A_0, R_1, X_1, A_1, R_2, …$</p>
+<p>A deterministic dynamical system always behave exactly the same given the same starting state and action, that is, they can be described as a transition function f instead of transition distribution $\rho$</p>
+<p>$x_{t+1} = f(x, a)$</p>
+<h2 id="Policy"><a href="#Policy" class="headerlink" title="Policy"></a>Policy</h2><img src='pngs/policy_1.png'>
+<img src='pngs/policy.png'>
+
+<h2 id="Policy-induced-Transition-Kernels"><a href="#Policy-induced-Transition-Kernels" class="headerlink" title="Policy induced Transition Kernels"></a>Policy induced Transition Kernels</h2><img src='pngs/transition_kernel.png'>
+
+<h2 id="Rewards-and-Returns"><a href="#Rewards-and-Returns" class="headerlink" title="Rewards and Returns"></a>Rewards and Returns</h2><p>Let’s define expected reward as</p>
+<p>$r(x, a) = E[R | X=x, A=a]$, then the expected reward following policy pi is defined as</p>
+<p>$r^{\pi} (x) = E_{a \sim \pi(a | s)} [R | X=x, A=a]$</p>
+<p>Define return following policy $\pi$ as discounted sum of rewards starting from $X_0$:</p>
+<p>$G^{\pi} = R_1 + \gamma R_2 + … + \gamma^{T-1} R_{T} = \sum^{\infty}<em>{t=1} \gamma^{t-1}R</em>{t}$</p>
+<p>or any starting at any step $X_{t}$:</p>
+<p>$G^{\pi}<em>{t} = \sum^{\infty}</em>{i=t+1} \gamma^{i + t - 1}R_{i}$</p>
+<p>Note that $\gamma$ is a part of the problem setting, it is usually not a hyperparameter.</p>
+<h2 id="Value-functions"><a href="#Value-functions" class="headerlink" title="Value functions"></a>Value functions</h2><p>Next we can define value functions as:</p>
+<p>State value function starting from state x and following policy $\pi$:</p>
+<p>$V^{\pi}(x) = E[G^{\pi} | X_{0} = x] = E[G^{\pi}<em>{t} | X</em>{t} = x]$ (Markov Property)</p>
+<p>Action value function following policy $\pi$ starting from state x and taking action a:</p>
+<p>$Q^{\pi} (x, a) = E[G^{\pi} | X_{0} = x, A_{0} = a] = E[G^{\pi}<em>{t} | X</em>{t} = x, A_{t} = a]$ (Markov Property)</p>
+<h2 id="Bellman-equations"><a href="#Bellman-equations" class="headerlink" title="Bellman equations"></a>Bellman equations</h2><p>By expanding value functions, we reveal the recursive property of return</p>
+<p>\begin{aligned}<br>V^{\pi} (x) &amp;= E[G^{\pi}<em>{t} | X</em>{t} = x]\<br>&amp; = E[R_{t} + \gamma G^{\pi}<em>{t+1} | X</em>{t} = x]\<br>&amp; = E_{a \sim \pi(a | s)}[R_{t} | X_{t} = x] + \gamma E[G^{\pi}<em>{t+1} | X</em>{t} = x]\<br>&amp; = r^{\pi} (x) + \gamma E[V^{\pi} (X_{t+1}) | X_{t} = x]\<br>\end{aligned}</p>
+<p>Where<br>$ E[V^{\pi} (X_{t+1}) | X_{t} = x] = E[E[G^{\pi}<em>{t+1} | X</em>{t+1} = x^\prime] | X_{t} = x] = E[G^{\pi}<em>{t+1} | X</em>{t} = x]$</p>
+<p>This implies that neither side is random, by expanding $E[V^{\pi} (X_{t+1}) | X_{t} = x]$, we get</p>
+<p>$E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (a | x) V^{\pi} (x^\prime)$</p>
+<p>Thus, the value function can be expressed as:</p>
+<p>$V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (a | x) V^{\pi} (x^\prime)$</p>
+<p>This is the <strong>bellman equation</strong> for a policy $\pi$, this can be interpreted as: The value of following a policy $\pi$ is the expected immediate reward that the $\pi$-following agent receives at that state plus the<br>discounted average(expected) value that the agent receives at the next-state.</p>
+<p>same for action-value function, we have bellman equation:</p>
+<p>$Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (a^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)$</p>
+<p>Compare with value function, we have expected reward base on action a plus discounted average(expected) value that the agent receives at the next-state following $\pi$ (the choice of action is given at state s in action value function)</p>
+<h2 id="Bellman-Equations-for-Optimal-Value-Functions"><a href="#Bellman-Equations-for-Optimal-Value-Functions" class="headerlink" title="Bellman Equations for Optimal Value Functions"></a>Bellman Equations for Optimal Value Functions</h2><p>So it is natural to ask, does the optimal value function of optimal policy $V^{\pi^*}$ have similar structure? the answer is yes, however, we need to prove this.</p>
+<p>The proof goes with 3 claims which we will prove later:</p>
+<p>1.<br>$\exists$ a value function $V^*$ s.t $\forall x \in X$, we have:<br>$V^{<em>}(x) = max_{a} {Q^{</em>}(x, a)} = max_{a} {r(x, a) + \gamma \int P(dx^\prime | x, a) V^{*}(x^\prime)}$.</p>
+<p>$\exists$ a value function $Q^*$ s.t $\forall x, a \in X, A$, we have:<br>$Q^{<em>}(x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) max_{a^\prime} {Q^{</em>} (x^\prime, a^\prime)}$.</p>
+<p>These equations are called <strong>bellman optimality equations for the value functions</strong></p>
+<p>2.<br>$V^{<em>}$ is the same as ${V^{\pi^</em>}}$, the optimal value function when $\pi$ is restricted to be within the space of all stationary and non-stationary policies.</p>
+<p>3.<br>For discounted continuing MDPs, we can always find a stationary policy that is optimal within the space of all stationary and non-stationary policies.</p>
+<p>In summary, we claim that $V^{<em>}$ exists and it is unique,  $V^{</em>} = V^{\pi^{<em>}}$. Same for $Q^{</em>}$.</p>
+<h2 id="Bellman-Operators"><a href="#Bellman-Operators" class="headerlink" title="Bellman Operators"></a>Bellman Operators</h2><p>In order to prove the claims, we need several concepts:</p>
+<img src='pngs/bellman-operator.png'>
+<img src='pngs/bellman-opt-operator.png'>
+
+<p>These operators are linear and recall that:</p>
+<p>$Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (a^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)$</p>
+<p>This implies $T^{\pi} Q^{\pi} = Q^{\pi}$, same for state-value function and bellman optimality operators. Thus, we can conclude that:</p>
+<p>$V^{\pi} = T^{\pi} V^{\pi}$</p>
+<p>$Q^{\pi} = T^{\pi} Q^{\pi}$</p>
+<p>$V^{<em>} = T^{</em>} V^{*}$</p>
+<p>$Q^{<em>} = T^{</em>} Q^{*}$</p>
+<h3 id="Properties-of-Bellman-operators"><a href="#Properties-of-Bellman-operators" class="headerlink" title="Properties of Bellman operators"></a>Properties of Bellman operators</h3><p>Bellman operators have several important properties. The properties that matters for us the most are:</p>
+<ol>
+<li>Monotonicity</li>
+<li>Contraction</li>
+</ol>
+<h4 id="Monotonicity"><a href="#Monotonicity" class="headerlink" title="Monotonicity"></a>Monotonicity</h4><img src='pngs/monotonicity.png'>
+
+<p>we can easily prove this (only prove $T^{\pi}$, $T^{*}$ is the same):</p>
+<p>Assume $V_1(x^{\prime}) \geq V_2(x^{\prime}), \forall x^{\prime} \in X$, we get that for any $x \in X$</p>
+<p>$T^{\pi}V_{1} (x) = r^{\pi} (x) + \gamma \int P^{\pi}(dx^{\prime} | x) V_{1} (x^\prime) \geq r^{\pi} (x) + \gamma \int P^{\pi}(dx^{\prime} | x) V_{2} (x^\prime) = T^{\pi}V_2(x)$</p>
+<p>Thus $T^{\pi}V_{1} (x) \geq T^{\pi}V_{2} (x)$</p>
+<h4 id="Contraction"><a href="#Contraction" class="headerlink" title="Contraction"></a>Contraction</h4><img src='pngs/contraction_mapping.png'>
+
+<p>we can also easily prove that $T^{<em>}, T^{\pi}$ are contraction mappings (only prove $T^{\pi}$, $T^{</em>}$ is the same):</p>
+<p>Consider two action-value functions $Q_1, Q_2 \in B(X\times A)$. Consider the metric $d(Q_1, Q_2) = | Q_1 - Q_2 |_{\infty}$. We show the contraction w.r.t $l-\infty$ norm.</p>
+<p>For any $(x, a) \in X \times A$, we have:</p>
+<p>\begin{aligned}<br>\lvert T^{\pi} Q_1 (x, a) - T^{\pi} Q_2 (x, a) \rvert &amp;= \lvert r (x, a) + \gamma \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) Q_{1} (x^\prime, a^{\prime}) - r (x, a) - \gamma \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) Q_{2} (x^\prime, a^{\prime}) \rvert\<br>&amp; = \gamma \lvert \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) [Q_{1} (x^\prime, a^{\prime}) -  Q_{2} (x^\prime, a^{\prime})] \rvert\<br>&amp; \leq \gamma \int \underbrace{P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime)}<em>{\text{these are probabilities which $ \geq $ 0}} \lvert [Q</em>{1} (x^\prime, a^{\prime}) -  Q_{2} (x^\prime, a^{\prime})] \rvert\<br>&amp; \leq \gamma \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) \sup_{x, a}\lvert [Q_{1} (x, a) -  Q_{2} (x, a)] \rvert\<br>&amp; = \gamma \sup_{x, a}\lvert Q_{1} (x, a) -  Q_{2} (x, a) \rvert \underbrace{\int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime)}<em>{\text{this is a probability distribution which sums to 1}}\<br>&amp; = \gamma \sup</em>{x, a}\lvert Q_{1} (x, a) -  Q_{2} (x, a) \rvert = \gamma |Q_{1} -  Q_{2}|_{\infty}<br>\end{aligned}</p>
+<p>This inequality holds for all state action pair, thus, we have showed that bellman operators are contraction mappings</p>
+<img src='pngs/gamma_contraction.png'>
+
+<h3 id="Consequences-of-Monotonicity-and-Contraction"><a href="#Consequences-of-Monotonicity-and-Contraction" class="headerlink" title="Consequences of Monotonicity and Contraction"></a>Consequences of Monotonicity and Contraction</h3><h4 id="Uniqueness-of-fixed-points"><a href="#Uniqueness-of-fixed-points" class="headerlink" title="Uniqueness of fixed points"></a>Uniqueness of fixed points</h4><img src='pngs/fixed_point.png'>
+<img src='pngs/bfpt.png'>
+<img src='pngs/unique_fixed_points.png'>
+
+<p>Prove of the proposition is also simple (Same for $Q^{\pi}, Q^{*}$):</p>
+<p>For any $\pi$, $T^{\pi}$ is a $\gamma-$contraction mapping (same for $T^{<em>}$), thus, by the Banach fixed point theorem, they have unique fixed point<br>$T^{</em>} V^{<em>} = V^{</em>}, T^{\pi} V^{\pi} = V^{\pi}$. Moreover, the update rule $V_{k+1} \leftarrow T^{\pi} V_{k}$ converges, which means $lim_{k \rightarrow \infty} | V_{k} - V^{\pi}|_{\infty} = 0$</p>
+<h4 id="Value-of-the-greedy-policy-of-V-is-V"><a href="#Value-of-the-greedy-policy-of-V-is-V" class="headerlink" title="Value of the greedy policy of $V^{}$ is $V^{}$"></a>Value of the greedy policy of $V^{<em>}$ is $V^{</em>}$</h4><p>We know if $T^{\pi} V^{<em>} = T^{</em>}V^{<em>} \implies T^{\pi} V^{</em>} = V^{<em>}$ This is also the fix point of $T^{\pi}$, this implies $V^{\pi} = V^{</em>}$.</p>
+<p>One the other hand, if we know $V^\pi = V^{<em>}$, the by applying $T^{\pi}$ to both side we have $T^{\pi} V^{\pi} = T^{\pi} V^{</em>} \implies T^{\pi} V^{\pi} = T^{<em>} V^{</em>} = T^{\pi} V^{*}$</p>
+<p>Thus, we can conclude that $T^{\pi} V^{<em>} = T^{</em>}V^{<em>}$ iff $V^\pi = V^{</em>}$.</p>
+<p><strong>To see the connection to greedy policy:</strong></p>
+<p>Given $V^{<em>}$, the greedy policy of $V^{</em>}$ is defined as:</p>
+<p>$\pi_{g} (x; V^{<em>}) = argmax_{a \in A} Q^{</em>}(x, a) = argmax_{a \in A} r(x, a) + \gamma \int P(dx^{\prime} | x, a) V^{*}(x^{\prime})$</p>
+<p>So</p>
+<p>$T^{\pi_{g} (x; V^{<em>})} V^{</em>} = r(x, \pi_{g} (x; V^{<em>})) + \gamma \int P(dx^{\prime} | x, \pi_{g} (x; V^{</em>})) V^{<em>}(x^{\prime}) = max_{a \in A} r(x, a) + \gamma \int P(dx^{\prime} | x, a) V^{</em>}(x^{\prime})$</p>
+<p>Compare with $T^{<em>} V^{</em>}$:</p>
+<p>$T^{<em>} V^{</em>} =  max_{a \in A} r(x, a) + \gamma \int P(dx^{\prime} | x, a) V^{*}(x^{\prime})$</p>
+<p>Thus, $T^{<em>} V^{</em>} = T^{\pi_{g} (x; V^{<em>})} V^{</em>}$.</p>
+<p>Since $T^{\pi} V^{<em>} = T^{</em>}V^{<em>}$ iff $V^\pi = V^{</em>} \implies V^{<em>} = V^{\pi_{g} (x; V^{</em>})}$</p>
+<p>That is, the value of following $\pi_{g} (x; V^{<em>})$ is the same as $V^{</em>}$. This means that if we find $V^{<em>}$ and its greedy policy, the value of following the greedy policy is $V^{</em>}$</p>
+<p><strong>To find an optimal policy, we can find $V^{*}$ first, then find its greedy policy</strong></p>
+<p>following this conclusion:</p>
+<p>Although we have not yet prove that $V^{<em>}$ is the optimal value function ($\pi^{</em>} = argmax_{\pi \in \prod} V^{\pi} (x)$, $V^{<em>} = V^{\pi^{</em>}}$ (claim 2)), this is indeed true. (prove later)</p>
+<h4 id="An-error-bound-based-on-the-bellman-error"><a href="#An-error-bound-based-on-the-bellman-error" class="headerlink" title="An error bound based on the bellman error"></a>An error bound based on the bellman error</h4><p>If we find a V s.t $V = T^{<em>} V$, we know that $V = V^{</em>}$ (same for $T^{\pi} and Q$), what if $V \approx T^{<em>} V$, what can we say about the closeness of $V$ to $V^{</em>}$?</p>
+<img src='pngs/br_1.png'>
+<img src='pngs/br_2.png'>
+
+<p><strong>Proof:</strong></p>
+<p>\begin{aligned}<br>V - V^{<em>} &amp;= V - T^{</em>} V + T^{<em>} V - V^{</em>}\<br>\implies | V - V^{<em>} |_{\infty} &amp;= | V - T^{</em>} V + T^{<em>} V - V^{</em>} |<em>{\infty}\<br>&amp;\leq   |V - T^{*} V |</em>{\infty} + |T^{<em>} V - T^{</em>}V^{<em>} |_{\infty} \<br>&amp;\leq   |V - T^{</em>} V |<em>{\infty} + \gamma |V - V^{*} |</em>{\infty} (|T^{<em>} V - T^{</em>}V^{<em>} |_{\infty} \leq \gamma |V - V^{</em>} |<em>{\infty}, ie. \text{contraction property} )\<br>\implies | V - V^{*} |</em>{\infty} &amp;\leq \frac{|V - T^{<em>} V |_{\infty}}{(1 - \gamma)}\<br>\implies | V - V^{</em>} |_{\infty} &amp;\leq \frac{BE^{*}}{(1 - \gamma)}<br>\end{aligned}</p>
+<h4 id="Proof-of-claim-2-V-T-V-is-the-same-as-V-pi"><a href="#Proof-of-claim-2-V-T-V-is-the-same-as-V-pi" class="headerlink" title="Proof of claim 2: $V^{} = T^{} V^{}$ is the same as $V^{\pi^{}}$"></a>Proof of claim 2: $V^{<em>} = T^{</em>} V^{<em>}$ is the same as $V^{\pi^{</em>}}$</h4><img src='pngs/claim_2.png'>
+
+<h5 id="Proof-V-x-leq-sup-pi-in-prod-V-pi-x"><a href="#Proof-V-x-leq-sup-pi-in-prod-V-pi-x" class="headerlink" title="Proof $V^{*} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)$"></a>Proof $V^{*} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)$</h5><p>From the error bound with the choice of $V = V^{*}$, we have for any $\pi \in \prod$,</p>
+<p>$| V^{<em>} - V^{\pi} |_{\infty} \leq \frac{| V^{</em>} - T^{\pi}V^{*} |_{\infty}}{1 - \gamma}$</p>
+<p>Let $\epsilon &gt; 0$. Choose a policy $\pi_{\epsilon}$ s.t:</p>
+<p>$| V^{<em>} - T^{\pi_{\epsilon}} V^{</em>} |_{\infty} \leq (1 - \gamma) \epsilon$</p>
+<p>We know that this $\pi_{\epsilon}$ exists because we can always pick a $\pi_{\epsilon}$ s.t it is the maximizer of $T^{<em>}V^{</em>}$ (ie. pick $\pi_{\epsilon}$ to be $\pi_{g} (x; V^{<em>})$, from above proof we know that $T^{\pi_{g} (x; V^{</em>})} V^{<em>} = T^{</em>} V^{*}$), then</p>
+<p>$| V^{<em>} - T^{\pi_{\epsilon}} V^{</em>} |_{\infty} = 0 \leq (1 - \gamma) * \epsilon, \forall \epsilon &gt; 0$</p>
+<p>For any policy $\pi_{\epsilon}$ that satisfies above equation:</p>
+<p>$| V^{*} - V^{\pi_{\epsilon}} |_{\infty} \leq \epsilon$</p>
+<p>This means that</p>
+<p>$sup_{x_i} {|V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)|} \leq \epsilon$</p>
+<p>$\implies |V^{<em>} (x_i) - V^{\pi_{\epsilon}} (x_i)| \leq sup_{x_i} {|V^{</em>} (x_i) - V^{\pi_{\epsilon}} (x_i)|} \leq \epsilon, \forall x_i \in X$</p>
+<p>$\implies V^{<em>} (x_i) - V^{\pi_{\epsilon}} (x_i) \leq  |V^{</em>} (x_i) - V^{\pi_{\epsilon}} (x_i)| \leq \epsilon$</p>
+<p>$\implies V^{*} (x_i) \leq \epsilon + V^{\pi_{\epsilon}} (x_i)$</p>
+<p>Since $V^{\pi_{\epsilon}} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)$, as we take $\epsilon \rightarrow 0$, we have</p>
+<p>$V^{*} (x) \leq lim_{\epsilon \rightarrow 0} (epsilon + V^{\pi_{\epsilon}} (x)) \leq lim_{\epsilon \rightarrow 0} (epsilon + sup_{\pi \in \prod} V^{\pi}  (x)) = sup_{\pi \in \prod} V^{\pi} (x)$</p>
+<p><strong>This shows that $V^{<em>} = T^{</em>} V^{*}$ is upper bounded by the optimal value function within the space of stationary policies</strong></p>
+<h5 id="Proof-V-x-geq-sup-pi-in-prod-V-pi-x"><a href="#Proof-V-x-geq-sup-pi-in-prod-V-pi-x" class="headerlink" title="Proof $V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)$"></a>Proof $V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)$</h5><p>Consider any $\pi \in \prod$. By the definition of $T^{\pi}$ and $T^{*}$, for any $V \in B(X)$, we have that for any $x \in X$,</p>
+<p>$T^{\pi} V = r^{\pi}(x) + \int P(dx^{\prime} | x, a) \pi(da | x) V(x^{\prime})$</p>
+<p>$= \int  \pi(da | x) [P(dx^{\prime} | x, a) V(x^{\prime}) + r(x, a)]$</p>
+<p>$\leq sup_{a \in A} {r(x, a) + \int P(dx^{\prime} | x, a) V(x^{\prime})} = T^{*} V$</p>
+<p>In particular, with the choice of $V = V^{*}$, we have</p>
+<p>$T^{\pi} V^{<em>} \leq T^{</em>} V^{<em>} = V^{</em>}$</p>
+<p>$\implies T^{\pi}T^{\pi} V^{<em>} \leq T^{\pi}V^{</em>} \leq V^{*}$ (Monotonicity)</p>
+<p>$\implies (T^{\pi})^{k} V^{<em>} \leq V^{</em>}$ (apply bellman operator k times)</p>
+<p>as $k \rightarrow \infty$, by fix point theorem, we know that $(T^{\pi})^k V^{*} = V^{\pi}$:</p>
+<p>$\implies V^{\pi} = lim_{k \rightarrow \infty} (T^{\pi})^k V^{<em>} \leq V^{</em>}, \forall \pi in \prod$</p>
+<p>$\implies V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)$</p>
+<p><strong>Thus, we can conclude that $V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)$</strong></p>
+<p><strong>Together, we showed that $V^{<em>}$ is the same as $V^{\pi^{</em>}}$, the solution of bellman optimality equation is the optimal value function</strong></p>
+
+  
+  </article>
+
+
+
+
+
+      
+<footer class="page-footer fs12"><hr><div><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p>本站由 <a href="http://example.com/">@Zhu, Zhaoyang</a> 创建，使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.1.0">Stellar</a> 作为主题。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" viewBox="0 0 1228 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2849"><path d="M0 0m97.390199 0l973.901995 0q97.390199 0 97.390199 97.390199l0 0q0 97.390199-97.390199 97.3902l-973.901995 0q-97.390199 0-97.390199-97.3902l0 0q0-97.390199 97.390199-97.390199Z" p-id="2850"></path><path d="M0 389.560798m97.390199 0l973.901995 0q97.390199 0 97.390199 97.390199l0 0q0 97.390199-97.390199 97.3902l-973.901995 0q-97.390199 0-97.390199-97.3902l0 0q0-97.390199 97.390199-97.390199Z" p-id="2851"></path><path d="M0 779.121596m97.390199 0l973.901995 0q97.390199 0 97.390199 97.390199l0 0q0 97.390199-97.390199 97.390199l-973.901995 0q-97.390199 0-97.390199-97.390199l0 0q0-97.390199 97.390199-97.390199Z" p-id="2852"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script')
+      script.src = src
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.1.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper/swiper-bundle.min.css","js":"https://unpkg.com/swiper/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://cdn.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>
