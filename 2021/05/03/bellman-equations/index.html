@@ -17,36 +17,36 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>如何使用手机摄像头测量心率 - GoGoGogo!</title>
+  <title>bellman_equations - GoGoGogo!</title>
 
   
-    <meta name="description" content="在心率管家默默无闻地上线了一年多之后，现在终于打算来好好聊聊关于手机摄像头测量心率的那些事。本文参考了很多前辈的文章，将在文末列出。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="如何使用手机摄像头测量心率">
-<meta property="og:url" content="http://example.com/bellman_equations.html">
+    <meta name="description" content="Bellman equationsMDPDefine our MDP different from Introduction to RL book:   Where $M(X)$ is the space of all probability distributions defined over the state space X So we could describe the process">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bellman_equations">
+<meta property="og:url" content="http://example.com/2021/05/03/bellman-equations/index.html">
 <meta property="og:site_name" content="GoGoGogo!">
-<meta property="og:description" content="在心率管家默默无闻地上线了一年多之后，现在终于打算来好好聊聊关于手机摄像头测量心率的那些事。本文参考了很多前辈的文章，将在文末列出。">
+<meta property="og:description" content="Bellman equationsMDPDefine our MDP different from Introduction to RL book:   Where $M(X)$ is the space of all probability distributions defined over the state space X So we could describe the process">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/pngs/mdp.png">
-<meta property="og:image" content="http://example.com/pngs/policy_1.png">
-<meta property="og:image" content="http://example.com/pngs/policy.png">
-<meta property="og:image" content="http://example.com/pngs/transition_kernel.png">
-<meta property="og:image" content="http://example.com/pngs/bellman-operator.png">
-<meta property="og:image" content="http://example.com/pngs/bellman-opt-operator.png">
-<meta property="og:image" content="http://example.com/pngs/monotonicity.png">
-<meta property="og:image" content="http://example.com/pngs/contraction_mapping.png">
-<meta property="og:image" content="http://example.com/pngs/gamma_contraction.png">
-<meta property="og:image" content="http://example.com/pngs/fixed_point.png">
-<meta property="og:image" content="http://example.com/pngs/bfpt.png">
-<meta property="og:image" content="http://example.com/pngs/unique_fixed_points.png">
-<meta property="og:image" content="http://example.com/pngs/br_1.png">
-<meta property="og:image" content="http://example.com/pngs/br_2.png">
-<meta property="og:image" content="http://example.com/pngs/claim_2.png">
-<meta property="article:published_time" content="2021-05-02T17:29:29.753Z">
-<meta property="article:modified_time" content="2021-05-02T17:29:28.459Z">
+<meta property="og:image" content="http://example.com/2021/05/03/bellman-equations/pngs/mdp.png">
+<meta property="og:image" content="http://example.com/2021/05/03/bellman-equations/pngs/policy_1.png">
+<meta property="og:image" content="http://example.com/2021/05/03/bellman-equations/pngs/policy.png">
+<meta property="og:image" content="http://example.com/2021/05/03/bellman-equations/pngs/transition_kernel.png">
+<meta property="og:image" content="http://example.com/2021/05/03/bellman-equations/pngs/bellman-operator.png">
+<meta property="og:image" content="http://example.com/2021/05/03/bellman-equations/pngs/bellman-opt-operator.png">
+<meta property="og:image" content="http://example.com/2021/05/03/bellman-equations/pngs/monotonicity.png">
+<meta property="og:image" content="http://example.com/2021/05/03/bellman-equations/pngs/contraction_mapping.png">
+<meta property="og:image" content="http://example.com/2021/05/03/bellman-equations/pngs/gamma_contraction.png">
+<meta property="og:image" content="http://example.com/2021/05/03/bellman-equations/pngs/fixed_point.png">
+<meta property="og:image" content="http://example.com/2021/05/03/bellman-equations/pngs/bfpt.png">
+<meta property="og:image" content="http://example.com/2021/05/03/bellman-equations/pngs/unique_fixed_points.png">
+<meta property="og:image" content="http://example.com/2021/05/03/bellman-equations/pngs/br_1.png">
+<meta property="og:image" content="http://example.com/2021/05/03/bellman-equations/pngs/br_2.png">
+<meta property="og:image" content="http://example.com/2021/05/03/bellman-equations/pngs/claim_2.png">
+<meta property="article:published_time" content="2021-05-02T17:44:05.000Z">
+<meta property="article:modified_time" content="2021-05-02T17:46:10.326Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/pngs/mdp.png">
+<meta name="twitter:image" content="http://example.com/2021/05/03/bellman-equations/pngs/mdp.png">
   
   
 
@@ -87,24 +87,8 @@
   
     
       
-      <div class='widget-wrap' id='markdown'>
-  <div class='widget-header h4 dis-select'>
-    <span class='name'>欢迎</span>
-  </div>
-  <div class='widget-body fs14'>
-    
-      <p>欢迎光临小站，<a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/">Stellar</a> 是一个支持 wiki 的 hexo 主题，适合综合型站点使用。同时也拥有简约而精美的视觉设计和丰富的标签插件，帮助您简单从容地应对各种场合。</p>
-
-    
-  </div>
-</div>
-
-    
-  
-    
       
-      
-<div class="widget-wrap" id="recent"><div class="widget-header h4 dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><div class="post-title reveal"><div class="cap"><time>2021-05-02</time></div><a href="/2021/05/02/hello-world/">Hello World</a></div></div></div>
+<div class="widget-wrap" id="toc"><div class="widget-header h4 dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14 post"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MDP"><span class="toc-text">MDP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Policy"><span class="toc-text">Policy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Policy-induced-Transition-Kernels"><span class="toc-text">Policy induced Transition Kernels</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Rewards-and-Returns"><span class="toc-text">Rewards and Returns</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Value-functions"><span class="toc-text">Value functions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bellman-equations-1"><span class="toc-text">Bellman equations</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bellman-Equations-for-Optimal-Value-Functions"><span class="toc-text">Bellman Equations for Optimal Value Functions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bellman-Operators"><span class="toc-text">Bellman Operators</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Properties-of-Bellman-operators"><span class="toc-text">Properties of Bellman operators</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Monotonicity"><span class="toc-text">Monotonicity</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Contraction"><span class="toc-text">Contraction</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Consequences-of-Monotonicity-and-Contraction"><span class="toc-text">Consequences of Monotonicity and Contraction</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Uniqueness-of-fixed-points"><span class="toc-text">Uniqueness of fixed points</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Value-of-the-greedy-policy-of-V-is-V"><span class="toc-text">Value of the greedy policy of $V^{}$ is $V^{}$</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#An-error-bound-based-on-the-bellman-error"><span class="toc-text">An error bound based on the bellman error</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Proof-of-claim-2-V-T-V-is-the-same-as-V-pi"><span class="toc-text">Proof of claim 2: $V^{} &#x3D; T^{} V^{}$ is the same as $V^{\pi^{}}$</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Proof-V-x-leq-sup-pi-in-prod-V-pi-x"><span class="toc-text">Proof $V^{*} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)$</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Proof-V-x-geq-sup-pi-in-prod-V-pi-x"><span class="toc-text">Proof $V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)$</span></a></li></ol></li></ol></li></ol></li></ol></div></div></div>
 
     
   
@@ -114,43 +98,29 @@
     </aside>
     <div class='l_main'>
       
-  
-<header class='header mobile-only'>
-  <div class='logo-wrap'>
-  
-  
-    <a class='title' href='/'>
-      GoGoGogo!
-    </a>
-  
-</div>
-
-  <nav class="menu dis-select"></nav>
-</header>
-
-
 
       
 
-  
+
   <div class='bread-nav fs12'>
   
-      <div id='breadcrumb'>
-        <a class='cap breadcrumb' href='/'>主页</a>
-        <span class="sep"></span>
-        <a class='cap breadcrumb' href='/bellman_equations.html'>如何使用手机摄像头测量心率</a>
-      </div>
+    
+    <div id='breadcrumb'>
+      <a class='cap breadcrumb' href='/'>主页</a>
+      <span class="sep"></span>
+      <a class='cap breadcrumb' href='/'>文章</a>
+      
+    </div>
+    <div id='post-meta'>
+      发布于&nbsp;<time datetime='2021-05-02T17:44:05.000Z'>2021-05-03</time>
+    </div>
   
   </div>
 
 
-  <article class='content md page'>
-  <h1 class="article-title"><span>如何使用手机摄像头测量心率</span></h1>
-  
-    <p>在心率管家默默无闻地上线了一年多之后，现在终于打算来好好聊聊关于手机摄像头测量心率的那些事。本文参考了很多前辈的文章，将在文末列出。</p>
-<span id="more"></span>
-
-<h1 id="More-on-Bellman-equations"><a href="#More-on-Bellman-equations" class="headerlink" title="More on Bellman equations"></a>More on Bellman equations</h1><h2 id="MDP"><a href="#MDP" class="headerlink" title="MDP"></a>MDP</h2><p>Define our MDP different from Introduction to RL book:</p>
+<article class='content md post'>
+<h1 class="article-title"><span>bellman_equations</span></h1>
+<h1 id="Bellman-equations"><a href="#Bellman-equations" class="headerlink" title="Bellman equations"></a>Bellman equations</h1><h2 id="MDP"><a href="#MDP" class="headerlink" title="MDP"></a>MDP</h2><p>Define our MDP different from Introduction to RL book:</p>
 <img src='pngs/mdp.png'>
 
 <p>Where $M(X)$ is the space of all probability distributions defined over the state space X</p>
@@ -176,7 +146,7 @@
 <p>$V^{\pi}(x) = E[G^{\pi} | X_{0} = x] = E[G^{\pi}<em>{t} | X</em>{t} = x]$ (Markov Property)</p>
 <p>Action value function following policy $\pi$ starting from state x and taking action a:</p>
 <p>$Q^{\pi} (x, a) = E[G^{\pi} | X_{0} = x, A_{0} = a] = E[G^{\pi}<em>{t} | X</em>{t} = x, A_{t} = a]$ (Markov Property)</p>
-<h2 id="Bellman-equations"><a href="#Bellman-equations" class="headerlink" title="Bellman equations"></a>Bellman equations</h2><p>By expanding value functions, we reveal the recursive property of return</p>
+<h2 id="Bellman-equations-1"><a href="#Bellman-equations-1" class="headerlink" title="Bellman equations"></a>Bellman equations</h2><p>By expanding value functions, we reveal the recursive property of return</p>
 <p>\begin{aligned}<br>V^{\pi} (x) &amp;= E[G^{\pi}<em>{t} | X</em>{t} = x]\<br>&amp; = E[R_{t} + \gamma G^{\pi}<em>{t+1} | X</em>{t} = x]\<br>&amp; = E_{a \sim \pi(a | s)}[R_{t} | X_{t} = x] + \gamma E[G^{\pi}<em>{t+1} | X</em>{t} = x]\<br>&amp; = r^{\pi} (x) + \gamma E[V^{\pi} (X_{t+1}) | X_{t} = x]\<br>\end{aligned}</p>
 <p>Where<br>$ E[V^{\pi} (X_{t+1}) | X_{t} = x] = E[E[G^{\pi}<em>{t+1} | X</em>{t+1} = x^\prime] | X_{t} = x] = E[G^{\pi}<em>{t+1} | X</em>{t} = x]$</p>
 <p>This implies that neither side is random, by expanding $E[V^{\pi} (X_{t+1}) | X_{t} = x]$, we get</p>
@@ -286,8 +256,16 @@
 <p><strong>Thus, we can conclude that $V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)$</strong></p>
 <p><strong>Together, we showed that $V^{<em>}$ is the same as $V^{\pi^{</em>}}$, the solution of bellman optimality equation is the optimal value function</strong></p>
 
-  
-  </article>
+
+<div class="article-footer fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body"><div class="post-title h2"><a href="/2021/05/02/hello-world/">Hello World</a></div></section></div>
+
+
+
 
 
 
