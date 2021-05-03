@@ -215,7 +215,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2021-05-03 18:11:55 / Modified: 19:06:58" itemprop="dateCreated datePublished" datetime="2021-05-03T18:11:55+08:00">2021-05-03</time>
+      <time title="Created: 2021-05-03 18:11:55 / Modified: 19:13:47" itemprop="dateCreated datePublished" datetime="2021-05-03T18:11:55+08:00">2021-05-03</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -239,7 +239,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>8.7k</span>
+      <span>8.9k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -259,151 +259,15 @@
     <div class="post-body" itemprop="articleBody">
           <h1 id="bellman-equations-for-optimal-value-functions">Bellman Equations for Optimal Value Functions</h1>
 <p><img src='/images/RL/bellman_equation/optimal_policy_value_func.png'></p>
-<p>So it is natural to ask, does the optimal value function of optimal policy <span class="math inline">\(V^{\pi^*}\)</span> have similar recursive structure? the answer is yes, however, we need to prove this. The proof goes with 3 claims which we will prove later:</p>
-<ol type="1">
-<li><ol type="a">
-<li><p><span class="math inline">\(\exists\)</span> a value function <span class="math inline">\(V^*\)</span> s.t <span class="math inline">\(\forall x \in X\)</span>, we have:</p>
-<p><span class="math display">\[V^{*}(x) = max_{a} \{Q^{*}(x, a)\} = max_{a} \{r(x, a) + \gamma \int P(dx^\prime | x, a) V^{*}(x^\prime)\}\]</span></p></li>
-<li><p><span class="math inline">\(\exists\)</span> a value function <span class="math inline">\(Q^*\)</span> s.t <span class="math inline">\(\forall x, a \in X, A\)</span>, we have:</p>
-<p><span class="math display">\[Q^{*}(x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) max_{a^\prime} \{Q^{*} (x^\prime, a^\prime)\}\]</span></p></li>
-</ol>
-<p>These equations are called <span style="color:red"><strong>bellman optimality equations for the value functions</strong></span></p></li>
-<li><p><span class="math inline">\(V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^*}\)</span>, the optimal value function when <span class="math inline">\(\pi\)</span> is restricted to be within the space of all stationary and non-stationary policies.</p></li>
-<li><p>For discounted continuing MDPs, we can always find a stationary policy that is optimal within the space of all stationary and non-stationary policies.</p></li>
-</ol>
-<p>In summary, we claim that:</p>
-<p><strong><span class="math inline">\(V^{*}\)</span> exists and it is unique, <span class="math inline">\(V^{*} = V^{\pi^{*}}\)</span>. Same for <span class="math inline">\(Q^{*}\)</span></strong></p>
-<h2 id="bellman-operators">Bellman Operators</h2>
-<p>In order to prove the claims, we need several concepts:</p>
-<p><img src='/images/RL/bellman_equation/bellman-operator.png'> <img src='/images/RL/bellman_equation/bell-opt-operator.png'></p>
-<p>These operators are linear and recall that:</p>
-<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (a^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
-<p>This implies <span class="math inline">\(T^{\pi} Q^{\pi} = Q^{\pi}\)</span>, same for state-value function and bellman optimality operators. Thus, we can conclude that:</p>
-<p><span class="math display">\[V^{\pi} = T^{\pi} V^{\pi}\]</span> <span class="math display">\[Q^{\pi} = T^{\pi} Q^{\pi}\]</span> <span class="math display">\[V^{*} = T^{*} V^{*}\]</span> <span class="math display">\[Q^{*} = T^{*} Q^{*}\]</span></p>
-<h3 id="properties-of-bellman-operators">Properties of Bellman Operators</h3>
-<p>Bellman operators have several important properties. The properties that matters for us the most are:</p>
-<ol type="1">
-<li>Monotonicity</li>
-<li>Contraction</li>
-</ol>
-<h4 id="monotonicity">Monotonicity</h4>
-<p><img src='/images/RL/bellman_equation/monotonicity.png'></p>
-<p>we can easily prove this (only prove <span class="math inline">\(T^{\pi}\)</span>, <span class="math inline">\(T^{*}\)</span> is the same):</p>
-<p>Assume:</p>
-<p><span class="math display">\[V_1(x^{\prime}) \geq V_2(x^{\prime}), \forall x^{\prime} \in X\]</span></p>
-<p>we get that for any <span class="math inline">\(x \in X\)</span>:</p>
-<p><span class="math display">\[T^{\pi}V_{1} (x) = r^{\pi} (x) + \gamma \int P^{\pi}(dx^{\prime} | x) V_{1} (x^\prime) \geq r^{\pi} (x) + \gamma \int P^{\pi}(dx^{\prime} | x) V_{2} (x^\prime) = T^{\pi}V_2(x)\]</span></p>
-<p>Thus:</p>
-<p><span class="math display">\[T^{\pi}V_{1} (x) \geq T^{\pi}V_{2} (x)\]</span></p>
-<h4 id="contraction">Contraction</h4>
-<p><img src='/images/RL/bellman_equation/contraction_mapping.png'></p>
-<p>we can also easily prove that <span class="math inline">\(T^{*}, T^{\pi}\)</span> are contraction mappings (only prove <span class="math inline">\(T^{\pi}\)</span>, <span class="math inline">\(T^{*}\)</span> is the same):</p>
-<p>Consider two action-value functions:</p>
-<p><span class="math display">\[Q_1, Q_2 \in B(X\times A)\]</span></p>
-<p>Consider the metric:</p>
-<p><span class="math display">\[d(Q_1, Q_2) = \| Q_1 - Q_2 \|_{\infty}\]</span></p>
-<p>We show the contraction w.r.t <span class="math inline">\(l-\infty\)</span> norm.</p>
-<p>For any <span class="math inline">\((x, a) \in X \times A\)</span>, we have:</p>
-<span class="math display">\[\begin{aligned}
-\lvert T^{\pi} Q_1 (x, a) - T^{\pi} Q_2 (x, a) \rvert &amp;= \lvert r (x, a) + \gamma \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) Q_{1} (x^\prime, a^{\prime}) - r (x, a) - \gamma \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) Q_{2} (x^\prime, a^{\prime}) \rvert\\
-&amp; = \gamma \lvert \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) [Q_{1} (x^\prime, a^{\prime}) -  Q_{2} (x^\prime, a^{\prime})] \rvert\\
-&amp; \leq \gamma \int \underbrace{P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime)}_{\text{these are probabilities which $ \geq $ 0}} \lvert [Q_{1} (x^\prime, a^{\prime}) -  Q_{2} (x^\prime, a^{\prime})] \rvert\\
-&amp; \leq \gamma \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) \sup_{x, a}\lvert [Q_{1} (x, a) -  Q_{2} (x, a)] \rvert\\
-&amp; = \gamma \sup_{x, a}\lvert Q_{1} (x, a) -  Q_{2} (x, a) \rvert \underbrace{\int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime)}_{\text{this is a probability distribution which sums to 1}}\\
-&amp; = \gamma \sup_{x, a}\lvert Q_{1} (x, a) -  Q_{2} (x, a) \rvert = \gamma \|Q_{1} -  Q_{2}\|_{\infty}
-\end{aligned}\]</span>
-<p>This inequality holds for all state action pair, thus, we have showed that bellman operators are contraction mappings.</p>
-<p><img src='/images/RL/bellman_equation/gamma_contraction.png'></p>
-<h3 id="consequences-of-monotonicity-and-contraction">Consequences of Monotonicity and Contraction</h3>
-<h4 id="uniqueness-of-fixed-points">Uniqueness of fixed points</h4>
-<p><img src='/images/RL/bellman_equation/fixed_point.png'> <img src='/images/RL/bellman_equation/bfpt.png'> <img src='/images/RL/bellman_equation/unique_fixed_points.png'></p>
-<p>Proof of the proposition is also simple (Same for <span class="math inline">\(Q^{\pi}, Q^{*}\)</span>):</p>
-<p>For any <span class="math inline">\(\pi\)</span>, <span class="math inline">\(T^{\pi}\)</span> is a <span class="math inline">\(\gamma-\)</span>contraction mapping (same for <span class="math inline">\(T^{*}\)</span>), thus, by the Banach fixed point theorem, they have unique fixed point</p>
-<p><span class="math display">\[T^{*} V^{*} = V^{*}, T^{\pi} V^{\pi} = V^{\pi}\]</span></p>
-<p>Moreover, the update rule <span class="math inline">\(V_{k+1} \leftarrow T^{\pi} V_{k}\)</span> converges, which means:</p>
-<p><span class="math display">\[lim_{k \rightarrow \infty} \| V_{k} - V^{\pi}\|_{\infty} = 0\]</span></p>
-<h4 id="value-of-the-greedy-policy-of-v-is-v">Value of the greedy policy of <span class="math inline">\(V^{*}\)</span> is <span class="math inline">\(V^{*}\)</span></h4>
-<p>We know if:</p>
-<p><span class="math display">\[T^{\pi} V^{*} = T^{*}V^{*} \implies T^{\pi} V^{*} = V^{*}\]</span></p>
-<p>This is also the fix point of <span class="math inline">\(T^{\pi}\)</span>, this implies <span class="math inline">\(V^{\pi} = V^{*}\)</span>.</p>
-<p>On the other hand, if we know <span class="math inline">\(V^\pi = V^{*}\)</span>, the by applying <span class="math inline">\(T^{\pi}\)</span> to both side we have</p>
-<p><span class="math display">\[T^{\pi} V^{\pi} = T^{\pi} V^{*} \implies T^{\pi} V^{\pi} = T^{*} V^{*} = T^{\pi} V^{*}\]</span></p>
-<p>Thus, we can conclude that:</p>
-<p><span class="math display">\[T^{\pi} V^{*} = T^{*}V^{*} \text{ iff } V^\pi = V^{*}\]</span></p>
-<p><strong>The Connection To Greedy Policy</strong></p>
-<p>Given <span class="math inline">\(V^{*}\)</span>, the greedy policy of <span class="math inline">\(V^{*}\)</span> is defined as:</p>
-<p><span class="math display">\[\pi_{g} (x; V^{*}) = argmax_{a \in A} Q^{*}(x, a) = argmax_{a \in A} r(x, a) + \gamma \int P(dx^{\prime} | x, a) V^{*}(x^{\prime})\]</span></p>
-<p>So:</p>
-<p><span class="math display">\[T^{\pi_{g} (x; V^{*})} V^{*} = r(x, \pi_{g} (x; V^{*})) + \gamma \int P(dx^{\prime} | x, \pi_{g} (x; V^{*})) V^{*}(x^{\prime}) = max_{a \in A} r(x, a) + \gamma \int P(dx^{\prime} | x, a) V^{*}(x^{\prime})\]</span></p>
-<p>Compare with <span class="math inline">\(T^{*} V^{*}\)</span>:</p>
-<p><span class="math display">\[T^{*} V^{*} =  max_{a \in A} r(x, a) + \gamma \int P(dx^{\prime} | x, a) V^{*}(x^{\prime})\]</span></p>
-<p>Thus:</p>
-<p><span class="math display">\[T^{*} V^{*} = T^{\pi_{g} (x; V^{*})} V^{*}\]</span></p>
-<p>Since:</p>
-<p><span class="math display">\[T^{\pi} V^{*} = T^{*}V^{*} \text{ iff } V^\pi = V^{*} \implies V^{*} = V^{\pi_{g} (x; V^{*})}\]</span></p>
-<p>That is, the value of following <span class="math inline">\(\pi_{g} (x; V^{*})\)</span> is the same as <span class="math inline">\(V^{*}\)</span>. This means that if we find <span class="math inline">\(V^{*}\)</span> and its greedy policy, the value of following the greedy policy is <span class="math inline">\(V^{*}\)</span>.</p>
-<p><span style="color:red"><strong>To find an optimal policy, we can find <span class="math inline">\(V^{*}\)</span> first, then find its greedy policy</strong></span></p>
-<p>following this conclusion: Although we have not yet prove that <span class="math inline">\(V^{*}\)</span> is the optimal value function (<span class="math inline">\(\pi^{*} = argmax_{\pi \in \prod} V^{\pi} (x)\)</span>, <span class="math inline">\(V^{*} = V^{\pi^{*}}\)</span> (claim 2)), this is indeed true. (prove later)</p>
-<h4 id="an-error-bound-based-on-the-bellman-error">An error bound based on the bellman error</h4>
-<p>If we find a V s.t <span class="math inline">\(V = T^{*} V\)</span>, we know that <span class="math inline">\(V = V^{*}\)</span> (same for <span class="math inline">\(T^{\pi} and Q\)</span>), what if <span class="math inline">\(V \approx T^{*} V\)</span>, what can we say about the closeness of <span class="math inline">\(V\)</span> to <span class="math inline">\(V^{*}\)</span>?</p>
-<p><img src='/images/RL/bellman_equation/br_1.png'> <img src='/images/RL/bellman_equation/br_2.png'></p>
-<p><strong>Proof:</strong></p>
-<span class="math display">\[\begin{aligned}
-V - V^{*} &amp;= V - T^{*} V + T^{*} V - V^{*}\\
-\implies \| V - V^{*} \|_{\infty} &amp;= \| V - T^{*} V + T^{*} V - V^{*} \|_{\infty}\\
-&amp;\leq   \|V - T^{*} V \|_{\infty} + \|T^{*} V - T^{*}V^{*} \|_{\infty} \\
-&amp;\leq   \|V - T^{*} V \|_{\infty} + \gamma \|V - V^{*} \|_{\infty} (i.e. \|T^{*} V - T^{*}V^{*} \|_{\infty} \leq \gamma \|V - V^{*} \|_{\infty}, \text{contraction property} )\\
-\implies \| V - V^{*} \|_{\infty} &amp;\leq \frac{\|V - T^{*} V \|_{\infty}}{(1 - \gamma)}\\
-\implies \| V - V^{*} \|_{\infty} &amp;\leq \frac{BE^{*}}{(1 - \gamma)}
-\end{aligned}\]</span>
-<h4 id="proof-of-claim-2-v-t-v-is-the-same-as-vpi">Proof of claim 2: <span class="math inline">\(V^{*} = T^{*} V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^{*}}\)</span></h4>
-<p><img src='/images/RL/bellman_equation/claim_2.png'></p>
-<p>The proof has three parts:</p>
-<ol type="1">
-<li><p>Prove that <span class="math inline">\(V^{*} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)\)</span></p></li>
-<li><p>Prove that <span class="math inline">\(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></p></li>
-<li><p>Combine 1 and 2, we show that claim 2 is true, that is, <span class="math inline">\(V^{*} = T^{*} V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^{*}}\)</span></p></li>
-</ol>
-<h5 id="proof-v-x-leq-sup_pi-in-prod-vpi-x">Proof <span class="math inline">\(V^{*} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)\)</span></h5>
-<p>From the error bound with the choice of <span class="math inline">\(V = V^{*}\)</span>, we have for any <span class="math inline">\(\pi \in \prod\)</span>,</p>
-<p><span class="math display">\[\| V^{*} - V^{\pi} \|_{\infty} \leq \frac{\| V^{*} - T^{\pi}V^{*} \|_{\infty}}{1 - \gamma}\]</span></p>
-<p>Let <span class="math inline">\(\epsilon &gt; 0\)</span>. Choose a policy <span class="math inline">\(\pi_{\epsilon}\)</span> s.t:</p>
-<p><span class="math display">\[\| V^{*} - T^{\pi_{\epsilon}} V^{*} \|_{\infty} \leq (1 - \gamma) \epsilon\]</span></p>
-<p>We know that this <span class="math inline">\(\pi_{\epsilon}\)</span> exists because we can always pick a <span class="math inline">\(\pi_{\epsilon}\)</span> s.t it is the maximizer of <span class="math inline">\(T^{*}V^{*}\)</span> (ie. pick <span class="math inline">\(\pi_{\epsilon}\)</span> to be <span class="math inline">\(\pi_{g} (x; V^{*})\)</span>, from above proof we know that <span class="math inline">\(T^{\pi_{g} (x; V^{*})} V^{*} = T^{*} V^{*}\)</span>), then:</p>
-<p><span class="math display">\[\| V^{*} - T^{\pi_{\epsilon}} V^{*} \|_{\infty} = 0 \leq (1 - \gamma) * \epsilon, \forall \epsilon &gt; 0\]</span></p>
-<p>For any policy <span class="math inline">\(\pi_{\epsilon}\)</span> that satisfies above equation:</p>
-<p><span class="math display">\[\| V^{*} - V^{\pi_{\epsilon}} \|_{\infty} \leq \epsilon\]</span></p>
-<p>This means that:</p>
-<p><span class="math display">\[sup_{x_i} \{|V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)|\} \leq \epsilon\]</span></p>
-<p><span class="math display">\[\implies |V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)| \leq sup_{x_i} \{|V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)|\} \leq \epsilon, \forall x_i \in X\]</span></p>
-<p><span class="math display">\[\implies V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i) \leq  |V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)| \leq \epsilon\]</span></p>
-<p><span class="math display">\[\implies V^{*} (x_i) \leq \epsilon + V^{\pi_{\epsilon}} (x_i)\]</span></p>
-<p>Since:</p>
-<p><span class="math display">\[V^{\pi_{\epsilon}} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)\]</span></p>
-<p>As we take <span class="math inline">\(\epsilon \rightarrow 0\)</span>, we have:</p>
-<p><span class="math display">\[V^{*} (x) \leq lim_{\epsilon \rightarrow 0} (\epsilon + V^{\pi_{\epsilon}} (x)) \leq lim_{\epsilon \rightarrow 0} (\epsilon + sup_{\pi \in \prod} V^{\pi}  (x)) = sup_{\pi \in \prod} V^{\pi} (x)\]</span></p>
-<p><strong>This shows that <span class="math inline">\(V^{*} = T^{*} V^{*}\)</span> is upper bounded by the optimal value function within the space of stationary policies</strong></p>
-<h5 id="proof-v-x-geq-sup_pi-in-prod-vpi-x">Proof <span class="math inline">\(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></h5>
-<p>Consider any <span class="math inline">\(\pi \in \prod\)</span>. By the definition of <span class="math inline">\(T^{\pi}\)</span> and <span class="math inline">\(T^{*}\)</span>, for any <span class="math inline">\(V \in B(X)\)</span>, we have that for any <span class="math inline">\(x \in X\)</span>:</p>
-<span class="math display">\[\begin{aligned}
-T^{\pi} V &amp;= r^{\pi}(x) + \int P(dx^{\prime} | x, a) \pi(da | x) V(x^{\prime})\\
-&amp;= \int  \pi(da | x) [P(dx^{\prime} | x, a) V(x^{\prime}) + r(x, a)]\\
-&amp;\leq sup_{a \in A} \{r(x, a) + \int P(dx^{\prime} | x, a) V(x^{\prime})\} = T^{*} V
-\end{aligned}\]</span>
-<p>In particular, with the choice of <span class="math inline">\(V = V^{*}\)</span>, we have:</p>
-<span class="math display">\[\begin{aligned}
-T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
-\implies T^{\pi}T^{\pi} V^{*} &amp;\leq T^{\pi}V^{*} \leq V^{*} \text{(Monotonicity)}\\
-\implies (T^{\pi})^{k} V^{*} &amp;\leq V^{*} \text{(apply bellman operator k times)}
-\end{aligned}\]</span>
-<p>as <span class="math inline">\(k \rightarrow \infty\)</span>, by fix point theorem, we know that <span class="math inline">\((T^{\pi})^k V^{*} = V^{\pi}\)</span>:</p>
-<span class="math display">\[\begin{aligned}
-\implies V^{\pi} &amp;= lim_{k \rightarrow \infty} (T^{\pi})^k V^{*} \leq V^{*}, \forall \pi \in \prod\\
-\implies V^{*} (x) &amp;\geq sup_{\pi \in \prod} V^{\pi} (x)
-\end{aligned}\]</span>
-<p><strong>Thus, we can conclude that <span class="math inline">\(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></strong></p>
-<p><span style="color:red"><strong>Together, we showed that <span class="math inline">\(V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^{*}}\)</span>, the solution of bellman optimality equation is the optimal value function</strong></span></p>
-
+<p>So it is natural to ask, does the optimal value function of optimal policy <span class="math inline">\(V^{\pi^*}\)</span> have similar recursive structure? the answer is yes, however, we need to prove this. The proof goes with 3 claims which we will prove later:
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/05/03/bellman-optimality-equations/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -454,7 +318,7 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2021-05-03 18:00:42 / Modified: 18:13:34" itemprop="dateCreated datePublished" datetime="2021-05-03T18:00:42+08:00">2021-05-03</time>
+      <time title="Created: 2021-05-03 18:00:42 / Modified: 19:13:39" itemprop="dateCreated datePublished" datetime="2021-05-03T18:00:42+08:00">2021-05-03</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -505,20 +369,15 @@ V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
 &amp; = E_{a \sim \pi(a | s)}[R_{t} | X_{t} = x] + \gamma E[G^{\pi}_{t+1} | X_{t} = x]\\
 &amp; = r^{\pi} (x) + \gamma E[V^{\pi} (X_{t+1}) | X_{t} = x]\\
 \end{aligned}
-\]</span></p>
-<p>Where:</p>
-<p><span class="math display">\[ E[V^{\pi} (X_{t+1}) | X_{t} = x] = E[E[G^{\pi}_{t+1} | X_{t+1} = x^\prime] | X_{t} = x] = E[G^{\pi}_{t+1} | X_{t} = x]\]</span></p>
-<p>This implies that neither side is random, by expanding:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x]\]</span></p>
-<p>we get:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (a | x) V^{\pi} (x^\prime)\]</span></p>
-<p>Thus, the value function can be expressed as:</p>
-<p><span class="math display">\[V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (a | x) V^{\pi} (x^\prime)\]</span></p>
-<p>This is the <span style="color:red"><strong>bellman equation</strong> </span> for a policy <span class="math inline">\(\pi\)</span>, this can be interpreted as: The value of following a policy <span class="math inline">\(\pi\)</span> is the expected immediate reward that the <span class="math inline">\(\pi\)</span>-following agent receives at that state plus the discounted average(expected) value that the agent receives at the next-state.</p>
-<p>Same for action-value function, we have bellman equation:</p>
-<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (a^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
-<p>Compare with value function, we have expected reward base on action <span class="math inline">\(a\)</span> plus discounted average(expected) value that the agent receives at the next-state following <span class="math inline">\(\pi\)</span> (the choice of action is given at state <span class="math inline">\(s\)</span> in action value function)</p>
-
+\]</span>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/05/03/bellman-equations/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -662,13 +521,13 @@ V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">11k</span>
+    <span title="Symbols count total">12k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10 mins.</span>
+    <span title="Reading time total">11 mins.</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>

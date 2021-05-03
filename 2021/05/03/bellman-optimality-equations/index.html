@@ -40,7 +40,7 @@
 <meta property="og:image" content="http://example.com/images/RL/bellman_equation/br_2.png">
 <meta property="og:image" content="http://example.com/images/RL/bellman_equation/claim_2.png">
 <meta property="article:published_time" content="2021-05-03T10:11:55.000Z">
-<meta property="article:modified_time" content="2021-05-03T11:06:58.583Z">
+<meta property="article:modified_time" content="2021-05-03T11:13:47.657Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta property="article:tag" content="Basics">
 <meta name="twitter:card" content="summary">
@@ -132,7 +132,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#bellman-equations-for-optimal-value-functions"><span class="nav-number">1.</span> <span class="nav-text">Bellman Equations for Optimal Value Functions</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bellman-operators"><span class="nav-number">1.1.</span> <span class="nav-text">Bellman Operators</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#properties-of-bellman-operators"><span class="nav-number">1.1.1.</span> <span class="nav-text">Properties of Bellman Operators</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#monotonicity"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">Monotonicity</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#contraction"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">Contraction</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#consequences-of-monotonicity-and-contraction"><span class="nav-number">1.1.2.</span> <span class="nav-text">Consequences of Monotonicity and Contraction</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#uniqueness-of-fixed-points"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Uniqueness of fixed points</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#value-of-the-greedy-policy-of-v-is-v"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">Value of the greedy policy of \(V^{*}\) is \(V^{*}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#an-error-bound-based-on-the-bellman-error"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">An error bound based on the bellman error</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#proof-of-claim-2-v-t-v-is-the-same-as-vpi"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">Proof of claim 2: \(V^{*} &#x3D; T^{*} V^{*}\) is the same as \(V^{\pi^{*}}\)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-v-x-leq-sup_pi-in-prod-vpi-x"><span class="nav-number">1.1.2.4.1.</span> <span class="nav-text">Proof \(V^{*} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)\)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-v-x-geq-sup_pi-in-prod-vpi-x"><span class="nav-number">1.1.2.4.2.</span> <span class="nav-text">Proof \(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#bellman-equations-for-optimal-value-functions"><span class="nav-number">1.</span> <span class="nav-text">Bellman Equations for Optimal Value Functions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#properties-of-bellman-operators"><span class="nav-number">1.0.1.</span> <span class="nav-text">Properties of Bellman Operators</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#monotonicity"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">Monotonicity</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#contraction"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">Contraction</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#consequences-of-monotonicity-and-contraction"><span class="nav-number">1.0.2.</span> <span class="nav-text">Consequences of Monotonicity and Contraction</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#uniqueness-of-fixed-points"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">Uniqueness of fixed points</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#value-of-the-greedy-policy-of-v-is-v"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">Value of the greedy policy of \(V^{*}\) is \(V^{*}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#an-error-bound-based-on-the-bellman-error"><span class="nav-number">1.0.2.3.</span> <span class="nav-text">An error bound based on the bellman error</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#proof-of-claim-2-v-t-v-is-the-same-as-vpi"><span class="nav-number">1.0.2.4.</span> <span class="nav-text">Proof of claim 2: \(V^{*} &#x3D; T^{*} V^{*}\) is the same as \(V^{\pi^{*}}\)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-v-x-leq-sup_pi-in-prod-vpi-x"><span class="nav-number">1.0.2.4.1.</span> <span class="nav-text">Proof \(V^{*} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)\)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-v-x-geq-sup_pi-in-prod-vpi-x"><span class="nav-number">1.0.2.4.2.</span> <span class="nav-text">Proof \(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -235,7 +235,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2021-05-03 18:11:55 / Modified: 19:06:58" itemprop="dateCreated datePublished" datetime="2021-05-03T18:11:55+08:00">2021-05-03</time>
+      <time title="Created: 2021-05-03 18:11:55 / Modified: 19:13:47" itemprop="dateCreated datePublished" datetime="2021-05-03T18:11:55+08:00">2021-05-03</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -259,7 +259,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>8.7k</span>
+      <span>8.9k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -279,21 +279,20 @@
     <div class="post-body" itemprop="articleBody">
         <h1 id="bellman-equations-for-optimal-value-functions">Bellman Equations for Optimal Value Functions</h1>
 <p><img src='/images/RL/bellman_equation/optimal_policy_value_func.png'></p>
-<p>So it is natural to ask, does the optimal value function of optimal policy <span class="math inline">\(V^{\pi^*}\)</span> have similar recursive structure? the answer is yes, however, we need to prove this. The proof goes with 3 claims which we will prove later:</p>
-<ol type="1">
-<li><ol type="a">
-<li><p><span class="math inline">\(\exists\)</span> a value function <span class="math inline">\(V^*\)</span> s.t <span class="math inline">\(\forall x \in X\)</span>, we have:</p>
-<p><span class="math display">\[V^{*}(x) = max_{a} \{Q^{*}(x, a)\} = max_{a} \{r(x, a) + \gamma \int P(dx^\prime | x, a) V^{*}(x^\prime)\}\]</span></p></li>
-<li><p><span class="math inline">\(\exists\)</span> a value function <span class="math inline">\(Q^*\)</span> s.t <span class="math inline">\(\forall x, a \in X, A\)</span>, we have:</p>
-<p><span class="math display">\[Q^{*}(x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) max_{a^\prime} \{Q^{*} (x^\prime, a^\prime)\}\]</span></p></li>
-</ol>
-<p>These equations are called <span style="color:red"><strong>bellman optimality equations for the value functions</strong></span></p></li>
+<p>So it is natural to ask, does the optimal value function of optimal policy <span class="math inline">\(V^{\pi^*}\)</span> have similar recursive structure? the answer is yes, however, we need to prove this. The proof goes with 3 claims which we will prove later: <span id="more"></span> 1. a. <span class="math inline">\(\exists\)</span> a value function <span class="math inline">\(V^*\)</span> s.t <span class="math inline">\(\forall x \in X\)</span>, we have:</p>
+<pre><code>    $$V^&#123;*&#125;(x) = max_&#123;a&#125; \&#123;Q^&#123;*&#125;(x, a)\&#125; = max_&#123;a&#125; \&#123;r(x, a) + \gamma \int P(dx^\prime | x, a) V^&#123;*&#125;(x^\prime)\&#125;$$
+
+b. $\exists$ a value function $Q^*$ s.t $\forall x, a \in X, A$, we have:
+
+    $$Q^&#123;*&#125;(x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) max_&#123;a^\prime&#125; \&#123;Q^&#123;*&#125; (x^\prime, a^\prime)\&#125;$$
+
+These equations are called &lt;span style=&quot;color:red&quot;&gt;**bellman optimality equations for the value functions**&lt;/span&gt;</code></pre>
+<ol start="2" type="1">
 <li><p><span class="math inline">\(V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^*}\)</span>, the optimal value function when <span class="math inline">\(\pi\)</span> is restricted to be within the space of all stationary and non-stationary policies.</p></li>
 <li><p>For discounted continuing MDPs, we can always find a stationary policy that is optimal within the space of all stationary and non-stationary policies.</p></li>
 </ol>
 <p>In summary, we claim that:</p>
-<p><strong><span class="math inline">\(V^{*}\)</span> exists and it is unique, <span class="math inline">\(V^{*} = V^{\pi^{*}}\)</span>. Same for <span class="math inline">\(Q^{*}\)</span></strong></p>
-<h2 id="bellman-operators">Bellman Operators</h2>
+<p><strong><span class="math inline">\(V^{*}\)</span> exists and it is unique, <span class="math inline">\(V^{*} = V^{\pi^{*}}\)</span>. Same for <span class="math inline">\(Q^{*}\)</span></strong> ## Bellman Operators</p>
 <p>In order to prove the claims, we need several concepts:</p>
 <p><img src='/images/RL/bellman_equation/bellman-operator.png'> <img src='/images/RL/bellman_equation/bell-opt-operator.png'></p>
 <p>These operators are linear and recall that:</p>
@@ -486,13 +485,13 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">11k</span>
+    <span title="Symbols count total">12k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10 mins.</span>
+    <span title="Reading time total">11 mins.</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
