@@ -39,13 +39,14 @@
         <category>Basics</category>
       </categories>
       <tags>
-        <tag>Basics</tag>
+        <tag>RL Basics</tag>
       </tags>
   </entry>
   <entry>
     <title>Bellman Equations</title>
     <url>/2021/05/03/bellman-equations/</url>
-    <content><![CDATA[<h1 id="bellman-equations">Bellman Equations</h1>
+    <content><![CDATA[<p><em>Please read post on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> prior this post</em></p>
+<h1 id="bellman-equations">Bellman Equations</h1>
 <p>By expanding value functions, we reveal the recursive property of return:</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -73,13 +74,14 @@ V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
         <category>Basics</category>
       </categories>
       <tags>
-        <tag>Basics</tag>
+        <tag>RL Basics</tag>
       </tags>
   </entry>
   <entry>
     <title>Bellman Equations for Optimal Value Functions</title>
     <url>/2021/05/03/bellman-optimality-equations/</url>
-    <content><![CDATA[<h1 id="bellman-equations-for-optimal-value-functions">Bellman Equations for Optimal Value Functions</h1>
+    <content><![CDATA[<p><em>Please read posts on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> and <a href="/2021/05/03/bellman-equations/" title="Bellman Equations">Bellman Equations</a> prior this post.</em></p>
+<h1 id="bellman-equations-for-optimal-value-functions">Bellman Equations for Optimal Value Functions</h1>
 <p><img src='/images/RL/bellman_equation/optimal_policy_value_func.png'></p>
 <p>So it is natural to ask, does the optimal value function of optimal policy <span class="math inline">\(V^{\pi^*}\)</span> have similar recursive structure? the answer is yes, however, we need to prove this. The proof goes with 3 claims which we will prove later: <span id="more"></span></p>
 <ol type="1">
@@ -231,7 +233,55 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
         <category>Basics</category>
       </categories>
       <tags>
-        <tag>Basics</tag>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Policy Iteration</title>
+    <url>/2021/05/03/policy-iteration/</url>
+    <content><![CDATA[
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>DP</category>
+      </categories>
+      <tags>
+        <tag>Dynamic Programming</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Dynamic Programming</title>
+    <url>/2021/05/03/dp/</url>
+    <content><![CDATA[<h1 id="dynamic-programming">Dynamic Programming</h1>
+<p>We have defined concepts and properties such as value functions, bellman equations, bellman operators and etc. The question is <strong>how we can find the the optimal policy?</strong> Before we start, we assume that the dynamics of the MDP is given, that is, we know our transition distribution <span class="math inline">\(P\)</span> and immediate reward distribution <span class="math inline">\(R\)</span>. The assumption of knowing the dynamics do not hold in the RL setting, but designing methods for finding the optimal policy with known model provides the foundation for developing methods for the RL setting.</p>
+<p>DP methods benefit from the structure of the MDP such as the recursive structure encoded in the Bellman equation, in order to compute the value function.</p>
+<h2 id="policy-evaluation">Policy Evaluation</h2>
+<p>Policy Evaluation is the problem of computing the value function of a given policy <span class="math inline">\(\pi\)</span> (i.e. find <span class="math inline">\(V^{\pi}\)</span> or <span class="math inline">\(Q^{\pi}\)</span>). This is not the ultimate goal of an RL agent (Finding the optimal policy is the goal), but is often needed as an intermediate step in finding the optimal policy</p>
+<p>Given an MDP (<span class="math inline">\(X, A, P, R, \gamma\)</span>) and a policy <span class="math inline">\(\pi\)</span>, we would like to compute <span class="math inline">\(V^{\pi}, Q^{\pi}\)</span>:</p>
+<p><span class="math display">\[V^{\pi} (x) = E^{\pi}[\sum_{t=1}^{\infty} \gamma^{t-1} R_{t} | X_1 = x]\]</span></p>
+<p><img src='/images/RL/dp/tree_structure.png'></p>
+<h2 id="control">Control</h2>
+<p>Control is the problem of finding the optimal value function <span class="math inline">\(V^{*}, Q^{*}\)</span> or <span class="math inline">\(\pi^{*}\)</span></p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>DP</category>
+      </categories>
+      <tags>
+        <tag>Dynamic Programming</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Value Iteration</title>
+    <url>/2021/05/03/value-iteration/</url>
+    <content><![CDATA[
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>DP</category>
+      </categories>
+      <tags>
+        <tag>Dynamic Programming</tag>
       </tags>
   </entry>
 </search>
