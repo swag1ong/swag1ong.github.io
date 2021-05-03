@@ -20,28 +20,33 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
 
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Pisces&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;}}</script>
-<meta name="description" content="Bellman Equations By expanding value functions, we reveal the recursive property of return: \[ \begin{aligned} V^{\pi} (x) &amp;&#x3D; E[G^{\pi}_{t} | X_{t} &#x3D; x]\\ &amp; &#x3D; E[R_{t} + \gamma G^{\pi}_{t+1} |">
+<meta name="description" content="MDP Based on Prof Amir-massoud Farahmand&#39;s Lecture on RL  Define our MDP different from Introduction to RL book:  Where \(M(X)\) is the space of all probability distributions defined over the state sp">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Bellman Equations">
-<meta property="og:url" content="http://example.com/2021/05/03/bellman-equations/index.html">
+<meta property="og:title" content="MDP">
+<meta property="og:url" content="http://example.com/2021/05/03/MDP/index.html">
 <meta property="og:site_name" content="GoGoGogo!">
-<meta property="og:description" content="Bellman Equations By expanding value functions, we reveal the recursive property of return: \[ \begin{aligned} V^{\pi} (x) &amp;&#x3D; E[G^{\pi}_{t} | X_{t} &#x3D; x]\\ &amp; &#x3D; E[R_{t} + \gamma G^{\pi}_{t+1} |">
+<meta property="og:description" content="MDP Based on Prof Amir-massoud Farahmand&#39;s Lecture on RL  Define our MDP different from Introduction to RL book:  Where \(M(X)\) is the space of all probability distributions defined over the state sp">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-05-03T10:00:42.000Z">
-<meta property="article:modified_time" content="2021-05-03T10:13:34.734Z">
+<meta property="og:image" content="http://example.com/images/RL/bellman_equation/mdp.png">
+<meta property="og:image" content="http://example.com/images/RL/bellman_equation/policy_1.png">
+<meta property="og:image" content="http://example.com/images/RL/bellman_equation/policy.png">
+<meta property="og:image" content="http://example.com/images/RL/bellman_equation/transition_kernel.png">
+<meta property="article:published_time" content="2021-05-02T17:44:05.000Z">
+<meta property="article:modified_time" content="2021-05-03T10:10:35.467Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta property="article:tag" content="Basics">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/RL/bellman_equation/mdp.png">
 
 
-<link rel="canonical" href="http://example.com/2021/05/03/bellman-equations/">
+<link rel="canonical" href="http://example.com/2021/05/03/MDP/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;05&#x2F;03&#x2F;bellman-equations&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;05&#x2F;03&#x2F;bellman-equations&#x2F;&quot;,&quot;title&quot;:&quot;Bellman Equations&quot;}</script>
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;05&#x2F;03&#x2F;MDP&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;05&#x2F;03&#x2F;MDP&#x2F;&quot;,&quot;title&quot;:&quot;MDP&quot;}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
-<title>Bellman Equations | GoGoGogo!</title><script src="/js/config.js"></script>
+<title>MDP | GoGoGogo!</title><script src="/js/config.js"></script>
   
 
 
@@ -119,7 +124,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#bellman-equations"><span class="nav-number">1.</span> <span class="nav-text">Bellman Equations</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#mdp"><span class="nav-number">1.</span> <span class="nav-text">MDP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#policy"><span class="nav-number">1.1.</span> <span class="nav-text">Policy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#policy-induced-transition-kernels"><span class="nav-number">1.2.</span> <span class="nav-text">Policy induced Transition Kernels</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rewards-and-returns"><span class="nav-number">1.3.</span> <span class="nav-text">Rewards and Returns</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#value-functions"><span class="nav-number">1.4.</span> <span class="nav-text">Value functions</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -197,7 +202,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/03/bellman-equations/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/03/MDP/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/others/favicon.jpeg">
@@ -210,7 +215,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Bellman Equations
+          MDP
         </h1>
 
         <div class="post-meta-container">
@@ -222,7 +227,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2021-05-03 18:00:42 / Modified: 18:13:34" itemprop="dateCreated datePublished" datetime="2021-05-03T18:00:42+08:00">2021-05-03</time>
+      <time title="Created: 2021-05-03 01:44:05 / Modified: 18:10:35" itemprop="dateCreated datePublished" datetime="2021-05-03T01:44:05+08:00">2021-05-03</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -264,28 +269,36 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="bellman-equations">Bellman Equations</h1>
-<p>By expanding value functions, we reveal the recursive property of return:</p>
-<p><span class="math display">\[
-\begin{aligned}
-V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
-&amp; = E[R_{t} + \gamma G^{\pi}_{t+1} | X_{t} = x]\\
-&amp; = E_{a \sim \pi(a | s)}[R_{t} | X_{t} = x] + \gamma E[G^{\pi}_{t+1} | X_{t} = x]\\
-&amp; = r^{\pi} (x) + \gamma E[V^{\pi} (X_{t+1}) | X_{t} = x]\\
-\end{aligned}
-\]</span></p>
-<p>Where:</p>
-<p><span class="math display">\[ E[V^{\pi} (X_{t+1}) | X_{t} = x] = E[E[G^{\pi}_{t+1} | X_{t+1} = x^\prime] | X_{t} = x] = E[G^{\pi}_{t+1} | X_{t} = x]\]</span></p>
-<p>This implies that neither side is random, by expanding:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x]\]</span></p>
-<p>we get:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (a | x) V^{\pi} (x^\prime)\]</span></p>
-<p>Thus, the value function can be expressed as:</p>
-<p><span class="math display">\[V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (a | x) V^{\pi} (x^\prime)\]</span></p>
-<p>This is the <span style="color:red"><strong>bellman equation</strong> </span> for a policy <span class="math inline">\(\pi\)</span>, this can be interpreted as: The value of following a policy <span class="math inline">\(\pi\)</span> is the expected immediate reward that the <span class="math inline">\(\pi\)</span>-following agent receives at that state plus the discounted average(expected) value that the agent receives at the next-state.</p>
-<p>Same for action-value function, we have bellman equation:</p>
-<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (a^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
-<p>Compare with value function, we have expected reward base on action <span class="math inline">\(a\)</span> plus discounted average(expected) value that the agent receives at the next-state following <span class="math inline">\(\pi\)</span> (the choice of action is given at state <span class="math inline">\(s\)</span> in action value function)</p>
+        <h1 id="mdp">MDP</h1>
+<p><span style="color:red"><em>Based on Prof Amir-massoud Farahmand's Lecture on RL</em> </span></p>
+<p>Define our MDP different from Introduction to RL book:</p>
+<p><img src='/images/RL/bellman_equation/mdp.png'></p>
+<p>Where <span class="math inline">\(M(X)\)</span> is the space of all probability distributions defined over the state space X <span id="more"></span></p>
+<p>So we could describe the process as a sequence of state, actions, and rewards:</p>
+<p><span class="math display">\[X_0, A_0, R_1, X_1, A_1, R_2, ...\]</span></p>
+<p>A deterministic dynamical system always behave exactly the same given the same starting state and action, that is, they can be described as a transition function <span class="math inline">\(f\)</span> instead of transition distribution <span class="math inline">\(\rho\)</span></p>
+<p><span class="math display">\[x_{t+1} = f(x, a)\]</span></p>
+<h2 id="policy">Policy</h2>
+<p><img src='/images/RL/bellman_equation/policy_1.png'></p>
+<p><img src='/images/RL/bellman_equation/policy.png'></p>
+<h2 id="policy-induced-transition-kernels">Policy induced Transition Kernels</h2>
+<p><img src='/images/RL/bellman_equation/transition_kernel.png'></p>
+<h2 id="rewards-and-returns">Rewards and Returns</h2>
+<p>Let's define expected reward as:</p>
+<p><span class="math display">\[r(x, a) = E[R | X=x, A=a]\]</span></p>
+<p>then the expected reward following policy pi is defined as</p>
+<p><span class="math display">\[r^{\pi} (x) = E_{a \sim \pi(a | s)} [R | X=x, A=a]\]</span></p>
+<p>Define return following policy <span class="math inline">\(\pi\)</span> as discounted sum of rewards starting from <span class="math inline">\(X_0\)</span>:</p>
+<p><span class="math display">\[G^{\pi} = R_1 + \gamma R_2 + ... + \gamma^{T-1} R_{T} = \sum^{\infty}_{t=1} \gamma^{t-1}R_{t}\]</span></p>
+<p>or any starting at any step <span class="math inline">\(X_{t}\)</span>:</p>
+<p><span class="math display">\[G^{\pi}_{t} = \sum^{\infty}_{i=t+1} \gamma^{i + t - 1}R_{i}\]</span></p>
+<p>Note that <span class="math inline">\(\gamma\)</span> is a part of the problem setting, it is usually not a hyperparameter.</p>
+<h2 id="value-functions">Value functions</h2>
+<p>Next we can define value functions as:</p>
+<p>State value function (alias: Value function, V, v) starting from state x and following policy <span class="math inline">\(\pi\)</span>:</p>
+<p><span class="math display">\[V^{\pi}(x) = E[G^{\pi} | X_{0} = x] = E[G^{\pi}_{t} | X_{t} = x] \text{    (Markov Property)}\]</span></p>
+<p>Action value function following policy <span class="math inline">\(\pi\)</span> starting from state x and taking action a:</p>
+<p><span class="math display">\[Q^{\pi} (x, a) = E[G^{\pi} | X_{0} = x, A_{0} = a] = E[G^{\pi}_{t} | X_{t} = x, A_{t} = a] \text{    (Markov Property)}\]</span></p>
 
     </div>
 
@@ -296,7 +309,7 @@ V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
   <div class="popular-posts-header">Related Posts</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/05/03/MDP/" rel="bookmark">MDP</a></div>
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-equations/" rel="bookmark">Bellman Equations</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/2021/05/03/bellman-optimality-equations/" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
@@ -313,13 +326,10 @@ V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/05/03/MDP/" rel="prev" title="MDP">
-                  <i class="fa fa-chevron-left"></i> MDP
-                </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/05/03/bellman-optimality-equations/" rel="next" title="Bellman Equations for Optimal Value Functions">
-                  Bellman Equations for Optimal Value Functions <i class="fa fa-chevron-right"></i>
+                <a href="/2021/05/03/bellman-equations/" rel="next" title="Bellman Equations">
+                  Bellman Equations <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

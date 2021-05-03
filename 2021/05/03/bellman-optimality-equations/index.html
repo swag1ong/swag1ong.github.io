@@ -20,23 +20,41 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
 
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Pisces&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;}}</script>
-<meta property="og:type" content="website">
-<meta property="og:title" content="GoGoGogo!">
-<meta property="og:url" content="http://example.com/index.html">
+<meta name="description" content="Bellman Equations for Optimal Value Functions  So it is natural to ask, does the optimal value function of optimal policy \(V^{\pi^*}\) have similar recursive structure? the answer is yes, however, we">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bellman Equations for Optimal Value Functions">
+<meta property="og:url" content="http://example.com/2021/05/03/bellman-optimality-equations/index.html">
 <meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Bellman Equations for Optimal Value Functions  So it is natural to ask, does the optimal value function of optimal policy \(V^{\pi^*}\) have similar recursive structure? the answer is yes, however, we">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/RL/bellman_equation/optimal_policy_value_func.png">
+<meta property="og:image" content="http://example.com/images/RL/bellman_equation/bellman-operator.png">
+<meta property="og:image" content="http://example.com/images/RL/bellman_equation/bell-opt-operator.png">
+<meta property="og:image" content="http://example.com/images/RL/bellman_equation/monotonicity.png">
+<meta property="og:image" content="http://example.com/images/RL/bellman_equation/contraction_mapping.png">
+<meta property="og:image" content="http://example.com/images/RL/bellman_equation/gamma_contraction.png">
+<meta property="og:image" content="http://example.com/images/RL/bellman_equation/fixed_point.png">
+<meta property="og:image" content="http://example.com/images/RL/bellman_equation/bfpt.png">
+<meta property="og:image" content="http://example.com/images/RL/bellman_equation/unique_fixed_points.png">
+<meta property="og:image" content="http://example.com/images/RL/bellman_equation/br_1.png">
+<meta property="og:image" content="http://example.com/images/RL/bellman_equation/br_2.png">
+<meta property="og:image" content="http://example.com/images/RL/bellman_equation/claim_2.png">
+<meta property="article:published_time" content="2021-05-03T10:11:55.000Z">
+<meta property="article:modified_time" content="2021-05-03T11:06:58.583Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="Basics">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/RL/bellman_equation/optimal_policy_value_func.png">
 
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2021/05/03/bellman-optimality-equations/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:true,&quot;isPost&quot;:false,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:&quot;&quot;,&quot;permalink&quot;:&quot;&quot;,&quot;path&quot;:&quot;index.html&quot;,&quot;title&quot;:&quot;&quot;}</script>
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;05&#x2F;03&#x2F;bellman-optimality-equations&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;05&#x2F;03&#x2F;bellman-optimality-equations&#x2F;&quot;,&quot;title&quot;:&quot;Bellman Equations for Optimal Value Functions&quot;}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
-<title>GoGoGogo!</title><script src="/js/config.js"></script>
+<title>Bellman Equations for Optimal Value Functions | GoGoGogo!</title><script src="/js/config.js"></script>
   
 
 
@@ -101,7 +119,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -114,6 +132,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#bellman-equations-for-optimal-value-functions"><span class="nav-number">1.</span> <span class="nav-text">Bellman Equations for Optimal Value Functions</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bellman-operators"><span class="nav-number">1.1.</span> <span class="nav-text">Bellman Operators</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#properties-of-bellman-operators"><span class="nav-number">1.1.1.</span> <span class="nav-text">Properties of Bellman Operators</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#monotonicity"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">Monotonicity</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#contraction"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">Contraction</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#consequences-of-monotonicity-and-contraction"><span class="nav-number">1.1.2.</span> <span class="nav-text">Consequences of Monotonicity and Contraction</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#uniqueness-of-fixed-points"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Uniqueness of fixed points</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#value-of-the-greedy-policy-of-v-is-v"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">Value of the greedy policy of \(V^{*}\) is \(V^{*}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#an-error-bound-based-on-the-bellman-error"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">An error bound based on the bellman error</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#proof-of-claim-2-v-t-v-is-the-same-as-vpi"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">Proof of claim 2: \(V^{*} &#x3D; T^{*} V^{*}\) is the same as \(V^{\pi^{*}}\)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-v-x-leq-sup_pi-in-prod-vpi-x"><span class="nav-number">1.1.2.4.1.</span> <span class="nav-text">Proof \(V^{*} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)\)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-v-x-geq-sup_pi-in-prod-vpi-x"><span class="nav-number">1.1.2.4.2.</span> <span class="nav-text">Proof \(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -180,16 +199,17 @@
 </noscript>
 
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/03/bellman-optimality-equations/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -202,9 +222,9 @@
       <meta itemprop="name" content="GoGoGogo!">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/03/bellman-optimality-equations/" class="post-title-link" itemprop="url">Bellman Equations for Optimal Value Functions</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          Bellman Equations for Optimal Value Functions
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -257,7 +277,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="bellman-equations-for-optimal-value-functions">Bellman Equations for Optimal Value Functions</h1>
+        <h1 id="bellman-equations-for-optimal-value-functions">Bellman Equations for Optimal Value Functions</h1>
 <p><img src='/images/RL/bellman_equation/optimal_policy_value_func.png'></p>
 <p>So it is natural to ask, does the optimal value function of optimal policy <span class="math inline">\(V^{\pi^*}\)</span> have similar recursive structure? the answer is yes, however, we need to prove this. The proof goes with 3 claims which we will prove later:</p>
 <ol type="1">
@@ -404,239 +424,43 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
 <p><strong>Thus, we can conclude that <span class="math inline">\(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></strong></p>
 <p><span style="color:red"><strong>Together, we showed that <span class="math inline">\(V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^{*}}\)</span>, the solution of bellman optimality equation is the optimal value function</strong></span></p>
 
-      
     </div>
 
     
     
     
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/MDP/" rel="bookmark">MDP</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-equations/" rel="bookmark">Bellman Equations</a></div>
+    </li>
+  </ul>
+
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
+          <div class="post-tags">
+              <a href="/tags/Basics/" rel="tag"># Basics</a>
+          </div>
 
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/03/bellman-equations/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/03/bellman-equations/" class="post-title-link" itemprop="url">Bellman Equations</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-05-03 18:00:42 / Modified: 18:13:34" itemprop="dateCreated datePublished" datetime="2021-05-03T18:00:42+08:00">2021-05-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/Basics/" itemprop="url" rel="index"><span itemprop="name">Basics</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>1.4k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="bellman-equations">Bellman Equations</h1>
-<p>By expanding value functions, we reveal the recursive property of return:</p>
-<p><span class="math display">\[
-\begin{aligned}
-V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
-&amp; = E[R_{t} + \gamma G^{\pi}_{t+1} | X_{t} = x]\\
-&amp; = E_{a \sim \pi(a | s)}[R_{t} | X_{t} = x] + \gamma E[G^{\pi}_{t+1} | X_{t} = x]\\
-&amp; = r^{\pi} (x) + \gamma E[V^{\pi} (X_{t+1}) | X_{t} = x]\\
-\end{aligned}
-\]</span></p>
-<p>Where:</p>
-<p><span class="math display">\[ E[V^{\pi} (X_{t+1}) | X_{t} = x] = E[E[G^{\pi}_{t+1} | X_{t+1} = x^\prime] | X_{t} = x] = E[G^{\pi}_{t+1} | X_{t} = x]\]</span></p>
-<p>This implies that neither side is random, by expanding:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x]\]</span></p>
-<p>we get:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (a | x) V^{\pi} (x^\prime)\]</span></p>
-<p>Thus, the value function can be expressed as:</p>
-<p><span class="math display">\[V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (a | x) V^{\pi} (x^\prime)\]</span></p>
-<p>This is the <span style="color:red"><strong>bellman equation</strong> </span> for a policy <span class="math inline">\(\pi\)</span>, this can be interpreted as: The value of following a policy <span class="math inline">\(\pi\)</span> is the expected immediate reward that the <span class="math inline">\(\pi\)</span>-following agent receives at that state plus the discounted average(expected) value that the agent receives at the next-state.</p>
-<p>Same for action-value function, we have bellman equation:</p>
-<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (a^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
-<p>Compare with value function, we have expected reward base on action <span class="math inline">\(a\)</span> plus discounted average(expected) value that the agent receives at the next-state following <span class="math inline">\(\pi\)</span> (the choice of action is given at state <span class="math inline">\(s\)</span> in action value function)</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/03/MDP/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/03/MDP/" class="post-title-link" itemprop="url">MDP</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-05-03 01:44:05 / Modified: 18:10:35" itemprop="dateCreated datePublished" datetime="2021-05-03T01:44:05+08:00">2021-05-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/Basics/" itemprop="url" rel="index"><span itemprop="name">Basics</span></a>
-        </span>
-    </span>
-
-  
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>1.4k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="mdp">MDP</h1>
-<p><span style="color:red"><em>Based on Prof Amir-massoud Farahmand's Lecture on RL</em> </span></p>
-<p>Define our MDP different from Introduction to RL book:</p>
-<p><img src='/images/RL/bellman_equation/mdp.png'></p>
-<p>Where <span class="math inline">\(M(X)\)</span> is the space of all probability distributions defined over the state space X
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/05/03/MDP/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/03/bellman-equations/" rel="prev" title="Bellman Equations">
+                  <i class="fa fa-chevron-left"></i> Bellman Equations
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
     </footer>
   </article>
 </div>
+
 
 
 
