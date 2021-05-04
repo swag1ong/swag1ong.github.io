@@ -43,41 +43,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Bellman Equations</title>
-    <url>/2021/05/03/bellman-equations/</url>
-    <content><![CDATA[<p><em>Please read post on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> prior this post</em></p>
-<h1 id="bellman-equations">Bellman Equations</h1>
-<p>By expanding value functions, we reveal the recursive property of return:</p>
-<p><span class="math display">\[
-\begin{aligned}
-V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
-&amp; = E[R_{t} + \gamma G^{\pi}_{t+1} | X_{t} = x]\\
-&amp; = E_{a \sim \pi(a | s)}[R_{t} | X_{t} = x] + \gamma E[G^{\pi}_{t+1} | X_{t} = x]\\
-&amp; = r^{\pi} (x) + \gamma E[V^{\pi} (X_{t+1}) | X_{t} = x]\\
-\end{aligned}
-\]</span> <span id="more"></span></p>
-<p>Where:</p>
-<p><span class="math display">\[ E[V^{\pi} (X_{t+1}) | X_{t} = x] = E[E[G^{\pi}_{t+1} | X_{t+1} = x^\prime] | X_{t} = x] = E[G^{\pi}_{t+1} | X_{t} = x]\]</span></p>
-<p>This implies that neither side is random, by expanding:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x]\]</span></p>
-<p>we get:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (a | x) V^{\pi} (x^\prime)\]</span></p>
-<p>Thus, the value function can be expressed as:</p>
-<p><span class="math display">\[V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (a | x) V^{\pi} (x^\prime)\]</span></p>
-<p>This is the <span style="color:red"><strong>bellman equation</strong> </span> for a policy <span class="math inline">\(\pi\)</span>, this can be interpreted as: The value of following a policy <span class="math inline">\(\pi\)</span> is the expected immediate reward that the <span class="math inline">\(\pi\)</span>-following agent receives at that state plus the discounted average(expected) value that the agent receives at the next-state.</p>
-<p>Same for action-value function, we have bellman equation:</p>
-<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (a^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
-<p>Compare with value function, we have expected reward base on action <span class="math inline">\(a\)</span> plus discounted average(expected) value that the agent receives at the next-state following <span class="math inline">\(\pi\)</span> (the choice of action is given at state <span class="math inline">\(s\)</span> in action value function)</p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>Basics</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Bellman Equations for Optimal Value Functions</title>
     <url>/2021/05/03/bellman-optimality-equations/</url>
     <content><![CDATA[<p><em>Please read posts on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> and <a href="/2021/05/03/bellman-equations/" title="Bellman Equations">Bellman Equations</a> prior this post.</em></p>
@@ -237,6 +202,41 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
+    <title>Bellman Equations</title>
+    <url>/2021/05/03/bellman-equations/</url>
+    <content><![CDATA[<p><em>Please read post on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> prior this post</em></p>
+<h1 id="bellman-equations">Bellman Equations</h1>
+<p>By expanding value functions, we reveal the recursive property of return:</p>
+<p><span class="math display">\[
+\begin{aligned}
+V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
+&amp; = E[R_{t} + \gamma G^{\pi}_{t+1} | X_{t} = x]\\
+&amp; = E_{a \sim \pi(a | s)}[R_{t} | X_{t} = x] + \gamma E[G^{\pi}_{t+1} | X_{t} = x]\\
+&amp; = r^{\pi} (x) + \gamma E[V^{\pi} (X_{t+1}) | X_{t} = x]\\
+\end{aligned}
+\]</span> <span id="more"></span></p>
+<p>Where:</p>
+<p><span class="math display">\[ E[V^{\pi} (X_{t+1}) | X_{t} = x] = E[E[G^{\pi}_{t+1} | X_{t+1} = x^\prime] | X_{t} = x] = E[G^{\pi}_{t+1} | X_{t} = x]\]</span></p>
+<p>This implies that neither side is random, by expanding:</p>
+<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x]\]</span></p>
+<p>we get:</p>
+<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (a | x) V^{\pi} (x^\prime)\]</span></p>
+<p>Thus, the value function can be expressed as:</p>
+<p><span class="math display">\[V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (a | x) V^{\pi} (x^\prime)\]</span></p>
+<p>This is the <span style="color:red"><strong>bellman equation</strong> </span> for a policy <span class="math inline">\(\pi\)</span>, this can be interpreted as: The value of following a policy <span class="math inline">\(\pi\)</span> is the expected immediate reward that the <span class="math inline">\(\pi\)</span>-following agent receives at that state plus the discounted average(expected) value that the agent receives at the next-state.</p>
+<p>Same for action-value function, we have bellman equation:</p>
+<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (a^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
+<p>Compare with value function, we have expected reward base on action <span class="math inline">\(a\)</span> plus discounted average(expected) value that the agent receives at the next-state following <span class="math inline">\(\pi\)</span> (the choice of action is given at state <span class="math inline">\(s\)</span> in action value function)</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>Basics</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Dynamic Programming</title>
     <url>/2021/05/03/dp/</url>
     <content><![CDATA[<h1 id="dynamic-programming">Dynamic Programming</h1>
@@ -256,19 +256,7 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
         <category>DP</category>
       </categories>
       <tags>
-        <tag>Dynamic Programming</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Policy Iteration</title>
-    <url>/2021/05/03/policy-iteration/</url>
-    <content><![CDATA[<span id="more"></span>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>DP</category>
-      </categories>
-      <tags>
+        <tag>RL Basics</tag>
         <tag>Dynamic Programming</tag>
       </tags>
   </entry>
@@ -306,6 +294,67 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
         <category>DP</category>
       </categories>
       <tags>
+        <tag>RL Basics</tag>
+        <tag>Dynamic Programming</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Policy Iteration</title>
+    <url>/2021/05/03/policy-iteration/</url>
+    <content><![CDATA[<h1 id="policy-iteration">Policy Iteration</h1>
+<p>A different approach is based on the iterative application of:</p>
+<ol type="1">
+<li>Policy Evaluation: Given a policy <span class="math inline">\(\pi_k\)</span>, compute <span class="math inline">\(V^{\pi_k}, Q^{\pi_k}\)</span></li>
+<li>Policy Improvement: Find a new policy <span class="math inline">\(\pi_{k+1}\)</span> that is better than <span class="math inline">\(\pi_{k}\)</span>, i.e., <span class="math inline">\(V^{\pi_{k+1}} \geq V^{\pi_k}\)</span> (with a strict inequality in at least one state, unless at convergence)</li>
+</ol>
+<p><img src='/images/RL/dp/policy_iteration.png'></p>
+<span id="more"></span>
+<p>So, how do we perform policy evaluation and policy improvement?</p>
+<ol type="1">
+<li><p>Policy Evaluation: We can use the policy evaluation part of VI (<span class="math inline">\(V_{k+1} \leftarrow T^{\pi} V_{k}\)</span>) to compute the value of a policy <span class="math inline">\(\pi_k\)</span></p></li>
+<li><p>Policy Improvement: We take the <strong>greedy policy</strong>,</p>
+<p><span class="math display">\[\pi_{k+1} \leftarrow \pi_g (x; Q^{\pi_k}) = argmax_{a \in A} Q^{\pi_k} (x, a), \forall x \in X\]</span></p></li>
+</ol>
+<h2 id="why-greedy-policy-intuition">Why Greedy Policy? (Intuition)</h2>
+<p>Assume that at state <span class="math inline">\(x\)</span>, we act according to greedy policy <span class="math inline">\(\pi_g (x; Q^{\pi_{k}})\)</span>, and afterwards, we follow <span class="math inline">\(\pi_{k}\)</span>. (we modify our policy at state <span class="math inline">\(x\)</span> to choose the greedy action)</p>
+<p>The value of this new policy is:</p>
+<p><span class="math display">\[Q^{\pi_k} (x, \pi_g (x; Q^{\pi_{k}})) = Q^{\pi_k} (x, argmax_{a \in A} Q^{\pi_k} (x, a)) = max_{a \in A} Q^{\pi_k} (x, a)\]</span></p>
+<p>Compare <span class="math inline">\(max_{a \in A} Q^{\pi_k} (x, a)\)</span> with <span class="math inline">\(V^{\pi_k} (x) = Q^{\pi_k} (x, \underbrace{\pi_k (x)}_{\text{any deterministic policy}})\)</span>, we can see that:</p>
+<p><span class="math display">\[max_{a \in A} Q^{\pi_k} (x, a) = Q^{\pi_k} (x, \pi_g (x; Q^{\pi_{k}})) \geq Q^{\pi_k} (x, \underbrace{\pi_k (x)}_{\text{any deterministic policy}}) = V^{\pi_k} (x)\]</span></p>
+<p>So this new policy is equal to or better than <span class="math inline">\(\pi_k\)</span> at state <span class="math inline">\(x\)</span>.</p>
+<h2 id="algorithm">Algorithm</h2>
+<p>Recall that:</p>
+<ul>
+<li><p><span class="math inline">\(V^{\pi_k}\)</span> is an unique fixed point of bellman operator <span class="math inline">\(T^{\pi_{k}}\)</span></p></li>
+<li><p>The greedy policy <span class="math inline">\(\pi_{k+1}\)</span> satisfies:</p>
+<span class="math display">\[\begin{aligned}
+  T^{\pi_{k+1}} Q^{\pi_k} &amp;= r(x, a) + \int P(dx^{\prime} | x, a) \underbrace{\pi_{k+1} (da^{\prime} | x^{\prime})}_{\text{This policy is greedy policy}} Q^{\pi_k} (x^{\prime}, a^{\prime})\\ 
+  &amp;= r(x, a) + \int P(dx^{\prime} | x, a) Q^{\pi_k} (x^{\prime}, argmax_{a^{\prime} \in A} Q^{\pi_k} (x^{\prime}, a^{\prime})\\
+  &amp;= r(x, a) + \int P(dx^{\prime} | x, a) max_{a^{\prime} \in A} Q^{\pi_k} (x^{\prime}, a^{\prime})\\
+  &amp;= T^{*} Q^{\pi_{k}}
+  \end{aligned}\]</span></li>
+</ul>
+<p>We can summarize each iteration of the Policy iteration algorithm as:</p>
+<ul>
+<li><p>(<strong>Policy Evaluation</strong>) Given <span class="math inline">\(\pi_k\)</span>, compute Q^{_k}, i.e find a Q that satisfies <span class="math inline">\(Q = T^{\pi_k} Q\)</span></p></li>
+<li><p>(<strong>Policy Improvement</strong>) Obtain <span class="math inline">\(\pi_{k+1}\)</span> as a policy that satisfies (select greedy policy at each state <span class="math inline">\(x\)</span>):</p>
+<p><span class="math display">\[T^{\pi_{k+1}} Q^{\pi_k} = T^{*} Q^{\pi_{k}}\]</span></p></li>
+</ul>
+<p>We also have approximate policy iteration algorithms too, where policy evaluation or improvement steps (Truncate evaluation step, function approximation) are performed approximately:</p>
+<p><span class="math display">\[Q \approx T^{\pi_k} Q\]</span></p>
+<p><span class="math display">\[T^{\pi_{k+1}} Q^{\pi_k} \approx T^{*} Q^{\pi_{k}}\]</span></p>
+<p>A generic algorithm can be found in Intro to RL book:</p>
+<p><img src='/images/RL/dp/pi.png'></p>
+<h3 id="implementation">Implementation</h3>
+<h2 id="convergence-of-policy-iteration">Convergence of Policy Iteration</h2>
+<h3 id="policy-improvement-theorem">Policy Improvement Theorem</h3>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>DP</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
         <tag>Dynamic Programming</tag>
       </tags>
   </entry>

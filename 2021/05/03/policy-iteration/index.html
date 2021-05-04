@@ -20,16 +20,22 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
 
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Policy Iteration A different approach is based on the iterative application of:  Policy Evaluation: Given a policy \(\pi_k\), compute \(V^{\pi_k}, Q^{\pi_k}\) Policy Improvement: Find a new policy \(\">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Policy Iteration">
 <meta property="og:url" content="http://example.com/2021/05/03/policy-iteration/index.html">
 <meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Policy Iteration A different approach is based on the iterative application of:  Policy Evaluation: Given a policy \(\pi_k\), compute \(V^{\pi_k}, Q^{\pi_k}\) Policy Improvement: Find a new policy \(\">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/RL/dp/policy_iteration.png">
+<meta property="og:image" content="http://example.com/images/RL/dp/pi.png">
 <meta property="article:published_time" content="2021-05-03T14:49:30.000Z">
-<meta property="article:modified_time" content="2021-05-03T14:53:42.929Z">
+<meta property="article:modified_time" content="2021-05-04T17:30:28.814Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="RL Basics">
 <meta property="article:tag" content="Dynamic Programming">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/RL/dp/policy_iteration.png">
 
 
 <link rel="canonical" href="http://example.com/2021/05/03/policy-iteration/">
@@ -133,7 +139,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -146,6 +152,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#policy-iteration"><span class="nav-number">1.</span> <span class="nav-text">Policy Iteration</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#why-greedy-policy-intuition"><span class="nav-number">1.1.</span> <span class="nav-text">Why Greedy Policy? (Intuition)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#algorithm"><span class="nav-number">1.2.</span> <span class="nav-text">Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#implementation"><span class="nav-number">1.2.1.</span> <span class="nav-text">Implementation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#convergence-of-policy-iteration"><span class="nav-number">1.3.</span> <span class="nav-text">Convergence of Policy Iteration</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#policy-improvement-theorem"><span class="nav-number">1.3.1.</span> <span class="nav-text">Policy Improvement Theorem</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -246,10 +253,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-05-03 22:49:30 / Modified: 22:53:42" itemprop="dateCreated datePublished" datetime="2021-05-03T22:49:30+08:00">2021-05-03</time>
+      <time title="Created: 2021-05-03 22:49:30" itemprop="dateCreated datePublished" datetime="2021-05-03T22:49:30+08:00">2021-05-03</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-05-05 01:30:28" itemprop="dateModified" datetime="2021-05-05T01:30:28+08:00">2021-05-05</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -272,14 +285,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>0</span>
+      <span>2.4k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>2 mins.</span>
     </span>
 </div>
 
@@ -290,7 +303,53 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <span id="more"></span>
+        <h1 id="policy-iteration">Policy Iteration</h1>
+<p>A different approach is based on the iterative application of:</p>
+<ol type="1">
+<li>Policy Evaluation: Given a policy <span class="math inline">\(\pi_k\)</span>, compute <span class="math inline">\(V^{\pi_k}, Q^{\pi_k}\)</span></li>
+<li>Policy Improvement: Find a new policy <span class="math inline">\(\pi_{k+1}\)</span> that is better than <span class="math inline">\(\pi_{k}\)</span>, i.e., <span class="math inline">\(V^{\pi_{k+1}} \geq V^{\pi_k}\)</span> (with a strict inequality in at least one state, unless at convergence)</li>
+</ol>
+<p><img src='/images/RL/dp/policy_iteration.png'></p>
+<span id="more"></span>
+<p>So, how do we perform policy evaluation and policy improvement?</p>
+<ol type="1">
+<li><p>Policy Evaluation: We can use the policy evaluation part of VI (<span class="math inline">\(V_{k+1} \leftarrow T^{\pi} V_{k}\)</span>) to compute the value of a policy <span class="math inline">\(\pi_k\)</span></p></li>
+<li><p>Policy Improvement: We take the <strong>greedy policy</strong>,</p>
+<p><span class="math display">\[\pi_{k+1} \leftarrow \pi_g (x; Q^{\pi_k}) = argmax_{a \in A} Q^{\pi_k} (x, a), \forall x \in X\]</span></p></li>
+</ol>
+<h2 id="why-greedy-policy-intuition">Why Greedy Policy? (Intuition)</h2>
+<p>Assume that at state <span class="math inline">\(x\)</span>, we act according to greedy policy <span class="math inline">\(\pi_g (x; Q^{\pi_{k}})\)</span>, and afterwards, we follow <span class="math inline">\(\pi_{k}\)</span>. (we modify our policy at state <span class="math inline">\(x\)</span> to choose the greedy action)</p>
+<p>The value of this new policy is:</p>
+<p><span class="math display">\[Q^{\pi_k} (x, \pi_g (x; Q^{\pi_{k}})) = Q^{\pi_k} (x, argmax_{a \in A} Q^{\pi_k} (x, a)) = max_{a \in A} Q^{\pi_k} (x, a)\]</span></p>
+<p>Compare <span class="math inline">\(max_{a \in A} Q^{\pi_k} (x, a)\)</span> with <span class="math inline">\(V^{\pi_k} (x) = Q^{\pi_k} (x, \underbrace{\pi_k (x)}_{\text{any deterministic policy}})\)</span>, we can see that:</p>
+<p><span class="math display">\[max_{a \in A} Q^{\pi_k} (x, a) = Q^{\pi_k} (x, \pi_g (x; Q^{\pi_{k}})) \geq Q^{\pi_k} (x, \underbrace{\pi_k (x)}_{\text{any deterministic policy}}) = V^{\pi_k} (x)\]</span></p>
+<p>So this new policy is equal to or better than <span class="math inline">\(\pi_k\)</span> at state <span class="math inline">\(x\)</span>.</p>
+<h2 id="algorithm">Algorithm</h2>
+<p>Recall that:</p>
+<ul>
+<li><p><span class="math inline">\(V^{\pi_k}\)</span> is an unique fixed point of bellman operator <span class="math inline">\(T^{\pi_{k}}\)</span></p></li>
+<li><p>The greedy policy <span class="math inline">\(\pi_{k+1}\)</span> satisfies:</p>
+<span class="math display">\[\begin{aligned}
+  T^{\pi_{k+1}} Q^{\pi_k} &amp;= r(x, a) + \int P(dx^{\prime} | x, a) \underbrace{\pi_{k+1} (da^{\prime} | x^{\prime})}_{\text{This policy is greedy policy}} Q^{\pi_k} (x^{\prime}, a^{\prime})\\ 
+  &amp;= r(x, a) + \int P(dx^{\prime} | x, a) Q^{\pi_k} (x^{\prime}, argmax_{a^{\prime} \in A} Q^{\pi_k} (x^{\prime}, a^{\prime})\\
+  &amp;= r(x, a) + \int P(dx^{\prime} | x, a) max_{a^{\prime} \in A} Q^{\pi_k} (x^{\prime}, a^{\prime})\\
+  &amp;= T^{*} Q^{\pi_{k}}
+  \end{aligned}\]</span></li>
+</ul>
+<p>We can summarize each iteration of the Policy iteration algorithm as:</p>
+<ul>
+<li><p>(<strong>Policy Evaluation</strong>) Given <span class="math inline">\(\pi_k\)</span>, compute Q^{_k}, i.e find a Q that satisfies <span class="math inline">\(Q = T^{\pi_k} Q\)</span></p></li>
+<li><p>(<strong>Policy Improvement</strong>) Obtain <span class="math inline">\(\pi_{k+1}\)</span> as a policy that satisfies (select greedy policy at each state <span class="math inline">\(x\)</span>):</p>
+<p><span class="math display">\[T^{\pi_{k+1}} Q^{\pi_k} = T^{*} Q^{\pi_{k}}\]</span></p></li>
+</ul>
+<p>We also have approximate policy iteration algorithms too, where policy evaluation or improvement steps (Truncate evaluation step, function approximation) are performed approximately:</p>
+<p><span class="math display">\[Q \approx T^{\pi_k} Q\]</span></p>
+<p><span class="math display">\[T^{\pi_{k+1}} Q^{\pi_k} \approx T^{*} Q^{\pi_{k}}\]</span></p>
+<p>A generic algorithm can be found in Intro to RL book:</p>
+<p><img src='/images/RL/dp/pi.png'></p>
+<h3 id="implementation">Implementation</h3>
+<h2 id="convergence-of-policy-iteration">Convergence of Policy Iteration</h2>
+<h3 id="policy-improvement-theorem">Policy Improvement Theorem</h3>
 
     </div>
 
@@ -306,11 +365,21 @@
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/2021/05/03/value-iteration/" rel="bookmark">Value Iteration</a></div>
     </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/MDP/" rel="bookmark">MDP</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-optimality-equations/" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-equations/" rel="bookmark">Bellman Equations</a></div>
+    </li>
   </ul>
 
 
     <footer class="post-footer">
           <div class="post-tags">
+              <a href="/tags/RL-Basics/" rel="tag"># RL Basics</a>
               <a href="/tags/Dynamic-Programming/" rel="tag"># Dynamic Programming</a>
           </div>
 
@@ -354,13 +423,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">14k</span>
+    <span title="Symbols count total">17k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">13 mins.</span>
+    <span title="Reading time total">15 mins.</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
