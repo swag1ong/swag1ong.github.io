@@ -28,7 +28,7 @@
 <meta property="og:description" content="Please read post on MDP prior this post Bellman Equations By expanding value functions, we reveal the recursive property of return: \[ \begin{aligned} V^{\pi} (x) &amp;&#x3D; E[G^{\pi}_{t} | X_{t} &#x3D; x]\\ &amp;">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-05-03T10:00:42.000Z">
-<meta property="article:modified_time" content="2021-05-03T14:32:05.773Z">
+<meta property="article:modified_time" content="2021-05-05T07:17:57.304Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta property="article:tag" content="RL Basics">
 <meta name="twitter:card" content="summary">
@@ -249,10 +249,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-05-03 18:00:42 / Modified: 22:32:05" itemprop="dateCreated datePublished" datetime="2021-05-03T18:00:42+08:00">2021-05-03</time>
+      <time title="Created: 2021-05-03 18:00:42" itemprop="dateCreated datePublished" datetime="2021-05-03T18:00:42+08:00">2021-05-03</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-05-05 15:17:57" itemprop="dateModified" datetime="2021-05-05T15:17:57+08:00">2021-05-05</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -311,10 +317,10 @@ V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
 <p>we get:</p>
 <p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (a | x) V^{\pi} (x^\prime)\]</span></p>
 <p>Thus, the value function can be expressed as:</p>
-<p><span class="math display">\[V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (a | x) V^{\pi} (x^\prime)\]</span></p>
+<p><span class="math display">\[V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
 <p>This is the <span style="color:red"><strong>bellman equation</strong> </span> for a policy <span class="math inline">\(\pi\)</span>, this can be interpreted as: The value of following a policy <span class="math inline">\(\pi\)</span> is the expected immediate reward that the <span class="math inline">\(\pi\)</span>-following agent receives at that state plus the discounted average(expected) value that the agent receives at the next-state.</p>
 <p>Same for action-value function, we have bellman equation:</p>
-<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (a^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
+<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (da^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
 <p>Compare with value function, we have expected reward base on action <span class="math inline">\(a\)</span> plus discounted average(expected) value that the agent receives at the next-state following <span class="math inline">\(\pi\)</span> (the choice of action is given at state <span class="math inline">\(s\)</span> in action value function)</p>
 
     </div>
@@ -329,16 +335,16 @@ V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
       <div class="popular-posts-title"><a href="/2021/05/03/MDP/" rel="bookmark">MDP</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/05/03/bellman-optimality-equations/" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
+      <div class="popular-posts-title"><a href="/2021/05/03/policy-iteration/" rel="bookmark">Policy Iteration</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/05/03/dp/" rel="bookmark">Dynamic Programming</a></div>
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-optimality-equations/" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/2021/05/03/value-iteration/" rel="bookmark">Value Iteration</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/05/03/policy-iteration/" rel="bookmark">Policy Iteration</a></div>
+      <div class="popular-posts-title"><a href="/2021/05/03/dp/" rel="bookmark">Dynamic Programming</a></div>
     </li>
   </ul>
 
@@ -391,13 +397,13 @@ V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">17k</span>
+    <span title="Symbols count total">18k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">15 mins.</span>
+    <span title="Reading time total">16 mins.</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
