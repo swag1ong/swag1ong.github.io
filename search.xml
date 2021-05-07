@@ -1,35 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>DPG</title>
-    <url>/2021/05/06/DPG/</url>
-    <content><![CDATA[<h1 id="deterministic-policy-gradient-algorithms">Deterministic Policy Gradient Algorithms</h1>
-<h2 id="introduction">Introduction</h2>
-<p>In traditional policy gradient algorithms, policy is parametrized by a probability distribution <span class="math inline">\(pi_{\theta} (a | s) = P[a | s; \theta]\)</span> that stochastically selects action <span class="math inline">\(a\)</span> in state <span class="math inline">\(s\)</span> according to parameter vector <span class="math inline">\(\theta\)</span>. In this paper, the authors consider deterministic policies <span class="math inline">\(a = \mu_{\theta} (s)\)</span>.</p>
-<p>From a practical viewpoint, there is a crucial difference between the stochastic and deterministic policy gradients. In the stochastic case, the policy gradient integrates over both state and action spaces, whereas in the deterministic case it only integrates over the state space:</p>
-<p><span class="math display">\[E_{X\sim \rho^{\pi_\theta}A \sim \pi_{\theta}} [\nabla log \pi(A | X) Q^{\pi_{\theta}} (X, A)]\]</span></p>
-<p>Thus, <strong>computing deterministic policies may require less samples</strong>.</p>
-<p>An off-policy learning scheme is introduced here to ensure adequate exploration (i.e The basic idea is to choose actions according to a stochastic behaviour policy).</p>
-<h2 id="notations">Notations</h2>
-<p>Initial state distribution <span class="math inline">\(p_1(s_1)\)</span>, stationary transition dynamics distribution <span class="math inline">\(p(s_{t+1} | s_{t}, a_{t})\)</span>, deterministic reward function <span class="math inline">\(r(x, a)\)</span>. Stochastic policy is represented as <span class="math inline">\(\pi_{\theta} (a_t | s_t)\)</span>. The return is the total discounted reward</p>
-<p><span class="math display">\[r_t^{\gamma} = \sum^{\infty}_{k = t} \gamma^{k-t} r(s_k, a_k)\]</span></p>
-<p>Value functions:</p>
-<p><span class="math display">\[V^{\pi} (s) = E[r_1^{\gamma} | S_1=s; \pi]\]</span></p>
-<p><span class="math display">\[Q^{\pi} (s, a) = E[r_1^{\gamma} | S_1=s, A_1=a; \pi]\]</span></p>
-<p>The objective is to find a policy <span class="math inline">\(\pi\)</span> that maximize <span class="math inline">\(J(\pi)\)</span></p>
-<p><span class="math display">\[J(\pi) = E_{s_1 \sim p_1}[r_1^{\gamma}]\]</span></p>
-<p>Define t step transition probability following <span class="math inline">\(\pi\)</span> as <span class="math inline">\(p^{\pi}(s \rightarrow s^{\prime}; t)\)</span></p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>PG</category>
-      </categories>
-      <tags>
-        <tag>Policy Gradient</tag>
-        <tag>Continuous Action Space</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>MDP</title>
     <url>/2021/05/03/MDP/</url>
     <content><![CDATA[<h1 id="mdp">MDP</h1>
@@ -91,6 +62,100 @@
       </categories>
       <tags>
         <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DPG</title>
+    <url>/2021/05/06/DPG/</url>
+    <content><![CDATA[<h1 id="deterministic-policy-gradient-algorithms">Deterministic Policy Gradient Algorithms</h1>
+<h2 id="introduction">Introduction</h2>
+<p>In traditional policy gradient algorithms, policy is parametrized by a probability distribution <span class="math inline">\(pi_{\theta} (a | s) = P[a | s; \theta]\)</span> that stochastically selects action <span class="math inline">\(a\)</span> in state <span class="math inline">\(s\)</span> according to parameter vector <span class="math inline">\(\theta\)</span>. In this paper, the authors consider deterministic policies <span class="math inline">\(a = \mu_{\theta} (s)\)</span>.</p>
+<p>From a practical viewpoint, there is a crucial difference between the stochastic and deterministic policy gradients. In the stochastic case, the policy gradient integrates over both state and action spaces, whereas in the deterministic case it only integrates over the state space:</p>
+<p><span class="math display">\[E_{X\sim \rho^{\pi_\theta}A \sim \pi_{\theta}} [\nabla log \pi(A | X) Q^{\pi_{\theta}} (X, A)]\]</span></p>
+<p>Thus, <strong>computing deterministic policies may require less samples</strong>.</p>
+<p>An off-policy learning scheme is introduced here to ensure adequate exploration (i.e The basic idea is to choose actions according to a stochastic behaviour policy).</p>
+<h2 id="notations">Notations</h2>
+<p>Initial state distribution <span class="math inline">\(p_1(s_1)\)</span>, stationary transition dynamics distribution <span class="math inline">\(p(s_{t+1} | s_{t}, a_{t})\)</span>, deterministic reward function <span class="math inline">\(r(x, a)\)</span>. Stochastic policy is represented as <span class="math inline">\(\pi_{\theta} (a_t | s_t)\)</span>. The return is the total discounted reward</p>
+<p><span class="math display">\[r_t^{\gamma} = \sum^{\infty}_{k = t} \gamma^{k-t} r(s_k, a_k)\]</span></p>
+<p>Value functions:</p>
+<p><span class="math display">\[V^{\pi} (s) = E[r_1^{\gamma} | S_1=s; \pi]\]</span></p>
+<p><span class="math display">\[Q^{\pi} (s, a) = E[r_1^{\gamma} | S_1=s, A_1=a; \pi]\]</span></p>
+<p>The objective is to find a policy <span class="math inline">\(\pi\)</span> that maximize <span class="math inline">\(J(\pi)\)</span></p>
+<p><span class="math display">\[J(\pi) = E_{s_1 \sim p_1}[r_1^{\gamma}]\]</span></p>
+<p>Define t step transition probability following <span class="math inline">\(\pi\)</span> as <span class="math inline">\(p^{\pi}(s \rightarrow s^{\prime}; t)\)</span></p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>PG</category>
+      </categories>
+      <tags>
+        <tag>Policy Gradient</tag>
+        <tag>Continuous Action Space</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Issues in Using Function Approximation for RL</title>
+    <url>/2021/05/07/FA-issues/</url>
+    <content><![CDATA[<h1 id="issues-in-using-function-approximation-for-reinforcement-learning"><a href="https://www.ri.cmu.edu/pub_files/pub1/thrun_sebastian_1993_1/thrun_sebastian_1993_1.pdf">Issues in Using Function Approximation for Reinforcement Learning</a></h1>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Discussions</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DDQN</title>
+    <url>/2021/05/07/DDQN/</url>
+    <content><![CDATA[<h1 id="deep-reinforcement-learning-with-double-q-learning"><a href="https://arxiv.org/abs/1509.06461">Deep Reinforcement Learning with Double Q-Learning</a></h1>
+<h2 id="introduction">Introduction</h2>
+<p>The authors show that the double Q-learning algorithm which was first proposed in a tabular setting, can be generalized to arbitrary function approximation, including DNN. They use this to construct a new algorithm called double DQN to solve the overestimation problem in DQN.</p>
+<h2 id="notations">Notations</h2>
+<p>Define:</p>
+<p><span class="math display">\[Q_{\pi} (s, a) = E[R_1 + \gamma R_2 + ... | S_0=s, A_0=a, \pi]\]</span></p>
+<p><span class="math display">\[Q_{*} (s, a) = max_{\pi} Q_{\pi} (s, a)\]</span></p>
+<p><span class="math display">\[\pi_{*} (s) = argmax_{a \in A} Q_{*} (s, a)\]</span></p>
+<p>The Target:</p>
+<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma max_{a} Q(S_{t+1}, a; \theta_{t})\]</span></p>
+<p>A standard Q update using stochastic gradient decent is (Semi-gradient Q):</p>
+<p><span class="math display">\[\theta_{t+1} = \theta_t + \alpha (Y_{t}^{Q} - Q(S_t, A_t; \theta_t)) \nabla_{\theta_t} Q(S_t, A_t; \theta_t)\]</span></p>
+<p>Where <span class="math inline">\(\alpha\)</span> is a scalar step size.</p>
+<span id="more"></span>
+<h2 id="background">Background</h2>
+<h3 id="double-q-learning">Double Q-learning</h3>
+<p>The max operator in standard Q-learning and DQN uses the same values both to select and to evaluate an action (ie. same Q is used to select the max action and use the value of this max action to update the Value of the state action pair). This makes it more likely to select overestimated values, resulting in overoptimistic value estimates.</p>
+<p>In Double Q-learning, two value functions are learned by assigning experiences randomly to update one of the two value functions, resulting in two sets of weights, <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\theta^{\prime}\)</span>. For each update, one set of weights is used to determine the greedy action, and the other to determine its value.</p>
+<p>Previous Q target:</p>
+<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta_{t}})\]</span></p>
+<p>The double Q-learning target:</p>
+<p><span class="math display">\[Y_t^{\text{DoubleQ}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta^{\prime}_{t}})\]</span></p>
+<h3 id="maximization-problem">Maximization Problem</h3>
+<p><img src='/images/RL/papers/DDQN_1.png'></p>
+<p>This theorem shows that even if the value estimates are on average correct, estimation errors of any source can drive the estimates up and away from the true optimal values.</p>
+<p>The lower bound in Theorem 1 decreases with the number of actions. This is an artifact of considering the lower bound, which requires very specific values to be attained. More typically, the overoptimism increases with the number of actions.</p>
+<p><img src='/images/RL/papers/DDQN_2.png'></p>
+<p><span class="math display">\[E[Q(s, a) - V_{*}(s)] = E[V_{*}(s) - V_{*}(s) + \epsilon ] = 0\]</span></p>
+<p>But, Q-learning updates have large bias due to max operation, the phenomena is severer as number of actions increases.</p>
+<p>In function approximation setting:</p>
+<p><img src='/images/RL/papers/DDQN_3.png'></p>
+<h2 id="algorithm">Algorithm</h2>
+<p>The target network in the DQN architecture provides a natural candidate for the second value function, without having to introduce additional networks. Thus, we can evaluate the greedy policy according to the online network, but using the target network to estimate its value. The resulting update:</p>
+<p><span class="math display">\[Y_t^{\text{DoubleDQN}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a} Q(S_{t+1}, a; \theta_{t}), \theta_{t}^{-})\]</span></p>
+<h2 id="implementation">Implementation</h2>
+<p>This is an implementation of DDQN in PARL. This implementation is written using PaddlePaddle.</p>
+<p>https://github.com/PaddlePaddle/PARL</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></span><br><span class="line"><span class="comment"># you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"># You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> copy</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"><span class="keyword">import</span> paddle</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DQN</span>(<span class="params">parl.Algorithm</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, model, gamma=<span class="literal">None</span>, lr=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; DQN algorithm</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            model (parl.Model): forward neural network representing the Q function.</span></span><br><span class="line"><span class="string">            gamma (float): discounted factor for `accumulative` reward computation</span></span><br><span class="line"><span class="string">            lr (float): learning rate.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.model = model</span><br><span class="line">        self.target_model = copy.deepcopy(model)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(gamma, <span class="built_in">float</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(lr, <span class="built_in">float</span>)</span><br><span class="line">        self.gamma = gamma</span><br><span class="line">        self.lr = lr</span><br><span class="line"></span><br><span class="line">        self.mse_loss = paddle.nn.MSELoss(reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line">        self.optimizer = paddle.optimizer.Adam(</span><br><span class="line">            learning_rate=lr, parameters=self.model.parameters())</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; use self.model (Q function) to predict the action values</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.model.value(obs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self, obs, action, reward, next_obs, terminal</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; update the Q function (self.model) with DQN algorithm</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># Q</span></span><br><span class="line">        pred_values = self.model.value(obs)</span><br><span class="line">        action_dim = pred_values.shape[-<span class="number">1</span>]</span><br><span class="line">        action = paddle.squeeze(action, axis=-<span class="number">1</span>)</span><br><span class="line">        action_onehot = paddle.nn.functional.one_hot(</span><br><span class="line">            action, num_classes=action_dim)</span><br><span class="line">        pred_value = paddle.multiply(pred_values, action_onehot)</span><br><span class="line">        pred_value = paddle.<span class="built_in">sum</span>(pred_value, axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># target Q</span></span><br><span class="line">        <span class="keyword">with</span> paddle.no_grad():</span><br><span class="line">            greedy_actions = self.model.value(next_obs).argmax(<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">            max_v = self.target_model(next_obs).gather(<span class="number">1</span>, greedy_actions)</span><br><span class="line">            target = reward + (<span class="number">1</span> - terminal) * self.gamma * max_v</span><br><span class="line"></span><br><span class="line">        loss = self.mse_loss(pred_value, target)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># optimize</span></span><br><span class="line">        self.optimizer.clear_grad()</span><br><span class="line">        loss.backward()</span><br><span class="line">        self.optimizer.step()</span><br><span class="line">        <span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sync_target</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.model.sync_weights_to(self.target_model)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Continuous State Space</tag>
       </tags>
   </entry>
   <entry>
@@ -288,30 +353,6 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
-    <title>Dynamic Programming</title>
-    <url>/2021/05/03/dp/</url>
-    <content><![CDATA[<h1 id="dynamic-programming">Dynamic Programming</h1>
-<p>We have defined concepts and properties such as value functions, bellman equations, bellman operators and etc. The question is <strong>how we can find the the optimal policy?</strong> Before we start, we assume that the dynamics of the MDP is given, that is, we know our transition distribution <span class="math inline">\(P\)</span> and immediate reward distribution <span class="math inline">\(R\)</span>. The assumption of knowing the dynamics do not hold in the RL setting, but designing methods for finding the optimal policy with known model provides the foundation for developing methods for the RL setting.</p>
-<p>DP methods benefit from the structure of the MDP such as the recursive structure encoded in the Bellman equation, in order to compute the value function.</p>
-<span id="more"></span>
-<h2 id="policy-evaluation">Policy Evaluation</h2>
-<p>Policy Evaluation is the problem of computing the value function of a given policy <span class="math inline">\(\pi\)</span> (i.e. find <span class="math inline">\(V^{\pi}\)</span> or <span class="math inline">\(Q^{\pi}\)</span>). This is not the ultimate goal of an RL agent (Finding the optimal policy is the goal), but is often needed as an intermediate step in finding the optimal policy</p>
-<p>Given an MDP (<span class="math inline">\(X, A, P, R, \gamma\)</span>) and a policy <span class="math inline">\(\pi\)</span>, we would like to compute <span class="math inline">\(V^{\pi}, Q^{\pi}\)</span>:</p>
-<p><span class="math display">\[V^{\pi} (x) = E^{\pi}[\sum_{t=1}^{\infty} \gamma^{t-1} R_{t} | X_0 = x]\]</span></p>
-<p><img src='/images/RL/dp/tree_structure.png'></p>
-<h2 id="control">Control</h2>
-<p>Control is the problem of finding the optimal value function <span class="math inline">\(V^{*}, Q^{*}\)</span> or <span class="math inline">\(\pi^{*}\)</span></p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>DP</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>Dynamic Programming</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Policy Iteration</title>
     <url>/2021/05/03/policy-iteration/</url>
     <content><![CDATA[<h1 id="policy-iteration">Policy Iteration</h1>
@@ -388,6 +429,91 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       <tags>
         <tag>RL Basics</tag>
         <tag>Dynamic Programming</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Dynamic Programming</title>
+    <url>/2021/05/03/dp/</url>
+    <content><![CDATA[<h1 id="dynamic-programming">Dynamic Programming</h1>
+<p>We have defined concepts and properties such as value functions, bellman equations, bellman operators and etc. The question is <strong>how we can find the the optimal policy?</strong> Before we start, we assume that the dynamics of the MDP is given, that is, we know our transition distribution <span class="math inline">\(P\)</span> and immediate reward distribution <span class="math inline">\(R\)</span>. The assumption of knowing the dynamics do not hold in the RL setting, but designing methods for finding the optimal policy with known model provides the foundation for developing methods for the RL setting.</p>
+<p>DP methods benefit from the structure of the MDP such as the recursive structure encoded in the Bellman equation, in order to compute the value function.</p>
+<span id="more"></span>
+<h2 id="policy-evaluation">Policy Evaluation</h2>
+<p>Policy Evaluation is the problem of computing the value function of a given policy <span class="math inline">\(\pi\)</span> (i.e. find <span class="math inline">\(V^{\pi}\)</span> or <span class="math inline">\(Q^{\pi}\)</span>). This is not the ultimate goal of an RL agent (Finding the optimal policy is the goal), but is often needed as an intermediate step in finding the optimal policy</p>
+<p>Given an MDP (<span class="math inline">\(X, A, P, R, \gamma\)</span>) and a policy <span class="math inline">\(\pi\)</span>, we would like to compute <span class="math inline">\(V^{\pi}, Q^{\pi}\)</span>:</p>
+<p><span class="math display">\[V^{\pi} (x) = E^{\pi}[\sum_{t=1}^{\infty} \gamma^{t-1} R_{t} | X_0 = x]\]</span></p>
+<p><img src='/images/RL/dp/tree_structure.png'></p>
+<h2 id="control">Control</h2>
+<p>Control is the problem of finding the optimal value function <span class="math inline">\(V^{*}, Q^{*}\)</span> or <span class="math inline">\(\pi^{*}\)</span></p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>DP</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>Dynamic Programming</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Learning From Stream of Data</title>
+    <url>/2021/05/07/value-function-learning/</url>
+    <content><![CDATA[<h1 id="learning-from-stream-of-data">Learning From Stream of Data</h1>
+<p>In previous DP settings, we know the transition distribution <span class="math inline">\(P\)</span> and reward distribution <span class="math inline">\(R\)</span>. Everything about the environment dynamics are given. However, in RL setting, we have no access to the environment dynamics, instead, we observe data from agent interacting with its environment.</p>
+<p>A stream of data (rollout or trajectory):</p>
+<p><span class="math display">\[X_1, A_1, R_1, X_2, A_2, R_2, ...\]</span></p>
+<p>with <span class="math inline">\(A_t \sim \pi(\cdot | X_t), X_{t+1} \sim P(\cdot | A_t, X_t), X_1 \sim \rho(\cdot), R_t \sim R(\cdot | X_t, A_t)\)</span></p>
+<p>The questions are:</p>
+<ol type="1">
+<li>How can we learn a value of a policy <span class="math inline">\(\pi\)</span>?</li>
+<li>How can we find the optimal policy <span class="math inline">\(\pi^{*}\)</span>?</li>
+</ol>
+<h2 id="stochastic-approximation-of-mean">Stochastic Approximation of Mean</h2>
+<p>Let <span class="math inline">\(Z_1, ..., Z_t\)</span> be i.i.d R.V drawn from distribution <span class="math inline">\(v\)</span>, how can we estimate the expectation of <span class="math inline">\(Z_i\)</span>? One way is stochastic approximation.</p>
+<p>Define:</p>
+<p><span class="math display">\[\theta_{t+1} = (1 - \alpha_t)\theta_t + \alpha_t Z_t\]</span></p>
+<p>Note that <span class="math inline">\(\theta_{t+1}\)</span> is a random variable, because <span class="math inline">\(Z_t\)</span> is a random variable.</p>
+<h3 id="expectation">Expectation</h3>
+<p>Assume <span class="math inline">\(\alpha_t = \alpha\)</span> is fixed, <span class="math inline">\(E[Z_t] = m\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+E[\theta_{t+1}] &amp;= E[(1 - \alpha) \theta_t + \alpha Z_t]\\
+&amp;= (1 - \alpha) E[\theta_t] + \alpha E[Z_t]\\
+&amp;= (1 - \alpha) E[\theta_t] + \alpha m\\
+\end{aligned}\]</span>
+<p>Let <span class="math inline">\(E[\theta_t] = \bar{\theta_t}\)</span>, then:</p>
+<p><span class="math display">\[E[\theta_{t+1}] = (1 - \alpha) E[\theta_t] + \alpha m \implies \bar{\theta_{t+1}} = (1 - \alpha) \bar{\theta_t} + \alpha m\]</span></p>
+<p>Let <span class="math inline">\(\theta_0 = 0\)</span>, that is, <span class="math inline">\(\bar{\theta_0} = 0\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+\bar{\theta_{1}} &amp;= \alpha m\\
+\bar{\theta_{2}}&amp;= (1 - \alpha) \alpha m + \alpha m\\
+...\\
+...\\
+\bar{\theta_{t}}&amp;= \alpha \sum_{i=0}^{t-1} (1 - \alpha)^i m = \frac{\alpha m (1 - (1 - \alpha)^t)}{1 - (1 - \alpha)} = m[1 - (1 - \alpha)^t]\\
+\end{aligned}\]</span>
+<p>As <span class="math inline">\(t \rightarrow \infty\)</span>, if <span class="math inline">\(0 \geq \alpha &lt; 1\)</span></p>
+<p><span class="math display">\[lim_{t \rightarrow \infty} \bar{\theta_{t}} = lim_{t \rightarrow \infty} m[1 - (1 - \alpha)^t] = m\]</span></p>
+<p><strong>This implies <span class="math inline">\(\theta_t\)</span> converges to <span class="math inline">\(m\)</span> in expectation</strong></p>
+<h3 id="variance">Variance</h3>
+<p>Since all <span class="math inline">\(Z_i\)</span> are i.i.d:</p>
+<p><span class="math display">\[V[\theta_{t+1}] = (1 - \alpha)^2 V[\theta_t] + \alpha^2 V[Z_t] \geq \alpha^2 V[Z_t] = \alpha^2 \theta^2\]</span></p>
+<p>We can show that:</p>
+<p><span class="math display">\[lim_{t \rightarrow \infty} V[\theta_t] = \frac{\alpha \theta^2}{2 - \alpha}\]</span></p>
+<p>For a constant <span class="math inline">\(\alpha\)</span>, the variance <span class="math inline">\(\theta_t\)</span>is not going to converge to zero. This means that <span class="math inline">\(\theta_t\)</span> fluctuates around its mean.</p>
+<h3 id="sa-condition">SA Condition</h3>
+<p>In order to make <span class="math inline">\(\theta_t\)</span> converge, we need a time dependent <span class="math inline">\(\alpha_t \rightarrow 0\)</span> with some schedule:</p>
+<p><span class="math display">\[\sum_{t=0}^{\infty} \alpha_t = \infty\]</span></p>
+<p><span class="math display">\[\sum_{t=0}^{\infty} \alpha_t^2 &lt; \infty\]</span></p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>MC</category>
+        <category>TD</category>
+      </categories>
+      <tags>
+        <tag>Basics</tag>
+        <tag>MC</tag>
+        <tag>TD</tag>
+        <tag>Tabular Methods</tag>
       </tags>
   </entry>
   <entry>

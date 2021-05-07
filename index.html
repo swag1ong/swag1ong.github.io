@@ -84,8 +84,8 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">4</span></a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">4</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">7</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">11</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
@@ -157,20 +157,20 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -210,6 +210,355 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/07/value-function-learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/05/07/value-function-learning/" class="post-title-link" itemprop="url">Learning From Stream of Data</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-05-07 18:50:25 / Modified: 19:51:17" itemprop="dateCreated datePublished" datetime="2021-05-07T18:50:25+08:00">2021-05-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/MC/" itemprop="url" rel="index"><span itemprop="name">MC</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/TD/" itemprop="url" rel="index"><span itemprop="name">TD</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>2.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="learning-from-stream-of-data">Learning From Stream of Data</h1>
+<p>In previous DP settings, we know the transition distribution <span class="math inline">\(P\)</span> and reward distribution <span class="math inline">\(R\)</span>. Everything about the environment dynamics are given. However, in RL setting, we have no access to the environment dynamics, instead, we observe data from agent interacting with its environment.</p>
+<p>A stream of data (rollout or trajectory):</p>
+<p><span class="math display">\[X_1, A_1, R_1, X_2, A_2, R_2, ...\]</span></p>
+<p>with <span class="math inline">\(A_t \sim \pi(\cdot | X_t), X_{t+1} \sim P(\cdot | A_t, X_t), X_1 \sim \rho(\cdot), R_t \sim R(\cdot | X_t, A_t)\)</span></p>
+<p>The questions are:</p>
+<ol type="1">
+<li>How can we learn a value of a policy <span class="math inline">\(\pi\)</span>?</li>
+<li>How can we find the optimal policy <span class="math inline">\(\pi^{*}\)</span>?</li>
+</ol>
+<h2 id="stochastic-approximation-of-mean">Stochastic Approximation of Mean</h2>
+<p>Let <span class="math inline">\(Z_1, ..., Z_t\)</span> be i.i.d R.V drawn from distribution <span class="math inline">\(v\)</span>, how can we estimate the expectation of <span class="math inline">\(Z_i\)</span>? One way is stochastic approximation.</p>
+<p>Define:</p>
+<p><span class="math display">\[\theta_{t+1} = (1 - \alpha_t)\theta_t + \alpha_t Z_t\]</span></p>
+<p>Note that <span class="math inline">\(\theta_{t+1}\)</span> is a random variable, because <span class="math inline">\(Z_t\)</span> is a random variable.</p>
+<h3 id="expectation">Expectation</h3>
+<p>Assume <span class="math inline">\(\alpha_t = \alpha\)</span> is fixed, <span class="math inline">\(E[Z_t] = m\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+E[\theta_{t+1}] &amp;= E[(1 - \alpha) \theta_t + \alpha Z_t]\\
+&amp;= (1 - \alpha) E[\theta_t] + \alpha E[Z_t]\\
+&amp;= (1 - \alpha) E[\theta_t] + \alpha m\\
+\end{aligned}\]</span>
+<p>Let <span class="math inline">\(E[\theta_t] = \bar{\theta_t}\)</span>, then:</p>
+<p><span class="math display">\[E[\theta_{t+1}] = (1 - \alpha) E[\theta_t] + \alpha m \implies \bar{\theta_{t+1}} = (1 - \alpha) \bar{\theta_t} + \alpha m\]</span></p>
+<p>Let <span class="math inline">\(\theta_0 = 0\)</span>, that is, <span class="math inline">\(\bar{\theta_0} = 0\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+\bar{\theta_{1}} &amp;= \alpha m\\
+\bar{\theta_{2}}&amp;= (1 - \alpha) \alpha m + \alpha m\\
+...\\
+...\\
+\bar{\theta_{t}}&amp;= \alpha \sum_{i=0}^{t-1} (1 - \alpha)^i m = \frac{\alpha m (1 - (1 - \alpha)^t)}{1 - (1 - \alpha)} = m[1 - (1 - \alpha)^t]\\
+\end{aligned}\]</span>
+<p>As <span class="math inline">\(t \rightarrow \infty\)</span>, if <span class="math inline">\(0 \geq \alpha &lt; 1\)</span></p>
+<p><span class="math display">\[lim_{t \rightarrow \infty} \bar{\theta_{t}} = lim_{t \rightarrow \infty} m[1 - (1 - \alpha)^t] = m\]</span></p>
+<p><strong>This implies <span class="math inline">\(\theta_t\)</span> converges to <span class="math inline">\(m\)</span> in expectation</strong></p>
+<h3 id="variance">Variance</h3>
+<p>Since all <span class="math inline">\(Z_i\)</span> are i.i.d:</p>
+<p><span class="math display">\[V[\theta_{t+1}] = (1 - \alpha)^2 V[\theta_t] + \alpha^2 V[Z_t] \geq \alpha^2 V[Z_t] = \alpha^2 \theta^2\]</span></p>
+<p>We can show that:</p>
+<p><span class="math display">\[lim_{t \rightarrow \infty} V[\theta_t] = \frac{\alpha \theta^2}{2 - \alpha}\]</span></p>
+<p>For a constant <span class="math inline">\(\alpha\)</span>, the variance <span class="math inline">\(\theta_t\)</span>is not going to converge to zero. This means that <span class="math inline">\(\theta_t\)</span> fluctuates around its mean.</p>
+<h3 id="sa-condition">SA Condition</h3>
+<p>In order to make <span class="math inline">\(\theta_t\)</span> converge, we need a time dependent <span class="math inline">\(\alpha_t \rightarrow 0\)</span> with some schedule:</p>
+<p><span class="math display">\[\sum_{t=0}^{\infty} \alpha_t = \infty\]</span></p>
+<p><span class="math display">\[\sum_{t=0}^{\infty} \alpha_t^2 &lt; \infty\]</span></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/07/FA-issues/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/05/07/FA-issues/" class="post-title-link" itemprop="url">Issues in Using Function Approximation for RL</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-05-07 17:35:21 / Modified: 17:40:46" itemprop="dateCreated datePublished" datetime="2021-05-07T17:35:21+08:00">2021-05-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/VFA/" itemprop="url" rel="index"><span itemprop="name">VFA</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>58</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="issues-in-using-function-approximation-for-reinforcement-learning"><a target="_blank" rel="noopener" href="https://www.ri.cmu.edu/pub_files/pub1/thrun_sebastian_1993_1/thrun_sebastian_1993_1.pdf">Issues in Using Function Approximation for Reinforcement Learning</a></h1>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/07/DDQN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/05/07/DDQN/" class="post-title-link" itemprop="url">DDQN</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-05-07 13:56:27 / Modified: 17:38:39" itemprop="dateCreated datePublished" datetime="2021-05-07T13:56:27+08:00">2021-05-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/VFA/" itemprop="url" rel="index"><span itemprop="name">VFA</span></a>
+        </span>
+    </span>
+
+  
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>4.8k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="deep-reinforcement-learning-with-double-q-learning"><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1509.06461">Deep Reinforcement Learning with Double Q-Learning</a></h1>
+<h2 id="introduction">Introduction</h2>
+<p>The authors show that the double Q-learning algorithm which was first proposed in a tabular setting, can be generalized to arbitrary function approximation, including DNN. They use this to construct a new algorithm called double DQN to solve the overestimation problem in DQN.</p>
+<h2 id="notations">Notations</h2>
+<p>Define:</p>
+<p><span class="math display">\[Q_{\pi} (s, a) = E[R_1 + \gamma R_2 + ... | S_0=s, A_0=a, \pi]\]</span></p>
+<p><span class="math display">\[Q_{*} (s, a) = max_{\pi} Q_{\pi} (s, a)\]</span></p>
+<p><span class="math display">\[\pi_{*} (s) = argmax_{a \in A} Q_{*} (s, a)\]</span></p>
+<p>The Target:</p>
+<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma max_{a} Q(S_{t+1}, a; \theta_{t})\]</span></p>
+<p>A standard Q update using stochastic gradient decent is (Semi-gradient Q):</p>
+<p><span class="math display">\[\theta_{t+1} = \theta_t + \alpha (Y_{t}^{Q} - Q(S_t, A_t; \theta_t)) \nabla_{\theta_t} Q(S_t, A_t; \theta_t)\]</span></p>
+<p>Where <span class="math inline">\(\alpha\)</span> is a scalar step size.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/05/07/DDQN/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1010,13 +1359,13 @@ V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">20k</span>
+    <span title="Symbols count total">27k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">18 mins.</span>
+    <span title="Reading time total">25 mins.</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
