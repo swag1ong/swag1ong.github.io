@@ -52,6 +52,49 @@
       </tags>
   </entry>
   <entry>
+    <title>DPG</title>
+    <url>/2021/05/06/DPG/</url>
+    <content><![CDATA[<h1 id="deterministic-policy-gradient-algorithms">Deterministic Policy Gradient Algorithms</h1>
+<h2 id="introduction">Introduction</h2>
+<p>In traditional policy gradient algorithms, policy is parametrized by a probability distribution <span class="math inline">\(pi_{\theta} (a | s) = P[a | s; \theta]\)</span> that stochastically selects action <span class="math inline">\(a\)</span> in state <span class="math inline">\(s\)</span> according to parameter vector <span class="math inline">\(\theta\)</span>. In this paper, the authors consider deterministic policies <span class="math inline">\(a = \mu_{\theta} (s)\)</span>.</p>
+<p>From a practical viewpoint, there is a crucial difference between the stochastic and deterministic policy gradients. In the stochastic case, the policy gradient integrates over both state and action spaces, whereas in the deterministic case it only integrates over the state space:</p>
+<p><span class="math display">\[E_{X\sim \rho^{\pi_\theta}A \sim \pi_{\theta}} [\nabla log \pi(A | X) Q^{\pi_{\theta}} (X, A)]\]</span></p>
+<p>Thus, <strong>computing deterministic policies may require less samples</strong>.</p>
+<p>An off-policy learning scheme is introduced here to ensure adequate exploration (i.e The basic idea is to choose actions according to a stochastic behaviour policy).</p>
+<h2 id="notations">Notations</h2>
+<p>Initial state distribution <span class="math inline">\(p_1(s_1)\)</span>, stationary transition dynamics distribution <span class="math inline">\(p(s_{t+1} | s_{t}, a_{t})\)</span>, deterministic reward function <span class="math inline">\(r(x, a)\)</span>. Stochastic policy is represented as <span class="math inline">\(\pi_{\theta} (a_t | s_t)\)</span>. The return is the total discounted reward</p>
+<p><span class="math display">\[r_t^{\gamma} = \sum^{\infty}_{k = t} \gamma^{k-t} r(s_k, a_k)\]</span></p>
+<p>Value functions:</p>
+<p><span class="math display">\[V^{\pi} (s) = E[r_1^{\gamma} | S_1=s; \pi]\]</span></p>
+<p><span class="math display">\[Q^{\pi} (s, a) = E[r_1^{\gamma} | S_1=s, A_1=a; \pi]\]</span></p>
+<p>The objective is to find a policy <span class="math inline">\(\pi\)</span> that maximize <span class="math inline">\(J(\pi)\)</span></p>
+<p><span class="math display">\[J(\pi) = E_{s_1 \sim p_1}[r_1^{\gamma}]\]</span></p>
+<p>Define t step transition probability following <span class="math inline">\(\pi\)</span> as <span class="math inline">\(p^{\pi}(s \rightarrow s^{\prime}; t)\)</span></p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>PG</category>
+      </categories>
+      <tags>
+        <tag>Policy Gradient</tag>
+        <tag>Continuous Action Space</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Issues in Using Function Approximation for RL</title>
+    <url>/2021/05/07/FA-issues/</url>
+    <content><![CDATA[<h1 id="issues-in-using-function-approximation-for-reinforcement-learning"><a href="https://www.ri.cmu.edu/pub_files/pub1/thrun_sebastian_1993_1/thrun_sebastian_1993_1.pdf">Issues in Using Function Approximation for Reinforcement Learning</a></h1>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Discussions</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MDP</title>
     <url>/2021/05/03/MDP/</url>
     <content><![CDATA[<h1 id="mdp">MDP</h1>
@@ -116,20 +159,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Issues in Using Function Approximation for RL</title>
-    <url>/2021/05/07/FA-issues/</url>
-    <content><![CDATA[<h1 id="issues-in-using-function-approximation-for-reinforcement-learning"><a href="https://www.ri.cmu.edu/pub_files/pub1/thrun_sebastian_1993_1/thrun_sebastian_1993_1.pdf">Issues in Using Function Approximation for Reinforcement Learning</a></h1>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>VFA</category>
-      </categories>
-      <tags>
-        <tag>Function Approximation</tag>
-        <tag>Discussions</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Bellman Equations</title>
     <url>/2021/05/03/bellman-equations/</url>
     <content><![CDATA[<p><em>Please read post on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> prior this post</em></p>
@@ -162,143 +191,6 @@ V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
       </categories>
       <tags>
         <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>DPG</title>
-    <url>/2021/05/06/DPG/</url>
-    <content><![CDATA[<h1 id="deterministic-policy-gradient-algorithms">Deterministic Policy Gradient Algorithms</h1>
-<h2 id="introduction">Introduction</h2>
-<p>In traditional policy gradient algorithms, policy is parametrized by a probability distribution <span class="math inline">\(pi_{\theta} (a | s) = P[a | s; \theta]\)</span> that stochastically selects action <span class="math inline">\(a\)</span> in state <span class="math inline">\(s\)</span> according to parameter vector <span class="math inline">\(\theta\)</span>. In this paper, the authors consider deterministic policies <span class="math inline">\(a = \mu_{\theta} (s)\)</span>.</p>
-<p>From a practical viewpoint, there is a crucial difference between the stochastic and deterministic policy gradients. In the stochastic case, the policy gradient integrates over both state and action spaces, whereas in the deterministic case it only integrates over the state space:</p>
-<p><span class="math display">\[E_{X\sim \rho^{\pi_\theta}A \sim \pi_{\theta}} [\nabla log \pi(A | X) Q^{\pi_{\theta}} (X, A)]\]</span></p>
-<p>Thus, <strong>computing deterministic policies may require less samples</strong>.</p>
-<p>An off-policy learning scheme is introduced here to ensure adequate exploration (i.e The basic idea is to choose actions according to a stochastic behaviour policy).</p>
-<h2 id="notations">Notations</h2>
-<p>Initial state distribution <span class="math inline">\(p_1(s_1)\)</span>, stationary transition dynamics distribution <span class="math inline">\(p(s_{t+1} | s_{t}, a_{t})\)</span>, deterministic reward function <span class="math inline">\(r(x, a)\)</span>. Stochastic policy is represented as <span class="math inline">\(\pi_{\theta} (a_t | s_t)\)</span>. The return is the total discounted reward</p>
-<p><span class="math display">\[r_t^{\gamma} = \sum^{\infty}_{k = t} \gamma^{k-t} r(s_k, a_k)\]</span></p>
-<p>Value functions:</p>
-<p><span class="math display">\[V^{\pi} (s) = E[r_1^{\gamma} | S_1=s; \pi]\]</span></p>
-<p><span class="math display">\[Q^{\pi} (s, a) = E[r_1^{\gamma} | S_1=s, A_1=a; \pi]\]</span></p>
-<p>The objective is to find a policy <span class="math inline">\(\pi\)</span> that maximize <span class="math inline">\(J(\pi)\)</span></p>
-<p><span class="math display">\[J(\pi) = E_{s_1 \sim p_1}[r_1^{\gamma}]\]</span></p>
-<p>Define t step transition probability following <span class="math inline">\(\pi\)</span> as <span class="math inline">\(p^{\pi}(s \rightarrow s^{\prime}; t)\)</span></p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>PG</category>
-      </categories>
-      <tags>
-        <tag>Policy Gradient</tag>
-        <tag>Continuous Action Space</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Probability</title>
-    <url>/2021/05/11/probability/</url>
-    <content><![CDATA[<h1 id="probability-background">Probability Background</h1>
-<h2 id="sets">Sets</h2>
-<p>A set is a collection of objects, which are the elements of set. If S is a set and <span class="math inline">\(x\)</span> is an element of <span class="math inline">\(S\)</span>, we write <span class="math inline">\(x \in S\)</span>. If <span class="math inline">\(x\)</span> is not an element of <span class="math inline">\(S\)</span>, we write <span class="math inline">\(x \notin S\)</span>. A set can have no elements, in which case it is called the empty set, denoted by <span class="math inline">\(\emptyset\)</span>.</p>
-<h3 id="finite-countable-uncountable">Finite, Countable, Uncountable</h3>
-<p>If <span class="math inline">\(S\)</span> contains a finite number of elements, say <span class="math inline">\(x_1, x_2, ..., x_n\)</span>, we write it as list of the elements in braces:</p>
-<p><span class="math display">\[S = \{x_1, x_2, ...., x_n\}\]</span></p>
-<p>if <span class="math inline">\(S\)</span> contains countable infinitely many elements <span class="math inline">\(x_1, x_2, ...\)</span>, we can write:</p>
-<p><span class="math display">\[S = \{x_1, x_2, ... \}\]</span></p>
-<p><span class="math inline">\(S\)</span> is countable infinite, if the set is countable but has infinitely many elements. However, a set with uncountable elements can not be written down in a list.</p>
-<p>We can denote set of all <span class="math inline">\(x\)</span> that have certain property <span class="math inline">\(P\)</span>:</p>
-<p><span class="math display">\[\{x | x \text{ satisfies } P\}\]</span></p>
-<p>ie. the set of even integers can be written as <span class="math inline">\(\{k | k/2 \text{ is integer}\}\)</span>, <span class="math inline">\(\{x | 0 \leq x \leq 1\}\)</span> (uncountable)</p>
-<span id="more"></span>
-<h3 id="subsets-and-universal-set">Subsets and Universal set</h3>
-<p>If every element of a set <span class="math inline">\(S\)</span> is also an element of a set <span class="math inline">\(T\)</span>, then <span class="math inline">\(S\)</span> is a subset of <span class="math inline">\(T\)</span>, we denote as <span class="math inline">\(S \subset T\)</span> or <span class="math inline">\(T \subset S\)</span>. If <span class="math inline">\(S \subset T\)</span> and <span class="math inline">\(T \subset S\)</span>, the two sets are equal. We also denote universal set to be <span class="math inline">\(\Omega\)</span> which contains all objects that could conceivably be of interest in a particular context.</p>
-<h2 id="probability-models">Probability Models</h2>
-<p>A probabilistic model is a mathematical description of an uncertain situation.</p>
-<p><img src='/images/RL/background/prob_1.png'></p>
-<h3 id="sample-spaces-and-events">Sample Spaces and Events</h3>
-<p>Every probabilistic model involves an underlying process, called the <strong>experiment</strong>, that will produce exactly <strong>one</strong> out of several possible outcomes. The set of all possible outcomes is called the sample space of the experiment, and is denoted by <span class="math inline">\(\Omega\)</span> (Universal Set). A subset of the sample space, that is, a collection of possible outcomes, is called an <strong>event</strong>. Any collection of possible outcomes, including the entire sample space <span class="math inline">\(\Omega\)</span> and its complement the empty set. There is no restriction on what constitutes an experiment. (ie. it can be one toss of the coin, three tosses of coin, or an infinite sequence of tosses). However, in this formulation, there is only one experiment (three tosses is one experiment rather than three experiments).</p>
-<p>The sample space of an experiment may consist of a finite, or an infinite number of possible outcomes.</p>
-<p>Regardless of their number. different elements of the sample space should be <strong>distinct and mutually exclusive</strong>, so that when the experiment is carried out there is a unique outcome. For example, the sample space associated with the roll of a die cannot contain "1 or 3" as a possible outcome and also "1 or 4" as another possible outcome. If it did, we would not be able to assign a unique outcome when the roll is a 1.</p>
-<p>A given physical situation may be modeled in several ways, depending pending on the kind of questions that we are interested in . Generally, the sample space chosen for a probabilistic model must be <strong>collectively exhaustive</strong>, in the sense that no matter what happens in the experiment, we always obtain an outcome that has been included in the sample space. In addition, the sample space should have enough detail to distinguish between all outcomes of interest to the modeler, while avoiding irrelevant details.</p>
-<p><img src="/images/RL/background/prob_2.png"> <img src="/images/RL/background/prob_3.png"></p>
-<h3 id="probability-laws">Probability Laws</h3>
-<p>The probability law assigns to every event <span class="math inline">\(A\)</span>, a number <span class="math inline">\(P(A)\)</span>, called the <strong>probability</strong> of <span class="math inline">\(A\)</span>, satisfying:</p>
-<ol type="1">
-<li>(Nonnegativity) <span class="math inline">\(P(A) \geq 0, \forall A\)</span></li>
-<li>(Additivity) if <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are two disjoint events, then the probability of their union satisfies: <span class="math display">\[P(A \cup B) = P(A) + P(B)\]</span></li>
-<li>(Normalization) The probability of the entire sample space <span class="math inline">\(\Omega\)</span> is 1, that is: <span class="math display">\[P(\Omega) = 1\]</span></li>
-<li>The probability of the empty set <span class="math inline">\(\emptyset\)</span> is 0, that is: <span class="math display">\[P(\emptyset) = 0\]</span></li>
-</ol>
-<p>In order to visualize a probability law. Consider a unit of mass which is spread over the sample space. Then, <span class="math inline">\(P(A)\)</span> is simply the total mass that was assigned collectively to the elements of A. For example, <span class="math inline">\(\Omega = {1, 2, 3, 4, 5, 6}, A = {1, 2}\)</span>, <span class="math inline">\(P(A) = \frac{1}{3}\)</span></p>
-<h4 id="discrete-model">Discrete Model</h4>
-<p><img src="/images/RL/background/prob_4.png"> <img src="/images/RL/background/prob_5.png"></p>
-<h2 id="conditional-probability">Conditional Probability</h2>
-<p>Conditional probability provides us with a way to reason about the outcome of an experiment, based on <strong>partial information</strong>. In more precise terms, given an experiment, a corresponding sample space, and a probability law, suppose that we know that the outcome is within some given event <span class="math inline">\(B\)</span>. We wish to quantify the likelihood that the outcome also belongs to some other given event <span class="math inline">\(A\)</span>. This concept specifies the conditional probability of <span class="math inline">\(A\)</span> given <span class="math inline">\(B\)</span>, denoted by <span class="math inline">\(P(A | B)\)</span>.</p>
-<p>Furthermore, for a fixed event <span class="math inline">\(B\)</span>, it can be verified that the conditional probabilities <span class="math inline">\(P(A | B), \forall A\)</span> form a legitimate probability law that satisfies the requirements.</p>
-<p><img src="/images/RL/background/prob_6.png"></p>
-<h3 id="chain-rule">Chain Rule</h3>
-<p><img src="/images/RL/background/prob_7.png"></p>
-<h3 id="law-of-total-probability">Law of Total Probability</h3>
-<p><img src="/images/RL/background/prob_8.png"></p>
-<h3 id="bayes-rule">Bayes' Rule</h3>
-<p><img src="/images/RL/background/prob_9.png"></p>
-<h2 id="random-variables">Random Variables</h2>
-<p>Given an experiment and the corresponding set of possible outcomes (the sample space), a <strong>random variable</strong> is a real-valued <strong>function</strong> (max, min etc.) of experiment outcome that associates a <strong>particular number with each outcome</strong>. We refer to this number as the numerical value or simply the value of the random variable.</p>
-<p><img src="/images/RL/background/prob_11.png"> <img src="/images/RL/background/prob_10.png"></p>
-<h3 id="discrete-random-variable">Discrete Random Variable</h3>
-<p>A random is called <strong>discrete</strong> if its range is either finite or countably infinite.</p>
-<p><img src="/images/RL/background/prob_12.png"></p>
-<h4 id="pmf">PMF</h4>
-<p>For discrete R.V <span class="math inline">\(X\)</span>, the probability is captured by the <strong>probability mass function</strong> of <span class="math inline">\(X\)</span> denoted by <span class="math inline">\(p_X\)</span>. In particular, if <span class="math inline">\(x\)</span> is any possible value of <span class="math inline">\(X\)</span>, the probability mass of <span class="math inline">\(x\)</span>, , denoted <span class="math inline">\(p_X(x)\)</span>, is the probability of the event <span class="math inline">\(\{X = x\}\)</span> consisting of all outcomes that give rise to a value of <span class="math inline">\(X = x\)</span>:</p>
-<p><span class="math display">\[p_X (x) = P(\{X = x\})\]</span></p>
-<p>The braces from the event/set notation is often omit when no ambiguity can arise:</p>
-<p><span class="math display">\[p_X (x) = P(\{X = x\}) = P(X=x)\]</span></p>
-<p>Note that:</p>
-<p><span class="math display">\[\sum_x p_{X} (x) = 1\]</span></p>
-<p>Where in the summation, <span class="math inline">\(x\)</span> ranges over all the possible numerical values of <span class="math inline">\(X\)</span>. This follows from the additivity and normalization properties: as <span class="math inline">\(x\)</span> ranges over all possible values of <span class="math inline">\(X\)</span>, the events <span class="math inline">\(\{X=x\}\)</span> are disjoint and form a partition of the sample space.</p>
-<h3 id="functions-of-random-variables">Functions of Random Variables</h3>
-<p>Given a R.V <span class="math inline">\(X\)</span>, one may generate other R.V by applying various transformation on <span class="math inline">\(X\)</span>. For example, <span class="math inline">\(Y = g(X) = a + bX\)</span>. <span class="math inline">\(Y=g(X)\)</span> here is also a R.V, since it provides a numerical value for each possible outcome. This is because every outcome in the sample space defines a numerical value <span class="math inline">\(x\)</span> for <span class="math inline">\(X\)</span> and hence also the numerical value <span class="math inline">\(y = g(x)\)</span> for <span class="math inline">\(Y\)</span>. If <span class="math inline">\(X\)</span> is discrete and its PMF <span class="math inline">\(p_Y\)</span> can be calculated using the PMF of <span class="math inline">\(X\)</span>:</p>
-<p><span class="math display">\[p_Y(y) = \sum_{\{x | g(x) = y\}} p_X (x)\]</span></p>
-<h3 id="expectation">Expectation</h3>
-<p>Expectation of <span class="math inline">\(X\)</span> is a weighted (in proportion to probabilities) average of the possible values of <span class="math inline">\(X\)</span>.</p>
-<p>Discrete:</p>
-<p><img src="/images/RL/background/prob_13.png"></p>
-<h4 id="well-defined-expectation">Well-Defined Expectation</h4>
-<p>When dealing with R.V that takes a countably infinite number of values, one has to deal with the possibility that the infinite sum <span class="math inline">\(\sum_x xp_X(x)\)</span> is not well-defined. More concretely, the expectation is well-defined if</p>
-<p><span class="math display">\[\sum_x |x| p_X(x) &lt; \infty\]</span></p>
-<h1 id="reference">Reference</h1>
-<ol type="1">
-<li>D. P. Bertsekas and J. N. Tsitsiklis, Introduction to Probability, NH, Nashua:Athena Scientific, 2008.</li>
-</ol>
-]]></content>
-      <categories>
-        <category>Background</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Dynamic Programming</title>
-    <url>/2021/05/03/dp/</url>
-    <content><![CDATA[<h1 id="dynamic-programming">Dynamic Programming</h1>
-<p>We have defined concepts and properties such as value functions, bellman equations, bellman operators and etc. The question is <strong>how we can find the the optimal policy?</strong> Before we start, we assume that the dynamics of the MDP is given, that is, we know our transition distribution <span class="math inline">\(P\)</span> and immediate reward distribution <span class="math inline">\(R\)</span>. The assumption of knowing the dynamics do not hold in the RL setting, but designing methods for finding the optimal policy with known model provides the foundation for developing methods for the RL setting.</p>
-<p>DP methods benefit from the structure of the MDP such as the recursive structure encoded in the Bellman equation, in order to compute the value function.</p>
-<span id="more"></span>
-<h2 id="policy-evaluation">Policy Evaluation</h2>
-<p>Policy Evaluation is the problem of computing the value function of a given policy <span class="math inline">\(\pi\)</span> (i.e. find <span class="math inline">\(V^{\pi}\)</span> or <span class="math inline">\(Q^{\pi}\)</span>). This is not the ultimate goal of an RL agent (Finding the optimal policy is the goal), but is often needed as an intermediate step in finding the optimal policy</p>
-<p>Given an MDP (<span class="math inline">\(X, A, P, R, \gamma\)</span>) and a policy <span class="math inline">\(\pi\)</span>, we would like to compute <span class="math inline">\(V^{\pi}, Q^{\pi}\)</span>:</p>
-<p><span class="math display">\[V^{\pi} (x) = E^{\pi}[\sum_{t=1}^{\infty} \gamma^{t-1} R_{t} | X_0 = x]\]</span></p>
-<p><img src='/images/RL/dp/tree_structure.png'></p>
-<h2 id="control">Control</h2>
-<p>Control is the problem of finding the optimal value function <span class="math inline">\(V^{*}, Q^{*}\)</span> or <span class="math inline">\(\pi^{*}\)</span></p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>DP</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>Dynamic Programming</tag>
       </tags>
   </entry>
   <entry>
@@ -461,33 +353,19 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
-    <title>Value Iteration</title>
-    <url>/2021/05/03/value-iteration/</url>
-    <content><![CDATA[<h1 id="value-iteration">Value Iteration</h1>
-<p>VI is one of the fundamental algorithms for planning. Many RL algorithms are essentially the sample-based variants of VI (DQN). We directly use the results of fixed points proposition and contraction property of the Bellman operator we proved in <a href="/2021/05/03/bellman-optimality-equations/" title="Bellman Optimality Equations">Bellman Optimality Equations</a>.</p>
-<h2 id="idea">Idea</h2>
-<p>Starting from <span class="math inline">\(V_0 \in B(X)\)</span>, we compute a sequence of <span class="math inline">\((V_{k})_{k \geq 0}\)</span> by:</p>
-<p><span class="math display">\[V_{k+1} \leftarrow T^{\pi} V_{k}\]</span></p>
-<p>By the contraction property of the Bellman operator and Uniqueness of fixed points proposition :</p>
-<p><span class="math display">\[lim_{k \rightarrow \infty} \| V_k - V^{\pi}\|_{\infty} = 0\]</span></p>
-<p>similar for <span class="math inline">\(Q\)</span>:</p>
-<p><span class="math display">\[lim_{k \rightarrow \infty} \| Q_k - Q^{\pi}\|_{\infty} = 0\]</span></p>
+    <title>Dynamic Programming</title>
+    <url>/2021/05/03/dp/</url>
+    <content><![CDATA[<h1 id="dynamic-programming">Dynamic Programming</h1>
+<p>We have defined concepts and properties such as value functions, bellman equations, bellman operators and etc. The question is <strong>how we can find the the optimal policy?</strong> Before we start, we assume that the dynamics of the MDP is given, that is, we know our transition distribution <span class="math inline">\(P\)</span> and immediate reward distribution <span class="math inline">\(R\)</span>. The assumption of knowing the dynamics do not hold in the RL setting, but designing methods for finding the optimal policy with known model provides the foundation for developing methods for the RL setting.</p>
+<p>DP methods benefit from the structure of the MDP such as the recursive structure encoded in the Bellman equation, in order to compute the value function.</p>
 <span id="more"></span>
-<p>Also, if we compute a sequence of <span class="math inline">\((V_{k})_{k \geq 0}\)</span> by:</p>
-<p><span class="math display">\[V_{k+1} \leftarrow T^{*} V_{k}\]</span></p>
-<p><span class="math display">\[Q_{k+1} \leftarrow T^{*} Q_{k}\]</span></p>
-<p>By the contraction property of the Bellman operator and Uniqueness of fixed points proposition, it is guaranteed that</p>
-<p><span class="math display">\[lim_{k \rightarrow \infty} \| V_k - V^{*}\|_{\infty} = 0\]</span></p>
-<p><span class="math display">\[lim_{k \rightarrow \infty} \| Q_k - Q^{*}\|_{\infty} = 0\]</span></p>
-<p><img src='/images/RL/dp/value_iteration_1.png'> <img src='/images/RL/dp/value_iteration_2.png'> <img src='/images/RL/dp/value_iteration_3.png'></p>
-<p>After finding <span class="math inline">\(Q^{*}\)</span>, finding optimal policy is straightforward:</p>
-<p><span class="math display">\[\pi^{*} (a | x) = argmax_{a \in A} Q^{*} (x, a)\]</span></p>
-<h2 id="algorithm">algorithm</h2>
-<p>One generic implementation can be found in intro to RL book:</p>
-<p><img src='/images/RL/dp/value-iteration.png'></p>
-<h2 id="implementation">Implementation</h2>
-<p>Below is one implementation of Value iteration (using Q):</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># part of code from rl-algo.dp</span></span><br><span class="line"><span class="comment"># link: https://github.com/swag1ong/rl-algo</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ValueIter</span>(<span class="params">DpBase</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">train</span>(<span class="params">self</span>):</span></span><br><span class="line"></span><br><span class="line">        dynamics = self.env.env.P</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line"></span><br><span class="line">            delta = <span class="number">0</span></span><br><span class="line">            <span class="comment"># Calculate Q^*, V^* (s) = max_a Q^* (s, a)</span></span><br><span class="line">            <span class="keyword">for</span> s <span class="keyword">in</span> dynamics.keys():</span><br><span class="line">                prev_val = self._val[s].copy()</span><br><span class="line">                curr_val = self._val[s]</span><br><span class="line"></span><br><span class="line">                <span class="keyword">for</span> a <span class="keyword">in</span> dynamics[s].keys():</span><br><span class="line">                    temp_val = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">                    <span class="keyword">for</span> p, s_prime, r, _ <span class="keyword">in</span> dynamics[s][a]:</span><br><span class="line">                        temp_val = temp_val + p * (r + self.gamma * np.<span class="built_in">max</span>(self._val[s_prime]))</span><br><span class="line"></span><br><span class="line">                    curr_val[a] = temp_val</span><br><span class="line"></span><br><span class="line">                curr_delta = np.linalg.norm(np.array(prev_val) - np.array(curr_val))</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> curr_delta &gt; delta:</span><br><span class="line">                    delta = curr_delta</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> delta &lt; self.threshold:</span><br><span class="line">                <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<h2 id="policy-evaluation">Policy Evaluation</h2>
+<p>Policy Evaluation is the problem of computing the value function of a given policy <span class="math inline">\(\pi\)</span> (i.e. find <span class="math inline">\(V^{\pi}\)</span> or <span class="math inline">\(Q^{\pi}\)</span>). This is not the ultimate goal of an RL agent (Finding the optimal policy is the goal), but is often needed as an intermediate step in finding the optimal policy</p>
+<p>Given an MDP (<span class="math inline">\(X, A, P, R, \gamma\)</span>) and a policy <span class="math inline">\(\pi\)</span>, we would like to compute <span class="math inline">\(V^{\pi}, Q^{\pi}\)</span>:</p>
+<p><span class="math display">\[V^{\pi} (x) = E^{\pi}[\sum_{t=1}^{\infty} \gamma^{t-1} R_{t} | X_0 = x]\]</span></p>
+<p><img src='/images/RL/dp/tree_structure.png'></p>
+<h2 id="control">Control</h2>
+<p>Control is the problem of finding the optimal value function <span class="math inline">\(V^{*}, Q^{*}\)</span> or <span class="math inline">\(\pi^{*}\)</span></p>
 ]]></content>
       <categories>
         <category>RL</category>
@@ -496,72 +374,6 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       <tags>
         <tag>RL Basics</tag>
         <tag>Dynamic Programming</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Learning From Stream of Data</title>
-    <url>/2021/05/07/value-function-learning/</url>
-    <content><![CDATA[<h1 id="learning-from-stream-of-data">Learning From Stream of Data</h1>
-<p>In previous DP settings, we know the transition distribution <span class="math inline">\(P\)</span> and reward distribution <span class="math inline">\(R\)</span>. Everything about the environment dynamics are given. However, in RL setting, we have no access to the environment dynamics, instead, we observe data from agent interacting with its environment.</p>
-<p>A stream of data (rollout or trajectory):</p>
-<p><span class="math display">\[X_1, A_1, R_1, X_2, A_2, R_2, ...\]</span></p>
-<p>with <span class="math inline">\(A_t \sim \pi(\cdot | X_t), X_{t+1} \sim P(\cdot | A_t, X_t), X_1 \sim \rho(\cdot), R_t \sim R(\cdot | X_t, A_t)\)</span></p>
-<p>The questions are:</p>
-<ol type="1">
-<li>How can we learn a value of a policy <span class="math inline">\(\pi\)</span>?</li>
-<li>How can we find the optimal policy <span class="math inline">\(\pi^{*}\)</span>?</li>
-</ol>
-<h2 id="stochastic-approximation-of-mean">Stochastic Approximation of Mean</h2>
-<p>Let <span class="math inline">\(Z_1, ..., Z_t\)</span> be i.i.d R.V drawn from distribution <span class="math inline">\(v\)</span>, how can we estimate the expectation of <span class="math inline">\(Z_i\)</span>? One way is stochastic approximation.</p>
-<p>Define:</p>
-<p><span class="math display">\[\theta_{t+1} = (1 - \alpha_t)\theta_t + \alpha_t Z_t\]</span></p>
-<p>Note that <span class="math inline">\(\theta_{t+1}\)</span> is a random variable, because <span class="math inline">\(Z_t\)</span> is a random variable.</p>
-<h3 id="expectation">Expectation</h3>
-<p>Assume <span class="math inline">\(\alpha_t = \alpha\)</span> is fixed, <span class="math inline">\(E[Z_t] = m\)</span>:</p>
-<span class="math display">\[\begin{aligned}
-E[\theta_{t+1}] &amp;= E[(1 - \alpha) \theta_t + \alpha Z_t]\\
-&amp;= (1 - \alpha) E[\theta_t] + \alpha E[Z_t]\\
-&amp;= (1 - \alpha) E[\theta_t] + \alpha m\\
-\end{aligned}\]</span>
-<p>Let <span class="math inline">\(E[\theta_t] = \bar{\theta_t}\)</span>, then:</p>
-<p><span class="math display">\[E[\theta_{t+1}] = (1 - \alpha) E[\theta_t] + \alpha m \implies \bar{\theta_{t+1}} = (1 - \alpha) \bar{\theta_t} + \alpha m\]</span></p>
-<p>Let <span class="math inline">\(\theta_0 = 0\)</span>, that is, <span class="math inline">\(\bar{\theta_0} = 0\)</span>:</p>
-<span class="math display">\[\begin{aligned}
-\bar{\theta_{1}} &amp;= \alpha m\\
-\bar{\theta_{2}}&amp;= (1 - \alpha) \alpha m + \alpha m\\
-...\\
-...\\
-\bar{\theta_{t}}&amp;= \alpha \sum_{i=0}^{t-1} (1 - \alpha)^i m = \frac{\alpha m (1 - (1 - \alpha)^t)}{1 - (1 - \alpha)} = m[1 - (1 - \alpha)^t]\\
-\end{aligned}\]</span>
-<p>As <span class="math inline">\(t \rightarrow \infty\)</span>, if <span class="math inline">\(0 \geq \alpha &lt; 1\)</span></p>
-<p><span class="math display">\[lim_{t \rightarrow \infty} \bar{\theta_{t}} = lim_{t \rightarrow \infty} m[1 - (1 - \alpha)^t] = m\]</span></p>
-<p><strong>This implies <span class="math inline">\(\theta_t\)</span> converges to <span class="math inline">\(m\)</span> in expectation</strong></p>
-<h3 id="variance">Variance</h3>
-<p>Since all <span class="math inline">\(Z_i\)</span> are i.i.d:</p>
-<p><span class="math display">\[V[\theta_{t+1}] = (1 - \alpha)^2 V[\theta_t] + \alpha^2 V[Z_t] \geq \alpha^2 V[Z_t] = \alpha^2 \theta^2\]</span></p>
-<p>We can show that:</p>
-<p><span class="math display">\[lim_{t \rightarrow \infty} V[\theta_t] = \frac{\alpha \theta^2}{2 - \alpha}\]</span></p>
-<p>For a constant <span class="math inline">\(\alpha\)</span>, the variance <span class="math inline">\(\theta_t\)</span>is not going to converge to zero. This means that <span class="math inline">\(\theta_t\)</span> fluctuates around its mean.</p>
-<h3 id="sa-condition">SA Condition</h3>
-<p>In order to make <span class="math inline">\(\theta_t\)</span> converge, we need a time dependent <span class="math inline">\(\alpha_t \rightarrow 0\)</span> with some schedule:</p>
-<p><span class="math display">\[\sum_{t=0}^{\infty} \alpha_t = \infty\]</span></p>
-<p><span class="math display">\[\sum_{t=0}^{\infty} \alpha_t^2 &lt; \infty\]</span></p>
-<h2 id="epsilon---greedy-policy"><span class="math inline">\(\epsilon - Greedy policy\)</span></h2>
-<h3 id="problem-with-greedy-policy">Problem With Greedy Policy</h3>
-<p>By selecting</p>
-<p><span class="math display">\[a \rightarrow \pi_g (x; Q) = argmax_{a \in A] Q(x, a)\]</span></p>
-<p>We would choose the optimal action at state <span class="math inline">\(x\)</span></p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>MC</category>
-        <category>TD</category>
-      </categories>
-      <tags>
-        <tag>Basics</tag>
-        <tag>MC</tag>
-        <tag>TD</tag>
-        <tag>Tabular Methods</tag>
       </tags>
   </entry>
   <entry>
@@ -633,6 +445,194 @@ E[\theta_{t+1}] &amp;= E[(1 - \alpha) \theta_t + \alpha Z_t]\\
 <p><span class="math display">\[lim_{m \rightarrow \infty} (T^{\pi^{\prime}})^{m} Q^{\pi} = Q^{\pi^\prime}\]</span></p>
 <p><span class="math display">\[\implies Q^{\pi^\prime} = lim_{m \rightarrow \infty} (T^{\pi^{\prime}})^{m} Q^{\pi} \geq Q^{\pi}\]</span></p>
 <h3 id="proof-convergence-of-policy-iteration">Proof: Convergence of Policy Iteration</h3>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>DP</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>Dynamic Programming</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Probability</title>
+    <url>/2021/05/11/probability/</url>
+    <content><![CDATA[<h1 id="probability-background">Probability Background</h1>
+<h2 id="sets">Sets</h2>
+<p>A set is a collection of objects, which are the elements of set. If S is a set and <span class="math inline">\(x\)</span> is an element of <span class="math inline">\(S\)</span>, we write <span class="math inline">\(x \in S\)</span>. If <span class="math inline">\(x\)</span> is not an element of <span class="math inline">\(S\)</span>, we write <span class="math inline">\(x \notin S\)</span>. A set can have no elements, in which case it is called the empty set, denoted by <span class="math inline">\(\emptyset\)</span>.</p>
+<h3 id="finite-countable-uncountable">Finite, Countable, Uncountable</h3>
+<p>If <span class="math inline">\(S\)</span> contains a finite number of elements, say <span class="math inline">\(x_1, x_2, ..., x_n\)</span>, we write it as list of the elements in braces:</p>
+<p><span class="math display">\[S = \{x_1, x_2, ...., x_n\}\]</span></p>
+<p>if <span class="math inline">\(S\)</span> contains countable infinitely many elements <span class="math inline">\(x_1, x_2, ...\)</span>, we can write:</p>
+<p><span class="math display">\[S = \{x_1, x_2, ... \}\]</span></p>
+<p><span class="math inline">\(S\)</span> is countable infinite, if the set is countable but has infinitely many elements. However, a set with uncountable elements can not be written down in a list.</p>
+<p>We can denote set of all <span class="math inline">\(x\)</span> that have certain property <span class="math inline">\(P\)</span>:</p>
+<p><span class="math display">\[\{x | x \text{ satisfies } P\}\]</span></p>
+<p>ie. the set of even integers can be written as <span class="math inline">\(\{k | k/2 \text{ is integer}\}\)</span>, <span class="math inline">\(\{x | 0 \leq x \leq 1\}\)</span> (uncountable)</p>
+<span id="more"></span>
+<h3 id="subsets-and-universal-set">Subsets and Universal set</h3>
+<p>If every element of a set <span class="math inline">\(S\)</span> is also an element of a set <span class="math inline">\(T\)</span>, then <span class="math inline">\(S\)</span> is a subset of <span class="math inline">\(T\)</span>, we denote as <span class="math inline">\(S \subset T\)</span> or <span class="math inline">\(T \subset S\)</span>. If <span class="math inline">\(S \subset T\)</span> and <span class="math inline">\(T \subset S\)</span>, the two sets are equal. We also denote universal set to be <span class="math inline">\(\Omega\)</span> which contains all objects that could conceivably be of interest in a particular context.</p>
+<h2 id="probability-models">Probability Models</h2>
+<p>A probabilistic model is a mathematical description of an uncertain situation.</p>
+<p><img src='/images/RL/background/prob_1.png'></p>
+<h3 id="sample-spaces-and-events">Sample Spaces and Events</h3>
+<p>Every probabilistic model involves an underlying process, called the <strong>experiment</strong>, that will produce exactly <strong>one</strong> out of several possible outcomes. The set of all possible outcomes is called the sample space of the experiment, and is denoted by <span class="math inline">\(\Omega\)</span> (Universal Set). A subset of the sample space, that is, a collection of possible outcomes, is called an <strong>event</strong>. Any collection of possible outcomes, including the entire sample space <span class="math inline">\(\Omega\)</span> and its complement the empty set. There is no restriction on what constitutes an experiment. (ie. it can be one toss of the coin, three tosses of coin, or an infinite sequence of tosses). However, in this formulation, there is only one experiment (three tosses is one experiment rather than three experiments).</p>
+<p>The sample space of an experiment may consist of a finite, or an infinite number of possible outcomes.</p>
+<p>Regardless of their number. different elements of the sample space should be <strong>distinct and mutually exclusive</strong>, so that when the experiment is carried out there is a unique outcome. For example, the sample space associated with the roll of a die cannot contain "1 or 3" as a possible outcome and also "1 or 4" as another possible outcome. If it did, we would not be able to assign a unique outcome when the roll is a 1.</p>
+<p>A given physical situation may be modeled in several ways, depending pending on the kind of questions that we are interested in . Generally, the sample space chosen for a probabilistic model must be <strong>collectively exhaustive</strong>, in the sense that no matter what happens in the experiment, we always obtain an outcome that has been included in the sample space. In addition, the sample space should have enough detail to distinguish between all outcomes of interest to the modeler, while avoiding irrelevant details.</p>
+<p><img src="/images/RL/background/prob_2.png"> <img src="/images/RL/background/prob_3.png"></p>
+<h3 id="probability-laws">Probability Laws</h3>
+<p>The probability law assigns to every event <span class="math inline">\(A\)</span>, a number <span class="math inline">\(P(A)\)</span>, called the <strong>probability</strong> of <span class="math inline">\(A\)</span>, satisfying:</p>
+<ol type="1">
+<li>(Nonnegativity) <span class="math inline">\(P(A) \geq 0, \forall A\)</span></li>
+<li>(Additivity) if <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are two disjoint events, then the probability of their union satisfies: <span class="math display">\[P(A \cup B) = P(A) + P(B)\]</span></li>
+<li>(Normalization) The probability of the entire sample space <span class="math inline">\(\Omega\)</span> is 1, that is: <span class="math display">\[P(\Omega) = 1\]</span></li>
+<li>The probability of the empty set <span class="math inline">\(\emptyset\)</span> is 0, that is: <span class="math display">\[P(\emptyset) = 0\]</span></li>
+</ol>
+<p>In order to visualize a probability law. Consider a unit of mass which is spread over the sample space. Then, <span class="math inline">\(P(A)\)</span> is simply the total mass that was assigned collectively to the elements of A. For example, <span class="math inline">\(\Omega = {1, 2, 3, 4, 5, 6}, A = {1, 2}\)</span>, <span class="math inline">\(P(A) = \frac{1}{3}\)</span></p>
+<h4 id="discrete-model">Discrete Model</h4>
+<p><img src="/images/RL/background/prob_4.png"> <img src="/images/RL/background/prob_5.png"></p>
+<h2 id="conditional-probability">Conditional Probability</h2>
+<p>Conditional probability provides us with a way to reason about the outcome of an experiment, based on <strong>partial information</strong>. In more precise terms, given an experiment, a corresponding sample space, and a probability law, suppose that we know that the outcome is within some given event <span class="math inline">\(B\)</span>. We wish to quantify the likelihood that the outcome also belongs to some other given event <span class="math inline">\(A\)</span>. This concept specifies the conditional probability of <span class="math inline">\(A\)</span> given <span class="math inline">\(B\)</span>, denoted by <span class="math inline">\(P(A | B)\)</span>.</p>
+<p>Furthermore, for a fixed event <span class="math inline">\(B\)</span>, it can be verified that the conditional probabilities <span class="math inline">\(P(A | B), \forall A\)</span> form a legitimate probability law that satisfies the requirements.</p>
+<p><img src="/images/RL/background/prob_6.png"></p>
+<h3 id="chain-rule">Chain Rule</h3>
+<p><img src="/images/RL/background/prob_7.png"></p>
+<h3 id="law-of-total-probability">Law of Total Probability</h3>
+<p><img src="/images/RL/background/prob_8.png"></p>
+<h3 id="bayes-rule">Bayes' Rule</h3>
+<p><img src="/images/RL/background/prob_9.png"></p>
+<h2 id="random-variables">Random Variables</h2>
+<p>Given an experiment and the corresponding set of possible outcomes (the sample space), a <strong>random variable</strong> is a real-valued <strong>function</strong> (max, min etc.) of experiment outcome that associates a <strong>particular number with each outcome</strong>. We refer to this number as the numerical value or simply the value of the random variable.</p>
+<p><img src="/images/RL/background/prob_11.png"> <img src="/images/RL/background/prob_10.png"></p>
+<h3 id="discrete-random-variable">Discrete Random Variable</h3>
+<p>A random is called <strong>discrete</strong> if its range is either finite or countably infinite.</p>
+<p><img src="/images/RL/background/prob_12.png"></p>
+<h4 id="pmf">PMF</h4>
+<p>For discrete R.V <span class="math inline">\(X\)</span>, the probability is captured by the <strong>probability mass function</strong> of <span class="math inline">\(X\)</span> denoted by <span class="math inline">\(p_X\)</span>. In particular, if <span class="math inline">\(x\)</span> is any possible value of <span class="math inline">\(X\)</span>, the probability mass of <span class="math inline">\(x\)</span>, , denoted <span class="math inline">\(p_X(x)\)</span>, is the probability of the event <span class="math inline">\(\{X = x\}\)</span> consisting of all outcomes that give rise to a value of <span class="math inline">\(X = x\)</span>:</p>
+<p><span class="math display">\[p_X (x) = P(\{X = x\})\]</span></p>
+<p>The braces from the event/set notation is often omit when no ambiguity can arise:</p>
+<p><span class="math display">\[p_X (x) = P(\{X = x\}) = P(X=x)\]</span></p>
+<p>Note that:</p>
+<p><span class="math display">\[\sum_x p_{X} (x) = 1\]</span></p>
+<p>Where in the summation, <span class="math inline">\(x\)</span> ranges over all the possible numerical values of <span class="math inline">\(X\)</span>. This follows from the additivity and normalization properties: as <span class="math inline">\(x\)</span> ranges over all possible values of <span class="math inline">\(X\)</span>, the events <span class="math inline">\(\{X=x\}\)</span> are disjoint and form a partition of the sample space.</p>
+<h3 id="functions-of-random-variables">Functions of Random Variables</h3>
+<p>Given a R.V <span class="math inline">\(X\)</span>, one may generate other R.V by applying various transformation on <span class="math inline">\(X\)</span>. For example, <span class="math inline">\(Y = g(X) = a + bX\)</span>. <span class="math inline">\(Y=g(X)\)</span> here is also a R.V, since it provides a numerical value for each possible outcome. This is because every outcome in the sample space defines a numerical value <span class="math inline">\(x\)</span> for <span class="math inline">\(X\)</span> and hence also the numerical value <span class="math inline">\(y = g(x)\)</span> for <span class="math inline">\(Y\)</span>. If <span class="math inline">\(X\)</span> is discrete and its PMF <span class="math inline">\(p_Y\)</span> can be calculated using the PMF of <span class="math inline">\(X\)</span>:</p>
+<p><span class="math display">\[p_Y(y) = \sum_{\{x | g(x) = y\}} p_X (x)\]</span></p>
+<h3 id="expectation">Expectation</h3>
+<p>Expectation of <span class="math inline">\(X\)</span> is a weighted (in proportion to probabilities) average of the possible values of <span class="math inline">\(X\)</span>.</p>
+<p>Discrete:</p>
+<p><img src="/images/RL/background/prob_13.png"></p>
+<h4 id="well-defined-expectation">Well-Defined Expectation</h4>
+<p>When dealing with R.V that takes a countably infinite number of values, one has to deal with the possibility that the infinite sum <span class="math inline">\(\sum_x xp_X(x)\)</span> is not well-defined. More concretely, the expectation is well-defined if</p>
+<p><span class="math display">\[\sum_x |x| p_X(x) &lt; \infty\]</span></p>
+<h1 id="reference">Reference</h1>
+<ol type="1">
+<li>D. P. Bertsekas and J. N. Tsitsiklis, Introduction to Probability, NH, Nashua:Athena Scientific, 2008.</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Background</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Learning From Stream of Data</title>
+    <url>/2021/05/07/value-function-learning/</url>
+    <content><![CDATA[<h1 id="learning-from-stream-of-data">Learning From Stream of Data</h1>
+<p>In previous DP settings, we know the transition distribution <span class="math inline">\(P\)</span> and reward distribution <span class="math inline">\(R\)</span>. Everything about the environment dynamics are given. However, in RL setting, we have no access to the environment dynamics, instead, we observe data from agent interacting with its environment.</p>
+<p>A stream of data (rollout or trajectory):</p>
+<p><span class="math display">\[X_1, A_1, R_1, X_2, A_2, R_2, ...\]</span></p>
+<p>with <span class="math inline">\(A_t \sim \pi(\cdot | X_t), X_{t+1} \sim P(\cdot | A_t, X_t), X_1 \sim \rho(\cdot), R_t \sim R(\cdot | X_t, A_t)\)</span></p>
+<p>The questions are:</p>
+<ol type="1">
+<li>How can we learn a value of a policy <span class="math inline">\(\pi\)</span>?</li>
+<li>How can we find the optimal policy <span class="math inline">\(\pi^{*}\)</span>?</li>
+</ol>
+<h2 id="stochastic-approximation-of-mean">Stochastic Approximation of Mean</h2>
+<p>Let <span class="math inline">\(Z_1, ..., Z_t\)</span> be i.i.d R.V drawn from distribution <span class="math inline">\(v\)</span>, how can we estimate the expectation of <span class="math inline">\(Z_i\)</span>? One way is stochastic approximation.</p>
+<p>Define:</p>
+<p><span class="math display">\[\theta_{t+1} = (1 - \alpha_t)\theta_t + \alpha_t Z_t\]</span></p>
+<p>Note that <span class="math inline">\(\theta_{t+1}\)</span> is a random variable, because <span class="math inline">\(Z_t\)</span> is a random variable.</p>
+<h3 id="expectation">Expectation</h3>
+<p>Assume <span class="math inline">\(\alpha_t = \alpha\)</span> is fixed, <span class="math inline">\(E[Z_t] = m\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+E[\theta_{t+1}] &amp;= E[(1 - \alpha) \theta_t + \alpha Z_t]\\
+&amp;= (1 - \alpha) E[\theta_t] + \alpha E[Z_t]\\
+&amp;= (1 - \alpha) E[\theta_t] + \alpha m\\
+\end{aligned}\]</span>
+<p>Let <span class="math inline">\(E[\theta_t] = \bar{\theta_t}\)</span>, then:</p>
+<p><span class="math display">\[E[\theta_{t+1}] = (1 - \alpha) E[\theta_t] + \alpha m \implies \bar{\theta_{t+1}} = (1 - \alpha) \bar{\theta_t} + \alpha m\]</span></p>
+<p>Let <span class="math inline">\(\theta_0 = 0\)</span>, that is, <span class="math inline">\(\bar{\theta_0} = 0\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+\bar{\theta_{1}} &amp;= \alpha m\\
+\bar{\theta_{2}}&amp;= (1 - \alpha) \alpha m + \alpha m\\
+...\\
+...\\
+\bar{\theta_{t}}&amp;= \alpha \sum_{i=0}^{t-1} (1 - \alpha)^i m = \frac{\alpha m (1 - (1 - \alpha)^t)}{1 - (1 - \alpha)} = m[1 - (1 - \alpha)^t]\\
+\end{aligned}\]</span>
+<p>As <span class="math inline">\(t \rightarrow \infty\)</span>, if <span class="math inline">\(0 \geq \alpha &lt; 1\)</span></p>
+<p><span class="math display">\[lim_{t \rightarrow \infty} \bar{\theta_{t}} = lim_{t \rightarrow \infty} m[1 - (1 - \alpha)^t] = m\]</span></p>
+<p><strong>This implies <span class="math inline">\(\theta_t\)</span> converges to <span class="math inline">\(m\)</span> in expectation</strong></p>
+<h3 id="variance">Variance</h3>
+<p>Since all <span class="math inline">\(Z_i\)</span> are i.i.d:</p>
+<p><span class="math display">\[V[\theta_{t+1}] = (1 - \alpha)^2 V[\theta_t] + \alpha^2 V[Z_t] \geq \alpha^2 V[Z_t] = \alpha^2 \theta^2\]</span></p>
+<p>We can show that:</p>
+<p><span class="math display">\[lim_{t \rightarrow \infty} V[\theta_t] = \frac{\alpha \theta^2}{2 - \alpha}\]</span></p>
+<p>For a constant <span class="math inline">\(\alpha\)</span>, the variance <span class="math inline">\(\theta_t\)</span>is not going to converge to zero. This means that <span class="math inline">\(\theta_t\)</span> fluctuates around its mean.</p>
+<h3 id="sa-condition">SA Condition</h3>
+<p>In order to make <span class="math inline">\(\theta_t\)</span> converge, we need a time dependent <span class="math inline">\(\alpha_t \rightarrow 0\)</span> with some schedule:</p>
+<p><span class="math display">\[\sum_{t=0}^{\infty} \alpha_t = \infty\]</span></p>
+<p><span class="math display">\[\sum_{t=0}^{\infty} \alpha_t^2 &lt; \infty\]</span></p>
+<h2 id="epsilon---greedy-policy"><span class="math inline">\(\epsilon - Greedy policy\)</span></h2>
+<h3 id="problem-with-greedy-policy">Problem With Greedy Policy</h3>
+<p>By selecting</p>
+<p><span class="math display">\[a \rightarrow \pi_g (x; Q) = argmax_{a \in A] Q(x, a)\]</span></p>
+<p>We would choose the optimal action at state <span class="math inline">\(x\)</span></p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>MC</category>
+        <category>TD</category>
+      </categories>
+      <tags>
+        <tag>Basics</tag>
+        <tag>MC</tag>
+        <tag>TD</tag>
+        <tag>Tabular Methods</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Value Iteration</title>
+    <url>/2021/05/03/value-iteration/</url>
+    <content><![CDATA[<h1 id="value-iteration">Value Iteration</h1>
+<p>VI is one of the fundamental algorithms for planning. Many RL algorithms are essentially the sample-based variants of VI (DQN). We directly use the results of fixed points proposition and contraction property of the Bellman operator we proved in <a href="/2021/05/03/bellman-optimality-equations/" title="Bellman Optimality Equations">Bellman Optimality Equations</a>.</p>
+<h2 id="idea">Idea</h2>
+<p>Starting from <span class="math inline">\(V_0 \in B(X)\)</span>, we compute a sequence of <span class="math inline">\((V_{k})_{k \geq 0}\)</span> by:</p>
+<p><span class="math display">\[V_{k+1} \leftarrow T^{\pi} V_{k}\]</span></p>
+<p>By the contraction property of the Bellman operator and Uniqueness of fixed points proposition :</p>
+<p><span class="math display">\[lim_{k \rightarrow \infty} \| V_k - V^{\pi}\|_{\infty} = 0\]</span></p>
+<p>similar for <span class="math inline">\(Q\)</span>:</p>
+<p><span class="math display">\[lim_{k \rightarrow \infty} \| Q_k - Q^{\pi}\|_{\infty} = 0\]</span></p>
+<span id="more"></span>
+<p>Also, if we compute a sequence of <span class="math inline">\((V_{k})_{k \geq 0}\)</span> by:</p>
+<p><span class="math display">\[V_{k+1} \leftarrow T^{*} V_{k}\]</span></p>
+<p><span class="math display">\[Q_{k+1} \leftarrow T^{*} Q_{k}\]</span></p>
+<p>By the contraction property of the Bellman operator and Uniqueness of fixed points proposition, it is guaranteed that</p>
+<p><span class="math display">\[lim_{k \rightarrow \infty} \| V_k - V^{*}\|_{\infty} = 0\]</span></p>
+<p><span class="math display">\[lim_{k \rightarrow \infty} \| Q_k - Q^{*}\|_{\infty} = 0\]</span></p>
+<p><img src='/images/RL/dp/value_iteration_1.png'> <img src='/images/RL/dp/value_iteration_2.png'> <img src='/images/RL/dp/value_iteration_3.png'></p>
+<p>After finding <span class="math inline">\(Q^{*}\)</span>, finding optimal policy is straightforward:</p>
+<p><span class="math display">\[\pi^{*} (a | x) = argmax_{a \in A} Q^{*} (x, a)\]</span></p>
+<h2 id="algorithm">algorithm</h2>
+<p>One generic implementation can be found in intro to RL book:</p>
+<p><img src='/images/RL/dp/value-iteration.png'></p>
+<h2 id="implementation">Implementation</h2>
+<p>Below is one implementation of Value iteration (using Q):</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># part of code from rl-algo.dp</span></span><br><span class="line"><span class="comment"># link: https://github.com/swag1ong/rl-algo</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ValueIter</span>(<span class="params">DpBase</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">train</span>(<span class="params">self</span>):</span></span><br><span class="line"></span><br><span class="line">        dynamics = self.env.env.P</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line"></span><br><span class="line">            delta = <span class="number">0</span></span><br><span class="line">            <span class="comment"># Calculate Q^*, V^* (s) = max_a Q^* (s, a)</span></span><br><span class="line">            <span class="keyword">for</span> s <span class="keyword">in</span> dynamics.keys():</span><br><span class="line">                prev_val = self._val[s].copy()</span><br><span class="line">                curr_val = self._val[s]</span><br><span class="line"></span><br><span class="line">                <span class="keyword">for</span> a <span class="keyword">in</span> dynamics[s].keys():</span><br><span class="line">                    temp_val = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">                    <span class="keyword">for</span> p, s_prime, r, _ <span class="keyword">in</span> dynamics[s][a]:</span><br><span class="line">                        temp_val = temp_val + p * (r + self.gamma * np.<span class="built_in">max</span>(self._val[s_prime]))</span><br><span class="line"></span><br><span class="line">                    curr_val[a] = temp_val</span><br><span class="line"></span><br><span class="line">                curr_delta = np.linalg.norm(np.array(prev_val) - np.array(curr_val))</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> curr_delta &gt; delta:</span><br><span class="line">                    delta = curr_delta</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> delta &lt; self.threshold:</span><br><span class="line">                <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>RL</category>
