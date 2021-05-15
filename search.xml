@@ -81,6 +81,35 @@
       </tags>
   </entry>
   <entry>
+    <title>Dueling Network Architectures for DRL</title>
+    <url>/2021/05/13/Dueling/</url>
+    <content><![CDATA[<h1 id="dueling-network-architectures-for-deep-reinforcement-learning">Dueling Network Architectures for Deep Reinforcement Learning</h1>
+<h2 id="introduction">Introduction</h2>
+<p>The authors introduce an innovating neural network architecture that is better suited for model-free RL. This paper advances a new network but uses already published algorithms.</p>
+<p>The proposed architecture is called dueling architecture, explicitly separates the representation of state values and state-dependent action advantages. The architecture consists of two streams that represent the value and advantage functions, while sharing a common convolutional feature learning module. The two streams are combined via a special aggregating layer to produce an estimate of the state-action value function <span class="math inline">\(Q\)</span>. This dueling network should be understood as a single Q network with two streams that replaces the popular single-stream Q-network in existing algorithms such as DQN. The dueling network automatically produces separate estimates of the state value function and advantage function, without any extra supervision.</p>
+<p><img src="/images/RL/papers/dueling_1.png"></p>
+<p>Intuitively, the dueling architecture can learn which states are (or are not) valuable, without having to learn the effect of each action for each state. (by taking the gradient wrt to the input) It can more quickly identify the correct action during policy evaluation as redundant or similar actions are added to the learning problem.</p>
+<h2 id="background">Background</h2>
+<p><strong>random variables have subscript <span class="math inline">\(t\)</span>, <span class="math inline">\(E[ g(x_t, a_t) | x_t=x, a_t] = f(x, a)\)</span> is shorthanded as <span class="math inline">\(f(x, a) = E[g(x, a)]\)</span></strong></p>
+<p>In Atari domain, the agent perceives a video <span class="math inline">\(s_t\)</span> consisting of M image frames <span class="math inline">\(s_t = (x_{t-M+1}, ..., x_t) \in S\)</span> at time step <span class="math inline">\(t\)</span>. Then agent chooses an action from a discrete set <span class="math inline">\(a_t \in A\)</span> and observes a reward signal <span class="math inline">\(r_t\)</span> produced by the game emulator.</p>
+<p>The agent seeks to maximize the expected discounted return where we define the discounted return as <span class="math inline">\(R_t = \sum_{\tao=t}^{\infty} \gamma^{\tau - t} r_{\tau}\)</span> with <span class="math inline">\(\gamma \in [0, 1]\)</span>.</p>
+<p>For an agent behaving to a stochastic policy <span class="math inline">\(\pi\)</span>, the values of the state-action pair <span class="math inline">\((s, a)\)</span> and the state <span class="math inline">\(s\)</span> are defined as:</p>
+<p><span class="math display">\[Q^{\pi} (s, a) = E[R_t | s_t=s, a_t=a, \pi]\]</span></p>
+<p><span class="math display">\[V^{\pi} (s) = E_{a_t \sim pi(\cdot | s)}[R_t | s_t=s, \pi] = E_{a_t \sim pi(\cdot | s)}[E[R_t | s_t, a_t, \pi] | s_t=s] = E_{a_t \sim pi(\cdot | s)}[ Q^{\pi}(s, a_t)]\]</span></p>
+<p>We know that we can rewrite <span class="math inline">\(Q^{\pi}\)</span> as:</p>
+<p><span class="math display">\[Q^{\pi} (s, a) = E_{s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
+<p>We also define <span class="math inline">\(Q^{*} (s, a) = max_{\pi} Q^{\pi} (s, a), \forall (s, a) \in S X A\)</span></p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>PG</category>
+      </categories>
+      <tags>
+        <tag>Policy Gradient</tag>
+        <tag>Continuous Action Space</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Issues in Using Function Approximation for RL</title>
     <url>/2021/05/07/FA-issues/</url>
     <content><![CDATA[<h1 id="issues-in-using-function-approximation-for-reinforcement-learning"><a href="https://www.ri.cmu.edu/pub_files/pub1/thrun_sebastian_1993_1/thrun_sebastian_1993_1.pdf">Issues in Using Function Approximation for Reinforcement Learning</a></h1>
@@ -92,70 +121,6 @@
       <tags>
         <tag>Function Approximation</tag>
         <tag>Discussions</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MDP</title>
-    <url>/2021/05/03/MDP/</url>
-    <content><![CDATA[<h1 id="mdp">MDP</h1>
-<p><span style="color:red"><em>Based on Prof Amir-massoud Farahmand's Lecture on RL</em> </span></p>
-<p>Define our MDP different from Introduction to RL book:</p>
-<p><img src='/images/RL/bellman_equation/mdp.png'></p>
-<p>Where <span class="math inline">\(M(X)\)</span> is the space of all probability distributions defined over the state space X <span id="more"></span></p>
-<p>So a sample of the process can be described as a rollout or trajectory:</p>
-<p><span class="math display">\[\tau = x_1, a_1, r_1, x_2, a_2, r_2, ...\]</span></p>
-<p>A deterministic dynamical system always behave exactly the same given the same starting state and action, that is, they can be described as a transition function <span class="math inline">\(f\)</span> instead of transition distribution <span class="math inline">\(P\)</span></p>
-<p><span class="math display">\[x_{t+1} = f(x, a)\]</span></p>
-<h2 id="policy">Policy</h2>
-<p><img src='/images/RL/bellman_equation/policy_1.png'></p>
-<p><img src='/images/RL/bellman_equation/policy.png'></p>
-<h2 id="policy-induced-transition-kernels">Policy induced Transition Kernels</h2>
-<p><img src='/images/RL/bellman_equation/transition_kernel.png'></p>
-<h2 id="rewards-and-returns">Rewards and Returns</h2>
-<p>Let's define expected reward as:</p>
-<p><span class="math display">\[r(x, a) = E[R | X=x, A=a]\]</span></p>
-<p>then the expected reward following policy pi is defined as</p>
-<p><span class="math display">\[r^{\pi} (x) = E_{a \sim \pi(a | x)} [R | X=x]\]</span></p>
-<p>Define return following policy <span class="math inline">\(\pi\)</span> as discounted sum of rewards starting from <span class="math inline">\(X_1\)</span>:</p>
-<p><span class="math display">\[G^{\pi} = R_1 + \gamma R_2 + ... + \gamma^{T-1} R_{T} = \sum^{\infty}_{k=t} \gamma^{k - t}R_{t}\]</span></p>
-<p>or any starting at any step <span class="math inline">\(X_{t}\)</span>:</p>
-<p><span class="math display">\[G^{\pi}_{t} = \sum^{\infty}_{k=t} \gamma^{k - t}R_{t}\]</span></p>
-<p>Note that <span class="math inline">\(\gamma\)</span> is a part of the problem setting, it is usually not a hyperparameter.</p>
-<h2 id="another-formulation">Another formulation</h2>
-<p>We can also define the T-step rollout or trajectory distribution <span class="math inline">\(P(\tau | \pi)\)</span> following policy <span class="math inline">\(\pi\)</span>:</p>
-<p><span class="math display">\[P(\tau | \pi) = \rho(x_1)\prod_{t=1}^{T} P(x_{t+1}| x_{t}, a_{t}) \pi(a_t | x_{t}) R(r_t | x_{t}, a_{t})\]</span></p>
-<p>Then:</p>
-<p><span class="math display">\[R(\tau) = G^{\pi}_{1} = \sum^{T}_{k=1} \gamma^{k - t}R_{t}\]</span></p>
-<p><span class="math display">\[J(\pi) = E_{\tau \sim P(\tau | \pi) }[R(\tau)] = \int R(\tau) P(d\tau | \pi)\]</span></p>
-<p><span class="math display">\[V^{\pi} (x) = E_{\tau \sim P(\tau | \pi, X_1=x)}[R(\tau) | X_1 = x]\]</span></p>
-<p>And:</p>
-<p><span class="math display">\[J(\pi) = \int V^{\pi} (x) d\rho(x)\]</span></p>
-<h2 id="example">Example</h2>
-<p>Finite horizon example:</p>
-<ul>
-<li>Start at <span class="math inline">\(X_1 \sim \rho\)</span></li>
-<li>Select <span class="math inline">\(A_1 \sim \pi(\cdot | X_1)\)</span></li>
-<li>Get <span class="math inline">\(R_1 \sim R\cdot | A_1, X_1)\)</span></li>
-<li>Get <span class="math inline">\(X_2 \sim P(\cdot | A_1, X_1)\)</span></li>
-<li>...</li>
-<li>...</li>
-<li>Get <span class="math inline">\(R_{T} \sim R(\cdot | X_{T}, A_{T})\)</span></li>
-<li>Get <span class="math inline">\(X_{T+1} \sim P(\cdot | X_{T}, A_{T})\)</span> (This is the terminal state, which is often dropped because it has value of 0)</li>
-</ul>
-<p>The process stops!</p>
-<h2 id="value-functions">Value functions</h2>
-<p>Next we can define value functions as:</p>
-<p>State value function (alias: Value function, V, v) starting from state x and following policy <span class="math inline">\(\pi\)</span>:</p>
-<p><span class="math display">\[V^{\pi}(x) = E[G^{\pi} | X_{0} = x] = E[G^{\pi}_{t} | X_{t} = x] \text{    (Markov Property)}\]</span></p>
-<p>Action value function following policy <span class="math inline">\(\pi\)</span> starting from state x and taking action a:</p>
-<p><span class="math display">\[Q^{\pi} (x, a) = E[G^{\pi} | X_{0} = x, A_{0} = a] = E[G^{\pi}_{t} | X_{t} = x, A_{t} = a] \text{    (Markov Property)}\]</span></p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>Basics</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
       </tags>
   </entry>
   <entry>
@@ -177,13 +142,77 @@ V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
 <p>This implies that neither side is random, by expanding:</p>
 <p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x]\]</span></p>
 <p>we get:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (a | x) V^{\pi} (x^\prime)\]</span></p>
+<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
 <p>Thus, the value function can be expressed as:</p>
 <p><span class="math display">\[V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
 <p>This is the <span style="color:red"><strong>bellman equation</strong> </span> for a policy <span class="math inline">\(\pi\)</span>, this can be interpreted as: The value of following a policy <span class="math inline">\(\pi\)</span> is the expected immediate reward that the <span class="math inline">\(\pi\)</span>-following agent receives at that state plus the discounted average(expected) value that the agent receives at the next-state.</p>
 <p>Same for action-value function, we have bellman equation:</p>
 <p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (da^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
 <p>Compare with value function, we have expected reward base on action <span class="math inline">\(a\)</span> plus discounted average(expected) value that the agent receives at the next-state following <span class="math inline">\(\pi\)</span> (the choice of action is given at state <span class="math inline">\(s\)</span> in action value function)</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>Basics</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MDP</title>
+    <url>/2021/05/03/MDP/</url>
+    <content><![CDATA[<h1 id="mdp">MDP</h1>
+<p><span style="color:red"><em>Based on Prof Amir-massoud Farahmand's Lecture on RL</em> </span></p>
+<p>Define our MDP different from Introduction to RL book:</p>
+<p><img src='/images/RL/bellman_equation/mdp.png'></p>
+<p>Where <span class="math inline">\(M(X)\)</span> is the space of all probability distributions defined over the state space X <span id="more"></span></p>
+<p>So a sample of the process can be described as a rollout or trajectory:</p>
+<p><span class="math display">\[\tau = X_1, A_1, R_1, X_2, A_2, R_2, ...\]</span></p>
+<p>A deterministic dynamical system always behave exactly the same given the same starting state and action, that is, they can be described as a transition function <span class="math inline">\(f\)</span> instead of transition distribution <span class="math inline">\(P\)</span></p>
+<p><span class="math display">\[x_{t+1} = f(x, a)\]</span></p>
+<h2 id="policy">Policy</h2>
+<p><img src='/images/RL/bellman_equation/policy_1.png'></p>
+<p><img src='/images/RL/bellman_equation/policy.png'></p>
+<h2 id="policy-induced-transition-kernels">Policy induced Transition Kernels</h2>
+<p><img src='/images/RL/bellman_equation/transition_kernel.png'></p>
+<h2 id="rewards-and-returns">Rewards and Returns</h2>
+<p>Let's define expected reward as:</p>
+<p><span class="math display">\[r(x, a) = E[R | X=x, A=a]\]</span></p>
+<p>then the expected reward following policy pi is defined as</p>
+<p><span class="math display">\[r^{\pi} (x) = E_{a \sim \pi(a | x)} [R | X=x]\]</span></p>
+<p>Define return following policy <span class="math inline">\(\pi\)</span> as discounted sum of rewards starting from <span class="math inline">\(X_1\)</span>:</p>
+<p><span class="math display">\[G^{\pi} = R_1 + \gamma R_2 + ... + \gamma^{T-1} R_{T} = \sum^{\infty}_{k=t} \gamma^{k - t}R_{t}\]</span></p>
+<p>or any starting at any step <span class="math inline">\(X_{t}\)</span>:</p>
+<p><span class="math display">\[G^{\pi}_{t} = \sum^{\infty}_{k=t} \gamma^{k - t}R_{t}\]</span></p>
+<p>Note that <span class="math inline">\(\gamma\)</span> is a part of the problem setting, it is usually not a hyperparameter.</p>
+<h2 id="another-formulation">Another formulation</h2>
+<p>We can also define the T-step rollout or trajectory distribution <span class="math inline">\(P(\tau | \pi)\)</span> following policy <span class="math inline">\(\pi\)</span>:</p>
+<p><span class="math display">\[P(\tau | \pi) = \rho(X_1)\prod_{t=1}^{T} P(X_{t+1}| X_{t}, A_{t}) \pi(A_t | X_{t}) R(R_t | X_{t}, A_{t})\]</span></p>
+<p>Then:</p>
+<p><span class="math display">\[R(\tau) = G^{\pi}_{1} = \sum^{T}_{k=1} \gamma^{k - t}R_{t}\]</span></p>
+<p><span class="math display">\[J(\pi) = E_{\tau \sim P(\tau | \pi) }[R(\tau)] = \int R(\tau) P(d\tau | \pi)\]</span></p>
+<p><span class="math display">\[V^{\pi} (x) = E_{\tau \sim P(\tau | \pi, X_1=x)}[R(\tau) | X_1 = x]\]</span></p>
+<p>And:</p>
+<p><span class="math display">\[J(\pi) = \int V^{\pi} (x) d\rho(x)\]</span></p>
+<h2 id="example">Example</h2>
+<p>Finite horizon example:</p>
+<ul>
+<li>Start at <span class="math inline">\(X_1 \sim \rho\)</span></li>
+<li>Select <span class="math inline">\(A_1 \sim \pi(\cdot | X_1)\)</span></li>
+<li>Get <span class="math inline">\(R_1 \sim R(\cdot | A_1, X_1)\)</span></li>
+<li>Get <span class="math inline">\(X_2 \sim P(\cdot | A_1, X_1)\)</span></li>
+<li>...</li>
+<li>...</li>
+<li>Get <span class="math inline">\(R_{T} \sim R(\cdot | X_{T}, A_{T})\)</span></li>
+<li>Get <span class="math inline">\(X_{T+1} \sim P(\cdot | X_{T}, A_{T})\)</span> (This is the terminal state, which is often dropped because it has value of 0)</li>
+</ul>
+<p>The process stops!</p>
+<h2 id="value-functions">Value functions</h2>
+<p>Next we can define value functions as:</p>
+<p>State value function (alias: Value function, V, v) starting from state x and following policy <span class="math inline">\(\pi\)</span>:</p>
+<p><span class="math display">\[V^{\pi}(x) = E[G^{\pi} | X_{0} = x] = E[G^{\pi}_{t} | X_{t} = x] \text{    (Markov Property)}\]</span></p>
+<p>Action value function following policy <span class="math inline">\(\pi\)</span> starting from state x and taking action a:</p>
+<p><span class="math display">\[Q^{\pi} (x, a) = E[G^{\pi} | X_{0} = x, A_{0} = a] = E[G^{\pi}_{t} | X_{t} = x, A_{t} = a] \text{    (Markov Property)}\]</span></p>
 ]]></content>
       <categories>
         <category>RL</category>
@@ -377,6 +406,21 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
+    <title>mc</title>
+    <url>/2021/05/15/mc/</url>
+    <content><![CDATA[<h1 id="learning-from-stream-of-data-monte-carlo-methods">Learning From Stream of Data (Monte Carlo Methods)</h1>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>MC</category>
+      </categories>
+      <tags>
+        <tag>Basics</tag>
+        <tag>MC</tag>
+        <tag>Tabular Methods</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Policy Iteration</title>
     <url>/2021/05/03/policy-iteration/</url>
     <content><![CDATA[<h1 id="policy-iteration">Policy Iteration</h1>
@@ -540,9 +584,24 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
+    <title>td</title>
+    <url>/2021/05/15/td/</url>
+    <content><![CDATA[<h1 id="learning-from-stream-of-data-temporal-difference-learning-methods">Learning From Stream of Data (Temporal Difference Learning Methods)</h1>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>TD</category>
+      </categories>
+      <tags>
+        <tag>Basics</tag>
+        <tag>Tabular Methods</tag>
+        <tag>TD</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Learning From Stream of Data</title>
     <url>/2021/05/07/value-function-learning/</url>
-    <content><![CDATA[<h1 id="learning-from-stream-of-data">Learning From Stream of Data</h1>
+    <content><![CDATA[<h1 id="learning-from-stream-of-data-introduction">Learning From Stream of Data (Introduction)</h1>
 <p>In previous DP settings, we know the transition distribution <span class="math inline">\(P\)</span> and reward distribution <span class="math inline">\(R\)</span>. Everything about the environment dynamics are given. However, in RL setting, we have no access to the environment dynamics, instead, we observe data from agent interacting with its environment.</p>
 <p>A stream of data (rollout or trajectory):</p>
 <p><span class="math display">\[X_1, A_1, R_1, X_2, A_2, R_2, ...\]</span></p>
@@ -552,6 +611,7 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
 <li>How can we learn a value of a policy <span class="math inline">\(\pi\)</span>?</li>
 <li>How can we find the optimal policy <span class="math inline">\(\pi^{*}\)</span>?</li>
 </ol>
+<span id="more"></span>
 <h2 id="stochastic-approximation-of-mean">Stochastic Approximation of Mean</h2>
 <p>Let <span class="math inline">\(Z_1, ..., Z_t\)</span> be i.i.d R.V drawn from distribution <span class="math inline">\(v\)</span>, how can we estimate the expectation of <span class="math inline">\(Z_i\)</span>? One way is stochastic approximation.</p>
 <p>Define:</p>
@@ -585,13 +645,31 @@ E[\theta_{t+1}] &amp;= E[(1 - \alpha) \theta_t + \alpha Z_t]\\
 <p>For a constant <span class="math inline">\(\alpha\)</span>, the variance <span class="math inline">\(\theta_t\)</span>is not going to converge to zero. This means that <span class="math inline">\(\theta_t\)</span> fluctuates around its mean.</p>
 <h3 id="sa-condition">SA Condition</h3>
 <p>In order to make <span class="math inline">\(\theta_t\)</span> converge, we need a time dependent <span class="math inline">\(\alpha_t \rightarrow 0\)</span> with some schedule:</p>
-<p><span class="math display">\[\sum_{t=0}^{\infty} \alpha_t = \infty\]</span></p>
-<p><span class="math display">\[\sum_{t=0}^{\infty} \alpha_t^2 &lt; \infty\]</span></p>
-<h2 id="epsilon---greedy-policy"><span class="math inline">\(\epsilon - Greedy policy\)</span></h2>
+<p><span class="math display">\[\sum_{t=0}^{\infty} \alpha_t = \infty \]</span></p>
+<p><span class="math display">\[\sum_{t=0}^{\infty} \alpha_t^2 &lt; \infty \]</span></p>
+<h2 id="epsilon---greedy-policy"><span class="math inline">\(\epsilon\)</span> - Greedy policy</h2>
 <h3 id="problem-with-greedy-policy">Problem With Greedy Policy</h3>
 <p>By selecting</p>
-<p><span class="math display">\[a \rightarrow \pi_g (x; Q) = argmax_{a \in A] Q(x, a)\]</span></p>
-<p>We would choose the optimal action at state <span class="math inline">\(x\)</span></p>
+<p><span class="math display">\[a \rightarrow \pi_g (x; Q) = argmax_{a \in A} Q(x, a)\]</span></p>
+<p>We would choose the optimal action at state <span class="math inline">\(x\)</span>. However, if <span class="math inline">\(Q(x, a)\)</span> is inaccurate estimate of <span class="math inline">\(Q^{\pi} (x, a)\)</span>, we may select a suboptimal action. It is also possible we get stuck in choosing this action forever, without any chance to improve its estimate.</p>
+<h3 id="solution">Solution</h3>
+<p>One solution for this problem it to force the agent regularly picks actions other than the one suggested by the greedy policy.</p>
+<p>Thus, for <span class="math inline">\(\epsilon \geq 0, x \in X\)</span>, a function <span class="math inline">\(\hat{V}\)</span>, we define <span class="math inline">\(\pi_{\epsilon}\)</span> as:</p>
+<p><span class="math display">\[
+\pi_\epsilon (\cdot | x; \hat{V})=
+\begin{cases}
+\pi_g(x; \hat{V}), \text{w. p } 1 - \epsilon \\
+Uniform(A), \text{w. p } \epsilon \\
+\end{cases}
+\]</span></p>
+<ul>
+<li>The uniform choice of action in the <span class="math inline">\(\epsilon\)</span>-greedy helps the agent <code>explore</code> all actions, even if the action is seemingly suboptimal.</li>
+<li>The greedy part of its action select mechanism <code>exploits</code> the current knowledge about the reward function, and chooses the action that has the highest estimated reward.</li>
+</ul>
+<h3 id="exploration-and-exploitation-tradeoff">Exploration and Exploitation Tradeoff</h3>
+<p>Exploiting our knowledge is a reasonable choice when our knowledge about the world is <code>accurate</code>. (ie. If we have <span class="math inline">\(Q^{*}\)</span> we should always choose the greedy action at each state to have a maximized return)</p>
+<p>However, when we have uncertainty about the world, we should not be overconfident of our knowledge and exploit it at all time. (ie. If we only have <span class="math inline">\(\hat{Q}\)</span> of <span class="math inline">\(Q^{*}\)</span>, it is possible that <span class="math inline">\(argmax_{a \in A} \hat Q (x, a) \neq argmax_{a \in A} Q^{*} (x, a)\)</span>) But, instead explore other available actions, which might happen to be better.</p>
+<p>The tradeoff between exploration and exploitation is a major topic in RL and is an area of active research.</p>
 ]]></content>
       <categories>
         <category>RL</category>
@@ -601,8 +679,8 @@ E[\theta_{t+1}] &amp;= E[(1 - \alpha) \theta_t + \alpha Z_t]\\
       <tags>
         <tag>Basics</tag>
         <tag>MC</tag>
-        <tag>TD</tag>
         <tag>Tabular Methods</tag>
+        <tag>TD</tag>
       </tags>
   </entry>
   <entry>

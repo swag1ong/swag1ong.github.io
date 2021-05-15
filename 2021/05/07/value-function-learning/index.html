@@ -20,20 +20,20 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
 
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
-<meta name="description" content="Learning From Stream of Data In previous DP settings, we know the transition distribution \(P\) and reward distribution \(R\). Everything about the environment dynamics are given. However, in RL setti">
+<meta name="description" content="Learning From Stream of Data (Introduction) In previous DP settings, we know the transition distribution \(P\) and reward distribution \(R\). Everything about the environment dynamics are given. Howev">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Learning From Stream of Data">
 <meta property="og:url" content="http://example.com/2021/05/07/value-function-learning/index.html">
 <meta property="og:site_name" content="GoGoGogo!">
-<meta property="og:description" content="Learning From Stream of Data In previous DP settings, we know the transition distribution \(P\) and reward distribution \(R\). Everything about the environment dynamics are given. However, in RL setti">
+<meta property="og:description" content="Learning From Stream of Data (Introduction) In previous DP settings, we know the transition distribution \(P\) and reward distribution \(R\). Everything about the environment dynamics are given. Howev">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-05-07T10:50:25.000Z">
-<meta property="article:modified_time" content="2021-05-08T02:26:54.763Z">
+<meta property="article:modified_time" content="2021-05-15T09:29:35.730Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta property="article:tag" content="Basics">
 <meta property="article:tag" content="MC">
-<meta property="article:tag" content="TD">
 <meta property="article:tag" content="Tabular Methods">
+<meta property="article:tag" content="TD">
 <meta name="twitter:card" content="summary">
 
 
@@ -151,7 +151,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#learning-from-stream-of-data"><span class="nav-number">1.</span> <span class="nav-text">Learning From Stream of Data</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#stochastic-approximation-of-mean"><span class="nav-number">1.1.</span> <span class="nav-text">Stochastic Approximation of Mean</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#expectation"><span class="nav-number">1.1.1.</span> <span class="nav-text">Expectation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#variance"><span class="nav-number">1.1.2.</span> <span class="nav-text">Variance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sa-condition"><span class="nav-number">1.1.3.</span> <span class="nav-text">SA Condition</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#epsilon---greedy-policy"><span class="nav-number">1.2.</span> <span class="nav-text">\(\epsilon - Greedy policy\)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#problem-with-greedy-policy"><span class="nav-number">1.2.1.</span> <span class="nav-text">Problem With Greedy Policy</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#learning-from-stream-of-data-introduction"><span class="nav-number">1.</span> <span class="nav-text">Learning From Stream of Data (Introduction)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#stochastic-approximation-of-mean"><span class="nav-number">1.1.</span> <span class="nav-text">Stochastic Approximation of Mean</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#expectation"><span class="nav-number">1.1.1.</span> <span class="nav-text">Expectation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#variance"><span class="nav-number">1.1.2.</span> <span class="nav-text">Variance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sa-condition"><span class="nav-number">1.1.3.</span> <span class="nav-text">SA Condition</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#epsilon---greedy-policy"><span class="nav-number">1.2.</span> <span class="nav-text">\(\epsilon\) - Greedy policy</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#problem-with-greedy-policy"><span class="nav-number">1.2.1.</span> <span class="nav-text">Problem With Greedy Policy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#solution"><span class="nav-number">1.2.2.</span> <span class="nav-text">Solution</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exploration-and-exploitation-tradeoff"><span class="nav-number">1.2.3.</span> <span class="nav-text">Exploration and Exploitation Tradeoff</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -260,7 +260,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-05-08 10:26:54" itemprop="dateModified" datetime="2021-05-08T10:26:54+08:00">2021-05-08</time>
+        <time title="Modified: 2021-05-15 17:29:35" itemprop="dateModified" datetime="2021-05-15T17:29:35+08:00">2021-05-15</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -288,14 +288,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>2.3k</span>
+      <span>3.7k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
+      <span>3 mins.</span>
     </span>
 </div>
 
@@ -306,7 +306,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="learning-from-stream-of-data">Learning From Stream of Data</h1>
+        <h1 id="learning-from-stream-of-data-introduction">Learning From Stream of Data (Introduction)</h1>
 <p>In previous DP settings, we know the transition distribution <span class="math inline">\(P\)</span> and reward distribution <span class="math inline">\(R\)</span>. Everything about the environment dynamics are given. However, in RL setting, we have no access to the environment dynamics, instead, we observe data from agent interacting with its environment.</p>
 <p>A stream of data (rollout or trajectory):</p>
 <p><span class="math display">\[X_1, A_1, R_1, X_2, A_2, R_2, ...\]</span></p>
@@ -316,6 +316,7 @@
 <li>How can we learn a value of a policy <span class="math inline">\(\pi\)</span>?</li>
 <li>How can we find the optimal policy <span class="math inline">\(\pi^{*}\)</span>?</li>
 </ol>
+<span id="more"></span>
 <h2 id="stochastic-approximation-of-mean">Stochastic Approximation of Mean</h2>
 <p>Let <span class="math inline">\(Z_1, ..., Z_t\)</span> be i.i.d R.V drawn from distribution <span class="math inline">\(v\)</span>, how can we estimate the expectation of <span class="math inline">\(Z_i\)</span>? One way is stochastic approximation.</p>
 <p>Define:</p>
@@ -349,13 +350,31 @@ E[\theta_{t+1}] &amp;= E[(1 - \alpha) \theta_t + \alpha Z_t]\\
 <p>For a constant <span class="math inline">\(\alpha\)</span>, the variance <span class="math inline">\(\theta_t\)</span>is not going to converge to zero. This means that <span class="math inline">\(\theta_t\)</span> fluctuates around its mean.</p>
 <h3 id="sa-condition">SA Condition</h3>
 <p>In order to make <span class="math inline">\(\theta_t\)</span> converge, we need a time dependent <span class="math inline">\(\alpha_t \rightarrow 0\)</span> with some schedule:</p>
-<p><span class="math display">\[\sum_{t=0}^{\infty} \alpha_t = \infty\]</span></p>
-<p><span class="math display">\[\sum_{t=0}^{\infty} \alpha_t^2 &lt; \infty\]</span></p>
-<h2 id="epsilon---greedy-policy"><span class="math inline">\(\epsilon - Greedy policy\)</span></h2>
+<p><span class="math display">\[\sum_{t=0}^{\infty} \alpha_t = \infty \]</span></p>
+<p><span class="math display">\[\sum_{t=0}^{\infty} \alpha_t^2 &lt; \infty \]</span></p>
+<h2 id="epsilon---greedy-policy"><span class="math inline">\(\epsilon\)</span> - Greedy policy</h2>
 <h3 id="problem-with-greedy-policy">Problem With Greedy Policy</h3>
 <p>By selecting</p>
-<p><span class="math display">\[a \rightarrow \pi_g (x; Q) = argmax_{a \in A] Q(x, a)\]</span></p>
-<p>We would choose the optimal action at state <span class="math inline">\(x\)</span></p>
+<p><span class="math display">\[a \rightarrow \pi_g (x; Q) = argmax_{a \in A} Q(x, a)\]</span></p>
+<p>We would choose the optimal action at state <span class="math inline">\(x\)</span>. However, if <span class="math inline">\(Q(x, a)\)</span> is inaccurate estimate of <span class="math inline">\(Q^{\pi} (x, a)\)</span>, we may select a suboptimal action. It is also possible we get stuck in choosing this action forever, without any chance to improve its estimate.</p>
+<h3 id="solution">Solution</h3>
+<p>One solution for this problem it to force the agent regularly picks actions other than the one suggested by the greedy policy.</p>
+<p>Thus, for <span class="math inline">\(\epsilon \geq 0, x \in X\)</span>, a function <span class="math inline">\(\hat{V}\)</span>, we define <span class="math inline">\(\pi_{\epsilon}\)</span> as:</p>
+<p><span class="math display">\[
+\pi_\epsilon (\cdot | x; \hat{V})=
+\begin{cases}
+\pi_g(x; \hat{V}), \text{w. p } 1 - \epsilon \\
+Uniform(A), \text{w. p } \epsilon \\
+\end{cases}
+\]</span></p>
+<ul>
+<li>The uniform choice of action in the <span class="math inline">\(\epsilon\)</span>-greedy helps the agent <code>explore</code> all actions, even if the action is seemingly suboptimal.</li>
+<li>The greedy part of its action select mechanism <code>exploits</code> the current knowledge about the reward function, and chooses the action that has the highest estimated reward.</li>
+</ul>
+<h3 id="exploration-and-exploitation-tradeoff">Exploration and Exploitation Tradeoff</h3>
+<p>Exploiting our knowledge is a reasonable choice when our knowledge about the world is <code>accurate</code>. (ie. If we have <span class="math inline">\(Q^{*}\)</span> we should always choose the greedy action at each state to have a maximized return)</p>
+<p>However, when we have uncertainty about the world, we should not be overconfident of our knowledge and exploit it at all time. (ie. If we only have <span class="math inline">\(\hat{Q}\)</span> of <span class="math inline">\(Q^{*}\)</span>, it is possible that <span class="math inline">\(argmax_{a \in A} \hat Q (x, a) \neq argmax_{a \in A} Q^{*} (x, a)\)</span>) But, instead explore other available actions, which might happen to be better.</p>
+<p>The tradeoff between exploration and exploitation is a major topic in RL and is an area of active research.</p>
 
     </div>
 
@@ -363,14 +382,23 @@ E[\theta_{t+1}] &amp;= E[(1 - \alpha) \theta_t + \alpha Z_t]\\
     
     
       
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/15/mc/" rel="bookmark">mc</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/15/td/" rel="bookmark">td</a></div>
+    </li>
+  </ul>
 
 
     <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/Basics/" rel="tag"># Basics</a>
               <a href="/tags/MC/" rel="tag"># MC</a>
-              <a href="/tags/TD/" rel="tag"># TD</a>
               <a href="/tags/Tabular-Methods/" rel="tag"># Tabular Methods</a>
+              <a href="/tags/TD/" rel="tag"># TD</a>
           </div>
 
         
@@ -416,13 +444,13 @@ E[\theta_{t+1}] &amp;= E[(1 - \alpha) \theta_t + \alpha Z_t]\\
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">33k</span>
+    <span title="Symbols count total">37k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">30 mins.</span>
+    <span title="Reading time total">34 mins.</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
