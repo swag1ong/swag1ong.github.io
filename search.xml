@@ -52,6 +52,35 @@
       </tags>
   </entry>
   <entry>
+    <title>DPG</title>
+    <url>/2021/05/06/DPG/</url>
+    <content><![CDATA[<h1 id="deterministic-policy-gradient-algorithms">Deterministic Policy Gradient Algorithms</h1>
+<h2 id="introduction">Introduction</h2>
+<p>In traditional policy gradient algorithms, policy is parametrized by a probability distribution <span class="math inline">\(pi_{\theta} (a | s) = P[a | s; \theta]\)</span> that stochastically selects action <span class="math inline">\(a\)</span> in state <span class="math inline">\(s\)</span> according to parameter vector <span class="math inline">\(\theta\)</span>. In this paper, the authors consider deterministic policies <span class="math inline">\(a = \mu_{\theta} (s)\)</span>.</p>
+<p>From a practical viewpoint, there is a crucial difference between the stochastic and deterministic policy gradients. In the stochastic case, the policy gradient integrates over both state and action spaces, whereas in the deterministic case it only integrates over the state space:</p>
+<p><span class="math display">\[E_{X\sim \rho^{\pi_\theta}A \sim \pi_{\theta}} [\nabla log \pi(A | X) Q^{\pi_{\theta}} (X, A)]\]</span></p>
+<p>Thus, <strong>computing deterministic policies may require less samples</strong>.</p>
+<p>An off-policy learning scheme is introduced here to ensure adequate exploration (i.e The basic idea is to choose actions according to a stochastic behaviour policy).</p>
+<h2 id="notations">Notations</h2>
+<p>Initial state distribution <span class="math inline">\(p_1(s_1)\)</span>, stationary transition dynamics distribution <span class="math inline">\(p(s_{t+1} | s_{t}, a_{t})\)</span>, deterministic reward function <span class="math inline">\(r(x, a)\)</span>. Stochastic policy is represented as <span class="math inline">\(\pi_{\theta} (a_t | s_t)\)</span>. The return is the total discounted reward</p>
+<p><span class="math display">\[r_t^{\gamma} = \sum^{\infty}_{k = t} \gamma^{k-t} r(s_k, a_k)\]</span></p>
+<p>Value functions:</p>
+<p><span class="math display">\[V^{\pi} (s) = E[r_1^{\gamma} | S_1=s; \pi]\]</span></p>
+<p><span class="math display">\[Q^{\pi} (s, a) = E[r_1^{\gamma} | S_1=s, A_1=a; \pi]\]</span></p>
+<p>The objective is to find a policy <span class="math inline">\(\pi\)</span> that maximize <span class="math inline">\(J(\pi)\)</span></p>
+<p><span class="math display">\[J(\pi) = E_{s_1 \sim p_1}[r_1^{\gamma}]\]</span></p>
+<p>Define t step transition probability following <span class="math inline">\(\pi\)</span> as <span class="math inline">\(p^{\pi}(s \rightarrow s^{\prime}; t)\)</span></p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>PG</category>
+      </categories>
+      <tags>
+        <tag>Policy Gradient</tag>
+        <tag>Continuous Action Space</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Dueling Network Architectures for DRL</title>
     <url>/2021/05/13/Dueling/</url>
     <content><![CDATA[<h1 id="dueling-network-architectures-for-deep-reinforcement-learning">Dueling Network Architectures for Deep Reinforcement Learning</h1>
@@ -92,35 +121,6 @@
       <tags>
         <tag>Function Approximation</tag>
         <tag>Discussions</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>DPG</title>
-    <url>/2021/05/06/DPG/</url>
-    <content><![CDATA[<h1 id="deterministic-policy-gradient-algorithms">Deterministic Policy Gradient Algorithms</h1>
-<h2 id="introduction">Introduction</h2>
-<p>In traditional policy gradient algorithms, policy is parametrized by a probability distribution <span class="math inline">\(pi_{\theta} (a | s) = P[a | s; \theta]\)</span> that stochastically selects action <span class="math inline">\(a\)</span> in state <span class="math inline">\(s\)</span> according to parameter vector <span class="math inline">\(\theta\)</span>. In this paper, the authors consider deterministic policies <span class="math inline">\(a = \mu_{\theta} (s)\)</span>.</p>
-<p>From a practical viewpoint, there is a crucial difference between the stochastic and deterministic policy gradients. In the stochastic case, the policy gradient integrates over both state and action spaces, whereas in the deterministic case it only integrates over the state space:</p>
-<p><span class="math display">\[E_{X\sim \rho^{\pi_\theta}A \sim \pi_{\theta}} [\nabla log \pi(A | X) Q^{\pi_{\theta}} (X, A)]\]</span></p>
-<p>Thus, <strong>computing deterministic policies may require less samples</strong>.</p>
-<p>An off-policy learning scheme is introduced here to ensure adequate exploration (i.e The basic idea is to choose actions according to a stochastic behaviour policy).</p>
-<h2 id="notations">Notations</h2>
-<p>Initial state distribution <span class="math inline">\(p_1(s_1)\)</span>, stationary transition dynamics distribution <span class="math inline">\(p(s_{t+1} | s_{t}, a_{t})\)</span>, deterministic reward function <span class="math inline">\(r(x, a)\)</span>. Stochastic policy is represented as <span class="math inline">\(\pi_{\theta} (a_t | s_t)\)</span>. The return is the total discounted reward</p>
-<p><span class="math display">\[r_t^{\gamma} = \sum^{\infty}_{k = t} \gamma^{k-t} r(s_k, a_k)\]</span></p>
-<p>Value functions:</p>
-<p><span class="math display">\[V^{\pi} (s) = E[r_1^{\gamma} | S_1=s; \pi]\]</span></p>
-<p><span class="math display">\[Q^{\pi} (s, a) = E[r_1^{\gamma} | S_1=s, A_1=a; \pi]\]</span></p>
-<p>The objective is to find a policy <span class="math inline">\(\pi\)</span> that maximize <span class="math inline">\(J(\pi)\)</span></p>
-<p><span class="math display">\[J(\pi) = E_{s_1 \sim p_1}[r_1^{\gamma}]\]</span></p>
-<p>Define t step transition probability following <span class="math inline">\(\pi\)</span> as <span class="math inline">\(p^{\pi}(s \rightarrow s^{\prime}; t)\)</span></p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>PG</category>
-      </categories>
-      <tags>
-        <tag>Policy Gradient</tag>
-        <tag>Continuous Action Space</tag>
       </tags>
   </entry>
   <entry>
