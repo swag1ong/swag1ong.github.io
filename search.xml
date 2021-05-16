@@ -617,6 +617,66 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
+    <title>Q-Learning</title>
+    <url>/2021/05/16/q-learning/</url>
+    <content><![CDATA[<h1 id="temporal-difference-learning-for-control-q-learning">Temporal Difference Learning for Control: Q-Learning</h1>
+<p>We can use TD-like methods for the problem of control too. Consider any $Q. Let <span class="math inline">\(X^{\prime} \sim P(\cdot | X, A)\)</span> and <span class="math inline">\(R \sim R(\cdot | X, A)\)</span> and define:</p>
+<p><span class="math display">\[Y = R + \gamma max_{a^{\prime} \in A} Q(X^{\prime}, a^{\prime})\]</span></p>
+<p>We have:</p>
+<p><span class="math display">\[E[Y | X=x, A=a] = r(x, a) + \gamma \int P(dx^{\prime} | x, a) max_{a^{\prime} \in A} Q(x^{\prime}, a^{\prime} = T^{*} Q (x, a)\]</span></p>
+<p>So, <span class="math inline">\(Y\)</span> is an unbiased estimate of <span class="math inline">\(T^{*} Q (x, a)\)</span>. Let's define the <code>empirical Bellman optimality operator</code> <span class="math inline">\(\hat{T}^{*} Q (x, a)\)</span>:</p>
+<p><span class="math display">\[T^{*} Q (x, a) = Y = R + \gamma max_{a^{\prime} \in A} Q(X^{\prime}, a^{\prime})\]</span></p>
+<p>We can write the SA update rule for estimating <span class="math inline">\(Q^{*}\)</span> as:</p>
+<p><span class="math display">\[Q_{t+1} (X_t, A_t) \leftarrow Q_t(X_t, A_t) + \alpha_t (X_t, A_t) [R_t + \gamma max_{a^{\prime} \in A} Q_t (X^{\prime}_t, a^{\prime}) - Q_t(X_t, A_t)]\]</span></p>
+<p><img src="/images/RL/mc/td_3.png"></p>
+<p>We can clearly see that Q-learning is an <code>off-policy</code> method, because we are generating the episode using <span class="math inline">\(\pi\)</span> which is usually an <span class="math inline">\(\epsilon\)</span>-greedy policy. However, we are evaluating the greedy policy (in update rule, we select according to the greedy policy not $).</p>
+<h2 id="proof-convergence-of-q-learning">Proof: Convergence of Q-Learning</h2>
+<p>Suppose that we want to find the fixed-point of an operator <span class="math inline">\(L\)</span>:</p>
+<p><span class="math display">\[L \theta = \theta\]</span></p>
+<p>for <span class="math inline">\(\theta \in \mathbb{R}^{d}, L: \mathbb{R}^{d} \rightarrow \mathbb{R}^{d}\)</span>.</p>
+<p>Consider the iterative update:</p>
+<p><span class="math display">\[\theta_{t+1} \leftarrow (1 - \alpha) \theta_t + \alpha L\theta_t\]</span></p>
+<p><span class="math inline">\(L\theta_t\)</span> can be anything such as <span class="math inline">\(T^{\pi} V_k\)</span>, as long as <span class="math inline">\(L\)</span> is <span class="math inline">\(c-\)</span>Lipschitz with <span class="math inline">\(c &lt; 1\)</span> and <span class="math inline">\(\alpha\)</span> is small enough <span class="math inline">\((0 &lt; \alpha &lt; \frac{2}{1 - c})\)</span>, this would converge.</p>
+<p>To see this, let:</p>
+<p><span class="math display">\[L^{\prime}: \theta \rightarrow ((1 - \alpha) I +  \alpha L) \theta\]</span></p>
+<p>Then the above update rule can be rewritten as:</p>
+<p><span class="math display">\[\theta_{t+1} \leftarrow L^{\prime} \theta_{t}\]</span></p>
+<p>For any <span class="math inline">\(\theta_1, \theta_2 \in \mathbb{R}^{d}\)</span>, this new mapping satisfies:</p>
+<span class="math display">\[\begin{aligned}
+\| L^{\prime} \theta_1 - L^{\prime}\theta_2 \| &amp;= \|((1 - \alpha) I +  \alpha L) \theta_1 - ((1 - \alpha) I +  \alpha L) \theta_2\|\\
+&amp; \leq (1 - \alpha) \| \theta_1 - \theta_2 \| + \underbrace{\alpha \|L\theta_1 - L\theta_2 \|}_{\leq \alpha * c \| \theta_1 - \theta_2 \|} \\
+&amp; \leq ((1 - \alpha) + c \alpha) \| \theta_1 - \theta_2 \|
+\end{aligned}\]</span>
+<p>If <span class="math inline">\((1 - \alpha) + c \alpha &lt; 1 \implies 0 &lt; \alpha &lt; \frac{2}{1 - c}\)</span>, then <span class="math inline">\(L^{\prime}\)</span> is a contraction mapping and by the Banach fixed point theorem, the iterative process converges.</p>
+<p>However, in reality, we do not have access to <span class="math inline">\(L\theta_t\)</span> in general, but only its noise contaminated version <span class="math inline">\(L\theta_t + \epsilon_t\)</span> with <span class="math inline">\(\epsilon_t \in \mathbb{R}^{d}\)</span> being a zero-mean noise, we have:</p>
+<p><span class="math display">\[\theta_{t+1} \leftarrow (1 - \alpha) \theta_t + \alpha (L\theta_t + \epsilon_t)\]</span></p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>TD</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>Tabular Methods</tag>
+        <tag>TD</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SARSA</title>
+    <url>/2021/05/16/sarsa/</url>
+    <content><![CDATA[
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>TD</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>Tabular Methods</tag>
+        <tag>TD</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Temporal Difference Learning</title>
     <url>/2021/05/15/td/</url>
     <content><![CDATA[<h1 id="learning-from-stream-of-data-temporal-difference-learning-methods">Learning From Stream of Data (Temporal Difference Learning Methods)</h1>
