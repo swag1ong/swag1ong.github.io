@@ -27,12 +27,13 @@
 <meta property="og:site_name" content="GoGoGogo!">
 <meta property="og:description" content="Prioritized Experience Replay Introduction In simplest form, RL agents observe a stream of experience and discard incoming data immediately, after a single update. Two issues with this are:  Strongly">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/RL/papers/prm_1.png">
 <meta property="article:published_time" content="2021-05-20T02:17:30.000Z">
-<meta property="article:modified_time" content="2021-05-20T11:33:31.962Z">
+<meta property="article:modified_time" content="2021-05-21T02:59:36.537Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
-<meta property="article:tag" content="Function Approximation">
-<meta property="article:tag" content="Continuous State Space">
+<meta property="article:tag" content="Replay Memory">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/RL/papers/prm_1.png">
 
 
 <link rel="canonical" href="http://example.com/2021/05/20/prior-exp-replay/">
@@ -91,7 +92,7 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">8</span></a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">10</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">11</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
@@ -149,7 +150,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#prioritized-experience-replay"><span class="nav-number">1.</span> <span class="nav-text">Prioritized Experience Replay</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#introduction"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#prioritized-replay"><span class="nav-number">1.2.</span> <span class="nav-text">Prioritized Replay</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#prioritizing-with-td-error"><span class="nav-number">1.2.1.</span> <span class="nav-text">Prioritizing with TD Error</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#greedy-td-error-prioritization"><span class="nav-number">1.2.2.</span> <span class="nav-text">Greedy TD Error Prioritization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#stochastic-prioritization"><span class="nav-number">1.2.3.</span> <span class="nav-text">Stochastic Prioritization</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#prioritized-experience-replay"><span class="nav-number">1.</span> <span class="nav-text">Prioritized Experience Replay</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#introduction"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#prioritized-replay"><span class="nav-number">1.2.</span> <span class="nav-text">Prioritized Replay</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#prioritizing-with-td-error"><span class="nav-number">1.2.1.</span> <span class="nav-text">Prioritizing with TD Error</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#greedy-td-error-prioritization"><span class="nav-number">1.2.2.</span> <span class="nav-text">Greedy TD Error Prioritization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#stochastic-prioritization"><span class="nav-number">1.2.3.</span> <span class="nav-text">Stochastic Prioritization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#implementation"><span class="nav-number">1.2.4.</span> <span class="nav-text">Implementation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#importance-sampling-to-correct-bias"><span class="nav-number">1.3.</span> <span class="nav-text">Importance Sampling to Correct Bias</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ref"><span class="nav-number">2.</span> <span class="nav-text">Ref</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -164,7 +165,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-count">20</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -177,7 +178,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -250,10 +251,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-05-20 10:17:30 / Modified: 19:33:31" itemprop="dateCreated datePublished" datetime="2021-05-20T10:17:30+08:00">2021-05-20</time>
+      <time title="Created: 2021-05-20 10:17:30" itemprop="dateCreated datePublished" datetime="2021-05-20T10:17:30+08:00">2021-05-20</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-05-21 10:59:36" itemprop="dateModified" datetime="2021-05-21T10:59:36+08:00">2021-05-21</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -261,10 +268,6 @@
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/VFA/" itemprop="url" rel="index"><span itemprop="name">VFA</span></a>
         </span>
     </span>
 
@@ -276,14 +279,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>4.1k</span>
+      <span>5.7k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
+      <span>5 mins.</span>
     </span>
 </div>
 
@@ -304,6 +307,7 @@
 <p>Experience replay addresses both of these issues. In general, it can reduce the amount of experience required to learn, and replace it with more computation and more memory.</p>
 <p>However, RL gant can learn more effectively from some transitions than from others. Transitions may be more or less surprising, redundant, or task-relevant. Some transitions may not be immediately useful to the agent but might become so when the agent competence increases. Prioritized replay memory liberates agents from considering transitions uniformly. In particular, the authers propose to more frequently reply transitions with high <strong>expected learning progress</strong>, as measured by the magnitude of their TD error (on expectation, it is the <strong>BR</strong>). The bias will be corrected with importance sampling, loss of diversity will be alleviated with stochastic optimization.</p>
 <p>Using a replay memory leads to design choices at two levels: which experiences to store, and which experiences to replay (and how to do so). This paper addresses only the latter: <code>making the most effective use of the replay memory for learning</code>.</p>
+<span id="more"></span>
 <h2 id="prioritized-replay">Prioritized Replay</h2>
 <h3 id="prioritizing-with-td-error">Prioritizing with TD Error</h3>
 <p>The central component of prioritized replay is the criterion by which the importance of each transition is measured. One idealised criterion would be the amount the RL agent can learn from a transition in its current state (expected learning progress). While this measure is not directly accessible, a reasonable proxy is the magnitude of a transition's TD error <span class="math inline">\(\delta\)</span> (remember the <span class="math inline">\(E[\delta] = BR\)</span>, so <span class="math inline">\(\delta\)</span> is an unbiased estimate of BR). Which indicates how 'surprising' or unexpected the transition is, in order words, how far the value is from its next-step bootstrap estimate (i.e <span class="math inline">\(\hat{T} V\)</span>). However, TD-error can have high variance in some circumstances. Some possible alternatives for TD error:</p>
@@ -328,9 +332,19 @@
 <p>There are several choice of priority measure <span class="math inline">\(p_i\)</span>:</p>
 <ol type="1">
 <li>absolute TD error: <span class="math inline">\(p_i = | \delta_i | + \epsilon\)</span>, where <span class="math inline">\(\epsilon\)</span> is a small positive constant that prevents the edge-case of transitions not being revisited once their error is 0.</li>
-<li>rank based: <span class="math inline">\(\p_i = \frac{1}{rank(i)}\)</span>, where <span class="math inline">\(rank(i)\)</span> is the rank of transition <span class="math inline">\(i\)</span> when the replay memory is sorted according to <span class="math inline">\(|\delta_i|\)</span>. In this case, <span class="math inline">\(P\)</span> becomes a power law distribution with exponent <span class="math inline">\(\alpha\)</span>.</li>
+<li>rank based: <span class="math inline">\(p_i = \frac{1}{rank(i)}\)</span>, where <span class="math inline">\(rank(i)\)</span> is the rank of transition <span class="math inline">\(i\)</span> when the replay memory is sorted according to <span class="math inline">\(|\delta_i|\)</span>. In this case, <span class="math inline">\(P\)</span> becomes a power law distribution with exponent <span class="math inline">\(\alpha\)</span>.</li>
 </ol>
-<p>Both distributions are monotonic in <span class="math inline">\(|\delta_i|\)</span>, but the latter is likely to be more robust because it is not sensitive to ourliers.</p>
+<p>Both distributions are monotonic in <span class="math inline">\(|\delta_i|\)</span>, but the latter is likely to be more robust because it is not sensitive to outliers.</p>
+<h3 id="implementation">Implementation</h3>
+<p>To efficiently sample from the distribution, the complexity cannot depend on <span class="math inline">\(N\)</span>. For a rank-based variant, we can approximate the cumulative density function with a piecewise linear function with <span class="math inline">\(k\)</span> segments of equal probability. The segment boundaries can be precomputed. At runtime, we can sample a segment and then sample uniformly among the transitions within it. This works particularly well with mini-batch based learning algorithm. Choose <span class="math inline">\(k\)</span> to be the size of the mini-batch the sample one transition from each segment (stratified sampling). The proportional variant is different, it is based on sum-tree data structure which can be efficiently updated and sampled from.</p>
+<p><img src="/images/RL/papers/prm_1.png"></p>
+<h2 id="importance-sampling-to-correct-bias">Importance Sampling to Correct Bias</h2>
+<p>The estimation of the expected value with stochastic updates relies on those updates corresponding to the same distribution as its expectation <strong>(I think they are talking about the DQN loss, <span class="math inline">\(E[\| \hat{T}Q_{k} - Q\|]\)</span>, where transitions are sampled from the replay memory, since the priority of transitions changes, the underlying distribution changes, in order to fix this, we need to remove some effect of the priority on the shift of distribution)</strong>. Prioritized replay introduces bias because it changes this distribution in an uncontrolled fashion, and therefore changes the solution that the estimates will converge to (even if the policy and state distribution are fixed). We can correct this bias by using importance-sampling (IS) weights:</p>
+<p><span class="math display">\[w_i = \frac{1}{N} \frac{1}{P(i)}\]</span></p>
+<p>Thus, if we have large <span class="math inline">\(P(i)\)</span>, we should make it smaller, so the distribution is uniform.</p>
+<p>These weights can be folded into the Q-learning update by using <span class="math inline">\(w_i \delta_i\)</span> instead of <span class="math inline">\(\delta\)</span>, for stability, they also normalize weights by <span class="math inline">\(\frac{1}{max_i w_i}\)</span></p>
+<h1 id="ref">Ref</h1>
+<p>https://danieltakeshi.github.io/2019/07/14/per/#:~:text=Prioritized%20replay%20introduces%20bias%20because,%2Dsampling%20(IS)%20weights.</p>
 
     </div>
 
@@ -338,24 +352,11 @@
     
     
       
-  <div class="popular-posts-header">Related Posts</div>
-  <ul class="popular-posts">
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/05/07/DDQN/" rel="bookmark">DDQN</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/05/13/Dueling/" rel="bookmark">Dueling Network Architectures for DRL</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/05/07/FA-issues/" rel="bookmark">Issues in Using Function Approximation for RL</a></div>
-    </li>
-  </ul>
 
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Function-Approximation/" rel="tag"># Function Approximation</a>
-              <a href="/tags/Continuous-State-Space/" rel="tag"># Continuous State Space</a>
+              <a href="/tags/Replay-Memory/" rel="tag"># Replay Memory</a>
           </div>
 
         
@@ -367,6 +368,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2021/05/21/importance-sampling/" rel="next" title="importance_sampling">
+                  importance_sampling <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -398,13 +402,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">65k</span>
+    <span title="Symbols count total">69k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">59 mins.</span>
+    <span title="Reading time total">1:03</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
