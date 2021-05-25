@@ -222,41 +222,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Bellman Equations</title>
-    <url>/2021/05/03/bellman-equations/</url>
-    <content><![CDATA[<p><em>Please read post on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> prior this post</em></p>
-<h1 id="bellman-equations">Bellman Equations</h1>
-<p>By expanding value functions, we reveal the recursive property of return:</p>
-<p><span class="math display">\[
-\begin{aligned}
-V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
-&amp; = E[R_{t} + \gamma G^{\pi}_{t+1} | X_{t} = x]\\
-&amp; = E_{a \sim \pi(a | s)}[R_{t} | X_{t} = x] + \gamma E[G^{\pi}_{t+1} | X_{t} = x]\\
-&amp; = r^{\pi} (x) + \gamma E[V^{\pi} (X_{t+1}) | X_{t} = x]\\
-\end{aligned}
-\]</span> <span id="more"></span></p>
-<p>Where: <span class="math display">\[V^{\pi} (X_{t+1}) = E[G^{\pi}_{t+1} | X_{t+1}] \]</span></p>
-<p><span class="math display">\[\implies E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[V^{\pi} (X_{t+1}) | X_t=x_t] = E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[E[G^{\pi}_{t+1} | X_{t+1}] | X_{t}=x_t] = E[G^{\pi}_{t+1} | X_{t} = x_t]\]</span></p>
-<p>This implies that neither side is random, by expanding:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x]\]</span></p>
-<p>we get:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
-<p>Thus, the value function can be expressed as:</p>
-<p><span class="math display">\[V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
-<p>This is the <span style="color:red"><strong>bellman equation</strong> </span> for a policy <span class="math inline">\(\pi\)</span>, this can be interpreted as: The value of following a policy <span class="math inline">\(\pi\)</span> is the expected immediate reward that the <span class="math inline">\(\pi\)</span>-following agent receives at that state plus the discounted average(expected) value that the agent receives at the next-state.</p>
-<p>Same for action-value function, we have bellman equation:</p>
-<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (da^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
-<p>Compare with value function, we have expected reward base on action <span class="math inline">\(a\)</span> plus discounted average(expected) value that the agent receives at the next-state following <span class="math inline">\(\pi\)</span> (the choice of action is given at state <span class="math inline">\(s\)</span> in action value function)</p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>Basics</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Bellman Equations for Optimal Value Functions</title>
     <url>/2021/05/03/bellman-optimality-equations/</url>
     <content><![CDATA[<p><em>Please read posts on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> and <a href="/2021/05/03/bellman-equations/" title="Bellman Equations">Bellman Equations</a> prior this post.</em></p>
@@ -416,6 +381,41 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
+    <title>Bellman Equations</title>
+    <url>/2021/05/03/bellman-equations/</url>
+    <content><![CDATA[<p><em>Please read post on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> prior this post</em></p>
+<h1 id="bellman-equations">Bellman Equations</h1>
+<p>By expanding value functions, we reveal the recursive property of return:</p>
+<p><span class="math display">\[
+\begin{aligned}
+V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
+&amp; = E[R_{t} + \gamma G^{\pi}_{t+1} | X_{t} = x]\\
+&amp; = E_{a \sim \pi(a | s)}[R_{t} | X_{t} = x] + \gamma E[G^{\pi}_{t+1} | X_{t} = x]\\
+&amp; = r^{\pi} (x) + \gamma E[V^{\pi} (X_{t+1}) | X_{t} = x]\\
+\end{aligned}
+\]</span> <span id="more"></span></p>
+<p>Where: <span class="math display">\[V^{\pi} (X_{t+1}) = E[G^{\pi}_{t+1} | X_{t+1}] \]</span></p>
+<p><span class="math display">\[\implies E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[V^{\pi} (X_{t+1}) | X_t=x_t] = E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[E[G^{\pi}_{t+1} | X_{t+1}] | X_{t}=x_t] = E[G^{\pi}_{t+1} | X_{t} = x_t]\]</span></p>
+<p>This implies that neither side is random, by expanding:</p>
+<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x]\]</span></p>
+<p>we get:</p>
+<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
+<p>Thus, the value function can be expressed as:</p>
+<p><span class="math display">\[V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
+<p>This is the <span style="color:red"><strong>bellman equation</strong> </span> for a policy <span class="math inline">\(\pi\)</span>, this can be interpreted as: The value of following a policy <span class="math inline">\(\pi\)</span> is the expected immediate reward that the <span class="math inline">\(\pi\)</span>-following agent receives at that state plus the discounted average(expected) value that the agent receives at the next-state.</p>
+<p>Same for action-value function, we have bellman equation:</p>
+<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (da^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
+<p>Compare with value function, we have expected reward base on action <span class="math inline">\(a\)</span> plus discounted average(expected) value that the agent receives at the next-state following <span class="math inline">\(\pi\)</span> (the choice of action is given at state <span class="math inline">\(s\)</span> in action value function)</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>Basics</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>RL Cheat Sheet</title>
     <url>/2021/05/18/cheat-sheet/</url>
     <content><![CDATA[<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
@@ -430,30 +430,6 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </categories>
       <tags>
         <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Dynamic Programming</title>
-    <url>/2021/05/03/dp/</url>
-    <content><![CDATA[<h1 id="dynamic-programming">Dynamic Programming</h1>
-<p>We have defined concepts and properties such as value functions, bellman equations, bellman operators and etc. The question is <strong>how we can find the the optimal policy?</strong> Before we start, we assume that the dynamics of the MDP is given, that is, we know our transition distribution <span class="math inline">\(P\)</span> and immediate reward distribution <span class="math inline">\(R\)</span>. The assumption of knowing the dynamics do not hold in the RL setting, but designing methods for finding the optimal policy with known model provides the foundation for developing methods for the RL setting.</p>
-<p>DP methods benefit from the structure of the MDP such as the recursive structure encoded in the Bellman equation, in order to compute the value function.</p>
-<span id="more"></span>
-<h2 id="policy-evaluation">Policy Evaluation</h2>
-<p>Policy Evaluation is the problem of computing the value function of a given policy <span class="math inline">\(\pi\)</span> (i.e. find <span class="math inline">\(V^{\pi}\)</span> or <span class="math inline">\(Q^{\pi}\)</span>). This is not the ultimate goal of an RL agent (Finding the optimal policy is the goal), but is often needed as an intermediate step in finding the optimal policy</p>
-<p>Given an MDP (<span class="math inline">\(X, A, P, R, \gamma\)</span>) and a policy <span class="math inline">\(\pi\)</span>, we would like to compute <span class="math inline">\(V^{\pi}, Q^{\pi}\)</span>:</p>
-<p><span class="math display">\[V^{\pi} (x) = E^{\pi}[\sum_{t=1}^{\infty} \gamma^{t-1} R_{t} | X_0 = x]\]</span></p>
-<p><img src='/images/RL/dp/tree_structure.png'></p>
-<h2 id="control">Control</h2>
-<p>Control is the problem of finding the optimal value function <span class="math inline">\(V^{*}, Q^{*}\)</span> or <span class="math inline">\(\pi^{*}\)</span></p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>DP</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>Dynamic Programming</tag>
       </tags>
   </entry>
   <entry>
@@ -505,6 +481,30 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       <tags>
         <tag>Deep Learning</tag>
         <tag>Regularization</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Dynamic Programming</title>
+    <url>/2021/05/03/dp/</url>
+    <content><![CDATA[<h1 id="dynamic-programming">Dynamic Programming</h1>
+<p>We have defined concepts and properties such as value functions, bellman equations, bellman operators and etc. The question is <strong>how we can find the the optimal policy?</strong> Before we start, we assume that the dynamics of the MDP is given, that is, we know our transition distribution <span class="math inline">\(P\)</span> and immediate reward distribution <span class="math inline">\(R\)</span>. The assumption of knowing the dynamics do not hold in the RL setting, but designing methods for finding the optimal policy with known model provides the foundation for developing methods for the RL setting.</p>
+<p>DP methods benefit from the structure of the MDP such as the recursive structure encoded in the Bellman equation, in order to compute the value function.</p>
+<span id="more"></span>
+<h2 id="policy-evaluation">Policy Evaluation</h2>
+<p>Policy Evaluation is the problem of computing the value function of a given policy <span class="math inline">\(\pi\)</span> (i.e. find <span class="math inline">\(V^{\pi}\)</span> or <span class="math inline">\(Q^{\pi}\)</span>). This is not the ultimate goal of an RL agent (Finding the optimal policy is the goal), but is often needed as an intermediate step in finding the optimal policy</p>
+<p>Given an MDP (<span class="math inline">\(X, A, P, R, \gamma\)</span>) and a policy <span class="math inline">\(\pi\)</span>, we would like to compute <span class="math inline">\(V^{\pi}, Q^{\pi}\)</span>:</p>
+<p><span class="math display">\[V^{\pi} (x) = E^{\pi}[\sum_{t=1}^{\infty} \gamma^{t-1} R_{t} | X_0 = x]\]</span></p>
+<p><img src='/images/RL/dp/tree_structure.png'></p>
+<h2 id="control">Control</h2>
+<p>Control is the problem of finding the optimal value function <span class="math inline">\(V^{*}, Q^{*}\)</span> or <span class="math inline">\(\pi^{*}\)</span></p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>DP</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>Dynamic Programming</tag>
       </tags>
   </entry>
   <entry>
@@ -595,6 +595,22 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
 ]]></content>
   </entry>
   <entry>
+    <title>policy_gradient</title>
+    <url>/2021/05/23/policy-gradient/</url>
+    <content><![CDATA[<h1 id="policy-search-methods">Policy Search Methods</h1>
+<p>So far, we have encountered methods for computing the optimal policy based on the computation of the value function. In this case, only value function was explicitly represented.</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>PG</category>
+      </categories>
+      <tags>
+        <tag>Policy Gradient</tag>
+        <tag>Continuous Action Space</tag>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Monte Carlo Estimation</title>
     <url>/2021/05/15/mc/</url>
     <content><![CDATA[<h1 id="learning-from-stream-of-data-monte-carlo-methods">Learning From Stream of Data (Monte Carlo Methods)</h1>
@@ -640,101 +656,6 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
         <tag>RL Basics</tag>
         <tag>MC</tag>
         <tag>Tabular Methods</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Policy Iteration</title>
-    <url>/2021/05/03/policy-iteration/</url>
-    <content><![CDATA[<h1 id="policy-iteration">Policy Iteration</h1>
-<p>A different approach is based on the iterative application of:</p>
-<ol type="1">
-<li>Policy Evaluation: Given a policy <span class="math inline">\(\pi_k\)</span>, compute <span class="math inline">\(V^{\pi_k}, Q^{\pi_k}\)</span></li>
-<li>Policy Improvement: Find a new policy <span class="math inline">\(\pi_{k+1}\)</span> that is better than <span class="math inline">\(\pi_{k}\)</span>, i.e., <span class="math inline">\(V^{\pi_{k+1}} \geq V^{\pi_k}\)</span> (with a strict inequality in at least one state, unless at convergence)</li>
-</ol>
-<p><img src='/images/RL/dp/policy_iteration.png'></p>
-<span id="more"></span>
-<p>So, how do we perform policy evaluation and policy improvement?</p>
-<ol type="1">
-<li><p>Policy Evaluation: We can use the policy evaluation part of VI (<span class="math inline">\(V_{k+1} \leftarrow T^{\pi} V_{k}\)</span>) to compute the value of a policy <span class="math inline">\(\pi_k\)</span></p></li>
-<li><p>Policy Improvement: We take the <strong>greedy policy</strong>,</p>
-<p><span class="math display">\[\pi_{k+1} \leftarrow \pi_g (x; Q^{\pi_k}) = argmax_{a \in A} Q^{\pi_k} (x, a), \forall x \in X\]</span></p></li>
-</ol>
-<h2 id="why-greedy-policy-intuition">Why Greedy Policy? (Intuition)</h2>
-<p>Assume that at state <span class="math inline">\(x\)</span>, we act according to greedy policy <span class="math inline">\(\pi_g (x; Q^{\pi_{k}})\)</span>, and afterwards, we follow <span class="math inline">\(\pi_{k}\)</span>. (we modify our policy at state <span class="math inline">\(x\)</span> to choose the greedy action)</p>
-<p>The value of this new policy is:</p>
-<p><span class="math display">\[Q^{\pi_k} (x, \pi_g (x; Q^{\pi_{k}})) = Q^{\pi_k} (x, argmax_{a \in A} Q^{\pi_k} (x, a)) = max_{a \in A} Q^{\pi_k} (x, a)\]</span></p>
-<p>Compare <span class="math inline">\(max_{a \in A} Q^{\pi_k} (x, a)\)</span> with <span class="math inline">\(V^{\pi_k} (x) = Q^{\pi_k} (x, \underbrace{\pi_k (x)}_{\text{any deterministic policy}})\)</span>, we can see that:</p>
-<p><span class="math display">\[max_{a \in A} Q^{\pi_k} (x, a) = Q^{\pi_k} (x, \pi_g (x; Q^{\pi_{k}})) \geq Q^{\pi_k} (x, \underbrace{\pi_k (x)}_{\text{any deterministic policy}}) = V^{\pi_k} (x)\]</span></p>
-<p>So this new policy is equal to or better than <span class="math inline">\(\pi_k\)</span> at state <span class="math inline">\(x\)</span>.</p>
-<h2 id="algorithm">Algorithm</h2>
-<p>Recall that:</p>
-<ul>
-<li><p><span class="math inline">\(V^{\pi_k}\)</span> is an unique fixed point of bellman operator <span class="math inline">\(T^{\pi_{k}}\)</span></p></li>
-<li><p>The greedy policy <span class="math inline">\(\pi_{k+1}\)</span> satisfies:</p>
-<span class="math display">\[\begin{aligned}
-  T^{\pi_{k+1}} Q^{\pi_k} &amp;= r(x, a) + \int P(dx^{\prime} | x, a) \underbrace{\pi_{k+1} (da^{\prime} | x^{\prime})}_{\text{This policy is greedy policy}} Q^{\pi_k} (x^{\prime}, a^{\prime})\\ 
-  &amp;= r(x, a) + \int P(dx^{\prime} | x, a) Q^{\pi_k} (x^{\prime}, argmax_{a^{\prime} \in A} Q^{\pi_k} (x^{\prime}, a^{\prime})\\
-  &amp;= r(x, a) + \int P(dx^{\prime} | x, a) max_{a^{\prime} \in A} Q^{\pi_k} (x^{\prime}, a^{\prime})\\
-  &amp;= T^{*} Q^{\pi_{k}}
-  \end{aligned}\]</span></li>
-</ul>
-<p>We can summarize each iteration of the Policy iteration algorithm as:</p>
-<ul>
-<li><p>(<strong>Policy Evaluation</strong>) Given <span class="math inline">\(\pi_k\)</span>, compute Q^{_k}, i.e find a Q that satisfies <span class="math inline">\(Q = T^{\pi_k} Q\)</span></p></li>
-<li><p>(<strong>Policy Improvement</strong>) Obtain <span class="math inline">\(\pi_{k+1}\)</span> as a policy that satisfies (select greedy policy at each state <span class="math inline">\(x\)</span>):</p>
-<p><span class="math display">\[T^{\pi_{k+1}} Q^{\pi_k} = T^{*} Q^{\pi_{k}}\]</span></p></li>
-</ul>
-<p>We also have approximate policy iteration algorithms too, where policy evaluation or improvement steps (Truncate evaluation step, function approximation) are performed approximately:</p>
-<p><span class="math display">\[Q \approx T^{\pi_k} Q\]</span></p>
-<p><span class="math display">\[T^{\pi_{k+1}} Q^{\pi_k} \approx T^{*} Q^{\pi_{k}}\]</span></p>
-<p>A generic algorithm can be found in Intro to RL book:</p>
-<p><img src='/images/RL/dp/pi.png'></p>
-<h3 id="implementation">Implementation</h3>
-<h2 id="convergence-of-policy-iteration">Convergence of Policy Iteration</h2>
-<p>We can guarantee that the policy iteration algorithm converges to the optimal policy. For finite MDPs, the convergence happens in a finite number of iterations.</p>
-<h3 id="policy-improvement-theorem">Policy Improvement Theorem</h3>
-<p><img src='/images/RL/dp/pit.png'></p>
-<p>In other words, if we choose <span class="math inline">\(\pi^{\prime}\)</span> to be the greedy policy, then we are guaranteed to have a better policy.</p>
-<h4 id="poof">Poof</h4>
-<p>We have <span class="math inline">\(T^{*} Q^{\pi} \geq T^{\pi} Q^{\pi} = Q^{\pi}\)</span> because for any <span class="math inline">\((x, a) \in X \times A\)</span> it holds that:</p>
-<p>Deterministic Policy <span class="math inline">\(\pi(x)\)</span> <span class="math display">\[r(x, a) + \gamma \int P(dx^{\prime} | x, a) max_{a^{\prime} \in A} Q^{\pi} (x^\prime, a^\prime) \geq r(x, a) + \gamma \int P(dx^{\prime} | x, a) Q^{\pi} (x^{\prime}, \pi(x^{\prime}))) \]</span></p>
-<p>Stochastic Policy <span class="math inline">\(\pi(a | x)\)</span></p>
-<p><span class="math display">\[r(x, a) + \gamma \int P(dx^{\prime} | x, a) max_{a^{\prime} \in A} Q^{\pi} (x^\prime, a^\prime) \geq r(x, a) + \gamma \int P(dx^{\prime} | x, a) \pi(da^{\prime} | x^{\prime}) Q^{\pi} (x^{\prime}, a^{\prime}))) \]</span></p>
-<p>Thus, <span class="math display">\[T^{\pi^{\prime}} Q^{\pi} = T^{*} Q^{\pi} \geq T^{\pi} Q^{\pi} = Q^{\pi}\]</span></p>
-<p>We have:</p>
-<p><span class="math display">\[T^{\pi^{\prime}} Q^{\pi} \geq Q^{\pi}\]</span></p>
-<p>Then, we apply <span class="math inline">\(T^{\pi^\prime}\)</span> to both sides, by monotonic property of bellman operator, we have:</p>
-<p><span class="math display">\[T^{\pi^{\prime}}(T^{\pi^{\prime}} Q^{\pi}) \geq T^{\pi^{\prime}} Q^{\pi} = T^{*} Q^{\pi} \geq Q^{\pi}\]</span></p>
-<p>Repeat this, we have for any <span class="math inline">\(m \geq 1\)</span>:</p>
-<p><span class="math display">\[(T^{\pi^{\prime}})^{m} Q^{\pi} \geq T^{*} Q^{\pi} \geq Q^{\pi}\]</span></p>
-<p>As <span class="math inline">\(m \rightarrow \infty\)</span>:</p>
-<p><span class="math display">\[lim_{m \rightarrow \infty} (T^{\pi^{\prime}})^{m} Q^{\pi} = Q^{\pi^\prime}\]</span></p>
-<p><span class="math display">\[\implies Q^{\pi^\prime} = lim_{m \rightarrow \infty} (T^{\pi^{\prime}})^{m} Q^{\pi} \geq Q^{\pi}\]</span></p>
-<h3 id="proof-convergence-of-policy-iteration">Proof: Convergence of Policy Iteration</h3>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>DP</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>Dynamic Programming</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>policy_gradient</title>
-    <url>/2021/05/23/policy-gradient/</url>
-    <content><![CDATA[<h1 id="policy-search-methods">Policy Search Methods</h1>
-<p>So far, we have encountered methods for computing the optimal policy based on the computation of the value function. In this case, only value function was explicitly represented.</p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>PG</category>
-      </categories>
-      <tags>
-        <tag>Policy Gradient</tag>
-        <tag>Continuous Action Space</tag>
-        <tag>RL Basics</tag>
       </tags>
   </entry>
   <entry>
@@ -881,6 +802,85 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
+    <title>Policy Iteration</title>
+    <url>/2021/05/03/policy-iteration/</url>
+    <content><![CDATA[<h1 id="policy-iteration">Policy Iteration</h1>
+<p>A different approach is based on the iterative application of:</p>
+<ol type="1">
+<li>Policy Evaluation: Given a policy <span class="math inline">\(\pi_k\)</span>, compute <span class="math inline">\(V^{\pi_k}, Q^{\pi_k}\)</span></li>
+<li>Policy Improvement: Find a new policy <span class="math inline">\(\pi_{k+1}\)</span> that is better than <span class="math inline">\(\pi_{k}\)</span>, i.e., <span class="math inline">\(V^{\pi_{k+1}} \geq V^{\pi_k}\)</span> (with a strict inequality in at least one state, unless at convergence)</li>
+</ol>
+<p><img src='/images/RL/dp/policy_iteration.png'></p>
+<span id="more"></span>
+<p>So, how do we perform policy evaluation and policy improvement?</p>
+<ol type="1">
+<li><p>Policy Evaluation: We can use the policy evaluation part of VI (<span class="math inline">\(V_{k+1} \leftarrow T^{\pi} V_{k}\)</span>) to compute the value of a policy <span class="math inline">\(\pi_k\)</span></p></li>
+<li><p>Policy Improvement: We take the <strong>greedy policy</strong>,</p>
+<p><span class="math display">\[\pi_{k+1} \leftarrow \pi_g (x; Q^{\pi_k}) = argmax_{a \in A} Q^{\pi_k} (x, a), \forall x \in X\]</span></p></li>
+</ol>
+<h2 id="why-greedy-policy-intuition">Why Greedy Policy? (Intuition)</h2>
+<p>Assume that at state <span class="math inline">\(x\)</span>, we act according to greedy policy <span class="math inline">\(\pi_g (x; Q^{\pi_{k}})\)</span>, and afterwards, we follow <span class="math inline">\(\pi_{k}\)</span>. (we modify our policy at state <span class="math inline">\(x\)</span> to choose the greedy action)</p>
+<p>The value of this new policy is:</p>
+<p><span class="math display">\[Q^{\pi_k} (x, \pi_g (x; Q^{\pi_{k}})) = Q^{\pi_k} (x, argmax_{a \in A} Q^{\pi_k} (x, a)) = max_{a \in A} Q^{\pi_k} (x, a)\]</span></p>
+<p>Compare <span class="math inline">\(max_{a \in A} Q^{\pi_k} (x, a)\)</span> with <span class="math inline">\(V^{\pi_k} (x) = Q^{\pi_k} (x, \underbrace{\pi_k (x)}_{\text{any deterministic policy}})\)</span>, we can see that:</p>
+<p><span class="math display">\[max_{a \in A} Q^{\pi_k} (x, a) = Q^{\pi_k} (x, \pi_g (x; Q^{\pi_{k}})) \geq Q^{\pi_k} (x, \underbrace{\pi_k (x)}_{\text{any deterministic policy}}) = V^{\pi_k} (x)\]</span></p>
+<p>So this new policy is equal to or better than <span class="math inline">\(\pi_k\)</span> at state <span class="math inline">\(x\)</span>.</p>
+<h2 id="algorithm">Algorithm</h2>
+<p>Recall that:</p>
+<ul>
+<li><p><span class="math inline">\(V^{\pi_k}\)</span> is an unique fixed point of bellman operator <span class="math inline">\(T^{\pi_{k}}\)</span></p></li>
+<li><p>The greedy policy <span class="math inline">\(\pi_{k+1}\)</span> satisfies:</p>
+<span class="math display">\[\begin{aligned}
+  T^{\pi_{k+1}} Q^{\pi_k} &amp;= r(x, a) + \int P(dx^{\prime} | x, a) \underbrace{\pi_{k+1} (da^{\prime} | x^{\prime})}_{\text{This policy is greedy policy}} Q^{\pi_k} (x^{\prime}, a^{\prime})\\ 
+  &amp;= r(x, a) + \int P(dx^{\prime} | x, a) Q^{\pi_k} (x^{\prime}, argmax_{a^{\prime} \in A} Q^{\pi_k} (x^{\prime}, a^{\prime})\\
+  &amp;= r(x, a) + \int P(dx^{\prime} | x, a) max_{a^{\prime} \in A} Q^{\pi_k} (x^{\prime}, a^{\prime})\\
+  &amp;= T^{*} Q^{\pi_{k}}
+  \end{aligned}\]</span></li>
+</ul>
+<p>We can summarize each iteration of the Policy iteration algorithm as:</p>
+<ul>
+<li><p>(<strong>Policy Evaluation</strong>) Given <span class="math inline">\(\pi_k\)</span>, compute Q^{_k}, i.e find a Q that satisfies <span class="math inline">\(Q = T^{\pi_k} Q\)</span></p></li>
+<li><p>(<strong>Policy Improvement</strong>) Obtain <span class="math inline">\(\pi_{k+1}\)</span> as a policy that satisfies (select greedy policy at each state <span class="math inline">\(x\)</span>):</p>
+<p><span class="math display">\[T^{\pi_{k+1}} Q^{\pi_k} = T^{*} Q^{\pi_{k}}\]</span></p></li>
+</ul>
+<p>We also have approximate policy iteration algorithms too, where policy evaluation or improvement steps (Truncate evaluation step, function approximation) are performed approximately:</p>
+<p><span class="math display">\[Q \approx T^{\pi_k} Q\]</span></p>
+<p><span class="math display">\[T^{\pi_{k+1}} Q^{\pi_k} \approx T^{*} Q^{\pi_{k}}\]</span></p>
+<p>A generic algorithm can be found in Intro to RL book:</p>
+<p><img src='/images/RL/dp/pi.png'></p>
+<h3 id="implementation">Implementation</h3>
+<h2 id="convergence-of-policy-iteration">Convergence of Policy Iteration</h2>
+<p>We can guarantee that the policy iteration algorithm converges to the optimal policy. For finite MDPs, the convergence happens in a finite number of iterations.</p>
+<h3 id="policy-improvement-theorem">Policy Improvement Theorem</h3>
+<p><img src='/images/RL/dp/pit.png'></p>
+<p>In other words, if we choose <span class="math inline">\(\pi^{\prime}\)</span> to be the greedy policy, then we are guaranteed to have a better policy.</p>
+<h4 id="poof">Poof</h4>
+<p>We have <span class="math inline">\(T^{*} Q^{\pi} \geq T^{\pi} Q^{\pi} = Q^{\pi}\)</span> because for any <span class="math inline">\((x, a) \in X \times A\)</span> it holds that:</p>
+<p>Deterministic Policy <span class="math inline">\(\pi(x)\)</span> <span class="math display">\[r(x, a) + \gamma \int P(dx^{\prime} | x, a) max_{a^{\prime} \in A} Q^{\pi} (x^\prime, a^\prime) \geq r(x, a) + \gamma \int P(dx^{\prime} | x, a) Q^{\pi} (x^{\prime}, \pi(x^{\prime}))) \]</span></p>
+<p>Stochastic Policy <span class="math inline">\(\pi(a | x)\)</span></p>
+<p><span class="math display">\[r(x, a) + \gamma \int P(dx^{\prime} | x, a) max_{a^{\prime} \in A} Q^{\pi} (x^\prime, a^\prime) \geq r(x, a) + \gamma \int P(dx^{\prime} | x, a) \pi(da^{\prime} | x^{\prime}) Q^{\pi} (x^{\prime}, a^{\prime}))) \]</span></p>
+<p>Thus, <span class="math display">\[T^{\pi^{\prime}} Q^{\pi} = T^{*} Q^{\pi} \geq T^{\pi} Q^{\pi} = Q^{\pi}\]</span></p>
+<p>We have:</p>
+<p><span class="math display">\[T^{\pi^{\prime}} Q^{\pi} \geq Q^{\pi}\]</span></p>
+<p>Then, we apply <span class="math inline">\(T^{\pi^\prime}\)</span> to both sides, by monotonic property of bellman operator, we have:</p>
+<p><span class="math display">\[T^{\pi^{\prime}}(T^{\pi^{\prime}} Q^{\pi}) \geq T^{\pi^{\prime}} Q^{\pi} = T^{*} Q^{\pi} \geq Q^{\pi}\]</span></p>
+<p>Repeat this, we have for any <span class="math inline">\(m \geq 1\)</span>:</p>
+<p><span class="math display">\[(T^{\pi^{\prime}})^{m} Q^{\pi} \geq T^{*} Q^{\pi} \geq Q^{\pi}\]</span></p>
+<p>As <span class="math inline">\(m \rightarrow \infty\)</span>:</p>
+<p><span class="math display">\[lim_{m \rightarrow \infty} (T^{\pi^{\prime}})^{m} Q^{\pi} = Q^{\pi^\prime}\]</span></p>
+<p><span class="math display">\[\implies Q^{\pi^\prime} = lim_{m \rightarrow \infty} (T^{\pi^{\prime}})^{m} Q^{\pi} \geq Q^{\pi}\]</span></p>
+<h3 id="proof-convergence-of-policy-iteration">Proof: Convergence of Policy Iteration</h3>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>DP</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>Dynamic Programming</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Q-Learning</title>
     <url>/2021/05/16/q-learning/</url>
     <content><![CDATA[<h1 id="temporal-difference-learning-for-control-q-learning">Temporal Difference Learning for Control: Q-Learning</h1>
@@ -1017,80 +1017,6 @@ Var[max_{a^{\prime} \in A} Q_t (X^{\prime}, a^{\prime}) | X_t=x_t, A_t=a_t] &amp
       </tags>
   </entry>
   <entry>
-    <title>Temporal Difference Learning</title>
-    <url>/2021/05/15/td/</url>
-    <content><![CDATA[<h1 id="learning-from-stream-of-data-temporal-difference-learning-methods">Learning From Stream of Data (Temporal Difference Learning Methods)</h1>
-<p>We can see that from MC algorithm, in order to update <span class="math inline">\(\hat{Q^{\pi}}_{k+1} (x, a)\)</span>, we need to calculate the entire <span class="math inline">\(\hat{G^{\pi}_{k}}\)</span> which involves sum over product of rewards. If each episode is long or even continuous, the calculation of <span class="math inline">\(\hat{G^{\pi}_{k}}\)</span> will be hard or impossible. In general, MC is agnostic to the MDP structure, if the problem is an MDP, it does not benefit from the recursive property of the value functions.</p>
-<p>TD methods benefit from the structure of the MDP even if we do not know the environment dynamics <span class="math inline">\(P\)</span> and <span class="math inline">\(R\)</span>.</p>
-<h2 id="td-for-policy-evaluation">TD for Policy Evaluation</h2>
-<p>We first focus on VI for PE: at each state <span class="math inline">\(x\)</span>, the procedure is:</p>
-<p><span class="math display">\[V_{k+1} (x) = T^{\pi} V_{k} (x) = r^{\pi} (x) + \gamma \int P(dx^{\prime} | x, a) \pi(da | x) V_{k} (x^{\prime})\]</span></p>
-<p>If we do not know <span class="math inline">\(r^{\pi}, P\)</span>, we cannot compute this. Suppose that we have n samples starting from state <span class="math inline">\(x\)</span>, <span class="math inline">\(A_i \sim \pi(\cdot | x), X^{\prime}_i \sim P(\cdot | x, A_i), R_i \sim R(\cdot | x, A_i)\)</span>, using these samples and <span class="math inline">\(V_{k}\)</span>, we compute:</p>
-<p><span class="math display">\[Y_i = R_i + \gamma V_{k} (X_i^{\prime})\]</span></p>
-<p>Now, notice that:</p>
-<p><span class="math display">\[E[R_i | X=x] = r^{\pi} (x)\]</span></p>
-<p>and</p>
-<p><span class="math display">\[E[V_{k} (X^{\prime}_i) | X=x] = \int P(dx^{\prime} | x, a) \pi(da | x)V_{k} (x^{\prime})\]</span></p>
-<p>so the r.v $Y_i (x) $ (emphasis starting from state <span class="math inline">\(x\)</span> )satisfies:</p>
-<p><span class="math display">\[E[Y_i | X=x] = E[R_i + \gamma V_{k} (X_i^{\prime}) | X=x] = E[R_i | X=x] + \gamma E[V_{k} (X_i^{\prime}) | X=x] = T^{\pi} V_{k} (x)\]</span></p>
-<p>This implies that <span class="math inline">\(Y_i\)</span> is an unbiased estimator of <span class="math inline">\(T^{\pi} V_{k}\)</span> evaluated at <span class="math inline">\(x\)</span>. Thus, we can use a sample mean of <span class="math inline">\(Y_i\)</span> starting from <span class="math inline">\(x\)</span> to estimate <span class="math inline">\(T^{\pi} V_k (x)\)</span>, or we can use SA procedure.</p>
-<p><span class="math display">\[T^{\pi}V^{t+1}_{k} (x) \leftarrow  (1 - \alpha_t) T^{\pi}V^{t}_{k} (x) + \alpha Y_i\]</span></p>
-<span id="more"></span>
-<h3 id="empirical-bellman-operator">Empirical Bellman Operator</h3>
-<p>This <span class="math inline">\(Y_i\)</span> is called <code>empirical Bellman operator</code> (this (x) notation emphasises that we are starting from x):</p>
-<p><span class="math display">\[\hat{T}^{\pi} V_{k} (x) = Y_i (x) = R(x) + \gamma V_{k} (X^{\prime} (x))\]</span></p>
-<p>This operator is an unbiased estimate of <span class="math inline">\(T^{\pi} V_{k} (x)\)</span>:</p>
-<p><span class="math display">\[E[\hat{T}^{\pi} V_k (X) | X=x] = T^{\pi} V_{k} (x)\]</span></p>
-<p>The empirical version of the VI for Policy evaluation with some noise:</p>
-<p><span class="math display">\[V_{k+1} (x) \leftarrow \hat{T}^{\pi} V_k (x) = \underbrace{T^{\pi} V_{k} (x)}_{\text{deterministic part}} + \underbrace{(\hat{T}^{\pi} V_k (x) - T^{\pi} V_{k} (x))}_{\text{the stochastic part, the noise}}\]</span></p>
-<p>On average, this noise is 0.</p>
-<h2 id="generic-td-algorithms">Generic TD algorithms</h2>
-<p>A synchronous version of generic TD algorithm updates all states at the same time:</p>
-<p><img src="/images/RL/mc/td_1.png"></p>
-<p>However, we do not need to update all states at the same time, an asynchronous version of generic TD algorithm:</p>
-<p><img src="/images/RL/mc/td_2.png"></p>
-<p>From the above generic algorithms, we can see that the update following policy <span class="math inline">\(\pi\)</span> in general is :</p>
-<span class="math display">\[\begin{aligned}
-V_{t+1} (x) &amp;\leftarrow (1 - \alpha_t) V_t (x) + \alpha_t (\hat{T}^{\pi} V_t (x)) \\
-&amp;\leftarrow (1 - \alpha_t) V_t (x) + \alpha_t (R(x) + \gamma V_t (X^{\prime} (x)))\\
-&amp;\leftarrow V_t (x) + \alpha_t (x) [R_t (x) + \gamma V_t(X^{\prime} (x)) - V_t (x)]
-\end{aligned}\]</span>
-<p>The update rule could be written in perhaps a simpler but less precise, form of:</p>
-<p><span class="math display">\[V(X_t) \leftarrow V(X_t) + \alpha_t (X_t) [R_t + \gamma V(X_{t+1}) - V(X_t)]\]</span></p>
-<p>We can see that, at each time step, instead update <span class="math inline">\(V_{k+1} (x)\)</span> with <span class="math inline">\(T^{\pi} V_{k}\)</span>, we update it with the <code>empirical bellman operator</code> <span class="math inline">\(\hat{T}^{\pi} V_k\)</span> which is an unbiased estimate. The SA procedure seems a little strange because we are estimating the mean of a sequence of <span class="math inline">\(\hat{T}^{\pi} V_1, \hat{T}^{\pi} V_2, ...\)</span>, <strong>we will prove later that this update rule actually converge to <span class="math inline">\(V^{\pi}\)</span></strong>.</p>
-<h3 id="td-error">TD Error</h3>
-<p>Moreover, the term:</p>
-<p><span class="math display">\[\delta_t = R_t + \gamma V(X_{t+1}) - V(X_t)\]</span></p>
-<p>is called <code>TD error</code>. It is a noisy measure of how close we are to <span class="math inline">\(V^{\pi}\)</span>. To see this more clearly, let us define the dependence on the <code>TD error</code> on its components more explicitly. Given transitions <span class="math inline">\((X, X^{\prime}, R)\)</span> and value function <span class="math inline">\(V\)</span>, policy <span class="math inline">\(\pi\)</span>, we define:</p>
-<p><span class="math display">\[\delta (R, X^{\prime}, X; V, \pi) = R + \gamma V(X^{\prime}) - V(X)\]</span></p>
-<p>We have:</p>
-<p><span class="math display">\[E[\delta (X, R, X^{\prime}; V, \pi) | X=x] = T^{\pi} V (x) - V(x) = BR(V) (x)\]</span></p>
-<p>So in expectation, the TD error is equal to the Bellman residual of <span class="math inline">\(V\)</span>, evaluated at state <span class="math inline">\(x\)</span>. If BR = 0, we reach the fix point, so the algorithm reach the fix point.</p>
-<h3 id="td-learning-for-action-value-function">TD Learning for Action-Value Function</h3>
-<p>We can use a similar procedure to estimate the action-value function which is often used in TD and MC.</p>
-<p>To evaluate <span class="math inline">\(\pi\)</span>, we need to have an estimate of <span class="math inline">\(T^{\pi} Q (x, a) \forall (x, a) \in X \times A\)</span>.</p>
-<p>Suppose that <span class="math inline">\((X_t, A_t) \sim \mu\)</span> (where <span class="math inline">\(\mu\)</span> is some stationary distribution or initial distribution) and <span class="math inline">\(X^{\prime}_t \sim P(\cdot | X_t, A_t)\)</span> and <span class="math inline">\(R_t \sim R(\cdot | X_t, A_t), A^{\prime} \sim \pi(\cdot | X^{\prime})\)</span></p>
-<p>The update rule would be:</p>
-<p><span class="math display">\[Q_{t+1} (X_t, A_t) \leftarrow Q_t(X_t, A_t) + \alpha_t (X_t, A_t) [R_t + \gamma Q_t (X^{\prime}_t, A^{\prime}) - Q_t(X_t, A_t)]\]</span></p>
-<p>and</p>
-<p><span class="math display">\[Q_{t+1} (x, a) \leftarrow Q_t (x, a)\]</span></p>
-<p>for all other <span class="math inline">\((x, a) \neq (X_t, A_t)\)</span></p>
-<p>It is easy to see that following the same procedure for <span class="math inline">\(\hat{T}^{\pi} V\)</span>:</p>
-<p><span class="math display">\[E[\hat{T}^{\pi} Q (X_t, A_t) | X_t=x, A_t=a] = T^{\pi} Q (x, a)\]</span></p>
-<h1 id="further">Further</h1>
-<p>In this post, we have some basic understanding of generic TD methods and basic framework of TD Policy evaluation. Next, we will explore some popular TD methods for solving control problems. We will see that TD learning methods can be generalized to both on-policy sampling scenario (ie. SARSA) and off-policy sampling scenario (ie. Q-learning). At the same time, we will prove the update rule for each algorithm.</p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>TD</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>Tabular Methods</tag>
-        <tag>TD</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Learning From Stream of Data</title>
     <url>/2021/05/07/value-function-learning/</url>
     <content><![CDATA[<h1 id="learning-from-stream-of-data-introduction">Learning From Stream of Data (Introduction)</h1>
@@ -1181,6 +1107,80 @@ Uniform(A), \text{w. p } \epsilon \\
       <tags>
         <tag>RL Basics</tag>
         <tag>MC</tag>
+        <tag>Tabular Methods</tag>
+        <tag>TD</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Temporal Difference Learning</title>
+    <url>/2021/05/15/td/</url>
+    <content><![CDATA[<h1 id="learning-from-stream-of-data-temporal-difference-learning-methods">Learning From Stream of Data (Temporal Difference Learning Methods)</h1>
+<p>We can see that from MC algorithm, in order to update <span class="math inline">\(\hat{Q^{\pi}}_{k+1} (x, a)\)</span>, we need to calculate the entire <span class="math inline">\(\hat{G^{\pi}_{k}}\)</span> which involves sum over product of rewards. If each episode is long or even continuous, the calculation of <span class="math inline">\(\hat{G^{\pi}_{k}}\)</span> will be hard or impossible. In general, MC is agnostic to the MDP structure, if the problem is an MDP, it does not benefit from the recursive property of the value functions.</p>
+<p>TD methods benefit from the structure of the MDP even if we do not know the environment dynamics <span class="math inline">\(P\)</span> and <span class="math inline">\(R\)</span>.</p>
+<h2 id="td-for-policy-evaluation">TD for Policy Evaluation</h2>
+<p>We first focus on VI for PE: at each state <span class="math inline">\(x\)</span>, the procedure is:</p>
+<p><span class="math display">\[V_{k+1} (x) = T^{\pi} V_{k} (x) = r^{\pi} (x) + \gamma \int P(dx^{\prime} | x, a) \pi(da | x) V_{k} (x^{\prime})\]</span></p>
+<p>If we do not know <span class="math inline">\(r^{\pi}, P\)</span>, we cannot compute this. Suppose that we have n samples starting from state <span class="math inline">\(x\)</span>, <span class="math inline">\(A_i \sim \pi(\cdot | x), X^{\prime}_i \sim P(\cdot | x, A_i), R_i \sim R(\cdot | x, A_i)\)</span>, using these samples and <span class="math inline">\(V_{k}\)</span>, we compute:</p>
+<p><span class="math display">\[Y_i = R_i + \gamma V_{k} (X_i^{\prime})\]</span></p>
+<p>Now, notice that:</p>
+<p><span class="math display">\[E[R_i | X=x] = r^{\pi} (x)\]</span></p>
+<p>and</p>
+<p><span class="math display">\[E[V_{k} (X^{\prime}_i) | X=x] = \int P(dx^{\prime} | x, a) \pi(da | x)V_{k} (x^{\prime})\]</span></p>
+<p>so the r.v $Y_i (x) $ (emphasis starting from state <span class="math inline">\(x\)</span> )satisfies:</p>
+<p><span class="math display">\[E[Y_i | X=x] = E[R_i + \gamma V_{k} (X_i^{\prime}) | X=x] = E[R_i | X=x] + \gamma E[V_{k} (X_i^{\prime}) | X=x] = T^{\pi} V_{k} (x)\]</span></p>
+<p>This implies that <span class="math inline">\(Y_i\)</span> is an unbiased estimator of <span class="math inline">\(T^{\pi} V_{k}\)</span> evaluated at <span class="math inline">\(x\)</span>. Thus, we can use a sample mean of <span class="math inline">\(Y_i\)</span> starting from <span class="math inline">\(x\)</span> to estimate <span class="math inline">\(T^{\pi} V_k (x)\)</span>, or we can use SA procedure.</p>
+<p><span class="math display">\[T^{\pi}V^{t+1}_{k} (x) \leftarrow  (1 - \alpha_t) T^{\pi}V^{t}_{k} (x) + \alpha Y_i\]</span></p>
+<span id="more"></span>
+<h3 id="empirical-bellman-operator">Empirical Bellman Operator</h3>
+<p>This <span class="math inline">\(Y_i\)</span> is called <code>empirical Bellman operator</code> (this (x) notation emphasises that we are starting from x):</p>
+<p><span class="math display">\[\hat{T}^{\pi} V_{k} (x) = Y_i (x) = R(x) + \gamma V_{k} (X^{\prime} (x))\]</span></p>
+<p>This operator is an unbiased estimate of <span class="math inline">\(T^{\pi} V_{k} (x)\)</span>:</p>
+<p><span class="math display">\[E[\hat{T}^{\pi} V_k (X) | X=x] = T^{\pi} V_{k} (x)\]</span></p>
+<p>The empirical version of the VI for Policy evaluation with some noise:</p>
+<p><span class="math display">\[V_{k+1} (x) \leftarrow \hat{T}^{\pi} V_k (x) = \underbrace{T^{\pi} V_{k} (x)}_{\text{deterministic part}} + \underbrace{(\hat{T}^{\pi} V_k (x) - T^{\pi} V_{k} (x))}_{\text{the stochastic part, the noise}}\]</span></p>
+<p>On average, this noise is 0.</p>
+<h2 id="generic-td-algorithms">Generic TD algorithms</h2>
+<p>A synchronous version of generic TD algorithm updates all states at the same time:</p>
+<p><img src="/images/RL/mc/td_1.png"></p>
+<p>However, we do not need to update all states at the same time, an asynchronous version of generic TD algorithm:</p>
+<p><img src="/images/RL/mc/td_2.png"></p>
+<p>From the above generic algorithms, we can see that the update following policy <span class="math inline">\(\pi\)</span> in general is :</p>
+<span class="math display">\[\begin{aligned}
+V_{t+1} (x) &amp;\leftarrow (1 - \alpha_t) V_t (x) + \alpha_t (\hat{T}^{\pi} V_t (x)) \\
+&amp;\leftarrow (1 - \alpha_t) V_t (x) + \alpha_t (R(x) + \gamma V_t (X^{\prime} (x)))\\
+&amp;\leftarrow V_t (x) + \alpha_t (x) [R_t (x) + \gamma V_t(X^{\prime} (x)) - V_t (x)]
+\end{aligned}\]</span>
+<p>The update rule could be written in perhaps a simpler but less precise, form of:</p>
+<p><span class="math display">\[V(X_t) \leftarrow V(X_t) + \alpha_t (X_t) [R_t + \gamma V(X_{t+1}) - V(X_t)]\]</span></p>
+<p>We can see that, at each time step, instead update <span class="math inline">\(V_{k+1} (x)\)</span> with <span class="math inline">\(T^{\pi} V_{k}\)</span>, we update it with the <code>empirical bellman operator</code> <span class="math inline">\(\hat{T}^{\pi} V_k\)</span> which is an unbiased estimate. The SA procedure seems a little strange because we are estimating the mean of a sequence of <span class="math inline">\(\hat{T}^{\pi} V_1, \hat{T}^{\pi} V_2, ...\)</span>, <strong>we will prove later that this update rule actually converge to <span class="math inline">\(V^{\pi}\)</span></strong>.</p>
+<h3 id="td-error">TD Error</h3>
+<p>Moreover, the term:</p>
+<p><span class="math display">\[\delta_t = R_t + \gamma V(X_{t+1}) - V(X_t)\]</span></p>
+<p>is called <code>TD error</code>. It is a noisy measure of how close we are to <span class="math inline">\(V^{\pi}\)</span>. To see this more clearly, let us define the dependence on the <code>TD error</code> on its components more explicitly. Given transitions <span class="math inline">\((X, X^{\prime}, R)\)</span> and value function <span class="math inline">\(V\)</span>, policy <span class="math inline">\(\pi\)</span>, we define:</p>
+<p><span class="math display">\[\delta (R, X^{\prime}, X; V, \pi) = R + \gamma V(X^{\prime}) - V(X)\]</span></p>
+<p>We have:</p>
+<p><span class="math display">\[E[\delta (X, R, X^{\prime}; V, \pi) | X=x] = T^{\pi} V (x) - V(x) = BR(V) (x)\]</span></p>
+<p>So in expectation, the TD error is equal to the Bellman residual of <span class="math inline">\(V\)</span>, evaluated at state <span class="math inline">\(x\)</span>. If BR = 0, we reach the fix point, so the algorithm reach the fix point.</p>
+<h3 id="td-learning-for-action-value-function">TD Learning for Action-Value Function</h3>
+<p>We can use a similar procedure to estimate the action-value function which is often used in TD and MC.</p>
+<p>To evaluate <span class="math inline">\(\pi\)</span>, we need to have an estimate of <span class="math inline">\(T^{\pi} Q (x, a) \forall (x, a) \in X \times A\)</span>.</p>
+<p>Suppose that <span class="math inline">\((X_t, A_t) \sim \mu\)</span> (where <span class="math inline">\(\mu\)</span> is some stationary distribution or initial distribution) and <span class="math inline">\(X^{\prime}_t \sim P(\cdot | X_t, A_t)\)</span> and <span class="math inline">\(R_t \sim R(\cdot | X_t, A_t), A^{\prime} \sim \pi(\cdot | X^{\prime})\)</span></p>
+<p>The update rule would be:</p>
+<p><span class="math display">\[Q_{t+1} (X_t, A_t) \leftarrow Q_t(X_t, A_t) + \alpha_t (X_t, A_t) [R_t + \gamma Q_t (X^{\prime}_t, A^{\prime}) - Q_t(X_t, A_t)]\]</span></p>
+<p>and</p>
+<p><span class="math display">\[Q_{t+1} (x, a) \leftarrow Q_t (x, a)\]</span></p>
+<p>for all other <span class="math inline">\((x, a) \neq (X_t, A_t)\)</span></p>
+<p>It is easy to see that following the same procedure for <span class="math inline">\(\hat{T}^{\pi} V\)</span>:</p>
+<p><span class="math display">\[E[\hat{T}^{\pi} Q (X_t, A_t) | X_t=x, A_t=a] = T^{\pi} Q (x, a)\]</span></p>
+<h1 id="further">Further</h1>
+<p>In this post, we have some basic understanding of generic TD methods and basic framework of TD Policy evaluation. Next, we will explore some popular TD methods for solving control problems. We will see that TD learning methods can be generalized to both on-policy sampling scenario (ie. SARSA) and off-policy sampling scenario (ie. Q-learning). At the same time, we will prove the update rule for each algorithm.</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>TD</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
         <tag>Tabular Methods</tag>
         <tag>TD</tag>
       </tags>
