@@ -457,6 +457,57 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
+    <title>Dropout</title>
+    <url>/2021/05/25/drop-out/</url>
+    <content><![CDATA[<h1 id="dropout-a-simple-way-to-prevent-neural-networks-from-overfitting">Dropout: A Simple Way to Prevent Neural Networks from Overfitting</h1>
+<p>The key idea of drop out is to randomly drop units along with their connections from the neural network during training to prevent overfitting. It can be interpreted as a way of regularizing a NN by adding noise to its hidden units.</p>
+<h2 id="introduction">Introduction</h2>
+<p>With unlimited computation, the best way to "regularize" a fixed-sized model is to average the predictions of all possible settings of the parameters, weighting each setting by the posterior probability given the training data (<span class="math inline">\(P(\theta | X)\)</span>). This approach is not feasible in real life especially when there is large computational cost for training neural networks and training data are limited.Dropout prevents overfitting and provides a way of approximately combining exponentially many neural network architectures effectively.</p>
+<p>Dropout temporarily removes units from the network along with all their incoming and outgoing connections. The choice of which units to drop is random.</p>
+<p><img src="/images/ML/dropout_1.png"></p>
+<p><strong>At training time</strong>, for a NN with <span class="math inline">\(n\)</span> units, Dropout can be seen as training a collection of <span class="math inline">\(2^n\)</span> (each unit can be retained or removed by dropout, so <span class="math inline">\(2^n\)</span> different combinations) thinned networks (some units are dropped by dropout) with extensive weight sharing where each thinned network gets trained very rarely.</p>
+<p><strong>At test time</strong>, it is not feasible to explicitly average the predictions form exponentially many thinned models. However, we use a single NN without dropout by scaling-down the weights of this network. If an unit is retained with probability <span class="math inline">\(p\)</span> during traning, the outgoing weights of that unit are multiplied by <span class="math inline">\(p\)</span> at the test time. This ensures that the expected output is the same as the actual output at the test time (we use expected output at test time).</p>
+<span id="more"></span>
+<h3 id="model-description">Model Description</h3>
+<p>Consider a NN with <span class="math inline">\(L\)</span> hidden layers. Let <span class="math inline">\(l \in \{1, ..., L\}\)</span> index the hidden layers of the network. Let <span class="math inline">\(\textbf{z}^{l}\)</span> denote the vector of inputs into layer <span class="math inline">\(l\)</span>, <span class="math inline">\(\textbf{y}^{l}\)</span> denote the vector of output from layer <span class="math inline">\(l\)</span> (<span class="math inline">\(\textbf{y}^{0} = \textbf{x}\)</span>). <span class="math inline">\(W^{l}\)</span> and <span class="math inline">\(\textbf{b}^l\)</span> are the weights and biases at layer <span class="math inline">\(l\)</span>. The standard forward operation can be described as:</p>
+<p><span class="math display">\[z^{l + 1}_i = \textbf{w}_{i}^{l + 1} \textbf{y}^{l} + b_i^{l + 1}\]</span></p>
+<p><span class="math display">\[y_i^{l+1} = f(z^{l + 1}_i)\]</span></p>
+<p>Where <span class="math inline">\(W^l = [\textbf{w}_1^{l}, \textbf{w}_2^{l}, ...., \textbf{w}_{|l|}^{l}]\)</span>, <span class="math inline">\(f\)</span> is any activation function.</p>
+<p>With dropout, the forward operation becomes:</p>
+<p><span class="math display">\[R_j^{l} \sim Bernoulli(p)\]</span></p>
+<p><span class="math display">\[\tilde{\textbf{y}} = \textbf{R}^{l} * \textbf{y}^{l}\]</span></p>
+<p><span class="math display">\[z^{l + 1}_i = \textbf{w}_{i}^{l + 1} \tilde{\textbf{y}}^{l} + b_i^{l + 1}\]</span></p>
+<p><span class="math display">\[y_i^{l+1} = f(z^{l + 1}_i)\]</span></p>
+<p>At the test time, the weights are scaled as <span class="math inline">\(W^{l}_{test} = p W^{l}\)</span></p>
+<h2 id="backpropagation">Backpropagation</h2>
+<p>Dropout NNs are trained using SGD in manner similar to standard NN. The only difference is that for each training case in the mini-batch, we sample a thinned network by dropping out units. Parameters that are dropped have zero gradients:</p>
+<p><span class="math display">\[\tilde{\textbf{y}} = 0\]</span></p>
+<p><span class="math display">\[\frac{\partial L}{\partial \textbf{w}_{i}^{l + 1}} = \frac{\partial L}{\partial z^{l + 1}_i} \frac{\partial z^{l + 1}_i}{\partial \textbf{w}_{i}^{l + 1}} = 0\]</span></p>
+<p>One technique the authors found useful is to impose the max norm constraint on the weights during optimization such that:</p>
+<p><span class="math display">\[\|w\|_{2} \leq c\]</span></p>
+<h2 id="effect-on-sparsity">Effect on Sparsity</h2>
+<p>The authors also found that as a side-effect of doing dropout, the activations of the hidden units become sparse, even when no sparsity inducing regularizes are present. Thus, dropout automatically leads to sparse representations.</p>
+<p><img src="/images/ML/dropout_2.png"></p>
+<h2 id="practical-guide-for-training-dropout-networks">Practical Guide for Training Dropout Networks</h2>
+<h3 id="network-size">Network Size</h3>
+<p>It is to be expected that dropping units will reduce the capacity of a NN. At each training step (single training example or a mini-batch of examples), a subset of model parameters are optimized. Therefore, if <span class="math inline">\(n\)</span>-sized layer is optimal for a standard NN on any given task, a good dropout net should have at least <span class="math inline">\(\frac{n}{p}\)</span> units. This is a useful heuristic for setting the number of hidden units for convolutional and fully connected networks.</p>
+<h3 id="learning-rate-and-momentum">Learning Rate and Momentum</h3>
+<p>Dropout introduces a significant amount of noise in the gradients compared to standard SGD. Thus, a lot of gradients tend to cancel each other. In order ot make up for this, a dropout net should typically use 10-100 times the learning-rate that was optimal for a standard NN. Another way to reduce the effect of the noise is to use a high momentum. Using high learning rate and high momentum significantly speed up learning.</p>
+<h3 id="max-norm-regularization">Max-norm Regularization</h3>
+<p>Though large momentum and learning rate speed up learning, they sometimes cause the weights to explode, so we need to apply some regularization on the parameter size.</p>
+<h3 id="dropout-rate-p">Dropout Rate <span class="math inline">\(p\)</span></h3>
+<p>This hyperparameter controls the intensity of dropout. Small value of <span class="math inline">\(p\)</span> requires big hidden unit size <span class="math inline">\(n\)</span> which will slow down the training and leads to underfitting while large <span class="math inline">\(p\)</span> may not produce enough dropout to prevent overfitting.</p>
+]]></content>
+      <categories>
+        <category>DL</category>
+        <category>Techniques</category>
+      </categories>
+      <tags>
+        <tag>Deep Learning</tag>
+        <tag>Regularization</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>importance_sampling</title>
     <url>/2021/05/21/importance-sampling/</url>
     <content><![CDATA[<h1 id="importance-sampling">Importance Sampling</h1>
