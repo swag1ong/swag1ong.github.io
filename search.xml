@@ -144,6 +144,20 @@
       </tags>
   </entry>
   <entry>
+    <title>Issues in Using Function Approximation for RL</title>
+    <url>/2021/05/07/FA-issues/</url>
+    <content><![CDATA[<h1 id="issues-in-using-function-approximation-for-reinforcement-learning"><a href="https://www.ri.cmu.edu/pub_files/pub1/thrun_sebastian_1993_1/thrun_sebastian_1993_1.pdf">Issues in Using Function Approximation for Reinforcement Learning</a></h1>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Discussions</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MDP</title>
     <url>/2021/05/03/MDP/</url>
     <content><![CDATA[<h1 id="mdp">MDP</h1>
@@ -205,20 +219,6 @@
       </categories>
       <tags>
         <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Issues in Using Function Approximation for RL</title>
-    <url>/2021/05/07/FA-issues/</url>
-    <content><![CDATA[<h1 id="issues-in-using-function-approximation-for-reinforcement-learning"><a href="https://www.ri.cmu.edu/pub_files/pub1/thrun_sebastian_1993_1/thrun_sebastian_1993_1.pdf">Issues in Using Function Approximation for Reinforcement Learning</a></h1>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>VFA</category>
-      </categories>
-      <tags>
-        <tag>Function Approximation</tag>
-        <tag>Discussions</tag>
       </tags>
   </entry>
   <entry>
@@ -578,14 +578,6 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
-    <title>importance_sampling</title>
-    <url>/2021/05/21/importance-sampling/</url>
-    <content><![CDATA[<h1 id="importance-sampling">Importance Sampling</h1>
-<h1 id="ref">Ref</h1>
-<p>https://www.quora.com/Why-doesn-t-DQN-use-importance-sampling-Dont-we-always-use-this-method-to-correct-the-sampling-error-produced-by-the-off-policy https://danieltakeshi.github.io/2019/01/25/deep-learning-01/</p>
-]]></content>
-  </entry>
-  <entry>
     <title>Leet Code (1)</title>
     <url>/2021/05/18/leet-code-1/</url>
     <content><![CDATA[<p><strong>题目库: <code>[455, 605, 122, 435, 665, 763, 452, 167, 88, 142, 633, 680, 524, 69, 34, 81]</code></strong></p>
@@ -665,6 +657,14 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
 ]]></content>
   </entry>
   <entry>
+    <title>importance_sampling</title>
+    <url>/2021/05/21/importance-sampling/</url>
+    <content><![CDATA[<h1 id="importance-sampling">Importance Sampling</h1>
+<h1 id="ref">Ref</h1>
+<p>https://www.quora.com/Why-doesn-t-DQN-use-importance-sampling-Dont-we-always-use-this-method-to-correct-the-sampling-error-produced-by-the-off-policy https://danieltakeshi.github.io/2019/01/25/deep-learning-01/</p>
+]]></content>
+  </entry>
+  <entry>
     <title>Monte Carlo Estimation</title>
     <url>/2021/05/15/mc/</url>
     <content><![CDATA[<h1 id="learning-from-stream-of-data-monte-carlo-methods">Learning From Stream of Data (Monte Carlo Methods)</h1>
@@ -717,6 +717,7 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
     <url>/2021/05/23/policy-gradient/</url>
     <content><![CDATA[<h1 id="policy-search-methods">Policy Search Methods</h1>
 <p>So far, we have encountered methods for computing the optimal policy based on the computation of the value function. In this case, only value function was explicitly represented. There are also methods based on explicit representation of the policy and optimizing the performance of the agent by searching in the space of policies. These methods are called <strong>policy search methods</strong>.</p>
+<p>Consider a stochastic policy <span class="math inline">\(\pi_\theta: X \rightarrow M(A)\)</span> that maps state space to distribution defined over actions</p>
 ]]></content>
       <categories>
         <category>RL</category>
@@ -951,6 +952,32 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
+    <title>SARSA</title>
+    <url>/2021/05/16/sarsa/</url>
+    <content><![CDATA[<h1 id="sarsa">SARSA</h1>
+<p>SARSA (State Action State Reward State Action) is an on-policy TD algorithm that follows a PI-like procedure:</p>
+<ol type="1">
+<li>Estimate <span class="math inline">\(Q^{\pi_k}\)</span> for a given policy <span class="math inline">\(\pi_k\)</span></li>
+<li>Perform policy improvement to obtain a new policy <span class="math inline">\(\pi_{k+1}\)</span></li>
+</ol>
+<p>Compare with usual Policy iteration, SARSA uses <code>Generalized policy iteration</code> to improve the policy before <span class="math inline">\(Q\)</span> converges to <span class="math inline">\(Q^{\pi_k}\)</span>.</p>
+<span id="more"></span>
+<h2 id="algorithm">Algorithm</h2>
+<p><img src="/images/RL/mc/td_6.png"></p>
+<p>Notice that, <span class="math inline">\(\pi_t\)</span> here is a <span class="math inline">\(\epsilon\)</span>-greedy policy because we want to ensure some exploration. The greedy part of the policy performs the policy improvement while the occasional random choice of actions allows the agent to have some exploration.</p>
+<h2 id="implementation">Implementation</h2>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>TD</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>Tabular Methods</tag>
+        <tag>TD</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Q-Learning</title>
     <url>/2021/05/16/q-learning/</url>
     <content><![CDATA[<h1 id="temporal-difference-learning-for-control-q-learning">Temporal Difference Learning for Control: Q-Learning</h1>
@@ -1049,32 +1076,6 @@ Var[max_{a^{\prime} \in A} Q_t (X^{\prime}, a^{\prime}) | X_t=x_t, A_t=a_t] &amp
 <li>A single learning rate suffices if the agent happens to visit all <span class="math inline">\((x, a) \in (X \times A)\)</span> frequent enough.</li>
 </ul>
 <h1 id="implementations">Implementations:</h1>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>TD</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>Tabular Methods</tag>
-        <tag>TD</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SARSA</title>
-    <url>/2021/05/16/sarsa/</url>
-    <content><![CDATA[<h1 id="sarsa">SARSA</h1>
-<p>SARSA (State Action State Reward State Action) is an on-policy TD algorithm that follows a PI-like procedure:</p>
-<ol type="1">
-<li>Estimate <span class="math inline">\(Q^{\pi_k}\)</span> for a given policy <span class="math inline">\(\pi_k\)</span></li>
-<li>Perform policy improvement to obtain a new policy <span class="math inline">\(\pi_{k+1}\)</span></li>
-</ol>
-<p>Compare with usual Policy iteration, SARSA uses <code>Generalized policy iteration</code> to improve the policy before <span class="math inline">\(Q\)</span> converges to <span class="math inline">\(Q^{\pi_k}\)</span>.</p>
-<span id="more"></span>
-<h2 id="algorithm">Algorithm</h2>
-<p><img src="/images/RL/mc/td_6.png"></p>
-<p>Notice that, <span class="math inline">\(\pi_t\)</span> here is a <span class="math inline">\(\epsilon\)</span>-greedy policy because we want to ensure some exploration. The greedy part of the policy performs the policy improvement while the occasional random choice of actions allows the agent to have some exploration.</p>
-<h2 id="implementation">Implementation</h2>
 ]]></content>
       <categories>
         <category>RL</category>
