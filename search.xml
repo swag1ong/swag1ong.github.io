@@ -81,69 +81,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Dueling Network Architectures for DRL</title>
-    <url>/2021/05/13/Dueling/</url>
-    <content><![CDATA[<h1 id="dueling-network-architectures-for-deep-reinforcement-learning">Dueling Network Architectures for Deep Reinforcement Learning</h1>
-<h2 id="introduction">Introduction</h2>
-<p>The authors introduce an innovating neural network architecture that is better suited for model-free RL. This paper advances a new network but uses already published algorithms.</p>
-<p>The proposed architecture is called dueling architecture, explicitly separates the representation of state values and state-dependent action advantages. The architecture consists of two streams that represent the value and advantage functions, while sharing a common convolutional feature learning module. The two streams are combined via a special aggregating layer to produce an estimate of the state-action value function <span class="math inline">\(Q\)</span>. This dueling network should be understood as a single Q network with two streams that replaces the popular single-stream Q-network in existing algorithms such as DQN. The dueling network automatically produces separate estimates of the state value function and advantage function, without any extra supervision.</p>
-<p><img src="/images/RL/papers/dueling_1.png"></p>
-<p>Intuitively, the dueling architecture can learn which states are (or are not) valuable, without having to learn the effect of each action for each state. (by taking the gradient wrt to the input) It can more quickly identify the correct action during policy evaluation as redundant or similar actions are added to the learning problem.</p>
-<span id="more"></span>
-<h2 id="background">Background</h2>
-<p><strong>random variables have subscript <span class="math inline">\(t\)</span>, <span class="math inline">\(E[ g(x_t, a_t) | x_t=x, a_t] = f(x, a)\)</span> is shorthanded as <span class="math inline">\(f(x, a) = E[g(x, a)]\)</span></strong></p>
-<p>In Atari domain, the agent perceives a video <span class="math inline">\(s_t\)</span> consisting of M image frames <span class="math inline">\(s_t = (x_{t-M+1}, ..., x_t) \in S\)</span> at time step <span class="math inline">\(t\)</span>. Then agent chooses an action from a discrete set <span class="math inline">\(a_t \in A\)</span> and observes a reward signal <span class="math inline">\(r_t\)</span> produced by the game emulator.</p>
-<p>The agent seeks to maximize the expected discounted return where we define the discounted return as <span class="math inline">\(R_t = \sum_{\tau=t}^{\infty} \gamma^{\tau - t} r_{\tau}\)</span> with <span class="math inline">\(\gamma \in [0, 1]\)</span>.</p>
-<p>For an agent behaving to a stochastic policy <span class="math inline">\(\pi\)</span>, the values of the state-action pair <span class="math inline">\((s, a)\)</span> and the state <span class="math inline">\(s\)</span> are defined as:</p>
-<p><span class="math display">\[Q^{\pi} (s, a) = E[R_t | s_t=s, a_t=a, \pi]\]</span></p>
-<p><span class="math display">\[V^{\pi} (s) = E_{a_t \sim \pi(\cdot | s)}[R_t | s_t=s, \pi] = E_{a_t \sim \pi(\cdot | s)}[E[R_t | s_t, a_t, \pi] | s_t=s] = E_{a_t \sim \pi(\cdot | s)}[ Q^{\pi}(s, a_t)]\]</span></p>
-<p>We know that we can rewrite <span class="math inline">\(Q^{\pi}\)</span> as:</p>
-<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
-<p>We also define:</p>
-<p><span class="math display">\[Q^{*} (s, a) = max_{\pi} Q^{\pi} (s, a), \forall (s, a) \in S X A\]</span></p>
-<p>Then:</p>
-<p><span class="math display">\[V^{*} (s) = max_{a} Q^{*} (s, a)\]</span></p>
-<p>And,</p>
-<p><span class="math display">\[Q^{*}(s, a) = E_{s^{\prime}} [r + \gamma max_{a^{\prime}} Q^{*} (s^{\prime}, a^{\prime}) | s, a]\]</span></p>
-<p>The advantage function is denoted as:</p>
-<p><span class="math display">\[A^{\pi} (s, a) = Q^{\pi} (s, a) - V^{\pi} (s)\]</span></p>
-<p><span class="math display">\[E_{a^{\prime}}[A^{\pi} (s, a) | s] = E_{a^{\prime}}[Q^{\pi} (s, a) | s] - V^{\pi} (s) = 0\]</span></p>
-<p>This means that the advantage at state <span class="math inline">\(s\)</span> weighted by policy <span class="math inline">\(\pi\)</span> is 0. Intuitively, the advantage function measures the relative importance for each action.</p>
-<h2 id="dueling-network-architecture">Dueling Network Architecture</h2>
-<p>Instead of following the convolutional layers with a single sequence of fully connected layers, they instead use two sequences (streams) of fully connected layers. The streams are constructed such that they have the capability of providing separate estimates of the value and advantage functions. Finally , the two streams are combined to produce a single output <span class="math inline">\(Q\)</span> function.</p>
-<p>From the advantage expression, we know that</p>
-<p><span class="math display">\[Q^{\pi} (s, a) = V^{\pi} (s) + A^{\pi} (s, a)\]</span></p>
-<p>If the policy is the deterministic policy, <span class="math inline">\(a^{*} = argmax_{a^{\prime} \in A} Q(s, a^{\prime})\)</span>, then:</p>
-<p><span class="math display">\[E_{a^{\prime}}[Q^{\pi} (s, a)] = Q^{\pi} (s, a^{*}) = V^{\pi} (s)\]</span> and hence <span class="math inline">\(A^{\pi}(s, a^{*}) = 0\)</span>$</p>
-<p>Let <span class="math inline">\(V(s; \theta, \beta), A(s, a; \theta, \alpha), Q(s, a; \theta, \alpha, \beta)\)</span> be parametrized version of <span class="math inline">\(V, A, Q\)</span> respectively. <span class="math inline">\(\theta\)</span> are the shared parameters, <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are the stream parameters for <span class="math inline">\(V, A\)</span>. We can calculate <span class="math inline">\(Q\)</span> directly using the formula:</p>
-<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha)\]</span></p>
-<p>However, these functions are just estimates of the true values, therefore are unidentifiable in the sense that given <span class="math inline">\(Q\)</span> we can not recover <span class="math inline">\(V, A\)</span> uniquely. (ie. given <span class="math inline">\(Q(s, a)\)</span> what is <span class="math inline">\(V(s), A(s, a)\)</span>?)</p>
-<p>To solve the problem, we can force the advantage function to have zero advantage at some chosen action, in this case the greedy action:</p>
-<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha) - max_{a^{\prime}} A(s, a^{\prime}; \theta, \alpha)\]</span></p>
-<p>Thus, if <span class="math inline">\(a^{*} = argmax_{a^{\prime} \in A} Q(s, a^{\prime})\)</span>, then</p>
-<p><span class="math display">\[Q(s, a^{*}; \theta, \alpha, \beta) = V(s; \theta, \beta)\]</span></p>
-<p>We can determine the <span class="math inline">\(V\)</span> given <span class="math inline">\(Q\)</span>.</p>
-<p>Or, we can have:</p>
-<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha) - \frac{1}{|A|} \sum_{a^{\prime}} A(s, a^{\prime}; \theta, \alpha)\]</span></p>
-<p>Take the expectation or average of <span class="math inline">\(Q\)</span>:</p>
-<p><span class="math display">\[E[Q(s, a; \theta, \alpha, \beta)] = V(s; \theta, \theta)\]</span></p>
-<p>On the one hand this loses the original semantics of <span class="math inline">\(V\)</span> and <span class="math inline">\(A\)</span> because they are now off-target by a constant, but on the other hand it increases the stability of the optimization. Note that while subtracting the mean or max helps with the identifiability, it does not change the relative rank of <span class="math inline">\(A, Q\)</span>, so the greedy action.</p>
-<h2 id="discussion">Discussion</h2>
-<p>The advantage of the dueling architecture lies partly in its ability to learn the state-value function efficiently. With every update of the <span class="math inline">\(Q\)</span> values in the dueling architecture, the value stream <span class="math inline">\(V\)</span> is updated – this contrasts with the updates in a single-stream architecture where only the value of one of actions is updated, the values of other actions are untouched. The advantage of the dueling architecture over single-stream <span class="math inline">\(Q\)</span> networks grows when the number of actions is large.</p>
-<h2 id="implementation">Implementation</h2>
-<p><em>One implementation of Dueling Architecture in PARL using PaddlPaddle for Atari Games</em></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> paddle.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AtariModel</span>(<span class="params">parl.Model</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, act_dim, dueling=<span class="literal">False</span></span>):</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line">        self.conv1 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">4</span>, out_channels=<span class="number">32</span>, kernel_size=<span class="number">5</span>, stride=<span class="number">1</span>, padding=<span class="number">2</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv2 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">32</span>, out_channels=<span class="number">32</span>, kernel_size=<span class="number">5</span>, stride=<span class="number">1</span>, padding=<span class="number">2</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv3 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">32</span>, out_channels=<span class="number">64</span>, kernel_size=<span class="number">4</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv4 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">64</span>, out_channels=<span class="number">64</span>, kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.relu = nn.ReLU()</span><br><span class="line">        self.max_pool = nn.MaxPool2D(kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>)</span><br><span class="line">        self.flatten = nn.Flatten()</span><br><span class="line"></span><br><span class="line">        self.dueling = dueling</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> dueling:</span><br><span class="line">            self.linear_1_adv = nn.Linear(in_features=<span class="number">6400</span>, out_features=<span class="number">512</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">            self.linear_2_adv = nn.Linear(in_features=<span class="number">512</span>, out_features=act_dim)</span><br><span class="line">            self.linear_1_val = nn.Linear(in_features=<span class="number">6400</span>, out_features=<span class="number">512</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">            self.linear_2_val = nn.Linear(in_features=<span class="number">512</span>, out_features=<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.linear_1 = nn.Linear(in_features=<span class="number">6400</span>, out_features=act_dim)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">value</span>(<span class="params">self, obs</span>):</span></span><br><span class="line"></span><br><span class="line">        obs = obs / <span class="number">255.0</span></span><br><span class="line">        out = self.max_pool(self.relu(self.conv1(obs)))</span><br><span class="line">        out = self.max_pool(self.relu(self.conv2(out)))</span><br><span class="line">        out = self.max_pool(self.relu(self.conv3(out)))</span><br><span class="line">        out = self.relu(self.conv4(out))</span><br><span class="line">        out = self.flatten(out)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.dueling:</span><br><span class="line">            As = self.relu(self.linear_1_adv(out))</span><br><span class="line">            As = self.linear_2_adv(As)</span><br><span class="line">            V = self.relu(self.linear_1_val(out))</span><br><span class="line">            V = self.linear_2_val(V)</span><br><span class="line">            Q = As + (V - As.mean(axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            Q = self.linear_1(out)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Q</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>VFA</category>
-      </categories>
-      <tags>
-        <tag>Function Approximation</tag>
-        <tag>Continuous State Space</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Issues in Using Function Approximation for RL</title>
     <url>/2021/05/07/FA-issues/</url>
     <content><![CDATA[<h1 id="issues-in-using-function-approximation-for-reinforcement-learning"><a href="https://www.ri.cmu.edu/pub_files/pub1/thrun_sebastian_1993_1/thrun_sebastian_1993_1.pdf">Issues in Using Function Approximation for Reinforcement Learning</a></h1>
@@ -219,6 +156,76 @@
       </categories>
       <tags>
         <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Batch Normalization</title>
+    <url>/2021/05/26/batch-norm/</url>
+    <content><![CDATA[<h1 id="batch-normalization-accelerating-deep-network-training-by-reducing-internal-covariate-shift">Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift</h1>
+<p><strong>Internal covariate shift</strong> describes the phenomenon in training DNN that the distribution of each layer's inputs changes during training, as the parameters of the previous layer change. This slow down the training by requiring lower learning rates and careful parameter initialization, and makes it notoriously hard to train models with saturating non-linearities (tanh, sigmoid). This problem can be addressed by normalizing the layer inputs.</p>
+<h2 id="introduction">Introduction</h2>
+<p>To see the input distribution shift in terms of sub-network or a layer. Consider a network computing:</p>
+<p><span class="math display">\[l = F_2(F_1(\textbf{u}, \Theta_1), \Theta_2)\]</span></p>
+<p>Where <span class="math inline">\(F_1\)</span> and <span class="math inline">\(F_2\)</span> are arbitrary transformations, and the parameters <span class="math inline">\(\Theta_1, \Theta_2\)</span> are to be learned to minimize the loss <span class="math inline">\(l\)</span>. Learning <span class="math inline">\(\Theta_2\)</span> can be viewed as if inputs <span class="math inline">\(\textbf{x} = F_1(\textbf{u}, \Theta_1)\)</span> and fed into the sub-network:</p>
+<p><span class="math display">\[l = F_2(\textbf{x}, \Theta_2)\]</span></p>
+<p>Thus, a fixed input distribution (ie. the distribution of <span class="math inline">\(\textbf{x}\)</span>) would make the training more effective, because <span class="math inline">\(\Theta_2\)</span> does not need to adapt to the new distribution. At the same time, if the mapping <span class="math inline">\(F_2\)</span> is saturating non-linearity, a fixed-distribution will help to prevent the gradient of parameters from vanishing.</p>
+<span id="more"></span>
+<h2 id="towards-reducing-internal-covariate-shift">Towards Reducing Internal Covariate Shift</h2>
+<p>Consider a layer with the input <span class="math inline">\(u\)</span> that adds the learned bias <span class="math inline">\(b\)</span>, and normalizes the result by subtracting the mean of the activation computed over the training data <span class="math inline">\(\hat{x} = x - \bar{x}\)</span>, where <span class="math inline">\(\bar{x} = \frac{1}{N} \sum_{i=1}^{N} x_i\)</span>. If we <strong>ignore the dependence of <span class="math inline">\(b\)</span> in <span class="math inline">\(\bar{x}\)</span></strong> (ie. <span class="math inline">\(\hat{x} = x - \mu\)</span> we just center the input by some constant <span class="math inline">\(\mu\)</span>, does not take into account <span class="math inline">\(b\)</span>), then</p>
+<p><span class="math display">\[\frac{\partial L}{\partial b} = -\frac{\partial L}{\partial \hat{x}} \frac{\partial \hat{x}}{\partial b} = -\frac{\partial L}{\partial \hat{x}}\]</span></p>
+<p>Then, the update rule is:</p>
+<p><span class="math display">\[b \leftarrow b - \frac{1}{N}\sum_{i}\frac{\partial L}{\partial \hat{x}}\]</span></p>
+<p>Let, <span class="math inline">\(\nabla b = - \frac{1}{N}\sum_{i}\frac{\partial L}{\partial \hat{x}}\)</span> Then, new <span class="math inline">\(\hat{x}\)</span> after update <span class="math inline">\(b\)</span> is:</p>
+<p><span class="math display">\[u + (b + \nabla b) + \frac{1}{N} \sum_i [u + (b + \nabla b)] = u + b - E[u + b]\]</span></p>
+<p>Thus, the combination of the update to <span class="math inline">\(b\)</span> and subsequent change in normalization led to no change in the output of the layer nor, consequently, the loss (ie. center the input without taking account of <span class="math inline">\(b\)</span> will result useless update to <span class="math inline">\(b\)</span> that has no effect on the loss). However, as the training continues, <span class="math inline">\(b\)</span> will grow indefinitely while the loss remains the same.</p>
+<p>This is caused because the gradient descent optimization does not take into account that the normalization takes place.</p>
+<h2 id="normalization-via-mini-batch-statistics">Normalization via Mini-Batch Statistics</h2>
+<p>Normalize the layer inputs are expensive, as it requires computing the covariance matrix, the inverse square root, the expectation over all training samples, as well as the derivative of these transformations. Several simplifications are proposed to deal with these.</p>
+<ol type="1">
+<li><p>Instead normalize the features in layer inputs and outputs jointly, we will normalize each scalar feature independently by making it have the mean of zero and the variance of 1. For a layer with <span class="math inline">\(d\)</span>-dimensional input <span class="math inline">\(x = (x^{1}, ..., x^{d})\)</span>, we will normalize each individual feature:</p>
+<p><span class="math display">\[\hat{x}^{k} = \frac{x^k - E[x^k]}{\sqrt{Var[x^k]}}\]</span></p></li>
+</ol>
+<p>Where the expectation and variance are computed over the training dataset (i.e first input feature is normalized by first features of all input samples). However, this approach may decrease the expressive power of the activation function, for instance, if we scale the input of sigmoid activation to have mean 0 and variance 1, then we will be limited at the middle region of the sigmoid function (<strong>In this paper, batch norm is applied right after activation and before activation function</strong>)</p>
+<p><img src="/images/ML/batch_norm_1.png"></p>
+<p>To address this, we make sure that the transformation inserted in the network can represent the identity transformation, that is for each activation <span class="math inline">\(x^k\)</span>, a pair of parameters <span class="math inline">\(\gamma^k, \beta^k\)</span>, which scales and shift the normalized value:</p>
+<p><span class="math display">\[y^k = \gamma^k \hat{x}^k + \beta^k\]</span></p>
+<p>These parameters are learned through back propagation, and by setting <span class="math inline">\(\gamma^k = \sqrt{Var[x^k]}, \beta^k = E[x^k]\)</span>, we could recover the original activation, if that were the optimal thing to do.</p>
+<ol start="2" type="1">
+<li>Instead of using whole batch of data for estimating mean and variance which is impractical in practice. We only use mini-batches to estimate means and variance, because mini-batches produce unbiased estimates of the mean and variance. Note that the use of mini-batches is enabled by computation of <strong>per-dimension variances rather than joint covariances</strong> (we do not estimate the covariance). In joint case, regularization would be required since the mini-batch size is likely to be smaller than the number of activations, resulting in singular covariance matrices.</li>
+</ol>
+<p>Together, we can describe the batch norm transformation for each activation <span class="math inline">\(x\)</span> as:</p>
+<p><img src="/images/ML/batch_norm_2.png"></p>
+<p>Where <span class="math inline">\(\epsilon\)</span> is a constant added to the mini-batch variance for numerical stability, <span class="math inline">\(BN_{\gamma, \beta}: x_{1, ..., m} \rightarrow y_{1, ..., m}\)</span> is the batch norm transformation. Since the normalization is applied to each activation independently, <span class="math inline">\(k\)</span> which indicates the activation or dimension is dropped.</p>
+<p>The backward pass can be write as:</p>
+<p><img src="/images/ML/batch_norm_3.png"></p>
+<p>Notice that, <span class="math inline">\(\gamma, \beta\)</span> have superscript <span class="math inline">\(k\)</span>, they bind to each activation.</p>
+<h2 id="training-and-inference-with-batch-normalized-network">Training and Inference with Batch Normalized Network</h2>
+<p>To <strong>Batch-Normalize</strong> a network, any layer that previously received <span class="math inline">\(x\)</span> as input now receive <span class="math inline">\(BN(x)\)</span>.</p>
+<h3 id="training">Training</h3>
+<p>A model employing Batch Normalization can be trained using batch gradient descent, or Stochastic Gradient Descent with a mini-batch size <span class="math inline">\(m &gt; 1\)</span> or any variant such as Adam. The normalization of activations that depends on the mini-batch allows efficient training. Using moving averages instead, we can track the accuracy of a model as it trains.</p>
+<h3 id="testing">Testing</h3>
+<p>During testing, it is neither necessary nor desirable to estimate mean and variance using mini-batches, thus, once the network has been trained, we use the normalization:</p>
+<p><span class="math display">\[\hat{x} = \frac{x - E[x]}{\sqrt{Var[x] - \epsilon}}\]</span></p>
+<p><span class="math display">\[Var[x] = \frac{m}{m - 1} E_{B}[\sigma^2_{B}]\]</span></p>
+<p>where <span class="math inline">\(E[x]\)</span> is the mean for the whole dataset. The variance is a bias-corrected version of mini-batch sample variance over all training mini-batches weighted by their occurrence during training.</p>
+<p><img src="/images/ML/batch_norm_4.png"></p>
+<h2 id="batch-norm-in-cov-net">Batch Norm in Cov Net</h2>
+<p>For convolutional layers, we additionally want the normalization to obey the convolutional property ----- so that different elements of the same feature map, at different locations, are normalized in the same way (ie. features in the same feature are normalized in same way). So in the <span class="math inline">\(BN(x)\)</span>, we replace <span class="math inline">\(B\)</span>: mini-batch by <span class="math inline">\(B\)</span>: the set of all values in a feature map across both the elements of a mini-batch and spatial locations, for a mini-batch of size <span class="math inline">\(m\)</span> and feature map of size <span class="math inline">\(p * q\)</span> <span class="math inline">\(|B| = m * p * q\)</span>. We learn <span class="math inline">\(\gamma^k, \beta^k\)</span> per feature map. So in total, we have <span class="math inline">\(C\)</span> different means and variances, where <span class="math inline">\(C\)</span> is number of input channels.</p>
+<h2 id="side-effects-of-batch-norm">Side Effects of Batch Norm</h2>
+<ol type="1">
+<li><p>With Batch Norm, back-propagation through a layer is unaffected by the scale of its parameters. <span class="math display">\[ BN(\alpha W u) = BN(Wu) \]</span> <span class="math display">\[ \frac{\partial BN(\alpha Wu)}{\partial u} = \frac{\partial BN(Wu)}{\partial u}\]</span> <span class="math display">\[ \frac{\partial BN(\alpha Wu)}{\partial \alpha W} = \frac{1}{\alpha} \frac{\partial BN(Wu)}{\partial u}\]</span></p></li>
+<li><p>Larger weights leads to smaller gradients, Batch Normalization stabilize the parameter growth:</p>
+<p><span class="math display">\[\alpha = 100, \implies \frac{\partial BN(100 Wu)}{\partial 100 W} = \frac{1}{100} \frac{\partial BN(Wu)}{\partial u}\]</span></p></li>
+<li><p>Use sample statistics from mini-batches introduce random noise, which helps with the overfitting.</p></li>
+</ol>
+]]></content>
+      <categories>
+        <category>DL</category>
+        <category>Techniques</category>
+      </categories>
+      <tags>
+        <tag>Deep Learning</tag>
+        <tag>Regularization</tag>
       </tags>
   </entry>
   <entry>
@@ -643,7 +650,7 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
-    <title>policy_gradient</title>
+    <title>Policy Gradient</title>
     <url>/2021/05/23/policy-gradient/</url>
     <content><![CDATA[<h1 id="policy-search-methods">Policy Search Methods</h1>
 <p>So far, we have encountered methods for computing the optimal policy based on the computation of the value function. In this case, only value function was explicitly represented.</p>
@@ -881,6 +888,32 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
+    <title>SARSA</title>
+    <url>/2021/05/16/sarsa/</url>
+    <content><![CDATA[<h1 id="sarsa">SARSA</h1>
+<p>SARSA (State Action State Reward State Action) is an on-policy TD algorithm that follows a PI-like procedure:</p>
+<ol type="1">
+<li>Estimate <span class="math inline">\(Q^{\pi_k}\)</span> for a given policy <span class="math inline">\(\pi_k\)</span></li>
+<li>Perform policy improvement to obtain a new policy <span class="math inline">\(\pi_{k+1}\)</span></li>
+</ol>
+<p>Compare with usual Policy iteration, SARSA uses <code>Generalized policy iteration</code> to improve the policy before <span class="math inline">\(Q\)</span> converges to <span class="math inline">\(Q^{\pi_k}\)</span>.</p>
+<span id="more"></span>
+<h2 id="algorithm">Algorithm</h2>
+<p><img src="/images/RL/mc/td_6.png"></p>
+<p>Notice that, <span class="math inline">\(\pi_t\)</span> here is a <span class="math inline">\(\epsilon\)</span>-greedy policy because we want to ensure some exploration. The greedy part of the policy performs the policy improvement while the occasional random choice of actions allows the agent to have some exploration.</p>
+<h2 id="implementation">Implementation</h2>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>TD</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>Tabular Methods</tag>
+        <tag>TD</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Q-Learning</title>
     <url>/2021/05/16/q-learning/</url>
     <content><![CDATA[<h1 id="temporal-difference-learning-for-control-q-learning">Temporal Difference Learning for Control: Q-Learning</h1>
@@ -991,29 +1024,32 @@ Var[max_{a^{\prime} \in A} Q_t (X^{\prime}, a^{\prime}) | X_t=x_t, A_t=a_t] &amp
       </tags>
   </entry>
   <entry>
-    <title>SARSA</title>
-    <url>/2021/05/16/sarsa/</url>
-    <content><![CDATA[<h1 id="sarsa">SARSA</h1>
-<p>SARSA (State Action State Reward State Action) is an on-policy TD algorithm that follows a PI-like procedure:</p>
-<ol type="1">
-<li>Estimate <span class="math inline">\(Q^{\pi_k}\)</span> for a given policy <span class="math inline">\(\pi_k\)</span></li>
-<li>Perform policy improvement to obtain a new policy <span class="math inline">\(\pi_{k+1}\)</span></li>
-</ol>
-<p>Compare with usual Policy iteration, SARSA uses <code>Generalized policy iteration</code> to improve the policy before <span class="math inline">\(Q\)</span> converges to <span class="math inline">\(Q^{\pi_k}\)</span>.</p>
-<span id="more"></span>
-<h2 id="algorithm">Algorithm</h2>
-<p><img src="/images/RL/mc/td_6.png"></p>
-<p>Notice that, <span class="math inline">\(\pi_t\)</span> here is a <span class="math inline">\(\epsilon\)</span>-greedy policy because we want to ensure some exploration. The greedy part of the policy performs the policy improvement while the occasional random choice of actions allows the agent to have some exploration.</p>
-<h2 id="implementation">Implementation</h2>
+    <title>stochastic_graph</title>
+    <url>/2021/05/27/stochastic-graph/</url>
+    <content><![CDATA[<h1 id="gradient-estimation-using-stochastic-computation-graphs">Gradient Estimation Using Stochastic Computation Graphs</h1>
+<p>The backpropagation algorithm is only sufficient when the loss function is a deterministic, differentiable function of the parameter vector. The main practical result of this article is that to compute the gradient estimator, one just needs to make a simple modification to the backpropagation algorithm, where extra gradient signals are introduced at the stochastic nodes.</p>
+<h2 id="preliminaries">Preliminaries</h2>
+<p>Suppose <span class="math inline">\(X\)</span> is a random variable, <span class="math inline">\(f\)</span> is a function, we are interested in computing</p>
+<p><span class="math display">\[\frac{\partial}{\partial \theta} E_{X}[f(X)]\]</span></p>
+<p>There are few different ways that the process for generating <span class="math inline">\(X\)</span> could be parameterized in terms of <span class="math inline">\(\theta\)</span>, which lead to different gradient estimators.</p>
+<ul>
+<li><p>We might be given a parameterized probability distribution <span class="math inline">\(X \sim p(\cdot ; \theta)\)</span>. In this case, we can use <strong>score function</strong> estimator:</p>
+<p><span class="math display">\[\frac{\partial}{\partial \theta} E_{X \sim p(\cdot ; \theta)}[f(X)] = \int_x \frac{\frac{\partial}{\partial\theta} p(x; \theta)}{p(x; \theta)} p(x; \theta) f(x)dx = E_{X \sim p(\cdot ; \theta)}[f(X) \frac{\partial}{\partial\theta} log p(X; \theta)]\]</span></p>
+<p>This equation is valid if <span class="math inline">\(p(x; \theta)\)</span> is a continuous function of <span class="math inline">\(\theta\)</span>; however it does not need to be a continuous function of <span class="math inline">\(x\)</span></p></li>
+<li><p><span class="math inline">\(X\)</span> may be a deterministic, continuous function of <span class="math inline">\(\theta\)</span> and another random variable <span class="math inline">\(Z\)</span>, we can write as <span class="math inline">\(X(\theta, Z)\)</span>. Then we can use the <strong>pathwise derivative</strong> estimator:</p>
+<p><span class="math display">\[E_{Z}[f(X(\theta, Z))] = E_{Z}[\frac{\partial}{\partial \theta} f(X(\theta, Z))]\]</span></p>
+<p>We can swap the derivative and expectation iff <span class="math inline">\(f(X(\theta, Z))\)</span> is a continuous function of <span class="math inline">\(\theta\)</span> for all values of <span class="math inline">\(Z\)</span>. However, it is also sufficient that this function is almost-everywhere differentiable.</p></li>
+<li><p>Finally, <span class="math inline">\(\theta\)</span> may be appeared both in the probability distribution and inside the expectation:</p>
+<p><span class="math display">\[E_{Z \sim p(\cdot; \theta)}[f(X(\theta, Z))] = \int_z \frac{\partial}{\partial \theta} f(X(\theta, z)) p(z; \theta) dz = E_{Z \sim p(\cdot; \theta)}[\frac{\partial}{\partial \theta} f(X(\theta, Z)) + (\frac{\partial}{\partial \theta} log p(Z; \theta))f(X(\theta, Z))]\]</span></p></li>
+</ul>
 ]]></content>
       <categories>
-        <category>RL</category>
-        <category>TD</category>
+        <category>DL</category>
+        <category>Techniques</category>
       </categories>
       <tags>
-        <tag>RL Basics</tag>
-        <tag>Tabular Methods</tag>
-        <tag>TD</tag>
+        <tag>Policy Gradient</tag>
+        <tag>Deep Learning</tag>
       </tags>
   </entry>
   <entry>
@@ -1221,6 +1257,69 @@ Uniform(A), \text{w. p } \epsilon \\
       <tags>
         <tag>RL Basics</tag>
         <tag>Dynamic Programming</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Dueling Network Architectures for DRL</title>
+    <url>/2021/05/13/Dueling/</url>
+    <content><![CDATA[<h1 id="dueling-network-architectures-for-deep-reinforcement-learning">Dueling Network Architectures for Deep Reinforcement Learning</h1>
+<h2 id="introduction">Introduction</h2>
+<p>The authors introduce an innovating neural network architecture that is better suited for model-free RL. This paper advances a new network but uses already published algorithms.</p>
+<p>The proposed architecture is called dueling architecture, explicitly separates the representation of state values and state-dependent action advantages. The architecture consists of two streams that represent the value and advantage functions, while sharing a common convolutional feature learning module. The two streams are combined via a special aggregating layer to produce an estimate of the state-action value function <span class="math inline">\(Q\)</span>. This dueling network should be understood as a single Q network with two streams that replaces the popular single-stream Q-network in existing algorithms such as DQN. The dueling network automatically produces separate estimates of the state value function and advantage function, without any extra supervision.</p>
+<p><img src="/images/RL/papers/dueling_1.png"></p>
+<p>Intuitively, the dueling architecture can learn which states are (or are not) valuable, without having to learn the effect of each action for each state. (by taking the gradient wrt to the input) It can more quickly identify the correct action during policy evaluation as redundant or similar actions are added to the learning problem.</p>
+<span id="more"></span>
+<h2 id="background">Background</h2>
+<p><strong>random variables have subscript <span class="math inline">\(t\)</span>, <span class="math inline">\(E[ g(x_t, a_t) | x_t=x, a_t] = f(x, a)\)</span> is shorthanded as <span class="math inline">\(f(x, a) = E[g(x, a)]\)</span></strong></p>
+<p>In Atari domain, the agent perceives a video <span class="math inline">\(s_t\)</span> consisting of M image frames <span class="math inline">\(s_t = (x_{t-M+1}, ..., x_t) \in S\)</span> at time step <span class="math inline">\(t\)</span>. Then agent chooses an action from a discrete set <span class="math inline">\(a_t \in A\)</span> and observes a reward signal <span class="math inline">\(r_t\)</span> produced by the game emulator.</p>
+<p>The agent seeks to maximize the expected discounted return where we define the discounted return as <span class="math inline">\(R_t = \sum_{\tau=t}^{\infty} \gamma^{\tau - t} r_{\tau}\)</span> with <span class="math inline">\(\gamma \in [0, 1]\)</span>.</p>
+<p>For an agent behaving to a stochastic policy <span class="math inline">\(\pi\)</span>, the values of the state-action pair <span class="math inline">\((s, a)\)</span> and the state <span class="math inline">\(s\)</span> are defined as:</p>
+<p><span class="math display">\[Q^{\pi} (s, a) = E[R_t | s_t=s, a_t=a, \pi]\]</span></p>
+<p><span class="math display">\[V^{\pi} (s) = E_{a_t \sim \pi(\cdot | s)}[R_t | s_t=s, \pi] = E_{a_t \sim \pi(\cdot | s)}[E[R_t | s_t, a_t, \pi] | s_t=s] = E_{a_t \sim \pi(\cdot | s)}[ Q^{\pi}(s, a_t)]\]</span></p>
+<p>We know that we can rewrite <span class="math inline">\(Q^{\pi}\)</span> as:</p>
+<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
+<p>We also define:</p>
+<p><span class="math display">\[Q^{*} (s, a) = max_{\pi} Q^{\pi} (s, a), \forall (s, a) \in S X A\]</span></p>
+<p>Then:</p>
+<p><span class="math display">\[V^{*} (s) = max_{a} Q^{*} (s, a)\]</span></p>
+<p>And,</p>
+<p><span class="math display">\[Q^{*}(s, a) = E_{s^{\prime}} [r + \gamma max_{a^{\prime}} Q^{*} (s^{\prime}, a^{\prime}) | s, a]\]</span></p>
+<p>The advantage function is denoted as:</p>
+<p><span class="math display">\[A^{\pi} (s, a) = Q^{\pi} (s, a) - V^{\pi} (s)\]</span></p>
+<p><span class="math display">\[E_{a^{\prime}}[A^{\pi} (s, a) | s] = E_{a^{\prime}}[Q^{\pi} (s, a) | s] - V^{\pi} (s) = 0\]</span></p>
+<p>This means that the advantage at state <span class="math inline">\(s\)</span> weighted by policy <span class="math inline">\(\pi\)</span> is 0. Intuitively, the advantage function measures the relative importance for each action.</p>
+<h2 id="dueling-network-architecture">Dueling Network Architecture</h2>
+<p>Instead of following the convolutional layers with a single sequence of fully connected layers, they instead use two sequences (streams) of fully connected layers. The streams are constructed such that they have the capability of providing separate estimates of the value and advantage functions. Finally , the two streams are combined to produce a single output <span class="math inline">\(Q\)</span> function.</p>
+<p>From the advantage expression, we know that</p>
+<p><span class="math display">\[Q^{\pi} (s, a) = V^{\pi} (s) + A^{\pi} (s, a)\]</span></p>
+<p>If the policy is the deterministic policy, <span class="math inline">\(a^{*} = argmax_{a^{\prime} \in A} Q(s, a^{\prime})\)</span>, then:</p>
+<p><span class="math display">\[E_{a^{\prime}}[Q^{\pi} (s, a)] = Q^{\pi} (s, a^{*}) = V^{\pi} (s)\]</span> and hence <span class="math inline">\(A^{\pi}(s, a^{*}) = 0\)</span>$</p>
+<p>Let <span class="math inline">\(V(s; \theta, \beta), A(s, a; \theta, \alpha), Q(s, a; \theta, \alpha, \beta)\)</span> be parametrized version of <span class="math inline">\(V, A, Q\)</span> respectively. <span class="math inline">\(\theta\)</span> are the shared parameters, <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are the stream parameters for <span class="math inline">\(V, A\)</span>. We can calculate <span class="math inline">\(Q\)</span> directly using the formula:</p>
+<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha)\]</span></p>
+<p>However, these functions are just estimates of the true values, therefore are unidentifiable in the sense that given <span class="math inline">\(Q\)</span> we can not recover <span class="math inline">\(V, A\)</span> uniquely. (ie. given <span class="math inline">\(Q(s, a)\)</span> what is <span class="math inline">\(V(s), A(s, a)\)</span>?)</p>
+<p>To solve the problem, we can force the advantage function to have zero advantage at some chosen action, in this case the greedy action:</p>
+<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha) - max_{a^{\prime}} A(s, a^{\prime}; \theta, \alpha)\]</span></p>
+<p>Thus, if <span class="math inline">\(a^{*} = argmax_{a^{\prime} \in A} Q(s, a^{\prime})\)</span>, then</p>
+<p><span class="math display">\[Q(s, a^{*}; \theta, \alpha, \beta) = V(s; \theta, \beta)\]</span></p>
+<p>We can determine the <span class="math inline">\(V\)</span> given <span class="math inline">\(Q\)</span>.</p>
+<p>Or, we can have:</p>
+<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha) - \frac{1}{|A|} \sum_{a^{\prime}} A(s, a^{\prime}; \theta, \alpha)\]</span></p>
+<p>Take the expectation or average of <span class="math inline">\(Q\)</span>:</p>
+<p><span class="math display">\[E[Q(s, a; \theta, \alpha, \beta)] = V(s; \theta, \theta)\]</span></p>
+<p>On the one hand this loses the original semantics of <span class="math inline">\(V\)</span> and <span class="math inline">\(A\)</span> because they are now off-target by a constant, but on the other hand it increases the stability of the optimization. Note that while subtracting the mean or max helps with the identifiability, it does not change the relative rank of <span class="math inline">\(A, Q\)</span>, so the greedy action.</p>
+<h2 id="discussion">Discussion</h2>
+<p>The advantage of the dueling architecture lies partly in its ability to learn the state-value function efficiently. With every update of the <span class="math inline">\(Q\)</span> values in the dueling architecture, the value stream <span class="math inline">\(V\)</span> is updated – this contrasts with the updates in a single-stream architecture where only the value of one of actions is updated, the values of other actions are untouched. The advantage of the dueling architecture over single-stream <span class="math inline">\(Q\)</span> networks grows when the number of actions is large.</p>
+<h2 id="implementation">Implementation</h2>
+<p><em>One implementation of Dueling Architecture in PARL using PaddlPaddle for Atari Games</em></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> paddle.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AtariModel</span>(<span class="params">parl.Model</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, act_dim, dueling=<span class="literal">False</span></span>):</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line">        self.conv1 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">4</span>, out_channels=<span class="number">32</span>, kernel_size=<span class="number">5</span>, stride=<span class="number">1</span>, padding=<span class="number">2</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv2 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">32</span>, out_channels=<span class="number">32</span>, kernel_size=<span class="number">5</span>, stride=<span class="number">1</span>, padding=<span class="number">2</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv3 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">32</span>, out_channels=<span class="number">64</span>, kernel_size=<span class="number">4</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv4 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">64</span>, out_channels=<span class="number">64</span>, kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.relu = nn.ReLU()</span><br><span class="line">        self.max_pool = nn.MaxPool2D(kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>)</span><br><span class="line">        self.flatten = nn.Flatten()</span><br><span class="line"></span><br><span class="line">        self.dueling = dueling</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> dueling:</span><br><span class="line">            self.linear_1_adv = nn.Linear(in_features=<span class="number">6400</span>, out_features=<span class="number">512</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">            self.linear_2_adv = nn.Linear(in_features=<span class="number">512</span>, out_features=act_dim)</span><br><span class="line">            self.linear_1_val = nn.Linear(in_features=<span class="number">6400</span>, out_features=<span class="number">512</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">            self.linear_2_val = nn.Linear(in_features=<span class="number">512</span>, out_features=<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.linear_1 = nn.Linear(in_features=<span class="number">6400</span>, out_features=act_dim)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">value</span>(<span class="params">self, obs</span>):</span></span><br><span class="line"></span><br><span class="line">        obs = obs / <span class="number">255.0</span></span><br><span class="line">        out = self.max_pool(self.relu(self.conv1(obs)))</span><br><span class="line">        out = self.max_pool(self.relu(self.conv2(out)))</span><br><span class="line">        out = self.max_pool(self.relu(self.conv3(out)))</span><br><span class="line">        out = self.relu(self.conv4(out))</span><br><span class="line">        out = self.flatten(out)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.dueling:</span><br><span class="line">            As = self.relu(self.linear_1_adv(out))</span><br><span class="line">            As = self.linear_2_adv(As)</span><br><span class="line">            V = self.relu(self.linear_1_val(out))</span><br><span class="line">            V = self.linear_2_val(V)</span><br><span class="line">            Q = As + (V - As.mean(axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            Q = self.linear_1(out)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Q</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Continuous State Space</tag>
       </tags>
   </entry>
 </search>
