@@ -27,12 +27,16 @@
 <meta property="og:site_name" content="GoGoGogo!">
 <meta property="og:description" content="Gradient Estimation Using Stochastic Computation Graphs The backpropagation algorithm is only sufficient when the loss function is a deterministic, differentiable function of the parameter vector. The">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/ML/scg_1.png">
+<meta property="og:image" content="http://example.com/images/ML/scg_2.png">
+<meta property="og:image" content="http://example.com/images/ML/scg_3.png">
 <meta property="article:published_time" content="2021-05-27T09:38:11.000Z">
-<meta property="article:modified_time" content="2021-05-27T11:24:00.760Z">
+<meta property="article:modified_time" content="2021-05-28T06:41:43.210Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta property="article:tag" content="Policy Gradient">
 <meta property="article:tag" content="Deep Learning">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/ML/scg_1.png">
 
 
 <link rel="canonical" href="http://example.com/2021/05/27/stochastic-graph/">
@@ -149,7 +153,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#gradient-estimation-using-stochastic-computation-graphs"><span class="nav-number">1.</span> <span class="nav-text">Gradient Estimation Using Stochastic Computation Graphs</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#preliminaries"><span class="nav-number">1.1.</span> <span class="nav-text">Preliminaries</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#gradient-estimation-using-stochastic-computation-graphs"><span class="nav-number">1.</span> <span class="nav-text">Gradient Estimation Using Stochastic Computation Graphs</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#preliminaries"><span class="nav-number">1.1.</span> <span class="nav-text">Preliminaries</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#gradient-estimators-for-a-single-random-variable"><span class="nav-number">1.1.1.</span> <span class="nav-text">Gradient Estimators for a Single Random Variable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#stochastic-computation-graphs"><span class="nav-number">1.1.2.</span> <span class="nav-text">Stochastic Computation Graphs</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -250,10 +254,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-05-27 17:38:11 / Modified: 19:24:00" itemprop="dateCreated datePublished" datetime="2021-05-27T17:38:11+08:00">2021-05-27</time>
+      <time title="Created: 2021-05-27 17:38:11" itemprop="dateCreated datePublished" datetime="2021-05-27T17:38:11+08:00">2021-05-27</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-05-28 14:41:43" itemprop="dateModified" datetime="2021-05-28T14:41:43+08:00">2021-05-28</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -276,14 +286,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>1.9k</span>
+      <span>4.4k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
+      <span>4 mins.</span>
     </span>
 </div>
 
@@ -297,19 +307,43 @@
         <h1 id="gradient-estimation-using-stochastic-computation-graphs">Gradient Estimation Using Stochastic Computation Graphs</h1>
 <p>The backpropagation algorithm is only sufficient when the loss function is a deterministic, differentiable function of the parameter vector. The main practical result of this article is that to compute the gradient estimator, one just needs to make a simple modification to the backpropagation algorithm, where extra gradient signals are introduced at the stochastic nodes.</p>
 <h2 id="preliminaries">Preliminaries</h2>
+<h3 id="gradient-estimators-for-a-single-random-variable">Gradient Estimators for a Single Random Variable</h3>
 <p>Suppose <span class="math inline">\(X\)</span> is a random variable, <span class="math inline">\(f\)</span> is a function, we are interested in computing</p>
 <p><span class="math display">\[\frac{\partial}{\partial \theta} E_{X}[f(X)]\]</span></p>
 <p>There are few different ways that the process for generating <span class="math inline">\(X\)</span> could be parameterized in terms of <span class="math inline">\(\theta\)</span>, which lead to different gradient estimators.</p>
 <ul>
-<li><p>We might be given a parameterized probability distribution <span class="math inline">\(X \sim p(\cdot ; \theta)\)</span>. In this case, we can use <strong>score function</strong> estimator:</p>
+<li><p>We might be given a parameterized probability distribution <span class="math inline">\(X \sim p(\cdot ; \theta)\)</span>. In this case, we can use <strong>score function</strong> or <strong>REINFORCE</strong> or <strong>likelihood ratio estimator</strong> estimator:</p>
 <p><span class="math display">\[\frac{\partial}{\partial \theta} E_{X \sim p(\cdot ; \theta)}[f(X)] = \int_x \frac{\frac{\partial}{\partial\theta} p(x; \theta)}{p(x; \theta)} p(x; \theta) f(x)dx = E_{X \sim p(\cdot ; \theta)}[f(X) \frac{\partial}{\partial\theta} log p(X; \theta)]\]</span></p>
 <p>This equation is valid if <span class="math inline">\(p(x; \theta)\)</span> is a continuous function of <span class="math inline">\(\theta\)</span>; however it does not need to be a continuous function of <span class="math inline">\(x\)</span></p></li>
-<li><p><span class="math inline">\(X\)</span> may be a deterministic, continuous function of <span class="math inline">\(\theta\)</span> and another random variable <span class="math inline">\(Z\)</span>, we can write as <span class="math inline">\(X(\theta, Z)\)</span>. Then we can use the <strong>pathwise derivative</strong> estimator:</p>
+<li><p><span class="math inline">\(X\)</span> may be a deterministic, continuous function of <span class="math inline">\(\theta\)</span> and another random variable <span class="math inline">\(Z\)</span>, we can write as <span class="math inline">\(X(\theta, Z)\)</span>. Then we can use the <strong>pathwise derivative</strong> or <strong>stochastic backpropagation</strong> estimator:</p>
 <p><span class="math display">\[E_{Z}[f(X(\theta, Z))] = E_{Z}[\frac{\partial}{\partial \theta} f(X(\theta, Z))]\]</span></p>
 <p>We can swap the derivative and expectation iff <span class="math inline">\(f(X(\theta, Z))\)</span> is a continuous function of <span class="math inline">\(\theta\)</span> for all values of <span class="math inline">\(Z\)</span>. However, it is also sufficient that this function is almost-everywhere differentiable.</p></li>
 <li><p>Finally, <span class="math inline">\(\theta\)</span> may be appeared both in the probability distribution and inside the expectation:</p>
 <p><span class="math display">\[E_{Z \sim p(\cdot; \theta)}[f(X(\theta, Z))] = \int_z \frac{\partial}{\partial \theta} f(X(\theta, z)) p(z; \theta) dz = E_{Z \sim p(\cdot; \theta)}[\frac{\partial}{\partial \theta} f(X(\theta, Z)) + (\frac{\partial}{\partial \theta} log p(Z; \theta))f(X(\theta, Z))]\]</span></p></li>
 </ul>
+<span id="more"></span>
+<h3 id="stochastic-computation-graphs">Stochastic Computation Graphs</h3>
+<p><img src="/images/ML/scg_1.png"></p>
+<p><img src="/images/ML/scg_2.png"></p>
+<p>Where square denotes deterministic node, circle denotes stochastic node.</p>
+<p><img src="/images/ML/scg_3.png"></p>
+<p><strong>For simplification, <span class="math inline">\(E_Y [\cdot]\)</span> denotes that <span class="math inline">\(Y\)</span> are sampled from its distribution specified. P used for distribution, p for density function</strong></p>
+<ol type="1">
+<li><p><span class="math inline">\(x(\theta), Y \sim P_Y(\cdot | x(\theta)), E_{Y \sim P_Y(\cdot | x(\theta))}[f(Y)]\)</span> (<strong>the distribution depends on function of <span class="math inline">\(\theta\)</span></strong>)</p>
+<p><span class="math display">\[\frac{\partial }{\partial \theta} E_{Y \sim P_Y(\cdot | x(\theta))}[f(Y)] = \int_y p(y | x(\theta)) \frac{\partial log p(y | x(\theta))}{\partial \theta}\frac{\partial x(\theta)}{\partial \theta} dy = E_Y[\frac{\partial log p(Y | x(\theta))}{\partial \theta}\frac{\partial x(\theta)}{\partial \theta}]\]</span></p></li>
+<li><p><span class="math inline">\(X \sim P_X(\cdot | \theta), Y(X), f(Y(X))\)</span> (<strong>the distribution depends on <span class="math inline">\(\theta\)</span></strong>)</p>
+<p><span class="math display">\[\frac{\partial }{\partial \theta} E_X[f(Y(X))] = \int_x p(x | \theta) \frac{\partial }{\partial \theta} log p(x | \theta) f(Y(x)) dx = E_X [log p(X | \theta) f(Y(X))]\]</span></p></li>
+<li><p><span class="math inline">\(X \sim P_X(\cdot | \theta), Y \sim P_Y(\cdot | X), f(Y)\)</span> (<strong>the distribution depends on <span class="math inline">\(\theta\)</span></strong>)</p>
+<p><span class="math display">\[\frac{\partial }{\partial \theta} E_{X, Y}[f(Y)] = \int_y \int_x p(x | \theta) p(y | x) f(y)\frac{\partial }{\partial \theta} log p(x | \theta) dx dy = E_{X, Y} [log p(X | \theta) f(Y)]\]</span></p></li>
+<li><p><span class="math inline">\(X \sim P_X(\cdot | \theta), y(\theta), f(X, y(\theta))\)</span> (<strong>the distribution depends on <span class="math inline">\(\theta\)</span> and the function <span class="math inline">\(f\)</span> depends on <span class="math inline">\(\theta\)</span></strong>)</p>
+<p><span class="math display">\[\frac{\partial }{\partial \theta} E_{X}[f(X, y(\theta))] = \int_x p(x | \theta) \frac{\partial }{\partial \theta} log p(x | \theta) f(x, y(\theta)) + p(x | \theta) \frac{\partial f(x, y(\theta))}{\partial y(\theta)} \frac{\partial y(\theta)}{\partial \theta} dx = E_X [\frac{\partial }{\partial \theta} log p(X | \theta) f(X, y(\theta)) + \frac{\partial f(X, y(\theta))}{\partial y(\theta)} \frac{\partial y(\theta)}{\partial \theta}]\]</span></p></li>
+<li><p><span class="math inline">\(X_1 \sim P_{X_1}(\cdot | \theta, x_0), X_2 \sim P_{X_2}(\cdot | \theta, X_1), f_1 (X_1), f_2 (X_2)\)</span> (<strong>Notice that <span class="math inline">\(X_2\)</span> has no effect on the distribution of <span class="math inline">\(X_1\)</span>, this resembles a parameterized Markov reward process, and it illustrates that we’ll obtain score function terms of the form grad log-probability times future costs.</strong>)</p>
+<span class="math display">\[\begin{aligned}
+ \frac{\partial }{\partial \theta} E_{X_1, X_2}[f_1(X_1), f_2(X_2)] &amp;= \frac{\partial }{\partial \theta} (E_{X_1} [f_1(X_1)] +  E_{X_1, X_2} [f_2(X_2)]) \\
+ &amp;= \int_{x_1} p(x_1 | \theta) \frac{\partial }{\partial \theta} log p(x_1 | \theta) f_1 (x_1) dx_1  + \int_{x_1} \int_{x_2} p(x_2 | \theta)p(x_1 | \theta)  \frac{\partial }{\partial \theta} log p(x_2 | \theta) f_2 (x_2) + p(x_2 | \theta)p(x_1 | \theta) \frac{\partial }{\partial \theta} log p(x_1 | \theta) f_2 (x_2)dx_2 dx_1 \\
+ &amp;= E_{X_1, X_2}[\frac{\partial }{\partial \theta} log p(X_1 | \theta) (f(X_1) + f(X_2)) + \frac{\partial }{\partial \theta} log p(X_2 | \theta) f(X_2)]
+ \end{aligned}\]</span></li>
+</ol>
 
     </div>
 
@@ -380,13 +414,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">84k</span>
+    <span title="Symbols count total">88k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:17</span>
+    <span title="Reading time total">1:20</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
@@ -414,7 +448,7 @@
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
 <script src="/js/third-party/math/mathjax.js"></script>
 
 
