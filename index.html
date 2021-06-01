@@ -445,7 +445,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-05-31 01:07:54" itemprop="dateModified" datetime="2021-05-31T01:07:54+08:00">2021-05-31</time>
+        <time title="Modified: 2021-06-02 01:39:12" itemprop="dateModified" datetime="2021-06-02T01:39:12+08:00">2021-06-02</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -469,14 +469,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>3.9k</span>
+      <span>8.5k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
+      <span>8 mins.</span>
     </span>
 </div>
 
@@ -499,10 +499,8 @@
 &amp;= \int_{x_1} \int_{a} \int_{x^{\prime}} \nabla [\pi_{\theta}(a | x_1) (r(x_1, a) + P(x^{\prime} | x_1, a) V^{\pi_\theta}(x^{\prime}))]dx^{\prime} da dx_1 \\
 \end{aligned}\]</span>
 <p>We can swap integral and derivative as long as <span class="math inline">\(V^{\pi_{\theta}}\)</span> is a continuous function of <span class="math inline">\(\theta\)</span>, the estimator of this expectation is called <code>pathwise derivative estimator</code> or <code>stochastic backpropagation estimator</code> (more details in <a href="/2021/05/27/stochastic-graph/" title="Stochastic Graph">Stochastic Graph</a>).</p>
-<p>This <span class="math inline">\(\nabla J_\rho(\pi_\theta)\)</span> is called the <strong>Policy Gradient</strong>. If we know the policy gradient, we can use gradient ascent to update the parameters <span class="math inline">\(\theta\)</span>.</p>
-<h2 id="policy-gradient-in-average-reward-setting">Policy Gradient in Average Reward Setting</h2>
-<p><em>Check out <a href="/2021/05/30/average-reward-setting/" title="Average Reward Setting">Average Reward Setting</a> blog for more details.</em></p>
-<h3 id="immediate-reward-problem">Immediate Reward Problem</h3>
+<p>This <span class="math inline">\(\nabla J_\rho(\pi_\theta)\)</span> is called the <strong>Policy Gradient</strong>. In ideal case, if we know the policy gradient (i.e if we know the environment dynamics <span class="math inline">\(P, R\)</span>), we can use gradient ascent to update the parameters <span class="math inline">\(\theta\)</span>.</p>
+<h2 id="immediate-reward-problem-easy-case">Immediate Reward Problem (Easy Case)</h2>
 <p>First, let's consider an immediate reward problem:</p>
 <p><img src='/images/RL/pg/pg_1.png' width="600"></p>
 <p>In this setting, our <span class="math inline">\(J_\rho(\pi_\theta)\)</span> is:</p>
@@ -524,7 +522,7 @@ J_\rho(\pi_\theta) &amp;= \int_{x_1} V^{\pi_\theta} \rho(x_1) dx_1 \\
 <p>Then, we can draw samples from this expectation:</p>
 <p><span class="math display">\[r(X_1, A)  \nabla log (\pi_{\theta}(A | X_1))\]</span></p>
 <p>These samples are called <code>REINFORCE</code> or <code>Score function</code> estimators. These samples are unbiased samples of the policy gradient <span class="math inline">\(\nabla J_\rho(\pi_\theta)\)</span>. We can use these unbiased but noisy samples to update parameters. This makes it <strong>Stochastic Gradient Ascent</strong>.</p>
-<h4 id="baseline">Baseline</h4>
+<h3 id="baseline">Baseline</h3>
 <p>We know that above sample is unbiased sample of the policy gradient, but, how about its variance?</p>
 <p>There are two source of variance:</p>
 <ol type="1">
@@ -539,6 +537,51 @@ J_\rho(\pi_\theta) &amp;= \int_{x_1} V^{\pi_\theta} \rho(x_1) dx_1 \\
 <p><span class="math display">\[g(x; \theta) = E_{A \sim \pi_{\theta}(\cdot | x)} [r(x, A)  \nabla log (\pi_{\theta}(A | x))]\]</span></p>
 <p>This function <span class="math inline">\(g: X \times \Theta \rightarrow \mathbb{R}^{p}\)</span> is the policy gradient at a particular starting state <span class="math inline">\(x\)</span>, and it is a <span class="math inline">\(p\)</span>-dimensional vector (Assuming <span class="math inline">\(\theta\)</span> is <span class="math inline">\(p\)</span>-dimensional). Then we have:</p>
 <p><span class="math display">\[Var[r(X_1, A)  \frac{\partial}{\partial \theta_i} log (\pi_{\theta}(A | X_1))] = E_{X_1} [Var_{A}[r(X_1, A)  \frac{\partial}{\partial \theta_i}  log (\pi_{\theta}(A | X_1)) | X_1]] + Var_{X_1} [g_i(X_1; \theta)]\]</span></p>
+<p>These two sources of variance make our estimate of the gradient inaccurate. We can reduce them using a <code>baseline</code>.</p>
+<p>Consider the variance of estimating <span class="math inline">\(g(x; \theta)\)</span> using a single sample <span class="math inline">\(r(x, A) \nabla log (\pi_{\theta}(A | x))\)</span> with <span class="math inline">\(A \sim \pi_\theta(\cdot | x)\)</span>. For each dimension <span class="math inline">\(i\)</span>, we have:</p>
+<span class="math display">\[\begin{aligned} 
+E_{A}[ (r(x, A) -  b(x))  \frac{\partial}{\partial \theta_i}log (\pi_{\theta}(A | x)) \; |\; x] &amp;= \int_a (r(x, a) - b(x)) \pi_{\theta}(a | x)  \frac{\partial}{\partial \theta_i} log (\pi_{\theta}(a | x)) da\\
+&amp;= \int_a r(x, a) \frac{\partial}{\partial \theta_i} \pi_{\theta}(a | x) da  - b(x) \int_a \frac{\partial}{\partial \theta_i} \pi_{\theta}(a | x) da\\
+&amp;=  \int_a r(x, a) \frac{\partial}{\partial \theta_i} \pi_{\theta}(a | x) da - b(x) \frac{\partial}{\partial \theta_i} \underbrace{\int_a \pi_{\theta}(a | x) da}_{1} \\
+&amp;=  \int_a r(x, a) \frac{\partial}{\partial \theta_i} \pi_{\theta}(a | x) da - b(x) \frac{\partial}{\partial \theta_i} (1)\\
+&amp;=  \int_a r(x, a) \frac{\partial}{\partial \theta_i} \pi_{\theta}(a | x) da\\
+&amp;= E_{A}[ (r(x, A) -  b(x))  \frac{\partial}{\partial \theta_i}log (\pi_{\theta}(A | x))\; |\; x]
+\end{aligned}\]</span>
+<p><br/></p>
+<p>This shows that, if we add a state dependent function <span class="math inline">\(b(x)\)</span> to <span class="math inline">\(r(x, a)\)</span>, the expectation won't change. But, this may change the variance! We can formulate this idea to be an optimization problem and find a function <span class="math inline">\(b: X \rightarrow \mathbb{R}^{p}\)</span> such that for all <span class="math inline">\(x \in X\)</span> (for each <span class="math inline">\(b_i\)</span>):</p>
+<p><span class="math display">\[\min_{b_i} \sum^{p}_{i=1} Var[(r(x, A) + b_i (x))  \frac{\partial}{\partial \theta_i}log (\pi_{\theta}(A | x)) \; |\; x]\]</span></p>
+<p>by solving this optimization problem, we have:</p>
+<p><span class="math display">\[b_i (x) = \frac{-E_A[r(x, A) (\frac{\partial}{\partial \theta_i}log (\pi_{\theta}(A | x)))^2 \; |\; x]}{E_A [(\frac{\partial}{\partial \theta_i}log (\pi_{\theta}(A | x)))^2 | x]}\]</span></p>
+<p>We can also choose single scalar function <span class="math inline">\(b: X \rightarrow \mathbb{R}\)</span> instead：</p>
+<p><span class="math display">\[b (x) = \frac{-E_A[r(x, A) \|\frac{\partial}{\partial \theta_i}log (\pi_{\theta}(A | x))\|^2_2 \; |\; x]}{E_A [\|\frac{\partial}{\partial \theta_i}log (\pi_{\theta}(A | x))\|^2_2 | x]}\]</span><br/></p>
+<h2 id="policy-gradient-general-case">Policy Gradient (General Case)</h2>
+<p>Recall that:</p>
+<p><span class="math display">\[P^{\pi} (\cdot | y)= \int_{x \in X} \int_a P(x | y, a) \pi(a | y) da dx\]</span></p>
+<h3 id="average-reward-setting">Average Reward Setting</h3>
+<p>The difference with the immediate reward case, where we only need initial distribution <span class="math inline">\(\rho\)</span>, in average reward case, we depend on the environment transition distribution <span class="math inline">\(P^{\pi_{\theta}}\)</span> too. As we update <span class="math inline">\(\theta\)</span>, we obtain a different policy <span class="math inline">\(\pi_{\theta}\)</span>, that is, we have a different dynamics transition distribution <span class="math inline">\(P^{\pi_{\theta}}\)</span>.</p>
+<p>Recall that in average reward setting, the quality of a policy is measured as the long term expected reward or average rate reward or simply average reward following <span class="math inline">\(\pi_\theta\)</span> <code>independent of starting state</code> (<strong><span class="math inline">\(x_1\)</span> in the expectation is used to emphasize that the Expected reward is <span class="math inline">\(t\)</span> step</strong>):</p>
+<span class="math display">\[\begin{aligned}
+J (\pi_\theta) &amp;= \lim_{n \rightarrow \infty}\frac{1}{n}E_{X \sim \rho^{\pi_{\theta}}(\cdot)}[R_1 + R_2, .... \; |\; A_{1}, A_{2}, ... \sim \pi_{\theta}, x_1]\\
+&amp;= \lim_{n \rightarrow \infty}\frac{1}{n} \sum^{n}_{t=1} E_{X \sim \rho^{\pi_{\theta}}(\cdot)}[R_t \; |\; A_{1}, A_{2}, ... \sim \pi_{\theta}, x_1]\\
+&amp;= \int_{x} \rho^{\pi_{\theta}} (x) \int_a \pi_{\theta} (a | x) r(x, a) da dx
+\end{aligned}\]</span>
+<p>Where <span class="math inline">\(\rho^{\pi_{\theta}} (x) = \lim_{t \rightarrow \infty} P^{\pi_{\theta}} (X_t = x | x_1; t)\)</span> here is the <code>stationary distribution</code> under <span class="math inline">\(\pi_\theta\)</span> which is assumed to exists and independent of starting state (<strong><span class="math inline">\(x_1\)</span> here is used to emphasize that this is <span class="math inline">\(t\)</span> step transition probability</strong>). This is the special distribution in which if you select actions according to <span class="math inline">\(\pi_\theta\)</span>, you end up in the same distribution.</p>
+<h3 id="discounted-setting">Discounted Setting</h3>
+<p>In discounted setting, the objective is defined as long term discounted return starting from state <span class="math inline">\(x_1 \in X\)</span> following <span class="math inline">\(\pi_{\theta}\)</span>:</p>
+<p><span class="math display">\[J (x_1; \pi_\theta) = V^{\pi_{\theta}} (x_1)\]</span></p>
+<p>Let's now define the <code>discounted future state distribution</code> starting from state <span class="math inline">\(x_1 \in X\)</span> following <span class="math inline">\(\pi_{\theta}\)</span>:</p>
+<p><span class="math display">\[\rho^{\pi}_{\gamma} (\cdot | x_1) \triangleq (1 - \gamma) \sum^{\infty}_{k=0} \gamma^k P^{\pi_{\theta}} (\cdot | x; k)\]</span></p>
+<p>Where <span class="math inline">\(P^{\pi_{\theta}} (\cdot | x; k) = P^{\pi_{\theta}} (\cdot | x)^k\)</span> is the <span class="math inline">\(k\)</span> step transition distribution, and <span class="math inline">\(1 - \gamma\)</span> is the normalization term. We can easily verify that this is a valid distribution.</p>
+<h3 id="average-reward-and-discounted-return">Average Reward and Discounted Return</h3>
+<p>We can see the connection between average reward and discounted return:</p>
+<span class="math display">\[\begin{aligned}
+V^{\pi} (x) &amp;= E^{\pi}[\sum^{\infty}_{t = 1} \gamma^{t - 1} R_{t} \; |\; X_1 = x]\\
+&amp;= \sum^{\infty}_{t = 1} \gamma^{t - 1} E^{\pi}[R_{t} \; |\; X_1 = x]\\
+&amp;= \sum^{\infty}_{t = 1} \gamma^{t - 1} \int_{x^{\prime}} P^{\pi}(X_t=x^{\prime} | x; t) R(x^{\prime})dx^{\prime}\\
+&amp;= \frac{1}{1 - \gamma} \int_{x^{\prime}}c \rho^{\pi}_{\gamma} ( x^{\prime}| x) R(x^{\prime}) dx^{\prime}\\
+&amp;= \frac{1}{1 - \gamma}E_{X^{\prime} \sim \rho^{\pi}_{\gamma} (\cdot | x)} [R(X^{\prime})]\\
+\end{aligned}\]</span>
+<p>We can interchange summation and infinity sum because the sum is finite. Here <span class="math inline">\(R(\cdot)\)</span> represents the realization of <span class="math inline">\(R_{t}\)</span>. This tells us that the value function at a state <span class="math inline">\(x\)</span> is the expected reward when <span class="math inline">\(X^{\prime}\)</span> is distributed according to <span class="math inline">\(\rho^{\pi}_{\gamma} (\cdot | x)\)</span> and following <span class="math inline">\(\pi\)</span>.</p>
 
       
     </div>
@@ -1341,13 +1384,13 @@ J_\rho(\pi_\theta) &amp;= \int_{x_1} V^{\pi_\theta} \rho(x_1) dx_1 \\
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">103k</span>
+    <span title="Symbols count total">108k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:34</span>
+    <span title="Reading time total">1:38</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
