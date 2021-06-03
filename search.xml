@@ -56,20 +56,44 @@
     <url>/2021/05/06/DPG/</url>
     <content><![CDATA[<h1 id="deterministic-policy-gradient-algorithms">Deterministic Policy Gradient Algorithms</h1>
 <h2 id="introduction">Introduction</h2>
-<p>In traditional policy gradient algorithms, policy is parametrized by a probability distribution <span class="math inline">\(pi_{\theta} (a | s) = P[a | s; \theta]\)</span> that stochastically selects action <span class="math inline">\(a\)</span> in state <span class="math inline">\(s\)</span> according to parameter vector <span class="math inline">\(\theta\)</span>. In this paper, the authors consider deterministic policies <span class="math inline">\(a = \mu_{\theta} (s)\)</span>.</p>
+<p>In traditional policy gradient algorithms, policy is parametrized by a probability distribution <span class="math inline">\(\pi_{\theta} (a | s) = P[a | s; \theta]\)</span> that stochastically selects action <span class="math inline">\(a\)</span> in state <span class="math inline">\(s\)</span> according to parameter vector <span class="math inline">\(\theta\)</span>. In this paper, the authors consider deterministic policies <span class="math inline">\(a = \mu_{\theta} (s)\)</span>.</p>
 <p>From a practical viewpoint, there is a crucial difference between the stochastic and deterministic policy gradients. In the stochastic case, the policy gradient integrates over both state and action spaces, whereas in the deterministic case it only integrates over the state space:</p>
 <p><span class="math display">\[E_{X\sim \rho^{\pi_\theta}A \sim \pi_{\theta}} [\nabla log \pi(A | X) Q^{\pi_{\theta}} (X, A)]\]</span></p>
 <p>Thus, <strong>computing deterministic policies may require less samples</strong>.</p>
 <p>An off-policy learning scheme is introduced here to ensure adequate exploration (i.e The basic idea is to choose actions according to a stochastic behaviour policy).</p>
 <h2 id="notations">Notations</h2>
-<p>Initial state distribution <span class="math inline">\(p_1(s_1)\)</span>, stationary transition dynamics distribution <span class="math inline">\(p(s_{t+1} | s_{t}, a_{t})\)</span>, deterministic reward function <span class="math inline">\(r(x, a)\)</span>. Stochastic policy is represented as <span class="math inline">\(\pi_{\theta} (a_t | s_t)\)</span>. The return is the total discounted reward</p>
+<p><strong>Notations are simplified so that the random variables in the conditional density are dropped, and <span class="math inline">\(\pi_{\theta} = \pi\)</span>, the subscripts are dropped for simplicity</strong></p>
+<p>Initial state distribution <span class="math inline">\(p_1(s_1)\)</span>, stationary transition dynamics distribution <span class="math inline">\(p(s_{t+1} | s_{t}, a_{t})\)</span>, deterministic reward function <span class="math inline">\(r(x, a)\)</span>. Stochastic policy is represented as <span class="math inline">\(\pi_{\theta} (a_t | s_t)\)</span>. A trajectory of the process is represented as <span class="math inline">\(h_{1:T} = s_1, a_1, r_1, ...., s_T, a_T\)</span>.</p>
+<p>The return is the total discounted reward</p>
 <p><span class="math display">\[r_t^{\gamma} = \sum^{\infty}_{k = t} \gamma^{k-t} r(s_k, a_k)\]</span></p>
 <p>Value functions:</p>
 <p><span class="math display">\[V^{\pi} (s) = E[r_1^{\gamma} | S_1=s; \pi]\]</span></p>
 <p><span class="math display">\[Q^{\pi} (s, a) = E[r_1^{\gamma} | S_1=s, A_1=a; \pi]\]</span></p>
 <p>The objective is to find a policy <span class="math inline">\(\pi\)</span> that maximize <span class="math inline">\(J(\pi)\)</span></p>
-<p><span class="math display">\[J(\pi) = E_{s_1 \sim p_1}[r_1^{\gamma}]\]</span></p>
-<p>Define t step transition probability following <span class="math inline">\(\pi\)</span> as <span class="math inline">\(p^{\pi}(s \rightarrow s^{\prime}; t)\)</span></p>
+<p><span class="math display">\[J(\pi) = E_{s_1 \sim p_1}[r_1^{\gamma} | \pi]\]</span></p>
+<p>Define t step transition probability following <span class="math inline">\(\pi\)</span> starting from <span class="math inline">\(s\)</span> as <span class="math inline">\(p^{\pi}(s \rightarrow s^{\prime}; t)\)</span></p>
+<p>The un-normalized discounted future state distribution:</p>
+<p><span class="math display">\[\rho^{\pi} (s^{\prime}) \triangleq \int_s \sum^{\infty}_{t=1} \gamma^{t-1} p(s) p^{\pi}(s \rightarrow s^{\prime}; t) ds\]</span></p>
+<p>The performance objective as expectation:</p>
+<p><span class="math display">\[J(\pi) = E_{s \sim \rho^{\pi} (\cdot), a \sim \pi(\cdot | s)} [r(s, a)]\]</span></p>
+<p>Where this expectation is over the un-normalized discounted future state distribution. By replacing discounted future state distribution with stationary state distribution, we have average reward performance measure.</p>
+<p>The policy gradient can be written as:</p>
+<span class="math display">\[\begin{aligned}
+\nabla_{\theta} J(\pi_\theta) &amp;= \int_S \rho^{\pi} (s) \int_A \nabla_{\theta} \pi_\theta (a | s) Q^{\pi} (s, a) da ds\\
+&amp;= E_{s\sim \rho^{\pi} (\cdot), a \sim \pi_{\theta}}[\nabla_{\theta} \log \pi_\theta (a | s) Q^{\pi} (s, a)]
+\end{aligned}\]</span>
+<h2 id="off-policy-actor-critic">Off-Policy Actor-Critic</h2>
+<p>It is often useful to estimate the policy gradient off-policy from trajectories sampled from a distinct behaviour policy <span class="math inline">\(\beta(a | s) \neq \pi_{\theta} (a | s)\)</span>. In an off-policy setting, the performance objective is typically modified to be the value function of the target policy averaged over the state distribution of the behaviour policy as initial state.</p>
+<span class="math display">\[\begin{aligned}
+J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
+&amp;= \int_s \int_a \rho^{\beta} (s) \pi_{\theta} (a | s) Q^{\pi}(s, a) dads\\
+\end{aligned}\]</span>
+<p>Differentiating the performacne objective and applying an approximation gives the off-policy policy gradient:</p>
+<span class="math display">\[\begin{aligned}
+\nabla_{\theta} J_{\beta} (\pi_{\theta}) &amp;\approx \int_s \int_a \rho^{\beta} (s) \nabla_{\theta} \pi_{\theta} (a | s) Q^{\pi}(s, a) dads\\
+&amp;= E_{s \sim \rho^\beta, a \sim \beta_{\theta}}[\frac{\pi_{\theta} (a | s)}{\beta (a | s)} \nabla_{\theta} \log \pi_{\theta} (a | s) Q^{\pi} (s, a)]\\
+\end{aligned}\]</span>
+<h2 id="gradients-of-deterministic-policies">Gradients of Deterministic Policies</h2>
 ]]></content>
       <categories>
         <category>RL</category>
@@ -158,6 +182,73 @@
       </tags>
   </entry>
   <entry>
+    <title>MDP</title>
+    <url>/2021/05/03/MDP/</url>
+    <content><![CDATA[<h1 id="mdp">MDP</h1>
+<p><span style="color:red"><em>Based on Prof Amir-massoud Farahmand's Lecture on RL</em> </span></p>
+<p>Define our MDP different from Introduction to RL book:</p>
+<p><img src='/images/RL/bellman_equation/mdp.png'></p>
+<p>Where <span class="math inline">\(M(X)\)</span> is the space of all probability distributions defined over the state space X <span id="more"></span></p>
+<p>So a sample of the process can be described as a rollout or trajectory:</p>
+<p><span class="math display">\[\tau = X_1, A_1, R_1, X_2, A_2, R_2, ...\]</span></p>
+<p>A deterministic dynamical system always behave exactly the same given the same starting state and action, that is, they can be described as a transition function <span class="math inline">\(f\)</span> instead of transition distribution <span class="math inline">\(P\)</span></p>
+<p><span class="math display">\[x_{t+1} = f(x, a)\]</span></p>
+<h2 id="policy">Policy</h2>
+<p><img src='/images/RL/bellman_equation/policy_1.png'></p>
+<p><img src='/images/RL/bellman_equation/policy.png'></p>
+<h2 id="policy-induced-transition-kernels">Policy induced Transition Kernels</h2>
+<p><img src='/images/RL/bellman_equation/transition_kernel.png'></p>
+<h2 id="rewards-and-returns">Rewards and Returns</h2>
+<p>Let's define expected reward as:</p>
+<p><span class="math display">\[r(x, a) = E[R | X=x, A=a]\]</span></p>
+<p>then the expected reward following policy pi is defined as</p>
+<p><span class="math display">\[r^{\pi} (x) = E_{a \sim \pi(a | x)} [R | X=x]\]</span></p>
+<p>Define return following policy <span class="math inline">\(\pi\)</span> as discounted sum of rewards starting from <span class="math inline">\(X_1\)</span>:</p>
+<p><span class="math display">\[G^{\pi} = R_1 + \gamma R_2 + ... + \gamma^{T-1} R_{T} = \sum^{\infty}_{k=t} \gamma^{k - t}R_{t}\]</span></p>
+<p>or any starting at any step <span class="math inline">\(X_{t}\)</span>:</p>
+<p><span class="math display">\[G^{\pi}_{t} = \sum^{\infty}_{k=t} \gamma^{k - t}R_{t}\]</span></p>
+<p>Note that <span class="math inline">\(\gamma\)</span> is a part of the problem setting, it is usually not a hyperparameter. <strong>One way to think about is as a constant probability of termination of <span class="math inline">\(1 - \gamma\)</span>. Or we can set <span class="math inline">\(\gamma = 1\)</span> when we have episodic tasks.</strong>.</p>
+<h2 id="example">Example</h2>
+<p>Finite horizon example:</p>
+<ul>
+<li>Start at <span class="math inline">\(X_1 \sim \rho\)</span></li>
+<li>Select <span class="math inline">\(A_1 \sim \pi(\cdot | X_1)\)</span></li>
+<li>Get <span class="math inline">\(R_1 \sim R(\cdot | A_1, X_1)\)</span></li>
+<li>Get <span class="math inline">\(X_2 \sim P(\cdot | A_1, X_1)\)</span></li>
+<li>...</li>
+<li>...</li>
+<li>Get <span class="math inline">\(R_{T} \sim R(\cdot | X_{T}, A_{T})\)</span></li>
+<li>Get <span class="math inline">\(X_{T+1} \sim P(\cdot | X_{T}, A_{T})\)</span> (This is the terminal state, which is often dropped because it has value of 0)</li>
+</ul>
+<p>The process stops!</p>
+<h2 id="value-functions">Value functions</h2>
+<p>Next we can define value functions as:</p>
+<p>State value function (alias: Value function, V, v) starting from state x and following policy <span class="math inline">\(\pi\)</span>:</p>
+<p><span class="math display">\[V^{\pi}(x) = E[G_1^{\pi} | X_{1} = x] = E[G^{\pi}_{t} | X_{t} = x] \text{    (Markov Property)}\]</span></p>
+<p>Action value function following policy <span class="math inline">\(\pi\)</span> starting from state x and taking action a:</p>
+<p><span class="math display">\[Q^{\pi} (x, a) = E[G_1^{\pi} | X_{1} = x, A_{1} = a] = E[G^{\pi}_{t} | X_{t} = x, A_{t} = a] \text{    (Markov Property)}\]</span></p>
+<p>in the <code>terminal formulation</code>, the value function <span class="math inline">\(V_{term}^{\pi}\)</span> can be written as:</p>
+<p><span class="math display">\[V_{term}^{\pi} = E[R_{1} + R_2 + .... + R_{t + T} | X_1 = x] \;\;\;\;\;\; \forall x \in X\]</span></p>
+<p>The process terminates at time <span class="math inline">\(t + T\)</span> according to <span class="math inline">\(\gamma\)</span>. In this case the termination should be assumed to always occur in a finite number of steps (ie. if we have episodic task we can set <span class="math inline">\(\gamma = 1\)</span>).</p>
+<h2 id="another-formulation">Another formulation</h2>
+<p>We can also define the T-step rollout or trajectory distribution <span class="math inline">\(P(\tau | \pi)\)</span> following policy <span class="math inline">\(\pi\)</span>:</p>
+<p><span class="math display">\[P(\tau | \pi) = \rho(X_1)\prod_{t=1}^{T} P(X_{t+1}| X_{t}, A_{t}) \pi(A_t | X_{t}) R(R_t | X_{t}, A_{t})\]</span></p>
+<p>Then:</p>
+<p><span class="math display">\[R(\tau) = G^{\pi}_{1} = \sum^{T}_{k=1} \gamma^{k - t}R_{t}\]</span></p>
+<p><span class="math display">\[J(\pi) = E_{\tau \sim P(\tau | \pi) }[R(\tau)] = \int R(\tau) P(d\tau | \pi)\]</span></p>
+<p><span class="math display">\[V^{\pi} (x) = E_{\tau \sim P(\tau | \pi, X_1=x)}[R(\tau) | X_1 = x]\]</span></p>
+<p>And:</p>
+<p><span class="math display">\[J(\pi) = \int V^{\pi} (x) d\rho(x)\]</span></p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>Basics</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>average_reward_setting</title>
     <url>/2021/05/30/average-reward-setting/</url>
     <content><![CDATA[
@@ -231,70 +322,6 @@
       <tags>
         <tag>Deep Learning</tag>
         <tag>Normalization</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>MDP</title>
-    <url>/2021/05/03/MDP/</url>
-    <content><![CDATA[<h1 id="mdp">MDP</h1>
-<p><span style="color:red"><em>Based on Prof Amir-massoud Farahmand's Lecture on RL</em> </span></p>
-<p>Define our MDP different from Introduction to RL book:</p>
-<p><img src='/images/RL/bellman_equation/mdp.png'></p>
-<p>Where <span class="math inline">\(M(X)\)</span> is the space of all probability distributions defined over the state space X <span id="more"></span></p>
-<p>So a sample of the process can be described as a rollout or trajectory:</p>
-<p><span class="math display">\[\tau = X_1, A_1, R_1, X_2, A_2, R_2, ...\]</span></p>
-<p>A deterministic dynamical system always behave exactly the same given the same starting state and action, that is, they can be described as a transition function <span class="math inline">\(f\)</span> instead of transition distribution <span class="math inline">\(P\)</span></p>
-<p><span class="math display">\[x_{t+1} = f(x, a)\]</span></p>
-<h2 id="policy">Policy</h2>
-<p><img src='/images/RL/bellman_equation/policy_1.png'></p>
-<p><img src='/images/RL/bellman_equation/policy.png'></p>
-<h2 id="policy-induced-transition-kernels">Policy induced Transition Kernels</h2>
-<p><img src='/images/RL/bellman_equation/transition_kernel.png'></p>
-<h2 id="rewards-and-returns">Rewards and Returns</h2>
-<p>Let's define expected reward as:</p>
-<p><span class="math display">\[r(x, a) = E[R | X=x, A=a]\]</span></p>
-<p>then the expected reward following policy pi is defined as</p>
-<p><span class="math display">\[r^{\pi} (x) = E_{a \sim \pi(a | x)} [R | X=x]\]</span></p>
-<p>Define return following policy <span class="math inline">\(\pi\)</span> as discounted sum of rewards starting from <span class="math inline">\(X_1\)</span>:</p>
-<p><span class="math display">\[G^{\pi} = R_1 + \gamma R_2 + ... + \gamma^{T-1} R_{T} = \sum^{\infty}_{k=t} \gamma^{k - t}R_{t}\]</span></p>
-<p>or any starting at any step <span class="math inline">\(X_{t}\)</span>:</p>
-<p><span class="math display">\[G^{\pi}_{t} = \sum^{\infty}_{k=t} \gamma^{k - t}R_{t}\]</span></p>
-<p>Note that <span class="math inline">\(\gamma\)</span> is a part of the problem setting, it is usually not a hyperparameter.</p>
-<h2 id="another-formulation">Another formulation</h2>
-<p>We can also define the T-step rollout or trajectory distribution <span class="math inline">\(P(\tau | \pi)\)</span> following policy <span class="math inline">\(\pi\)</span>:</p>
-<p><span class="math display">\[P(\tau | \pi) = \rho(X_1)\prod_{t=1}^{T} P(X_{t+1}| X_{t}, A_{t}) \pi(A_t | X_{t}) R(R_t | X_{t}, A_{t})\]</span></p>
-<p>Then:</p>
-<p><span class="math display">\[R(\tau) = G^{\pi}_{1} = \sum^{T}_{k=1} \gamma^{k - t}R_{t}\]</span></p>
-<p><span class="math display">\[J(\pi) = E_{\tau \sim P(\tau | \pi) }[R(\tau)] = \int R(\tau) P(d\tau | \pi)\]</span></p>
-<p><span class="math display">\[V^{\pi} (x) = E_{\tau \sim P(\tau | \pi, X_1=x)}[R(\tau) | X_1 = x]\]</span></p>
-<p>And:</p>
-<p><span class="math display">\[J(\pi) = \int V^{\pi} (x) d\rho(x)\]</span></p>
-<h2 id="example">Example</h2>
-<p>Finite horizon example:</p>
-<ul>
-<li>Start at <span class="math inline">\(X_1 \sim \rho\)</span></li>
-<li>Select <span class="math inline">\(A_1 \sim \pi(\cdot | X_1)\)</span></li>
-<li>Get <span class="math inline">\(R_1 \sim R(\cdot | A_1, X_1)\)</span></li>
-<li>Get <span class="math inline">\(X_2 \sim P(\cdot | A_1, X_1)\)</span></li>
-<li>...</li>
-<li>...</li>
-<li>Get <span class="math inline">\(R_{T} \sim R(\cdot | X_{T}, A_{T})\)</span></li>
-<li>Get <span class="math inline">\(X_{T+1} \sim P(\cdot | X_{T}, A_{T})\)</span> (This is the terminal state, which is often dropped because it has value of 0)</li>
-</ul>
-<p>The process stops!</p>
-<h2 id="value-functions">Value functions</h2>
-<p>Next we can define value functions as:</p>
-<p>State value function (alias: Value function, V, v) starting from state x and following policy <span class="math inline">\(\pi\)</span>:</p>
-<p><span class="math display">\[V^{\pi}(x) = E[G_1^{\pi} | X_{1} = x] = E[G^{\pi}_{t} | X_{t} = x] \text{    (Markov Property)}\]</span></p>
-<p>Action value function following policy <span class="math inline">\(\pi\)</span> starting from state x and taking action a:</p>
-<p><span class="math display">\[Q^{\pi} (x, a) = E[G_1^{\pi} | X_{1} = x, A_{1} = a] = E[G^{\pi}_{t} | X_{t} = x, A_{t} = a] \text{    (Markov Property)}\]</span></p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>Basics</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
       </tags>
   </entry>
   <entry>
@@ -691,6 +718,12 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </tags>
   </entry>
   <entry>
+    <title>natural-actor-critic</title>
+    <url>/2021/06/03/natural-actor-critic/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
     <title>Notations</title>
     <url>/2030/05/30/notations/</url>
     <content><![CDATA[<h1 id="notations">Notations</h1>
@@ -719,136 +752,10 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </tags>
   </entry>
   <entry>
-    <title>policy_gradient_2</title>
-    <url>/2021/05/30/policy-gradient-2/</url>
-    <content><![CDATA[<h1 id="policy-search-methods-policy-gradient">Policy Search Methods (Policy Gradient)</h1>
-<p><span style="color:red"><em>All <span class="math inline">\(\nabla\)</span> refer to <span class="math inline">\(\nabla_{\theta}\)</span> for simplicity.</em></span></p>
-<p>From <a href="/2021/05/23/policy-gradient/" title="introduction">introduction</a> blog, our goal:</p>
-<p><span class="math display">\[\underset{\pi_{\theta}}{\operatorname{maximize}} J_\rho(\pi_\theta) = \underset{\theta}{\operatorname{maximize}} J_\rho(\pi_\theta)\]</span></p>
-<p>By taking the gradient w.r.t <span class="math inline">\(\theta\)</span>, we have:</p>
-<span class="math display">\[\begin{aligned}
-\nabla J_\rho(\pi_\theta) &amp;= \nabla E_{X_1 \sim \rho} [V^{\pi_\theta} (X_1)]\\
-&amp;= \nabla \int_{x_1}\int_{a} [r(x_1, a) \pi_{\theta} (a | x_1) da dx_1 + \int_{x^{\prime}} P(x^{\prime} | x_1, a) \pi_{\theta}(a | x_1) V^{\pi_\theta}(x^{\prime})dx^{\prime} da dx_1]\\
-&amp;= \nabla \int_{a} \int_{x_1} \int_{x^{\prime}} \pi_{\theta}(a | x_1) [r(x_1, a) + P(x^{\prime} | x_1, a) V^{\pi_\theta}(x^{\prime})]dx^{\prime} da dx_1 \\
-&amp;= \int_{x_1} \int_{a} \int_{x^{\prime}} \nabla [\pi_{\theta}(a | x_1) (r(x_1, a) + P(x^{\prime} | x_1, a) V^{\pi_\theta}(x^{\prime}))]dx^{\prime} da dx_1 \\
-\end{aligned}\]</span>
-<p>We can swap integral and derivative as long as <span class="math inline">\(V^{\pi_{\theta}}\)</span> is a continuous function of <span class="math inline">\(\theta\)</span>, the estimator of this expectation is called <code>pathwise derivative estimator</code> or <code>stochastic backpropagation estimator</code> (more details in <a href="/2021/05/27/stochastic-graph/" title="Stochastic Graph">Stochastic Graph</a>).</p>
-<p>This <span class="math inline">\(\nabla J_\rho(\pi_\theta)\)</span> is called the <strong>Policy Gradient</strong>. In ideal case, if we know the policy gradient (i.e if we know the environment dynamics <span class="math inline">\(P, R\)</span>), we can use gradient ascent to update the parameters <span class="math inline">\(\theta\)</span>.</p>
-<h2 id="immediate-reward-problem-easy-case">Immediate Reward Problem (Easy Case)</h2>
-<p>First, let's consider an immediate reward problem:</p>
-<p><img src='/images/RL/pg/pg_1.png' width="600"></p>
-<p>In this setting, our <span class="math inline">\(J_\rho(\pi_\theta)\)</span> is:</p>
-<span class="math display">\[\begin{aligned}
-J_\rho(\pi_\theta) &amp;= \int_{x_1} V^{\pi_\theta} \rho(x_1) dx_1 \\
-&amp;= \int_{x_1} \int_{a} r(x_1, a) \pi_{\theta}(a | x_1) \rho(x_1) da dx_1 \\
-\end{aligned}\]</span>
-<p>The value function <span class="math inline">\(V^{\pi_\theta}\)</span> in this setting is the same as <span class="math inline">\(r^{\pi_{\theta}}\)</span>, and the action space is continuous.</p>
-<p>Then, the policy gradient <span class="math inline">\(\nabla J_\rho(\pi_\theta)\)</span> can be written as:</p>
-<p><span class="math display">\[\nabla J_\rho(\pi_\theta) = \int_{x_1} \int_{a} r(x_1, a) \rho(x_1) \nabla \pi_{\theta}(a | x_1) da dx_1\]</span></p>
-<p><strong>How can we compute <span class="math inline">\(\nabla J_\rho(\pi_\theta)\)</span> ?</strong></p>
-<p>Recall that, <span class="math inline">\(\frac{\partial log (\theta)}{ \partial \theta} = \frac{1}{\theta}\)</span>:</p>
-<span class="math display">\[\begin{aligned}
-\nabla J_\rho(\pi_\theta) &amp;= \int_{x_1} \int_{a} r(x_1, a) \rho(x_1) \nabla \pi_{\theta}(a | x_1) da dx_1\\
-&amp;= \int_{x_1} \int_{a} r(x_1, a) \rho(x_1) \pi_{\theta}(a | x_1) \frac{\nabla \pi_{\theta}(a | x_1)}{\pi_{\theta}(a | x_1)}  da dx_1\\
-&amp;= \int_{x_1} \int_{a} \rho(x_1) \pi_{\theta}(a | x_1) r(x_1, a)  \nabla log (\pi_{\theta}(a | x_1))  da dx_1\\
-&amp;= E_{X_1 \sim \rho, A \sim \pi_{\theta}(\cdot | X_1)} [r(X_1, A)  \nabla log (\pi_{\theta}(A | X_1))]
-\end{aligned}\]</span>
-<p>Then, we can draw samples from this expectation:</p>
-<p><span class="math display">\[r(X_1, A)  \nabla log (\pi_{\theta}(A | X_1))\]</span></p>
-<p>These samples are called <code>REINFORCE</code> or <code>Score function</code> estimators. These samples are unbiased samples of the policy gradient <span class="math inline">\(\nabla J_\rho(\pi_\theta)\)</span>. We can use these unbiased but noisy samples to update parameters. This makes it <strong>Stochastic Gradient Ascent</strong>.</p>
-<h3 id="baseline">Baseline</h3>
-<p>We know that above sample is unbiased sample of the policy gradient, but, how about its variance?</p>
-<p>There are two source of variance:</p>
-<ol type="1">
-<li>Variance that comes from sampling <span class="math inline">\(X_1 \sim \rho\)</span> and use this sample to estimate the expectation.</li>
-<li>Variance that comes from sampling <span class="math inline">\(A \sim \pi_{\theta}(a | X_1)\)</span> and use this sample to estimate the expectation.</li>
-</ol>
-<p>Recall the total variance formula:</p>
-<p><span class="math display">\[Var[Y] = E_X[Var[Y | X]] + Var_X[E[Y | X]]\]</span></p>
-<p>One can show that the variance for <strong><span class="math inline">\(i\)</span>th dimension</strong> of <span class="math inline">\(\nabla J_\rho(\pi_\theta)\)</span>:</p>
-<p><span class="math display">\[Var[r(X_1, A)  \frac{\partial}{\partial \theta_i} log (\pi_{\theta}(A | X_1))] = E_{X_1} [Var_{A}[r(X_1, A)  \frac{\partial}{\partial \theta_i}  log (\pi_{\theta}(A | X_1)) | X_1]] + Var_{X_1} [E_A[r(X_1, A)  \frac{\partial}{\partial \theta_i} log (\pi_{\theta}(A | X_1)) | X_1]]\]</span></p>
-<p>To see this more clearly, let's define:</p>
-<p><span class="math display">\[g(x; \theta) = E_{A \sim \pi_{\theta}(\cdot | x)} [r(x, A)  \nabla log (\pi_{\theta}(A | x))]\]</span></p>
-<p>This function <span class="math inline">\(g: X \times \Theta \rightarrow \mathbb{R}^{p}\)</span> is the policy gradient at a particular starting state <span class="math inline">\(x\)</span>, and it is a <span class="math inline">\(p\)</span>-dimensional vector (Assuming <span class="math inline">\(\theta\)</span> is <span class="math inline">\(p\)</span>-dimensional). Then we have:</p>
-<p><span class="math display">\[Var[r(X_1, A)  \frac{\partial}{\partial \theta_i} log (\pi_{\theta}(A | X_1))] = E_{X_1} [Var_{A}[r(X_1, A)  \frac{\partial}{\partial \theta_i}  log (\pi_{\theta}(A | X_1)) | X_1]] + Var_{X_1} [g_i(X_1; \theta)]\]</span></p>
-<p>These two sources of variance make our estimate of the gradient inaccurate. We can reduce them using a <code>baseline</code>.</p>
-<p>Consider the variance of estimating <span class="math inline">\(g(x; \theta)\)</span> using a single sample <span class="math inline">\(r(x, A) \nabla log (\pi_{\theta}(A | x))\)</span> with <span class="math inline">\(A \sim \pi_\theta(\cdot | x)\)</span>. For each dimension <span class="math inline">\(i\)</span>, we have:</p>
-<span class="math display">\[\begin{aligned} 
-E_{A}[ (r(x, A) -  b(x))  \frac{\partial}{\partial \theta_i}log (\pi_{\theta}(A | x)) \; |\; x] &amp;= \int_a (r(x, a) - b(x)) \pi_{\theta}(a | x)  \frac{\partial}{\partial \theta_i} log (\pi_{\theta}(a | x)) da\\
-&amp;= \int_a r(x, a) \frac{\partial}{\partial \theta_i} \pi_{\theta}(a | x) da  - b(x) \int_a \frac{\partial}{\partial \theta_i} \pi_{\theta}(a | x) da\\
-&amp;=  \int_a r(x, a) \frac{\partial}{\partial \theta_i} \pi_{\theta}(a | x) da - b(x) \frac{\partial}{\partial \theta_i} \underbrace{\int_a \pi_{\theta}(a | x) da}_{1} \\
-&amp;=  \int_a r(x, a) \frac{\partial}{\partial \theta_i} \pi_{\theta}(a | x) da - b(x) \frac{\partial}{\partial \theta_i} (1)\\
-&amp;=  \int_a r(x, a) \frac{\partial}{\partial \theta_i} \pi_{\theta}(a | x) da\\
-&amp;= E_{A}[ (r(x, A) -  b(x))  \frac{\partial}{\partial \theta_i}log (\pi_{\theta}(A | x))\; |\; x]
-\end{aligned}\]</span>
-<p><br/></p>
-<p>This shows that, if we add a state dependent function <span class="math inline">\(b(x)\)</span> to <span class="math inline">\(r(x, a)\)</span>, the expectation won't change. But, this may change the variance! We can formulate this idea to be an optimization problem and find a function <span class="math inline">\(b: X \rightarrow \mathbb{R}^{p}\)</span> such that for all <span class="math inline">\(x \in X\)</span> (for each <span class="math inline">\(b_i\)</span>):</p>
-<p><span class="math display">\[\min_{b_i} \sum^{p}_{i=1} Var[(r(x, A) + b_i (x))  \frac{\partial}{\partial \theta_i}log (\pi_{\theta}(A | x)) \; |\; x]\]</span></p>
-<p>by solving this optimization problem, we have:</p>
-<p><span class="math display">\[b_i (x) = \frac{-E_A[r(x, A) (\frac{\partial}{\partial \theta_i}log (\pi_{\theta}(A | x)))^2 \; |\; x]}{E_A [(\frac{\partial}{\partial \theta_i}log (\pi_{\theta}(A | x)))^2 | x]}\]</span></p>
-<p>We can also choose single scalar function <span class="math inline">\(b: X \rightarrow \mathbb{R}\)</span> instead：</p>
-<p><span class="math display">\[b (x) = \frac{-E_A[r(x, A) \|\frac{\partial}{\partial \theta_i}log (\pi_{\theta}(A | x))\|^2_2 \; |\; x]}{E_A [\|\frac{\partial}{\partial \theta_i}log (\pi_{\theta}(A | x))\|^2_2 | x]}\]</span><br/></p>
-<h2 id="policy-gradient-general-case">Policy Gradient (General Case)</h2>
-<p>Recall that:</p>
-<p><span class="math display">\[P^{\pi} (\cdot | y)= \int_{x \in X} \int_a P(x | y, a) \pi(a | y) da dx\]</span></p>
-<h3 id="average-reward-setting">Average Reward Setting</h3>
-<p>The difference with the immediate reward case, where we only need initial distribution <span class="math inline">\(\rho\)</span>, in average reward case, we depend on the environment transition distribution <span class="math inline">\(P^{\pi_{\theta}}\)</span> too. As we update <span class="math inline">\(\theta\)</span>, we obtain a different policy <span class="math inline">\(\pi_{\theta}\)</span>, that is, we have a different dynamics transition distribution <span class="math inline">\(P^{\pi_{\theta}}\)</span>.</p>
-<p>Recall that in average reward setting, the quality of a policy is measured as the long term expected reward or average rate reward or simply average reward following <span class="math inline">\(\pi_\theta\)</span> <code>independent of starting state</code> (<strong><span class="math inline">\(x_1\)</span> in the expectation is used to emphasize that the Expected reward is <span class="math inline">\(t\)</span> step</strong>):</p>
-<span class="math display">\[\begin{aligned}
-J (\pi_\theta) &amp;= \lim_{n \rightarrow \infty}\frac{1}{n}E_{X \sim \rho^{\pi_{\theta}}(\cdot)}[R_1 + R_2, .... \; |\; A_{1}, A_{2}, ... \sim \pi_{\theta}, x_1]\\
-&amp;= \lim_{n \rightarrow \infty}\frac{1}{n} \sum^{n}_{t=1} E_{X \sim \rho^{\pi_{\theta}}(\cdot)}[R_t \; |\; A_{1}, A_{2}, ... \sim \pi_{\theta}, x_1]\\
-&amp;= \int_{x} \rho^{\pi_{\theta}} (x) \int_a \pi_{\theta} (a | x) r(x, a) da dx
-\end{aligned}\]</span>
-<p>Where <span class="math inline">\(\rho^{\pi_{\theta}} (x) = \lim_{t \rightarrow \infty} P^{\pi_{\theta}} (X_t = x | x_1; t)\)</span> here is the <code>stationary distribution</code> under <span class="math inline">\(\pi_\theta\)</span> which is assumed to exists and independent of starting state (<strong><span class="math inline">\(x_1\)</span> here is used to emphasize that this is <span class="math inline">\(t\)</span> step transition probability</strong>). This is the special distribution in which if you select actions according to <span class="math inline">\(\pi_\theta\)</span>, you end up in the same distribution. We can easily sample states from this distribution by following <span class="math inline">\(\pi_{\theta}\)</span>.</p>
-<h3 id="discounted-setting">Discounted Setting</h3>
-<p>In discounted setting, the objective is defined as long term discounted return starting from initial state distribution <span class="math inline">\(X_1 \sim \rho\)</span> following <span class="math inline">\(\pi_{\theta}\)</span>:</p>
-<p><span class="math display">\[J_{\rho} (\pi_\theta) = E_{X_1 \sim \rho} [V^{\pi_{\theta}} (X_1)]\]</span></p>
-Recall that <span class="math inline">\(P^{\pi_{\theta}} (\cdot | x; k) = P^{\pi_{\theta}} (\cdot | x)^k\)</span> is the <span class="math inline">\(k\)</span> step transition distribution:
-<span class="math display">\[\begin{aligned}
-\sum^{\infty}_{k=0} \gamma^k p^{\pi_{\theta}} (X_{k + 1}=x | x_{1}) &amp;= I(x=x_1)\rho(x) + \sum^{\infty}_{k=1} \gamma^k p^{\pi_{\theta}} (X_{k + 1}=x | x_{1})\\
-&amp;= I(x=x_1)\rho(x) + \sum^{\infty}_{k=1} \gamma^k \sum_{\bar{x}, a} \underbrace{p (X_{k+1} = x | X_{k}=\bar{x}, A_{k}=a)}_{\text{this does not depend on k, the memory less property}} \pi_{\theta}(a | \bar{x})p^{\pi_{\theta}}(X_{k}=\bar{x} | x_{1})\\
-&amp;= I(x=x_1)\rho(x) + \sum^{\infty}_{k=1} \gamma^k \sum_{\bar{x}, a} p (X^{\prime} = x | X=\bar{x}, A=a) \pi_{\theta}(a | \bar{x})p^{\pi_{\theta}}(X_{k}=\bar{x} | x_{1})\\
-&amp;= I(x=x_1)\rho(x) + \sum_{\bar{x}, a} p (X^{\prime} = x | X=\bar{x}, A=a) \pi_{\theta}(a | \bar{x}) \sum^{\infty}_{k=1} \gamma^k  p^{\pi_{\theta}}(X_{k}=\bar{x} | x_{1})\\
-\end{aligned}\]</span>
-<p>This is the <strong>number of time steps spend on average in state <span class="math inline">\(x\)</span> discounted by <span class="math inline">\(\gamma^k\)</span></strong> given we start at state <span class="math inline">\(X_1 \sim \rho = x_1\)</span> and <span class="math inline">\(\bar{x}\)</span> is the previous state.</p>
-<p>Let's now define the <code>discounted future state distribution</code> starting from state <span class="math inline">\(x_1 \in X\)</span> following <span class="math inline">\(\pi_{\theta}\)</span>:</p>
-<p><span class="math display">\[\rho^{\pi}_{\gamma} (\cdot | x_1) \triangleq (1 - \gamma) \sum^{\infty}_{k=0} \gamma^k P^{\pi_{\theta}} (\cdot | x; k)\]</span></p>
-<p>Where , and <span class="math inline">\(1 - \gamma\)</span> is the normalization term. We can easily verify that this is a valid distribution. One interpretation of this distribution is that the agent starts at <span class="math inline">\(x_1\)</span> and at each time step <span class="math inline">\(t\)</span> terminate with probability <span class="math inline">\(1 - \gamma\)</span>. This accounts for the discounted factor inside the average counts.</p>
-<p>We can also define the <code>discounted future-state distribution</code> of starting from <span class="math inline">\(\rho\)</span> and following <span class="math inline">\(\pi\)</span> as:</p>
-<p><span class="math display">\[\rho^{\pi}_{\gamma} (\cdot) = \int_{x_1} \rho^{\pi}_{\gamma} (\cdot | x_1) \rho (x_1) dx_1\]</span></p>
-<h3 id="average-reward-and-discounted-return">Average Reward and Discounted Return</h3>
-<p>We can see the connection between average reward and discounted return:</p>
-<span class="math display">\[\begin{aligned}
-V^{\pi} (x) &amp;= E^{\pi}[\sum^{\infty}_{t = 1} \gamma^{t - 1} R_{t} \; |\; X_1 = x]\\
-&amp;= \sum^{\infty}_{t = 1} \gamma^{t - 1} E^{\pi}[R_{t} \; |\; X_1 = x]\\
-&amp;= \sum^{\infty}_{t = 1} \gamma^{t - 1} \int_{x^{\prime}} P^{\pi}(X_t=x^{\prime} | x; t) R(x^{\prime})dx^{\prime}\\
-&amp;= \frac{1}{1 - \gamma} \int_{x^{\prime}} \rho^{\pi}_{\gamma} ( x^{\prime}| x) R(x^{\prime}) dx^{\prime}\\
-&amp;= \frac{1}{1 - \gamma}E_{X^{\prime} \sim \rho^{\pi}_{\gamma} (\cdot | x)} [R(X^{\prime})]\\
-\end{aligned}\]</span>
-<p>We can interchange summation and infinity sum because the sum is finite. Here <span class="math inline">\(R(\cdot)\)</span> represents the realization of <span class="math inline">\(R_{t}\)</span>. This tells us that the value function at a state <span class="math inline">\(x\)</span> is the expected reward when <span class="math inline">\(X^{\prime}\)</span> is distributed according to <span class="math inline">\(\rho^{\pi}_{\gamma} (\cdot | x)\)</span> and following <span class="math inline">\(\pi\)</span>.</p>
-<h3 id="policy-gradient-theorem">Policy Gradient Theorem</h3>
-<p><img src='/images/RL/pg/pg_2.png' width="600"></p>
-<h4 id="proof-average-reward-setting">Proof: Average Reward Setting</h4>
-<p>In average reward setting, <span class="math inline">\(d^{\pi} (x) = \rho^{\pi_{\theta}} (x),\; \; \rho = J (\pi_\theta)\)</span></p>
-<p>Recall that:</p>
-<span class="math display">\[\begin{aligned}
-\nabla V^{\pi_{\theta}} = 
-\end{aligned}\]</span>
-<span class="math display">\[\begin{aligned}
-\nabla J (\pi_\theta) = 
-\end{aligned}\]</span>
-<h1 id="reference">Reference</h1>
-<p>Sham M. Kakade. On the sample complexity of reinforcement learning. 2003. https://homes.cs.washington.edu/~sham/papers/thesis/sham_thesis.pdf</p>
+    <title>off-policy-actor-critic</title>
+    <url>/2021/06/03/off-policy-actor-critic/</url>
+    <content><![CDATA[
 ]]></content>
-      <categories>
-        <category>RL</category>
-        <category>PG</category>
-      </categories>
-      <tags>
-        <tag>Policy Gradient</tag>
-        <tag>Continuous Action Space</tag>
-        <tag>RL Basics</tag>
-      </tags>
   </entry>
   <entry>
     <title>Policy Gradient (1)</title>
@@ -1693,5 +1600,239 @@ Uniform(A), \text{w. p } \epsilon \\
 <h2 id="section-2">33</h2>
 <h2 id="section-3">81</h2>
 ]]></content>
+  </entry>
+  <entry>
+    <title>Policy Gradient (2)</title>
+    <url>/2021/05/30/policy-gradient-2/</url>
+    <content><![CDATA[<h1 id="policy-search-methods-policy-gradient">Policy Search Methods (Policy Gradient)</h1>
+<p><span style="color:red"><em>All <span class="math inline">\(\nabla\)</span> refer to <span class="math inline">\(\nabla_{\theta}\)</span> for simplicity.</em></span></p>
+<p>From <a href="/2021/05/23/policy-gradient/" title="introduction">introduction</a> blog, our goal:</p>
+<p><span class="math display">\[\underset{\pi_{\theta}}{\operatorname{maximize}} J_\rho(\pi_\theta) = \underset{\theta}{\operatorname{maximize}} J_\rho(\pi_\theta)\]</span></p>
+<p>By taking the gradient w.r.t <span class="math inline">\(\theta\)</span>, we have:</p>
+<span class="math display">\[\begin{aligned}
+\nabla J_\rho(\pi_\theta) &amp;= \nabla E_{X_1 \sim \rho} [V^{\pi_\theta} (X_1)]\\
+&amp;= \nabla \int_{x_1}\int_{a} [r(x_1, a) \pi_{\theta} (a | x_1) da dx_1 + \int_{x^{\prime}} P(x^{\prime} | x_1, a) \pi_{\theta}(a | x_1) V^{\pi_\theta}(x^{\prime})dx^{\prime} da dx_1]\\
+&amp;= \nabla \int_{a} \int_{x_1} \int_{x^{\prime}} \pi_{\theta}(a | x_1) [r(x_1, a) + P(x^{\prime} | x_1, a) V^{\pi_\theta}(x^{\prime})]dx^{\prime} da dx_1 \\
+&amp;= \int_{x_1} \int_{a} \int_{x^{\prime}} \nabla [\pi_{\theta}(a | x_1) (r(x_1, a) + P(x^{\prime} | x_1, a) V^{\pi_\theta}(x^{\prime}))]dx^{\prime} da dx_1 \\
+\end{aligned}\]</span>
+<p>We can swap integral and derivative as long as <span class="math inline">\(V^{\pi_{\theta}}\)</span> is a continuous function of <span class="math inline">\(\theta\)</span>, the estimator of this expectation is called <code>pathwise derivative estimator</code> or <code>stochastic backpropagation estimator</code> (more details in <a href="/2021/05/27/stochastic-graph/" title="Stochastic Graph">Stochastic Graph</a>).</p>
+<p>This <span class="math inline">\(\nabla J_\rho(\pi_\theta)\)</span> is called the <strong>Policy Gradient</strong>. In ideal case, if we know the policy gradient (i.e if we know the environment dynamics <span class="math inline">\(P, R\)</span>), we can use gradient ascent to update the parameters <span class="math inline">\(\theta\)</span>.</p>
+<p><strong>The question is, how can we approximate this gradient in reality using samples?</strong></p>
+<h2 id="immediate-reward-problem-easy-case">Immediate Reward Problem (Easy Case)</h2>
+<p>First, let's consider an immediate reward problem:</p>
+<p><img src='/images/RL/pg/pg_1.png' width="600"></p>
+<p>In this setting, our <span class="math inline">\(J_\rho(\pi_\theta)\)</span> is:</p>
+<span class="math display">\[\begin{aligned}
+J_\rho(\pi_\theta) &amp;= \int_{x_1} V^{\pi_\theta} \rho(x_1) dx_1 \\
+&amp;= \int_{x_1} \int_{a} r(x_1, a) \pi_{\theta}(a | x_1) \rho(x_1) da dx_1 \\
+\end{aligned}\]</span>
+<p>The value function <span class="math inline">\(V^{\pi_\theta}\)</span> in this setting is the same as <span class="math inline">\(r^{\pi_{\theta}}\)</span>, and the action space is continuous.</p>
+<p>Then, the policy gradient <span class="math inline">\(\nabla J_\rho(\pi_\theta)\)</span> can be written as:</p>
+<p><span class="math display">\[\nabla J_\rho(\pi_\theta) = \int_{x_1} \int_{a} r(x_1, a) \rho(x_1) \nabla \pi_{\theta}(a | x_1) da dx_1\]</span></p>
+<p><strong>How can we compute <span class="math inline">\(\nabla J_\rho(\pi_\theta)\)</span> ?</strong></p>
+<p>Recall that, <span class="math inline">\(\frac{\partial log (\theta)}{ \partial \theta} = \frac{1}{\theta}\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+\nabla J_\rho(\pi_\theta) &amp;= \int_{x_1} \int_{a} r(x_1, a) \rho(x_1) \nabla \pi_{\theta}(a | x_1) da dx_1\\
+&amp;= \int_{x_1} \int_{a} r(x_1, a) \rho(x_1) \pi_{\theta}(a | x_1) \frac{\nabla \pi_{\theta}(a | x_1)}{\pi_{\theta}(a | x_1)}  da dx_1\\
+&amp;= \int_{x_1} \int_{a} \rho(x_1) \pi_{\theta}(a | x_1) r(x_1, a)  \nabla log (\pi_{\theta}(a | x_1))  da dx_1\\
+&amp;= E_{X_1 \sim \rho, A \sim \pi_{\theta}(\cdot | X_1)} [r(X_1, A)  \nabla log (\pi_{\theta}(A | X_1))]
+\end{aligned}\]</span>
+<p>Then, we can draw samples from this expectation:</p>
+<p><span class="math display">\[r(X_1, A)  \nabla log (\pi_{\theta}(A | X_1))\]</span></p>
+<p>These samples are called <code>REINFORCE</code> or <code>Score function</code> estimators. These samples are unbiased samples of the policy gradient <span class="math inline">\(\nabla J_\rho(\pi_\theta)\)</span>. We can use these unbiased but noisy samples to update parameters. This makes it <strong>Stochastic Gradient Ascent</strong>.</p>
+<h3 id="baseline">Baseline</h3>
+<p>We know that above sample is unbiased sample of the policy gradient, but, how about its variance?</p>
+<p>There are two source of variance:</p>
+<ol type="1">
+<li>Variance that comes from sampling <span class="math inline">\(X_1 \sim \rho\)</span> and use this sample to estimate the expectation.</li>
+<li>Variance that comes from sampling <span class="math inline">\(A \sim \pi_{\theta}(a | X_1)\)</span> and use this sample to estimate the expectation.</li>
+</ol>
+<p>Recall the total variance formula:</p>
+<p><span class="math display">\[Var[Y] = E_X[Var[Y | X]] + Var_X[E[Y | X]]\]</span></p>
+<p>One can show that the variance for <strong><span class="math inline">\(i\)</span>th dimension</strong> of <span class="math inline">\(\nabla J_\rho(\pi_\theta)\)</span>:</p>
+<p><span class="math display">\[Var[r(X_1, A)  \frac{\partial}{\partial \theta_i} log (\pi_{\theta}(A | X_1))] = E_{X_1} [Var_{A}[r(X_1, A)  \frac{\partial}{\partial \theta_i}  log (\pi_{\theta}(A | X_1)) | X_1]] + Var_{X_1} [E_A[r(X_1, A)  \frac{\partial}{\partial \theta_i} log (\pi_{\theta}(A | X_1)) | X_1]]\]</span></p>
+<p>To see this more clearly, let's define:</p>
+<p><span class="math display">\[g(x; \theta) = E_{A \sim \pi_{\theta}(\cdot | x)} [r(x, A)  \nabla log (\pi_{\theta}(A | x))]\]</span></p>
+<p>This function <span class="math inline">\(g: X \times \Theta \rightarrow \mathbb{R}^{p}\)</span> is the policy gradient at a particular starting state <span class="math inline">\(x\)</span>, and it is a <span class="math inline">\(p\)</span>-dimensional vector (Assuming <span class="math inline">\(\theta\)</span> is <span class="math inline">\(p\)</span>-dimensional). Then we have:</p>
+<p><span class="math display">\[Var[r(X_1, A)  \frac{\partial}{\partial \theta_i} log (\pi_{\theta}(A | X_1))] = E_{X_1} [Var_{A}[r(X_1, A)  \frac{\partial}{\partial \theta_i}  log (\pi_{\theta}(A | X_1)) | X_1]] + Var_{X_1} [g_i(X_1; \theta)]\]</span></p>
+<p>These two sources of variance make our estimate of the gradient inaccurate. We can reduce them using a <code>baseline</code>.</p>
+<p>Consider the variance of estimating <span class="math inline">\(g(x; \theta)\)</span> using a single sample <span class="math inline">\(r(x, A) \nabla log (\pi_{\theta}(A | x))\)</span> with <span class="math inline">\(A \sim \pi_\theta(\cdot | x)\)</span>. For each dimension <span class="math inline">\(i\)</span>, we have:</p>
+<span class="math display">\[\begin{aligned} 
+E_{A}[ (r(x, A) -  b(x))  \frac{\partial}{\partial \theta_i}log (\pi_{\theta}(A | x)) \; |\; x] &amp;= \int_a (r(x, a) - b(x)) \pi_{\theta}(a | x)  \frac{\partial}{\partial \theta_i} log (\pi_{\theta}(a | x)) da\\
+&amp;= \int_a r(x, a) \frac{\partial}{\partial \theta_i} \pi_{\theta}(a | x) da  - b(x) \int_a \frac{\partial}{\partial \theta_i} \pi_{\theta}(a | x) da\\
+&amp;=  \int_a r(x, a) \frac{\partial}{\partial \theta_i} \pi_{\theta}(a | x) da - b(x) \frac{\partial}{\partial \theta_i} \underbrace{\int_a \pi_{\theta}(a | x) da}_{1} \\
+&amp;=  \int_a r(x, a) \frac{\partial}{\partial \theta_i} \pi_{\theta}(a | x) da - b(x) \frac{\partial}{\partial \theta_i} (1)\\
+&amp;=  \int_a r(x, a) \frac{\partial}{\partial \theta_i} \pi_{\theta}(a | x) da\\
+&amp;= E_{A}[ (r(x, A) -  b(x))  \frac{\partial}{\partial \theta_i}log (\pi_{\theta}(A | x))\; |\; x]
+\end{aligned}\]</span>
+<p><br/></p>
+<p>This shows that, if we add a state dependent function <span class="math inline">\(b(x)\)</span> to <span class="math inline">\(r(x, a)\)</span>, the expectation won't change. But, this may change the variance! We can formulate this idea to be an optimization problem and find a function <span class="math inline">\(b: X \rightarrow \mathbb{R}^{p}\)</span> such that for all <span class="math inline">\(x \in X\)</span> (for each <span class="math inline">\(b_i\)</span>):</p>
+<p><span class="math display">\[\min_{b_i} \sum^{p}_{i=1} Var[(r(x, A) + b_i (x))  \frac{\partial}{\partial \theta_i}log (\pi_{\theta}(A | x)) \; |\; x]\]</span></p>
+<p>by solving this optimization problem, we have:</p>
+<p><span class="math display">\[b_i (x) = \frac{-E_A[r(x, A) (\frac{\partial}{\partial \theta_i}log (\pi_{\theta}(A | x)))^2 \; |\; x]}{E_A [(\frac{\partial}{\partial \theta_i}log (\pi_{\theta}(A | x)))^2 | x]}\]</span></p>
+<p>We can also choose single scalar function <span class="math inline">\(b: X \rightarrow \mathbb{R}\)</span> instead：</p>
+<p><span class="math display">\[b (x) = \frac{-E_A[r(x, A) \|\frac{\partial}{\partial \theta_i}log (\pi_{\theta}(A | x))\|^2_2 \; |\; x]}{E_A [\|\frac{\partial}{\partial \theta_i}log (\pi_{\theta}(A | x))\|^2_2 | x]}\]</span><br/></p>
+<h2 id="policy-gradient-general-case">Policy Gradient (General Case)</h2>
+<p>Recall that:</p>
+<p><span class="math display">\[P^{\pi} (\cdot | y)= \int_{x \in X} \int_a P(x | y, a) \pi(a | y) da dx\]</span></p>
+<h3 id="average-reward-setting">Average Reward Setting</h3>
+<p>The difference with the immediate reward case, where we only need initial distribution <span class="math inline">\(\rho\)</span>, in average reward case, we depend on the environment transition distribution <span class="math inline">\(P^{\pi_{\theta}}\)</span> too. As we update <span class="math inline">\(\theta\)</span>, we obtain a different policy <span class="math inline">\(\pi_{\theta}\)</span>, that is, we have a different dynamics transition distribution <span class="math inline">\(P^{\pi_{\theta}}\)</span>.</p>
+<p>Recall that in average reward setting, the quality of a policy is measured as the long term expected reward or average rate reward or simply average reward following <span class="math inline">\(\pi_\theta\)</span> <code>independent of starting state</code> (<strong><span class="math inline">\(x_1\)</span> in the expectation is used to emphasize that the Expected reward is <span class="math inline">\(t\)</span> step</strong>):</p>
+<span class="math display">\[\begin{aligned}
+J (\pi_\theta) &amp;= \lim_{n \rightarrow \infty}\frac{1}{n}E[R_1 + R_2, .... \; |\; A_{1}, A_{2}, ... \sim \pi_{\theta}, x_1]\\
+&amp;= \lim_{n \rightarrow \infty}\frac{1}{n} \sum^{n}_{t=1} E[R_t \; |\; A_{1}, A_{2}, ... \sim \pi_{\theta}, x_1]\\
+&amp;= \lim_{n \rightarrow \infty}\frac{1}{n} \sum^{n}_{t=1} \int_{x, a} P^{\pi_{\theta}} (X_t = x | x_1; t) \pi(a | x) R(x, a) da dx\\
+&amp;= \int_{x, a} \lim_{n \rightarrow \infty}\frac{1}{n} \sum^{n}_{t=1} P^{\pi_{\theta}} (X_t = x | x_1; t) \pi(a | x) R(x, a) da dx\\
+&amp;= \int_{x} \rho^{\pi_{\theta}} (x) \int_a \pi_{\theta} (a | x) R(x, a) da dx\\
+\end{aligned}\]</span>
+<p><br/></p>
+<p>Where <span class="math inline">\(\rho^{\pi_{\theta}} (x) = \lim_{n \rightarrow \infty}\frac{1}{n} \sum^{n}_{t=1} P^{\pi_{\theta}} (X_t = x | x_1; t) = \lim_{t \rightarrow \infty} P^{\pi_{\theta}} (X_t = x | x_1; t)\)</span>.</p>
+<h4 id="stationary-distribution">Stationary Distribution</h4>
+<p><span class="math inline">\(\rho^{\pi_{\theta}}\)</span> above is the <code>stationary distribution</code> under <span class="math inline">\(\pi_\theta\)</span> which is assumed to exist (when the markov chain is <code>ergodic</code>) and independent of starting state (<strong><span class="math inline">\(x_1\)</span> here is used to emphasize that this is <span class="math inline">\(t\)</span> step transition probability</strong>).</p>
+<p>In general, let <span class="math inline">\(\sum^{N}_{n=1}I\{X_n = j | X_0=i \}\)</span> be the number of visits to state <span class="math inline">\(j\)</span> in <span class="math inline">\(N\)</span> steps starting from <span class="math inline">\(i\)</span>. Then the expected visits to state <span class="math inline">\(j\)</span> is:</p>
+<p><span class="math display">\[E[\sum^{N}_{n=1}I\{X_n = j | X_0=i\}] = \sum^{N}_{n=1} E[I\{X_n = j\} | X_0=i] = \sum^{N}_{n=1} P(X_n=j | X_0=i)\]</span><br/></p>
+<p>The <code>expected proportion of visits</code> is then:</p>
+<p><span class="math display">\[\frac{\sum^{N}_{n=1} P(X_n=j | X_0=i)}{N}\]</span><br/></p>
+<p>The <code>stationary distribution</code> can be interpreted as the long run expected proportion of time that the chain spends for each state over the state space, so it is defined as <span class="math inline">\(\pi = (\pi_0, \pi_1, ...)\)</span> over the state space <span class="math inline">\(X\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+\pi_j &amp;= \lim_{n \rightarrow \infty}\frac{1}{n}\sum^{n}_{m=1} E[I\{X_m=j | X_0=i\}] \;\;\;\;\;\;\;\;\; \forall \text{ initial states } i\\
+&amp;= \lim_{n \rightarrow \infty} \frac{\sum^{n}_{m=1} P(X_m=j | X_0=i)}{n}\\
+&amp;= \lim_{n \rightarrow \infty} P(X_m=j)
+\end{aligned}\]</span>
+<p><br/></p>
+<p><img src='/images/RL/pg/pg_3.png'> <img src='/images/RL/pg/pg_4.png' width="700"></p>
+<p>So <span class="math inline">\(\rho^{\pi_{\theta}} (\cdot)\)</span> is the special distribution in which if you select actions according to <span class="math inline">\(\pi_\theta\)</span>, you end up in the same distribution:</p>
+<p><span class="math display">\[\int_{x} \rho^{\pi_{\theta}} (x) \int_a \pi_{\theta}(a | x) \int_{x^{\prime}} P(x^{\prime} | x, a) dx^{\prime} da dx = \rho^{\pi_{\theta}} (x^{\prime})\]</span></p>
+<p><strong>We can easily sample states from this distribution by following <span class="math inline">\(\pi_{\theta}\)</span></strong>.</p>
+<h3 id="discounted-setting">Discounted Setting</h3>
+<p>In discounted setting, the objective is defined as long term discounted return starting from initial state distribution <span class="math inline">\(X_1 \sim \rho\)</span> following <span class="math inline">\(\pi_{\theta}\)</span>:</p>
+<p><span class="math display">\[J_{\rho} (\pi_\theta) = E_{X_1 \sim \rho} [V^{\pi_{\theta}} (X_1)]\]</span></p>
+Recall that <span class="math inline">\(P^{\pi_{\theta}} (\cdot | x; k) = P^{\pi_{\theta}} (\cdot | x)^k\)</span> is the <span class="math inline">\(k\)</span> step transition distribution:
+<span class="math display">\[\begin{aligned}
+\sum^{\infty}_{k=0} \gamma^k p^{\pi_{\theta}} (X_{k + 1}=x | x_{1}) &amp;= I(x=x_1)\rho(x) + \sum^{\infty}_{k=1} \gamma^k p^{\pi_{\theta}} (X_{k + 1}=x | x_{1})\\
+&amp;= I(x=x_1)\rho(x) + \sum^{\infty}_{k=1} \gamma^k \sum_{\bar{x}, a} \underbrace{p (X_{k+1} = x | X_{k}=\bar{x}, A_{k}=a)}_{\text{this does not depend on k, the memory less property}} \pi_{\theta}(a | \bar{x})p^{\pi_{\theta}}(X_{k}=\bar{x} | x_{1})\\
+&amp;= I(x=x_1)\rho(x) + \sum^{\infty}_{k=1} \gamma^k \sum_{\bar{x}, a} p (X^{\prime} = x | X=\bar{x}, A=a) \pi_{\theta}(a | \bar{x})p^{\pi_{\theta}}(X_{k}=\bar{x} | x_{1})\\
+&amp;= I(x=x_1)\rho(x) + \sum_{\bar{x}, a} p (X^{\prime} = x | X=\bar{x}, A=a) \pi_{\theta}(a | \bar{x}) \sum^{\infty}_{k=1} \gamma^k  p^{\pi_{\theta}}(X_{k}=\bar{x} | x_{1})\\
+\end{aligned}\]</span>
+<p>This is the <strong>expected number of time steps spend in state <span class="math inline">\(x\)</span> discounted by <span class="math inline">\(\gamma^k\)</span></strong> given we start at state <span class="math inline">\(X_1 \sim \rho = x_1\)</span> and <span class="math inline">\(\bar{x}\)</span> is the previous state.</p>
+<p>Let's now define the <code>discounted future state distribution</code> (similar to stationary distribution but with discount and depend on initial state)starting from state <span class="math inline">\(x_1 \in X\)</span> following <span class="math inline">\(\pi_{\theta}\)</span>:</p>
+<p><span class="math display">\[\rho^{\pi}_{\gamma} (\cdot | x_1) \triangleq (1 - \gamma) \sum^{\infty}_{k=0} \gamma^k P^{\pi_{\theta}} (\cdot | x; k)\]</span></p>
+<p>Where , and <span class="math inline">\(1 - \gamma\)</span> is the normalization term. We can easily verify that this is a valid distribution. <strong>One interpretation of this distribution is that the agent starts at <span class="math inline">\(x_1\)</span> and at each time step <span class="math inline">\(t\)</span> terminate with probability <span class="math inline">\(1 - \gamma\)</span>. This accounts for the discounted factor inside the average counts. That is, we can sample from the state stationary distribution and terminate at each step with probability <span class="math inline">\(1 - \gamma\)</span>. Or instead, we could weight each samples by <span class="math inline">\(\gamma^k\)</span> to account for the termination.</strong></p>
+<p>We can also define the <code>discounted future-state distribution</code> of starting from <span class="math inline">\(\rho\)</span> and following <span class="math inline">\(\pi\)</span> as:</p>
+<p><span class="math display">\[\rho^{\pi}_{\gamma} (\cdot) = \int_{x_1} \rho^{\pi}_{\gamma} (\cdot | x_1) \rho (x_1) dx_1\]</span></p>
+<h3 id="expected-reward-and-discounted-return">Expected Reward and Discounted Return</h3>
+<p>We can see the connection between expected reward and discounted return:</p>
+<span class="math display">\[\begin{aligned}
+V^{\pi} (x) &amp;= E^{\pi}[\sum^{\infty}_{t = 1} \gamma^{t - 1} R_{t} \; |\; X_1 = x]\\
+&amp;= \sum^{\infty}_{t = 1} \gamma^{t - 1} E^{\pi}[R_{t} \; |\; X_1 = x]\\
+&amp;= \sum^{\infty}_{t = 1} \gamma^{t - 1} \int_{x^{\prime}, a} P^{\pi}(X_t=x^{\prime} | x; t) \pi(a | x^{\prime})R(x^{\prime}, a)da dx^{\prime}\\
+&amp;= \frac{1}{1 - \gamma} \int_{x^{\prime}, a} \rho^{\pi}_{\gamma} ( x^{\prime}| x) \pi(a | x^{\prime}) R(x^{\prime}, a) dadx^{\prime}\\
+&amp;= \frac{1}{1 - \gamma}E_{X^{\prime} \sim \rho^{\pi}_{\gamma} (\cdot | x), A \sim \pi(\cdot | X^{\prime})} [R(X^{\prime}, A)]\\
+\end{aligned}\]</span>
+<p>We can interchange summation and infinity sum because the sum is finite. Here <span class="math inline">\(R(\cdot)\)</span> represents the realization of random variable <span class="math inline">\(R\)</span>. This tells us that the value function at a state <span class="math inline">\(x\)</span> is the expected reward when <span class="math inline">\(X^{\prime}\)</span> is distributed according to <span class="math inline">\(\rho^{\pi}_{\gamma} (\cdot | x)\)</span> and following <span class="math inline">\(\pi\)</span>.</p>
+<h3 id="policy-gradient-theorem">Policy Gradient Theorem</h3>
+<p><img src='/images/RL/pg/pg_2.png' width="600"></p>
+<h4 id="proof-average-reward-setting">Proof: Average Reward Setting</h4>
+<p>In average reward setting, <span class="math inline">\(d^{\pi} (x) = \rho^{\pi_{\theta}} (x),\; \; \rho = J (\pi_\theta)\)</span> and <span class="math inline">\(Q^{\pi} (x, a)\)</span> is defined as:</p>
+<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) - J(\pi_\theta) +  \int_{x^{\prime}} P(x^{\prime} | x, a) V^{\pi_{\theta}} (x^{\prime}) dx^{\prime}\]</span></p>
+<p>Recall that,</p>
+<span class="math display">\[\begin{aligned}
+\nabla V^{\pi_{\theta}} (x) &amp;= \int_{a} \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da \;\;\;\;\;\;\;\;\;\;\;\;\;\;\; \forall x \in X\\
+&amp;= \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da + \int_a \pi_{\theta}(a | x) \nabla Q^{\pi_{\theta}} (x, a) da\\
+&amp;= \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da + \int_a \pi_{\theta}(a | x) \nabla (r(x, a) - J(\pi_\theta) +  \int_{x^{\prime}} P(x^{\prime} | x, a) V^{\pi_{\theta}} (x^{\prime})dx^{\prime}) da\\
+&amp;= \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da + \int_a \pi_{\theta}(a | x) (- \nabla J(\pi_\theta) +  \int_{x^{\prime}} P(x^{\prime} | x, a) \nabla V^{\pi_{\theta}} (x^{\prime})dx^{\prime}) da\\
+\end{aligned}\]</span>
+<p><br/></p>
+<p>That is:</p>
+<p><span class="math display">\[\nabla J(\pi_\theta) \underbrace{\int_a \pi_{\theta}(a | x) da}_{1} =  \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da + \int_a \pi_{\theta}(a | x) \int_{x^{\prime}} P(x^{\prime} | x, a) \nabla V^{\pi_{\theta}} (x^{\prime})dx^{\prime} da - \nabla V^{\pi_{\theta}} (x)\]</span> <br/></p>
+<p>Weighting both sides by (taking expectation) <span class="math inline">\(\rho^{\pi_{\theta}} (x)\)</span> and remember the property of stationary distribution <span class="math inline">\(\int_{x} \rho^{\pi_{\theta}} (x) \int_a \pi_{\theta}(a | x) \int_{x^{\prime}} P(x^{\prime} | x, a) dx^{\prime} da dx = \rho^{\pi_{\theta}} (x^{\prime})\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+\underbrace{\int_{x} \rho^{\pi_{\theta}} (x) dx}_{1} \nabla J(\pi_\theta)  &amp;= \int_{x} \rho^{\pi_{\theta}} (x) \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da dx + \int_{x} \rho^{\pi_{\theta}} (x) \int_a \pi_{\theta}(a | x) \int_{x^{\prime}} P(x^{\prime} | x, a) \nabla V^{\pi_{\theta}} (x^{\prime})dx^{\prime} da dx- \int_{x} \rho^{\pi_{\theta}} (x) \nabla V^{\pi_{\theta}} (x) dx \\
+\nabla J(\pi_\theta)  &amp;= \int_{x} \rho^{\pi_{\theta}} (x) \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da dx + \int_{x} \rho^{\pi_{\theta}} (x) \int_a \pi_{\theta}(a | x) \int_{x^{\prime}} P(x^{\prime} | x, a) \nabla V^{\pi_{\theta}} (x^{\prime})dx^{\prime} da dx- \int_{x} \rho^{\pi_{\theta}} (x) \nabla V^{\pi_{\theta}} (x) dx \\
+&amp;= \int_{x} \rho^{\pi_{\theta}} (x) \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da dx + \int_{x^{\prime}}  \rho^{\pi_{\theta}} (x^{\prime}) \nabla V^{\pi_{\theta}} (x^{\prime})dx- \int_{x} \rho^{\pi_{\theta}} (x) \nabla V^{\pi_{\theta}} (x) dx \\
+&amp;= \int_{x} \rho^{\pi_{\theta}} (x) \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da dx \\
+\end{aligned}\]</span>
+<p><br/></p>
+<h4 id="proof-discounted-return-setting">Proof: Discounted Return Setting</h4>
+<p>In discounted return setting, <span class="math inline">\(d^{\pi} (x) = \rho^{\pi_{\theta}} (x),\; \; \rho = J_{\rho} (\pi_\theta)\)</span>.</p>
+<p>Recall that,</p>
+<span class="math display">\[\begin{aligned}
+\nabla V^{\pi_{\theta}} (x) &amp;= \int_{a} \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da \;\;\;\;\;\;\;\;\;\;\;\;\;\;\; \forall x \in X\\
+&amp;= \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da + \int_a \pi_{\theta}(a | x) \nabla Q^{\pi_{\theta}} (x, a) da\\
+&amp;= \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da + \int_a \pi_{\theta}(a | x) \nabla (r(x, a) +  \int_{x^{\prime}} P(x^{\prime} | x, a) \gamma V^{\pi_{\theta}} (x^{\prime})dx^{\prime}) da\\
+&amp;= \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da + \int_a \pi_{\theta}(a | x) \int_{x^{\prime}} P(x^{\prime} | x, a) \gamma \nabla V^{\pi_{\theta}} (x^{\prime})dx^{\prime} da\\
+&amp;= \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da + \int_a \pi_{\theta}(a | x) \int_{x^{\prime}} P(x^{\prime} | x, a) \gamma \nabla V^{\pi_{\theta}} (x^{\prime})dx^{\prime} da\\
+&amp;= \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da + \int_{x^{\prime}} P^{\pi_{\theta}}(x^{\prime} | x) \gamma \nabla V^{\pi_{\theta}} (x^{\prime})dx^{\prime}\\
+\end{aligned}\]</span>
+<p><br/></p>
+<p>Now we expand <span class="math inline">\(V^{\pi_{\theta}} (x^{\prime})\)</span> likewise, we will end up with the recursive relation:</p>
+<p><span class="math display">\[\nabla V^{\pi_{\theta}} (x) = \int_{x^{\prime}} \sum^{\infty}_{k = 0}\gamma^k P^{\pi_\theta} (x^{\prime} | x; k) \int_{a^{\prime}} \nabla \pi_{\theta}(a^{\prime} | x^{\prime}) Q^{\pi_{\theta}} (x^{\prime}, a^{\prime}) da^{\prime} dx^{\prime}\]</span></p>
+<p>Then, we can make this an expectation by adding normalization term:</p>
+<span class="math display">\[\begin{aligned}
+\nabla V^{\pi_{\theta}} (x) &amp;= \frac{1}{1 - \gamma}\int_{x^{\prime}} (1 - \gamma) \sum^{\infty}_{k = 0}\gamma^k P^{\pi_\theta} (x^{\prime} | x; k) \int_{a^{\prime}} \nabla \pi_{\theta}(a^{\prime} | x^{\prime}) Q^{\pi_{\theta}} (x^{\prime}, a^{\prime}) da^{\prime} dx^{\prime}\\
+&amp;= \frac{1}{1 - \gamma} \int_{x^{\prime}} \rho^{\pi_{\theta}} (x^{\prime} | x) \int_{a^{\prime}} \nabla \pi_{\theta}(a^{\prime} | x^{\prime}) Q^{\pi_{\theta}} (x^{\prime}, a^{\prime}) da^{\prime} dx^{\prime}\\
+\end{aligned}\]</span>
+<p><br/></p>
+<p>Then <span class="math inline">\(\nabla J_{\rho} (\pi_\theta) = E_{X \sim \rho}[\nabla V^{\pi_{\theta}} (X)]\)</span> can be expressed as:</p>
+<span class="math display">\[\begin{aligned}
+\nabla J_{\rho} (\pi_\theta) &amp;= \frac{1}{1 - \gamma} \int_{x_1} \int_{x^{\prime}} \rho(x_1) \rho^{\pi_{\theta}} (x^{\prime} | x_1) \int_{a^{\prime}} \nabla \pi_{\theta}(a^{\prime} | x^{\prime}) Q^{\pi_{\theta}} (x^{\prime}, a^{\prime}) da^{\prime} dx^{\prime} dx_1\\
+&amp;= \frac{1}{1 - \gamma} \int_{x^{\prime}}  \rho^{\pi_{\theta}} (x^{\prime}) \int_{a^{\prime}} \nabla \pi_{\theta}(a^{\prime} | x^{\prime}) Q^{\pi_{\theta}} (x^{\prime}, a^{\prime}) da^{\prime} dx^{\prime}\\
+\end{aligned}\]</span>
+<p><br/></p>
+<h2 id="policy-gradients-as-expectations">Policy Gradients as Expectations</h2>
+<p>Recall that, the <code>score function estimator</code> :</p>
+<p><span class="math display">\[\frac{\partial}{\partial \theta} E_{X \sim p(\cdot ; \theta)}[f(X)] = \int_x \frac{\frac{\partial}{\partial\theta} p(x; \theta)}{p(x; \theta)} p(x; \theta) f(x)dx = E_{X \sim p(\cdot ; \theta)}[f(X) \frac{\partial}{\partial\theta} \log p(X; \theta)]\]</span></p>
+<p>Thus, the results above can be written as:</p>
+<ul>
+<li><p>Average Reward Setting:</p>
+<span class="math display">\[\begin{aligned}
+  \nabla J(\pi_\theta) &amp;= \int_{x} \rho^{\pi_{\theta}} (x) \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da dx \\
+  &amp;= E_{X \sim \rho^{\pi_{\theta}} (\cdot)} [ \int_{a} \frac{\pi_{\theta}(a | X)}{\pi_{\theta}(a | X)}\nabla \pi_{\theta}(a | X) Q^{\pi_{\theta}} (X, a) da]\\
+  &amp;= E_{X \sim \rho^{\pi_{\theta}} (\cdot)} [ \int_{a} \frac{\nabla \pi_{\theta}(a | X)}{\pi_{\theta}(a | X)}\pi_{\theta}(a | X) Q^{\pi_{\theta}} (X, a) da]\\   
+  &amp;= E_{X \sim \rho^{\pi_{\theta}} (\cdot)} [ \int_{a} \pi_{\theta}(a | X)  \nabla \log \pi_{\theta}(a | X) Q^{\pi_{\theta}} (X, a) da]\\
+  &amp;= E_{X \sim \rho^{\pi_{\theta}} (\cdot), A \sim \pi_{\theta} (\cdot | X)} [\nabla \log \pi_{\theta}(A | X) Q^{\pi_{\theta}} (X, A)]\\
+  \end{aligned}\]</span>
+<p><br/></p></li>
+<li><p>Discounted Return Setting:</p>
+<p><span class="math display">\[\nabla J_{\rho}(\pi_\theta) \propto E_{X \sim \rho^{\pi_{\theta}} (\cdot), A \sim \pi_{\theta} (\cdot | X)} [\nabla \log \pi_{\theta}(A | X) Q^{\pi_{\theta}} (X, A)]\]</span></p></li>
+</ul>
+<p>Now we have nice expectation over state distribution or discounted future state distribution, we can use samples to estimate the gradient.</p>
+<h2 id="sampling-from-expectations">Sampling from Expectations</h2>
+<h3 id="average-reward-setting-1">Average Reward Setting</h3>
+<p>In average reward setting or in episodic tasks when we have <span class="math inline">\(\gamma = 1\)</span>, sampling from the expectation is straight forward. We can directly sample trajectories following <span class="math inline">\(\pi_{\theta}\)</span>, then the states would be samples from the stationary state distribution and actions would be samples from the policy.</p>
+<h3 id="discounted-return-setting">Discounted Return Setting</h3>
+<p>In discounted return setting, however, sampling is a little tricky.</p>
+<ol type="1">
+<li>The agent starts an episode from <span class="math inline">\(X_1 \sim \rho\)</span> and follows <span class="math inline">\(\pi_\theta\)</span></li>
+<li>We get a sequence of states <span class="math inline">\(X_1, ...\)</span></li>
+</ol>
+<p>However, these samples are from the stationary state distribution but <span style="color:red"><strong>not</strong> </span>from the discounted future state distribution. In order to sample from the correct distribution, we either:</p>
+<ol type="1">
+<li>Interpret <span class="math inline">\(\gamma\)</span> as termination, terminate at each time step with probability <span class="math inline">\(1 - \gamma\)</span>.</li>
+<li>Add a weight <span class="math inline">\(\gamma^k\)</span> which depends on the current time step to account for the discounting.</li>
+</ol>
+<p>If we have sampled from the correct distribution and have an estimate for <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>, we have an unbiased sample of the policy gradient:</p>
+<p><span class="math display">\[\gamma^{k} \nabla \log \pi_{\theta}(A | X) Q^{\pi_{\theta}} (X, A)\]</span></p>
+<p><strong>We can now use these samples in an SG scheme to improve the policy.</strong></p>
+<h2 id="next-reinforece-and-a2c">Next: REINFORECE and A2C</h2>
+<h1 id="reference">Reference</h1>
+<p>Amir-massoud Farahmand. Introduction to Reinforcement Learning (Spring 2021) Lecture 6</p>
+<p>Sham M. Kakade. On the sample complexity of reinforcement learning. 2003. https://homes.cs.washington.edu/~sham/papers/thesis/sham_thesis.pdf</p>
+<p>Thomas, P.. (2014). Bias in Natural Actor-Critic Algorithms. Proceedings of the 31st International Conference on Machine Learning, in PMLR 32(1):441-448</p>
+<p>Sutton, R. S., McAllester, D. A., Singh, S. P., and Man- sour, Y. (1999). Policy gradient methods for reinforce- ment learning with function approximation. In Neural Information Processing Systems 12, pages 1057–1063.</p>
+<p>Sutton &amp; Barto's "Reinforcement Learning: An Introduction", 2nd edition</p>
+<p>MC:</p>
+<p>http://wwwf.imperial.ac.uk/~ejm/M3S4/NOTES3.pdf</p>
+<p>A First Look at Stochastic Processes https://www.worldscientific.com/worldscibooks/10.1142/11488</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>PG</category>
+      </categories>
+      <tags>
+        <tag>Policy Gradient</tag>
+        <tag>Continuous Action Space</tag>
+        <tag>RL Basics</tag>
+      </tags>
   </entry>
 </search>

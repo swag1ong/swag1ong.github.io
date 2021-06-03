@@ -20,15 +20,15 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
 
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
-<meta name="description" content="Deterministic Policy Gradient Algorithms Introduction In traditional policy gradient algorithms, policy is parametrized by a probability distribution \(pi_{\theta} (a | s) &#x3D; P[a | s; \theta]\) that st">
+<meta name="description" content="Deterministic Policy Gradient Algorithms Introduction In traditional policy gradient algorithms, policy is parametrized by a probability distribution \(\pi_{\theta} (a | s) &#x3D; P[a | s; \theta]\) that s">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DPG (under construction)">
 <meta property="og:url" content="http://example.com/2021/05/06/DPG/index.html">
 <meta property="og:site_name" content="GoGoGogo!">
-<meta property="og:description" content="Deterministic Policy Gradient Algorithms Introduction In traditional policy gradient algorithms, policy is parametrized by a probability distribution \(pi_{\theta} (a | s) &#x3D; P[a | s; \theta]\) that st">
+<meta property="og:description" content="Deterministic Policy Gradient Algorithms Introduction In traditional policy gradient algorithms, policy is parametrized by a probability distribution \(\pi_{\theta} (a | s) &#x3D; P[a | s; \theta]\) that s">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-05-06T02:20:16.000Z">
-<meta property="article:modified_time" content="2021-05-30T06:49:55.779Z">
+<meta property="article:modified_time" content="2021-06-03T08:39:12.083Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta property="article:tag" content="Policy Gradient">
 <meta property="article:tag" content="Continuous Action Space">
@@ -149,7 +149,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#deterministic-policy-gradient-algorithms"><span class="nav-number">1.</span> <span class="nav-text">Deterministic Policy Gradient Algorithms</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#introduction"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#notations"><span class="nav-number">1.2.</span> <span class="nav-text">Notations</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#deterministic-policy-gradient-algorithms"><span class="nav-number">1.</span> <span class="nav-text">Deterministic Policy Gradient Algorithms</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#introduction"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#notations"><span class="nav-number">1.2.</span> <span class="nav-text">Notations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#off-policy-actor-critic"><span class="nav-number">1.3.</span> <span class="nav-text">Off-Policy Actor-Critic</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gradients-of-deterministic-policies"><span class="nav-number">1.4.</span> <span class="nav-text">Gradients of Deterministic Policies</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -164,7 +164,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -258,7 +258,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-05-30 14:49:55" itemprop="dateModified" datetime="2021-05-30T14:49:55+08:00">2021-05-30</time>
+        <time title="Modified: 2021-06-03 16:39:12" itemprop="dateModified" datetime="2021-06-03T16:39:12+08:00">2021-06-03</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -282,14 +282,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>1.4k</span>
+      <span>3.3k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>3 mins.</span>
     </span>
 </div>
 
@@ -302,20 +302,44 @@
     <div class="post-body" itemprop="articleBody">
         <h1 id="deterministic-policy-gradient-algorithms">Deterministic Policy Gradient Algorithms</h1>
 <h2 id="introduction">Introduction</h2>
-<p>In traditional policy gradient algorithms, policy is parametrized by a probability distribution <span class="math inline">\(pi_{\theta} (a | s) = P[a | s; \theta]\)</span> that stochastically selects action <span class="math inline">\(a\)</span> in state <span class="math inline">\(s\)</span> according to parameter vector <span class="math inline">\(\theta\)</span>. In this paper, the authors consider deterministic policies <span class="math inline">\(a = \mu_{\theta} (s)\)</span>.</p>
+<p>In traditional policy gradient algorithms, policy is parametrized by a probability distribution <span class="math inline">\(\pi_{\theta} (a | s) = P[a | s; \theta]\)</span> that stochastically selects action <span class="math inline">\(a\)</span> in state <span class="math inline">\(s\)</span> according to parameter vector <span class="math inline">\(\theta\)</span>. In this paper, the authors consider deterministic policies <span class="math inline">\(a = \mu_{\theta} (s)\)</span>.</p>
 <p>From a practical viewpoint, there is a crucial difference between the stochastic and deterministic policy gradients. In the stochastic case, the policy gradient integrates over both state and action spaces, whereas in the deterministic case it only integrates over the state space:</p>
 <p><span class="math display">\[E_{X\sim \rho^{\pi_\theta}A \sim \pi_{\theta}} [\nabla log \pi(A | X) Q^{\pi_{\theta}} (X, A)]\]</span></p>
 <p>Thus, <strong>computing deterministic policies may require less samples</strong>.</p>
 <p>An off-policy learning scheme is introduced here to ensure adequate exploration (i.e The basic idea is to choose actions according to a stochastic behaviour policy).</p>
 <h2 id="notations">Notations</h2>
-<p>Initial state distribution <span class="math inline">\(p_1(s_1)\)</span>, stationary transition dynamics distribution <span class="math inline">\(p(s_{t+1} | s_{t}, a_{t})\)</span>, deterministic reward function <span class="math inline">\(r(x, a)\)</span>. Stochastic policy is represented as <span class="math inline">\(\pi_{\theta} (a_t | s_t)\)</span>. The return is the total discounted reward</p>
+<p><strong>Notations are simplified so that the random variables in the conditional density are dropped, and <span class="math inline">\(\pi_{\theta} = \pi\)</span>, the subscripts are dropped for simplicity</strong></p>
+<p>Initial state distribution <span class="math inline">\(p_1(s_1)\)</span>, stationary transition dynamics distribution <span class="math inline">\(p(s_{t+1} | s_{t}, a_{t})\)</span>, deterministic reward function <span class="math inline">\(r(x, a)\)</span>. Stochastic policy is represented as <span class="math inline">\(\pi_{\theta} (a_t | s_t)\)</span>. A trajectory of the process is represented as <span class="math inline">\(h_{1:T} = s_1, a_1, r_1, ...., s_T, a_T\)</span>.</p>
+<p>The return is the total discounted reward</p>
 <p><span class="math display">\[r_t^{\gamma} = \sum^{\infty}_{k = t} \gamma^{k-t} r(s_k, a_k)\]</span></p>
 <p>Value functions:</p>
 <p><span class="math display">\[V^{\pi} (s) = E[r_1^{\gamma} | S_1=s; \pi]\]</span></p>
 <p><span class="math display">\[Q^{\pi} (s, a) = E[r_1^{\gamma} | S_1=s, A_1=a; \pi]\]</span></p>
 <p>The objective is to find a policy <span class="math inline">\(\pi\)</span> that maximize <span class="math inline">\(J(\pi)\)</span></p>
-<p><span class="math display">\[J(\pi) = E_{s_1 \sim p_1}[r_1^{\gamma}]\]</span></p>
-<p>Define t step transition probability following <span class="math inline">\(\pi\)</span> as <span class="math inline">\(p^{\pi}(s \rightarrow s^{\prime}; t)\)</span></p>
+<p><span class="math display">\[J(\pi) = E_{s_1 \sim p_1}[r_1^{\gamma} | \pi]\]</span></p>
+<p>Define t step transition probability following <span class="math inline">\(\pi\)</span> starting from <span class="math inline">\(s\)</span> as <span class="math inline">\(p^{\pi}(s \rightarrow s^{\prime}; t)\)</span></p>
+<p>The un-normalized discounted future state distribution:</p>
+<p><span class="math display">\[\rho^{\pi} (s^{\prime}) \triangleq \int_s \sum^{\infty}_{t=1} \gamma^{t-1} p(s) p^{\pi}(s \rightarrow s^{\prime}; t) ds\]</span></p>
+<p>The performance objective as expectation:</p>
+<p><span class="math display">\[J(\pi) = E_{s \sim \rho^{\pi} (\cdot), a \sim \pi(\cdot | s)} [r(s, a)]\]</span></p>
+<p>Where this expectation is over the un-normalized discounted future state distribution. By replacing discounted future state distribution with stationary state distribution, we have average reward performance measure.</p>
+<p>The policy gradient can be written as:</p>
+<span class="math display">\[\begin{aligned}
+\nabla_{\theta} J(\pi_\theta) &amp;= \int_S \rho^{\pi} (s) \int_A \nabla_{\theta} \pi_\theta (a | s) Q^{\pi} (s, a) da ds\\
+&amp;= E_{s\sim \rho^{\pi} (\cdot), a \sim \pi_{\theta}}[\nabla_{\theta} \log \pi_\theta (a | s) Q^{\pi} (s, a)]
+\end{aligned}\]</span>
+<h2 id="off-policy-actor-critic">Off-Policy Actor-Critic</h2>
+<p>It is often useful to estimate the policy gradient off-policy from trajectories sampled from a distinct behaviour policy <span class="math inline">\(\beta(a | s) \neq \pi_{\theta} (a | s)\)</span>. In an off-policy setting, the performance objective is typically modified to be the value function of the target policy averaged over the state distribution of the behaviour policy as initial state.</p>
+<span class="math display">\[\begin{aligned}
+J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
+&amp;= \int_s \int_a \rho^{\beta} (s) \pi_{\theta} (a | s) Q^{\pi}(s, a) dads\\
+\end{aligned}\]</span>
+<p>Differentiating the performacne objective and applying an approximation gives the off-policy policy gradient:</p>
+<span class="math display">\[\begin{aligned}
+\nabla_{\theta} J_{\beta} (\pi_{\theta}) &amp;\approx \int_s \int_a \rho^{\beta} (s) \nabla_{\theta} \pi_{\theta} (a | s) Q^{\pi}(s, a) dads\\
+&amp;= E_{s \sim \rho^\beta, a \sim \beta_{\theta}}[\frac{\pi_{\theta} (a | s)}{\beta (a | s)} \nabla_{\theta} \log \pi_{\theta} (a | s) Q^{\pi} (s, a)]\\
+\end{aligned}\]</span>
+<h2 id="gradients-of-deterministic-policies">Gradients of Deterministic Policies</h2>
 
     </div>
 
@@ -326,10 +350,10 @@
   <div class="popular-posts-header">Related Posts</div>
   <ul class="popular-posts">
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/05/30/policy-gradient-2/" rel="bookmark">policy_gradient_2</a></div>
+      <div class="popular-posts-title"><a href="/2021/05/23/policy-gradient/" rel="bookmark">Policy Gradient (1)</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/05/23/policy-gradient/" rel="bookmark">Policy Gradient (1)</a></div>
+      <div class="popular-posts-title"><a href="/2021/05/30/policy-gradient-2/" rel="bookmark">Policy Gradient (2)</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/2021/05/27/stochastic-graph/" rel="bookmark">Stochastic Graph</a></div>
@@ -386,13 +410,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">113k</span>
+    <span title="Symbols count total">125k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:43</span>
+    <span title="Reading time total">1:54</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

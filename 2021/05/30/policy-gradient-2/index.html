@@ -22,15 +22,17 @@
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
 <meta name="description" content="Policy Search Methods (Policy Gradient) All \(\nabla\) refer to \(\nabla_{\theta}\) for simplicity. From introduction blog, our goal: \[\underset{\pi_{\theta}}{\operatorname{maximize}} J_\rho(\pi_\the">
 <meta property="og:type" content="article">
-<meta property="og:title" content="policy_gradient_2">
+<meta property="og:title" content="Policy Gradient (2)">
 <meta property="og:url" content="http://example.com/2021/05/30/policy-gradient-2/index.html">
 <meta property="og:site_name" content="GoGoGogo!">
 <meta property="og:description" content="Policy Search Methods (Policy Gradient) All \(\nabla\) refer to \(\nabla_{\theta}\) for simplicity. From introduction blog, our goal: \[\underset{\pi_{\theta}}{\operatorname{maximize}} J_\rho(\pi_\the">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/RL/pg/pg_1.png">
+<meta property="og:image" content="http://example.com/images/RL/pg/pg_3.png">
+<meta property="og:image" content="http://example.com/images/RL/pg/pg_4.png">
 <meta property="og:image" content="http://example.com/images/RL/pg/pg_2.png">
 <meta property="article:published_time" content="2021-05-30T07:03:48.000Z">
-<meta property="article:modified_time" content="2021-06-02T16:48:54.906Z">
+<meta property="article:modified_time" content="2021-06-03T15:22:28.916Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta property="article:tag" content="Policy Gradient">
 <meta property="article:tag" content="Continuous Action Space">
@@ -43,10 +45,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;05&#x2F;30&#x2F;policy-gradient-2&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;05&#x2F;30&#x2F;policy-gradient-2&#x2F;&quot;,&quot;title&quot;:&quot;policy_gradient_2&quot;}</script>
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;05&#x2F;30&#x2F;policy-gradient-2&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;05&#x2F;30&#x2F;policy-gradient-2&#x2F;&quot;,&quot;title&quot;:&quot;Policy Gradient (2)&quot;}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
-<title>policy_gradient_2 | GoGoGogo!</title><script src="/js/config.js"></script>
+<title>Policy Gradient (2) | GoGoGogo!</title><script src="/js/config.js"></script>
   
 
   <script src="/js/third-party/analytics/baidu-analytics.js"></script>
@@ -153,7 +155,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#policy-search-methods-policy-gradient"><span class="nav-number">1.</span> <span class="nav-text">Policy Search Methods (Policy Gradient)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#immediate-reward-problem-easy-case"><span class="nav-number">1.1.</span> <span class="nav-text">Immediate Reward Problem (Easy Case)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#baseline"><span class="nav-number">1.1.1.</span> <span class="nav-text">Baseline</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#policy-gradient-general-case"><span class="nav-number">1.2.</span> <span class="nav-text">Policy Gradient (General Case)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#average-reward-setting"><span class="nav-number">1.2.1.</span> <span class="nav-text">Average Reward Setting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#discounted-setting"><span class="nav-number">1.2.2.</span> <span class="nav-text">Discounted Setting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#average-reward-and-discounted-return"><span class="nav-number">1.2.3.</span> <span class="nav-text">Average Reward and Discounted Return</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#policy-gradient-theorem"><span class="nav-number">1.2.4.</span> <span class="nav-text">Policy Gradient Theorem</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#proof-average-reward-setting"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">Proof: Average Reward Setting</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#policy-search-methods-policy-gradient"><span class="nav-number">1.</span> <span class="nav-text">Policy Search Methods (Policy Gradient)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#immediate-reward-problem-easy-case"><span class="nav-number">1.1.</span> <span class="nav-text">Immediate Reward Problem (Easy Case)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#baseline"><span class="nav-number">1.1.1.</span> <span class="nav-text">Baseline</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#policy-gradient-general-case"><span class="nav-number">1.2.</span> <span class="nav-text">Policy Gradient (General Case)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#average-reward-setting"><span class="nav-number">1.2.1.</span> <span class="nav-text">Average Reward Setting</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#stationary-distribution"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Stationary Distribution</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#discounted-setting"><span class="nav-number">1.2.2.</span> <span class="nav-text">Discounted Setting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#expected-reward-and-discounted-return"><span class="nav-number">1.2.3.</span> <span class="nav-text">Expected Reward and Discounted Return</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#policy-gradient-theorem"><span class="nav-number">1.2.4.</span> <span class="nav-text">Policy Gradient Theorem</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#proof-average-reward-setting"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">Proof: Average Reward Setting</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#proof-discounted-return-setting"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">Proof: Discounted Return Setting</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#policy-gradients-as-expectations"><span class="nav-number">1.3.</span> <span class="nav-text">Policy Gradients as Expectations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sampling-from-expectations"><span class="nav-number">1.4.</span> <span class="nav-text">Sampling from Expectations</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#average-reward-setting-1"><span class="nav-number">1.4.1.</span> <span class="nav-text">Average Reward Setting</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#discounted-return-setting"><span class="nav-number">1.4.2.</span> <span class="nav-text">Discounted Return Setting</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#next-reinforece-and-a2c"><span class="nav-number">1.5.</span> <span class="nav-text">Next: REINFORECE and A2C</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -168,7 +170,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -244,7 +246,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          policy_gradient_2
+          Policy Gradient (2)
         </h1>
 
         <div class="post-meta-container">
@@ -262,7 +264,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-03 00:48:54" itemprop="dateModified" datetime="2021-06-03T00:48:54+08:00">2021-06-03</time>
+        <time title="Modified: 2021-06-03 23:22:28" itemprop="dateModified" datetime="2021-06-03T23:22:28+08:00">2021-06-03</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -286,14 +288,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>10k</span>
+      <span>20k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>9 mins.</span>
+      <span>18 mins.</span>
     </span>
 </div>
 
@@ -317,6 +319,7 @@
 \end{aligned}\]</span>
 <p>We can swap integral and derivative as long as <span class="math inline">\(V^{\pi_{\theta}}\)</span> is a continuous function of <span class="math inline">\(\theta\)</span>, the estimator of this expectation is called <code>pathwise derivative estimator</code> or <code>stochastic backpropagation estimator</code> (more details in <a href="/2021/05/27/stochastic-graph/" title="Stochastic Graph">Stochastic Graph</a>).</p>
 <p>This <span class="math inline">\(\nabla J_\rho(\pi_\theta)\)</span> is called the <strong>Policy Gradient</strong>. In ideal case, if we know the policy gradient (i.e if we know the environment dynamics <span class="math inline">\(P, R\)</span>), we can use gradient ascent to update the parameters <span class="math inline">\(\theta\)</span>.</p>
+<p><strong>The question is, how can we approximate this gradient in reality using samples?</strong></p>
 <h2 id="immediate-reward-problem-easy-case">Immediate Reward Problem (Easy Case)</h2>
 <p>First, let's consider an immediate reward problem:</p>
 <p><img src='/images/RL/pg/pg_1.png' width="600"></p>
@@ -378,11 +381,31 @@ E_{A}[ (r(x, A) -  b(x))  \frac{\partial}{\partial \theta_i}log (\pi_{\theta}(A 
 <p>The difference with the immediate reward case, where we only need initial distribution <span class="math inline">\(\rho\)</span>, in average reward case, we depend on the environment transition distribution <span class="math inline">\(P^{\pi_{\theta}}\)</span> too. As we update <span class="math inline">\(\theta\)</span>, we obtain a different policy <span class="math inline">\(\pi_{\theta}\)</span>, that is, we have a different dynamics transition distribution <span class="math inline">\(P^{\pi_{\theta}}\)</span>.</p>
 <p>Recall that in average reward setting, the quality of a policy is measured as the long term expected reward or average rate reward or simply average reward following <span class="math inline">\(\pi_\theta\)</span> <code>independent of starting state</code> (<strong><span class="math inline">\(x_1\)</span> in the expectation is used to emphasize that the Expected reward is <span class="math inline">\(t\)</span> step</strong>):</p>
 <span class="math display">\[\begin{aligned}
-J (\pi_\theta) &amp;= \lim_{n \rightarrow \infty}\frac{1}{n}E_{X \sim \rho^{\pi_{\theta}}(\cdot)}[R_1 + R_2, .... \; |\; A_{1}, A_{2}, ... \sim \pi_{\theta}, x_1]\\
-&amp;= \lim_{n \rightarrow \infty}\frac{1}{n} \sum^{n}_{t=1} E_{X \sim \rho^{\pi_{\theta}}(\cdot)}[R_t \; |\; A_{1}, A_{2}, ... \sim \pi_{\theta}, x_1]\\
-&amp;= \int_{x} \rho^{\pi_{\theta}} (x) \int_a \pi_{\theta} (a | x) r(x, a) da dx
+J (\pi_\theta) &amp;= \lim_{n \rightarrow \infty}\frac{1}{n}E[R_1 + R_2, .... \; |\; A_{1}, A_{2}, ... \sim \pi_{\theta}, x_1]\\
+&amp;= \lim_{n \rightarrow \infty}\frac{1}{n} \sum^{n}_{t=1} E[R_t \; |\; A_{1}, A_{2}, ... \sim \pi_{\theta}, x_1]\\
+&amp;= \lim_{n \rightarrow \infty}\frac{1}{n} \sum^{n}_{t=1} \int_{x, a} P^{\pi_{\theta}} (X_t = x | x_1; t) \pi(a | x) R(x, a) da dx\\
+&amp;= \int_{x, a} \lim_{n \rightarrow \infty}\frac{1}{n} \sum^{n}_{t=1} P^{\pi_{\theta}} (X_t = x | x_1; t) \pi(a | x) R(x, a) da dx\\
+&amp;= \int_{x} \rho^{\pi_{\theta}} (x) \int_a \pi_{\theta} (a | x) R(x, a) da dx\\
 \end{aligned}\]</span>
-<p>Where <span class="math inline">\(\rho^{\pi_{\theta}} (x) = \lim_{t \rightarrow \infty} P^{\pi_{\theta}} (X_t = x | x_1; t)\)</span> here is the <code>stationary distribution</code> under <span class="math inline">\(\pi_\theta\)</span> which is assumed to exists and independent of starting state (<strong><span class="math inline">\(x_1\)</span> here is used to emphasize that this is <span class="math inline">\(t\)</span> step transition probability</strong>). This is the special distribution in which if you select actions according to <span class="math inline">\(\pi_\theta\)</span>, you end up in the same distribution. We can easily sample states from this distribution by following <span class="math inline">\(\pi_{\theta}\)</span>.</p>
+<p><br/></p>
+<p>Where <span class="math inline">\(\rho^{\pi_{\theta}} (x) = \lim_{n \rightarrow \infty}\frac{1}{n} \sum^{n}_{t=1} P^{\pi_{\theta}} (X_t = x | x_1; t) = \lim_{t \rightarrow \infty} P^{\pi_{\theta}} (X_t = x | x_1; t)\)</span>.</p>
+<h4 id="stationary-distribution">Stationary Distribution</h4>
+<p><span class="math inline">\(\rho^{\pi_{\theta}}\)</span> above is the <code>stationary distribution</code> under <span class="math inline">\(\pi_\theta\)</span> which is assumed to exist (when the markov chain is <code>ergodic</code>) and independent of starting state (<strong><span class="math inline">\(x_1\)</span> here is used to emphasize that this is <span class="math inline">\(t\)</span> step transition probability</strong>).</p>
+<p>In general, let <span class="math inline">\(\sum^{N}_{n=1}I\{X_n = j | X_0=i \}\)</span> be the number of visits to state <span class="math inline">\(j\)</span> in <span class="math inline">\(N\)</span> steps starting from <span class="math inline">\(i\)</span>. Then the expected visits to state <span class="math inline">\(j\)</span> is:</p>
+<p><span class="math display">\[E[\sum^{N}_{n=1}I\{X_n = j | X_0=i\}] = \sum^{N}_{n=1} E[I\{X_n = j\} | X_0=i] = \sum^{N}_{n=1} P(X_n=j | X_0=i)\]</span><br/></p>
+<p>The <code>expected proportion of visits</code> is then:</p>
+<p><span class="math display">\[\frac{\sum^{N}_{n=1} P(X_n=j | X_0=i)}{N}\]</span><br/></p>
+<p>The <code>stationary distribution</code> can be interpreted as the long run expected proportion of time that the chain spends for each state over the state space, so it is defined as <span class="math inline">\(\pi = (\pi_0, \pi_1, ...)\)</span> over the state space <span class="math inline">\(X\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+\pi_j &amp;= \lim_{n \rightarrow \infty}\frac{1}{n}\sum^{n}_{m=1} E[I\{X_m=j | X_0=i\}] \;\;\;\;\;\;\;\;\; \forall \text{ initial states } i\\
+&amp;= \lim_{n \rightarrow \infty} \frac{\sum^{n}_{m=1} P(X_m=j | X_0=i)}{n}\\
+&amp;= \lim_{n \rightarrow \infty} P(X_m=j)
+\end{aligned}\]</span>
+<p><br/></p>
+<p><img src='/images/RL/pg/pg_3.png'> <img src='/images/RL/pg/pg_4.png' width="700"></p>
+<p>So <span class="math inline">\(\rho^{\pi_{\theta}} (\cdot)\)</span> is the special distribution in which if you select actions according to <span class="math inline">\(\pi_\theta\)</span>, you end up in the same distribution:</p>
+<p><span class="math display">\[\int_{x} \rho^{\pi_{\theta}} (x) \int_a \pi_{\theta}(a | x) \int_{x^{\prime}} P(x^{\prime} | x, a) dx^{\prime} da dx = \rho^{\pi_{\theta}} (x^{\prime})\]</span></p>
+<p><strong>We can easily sample states from this distribution by following <span class="math inline">\(\pi_{\theta}\)</span></strong>.</p>
 <h3 id="discounted-setting">Discounted Setting</h3>
 <p>In discounted setting, the objective is defined as long term discounted return starting from initial state distribution <span class="math inline">\(X_1 \sim \rho\)</span> following <span class="math inline">\(\pi_{\theta}\)</span>:</p>
 <p><span class="math display">\[J_{\rho} (\pi_\theta) = E_{X_1 \sim \rho} [V^{\pi_{\theta}} (X_1)]\]</span></p>
@@ -393,35 +416,116 @@ Recall that <span class="math inline">\(P^{\pi_{\theta}} (\cdot | x; k) = P^{\pi
 &amp;= I(x=x_1)\rho(x) + \sum^{\infty}_{k=1} \gamma^k \sum_{\bar{x}, a} p (X^{\prime} = x | X=\bar{x}, A=a) \pi_{\theta}(a | \bar{x})p^{\pi_{\theta}}(X_{k}=\bar{x} | x_{1})\\
 &amp;= I(x=x_1)\rho(x) + \sum_{\bar{x}, a} p (X^{\prime} = x | X=\bar{x}, A=a) \pi_{\theta}(a | \bar{x}) \sum^{\infty}_{k=1} \gamma^k  p^{\pi_{\theta}}(X_{k}=\bar{x} | x_{1})\\
 \end{aligned}\]</span>
-<p>This is the <strong>number of time steps spend on average in state <span class="math inline">\(x\)</span> discounted by <span class="math inline">\(\gamma^k\)</span></strong> given we start at state <span class="math inline">\(X_1 \sim \rho = x_1\)</span> and <span class="math inline">\(\bar{x}\)</span> is the previous state.</p>
-<p>Let's now define the <code>discounted future state distribution</code> starting from state <span class="math inline">\(x_1 \in X\)</span> following <span class="math inline">\(\pi_{\theta}\)</span>:</p>
+<p>This is the <strong>expected number of time steps spend in state <span class="math inline">\(x\)</span> discounted by <span class="math inline">\(\gamma^k\)</span></strong> given we start at state <span class="math inline">\(X_1 \sim \rho = x_1\)</span> and <span class="math inline">\(\bar{x}\)</span> is the previous state.</p>
+<p>Let's now define the <code>discounted future state distribution</code> (similar to stationary distribution but with discount and depend on initial state)starting from state <span class="math inline">\(x_1 \in X\)</span> following <span class="math inline">\(\pi_{\theta}\)</span>:</p>
 <p><span class="math display">\[\rho^{\pi}_{\gamma} (\cdot | x_1) \triangleq (1 - \gamma) \sum^{\infty}_{k=0} \gamma^k P^{\pi_{\theta}} (\cdot | x; k)\]</span></p>
-<p>Where , and <span class="math inline">\(1 - \gamma\)</span> is the normalization term. We can easily verify that this is a valid distribution. One interpretation of this distribution is that the agent starts at <span class="math inline">\(x_1\)</span> and at each time step <span class="math inline">\(t\)</span> terminate with probability <span class="math inline">\(1 - \gamma\)</span>. This accounts for the discounted factor inside the average counts.</p>
+<p>Where , and <span class="math inline">\(1 - \gamma\)</span> is the normalization term. We can easily verify that this is a valid distribution. <strong>One interpretation of this distribution is that the agent starts at <span class="math inline">\(x_1\)</span> and at each time step <span class="math inline">\(t\)</span> terminate with probability <span class="math inline">\(1 - \gamma\)</span>. This accounts for the discounted factor inside the average counts. That is, we can sample from the state stationary distribution and terminate at each step with probability <span class="math inline">\(1 - \gamma\)</span>. Or instead, we could weight each samples by <span class="math inline">\(\gamma^k\)</span> to account for the termination.</strong></p>
 <p>We can also define the <code>discounted future-state distribution</code> of starting from <span class="math inline">\(\rho\)</span> and following <span class="math inline">\(\pi\)</span> as:</p>
 <p><span class="math display">\[\rho^{\pi}_{\gamma} (\cdot) = \int_{x_1} \rho^{\pi}_{\gamma} (\cdot | x_1) \rho (x_1) dx_1\]</span></p>
-<h3 id="average-reward-and-discounted-return">Average Reward and Discounted Return</h3>
-<p>We can see the connection between average reward and discounted return:</p>
+<h3 id="expected-reward-and-discounted-return">Expected Reward and Discounted Return</h3>
+<p>We can see the connection between expected reward and discounted return:</p>
 <span class="math display">\[\begin{aligned}
 V^{\pi} (x) &amp;= E^{\pi}[\sum^{\infty}_{t = 1} \gamma^{t - 1} R_{t} \; |\; X_1 = x]\\
 &amp;= \sum^{\infty}_{t = 1} \gamma^{t - 1} E^{\pi}[R_{t} \; |\; X_1 = x]\\
-&amp;= \sum^{\infty}_{t = 1} \gamma^{t - 1} \int_{x^{\prime}} P^{\pi}(X_t=x^{\prime} | x; t) R(x^{\prime})dx^{\prime}\\
-&amp;= \frac{1}{1 - \gamma} \int_{x^{\prime}} \rho^{\pi}_{\gamma} ( x^{\prime}| x) R(x^{\prime}) dx^{\prime}\\
-&amp;= \frac{1}{1 - \gamma}E_{X^{\prime} \sim \rho^{\pi}_{\gamma} (\cdot | x)} [R(X^{\prime})]\\
+&amp;= \sum^{\infty}_{t = 1} \gamma^{t - 1} \int_{x^{\prime}, a} P^{\pi}(X_t=x^{\prime} | x; t) \pi(a | x^{\prime})R(x^{\prime}, a)da dx^{\prime}\\
+&amp;= \frac{1}{1 - \gamma} \int_{x^{\prime}, a} \rho^{\pi}_{\gamma} ( x^{\prime}| x) \pi(a | x^{\prime}) R(x^{\prime}, a) dadx^{\prime}\\
+&amp;= \frac{1}{1 - \gamma}E_{X^{\prime} \sim \rho^{\pi}_{\gamma} (\cdot | x), A \sim \pi(\cdot | X^{\prime})} [R(X^{\prime}, A)]\\
 \end{aligned}\]</span>
-<p>We can interchange summation and infinity sum because the sum is finite. Here <span class="math inline">\(R(\cdot)\)</span> represents the realization of <span class="math inline">\(R_{t}\)</span>. This tells us that the value function at a state <span class="math inline">\(x\)</span> is the expected reward when <span class="math inline">\(X^{\prime}\)</span> is distributed according to <span class="math inline">\(\rho^{\pi}_{\gamma} (\cdot | x)\)</span> and following <span class="math inline">\(\pi\)</span>.</p>
+<p>We can interchange summation and infinity sum because the sum is finite. Here <span class="math inline">\(R(\cdot)\)</span> represents the realization of random variable <span class="math inline">\(R\)</span>. This tells us that the value function at a state <span class="math inline">\(x\)</span> is the expected reward when <span class="math inline">\(X^{\prime}\)</span> is distributed according to <span class="math inline">\(\rho^{\pi}_{\gamma} (\cdot | x)\)</span> and following <span class="math inline">\(\pi\)</span>.</p>
 <h3 id="policy-gradient-theorem">Policy Gradient Theorem</h3>
 <p><img src='/images/RL/pg/pg_2.png' width="600"></p>
 <h4 id="proof-average-reward-setting">Proof: Average Reward Setting</h4>
-<p>In average reward setting, <span class="math inline">\(d^{\pi} (x) = \rho^{\pi_{\theta}} (x),\; \; \rho = J (\pi_\theta)\)</span></p>
-<p>Recall that:</p>
+<p>In average reward setting, <span class="math inline">\(d^{\pi} (x) = \rho^{\pi_{\theta}} (x),\; \; \rho = J (\pi_\theta)\)</span> and <span class="math inline">\(Q^{\pi} (x, a)\)</span> is defined as:</p>
+<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) - J(\pi_\theta) +  \int_{x^{\prime}} P(x^{\prime} | x, a) V^{\pi_{\theta}} (x^{\prime}) dx^{\prime}\]</span></p>
+<p>Recall that,</p>
 <span class="math display">\[\begin{aligned}
-\nabla V^{\pi_{\theta}} = 
+\nabla V^{\pi_{\theta}} (x) &amp;= \int_{a} \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da \;\;\;\;\;\;\;\;\;\;\;\;\;\;\; \forall x \in X\\
+&amp;= \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da + \int_a \pi_{\theta}(a | x) \nabla Q^{\pi_{\theta}} (x, a) da\\
+&amp;= \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da + \int_a \pi_{\theta}(a | x) \nabla (r(x, a) - J(\pi_\theta) +  \int_{x^{\prime}} P(x^{\prime} | x, a) V^{\pi_{\theta}} (x^{\prime})dx^{\prime}) da\\
+&amp;= \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da + \int_a \pi_{\theta}(a | x) (- \nabla J(\pi_\theta) +  \int_{x^{\prime}} P(x^{\prime} | x, a) \nabla V^{\pi_{\theta}} (x^{\prime})dx^{\prime}) da\\
 \end{aligned}\]</span>
+<p><br/></p>
+<p>That is:</p>
+<p><span class="math display">\[\nabla J(\pi_\theta) \underbrace{\int_a \pi_{\theta}(a | x) da}_{1} =  \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da + \int_a \pi_{\theta}(a | x) \int_{x^{\prime}} P(x^{\prime} | x, a) \nabla V^{\pi_{\theta}} (x^{\prime})dx^{\prime} da - \nabla V^{\pi_{\theta}} (x)\]</span> <br/></p>
+<p>Weighting both sides by (taking expectation) <span class="math inline">\(\rho^{\pi_{\theta}} (x)\)</span> and remember the property of stationary distribution <span class="math inline">\(\int_{x} \rho^{\pi_{\theta}} (x) \int_a \pi_{\theta}(a | x) \int_{x^{\prime}} P(x^{\prime} | x, a) dx^{\prime} da dx = \rho^{\pi_{\theta}} (x^{\prime})\)</span>:</p>
 <span class="math display">\[\begin{aligned}
-\nabla J (\pi_\theta) = 
+\underbrace{\int_{x} \rho^{\pi_{\theta}} (x) dx}_{1} \nabla J(\pi_\theta)  &amp;= \int_{x} \rho^{\pi_{\theta}} (x) \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da dx + \int_{x} \rho^{\pi_{\theta}} (x) \int_a \pi_{\theta}(a | x) \int_{x^{\prime}} P(x^{\prime} | x, a) \nabla V^{\pi_{\theta}} (x^{\prime})dx^{\prime} da dx- \int_{x} \rho^{\pi_{\theta}} (x) \nabla V^{\pi_{\theta}} (x) dx \\
+\nabla J(\pi_\theta)  &amp;= \int_{x} \rho^{\pi_{\theta}} (x) \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da dx + \int_{x} \rho^{\pi_{\theta}} (x) \int_a \pi_{\theta}(a | x) \int_{x^{\prime}} P(x^{\prime} | x, a) \nabla V^{\pi_{\theta}} (x^{\prime})dx^{\prime} da dx- \int_{x} \rho^{\pi_{\theta}} (x) \nabla V^{\pi_{\theta}} (x) dx \\
+&amp;= \int_{x} \rho^{\pi_{\theta}} (x) \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da dx + \int_{x^{\prime}}  \rho^{\pi_{\theta}} (x^{\prime}) \nabla V^{\pi_{\theta}} (x^{\prime})dx- \int_{x} \rho^{\pi_{\theta}} (x) \nabla V^{\pi_{\theta}} (x) dx \\
+&amp;= \int_{x} \rho^{\pi_{\theta}} (x) \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da dx \\
 \end{aligned}\]</span>
+<p><br/></p>
+<h4 id="proof-discounted-return-setting">Proof: Discounted Return Setting</h4>
+<p>In discounted return setting, <span class="math inline">\(d^{\pi} (x) = \rho^{\pi_{\theta}} (x),\; \; \rho = J_{\rho} (\pi_\theta)\)</span>.</p>
+<p>Recall that,</p>
+<span class="math display">\[\begin{aligned}
+\nabla V^{\pi_{\theta}} (x) &amp;= \int_{a} \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da \;\;\;\;\;\;\;\;\;\;\;\;\;\;\; \forall x \in X\\
+&amp;= \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da + \int_a \pi_{\theta}(a | x) \nabla Q^{\pi_{\theta}} (x, a) da\\
+&amp;= \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da + \int_a \pi_{\theta}(a | x) \nabla (r(x, a) +  \int_{x^{\prime}} P(x^{\prime} | x, a) \gamma V^{\pi_{\theta}} (x^{\prime})dx^{\prime}) da\\
+&amp;= \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da + \int_a \pi_{\theta}(a | x) \int_{x^{\prime}} P(x^{\prime} | x, a) \gamma \nabla V^{\pi_{\theta}} (x^{\prime})dx^{\prime} da\\
+&amp;= \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da + \int_a \pi_{\theta}(a | x) \int_{x^{\prime}} P(x^{\prime} | x, a) \gamma \nabla V^{\pi_{\theta}} (x^{\prime})dx^{\prime} da\\
+&amp;= \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da + \int_{x^{\prime}} P^{\pi_{\theta}}(x^{\prime} | x) \gamma \nabla V^{\pi_{\theta}} (x^{\prime})dx^{\prime}\\
+\end{aligned}\]</span>
+<p><br/></p>
+<p>Now we expand <span class="math inline">\(V^{\pi_{\theta}} (x^{\prime})\)</span> likewise, we will end up with the recursive relation:</p>
+<p><span class="math display">\[\nabla V^{\pi_{\theta}} (x) = \int_{x^{\prime}} \sum^{\infty}_{k = 0}\gamma^k P^{\pi_\theta} (x^{\prime} | x; k) \int_{a^{\prime}} \nabla \pi_{\theta}(a^{\prime} | x^{\prime}) Q^{\pi_{\theta}} (x^{\prime}, a^{\prime}) da^{\prime} dx^{\prime}\]</span></p>
+<p>Then, we can make this an expectation by adding normalization term:</p>
+<span class="math display">\[\begin{aligned}
+\nabla V^{\pi_{\theta}} (x) &amp;= \frac{1}{1 - \gamma}\int_{x^{\prime}} (1 - \gamma) \sum^{\infty}_{k = 0}\gamma^k P^{\pi_\theta} (x^{\prime} | x; k) \int_{a^{\prime}} \nabla \pi_{\theta}(a^{\prime} | x^{\prime}) Q^{\pi_{\theta}} (x^{\prime}, a^{\prime}) da^{\prime} dx^{\prime}\\
+&amp;= \frac{1}{1 - \gamma} \int_{x^{\prime}} \rho^{\pi_{\theta}} (x^{\prime} | x) \int_{a^{\prime}} \nabla \pi_{\theta}(a^{\prime} | x^{\prime}) Q^{\pi_{\theta}} (x^{\prime}, a^{\prime}) da^{\prime} dx^{\prime}\\
+\end{aligned}\]</span>
+<p><br/></p>
+<p>Then <span class="math inline">\(\nabla J_{\rho} (\pi_\theta) = E_{X \sim \rho}[\nabla V^{\pi_{\theta}} (X)]\)</span> can be expressed as:</p>
+<span class="math display">\[\begin{aligned}
+\nabla J_{\rho} (\pi_\theta) &amp;= \frac{1}{1 - \gamma} \int_{x_1} \int_{x^{\prime}} \rho(x_1) \rho^{\pi_{\theta}} (x^{\prime} | x_1) \int_{a^{\prime}} \nabla \pi_{\theta}(a^{\prime} | x^{\prime}) Q^{\pi_{\theta}} (x^{\prime}, a^{\prime}) da^{\prime} dx^{\prime} dx_1\\
+&amp;= \frac{1}{1 - \gamma} \int_{x^{\prime}}  \rho^{\pi_{\theta}} (x^{\prime}) \int_{a^{\prime}} \nabla \pi_{\theta}(a^{\prime} | x^{\prime}) Q^{\pi_{\theta}} (x^{\prime}, a^{\prime}) da^{\prime} dx^{\prime}\\
+\end{aligned}\]</span>
+<p><br/></p>
+<h2 id="policy-gradients-as-expectations">Policy Gradients as Expectations</h2>
+<p>Recall that, the <code>score function estimator</code> :</p>
+<p><span class="math display">\[\frac{\partial}{\partial \theta} E_{X \sim p(\cdot ; \theta)}[f(X)] = \int_x \frac{\frac{\partial}{\partial\theta} p(x; \theta)}{p(x; \theta)} p(x; \theta) f(x)dx = E_{X \sim p(\cdot ; \theta)}[f(X) \frac{\partial}{\partial\theta} \log p(X; \theta)]\]</span></p>
+<p>Thus, the results above can be written as:</p>
+<ul>
+<li><p>Average Reward Setting:</p>
+<span class="math display">\[\begin{aligned}
+  \nabla J(\pi_\theta) &amp;= \int_{x} \rho^{\pi_{\theta}} (x) \int_{a} \nabla \pi_{\theta}(a | x) Q^{\pi_{\theta}} (x, a) da dx \\
+  &amp;= E_{X \sim \rho^{\pi_{\theta}} (\cdot)} [ \int_{a} \frac{\pi_{\theta}(a | X)}{\pi_{\theta}(a | X)}\nabla \pi_{\theta}(a | X) Q^{\pi_{\theta}} (X, a) da]\\
+  &amp;= E_{X \sim \rho^{\pi_{\theta}} (\cdot)} [ \int_{a} \frac{\nabla \pi_{\theta}(a | X)}{\pi_{\theta}(a | X)}\pi_{\theta}(a | X) Q^{\pi_{\theta}} (X, a) da]\\   
+  &amp;= E_{X \sim \rho^{\pi_{\theta}} (\cdot)} [ \int_{a} \pi_{\theta}(a | X)  \nabla \log \pi_{\theta}(a | X) Q^{\pi_{\theta}} (X, a) da]\\
+  &amp;= E_{X \sim \rho^{\pi_{\theta}} (\cdot), A \sim \pi_{\theta} (\cdot | X)} [\nabla \log \pi_{\theta}(A | X) Q^{\pi_{\theta}} (X, A)]\\
+  \end{aligned}\]</span>
+<p><br/></p></li>
+<li><p>Discounted Return Setting:</p>
+<p><span class="math display">\[\nabla J_{\rho}(\pi_\theta) \propto E_{X \sim \rho^{\pi_{\theta}} (\cdot), A \sim \pi_{\theta} (\cdot | X)} [\nabla \log \pi_{\theta}(A | X) Q^{\pi_{\theta}} (X, A)]\]</span></p></li>
+</ul>
+<p>Now we have nice expectation over state distribution or discounted future state distribution, we can use samples to estimate the gradient.</p>
+<h2 id="sampling-from-expectations">Sampling from Expectations</h2>
+<h3 id="average-reward-setting-1">Average Reward Setting</h3>
+<p>In average reward setting or in episodic tasks when we have <span class="math inline">\(\gamma = 1\)</span>, sampling from the expectation is straight forward. We can directly sample trajectories following <span class="math inline">\(\pi_{\theta}\)</span>, then the states would be samples from the stationary state distribution and actions would be samples from the policy.</p>
+<h3 id="discounted-return-setting">Discounted Return Setting</h3>
+<p>In discounted return setting, however, sampling is a little tricky.</p>
+<ol type="1">
+<li>The agent starts an episode from <span class="math inline">\(X_1 \sim \rho\)</span> and follows <span class="math inline">\(\pi_\theta\)</span></li>
+<li>We get a sequence of states <span class="math inline">\(X_1, ...\)</span></li>
+</ol>
+<p>However, these samples are from the stationary state distribution but <span style="color:red"><strong>not</strong> </span>from the discounted future state distribution. In order to sample from the correct distribution, we either:</p>
+<ol type="1">
+<li>Interpret <span class="math inline">\(\gamma\)</span> as termination, terminate at each time step with probability <span class="math inline">\(1 - \gamma\)</span>.</li>
+<li>Add a weight <span class="math inline">\(\gamma^k\)</span> which depends on the current time step to account for the discounting.</li>
+</ol>
+<p>If we have sampled from the correct distribution and have an estimate for <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>, we have an unbiased sample of the policy gradient:</p>
+<p><span class="math display">\[\gamma^{k} \nabla \log \pi_{\theta}(A | X) Q^{\pi_{\theta}} (X, A)\]</span></p>
+<p><strong>We can now use these samples in an SG scheme to improve the policy.</strong></p>
+<h2 id="next-reinforece-and-a2c">Next: REINFORECE and A2C</h2>
 <h1 id="reference">Reference</h1>
+<p>Amir-massoud Farahmand. Introduction to Reinforcement Learning (Spring 2021) Lecture 6</p>
 <p>Sham M. Kakade. On the sample complexity of reinforcement learning. 2003. https://homes.cs.washington.edu/~sham/papers/thesis/sham_thesis.pdf</p>
+<p>Thomas, P.. (2014). Bias in Natural Actor-Critic Algorithms. Proceedings of the 31st International Conference on Machine Learning, in PMLR 32(1):441-448</p>
+<p>Sutton, R. S., McAllester, D. A., Singh, S. P., and Man- sour, Y. (1999). Policy gradient methods for reinforce- ment learning with function approximation. In Neural Information Processing Systems 12, pages 1057–1063.</p>
+<p>Sutton &amp; Barto's "Reinforcement Learning: An Introduction", 2nd edition</p>
+<p>MC:</p>
+<p>http://wwwf.imperial.ac.uk/~ejm/M3S4/NOTES3.pdf</p>
+<p>A First Look at Stochastic Processes https://www.worldscientific.com/worldscibooks/10.1142/11488</p>
 
     </div>
 
@@ -499,13 +603,13 @@ V^{\pi} (x) &amp;= E^{\pi}[\sum^{\infty}_{t = 1} \gamma^{t - 1} R_{t} \; |\; X_1
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">113k</span>
+    <span title="Symbols count total">125k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:43</span>
+    <span title="Reading time total">1:54</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

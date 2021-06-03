@@ -32,7 +32,7 @@
 <meta property="og:image" content="http://example.com/images/RL/bellman_equation/policy.png">
 <meta property="og:image" content="http://example.com/images/RL/bellman_equation/transition_kernel.png">
 <meta property="article:published_time" content="2021-05-02T17:44:05.000Z">
-<meta property="article:modified_time" content="2021-06-01T16:45:01.263Z">
+<meta property="article:modified_time" content="2021-06-03T08:22:08.052Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta property="article:tag" content="RL Basics">
 <meta name="twitter:card" content="summary">
@@ -153,7 +153,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#mdp"><span class="nav-number">1.</span> <span class="nav-text">MDP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#policy"><span class="nav-number">1.1.</span> <span class="nav-text">Policy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#policy-induced-transition-kernels"><span class="nav-number">1.2.</span> <span class="nav-text">Policy induced Transition Kernels</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rewards-and-returns"><span class="nav-number">1.3.</span> <span class="nav-text">Rewards and Returns</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#another-formulation"><span class="nav-number">1.4.</span> <span class="nav-text">Another formulation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#example"><span class="nav-number">1.5.</span> <span class="nav-text">Example</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#value-functions"><span class="nav-number">1.6.</span> <span class="nav-text">Value functions</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#mdp"><span class="nav-number">1.</span> <span class="nav-text">MDP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#policy"><span class="nav-number">1.1.</span> <span class="nav-text">Policy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#policy-induced-transition-kernels"><span class="nav-number">1.2.</span> <span class="nav-text">Policy induced Transition Kernels</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rewards-and-returns"><span class="nav-number">1.3.</span> <span class="nav-text">Rewards and Returns</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#example"><span class="nav-number">1.4.</span> <span class="nav-text">Example</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#value-functions"><span class="nav-number">1.5.</span> <span class="nav-text">Value functions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#another-formulation"><span class="nav-number">1.6.</span> <span class="nav-text">Another formulation</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -168,7 +168,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -262,7 +262,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-02 00:45:01" itemprop="dateModified" datetime="2021-06-02T00:45:01+08:00">2021-06-02</time>
+        <time title="Modified: 2021-06-03 16:22:08" itemprop="dateModified" datetime="2021-06-03T16:22:08+08:00">2021-06-03</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -286,7 +286,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>2.1k</span>
+      <span>2.5k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -327,16 +327,7 @@
 <p><span class="math display">\[G^{\pi} = R_1 + \gamma R_2 + ... + \gamma^{T-1} R_{T} = \sum^{\infty}_{k=t} \gamma^{k - t}R_{t}\]</span></p>
 <p>or any starting at any step <span class="math inline">\(X_{t}\)</span>:</p>
 <p><span class="math display">\[G^{\pi}_{t} = \sum^{\infty}_{k=t} \gamma^{k - t}R_{t}\]</span></p>
-<p>Note that <span class="math inline">\(\gamma\)</span> is a part of the problem setting, it is usually not a hyperparameter.</p>
-<h2 id="another-formulation">Another formulation</h2>
-<p>We can also define the T-step rollout or trajectory distribution <span class="math inline">\(P(\tau | \pi)\)</span> following policy <span class="math inline">\(\pi\)</span>:</p>
-<p><span class="math display">\[P(\tau | \pi) = \rho(X_1)\prod_{t=1}^{T} P(X_{t+1}| X_{t}, A_{t}) \pi(A_t | X_{t}) R(R_t | X_{t}, A_{t})\]</span></p>
-<p>Then:</p>
-<p><span class="math display">\[R(\tau) = G^{\pi}_{1} = \sum^{T}_{k=1} \gamma^{k - t}R_{t}\]</span></p>
-<p><span class="math display">\[J(\pi) = E_{\tau \sim P(\tau | \pi) }[R(\tau)] = \int R(\tau) P(d\tau | \pi)\]</span></p>
-<p><span class="math display">\[V^{\pi} (x) = E_{\tau \sim P(\tau | \pi, X_1=x)}[R(\tau) | X_1 = x]\]</span></p>
-<p>And:</p>
-<p><span class="math display">\[J(\pi) = \int V^{\pi} (x) d\rho(x)\]</span></p>
+<p>Note that <span class="math inline">\(\gamma\)</span> is a part of the problem setting, it is usually not a hyperparameter. <strong>One way to think about is as a constant probability of termination of <span class="math inline">\(1 - \gamma\)</span>. Or we can set <span class="math inline">\(\gamma = 1\)</span> when we have episodic tasks.</strong>.</p>
 <h2 id="example">Example</h2>
 <p>Finite horizon example:</p>
 <ul>
@@ -356,6 +347,18 @@
 <p><span class="math display">\[V^{\pi}(x) = E[G_1^{\pi} | X_{1} = x] = E[G^{\pi}_{t} | X_{t} = x] \text{    (Markov Property)}\]</span></p>
 <p>Action value function following policy <span class="math inline">\(\pi\)</span> starting from state x and taking action a:</p>
 <p><span class="math display">\[Q^{\pi} (x, a) = E[G_1^{\pi} | X_{1} = x, A_{1} = a] = E[G^{\pi}_{t} | X_{t} = x, A_{t} = a] \text{    (Markov Property)}\]</span></p>
+<p>in the <code>terminal formulation</code>, the value function <span class="math inline">\(V_{term}^{\pi}\)</span> can be written as:</p>
+<p><span class="math display">\[V_{term}^{\pi} = E[R_{1} + R_2 + .... + R_{t + T} | X_1 = x] \;\;\;\;\;\; \forall x \in X\]</span></p>
+<p>The process terminates at time <span class="math inline">\(t + T\)</span> according to <span class="math inline">\(\gamma\)</span>. In this case the termination should be assumed to always occur in a finite number of steps (ie. if we have episodic task we can set <span class="math inline">\(\gamma = 1\)</span>).</p>
+<h2 id="another-formulation">Another formulation</h2>
+<p>We can also define the T-step rollout or trajectory distribution <span class="math inline">\(P(\tau | \pi)\)</span> following policy <span class="math inline">\(\pi\)</span>:</p>
+<p><span class="math display">\[P(\tau | \pi) = \rho(X_1)\prod_{t=1}^{T} P(X_{t+1}| X_{t}, A_{t}) \pi(A_t | X_{t}) R(R_t | X_{t}, A_{t})\]</span></p>
+<p>Then:</p>
+<p><span class="math display">\[R(\tau) = G^{\pi}_{1} = \sum^{T}_{k=1} \gamma^{k - t}R_{t}\]</span></p>
+<p><span class="math display">\[J(\pi) = E_{\tau \sim P(\tau | \pi) }[R(\tau)] = \int R(\tau) P(d\tau | \pi)\]</span></p>
+<p><span class="math display">\[V^{\pi} (x) = E_{\tau \sim P(\tau | \pi, X_1=x)}[R(\tau) | X_1 = x]\]</span></p>
+<p>And:</p>
+<p><span class="math display">\[J(\pi) = \int V^{\pi} (x) d\rho(x)\]</span></p>
 
     </div>
 
@@ -428,13 +431,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">113k</span>
+    <span title="Symbols count total">125k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">1:43</span>
+    <span title="Reading time total">1:54</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
