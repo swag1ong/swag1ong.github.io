@@ -1,57 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>DDQN</title>
-    <url>/2021/05/07/DDQN/</url>
-    <content><![CDATA[<h1 id="deep-reinforcement-learning-with-double-q-learning"><a href="https://arxiv.org/abs/1509.06461">Deep Reinforcement Learning with Double Q-Learning</a></h1>
-<h2 id="introduction">Introduction</h2>
-<p>The authors show that the double Q-learning algorithm which was first proposed in a tabular setting, can be generalized to arbitrary function approximation, including DNN. They use this to construct a new algorithm called double DQN to solve the overestimation problem in DQN.</p>
-<h2 id="notations">Notations</h2>
-<p>Define:</p>
-<p><span class="math display">\[Q_{\pi} (s, a) = E[R_1 + \gamma R_2 + ... | S_0=s, A_0=a, \pi]\]</span></p>
-<p><span class="math display">\[Q_{*} (s, a) = max_{\pi} Q_{\pi} (s, a)\]</span></p>
-<p><span class="math display">\[\pi_{*} (s) = argmax_{a \in A} Q_{*} (s, a)\]</span></p>
-<p>The Target:</p>
-<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma max_{a} Q(S_{t+1}, a; \theta_{t})\]</span></p>
-<p>A standard Q update using stochastic gradient decent is (Semi-gradient Q):</p>
-<p><span class="math display">\[\theta_{t+1} = \theta_t + \alpha (Y_{t}^{Q} - Q(S_t, A_t; \theta_t)) \nabla_{\theta_t} Q(S_t, A_t; \theta_t)\]</span></p>
-<p>Where <span class="math inline">\(\alpha\)</span> is a scalar step size.</p>
-<span id="more"></span>
-<h2 id="background">Background</h2>
-<h3 id="double-q-learning">Double Q-learning</h3>
-<p>The max operator in standard Q-learning and DQN uses the same values both to select and to evaluate an action (ie. same Q is used to select the max action and use the value of this max action to update the Value of the state action pair). This makes it more likely to select overestimated values, resulting in overoptimistic value estimates.</p>
-<p>In Double Q-learning, two value functions are learned by assigning experiences randomly to update one of the two value functions, resulting in two sets of weights, <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\theta^{\prime}\)</span>. For each update, one set of weights is used to determine the greedy action, and the other to determine its value.</p>
-<p>Previous Q target:</p>
-<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta_{t}})\]</span></p>
-<p>The double Q-learning target:</p>
-<p><span class="math display">\[Y_t^{\text{DoubleQ}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta^{\prime}_{t}})\]</span></p>
-<h3 id="maximization-problem">Maximization Problem</h3>
-<p><img src='/images/RL/papers/DDQN_1.png'></p>
-<p>This theorem shows that even if the value estimates are on average correct, estimation errors of any source can drive the estimates up and away from the true optimal values.</p>
-<p>The lower bound in Theorem 1 decreases with the number of actions. This is an artifact of considering the lower bound, which requires very specific values to be attained. More typically, the overoptimism increases with the number of actions.</p>
-<p><img src='/images/RL/papers/DDQN_2.png'></p>
-<p><span class="math display">\[E[Q(s, a) - V_{*}(s)] = E[V_{*}(s) - V_{*}(s) + \epsilon ] = 0\]</span></p>
-<p>But, Q-learning updates have large bias due to max operation, the phenomena is severer as number of actions increases.</p>
-<p>In function approximation setting:</p>
-<p><img src='/images/RL/papers/DDQN_3.png'></p>
-<h2 id="algorithm">Algorithm</h2>
-<p>The target network in the DQN architecture provides a natural candidate for the second value function, without having to introduce additional networks. Thus, we can evaluate the greedy policy according to the online network, but using the target network to estimate its value. The resulting update:</p>
-<p><span class="math display">\[Y_t^{\text{DoubleDQN}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a} Q(S_{t+1}, a; \theta_{t}), \theta_{t}^{-})\]</span></p>
-<h2 id="implementation">Implementation</h2>
-<p>This is an implementation of DDQN in PARL. This implementation is written using PaddlePaddle.</p>
-<p>https://github.com/PaddlePaddle/PARL</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></span><br><span class="line"><span class="comment"># you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"># You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> copy</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"><span class="keyword">import</span> paddle</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DQN</span>(<span class="params">parl.Algorithm</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, model, gamma=<span class="literal">None</span>, lr=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; DQN algorithm</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            model (parl.Model): forward neural network representing the Q function.</span></span><br><span class="line"><span class="string">            gamma (float): discounted factor for `accumulative` reward computation</span></span><br><span class="line"><span class="string">            lr (float): learning rate.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.model = model</span><br><span class="line">        self.target_model = copy.deepcopy(model)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(gamma, <span class="built_in">float</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(lr, <span class="built_in">float</span>)</span><br><span class="line">        self.gamma = gamma</span><br><span class="line">        self.lr = lr</span><br><span class="line"></span><br><span class="line">        self.mse_loss = paddle.nn.MSELoss(reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line">        self.optimizer = paddle.optimizer.Adam(</span><br><span class="line">            learning_rate=lr, parameters=self.model.parameters())</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; use self.model (Q function) to predict the action values</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.model.value(obs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self, obs, action, reward, next_obs, terminal</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; update the Q function (self.model) with DQN algorithm</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># Q</span></span><br><span class="line">        pred_values = self.model.value(obs)</span><br><span class="line">        action_dim = pred_values.shape[-<span class="number">1</span>]</span><br><span class="line">        action = paddle.squeeze(action, axis=-<span class="number">1</span>)</span><br><span class="line">        action_onehot = paddle.nn.functional.one_hot(</span><br><span class="line">            action, num_classes=action_dim)</span><br><span class="line">        pred_value = paddle.multiply(pred_values, action_onehot)</span><br><span class="line">        pred_value = paddle.<span class="built_in">sum</span>(pred_value, axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># target Q</span></span><br><span class="line">        <span class="keyword">with</span> paddle.no_grad():</span><br><span class="line">            greedy_actions = self.model.value(next_obs).argmax(<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">            max_v = self.target_model.value(next_obs).gather(index=greedy_actions, axis=<span class="number">1</span>)</span><br><span class="line">            target = reward + (<span class="number">1</span> - terminal) * self.gamma * max_v</span><br><span class="line"></span><br><span class="line">        loss = self.mse_loss(pred_value, target)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># optimize</span></span><br><span class="line">        self.optimizer.clear_grad()</span><br><span class="line">        loss.backward()</span><br><span class="line">        self.optimizer.step()</span><br><span class="line">        <span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sync_target</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.model.sync_weights_to(self.target_model)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>VFA</category>
-      </categories>
-      <tags>
-        <tag>Function Approximation</tag>
-        <tag>Continuous State Space</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>DPG (under construction)</title>
     <url>/2021/05/06/DPG/</url>
     <content><![CDATA[<h1 id="deterministic-policy-gradient-algorithms">Deterministic Policy Gradient Algorithms</h1>
@@ -118,6 +67,77 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
 &amp;= E_{s \sim \rho^{\mu_{\theta}} (\cdot)} [\nabla_{\theta} \mu_{\theta} (s) \nabla_{a} Q^{\mu_{\theta}} (s, a) |_{a = \mu_\theta(s)}]
 \end{aligned}\]</span>
 <p><br/></p>
+<h3 id="theorem-2">Theorem 2</h3>
+<p><img src="/images/RL/pg/dpg_2.png" width="600"></p>
+<p>This theorem shows that the familiar machinery of policy gradient. All PG methods are applicable to deterministic policy gradient.</p>
+<h2 id="off-policy-deterministic-actor-critic">Off Policy Deterministic Actor-Critic</h2>
+<p>The performance objective is:</p>
+<p><span class="math display">\[J_{\beta}(\mu_{\theta}) = E_{s \sim \rho^{\beta} (\cdot)} [r(s, \mu_{\theta}(s))]\]</span></p>
+<p>The gradient:</p>
+<span class="math display">\[\begin{aligned}
+\nabla_{\theta} J_{\beta} (\pi_{\theta}) &amp;\approx \int_s \rho^{\beta} (s) \nabla_{\theta} \mu_{\theta} (s) \nabla_{a} Q^{\mu_{\theta}} (s, a) |_{a = \mu_\theta(s)} ds\\
+&amp;= E_{s \sim \rho^\beta}[\nabla_{\theta} \mu_{\theta} (s) \nabla_{a} Q^{\mu_{\theta}} (s, a) |_{a = \mu_\theta(s)} ]\\
+\end{aligned}\]</span>
+<p>This equation gives the off-policy deterministic policy gradient. We now develop an actor-critic algorithm that updates the policy in the direction of the off-policy deterministic policy gradient. We can see that the integral over <span class="math inline">\(a\)</span> is removed because we are using the deterministic policy, that is, we can avoid importance sampling in the critic.</p>
+<p>We substitute a differentiable action-value function <span class="math inline">\(Q^{w} (s, a)\)</span> in place of the true action-value function <span class="math inline">\(Q^{\mu} (s, a)\)</span>. A critic estimates the action-value function <span class="math inline">\(Q^{w} (s, a) \approx Q^{\mu} (s, a)\)</span>. In the below off-policy deterministic actor critic algorithm, the critic estimates the action-value function using the samples from <span class="math inline">\(\rho^\beta\)</span></p>
+<p><img src="/images/RL/pg/dpg_3.png" width="600"></p>
+<h3 id="compatible-function-approximation">Compatible Function Approximation</h3>
+<h4 id="compatible-function-approximator-in-stochastic-case">Compatible Function Approximator in Stochastic Case</h4>
+<p>In general, substituting an approximate <span class="math inline">\(Q^{w} (s, a)\)</span> will not necessarily follow the true gradient. Similar to the stochastic ase, only compatible function approximators are guaranteed to be unbiased. Recall that a function approximator <span class="math inline">\(f_w\)</span> is <strong>compatiable</strong> if:</p>
+<ol type="1">
+<li><span class="math inline">\(f_w\)</span> is found by minimizing the square loss <span class="math inline">\(E_{s \sim \rho^{\pi_{\theta}}, a \sim \pi_{\theta}} [(Q^{\pi} (s, a) - f_{w} (s, a))^2]\)</span></li>
+<li><span class="math inline">\(\nabla_{w} f_w (s, a) = \nabla_{\theta} \pi_{\theta}(s, a) \frac{1}{\pi(s, a)}\)</span>, this is satisfied only when <span class="math inline">\(f_w (s, a) = \nabla_{\theta} \log \pi_{\theta}(s, a) w^T\)</span></li>
+</ol>
+<p><br/></p>
+<p>These conditions imply:</p>
+<p><span class="math display">\[\nabla_{\theta} J(\pi_\theta) = E_{s\sim \rho^{\pi} (\cdot), a \sim \pi_{\theta}}[\nabla_{\theta} \log \pi_\theta (a | s) f_w(s, a)]\]</span></p>
+<h4 id="proof-1">Proof</h4>
+<p>Notice that, at the fixed point, we will have:</p>
+<p><span class="math display">\[Q^{\pi} (s, a) - f_w (s, a) = 0\]</span></p>
+<p>and the gradient of the loss:</p>
+<p><span class="math display">\[\nabla_{w} E_{s \sim \rho^{\pi_{\theta}}, a \sim \pi_{\theta}} [(Q^{\pi} (s, a) - f_{w} (s, a))^2] = E_{s \sim \rho^{\pi_{\theta}}, a \sim \pi_{\theta}} [(Q^{\pi} (s, a) - f_{w} (s, a)) \nabla_{w} f_{w} (s, a)] = 0\]</span></p>
+<p>By substitute condition 2 into the above equation, we have:</p>
+<p><span class="math display">\[E_{s \sim \rho^{\pi_{\theta}}, a \sim \pi_{\theta}} [(Q^{\pi} (s, a) - f_{w} (s, a)) \nabla_{\theta} \log \pi_{\theta}(s, a)] = 0\]</span></p>
+<p>Since the gradient of loss is 0, we can subtract it from the policy gradient:</p>
+<span class="math display">\[\begin{aligned}
+\nabla_{\theta} J(\pi_\theta) &amp;= E_{s \sim \rho^{\pi_{\theta}}, a \sim \pi_{\theta}} [\nabla_{\theta} \log \pi_\theta (a | s) Q^{\pi} (s, a)] - E_{s \sim \rho^{\pi_{\theta}}, a \sim \pi_{\theta}} [(Q^{\pi} (s, a) - f_{w} (s, a)) \nabla_{\theta} \log \pi_{\theta}(s, a)]\\
+&amp;= E_{s\sim \rho^{\pi} (\cdot), a \sim \pi_{\theta}}[\nabla_{\theta} \log \pi_\theta (a | s) f_w(s, a)]
+\end{aligned}\]</span>
+<p><br/></p>
+<h4 id="compatible-function-approximator-in-deterministic-case">Compatible Function Approximator in Deterministic Case</h4>
+<p>Similar in above stochastic case, we want to find a class of compatible function approximators <span class="math inline">\(Q^{w} (s, a)\)</span> such that the gradient is preserved. In order words:</p>
+<p><span class="math display">\[\nabla_a Q^{w} (s, a) = \nabla_a Q^{\mu_{\theta}} (s, a)\]</span></p>
+<p>So that we could replace <span class="math inline">\(\nabla_a Q^{\mu_{\theta}} (s, a)\)</span> with <span class="math inline">\(\nabla_a Q^{w} (s, a)\)</span> and still have the true gradient preserved.</p>
+<p><img src="/images/RL/pg/dpg_4.png" width="600"></p>
+<p><strong>This theorem applies to both on-policy and off-policy cases</strong></p>
+<h4 id="proof-2">Proof</h4>
+<p>The proof basically follows the stochastic case:</p>
+<p><img src="/images/RL/pg/dpg_5.png" width="600"></p>
+<p>So for any deterministic policy <span class="math inline">\(\mu_\theta (s)\)</span>, there always exists a compatible function approximator of the form:</p>
+<p><span class="math display">\[f_{w} (s, a) = \phi(s, a)^T \nabla_{\theta} \mu_{\theta} (s)^Tw + V^{v} (s)\]</span></p>
+<p>Where <span class="math inline">\(V^{v} (s)\)</span> can be any baseline function that is independent of the action <span class="math inline">\(a\)</span> and <span class="math inline">\(\nabla_{a} \phi(s, a)^T = 1\)</span>. This function satisfies condition 1. However, in order to satisfy condition 2, we need to find the parameters <span class="math inline">\(w\)</span> that minimize the mse between th gradient of <span class="math inline">\(Q^w\)</span> and the true gradient. Since, acquiring unbiased samples of the true gradient is difficult, in practice, we learn <span class="math inline">\(w\)</span> using a standard policy evaluation method that does not exactly satisfy condition 2 (ie. using SARSA, Q-learning through semi-gradient TD).</p>
+<p>We denote the reasonable solution to the policy evaluation problem by <span class="math inline">\(Q^{w} (s, a) \approx Q^{\mu} (s, a)\)</span> and will therefore approximately satisfy</p>
+<p><span class="math display">\[\nabla_a Q^{w} (s, a) \approx \nabla_a Q^{\mu_{\theta}} (s, a)\]</span></p>
+<h2 id="compatible-off-policy-deterministic-actor-critic-algorithm-copdac">Compatible Off-Policy Deterministic Actor-Critic Algorithm (COPDAC)</h2>
+<p>The Compatible off-policy deterministic actor-critic algorithm consists of two compoenents:</p>
+<ol type="1">
+<li><p>The critic is a linear function approximator that estimates the action-value from features:</p>
+<p><span class="math display">\[a \nabla_{\theta}\mu_{\theta} (s)^Tw + V^{v} (s)\]</span></p>
+<p>This can be learnt off-policy using samples of a behaviour policy <span class="math inline">\(\beta(a | s)\)</span>, for example using Q-learning or gradient Q-learning. <span class="math inline">\(V^{v} (s)\)</span> is parametrized linearly as <span class="math inline">\({\phi(s)}^T v\)</span>.</p></li>
+<li><p>The actor then updates its parameters in the direction of the critic's action-value gradient.</p></li>
+</ol>
+<p><br/></p>
+<p>The following COPDAC-Q algorithm uses a simple Q-learning critic:</p>
+<ol type="1">
+<li><p>Calculate the TD error for semi gradient TD update</p>
+<p><span class="math display">\[\delta_t = r_t + \gamma Q^{w} (s_{t+1}, \mu_{\theta}(s_{t+1})) - Q^{w} (s_t, a_t)\]</span></p></li>
+<li><p>Update <span class="math inline">\(V^{v} (s)\)</span></p>
+<p><span class="math display">\[v_{t + 1} = v_t + \alpha_v \delta_t \phi(s_t)\]</span></p></li>
+<li><p>Update <span class="math inline">\(Q^{w} (s, a)\)</span></p>
+<p><span class="math display">\[w_{t + 1} = w_t + \alpha_w \delta_t a_t^T \nabla_{\theta}\mu_{\theta} (s_t)\]</span></p></li>
+<li><p>Update the actor <span class="math inline">\(\mu_{\theta} (s)\)</span>:</p>
+<p><span class="math display">\[\theta_{t + 1} = \theta_{t} + \alpha_{\theta}  \nabla_{\theta}\mu_{\theta} (s_t) (\nabla_{\theta}\mu_{\theta}^T (s_t) w_t)\]</span></p></li>
+</ol>
 ]]></content>
       <categories>
         <category>RL</category>
@@ -126,6 +146,57 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
       <tags>
         <tag>Policy Gradient</tag>
         <tag>Continuous Action Space</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DDQN</title>
+    <url>/2021/05/07/DDQN/</url>
+    <content><![CDATA[<h1 id="deep-reinforcement-learning-with-double-q-learning"><a href="https://arxiv.org/abs/1509.06461">Deep Reinforcement Learning with Double Q-Learning</a></h1>
+<h2 id="introduction">Introduction</h2>
+<p>The authors show that the double Q-learning algorithm which was first proposed in a tabular setting, can be generalized to arbitrary function approximation, including DNN. They use this to construct a new algorithm called double DQN to solve the overestimation problem in DQN.</p>
+<h2 id="notations">Notations</h2>
+<p>Define:</p>
+<p><span class="math display">\[Q_{\pi} (s, a) = E[R_1 + \gamma R_2 + ... | S_0=s, A_0=a, \pi]\]</span></p>
+<p><span class="math display">\[Q_{*} (s, a) = max_{\pi} Q_{\pi} (s, a)\]</span></p>
+<p><span class="math display">\[\pi_{*} (s) = argmax_{a \in A} Q_{*} (s, a)\]</span></p>
+<p>The Target:</p>
+<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma max_{a} Q(S_{t+1}, a; \theta_{t})\]</span></p>
+<p>A standard Q update using stochastic gradient decent is (Semi-gradient Q):</p>
+<p><span class="math display">\[\theta_{t+1} = \theta_t + \alpha (Y_{t}^{Q} - Q(S_t, A_t; \theta_t)) \nabla_{\theta_t} Q(S_t, A_t; \theta_t)\]</span></p>
+<p>Where <span class="math inline">\(\alpha\)</span> is a scalar step size.</p>
+<span id="more"></span>
+<h2 id="background">Background</h2>
+<h3 id="double-q-learning">Double Q-learning</h3>
+<p>The max operator in standard Q-learning and DQN uses the same values both to select and to evaluate an action (ie. same Q is used to select the max action and use the value of this max action to update the Value of the state action pair). This makes it more likely to select overestimated values, resulting in overoptimistic value estimates.</p>
+<p>In Double Q-learning, two value functions are learned by assigning experiences randomly to update one of the two value functions, resulting in two sets of weights, <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\theta^{\prime}\)</span>. For each update, one set of weights is used to determine the greedy action, and the other to determine its value.</p>
+<p>Previous Q target:</p>
+<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta_{t}})\]</span></p>
+<p>The double Q-learning target:</p>
+<p><span class="math display">\[Y_t^{\text{DoubleQ}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta^{\prime}_{t}})\]</span></p>
+<h3 id="maximization-problem">Maximization Problem</h3>
+<p><img src='/images/RL/papers/DDQN_1.png'></p>
+<p>This theorem shows that even if the value estimates are on average correct, estimation errors of any source can drive the estimates up and away from the true optimal values.</p>
+<p>The lower bound in Theorem 1 decreases with the number of actions. This is an artifact of considering the lower bound, which requires very specific values to be attained. More typically, the overoptimism increases with the number of actions.</p>
+<p><img src='/images/RL/papers/DDQN_2.png'></p>
+<p><span class="math display">\[E[Q(s, a) - V_{*}(s)] = E[V_{*}(s) - V_{*}(s) + \epsilon ] = 0\]</span></p>
+<p>But, Q-learning updates have large bias due to max operation, the phenomena is severer as number of actions increases.</p>
+<p>In function approximation setting:</p>
+<p><img src='/images/RL/papers/DDQN_3.png'></p>
+<h2 id="algorithm">Algorithm</h2>
+<p>The target network in the DQN architecture provides a natural candidate for the second value function, without having to introduce additional networks. Thus, we can evaluate the greedy policy according to the online network, but using the target network to estimate its value. The resulting update:</p>
+<p><span class="math display">\[Y_t^{\text{DoubleDQN}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a} Q(S_{t+1}, a; \theta_{t}), \theta_{t}^{-})\]</span></p>
+<h2 id="implementation">Implementation</h2>
+<p>This is an implementation of DDQN in PARL. This implementation is written using PaddlePaddle.</p>
+<p>https://github.com/PaddlePaddle/PARL</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></span><br><span class="line"><span class="comment"># you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"># You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> copy</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"><span class="keyword">import</span> paddle</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DQN</span>(<span class="params">parl.Algorithm</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, model, gamma=<span class="literal">None</span>, lr=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; DQN algorithm</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            model (parl.Model): forward neural network representing the Q function.</span></span><br><span class="line"><span class="string">            gamma (float): discounted factor for `accumulative` reward computation</span></span><br><span class="line"><span class="string">            lr (float): learning rate.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.model = model</span><br><span class="line">        self.target_model = copy.deepcopy(model)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(gamma, <span class="built_in">float</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(lr, <span class="built_in">float</span>)</span><br><span class="line">        self.gamma = gamma</span><br><span class="line">        self.lr = lr</span><br><span class="line"></span><br><span class="line">        self.mse_loss = paddle.nn.MSELoss(reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line">        self.optimizer = paddle.optimizer.Adam(</span><br><span class="line">            learning_rate=lr, parameters=self.model.parameters())</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; use self.model (Q function) to predict the action values</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.model.value(obs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self, obs, action, reward, next_obs, terminal</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; update the Q function (self.model) with DQN algorithm</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># Q</span></span><br><span class="line">        pred_values = self.model.value(obs)</span><br><span class="line">        action_dim = pred_values.shape[-<span class="number">1</span>]</span><br><span class="line">        action = paddle.squeeze(action, axis=-<span class="number">1</span>)</span><br><span class="line">        action_onehot = paddle.nn.functional.one_hot(</span><br><span class="line">            action, num_classes=action_dim)</span><br><span class="line">        pred_value = paddle.multiply(pred_values, action_onehot)</span><br><span class="line">        pred_value = paddle.<span class="built_in">sum</span>(pred_value, axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># target Q</span></span><br><span class="line">        <span class="keyword">with</span> paddle.no_grad():</span><br><span class="line">            greedy_actions = self.model.value(next_obs).argmax(<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">            max_v = self.target_model.value(next_obs).gather(index=greedy_actions, axis=<span class="number">1</span>)</span><br><span class="line">            target = reward + (<span class="number">1</span> - terminal) * self.gamma * max_v</span><br><span class="line"></span><br><span class="line">        loss = self.mse_loss(pred_value, target)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># optimize</span></span><br><span class="line">        self.optimizer.clear_grad()</span><br><span class="line">        loss.backward()</span><br><span class="line">        self.optimizer.step()</span><br><span class="line">        <span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sync_target</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.model.sync_weights_to(self.target_model)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Continuous State Space</tag>
       </tags>
   </entry>
   <entry>
@@ -279,6 +350,23 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
 ]]></content>
   </entry>
   <entry>
+    <title>RL Cheat Sheet (under construction)</title>
+    <url>/2021/05/18/cheat-sheet/</url>
+    <content><![CDATA[<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
+<p><span class="math display">\[V^{*} (s) = max_{a} Q^{*} (s, a)\]</span></p>
+<p><span class="math display">\[Q^{*} (s, a) = max_{\pi} Q^{\pi} (s, a), \forall (s, a) \in S X A\]</span></p>
+<p><span class="math display">\[V^{\pi} (s) = E_{a_t \sim pi(\cdot | s)}[R_t | s_t=s, \pi] = E_{a_t \sim pi(\cdot | s)}[E[R_t | s_t, a_t, \pi] | s_t=s] = E_{a_t \sim pi(\cdot | s)}[ Q^{\pi}(s, a_t)]\]</span></p>
+<p><span class="math display">\[A^{\pi} (s, a) = Q^{\pi} (s, a) - V^{\pi} (s)\]</span></p>
+<p><span class="math display">\[E_{a^{\prime}}[A^{\pi} (s, a) | s] = E_{a^{\prime}}[Q^{\pi} (s, a) | s] - V^{\pi} (s) = 0\]</span></p>
+]]></content>
+      <categories>
+        <category>RL</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Batch Normalization</title>
     <url>/2021/05/26/batch-norm/</url>
     <content><![CDATA[<h1 id="batch-normalization-accelerating-deep-network-training-by-reducing-internal-covariate-shift">Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift</h1>
@@ -346,6 +434,41 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
       <tags>
         <tag>Deep Learning</tag>
         <tag>Normalization</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Bellman Equations</title>
+    <url>/2021/05/03/bellman-equations/</url>
+    <content><![CDATA[<p><em>Please read post on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> prior this post</em></p>
+<h1 id="bellman-equations">Bellman Equations</h1>
+<p>By expanding value functions, we reveal the recursive property of return:</p>
+<p><span class="math display">\[
+\begin{aligned}
+V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
+&amp; = E[R_{t} + \gamma G^{\pi}_{t+1} | X_{t} = x]\\
+&amp; = E_{a \sim \pi(a | s)}[R_{t} | X_{t} = x] + \gamma E[G^{\pi}_{t+1} | X_{t} = x]\\
+&amp; = r^{\pi} (x) + \gamma E[V^{\pi} (X_{t+1}) | X_{t} = x]\\
+\end{aligned}
+\]</span> <span id="more"></span></p>
+<p>Where: <span class="math display">\[V^{\pi} (X_{t+1}) = E[G^{\pi}_{t+1} | X_{t+1}] \]</span></p>
+<p><span class="math display">\[\implies E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[V^{\pi} (X_{t+1}) | X_t=x_t] = E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[E[G^{\pi}_{t+1} | X_{t+1}] | X_{t}=x_t] = E[G^{\pi}_{t+1} | X_{t} = x_t]\]</span></p>
+<p>This implies that neither side is random, by expanding:</p>
+<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x]\]</span></p>
+<p>we get:</p>
+<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
+<p>Thus, the value function can be expressed as:</p>
+<p><span class="math display">\[V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
+<p>This is the <span style="color:red"><strong>bellman equation</strong> </span> for a policy <span class="math inline">\(\pi\)</span>, this can be interpreted as: The value of following a policy <span class="math inline">\(\pi\)</span> is the expected immediate reward that the <span class="math inline">\(\pi\)</span>-following agent receives at that state plus the discounted average(expected) value that the agent receives at the next-state.</p>
+<p>Same for action-value function, we have bellman equation:</p>
+<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (da^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
+<p>Compare with value function, we have expected reward base on action <span class="math inline">\(a\)</span> plus discounted average(expected) value that the agent receives at the next-state following <span class="math inline">\(\pi\)</span> (the choice of action is given at state <span class="math inline">\(s\)</span> in action value function)</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>Basics</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
       </tags>
   </entry>
   <entry>
@@ -508,58 +631,6 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
-    <title>Bellman Equations</title>
-    <url>/2021/05/03/bellman-equations/</url>
-    <content><![CDATA[<p><em>Please read post on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> prior this post</em></p>
-<h1 id="bellman-equations">Bellman Equations</h1>
-<p>By expanding value functions, we reveal the recursive property of return:</p>
-<p><span class="math display">\[
-\begin{aligned}
-V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
-&amp; = E[R_{t} + \gamma G^{\pi}_{t+1} | X_{t} = x]\\
-&amp; = E_{a \sim \pi(a | s)}[R_{t} | X_{t} = x] + \gamma E[G^{\pi}_{t+1} | X_{t} = x]\\
-&amp; = r^{\pi} (x) + \gamma E[V^{\pi} (X_{t+1}) | X_{t} = x]\\
-\end{aligned}
-\]</span> <span id="more"></span></p>
-<p>Where: <span class="math display">\[V^{\pi} (X_{t+1}) = E[G^{\pi}_{t+1} | X_{t+1}] \]</span></p>
-<p><span class="math display">\[\implies E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[V^{\pi} (X_{t+1}) | X_t=x_t] = E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[E[G^{\pi}_{t+1} | X_{t+1}] | X_{t}=x_t] = E[G^{\pi}_{t+1} | X_{t} = x_t]\]</span></p>
-<p>This implies that neither side is random, by expanding:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x]\]</span></p>
-<p>we get:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
-<p>Thus, the value function can be expressed as:</p>
-<p><span class="math display">\[V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
-<p>This is the <span style="color:red"><strong>bellman equation</strong> </span> for a policy <span class="math inline">\(\pi\)</span>, this can be interpreted as: The value of following a policy <span class="math inline">\(\pi\)</span> is the expected immediate reward that the <span class="math inline">\(\pi\)</span>-following agent receives at that state plus the discounted average(expected) value that the agent receives at the next-state.</p>
-<p>Same for action-value function, we have bellman equation:</p>
-<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (da^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
-<p>Compare with value function, we have expected reward base on action <span class="math inline">\(a\)</span> plus discounted average(expected) value that the agent receives at the next-state following <span class="math inline">\(\pi\)</span> (the choice of action is given at state <span class="math inline">\(s\)</span> in action value function)</p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>Basics</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>RL Cheat Sheet (under construction)</title>
-    <url>/2021/05/18/cheat-sheet/</url>
-    <content><![CDATA[<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
-<p><span class="math display">\[V^{*} (s) = max_{a} Q^{*} (s, a)\]</span></p>
-<p><span class="math display">\[Q^{*} (s, a) = max_{\pi} Q^{\pi} (s, a), \forall (s, a) \in S X A\]</span></p>
-<p><span class="math display">\[V^{\pi} (s) = E_{a_t \sim pi(\cdot | s)}[R_t | s_t=s, \pi] = E_{a_t \sim pi(\cdot | s)}[E[R_t | s_t, a_t, \pi] | s_t=s] = E_{a_t \sim pi(\cdot | s)}[ Q^{\pi}(s, a_t)]\]</span></p>
-<p><span class="math display">\[A^{\pi} (s, a) = Q^{\pi} (s, a) - V^{\pi} (s)\]</span></p>
-<p><span class="math display">\[E_{a^{\prime}}[A^{\pi} (s, a) | s] = E_{a^{\prime}}[Q^{\pi} (s, a) | s] - V^{\pi} (s) = 0\]</span></p>
-]]></content>
-      <categories>
-        <category>RL</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Dynamic Programming</title>
     <url>/2021/05/03/dp/</url>
     <content><![CDATA[<h1 id="dynamic-programming">Dynamic Programming</h1>
@@ -635,14 +706,6 @@ V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
       </tags>
   </entry>
   <entry>
-    <title>importance_sampling (under construction)</title>
-    <url>/2021/05/21/importance-sampling/</url>
-    <content><![CDATA[<h1 id="importance-sampling">Importance Sampling</h1>
-<h1 id="ref">Ref</h1>
-<p>https://www.quora.com/Why-doesn-t-DQN-use-importance-sampling-Dont-we-always-use-this-method-to-correct-the-sampling-error-produced-by-the-off-policy https://danieltakeshi.github.io/2019/01/25/deep-learning-01/</p>
-]]></content>
-  </entry>
-  <entry>
     <title>Layer Normalization</title>
     <url>/2021/06/02/layer-norm/</url>
     <content><![CDATA[<h1 id="layer-normalization">Layer Normalization</h1>
@@ -694,6 +757,39 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </tags>
   </entry>
   <entry>
+    <title>importance_sampling (under construction)</title>
+    <url>/2021/05/21/importance-sampling/</url>
+    <content><![CDATA[<h1 id="importance-sampling">Importance Sampling</h1>
+<h1 id="ref">Ref</h1>
+<p>https://www.quora.com/Why-doesn-t-DQN-use-importance-sampling-Dont-we-always-use-this-method-to-correct-the-sampling-error-produced-by-the-off-policy https://danieltakeshi.github.io/2019/01/25/deep-learning-01/</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Leet Code (2)</title>
+    <url>/2021/06/05/leet-code-2/</url>
+    <content><![CDATA[<p><strong>题目库: <code>[242， 205, 215, 347]</code></strong></p>
+<h1 id="strings">Strings</h1>
+<h2 id="easy">242 Easy</h2>
+<p>先排序再比较就行，或者我们可以统计每个字母出现次数，关键是要明白字符数量不同就不相同</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isAnagram</span>(<span class="params">self, s: <span class="built_in">str</span>, t: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span></span><br><span class="line">        s = <span class="built_in">sorted</span>(s)</span><br><span class="line">        t = <span class="built_in">sorted</span>(t)</span><br><span class="line">        <span class="keyword">return</span> s == t</span><br></pre></td></tr></table></figure>
+<h2 id="easy-1">205 Easy</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isIsomorphic</span>(<span class="params">self, s: <span class="built_in">str</span>, t: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(s) != <span class="built_in">len</span>(t):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        mapping_s = &#123;&#125;</span><br><span class="line">        mapping_t = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> i, j <span class="keyword">in</span> <span class="built_in">zip</span>(s, t):</span><br><span class="line">            <span class="keyword">if</span> i <span class="keyword">not</span> <span class="keyword">in</span> mapping_s.keys():</span><br><span class="line">                mapping_s[i] = j</span><br><span class="line">                <span class="keyword">if</span> j <span class="keyword">in</span> mapping_t.keys():</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">                mapping_t[j] = i</span><br><span class="line"></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> mapping_s[i] != j:</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<h2 id="medium">215 Medium</h2>
+<p><img src="/images/leetcode/215.png" width="600"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution_1</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findKthLargest</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>], k: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        <span class="comment"># selection sort</span></span><br><span class="line">        n = <span class="built_in">len</span>(nums)</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">find_max</span>(<span class="params">start</span>):</span></span><br><span class="line">            max_num = nums[start]</span><br><span class="line">            idx = start</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(start + <span class="number">1</span>, n):</span><br><span class="line">                <span class="keyword">if</span> max_num &lt; nums[i]:</span><br><span class="line">                    max_num = nums[i]</span><br><span class="line">                    idx = i</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> idx</span><br><span class="line"></span><br><span class="line">        j = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> j &lt; k:</span><br><span class="line">            max_idx = find_max(j)</span><br><span class="line">            val = nums[j]</span><br><span class="line">            nums[j] = nums[max_idx]</span><br><span class="line">            nums[max_idx] = val</span><br><span class="line"></span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> nums[j - <span class="number">1</span>]</span><br><span class="line">    </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution_2</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findKthLargest</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>], k: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">partition</span>(<span class="params">nums, l, r</span>):</span></span><br><span class="line">            first_small = l</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(l, r):</span><br><span class="line">                <span class="keyword">if</span> nums[j] &gt; nums[r]:</span><br><span class="line">                    swap(nums, first_small, j)</span><br><span class="line">                    first_small += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">            swap(nums, first_small, r)</span><br><span class="line">            <span class="keyword">return</span> first_small</span><br><span class="line">        </span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">swap</span>(<span class="params">nums, i, j</span>):</span></span><br><span class="line">            temp = nums[i]</span><br><span class="line">            nums[i] = nums[j]</span><br><span class="line">            nums[j] = temp</span><br><span class="line"></span><br><span class="line">        <span class="keyword">import</span> random</span><br><span class="line">        random.shuffle(nums)</span><br><span class="line">        <span class="comment"># random shuffle 不然quick selection会慢</span></span><br><span class="line">        l, r = <span class="number">0</span>, <span class="built_in">len</span>(nums) - <span class="number">1</span></span><br><span class="line">        k = k - <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> l &lt; r:</span><br><span class="line">            q = partition(nums, l, r)</span><br><span class="line">            <span class="keyword">if</span> q == k:</span><br><span class="line">                <span class="keyword">return</span> nums[q]</span><br><span class="line">            <span class="keyword">elif</span> q &gt; k: </span><br><span class="line">                r = q - <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                l = q + <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> nums[l]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="section">347</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">topKFrequent</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>], k: <span class="built_in">int</span></span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span></span><br><span class="line">        freq_dict = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> nums:</span><br><span class="line">            <span class="keyword">if</span> i <span class="keyword">in</span> freq_dict.keys():</span><br><span class="line">                freq_dict[i] += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                freq_dict[i] = <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        nums = []</span><br><span class="line">        <span class="keyword">for</span> i, v <span class="keyword">in</span> freq_dict.items():</span><br><span class="line">            nums.append((v, i))</span><br><span class="line"></span><br><span class="line">        nums.sort(key=<span class="keyword">lambda</span> x: x[<span class="number">0</span>], reverse=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        out = []</span><br><span class="line">        <span class="keyword">for</span> counts, idx <span class="keyword">in</span> nums:</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(out) == k:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            out.append(idx)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> out</span><br></pre></td></tr></table></figure>
+<h1 id="dp">DP</h1>
+<h2 id="medium-1">647 Medium</h2>
+]]></content>
+      <categories>
+        <category>Others</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Monte Carlo Estimation</title>
     <url>/2021/05/15/mc/</url>
     <content><![CDATA[<h1 id="learning-from-stream-of-data-monte-carlo-methods">Learning From Stream of Data (Monte Carlo Methods)</h1>
@@ -742,26 +838,6 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </tags>
   </entry>
   <entry>
-    <title>Leet Code (2)</title>
-    <url>/2021/06/05/leet-code-2/</url>
-    <content><![CDATA[<p><strong>题目库: <code>[242， 205]</code></strong></p>
-<h1 id="strings">Strings</h1>
-<h2 id="easy">242 Easy</h2>
-<p>先排序再比较就行，或者我们可以统计每个字母出现次数，关键是要明白字符数量不同就不相同</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isAnagram</span>(<span class="params">self, s: <span class="built_in">str</span>, t: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span></span><br><span class="line">        s = <span class="built_in">sorted</span>(s)</span><br><span class="line">        t = <span class="built_in">sorted</span>(t)</span><br><span class="line">        <span class="keyword">return</span> s == t</span><br></pre></td></tr></table></figure>
-<h2 id="easy-1">205 Easy</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isIsomorphic</span>(<span class="params">self, s: <span class="built_in">str</span>, t: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(s) != <span class="built_in">len</span>(t):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        mapping_s = &#123;&#125;</span><br><span class="line">        mapping_t = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> i, j <span class="keyword">in</span> <span class="built_in">zip</span>(s, t):</span><br><span class="line">            <span class="keyword">if</span> i <span class="keyword">not</span> <span class="keyword">in</span> mapping_s.keys():</span><br><span class="line">                mapping_s[i] = j</span><br><span class="line">                <span class="keyword">if</span> j <span class="keyword">in</span> mapping_t.keys():</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">                mapping_t[j] = i</span><br><span class="line"></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> mapping_s[i] != j:</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
-<h1 id="dp">DP</h1>
-<h2 id="medium">647 Medium</h2>
-]]></content>
-      <categories>
-        <category>Others</category>
-      </categories>
-      <tags>
-        <tag>LeetCode</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>natural-actor-critic</title>
     <url>/2021/06/03/natural-actor-critic/</url>
     <content><![CDATA[
@@ -802,7 +878,7 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
 ]]></content>
   </entry>
   <entry>
-    <title>policy-gradient-3</title>
+    <title>Policy Gradient (3)</title>
     <url>/2021/06/05/policy-gradient-3/</url>
     <content><![CDATA[<h1 id="policy-search-methods-reinforce">Policy Search Methods (REINFORCE)</h1>
 <p>We already now that, if we have sampled from the correct distribution and have an estimate for <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>, we have an unbiased sample of the policy gradient (Discounted Setting):</p>
@@ -813,13 +889,69 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
 <p>In the on-policy setting when agent follows <span class="math inline">\(\pi_{\theta}\)</span>:</p>
 <ul>
 <li>It generates the sequence <span class="math inline">\(X_1, A_1, R_1\)</span> with <span class="math inline">\(A_{t} \sim \pi_{\theta} (\cdot | X_t), X_t \sim \rho^{\pi_{\theta}}\)</span>.</li>
-<li>Then <span class="math inline">\(G_{t}^{\pi} = \sum_{k \geq t} \gamma^{k - t} R_{k}\)</span> is an unbiased estimator of <span class="math inline">\(Q^{\pi_{\theta}} (X_t, A_t)\)</span>.</li>
+<li>Then <span class="math inline">\(G_{t}^{\pi_{\theta}} = \sum_{k \geq t} \gamma^{k - t} R_{k}\)</span> is an unbiased estimator of <span class="math inline">\(Q^{\pi_{\theta}} (X_t, A_t)\)</span>.</li>
 <li>We replace the action-value function with the estimate.</li>
 <li>The return however has high variance even though it is unbiased.</li>
 <li>We can use a state dependent baseline function (usually the value function) to reduce the variance.</li>
 </ul>
 <p><img src='/images/RL/pg/pg_5.png' width="600"></p>
 <h2 id="implementation">Implementation</h2>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>PG</category>
+      </categories>
+      <tags>
+        <tag>Policy Gradient</tag>
+        <tag>Continuous Action Space</tag>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Policy Gradient (1)</title>
+    <url>/2021/05/23/policy-gradient/</url>
+    <content><![CDATA[<h1 id="policy-search-methods-introduction">Policy Search Methods (Introduction)</h1>
+<p>So far, we have encountered methods for computing the optimal policy based on the computation of the value function. In this case, only value function was explicitly represented. There are also methods based on explicit representation of the policy and optimizing the performance of the agent by searching in the space of policies. These methods are called <strong>policy search methods</strong>.</p>
+<p>Consider a stochastic policy <span class="math inline">\(\pi_\theta: X \rightarrow M(A)\)</span> that maps state space to distribution defined over actions and parameterized by a <span class="math inline">\(\theta \in \Theta\)</span>. The set <span class="math inline">\(\Theta\)</span> is the parameter space. The space of all parameterized policies can be described as:</p>
+<p><span class="math display">\[\prod_\Theta = \{\pi_\theta: X \rightarrow M(A): \theta \in \Theta\}\]</span></p>
+<p>This space depends on the mapping <span class="math inline">\(\pi_\theta\)</span> and <span class="math inline">\(\Theta\)</span></p>
+<p>One example how we can parameterize policy by softmax distribution. Given a function mapping <span class="math inline">\(f_{\theta}: X \times A \rightarrow \mathbb{R}\)</span>, the probability of choosing action <span class="math inline">\(a\)</span> at state <span class="math inline">\(x\)</span> is:</p>
+<p><span class="math display">\[\pi_{\theta} (a | x) = \frac{exp(f_{\theta} (x, a))}{\sum_{a^{\prime}} exp(f_{\theta} (x, a^{\prime}))}\]</span></p>
+<p>or a normal distribution defined by <span class="math inline">\(\mu_\theta (x), \Sigma_\theta(x)\)</span>:</p>
+<p><span class="math display">\[\pi_{\theta} (\cdot | x) = N(\mu_\theta(x), \Sigma_{\theta} (x))\]</span></p>
+<span id="more"></span>
+<h2 id="why-parameterize-policy">Why Parameterize Policy?</h2>
+<p>Explicit parameterization of policy allows us to easily choose a continuous action. For example, if the policy is normal distribution defined over actions, we can just sample actions according to this distribution. For value based methods, this can be challenging:</p>
+<ul>
+<li>Even if we know <span class="math inline">\(Q^{*}\)</span>, computing the greedy policy is impossible over continuous action space.</li>
+<li>VI and PI requires repeated calculation of the greedy policy.</li>
+</ul>
+<h2 id="how-can-we-compare-policies">How Can We Compare Policies?</h2>
+<p>The performance can be measured in various ways. In VFA, we have bellman residuals, bellman errors, projected bellman errors and etc (But the ideas are all based on maximizing the expected return). In policy gradient methods, we also maximize the expected return following <span class="math inline">\(\pi_\theta\)</span>, at the same time, we incorporate the variance or some other risk measures.</p>
+<p><strong>Our goal is to find a policy that maximize this performance measure within the space of <span class="math inline">\(\prod_\Theta\)</span>.</strong></p>
+<h3 id="reasonable-choice-of-performance-measure">Reasonable Choice of Performance Measure</h3>
+<p>Assume that we only care about the performance at state <span class="math inline">\(x \in X\)</span> (We only care about one state). Then the goal of policy search:</p>
+<p><span class="math display">\[argmax_{\pi \in \prod_{\Theta}} V^{\pi} (x) = argmax_{\theta \in \Theta} V^{\pi_{\theta}} (x)\]</span></p>
+<p>In this case, we are interested only in state <span class="math inline">\(x\)</span>, its performance, measured according to its expected return, is maximized. We may want to find a policy that is only good at our starting state <span class="math inline">\(x\)</span> and ignore the performance at other states. The obtained policy is going to be initial-state-dependent. If we change <span class="math inline">\(x\)</span> to another state <span class="math inline">\(x^{\prime} \neq x\)</span>, we get a different optimal policy (according to this performance measure).</p>
+<p>Recall that, the optimal value function <span class="math inline">\(V^{*}\)</span> is optimal at every state. The optimal policy <span class="math inline">\(\pi^{*}\)</span> not only maximizes the value function at this particular state <span class="math inline">\(x\)</span>, but also at any other <span class="math inline">\(x^{\prime} \in X\)</span>. So, Instead of this extreme case of considering only the initial state <span class="math inline">\(x\)</span>, we can consider when the initial state is distributed according to some distribution <span class="math inline">\(\rho \sim M(X)\)</span> (This formulation is emphasized in the <a href="/2021/05/03/MDP/" title="MDP">MDP</a> blog, where trajectory starts by sampling from this initial distribution).</p>
+<p>The <strong>performance measure</strong> would be the average of following <span class="math inline">\(\pi_\theta\)</span> over initial state distribution <span class="math inline">\(X_1 \sim \rho\)</span>:</p>
+<p><span class="math display">\[J(\pi_\theta) = J_\rho(\pi_\theta) \triangleq \int_{x_1} V^{\pi_{\theta}} (x_1) d\rho(x_1) = E_{X_1 \sim \rho}[V^{\pi_{\theta}}(X_1)]\]</span></p>
+<p>In this case:</p>
+<ul>
+<li>The optimal policy maximizes <span class="math inline">\(J_\rho\)</span></li>
+<li><span class="math inline">\(J_\rho (\pi^*) \leq J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
+<li>If <span class="math inline">\(\pi^{*} \notin \prod_{\Theta}\)</span>, then <span class="math inline">\(J_\rho (\pi^*) &gt; J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
+</ul>
+<h2 id="goal">Goal</h2>
+<p>So, in policy search methods, we aim to find the policy that maximizes the performance measure within <span class="math inline">\(\prod_{\Theta}\)</span>:</p>
+<p><span class="math display">\[\bar{\pi} = argmax_{\pi_{\theta} \in \prod_{\Theta}} J_{\rho} (\pi_{\theta})\]</span></p>
+<ul>
+<li>The maximizer is denoted as <span class="math inline">\(\bar{\pi}\)</span> because the optimal policy <span class="math inline">\(\pi^{*}\)</span> may not lie in the space of <span class="math inline">\(\prod_{\Theta}\)</span></li>
+<li>For different <span class="math inline">\(\rho\)</span>, we may get different maximizes. However, if <span class="math inline">\(\pi^{*} \in \prod_{\Theta}\)</span>, <span class="math inline">\(\rho\)</span> does not matter.</li>
+<li>To emphasis the dependence of <span class="math inline">\(\bar{\pi}\)</span> on <span class="math inline">\(\rho\)</span>, <span class="math inline">\(\bar{\pi}_{\rho}\)</span> may be used.</li>
+<li>Sometimes, <span class="math inline">\(J(\pi(\theta))\)</span> or <span class="math inline">\(J_{\rho}(\pi_{\theta})\)</span> is denoted as <span class="math inline">\(J_{\rho} (\theta)\)</span> for simplification.</li>
+</ul>
+<h2 id="next-how-can-we-solve-for-barpi_rho">Next: How can we solve for <span class="math inline">\(\bar{\pi}_{\rho}\)</span>?</h2>
 ]]></content>
       <categories>
         <category>RL</category>
@@ -967,62 +1099,6 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </categories>
       <tags>
         <tag>Replay Memory</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Policy Gradient (1)</title>
-    <url>/2021/05/23/policy-gradient/</url>
-    <content><![CDATA[<h1 id="policy-search-methods-introduction">Policy Search Methods (Introduction)</h1>
-<p>So far, we have encountered methods for computing the optimal policy based on the computation of the value function. In this case, only value function was explicitly represented. There are also methods based on explicit representation of the policy and optimizing the performance of the agent by searching in the space of policies. These methods are called <strong>policy search methods</strong>.</p>
-<p>Consider a stochastic policy <span class="math inline">\(\pi_\theta: X \rightarrow M(A)\)</span> that maps state space to distribution defined over actions and parameterized by a <span class="math inline">\(\theta \in \Theta\)</span>. The set <span class="math inline">\(\Theta\)</span> is the parameter space. The space of all parameterized policies can be described as:</p>
-<p><span class="math display">\[\prod_\Theta = \{\pi_\theta: X \rightarrow M(A): \theta \in \Theta\}\]</span></p>
-<p>This space depends on the mapping <span class="math inline">\(\pi_\theta\)</span> and <span class="math inline">\(\Theta\)</span></p>
-<p>One example how we can parameterize policy by softmax distribution. Given a function mapping <span class="math inline">\(f_{\theta}: X \times A \rightarrow \mathbb{R}\)</span>, the probability of choosing action <span class="math inline">\(a\)</span> at state <span class="math inline">\(x\)</span> is:</p>
-<p><span class="math display">\[\pi_{\theta} (a | x) = \frac{exp(f_{\theta} (x, a))}{\sum_{a^{\prime}} exp(f_{\theta} (x, a^{\prime}))}\]</span></p>
-<p>or a normal distribution defined by <span class="math inline">\(\mu_\theta (x), \Sigma_\theta(x)\)</span>:</p>
-<p><span class="math display">\[\pi_{\theta} (\cdot | x) = N(\mu_\theta(x), \Sigma_{\theta} (x))\]</span></p>
-<span id="more"></span>
-<h2 id="why-parameterize-policy">Why Parameterize Policy?</h2>
-<p>Explicit parameterization of policy allows us to easily choose a continuous action. For example, if the policy is normal distribution defined over actions, we can just sample actions according to this distribution. For value based methods, this can be challenging:</p>
-<ul>
-<li>Even if we know <span class="math inline">\(Q^{*}\)</span>, computing the greedy policy is impossible over continuous action space.</li>
-<li>VI and PI requires repeated calculation of the greedy policy.</li>
-</ul>
-<h2 id="how-can-we-compare-policies">How Can We Compare Policies?</h2>
-<p>The performance can be measured in various ways. In VFA, we have bellman residuals, bellman errors, projected bellman errors and etc (But the ideas are all based on maximizing the expected return). In policy gradient methods, we also maximize the expected return following <span class="math inline">\(\pi_\theta\)</span>, at the same time, we incorporate the variance or some other risk measures.</p>
-<p><strong>Our goal is to find a policy that maximize this performance measure within the space of <span class="math inline">\(\prod_\Theta\)</span>.</strong></p>
-<h3 id="reasonable-choice-of-performance-measure">Reasonable Choice of Performance Measure</h3>
-<p>Assume that we only care about the performance at state <span class="math inline">\(x \in X\)</span> (We only care about one state). Then the goal of policy search:</p>
-<p><span class="math display">\[argmax_{\pi \in \prod_{\Theta}} V^{\pi} (x) = argmax_{\theta \in \Theta} V^{\pi_{\theta}} (x)\]</span></p>
-<p>In this case, we are interested only in state <span class="math inline">\(x\)</span>, its performance, measured according to its expected return, is maximized. We may want to find a policy that is only good at our starting state <span class="math inline">\(x\)</span> and ignore the performance at other states. The obtained policy is going to be initial-state-dependent. If we change <span class="math inline">\(x\)</span> to another state <span class="math inline">\(x^{\prime} \neq x\)</span>, we get a different optimal policy (according to this performance measure).</p>
-<p>Recall that, the optimal value function <span class="math inline">\(V^{*}\)</span> is optimal at every state. The optimal policy <span class="math inline">\(\pi^{*}\)</span> not only maximizes the value function at this particular state <span class="math inline">\(x\)</span>, but also at any other <span class="math inline">\(x^{\prime} \in X\)</span>. So, Instead of this extreme case of considering only the initial state <span class="math inline">\(x\)</span>, we can consider when the initial state is distributed according to some distribution <span class="math inline">\(\rho \sim M(X)\)</span> (This formulation is emphasized in the <a href="/2021/05/03/MDP/" title="MDP">MDP</a> blog, where trajectory starts by sampling from this initial distribution).</p>
-<p>The <strong>performance measure</strong> would be the average of following <span class="math inline">\(\pi_\theta\)</span> over initial state distribution <span class="math inline">\(X_1 \sim \rho\)</span>:</p>
-<p><span class="math display">\[J(\pi_\theta) = J_\rho(\pi_\theta) \triangleq \int_{x_1} V^{\pi_{\theta}} (x_1) d\rho(x_1) = E_{X_1 \sim \rho}[V^{\pi_{\theta}}(X_1)]\]</span></p>
-<p>In this case:</p>
-<ul>
-<li>The optimal policy maximizes <span class="math inline">\(J_\rho\)</span></li>
-<li><span class="math inline">\(J_\rho (\pi^*) \leq J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
-<li>If <span class="math inline">\(\pi^{*} \notin \prod_{\Theta}\)</span>, then <span class="math inline">\(J_\rho (\pi^*) &gt; J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
-</ul>
-<h2 id="goal">Goal</h2>
-<p>So, in policy search methods, we aim to find the policy that maximizes the performance measure within <span class="math inline">\(\prod_{\Theta}\)</span>:</p>
-<p><span class="math display">\[\bar{\pi} = argmax_{\pi_{\theta} \in \prod_{\Theta}} J_{\rho} (\pi_{\theta})\]</span></p>
-<ul>
-<li>The maximizer is denoted as <span class="math inline">\(\bar{\pi}\)</span> because the optimal policy <span class="math inline">\(\pi^{*}\)</span> may not lie in the space of <span class="math inline">\(\prod_{\Theta}\)</span></li>
-<li>For different <span class="math inline">\(\rho\)</span>, we may get different maximizes. However, if <span class="math inline">\(\pi^{*} \in \prod_{\Theta}\)</span>, <span class="math inline">\(\rho\)</span> does not matter.</li>
-<li>To emphasis the dependence of <span class="math inline">\(\bar{\pi}\)</span> on <span class="math inline">\(\rho\)</span>, <span class="math inline">\(\bar{\pi}_{\rho}\)</span> may be used.</li>
-<li>Sometimes, <span class="math inline">\(J(\pi(\theta))\)</span> or <span class="math inline">\(J_{\rho}(\pi_{\theta})\)</span> is denoted as <span class="math inline">\(J_{\rho} (\theta)\)</span> for simplification.</li>
-</ul>
-<h2 id="next-how-can-we-solve-for-barpi_rho">Next: How can we solve for <span class="math inline">\(\bar{\pi}_{\rho}\)</span>?</h2>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>PG</category>
-      </categories>
-      <tags>
-        <tag>Policy Gradient</tag>
-        <tag>Continuous Action Space</tag>
-        <tag>RL Basics</tag>
       </tags>
   </entry>
   <entry>
