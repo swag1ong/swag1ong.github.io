@@ -1,7 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>DPG (under construction)</title>
+    <title>Deep Deterministic Policy Gradient</title>
+    <url>/2021/06/09/DDPG/</url>
+    <content><![CDATA[<h1 id="continuous-control-with-deep-reinforcement-learning">Continuous Control with Deep Reinforcement Learning</h1>
+<h2 id="notations">Notations</h2>
+<p>A trajectory is defined as <span class="math inline">\((s_1, a_1, r_1, ...)\)</span></p>
+<p>The initial state distribution: <span class="math inline">\(\rho (s_1)\)</span></p>
+<p>Transition dynamics <span class="math inline">\(p(s_{t+1} | s_t, a_t)\)</span></p>
+<p>Reward function <span class="math inline">\(r(s_t, a_t)\)</span></p>
+<p>The return from a state is defined as the sum of discounted future reward:</p>
+<p><span class="math display">\[R_t = \sum_{i=t}^{T} \gamma^{i - t} r(s_i, a_i)\]</span></p>
+<p>The discounted state distribution following <span class="math inline">\(\pi\)</span> is denoted as <span class="math inline">\(\rho^{\pi}\)</span></p>
+<p>The action-value function:</p>
+<p><span class="math display">\[Q^{\pi} (s_t, a_t) = E_{r_{i \geq t}, s_{i &gt; t} \sim P, a_{i &gt;t} \sim \pi} [R_t | s_t, a_t]\]</span></p>
+<p>And the action-value function can be expanded using bellman equation:</p>
+<p><span class="math display">\[Q^{\pi} (s_t, a_t) = E_{r_{t}, s_{t+1} \sim P} [r(s_t, a_t) + \gamma E_{a_{t+1} \sim \pi (\cdot | s_{t+1})}[Q^{\pi} (s_{t+1}, a_{t+1})] | s_t, a_t]\]</span></p>
+<p>If we have deterministic policy <span class="math inline">\(\mu: S \rightarrow A\)</span>, we can remove the integral over next actions and have:</p>
+<p><span class="math display">\[Q^{\mu} (s_t, a_t) = E_{r_{t}, s_{t+1} \sim P} [r(s_t, a_t) + \gamma Q^{\mu} (s_{t+1}, \mu(s_{t + 1})) | s_t, a_t]\]</span></p>
+<p>This implies that we can learn <span class="math inline">\(Q^{\mu}\)</span> off policy using state samples from another behavior policy <span class="math inline">\(\beta\)</span>.</p>
+<p>The off policy loss for parameterized function approximators <span class="math inline">\(\theta^Q\)</span> Bellman Residual Minimization is:</p>
+<p><span class="math display">\[L(\theta^{Q}) = E_{s_t \sim \rho^\beta. a_t \sim \beta, r_t} [(Q(s_t, a_t | \theta^{Q}) - y_t)^2]\]</span></p>
+<p>where:</p>
+<p><span class="math display">\[y_t = r(s_t, a_t) + \gamma Q(s_{t+1}, \mu(s_{t+1}) | \theta^{Q})\]</span></p>
+<p>The use of large, non-linear function approximators for learning value or action-value functions has often been avoided in the past since theoretical performance guarantees are impossible, and practically learning tends to be unstable.</p>
+<p>The off policy deterministic policy gradient:</p>
+<p><span class="math display">\[\nabla_{\theta^{\mu}} J \approx E_{s_{t} \sim \rho^{\beta}} [\nabla_{a} Q(s, a | \theta^Q) |_{s=s_t, a=\mu(s_t)}\nabla_{\theta_{\mu}} \mu(s | \theta^\mu) |_{s=s_t}]\]</span></p>
+<p>As with Q learning, introducing non-linear function approximators means that convergence is no longer guaranteed for off-policy deterministic policy gradient.</p>
+<h2 id="algorithm">Algorithm</h2>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>PG</category>
+      </categories>
+      <tags>
+        <tag>Policy Gradient</tag>
+        <tag>Continuous Action Space</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DDQN</title>
+    <url>/2021/05/07/DDQN/</url>
+    <content><![CDATA[<h1 id="deep-reinforcement-learning-with-double-q-learning"><a href="https://arxiv.org/abs/1509.06461">Deep Reinforcement Learning with Double Q-Learning</a></h1>
+<h2 id="introduction">Introduction</h2>
+<p>The authors show that the double Q-learning algorithm which was first proposed in a tabular setting, can be generalized to arbitrary function approximation, including DNN. They use this to construct a new algorithm called double DQN to solve the overestimation problem in DQN.</p>
+<h2 id="notations">Notations</h2>
+<p>Define:</p>
+<p><span class="math display">\[Q_{\pi} (s, a) = E[R_1 + \gamma R_2 + ... | S_0=s, A_0=a, \pi]\]</span></p>
+<p><span class="math display">\[Q_{*} (s, a) = max_{\pi} Q_{\pi} (s, a)\]</span></p>
+<p><span class="math display">\[\pi_{*} (s) = argmax_{a \in A} Q_{*} (s, a)\]</span></p>
+<p>The Target:</p>
+<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma max_{a} Q(S_{t+1}, a; \theta_{t})\]</span></p>
+<p>A standard Q update using stochastic gradient decent is (Semi-gradient Q):</p>
+<p><span class="math display">\[\theta_{t+1} = \theta_t + \alpha (Y_{t}^{Q} - Q(S_t, A_t; \theta_t)) \nabla_{\theta_t} Q(S_t, A_t; \theta_t)\]</span></p>
+<p>Where <span class="math inline">\(\alpha\)</span> is a scalar step size.</p>
+<span id="more"></span>
+<h2 id="background">Background</h2>
+<h3 id="double-q-learning">Double Q-learning</h3>
+<p>The max operator in standard Q-learning and DQN uses the same values both to select and to evaluate an action (ie. same Q is used to select the max action and use the value of this max action to update the Value of the state action pair). This makes it more likely to select overestimated values, resulting in overoptimistic value estimates.</p>
+<p>In Double Q-learning, two value functions are learned by assigning experiences randomly to update one of the two value functions, resulting in two sets of weights, <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\theta^{\prime}\)</span>. For each update, one set of weights is used to determine the greedy action, and the other to determine its value.</p>
+<p>Previous Q target:</p>
+<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta_{t}})\]</span></p>
+<p>The double Q-learning target:</p>
+<p><span class="math display">\[Y_t^{\text{DoubleQ}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta^{\prime}_{t}})\]</span></p>
+<h3 id="maximization-problem">Maximization Problem</h3>
+<p><img src='/images/RL/papers/DDQN_1.png'></p>
+<p>This theorem shows that even if the value estimates are on average correct, estimation errors of any source can drive the estimates up and away from the true optimal values.</p>
+<p>The lower bound in Theorem 1 decreases with the number of actions. This is an artifact of considering the lower bound, which requires very specific values to be attained. More typically, the overoptimism increases with the number of actions.</p>
+<p><img src='/images/RL/papers/DDQN_2.png'></p>
+<p><span class="math display">\[E[Q(s, a) - V_{*}(s)] = E[V_{*}(s) - V_{*}(s) + \epsilon ] = 0\]</span></p>
+<p>But, Q-learning updates have large bias due to max operation, the phenomena is severer as number of actions increases.</p>
+<p>In function approximation setting:</p>
+<p><img src='/images/RL/papers/DDQN_3.png'></p>
+<h2 id="algorithm">Algorithm</h2>
+<p>The target network in the DQN architecture provides a natural candidate for the second value function, without having to introduce additional networks. Thus, we can evaluate the greedy policy according to the online network, but using the target network to estimate its value. The resulting update:</p>
+<p><span class="math display">\[Y_t^{\text{DoubleDQN}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a} Q(S_{t+1}, a; \theta_{t}), \theta_{t}^{-})\]</span></p>
+<h2 id="implementation">Implementation</h2>
+<p>This is an implementation of DDQN in PARL. This implementation is written using PaddlePaddle.</p>
+<p>https://github.com/PaddlePaddle/PARL</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></span><br><span class="line"><span class="comment"># you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"># You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> copy</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"><span class="keyword">import</span> paddle</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DQN</span>(<span class="params">parl.Algorithm</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, model, gamma=<span class="literal">None</span>, lr=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; DQN algorithm</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            model (parl.Model): forward neural network representing the Q function.</span></span><br><span class="line"><span class="string">            gamma (float): discounted factor for `accumulative` reward computation</span></span><br><span class="line"><span class="string">            lr (float): learning rate.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.model = model</span><br><span class="line">        self.target_model = copy.deepcopy(model)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(gamma, <span class="built_in">float</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(lr, <span class="built_in">float</span>)</span><br><span class="line">        self.gamma = gamma</span><br><span class="line">        self.lr = lr</span><br><span class="line"></span><br><span class="line">        self.mse_loss = paddle.nn.MSELoss(reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line">        self.optimizer = paddle.optimizer.Adam(</span><br><span class="line">            learning_rate=lr, parameters=self.model.parameters())</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; use self.model (Q function) to predict the action values</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.model.value(obs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self, obs, action, reward, next_obs, terminal</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; update the Q function (self.model) with DQN algorithm</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># Q</span></span><br><span class="line">        pred_values = self.model.value(obs)</span><br><span class="line">        action_dim = pred_values.shape[-<span class="number">1</span>]</span><br><span class="line">        action = paddle.squeeze(action, axis=-<span class="number">1</span>)</span><br><span class="line">        action_onehot = paddle.nn.functional.one_hot(</span><br><span class="line">            action, num_classes=action_dim)</span><br><span class="line">        pred_value = paddle.multiply(pred_values, action_onehot)</span><br><span class="line">        pred_value = paddle.<span class="built_in">sum</span>(pred_value, axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># target Q</span></span><br><span class="line">        <span class="keyword">with</span> paddle.no_grad():</span><br><span class="line">            greedy_actions = self.model.value(next_obs).argmax(<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">            max_v = self.target_model.value(next_obs).gather(index=greedy_actions, axis=<span class="number">1</span>)</span><br><span class="line">            target = reward + (<span class="number">1</span> - terminal) * self.gamma * max_v</span><br><span class="line"></span><br><span class="line">        loss = self.mse_loss(pred_value, target)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># optimize</span></span><br><span class="line">        self.optimizer.clear_grad()</span><br><span class="line">        loss.backward()</span><br><span class="line">        self.optimizer.step()</span><br><span class="line">        <span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sync_target</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.model.sync_weights_to(self.target_model)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Continuous State Space</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Deterministic Policy Gradient</title>
     <url>/2021/05/06/DPG/</url>
     <content><![CDATA[<h1 id="deterministic-policy-gradient-algorithms">Deterministic Policy Gradient Algorithms</h1>
 <h2 id="introduction">Introduction</h2>
@@ -146,57 +235,6 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
       <tags>
         <tag>Policy Gradient</tag>
         <tag>Continuous Action Space</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>DDQN</title>
-    <url>/2021/05/07/DDQN/</url>
-    <content><![CDATA[<h1 id="deep-reinforcement-learning-with-double-q-learning"><a href="https://arxiv.org/abs/1509.06461">Deep Reinforcement Learning with Double Q-Learning</a></h1>
-<h2 id="introduction">Introduction</h2>
-<p>The authors show that the double Q-learning algorithm which was first proposed in a tabular setting, can be generalized to arbitrary function approximation, including DNN. They use this to construct a new algorithm called double DQN to solve the overestimation problem in DQN.</p>
-<h2 id="notations">Notations</h2>
-<p>Define:</p>
-<p><span class="math display">\[Q_{\pi} (s, a) = E[R_1 + \gamma R_2 + ... | S_0=s, A_0=a, \pi]\]</span></p>
-<p><span class="math display">\[Q_{*} (s, a) = max_{\pi} Q_{\pi} (s, a)\]</span></p>
-<p><span class="math display">\[\pi_{*} (s) = argmax_{a \in A} Q_{*} (s, a)\]</span></p>
-<p>The Target:</p>
-<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma max_{a} Q(S_{t+1}, a; \theta_{t})\]</span></p>
-<p>A standard Q update using stochastic gradient decent is (Semi-gradient Q):</p>
-<p><span class="math display">\[\theta_{t+1} = \theta_t + \alpha (Y_{t}^{Q} - Q(S_t, A_t; \theta_t)) \nabla_{\theta_t} Q(S_t, A_t; \theta_t)\]</span></p>
-<p>Where <span class="math inline">\(\alpha\)</span> is a scalar step size.</p>
-<span id="more"></span>
-<h2 id="background">Background</h2>
-<h3 id="double-q-learning">Double Q-learning</h3>
-<p>The max operator in standard Q-learning and DQN uses the same values both to select and to evaluate an action (ie. same Q is used to select the max action and use the value of this max action to update the Value of the state action pair). This makes it more likely to select overestimated values, resulting in overoptimistic value estimates.</p>
-<p>In Double Q-learning, two value functions are learned by assigning experiences randomly to update one of the two value functions, resulting in two sets of weights, <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\theta^{\prime}\)</span>. For each update, one set of weights is used to determine the greedy action, and the other to determine its value.</p>
-<p>Previous Q target:</p>
-<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta_{t}})\]</span></p>
-<p>The double Q-learning target:</p>
-<p><span class="math display">\[Y_t^{\text{DoubleQ}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta^{\prime}_{t}})\]</span></p>
-<h3 id="maximization-problem">Maximization Problem</h3>
-<p><img src='/images/RL/papers/DDQN_1.png'></p>
-<p>This theorem shows that even if the value estimates are on average correct, estimation errors of any source can drive the estimates up and away from the true optimal values.</p>
-<p>The lower bound in Theorem 1 decreases with the number of actions. This is an artifact of considering the lower bound, which requires very specific values to be attained. More typically, the overoptimism increases with the number of actions.</p>
-<p><img src='/images/RL/papers/DDQN_2.png'></p>
-<p><span class="math display">\[E[Q(s, a) - V_{*}(s)] = E[V_{*}(s) - V_{*}(s) + \epsilon ] = 0\]</span></p>
-<p>But, Q-learning updates have large bias due to max operation, the phenomena is severer as number of actions increases.</p>
-<p>In function approximation setting:</p>
-<p><img src='/images/RL/papers/DDQN_3.png'></p>
-<h2 id="algorithm">Algorithm</h2>
-<p>The target network in the DQN architecture provides a natural candidate for the second value function, without having to introduce additional networks. Thus, we can evaluate the greedy policy according to the online network, but using the target network to estimate its value. The resulting update:</p>
-<p><span class="math display">\[Y_t^{\text{DoubleDQN}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a} Q(S_{t+1}, a; \theta_{t}), \theta_{t}^{-})\]</span></p>
-<h2 id="implementation">Implementation</h2>
-<p>This is an implementation of DDQN in PARL. This implementation is written using PaddlePaddle.</p>
-<p>https://github.com/PaddlePaddle/PARL</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></span><br><span class="line"><span class="comment"># you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"># You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> copy</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"><span class="keyword">import</span> paddle</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DQN</span>(<span class="params">parl.Algorithm</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, model, gamma=<span class="literal">None</span>, lr=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; DQN algorithm</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            model (parl.Model): forward neural network representing the Q function.</span></span><br><span class="line"><span class="string">            gamma (float): discounted factor for `accumulative` reward computation</span></span><br><span class="line"><span class="string">            lr (float): learning rate.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.model = model</span><br><span class="line">        self.target_model = copy.deepcopy(model)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(gamma, <span class="built_in">float</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(lr, <span class="built_in">float</span>)</span><br><span class="line">        self.gamma = gamma</span><br><span class="line">        self.lr = lr</span><br><span class="line"></span><br><span class="line">        self.mse_loss = paddle.nn.MSELoss(reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line">        self.optimizer = paddle.optimizer.Adam(</span><br><span class="line">            learning_rate=lr, parameters=self.model.parameters())</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; use self.model (Q function) to predict the action values</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.model.value(obs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self, obs, action, reward, next_obs, terminal</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; update the Q function (self.model) with DQN algorithm</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># Q</span></span><br><span class="line">        pred_values = self.model.value(obs)</span><br><span class="line">        action_dim = pred_values.shape[-<span class="number">1</span>]</span><br><span class="line">        action = paddle.squeeze(action, axis=-<span class="number">1</span>)</span><br><span class="line">        action_onehot = paddle.nn.functional.one_hot(</span><br><span class="line">            action, num_classes=action_dim)</span><br><span class="line">        pred_value = paddle.multiply(pred_values, action_onehot)</span><br><span class="line">        pred_value = paddle.<span class="built_in">sum</span>(pred_value, axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># target Q</span></span><br><span class="line">        <span class="keyword">with</span> paddle.no_grad():</span><br><span class="line">            greedy_actions = self.model.value(next_obs).argmax(<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">            max_v = self.target_model.value(next_obs).gather(index=greedy_actions, axis=<span class="number">1</span>)</span><br><span class="line">            target = reward + (<span class="number">1</span> - terminal) * self.gamma * max_v</span><br><span class="line"></span><br><span class="line">        loss = self.mse_loss(pred_value, target)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># optimize</span></span><br><span class="line">        self.optimizer.clear_grad()</span><br><span class="line">        loss.backward()</span><br><span class="line">        self.optimizer.step()</span><br><span class="line">        <span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sync_target</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.model.sync_weights_to(self.target_model)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>VFA</category>
-      </categories>
-      <tags>
-        <tag>Function Approximation</tag>
-        <tag>Continuous State Space</tag>
       </tags>
   </entry>
   <entry>
@@ -348,23 +386,6 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
     <url>/2021/05/30/average-reward-setting/</url>
     <content><![CDATA[
 ]]></content>
-  </entry>
-  <entry>
-    <title>RL Cheat Sheet (under construction)</title>
-    <url>/2021/05/18/cheat-sheet/</url>
-    <content><![CDATA[<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
-<p><span class="math display">\[V^{*} (s) = max_{a} Q^{*} (s, a)\]</span></p>
-<p><span class="math display">\[Q^{*} (s, a) = max_{\pi} Q^{\pi} (s, a), \forall (s, a) \in S X A\]</span></p>
-<p><span class="math display">\[V^{\pi} (s) = E_{a_t \sim pi(\cdot | s)}[R_t | s_t=s, \pi] = E_{a_t \sim pi(\cdot | s)}[E[R_t | s_t, a_t, \pi] | s_t=s] = E_{a_t \sim pi(\cdot | s)}[ Q^{\pi}(s, a_t)]\]</span></p>
-<p><span class="math display">\[A^{\pi} (s, a) = Q^{\pi} (s, a) - V^{\pi} (s)\]</span></p>
-<p><span class="math display">\[E_{a^{\prime}}[A^{\pi} (s, a) | s] = E_{a^{\prime}}[Q^{\pi} (s, a) | s] - V^{\pi} (s) = 0\]</span></p>
-]]></content>
-      <categories>
-        <category>RL</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-      </tags>
   </entry>
   <entry>
     <title>Batch Normalization</title>
@@ -655,6 +676,23 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
+    <title>RL Cheat Sheet (under construction)</title>
+    <url>/2021/05/18/cheat-sheet/</url>
+    <content><![CDATA[<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
+<p><span class="math display">\[V^{*} (s) = max_{a} Q^{*} (s, a)\]</span></p>
+<p><span class="math display">\[Q^{*} (s, a) = max_{\pi} Q^{\pi} (s, a), \forall (s, a) \in S X A\]</span></p>
+<p><span class="math display">\[V^{\pi} (s) = E_{a_t \sim pi(\cdot | s)}[R_t | s_t=s, \pi] = E_{a_t \sim pi(\cdot | s)}[E[R_t | s_t, a_t, \pi] | s_t=s] = E_{a_t \sim pi(\cdot | s)}[ Q^{\pi}(s, a_t)]\]</span></p>
+<p><span class="math display">\[A^{\pi} (s, a) = Q^{\pi} (s, a) - V^{\pi} (s)\]</span></p>
+<p><span class="math display">\[E_{a^{\prime}}[A^{\pi} (s, a) | s] = E_{a^{\prime}}[Q^{\pi} (s, a) | s] - V^{\pi} (s) = 0\]</span></p>
+]]></content>
+      <categories>
+        <category>RL</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Dropout</title>
     <url>/2021/05/25/drop-out/</url>
     <content><![CDATA[<h1 id="dropout-a-simple-way-to-prevent-neural-networks-from-overfitting">Dropout: A Simple Way to Prevent Neural Networks from Overfitting</h1>
@@ -704,6 +742,14 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
         <tag>Deep Learning</tag>
         <tag>Regularization</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>importance_sampling (under construction)</title>
+    <url>/2021/05/21/importance-sampling/</url>
+    <content><![CDATA[<h1 id="importance-sampling">Importance Sampling</h1>
+<h1 id="ref">Ref</h1>
+<p>https://www.quora.com/Why-doesn-t-DQN-use-importance-sampling-Dont-we-always-use-this-method-to-correct-the-sampling-error-produced-by-the-off-policy https://danieltakeshi.github.io/2019/01/25/deep-learning-01/</p>
+]]></content>
   </entry>
   <entry>
     <title>Layer Normalization</title>
@@ -757,17 +803,9 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </tags>
   </entry>
   <entry>
-    <title>importance_sampling (under construction)</title>
-    <url>/2021/05/21/importance-sampling/</url>
-    <content><![CDATA[<h1 id="importance-sampling">Importance Sampling</h1>
-<h1 id="ref">Ref</h1>
-<p>https://www.quora.com/Why-doesn-t-DQN-use-importance-sampling-Dont-we-always-use-this-method-to-correct-the-sampling-error-produced-by-the-off-policy https://danieltakeshi.github.io/2019/01/25/deep-learning-01/</p>
-]]></content>
-  </entry>
-  <entry>
     <title>Leet Code (2)</title>
     <url>/2021/06/05/leet-code-2/</url>
-    <content><![CDATA[<p><strong>题目库: <code>[242， 205, 215, 347]</code></strong></p>
+    <content><![CDATA[<p><strong>题目库: <code>[242， 205, 215, 347, 349, 148]</code></strong></p>
 <h1 id="strings">Strings</h1>
 <h2 id="easy">242 Easy</h2>
 <p>先排序再比较就行，或者我们可以统计每个字母出现次数，关键是要明白字符数量不同就不相同</p>
@@ -777,10 +815,16 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
 <h2 id="medium">215 Medium</h2>
 <p><img src="/images/leetcode/215.png" width="600"></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution_1</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findKthLargest</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>], k: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        <span class="comment"># selection sort</span></span><br><span class="line">        n = <span class="built_in">len</span>(nums)</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">find_max</span>(<span class="params">start</span>):</span></span><br><span class="line">            max_num = nums[start]</span><br><span class="line">            idx = start</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(start + <span class="number">1</span>, n):</span><br><span class="line">                <span class="keyword">if</span> max_num &lt; nums[i]:</span><br><span class="line">                    max_num = nums[i]</span><br><span class="line">                    idx = i</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> idx</span><br><span class="line"></span><br><span class="line">        j = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> j &lt; k:</span><br><span class="line">            max_idx = find_max(j)</span><br><span class="line">            val = nums[j]</span><br><span class="line">            nums[j] = nums[max_idx]</span><br><span class="line">            nums[max_idx] = val</span><br><span class="line"></span><br><span class="line">            j += <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> nums[j - <span class="number">1</span>]</span><br><span class="line">    </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution_2</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findKthLargest</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>], k: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">partition</span>(<span class="params">nums, l, r</span>):</span></span><br><span class="line">            first_small = l</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(l, r):</span><br><span class="line">                <span class="keyword">if</span> nums[j] &gt; nums[r]:</span><br><span class="line">                    swap(nums, first_small, j)</span><br><span class="line">                    first_small += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">            swap(nums, first_small, r)</span><br><span class="line">            <span class="keyword">return</span> first_small</span><br><span class="line">        </span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">swap</span>(<span class="params">nums, i, j</span>):</span></span><br><span class="line">            temp = nums[i]</span><br><span class="line">            nums[i] = nums[j]</span><br><span class="line">            nums[j] = temp</span><br><span class="line"></span><br><span class="line">        <span class="keyword">import</span> random</span><br><span class="line">        random.shuffle(nums)</span><br><span class="line">        <span class="comment"># random shuffle 不然quick selection会慢</span></span><br><span class="line">        l, r = <span class="number">0</span>, <span class="built_in">len</span>(nums) - <span class="number">1</span></span><br><span class="line">        k = k - <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> l &lt; r:</span><br><span class="line">            q = partition(nums, l, r)</span><br><span class="line">            <span class="keyword">if</span> q == k:</span><br><span class="line">                <span class="keyword">return</span> nums[q]</span><br><span class="line">            <span class="keyword">elif</span> q &gt; k: </span><br><span class="line">                r = q - <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                l = q + <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> nums[l]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="section">347</h2>
+<h2 id="medium-1">347 Medium</h2>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">topKFrequent</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>], k: <span class="built_in">int</span></span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span></span><br><span class="line">        freq_dict = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> nums:</span><br><span class="line">            <span class="keyword">if</span> i <span class="keyword">in</span> freq_dict.keys():</span><br><span class="line">                freq_dict[i] += <span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                freq_dict[i] = <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        nums = []</span><br><span class="line">        <span class="keyword">for</span> i, v <span class="keyword">in</span> freq_dict.items():</span><br><span class="line">            nums.append((v, i))</span><br><span class="line"></span><br><span class="line">        nums.sort(key=<span class="keyword">lambda</span> x: x[<span class="number">0</span>], reverse=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        out = []</span><br><span class="line">        <span class="keyword">for</span> counts, idx <span class="keyword">in</span> nums:</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(out) == k:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            out.append(idx)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> out</span><br></pre></td></tr></table></figure>
+<h2 id="easy-2">349 Easy</h2>
+<p>大刀看蚂蚁</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">intersection</span>(<span class="params">self, nums1: <span class="type">List</span>[<span class="built_in">int</span>], nums2: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span></span><br><span class="line">        <span class="comment"># merge sort</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">merge_sort</span>(<span class="params">nums</span>):</span></span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(nums) &lt;= <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">return</span> nums</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                mid = <span class="built_in">len</span>(nums) // <span class="number">2</span></span><br><span class="line">                left_lst = merge_sort(nums[:mid])</span><br><span class="line">                right_lst = merge_sort(nums[mid:])</span><br><span class="line">                out_lst = []</span><br><span class="line">                <span class="keyword">while</span> left_lst <span class="keyword">or</span> right_lst:</span><br><span class="line">                    <span class="keyword">if</span> <span class="keyword">not</span> left_lst:</span><br><span class="line">                        out_lst.extend(right_lst)</span><br><span class="line">                        <span class="keyword">break</span></span><br><span class="line">                    <span class="keyword">elif</span> <span class="keyword">not</span> right_lst:</span><br><span class="line">                        out_lst.extend(left_lst)</span><br><span class="line">                        <span class="keyword">break</span></span><br><span class="line">                    <span class="keyword">elif</span> left_lst[<span class="number">0</span>] &gt; right_lst[<span class="number">0</span>]:</span><br><span class="line">                        out_lst.append(right_lst.pop(<span class="number">0</span>))</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        out_lst.append(left_lst.pop(<span class="number">0</span>))</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">return</span> out_lst</span><br><span class="line">        <span class="comment"># binary search</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">binary_search</span>(<span class="params">sort_lst, target_lst</span>):</span></span><br><span class="line">            out_lst = []</span><br><span class="line">            <span class="keyword">for</span> target <span class="keyword">in</span> target_lst:</span><br><span class="line">                l, r = <span class="number">0</span>, <span class="built_in">len</span>(sort_lst) - <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> target <span class="keyword">not</span> <span class="keyword">in</span> out_lst:</span><br><span class="line">                    <span class="keyword">while</span> l &lt;= r:</span><br><span class="line">                        mid = l + (r - l) // <span class="number">2</span></span><br><span class="line">                        <span class="keyword">if</span> target == sort_lst[mid]:</span><br><span class="line">                            out_lst.append(target)</span><br><span class="line">                            <span class="keyword">break</span></span><br><span class="line">                        <span class="keyword">elif</span> sort_lst[mid] &gt; target:</span><br><span class="line">                            r = mid - <span class="number">1</span></span><br><span class="line">                        <span class="keyword">else</span>:</span><br><span class="line">                            l = mid + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> out_lst</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        nums2 = merge_sort(nums2)</span><br><span class="line">        <span class="keyword">return</span> binary_search(nums2, nums1)</span><br></pre></td></tr></table></figure>
+<h2 id="medium-2">148 Medium</h2>
+<p>十分丑陋的merge sort</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"># class ListNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, next=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.next = next</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sortList</span>(<span class="params">self, head: ListNode</span>) -&gt; ListNode:</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">traverse</span>(<span class="params">lst, t</span>):</span></span><br><span class="line">            <span class="keyword">if</span> t == <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span>, lst</span><br><span class="line"></span><br><span class="line">            curr_node = lst</span><br><span class="line">            <span class="keyword">while</span> t &gt; <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">if</span> t == <span class="number">1</span>:</span><br><span class="line">                    right = curr_node.<span class="built_in">next</span></span><br><span class="line">                    curr_node.<span class="built_in">next</span> = <span class="literal">None</span></span><br><span class="line">                </span><br><span class="line">                curr_node = curr_node.<span class="built_in">next</span></span><br><span class="line">                t -= <span class="number">1</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> lst, right</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">merge_sort</span>(<span class="params">lst, length</span>):</span></span><br><span class="line">            <span class="keyword">if</span> length &lt;= <span class="number">1</span> :</span><br><span class="line">                <span class="keyword">return</span> lst</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                mid = length // <span class="number">2</span></span><br><span class="line">                left, right = traverse(lst, mid)</span><br><span class="line">                left_lst = merge_sort(left, mid)</span><br><span class="line">                right_lst = merge_sort(right, length - mid)</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> left_lst:</span><br><span class="line">                    <span class="keyword">return</span> right_lst</span><br><span class="line">                <span class="keyword">elif</span> <span class="keyword">not</span> right_lst:</span><br><span class="line">                    <span class="keyword">return</span> left_lst</span><br><span class="line">                <span class="keyword">elif</span> left_lst.val &gt; right_lst.val:</span><br><span class="line">                    out_lst = right_lst</span><br><span class="line">                    curr_out_node = right_lst</span><br><span class="line">                    right_lst = right_lst.<span class="built_in">next</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    out_lst = left_lst</span><br><span class="line">                    curr_out_node = left_lst</span><br><span class="line">                    left_lst = left_lst.<span class="built_in">next</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">                    <span class="keyword">if</span> <span class="keyword">not</span> left_lst:</span><br><span class="line">                        curr_out_node.<span class="built_in">next</span> = right_lst</span><br><span class="line">                        <span class="keyword">break</span></span><br><span class="line">                    <span class="keyword">elif</span> <span class="keyword">not</span> right_lst:</span><br><span class="line">                        curr_out_node.<span class="built_in">next</span> = left_lst</span><br><span class="line">                        <span class="keyword">break</span></span><br><span class="line">                    <span class="keyword">elif</span> left_lst.val &gt; right_lst.val:</span><br><span class="line">                        curr_out_node.<span class="built_in">next</span> = right_lst</span><br><span class="line">                        right_lst = right_lst.<span class="built_in">next</span></span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        curr_out_node.<span class="built_in">next</span> = left_lst</span><br><span class="line">                        left_lst = left_lst.<span class="built_in">next</span></span><br><span class="line">                    </span><br><span class="line">                    curr_out_node = curr_out_node.<span class="built_in">next</span></span><br><span class="line">                </span><br><span class="line">                <span class="keyword">return</span> out_lst</span><br><span class="line"></span><br><span class="line">        length = <span class="number">0</span></span><br><span class="line">        curr_pos = head</span><br><span class="line">        <span class="keyword">while</span> curr_pos:</span><br><span class="line">            curr_pos = curr_pos.<span class="built_in">next</span></span><br><span class="line">            length += <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> merge_sort(head, length)</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h1 id="dp">DP</h1>
-<h2 id="medium-1">647 Medium</h2>
+<h2 id="medium-3">647 Medium</h2>
 ]]></content>
       <categories>
         <category>Others</category>
