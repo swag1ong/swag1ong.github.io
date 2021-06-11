@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://example.com/images/algo/complex.png">
 <meta property="og:image" content="http://example.com/images/algo/insertion_sort.png">
 <meta property="article:published_time" content="2021-06-06T02:20:21.000Z">
-<meta property="article:modified_time" content="2021-06-08T06:09:57.748Z">
+<meta property="article:modified_time" content="2021-06-10T15:29:52.523Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta property="article:tag" content="Data Structures">
 <meta name="twitter:card" content="summary">
@@ -166,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-count">36</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -260,7 +260,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-08 14:09:57" itemprop="dateModified" datetime="2021-06-08T14:09:57+08:00">2021-06-08</time>
+        <time title="Modified: 2021-06-10 23:29:52" itemprop="dateModified" datetime="2021-06-10T23:29:52+08:00">2021-06-10</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -330,6 +330,7 @@
 <li>When one of the lists is empty, append all elements of the other list to the result.</li>
 </ol>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge_sort</span>(<span class="params">lst</span>):</span></span><br><span class="line">    <span class="comment"># base case</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(lst) == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> lst</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        sorted_lst = []</span><br><span class="line">        mid = <span class="built_in">len</span>(lst) // <span class="number">2</span></span><br><span class="line">        left_lst = merge_sort(lst[:mid])</span><br><span class="line">        right_lst = merge_sort(lst[mid:])</span><br><span class="line">        <span class="comment"># left_lst and right_lst will return two sorted lists, so we need to merge them</span></span><br><span class="line">        <span class="comment"># if left_lst[0] &gt; right_lst[0], we remove first element from right_lst and append to </span></span><br><span class="line">        <span class="comment"># the sorted_lst, if one of the lst is empty, we extend the another list to sorted_lst and exist the loop</span></span><br><span class="line">        <span class="keyword">while</span> left_lst <span class="keyword">or</span> right_lst:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> left_lst <span class="keyword">or</span> <span class="keyword">not</span> right_lst:</span><br><span class="line">                sorted_lst.extend(left_lst)</span><br><span class="line">                sorted_lst.extend(right_lst)</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">elif</span> left_lst[<span class="number">0</span>] &gt; right_lst[<span class="number">0</span>]:</span><br><span class="line">                sorted_lst.append(right_lst.pop(<span class="number">0</span>))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                sorted_lst.append(left_lst.pop(<span class="number">0</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> sorted_lst</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<span id="more"></span>
 <h2 id="bubble-sort">Bubble Sort</h2>
 <p>Bubble sort is a simple, inefficient sorting algorithm used to sort lists. The Bubble sort algorithm compares each pair of elements in an array and swaps them if they are out of order until the entire array is sorted. For each element in the list, the algorithm compares every pair of elements.</p>
 <p>The bubble sort algorithm is as follows:</p>
@@ -426,13 +427,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">147k</span>
+    <span title="Symbols count total">152k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">2:14</span>
+    <span title="Reading time total">2:18</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

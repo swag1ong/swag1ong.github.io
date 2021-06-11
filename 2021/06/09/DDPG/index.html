@@ -27,12 +27,14 @@
 <meta property="og:site_name" content="GoGoGogo!">
 <meta property="og:description" content="Continuous Control with Deep Reinforcement Learning Notations A trajectory is defined as \((s_1, a_1, r_1, ...)\) The initial state distribution: \(\rho (s_1)\) Transition dynamics \(p(s_{t+1} | s_t,">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/RL/pg/ddpg_1">
 <meta property="article:published_time" content="2021-06-09T03:13:00.000Z">
-<meta property="article:modified_time" content="2021-06-09T11:15:33.989Z">
+<meta property="article:modified_time" content="2021-06-10T09:43:00.378Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta property="article:tag" content="Policy Gradient">
 <meta property="article:tag" content="Continuous Action Space">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/RL/pg/ddpg_1">
 
 
 <link rel="canonical" href="http://example.com/2021/06/09/DDPG/">
@@ -164,7 +166,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-count">36</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -250,10 +252,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-06-09 11:13:00 / Modified: 19:15:33" itemprop="dateCreated datePublished" datetime="2021-06-09T11:13:00+08:00">2021-06-09</time>
+      <time title="Created: 2021-06-09 11:13:00" itemprop="dateCreated datePublished" datetime="2021-06-09T11:13:00+08:00">2021-06-09</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-10 17:43:00" itemprop="dateModified" datetime="2021-06-10T17:43:00+08:00">2021-06-10</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -276,14 +284,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>1.8k</span>
+      <span>5.3k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
+      <span>5 mins.</span>
     </span>
 </div>
 
@@ -318,7 +326,51 @@
 <p>The off policy deterministic policy gradient:</p>
 <p><span class="math display">\[\nabla_{\theta^{\mu}} J \approx E_{s_{t} \sim \rho^{\beta}} [\nabla_{a} Q(s, a | \theta^Q) |_{s=s_t, a=\mu(s_t)}\nabla_{\theta_{\mu}} \mu(s | \theta^\mu) |_{s=s_t}]\]</span></p>
 <p>As with Q learning, introducing non-linear function approximators means that convergence is no longer guaranteed for off-policy deterministic policy gradient.</p>
+<span id="more"></span>
 <h2 id="algorithm">Algorithm</h2>
+<p><img src="/images/RL/pg/ddpg_1" width="600"></p>
+<ol type="1">
+<li>Initialize:
+<ol type="a">
+<li>the weights <span class="math inline">\(\theta^Q\)</span> for critic network <span class="math inline">\(Q\)</span> and <span class="math inline">\(\theta^\mu\)</span> for actor network <span class="math inline">\(\mu\)</span></li>
+<li>the weights <span class="math inline">\(\theta^{Q^{\prime}} \leftarrow \theta^{Q}\)</span> for target critic <span class="math inline">\(Q^{\prime}\)</span> and <span class="math inline">\(\theta^{\mu^{\prime}} \leftarrow \theta^{\mu}\)</span> for target actor <span class="math inline">\(\mu^{\prime}\)</span></li>
+<li>the replay buffer <span class="math inline">\(R\)</span></li>
+</ol></li>
+<li>For each episode:
+<ol type="a">
+<li><p>Initialize a random process <span class="math inline">\(\mathcal{N}_1, ....,\)</span> for exploration</p></li>
+<li><p>Observe initial state <span class="math inline">\(s_1 \sim \rho^{\mu^{\beta}} \;\;\;\;\;\;\;\;\;\;\;\)</span> (remember we are learning off-policy)</p></li>
+<li><p>For each timestep <span class="math inline">\(t = 1, ..., T\)</span> in the episode:</p>
+<p><span style="color:red"><em>Data generation</em></span></p>
+<ul>
+<li><span class="math inline">\(a_t = \mu^{\beta} (s_t) = \mu (s_t | \theta^{\mu}) + \mathcal{N}_t \;\;\;\;\;\;\;\;\;\;\;\)</span> (actions is selected with some noise)</li>
+<li>Observe <span class="math inline">\(s_{t+1}, r_t\)</span> by following <span class="math inline">\(a_t\)</span></li>
+<li>Store <span class="math inline">\((s_t, a_t, r_t, s_{t+1})\)</span> in <span class="math inline">\(R \;\;\;\;\;\;\;\;\;\;\;\)</span> (for batch learning)</li>
+</ul>
+<p><span style="color:red"><em>Now we evaluate <span class="math inline">\(Q^{\mu_{\theta}}\)</span> and update <span class="math inline">\(\theta^{\mu}, \theta^{Q}\)</span></em></span></p>
+<ul>
+<li><p>Sample a random minibatch of <span class="math inline">\(N\)</span> transitions <span class="math inline">\((s_i, a_i, r_i, s_{i+1}) \;\;\;\;\;\;\;\;\;\;\;\)</span> (for batch learning)</p></li>
+<li><p>Calculate <span class="math inline">\(y_i = r_i + \gamma Q^{\prime} (s_{i+1}, \mu^{\prime} (s_{i+1}))\;\;\;\;\;\;\;\;\;\;\;\)</span> (<span class="math inline">\(\hat{T}^{\mu^{\prime}} Q^{\prime}\)</span>)</p></li>
+<li><p>Update critic by minimizing the loss <span class="math inline">\(L = \frac{1}{N} \sum_{i} (Q(s_i, a_i) - y_i)^2 \;\;\;\;\;\;\;\;\;\;\;\)</span> (update for several times, to have a better estimate of <span class="math inline">\(\hat{T}^{\mu^{\prime}} Q^{\prime}\)</span>)</p></li>
+<li><p>Update the actor policy using the sampled policy gradient:</p>
+<p><span class="math display">\[\frac{1}{N} \sum_i \nabla_{a} Q(s, a) |_{s=s_i, a=\mu_{s_i}} \nabla_{\theta^{\mu}} \mu(s_i)\]</span></p></li>
+<li><p>Update the target critic and target actor:</p>
+<p><span class="math display">\[\theta^{Q^{\prime}} \leftarrow \tau \theta^{Q} + (1 - \tau) \theta^{Q^{\prime}}\]</span> <span class="math display">\[\theta^{\mu^{\prime}} \leftarrow \tau \theta^{\mu} + (1 - \tau) \theta^{\mu^{\prime}}\]</span></p></li>
+</ul></li>
+</ol></li>
+</ol>
+<p>Features:</p>
+<ol type="1">
+<li><p>Use replay buffer to address correlated samples. Because DDPG is an off-policy algorithm, the replay buffer can be large, allowing the algorithm to benefit from learning across a set of uncorrelated transitions.</p></li>
+<li><p>Similar to target network in DQN, a soft target updates rather than directly copying the weights is used. We create a copy of the actor and critic networks, <span class="math inline">\(Q^{\prime} (s, a | \theta^{Q^{\prime}})\)</span> and <span class="math inline">\(\mu^{\prime} (s | \theta^{\mu^{\prime}})\)</span>. Notice here, the target is calculated using these delayed parameters. One problem with this is that:</p>
+<p><span class="math display">\[E[r(s_t, a_t) + \gamma Q^{\prime} (s, \mu^{\prime} (s_{t+1} | \theta^{\mu^{\prime}}) | \theta^{Q^{\prime}})] = E[\hat{T}^{\mu^{\prime}} Q^{\prime} (s, a)] = T^{\mu^{\prime}} Q^{\prime} (s, a)\]</span></p>
+<p>So, if we minimize the square loss of the critic w.r.t this target for some iterations, then follow the approximate value iteration, we end up evaluating <span class="math inline">\(Q^{\mu^{\prime}} (s, a)\)</span>.</p>
+<p>The weights of these target networks are then updated by having them slowly track the learned networks: <span class="math inline">\(\theta^{\prime} \leftarrow (1 - \tau) \theta^{\prime} + \theta\)</span> (stochastic approximation of mean of <span class="math inline">\(\theta\)</span>) with <span class="math inline">\(\tau &lt;&lt; 1\)</span>. This means that the target values are constrained to change slowly, greatly improving the stability of learning. The authors found that having both a delayed <span class="math inline">\(\mu^{\prime}\)</span> and a delayed <span class="math inline">\(Q^{\prime}\)</span> was required to have stable <span class="math inline">\(y_t\)</span> in order to consistently train the critic without divergence.</p></li>
+<li><p>In low dimensional feature vector observation space, Batch Normalization is used to normalize each dimension across the samples in a mini-batch to have unit mean and variance. A running average of mean and variance is maintained in training time and used in test time in this case evaluation or exploration. This technique is applied on the state input and all layers of the <span class="math inline">\(\mu\)</span> network and all layers of the <span class="math inline">\(Q\)</span> network prior to the action input. This help with the learning speed and scalability across different envs and units.</p></li>
+<li><p>Exploration problem is resolved by having a separate exploration policy <span class="math inline">\(\mu^{\prime}\)</span> (different from target network <span class="math inline">\(\mu^{\prime} (s | \theta^{\mu^{\prime}})\)</span>) by adding noise sampled from a noise process <span class="math inline">\(N\)</span> to our current actor policy:</p>
+<p><span class="math display">\[\mu^{\prime} (s_t) = \mu (s_t | \theta_t^{\mu}) + \mathcal{N}\]</span></p>
+<p>This <span class="math inline">\(N\)</span> can be chosen to suit the environment.</p></li>
+</ol>
 
     </div>
 
@@ -361,8 +413,8 @@
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2030/05/30/notations/" rel="next" title="Notations">
-                  Notations <i class="fa fa-chevron-right"></i>
+                <a href="/2021/06/11/TRPO/" rel="next" title="TRPO">
+                  TRPO <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -395,13 +447,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">147k</span>
+    <span title="Symbols count total">152k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">2:14</span>
+    <span title="Reading time total">2:18</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
