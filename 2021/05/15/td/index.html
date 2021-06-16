@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://example.com/images/RL/mc/td_1.png">
 <meta property="og:image" content="http://example.com/images/RL/mc/td_2.png">
 <meta property="article:published_time" content="2021-05-15T09:30:15.000Z">
-<meta property="article:modified_time" content="2021-05-16T12:52:06.059Z">
+<meta property="article:modified_time" content="2021-06-15T05:41:14.900Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta property="article:tag" content="RL Basics">
 <meta property="article:tag" content="Tabular Methods">
@@ -95,7 +95,7 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">13</span></a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">17</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
@@ -153,7 +153,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#learning-from-stream-of-data-temporal-difference-learning-methods"><span class="nav-number">1.</span> <span class="nav-text">Learning From Stream of Data (Temporal Difference Learning Methods)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#td-for-policy-evaluation"><span class="nav-number">1.1.</span> <span class="nav-text">TD for Policy Evaluation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#empirical-bellman-operator"><span class="nav-number">1.1.1.</span> <span class="nav-text">Empirical Bellman Operator</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#generic-td-algorithms"><span class="nav-number">1.2.</span> <span class="nav-text">Generic TD algorithms</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#td-error"><span class="nav-number">1.2.1.</span> <span class="nav-text">TD Error</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#td-learning-for-action-value-function"><span class="nav-number">1.2.2.</span> <span class="nav-text">TD Learning for Action-Value Function</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#further"><span class="nav-number">2.</span> <span class="nav-text">Further</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#learning-from-stream-of-data-temporal-difference-learning-methods"><span class="nav-number">1.</span> <span class="nav-text">Learning From Stream of Data (Temporal Difference Learning Methods)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#td-for-policy-evaluation"><span class="nav-number">1.1.</span> <span class="nav-text">TD for Policy Evaluation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#empirical-bellman-operator"><span class="nav-number">1.1.1.</span> <span class="nav-text">Empirical Bellman Operator</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#generic-td-algorithms"><span class="nav-number">1.2.</span> <span class="nav-text">Generic TD algorithms</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#td-error"><span class="nav-number">1.2.1.</span> <span class="nav-text">TD Error</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#td-erorr-and-bellman-residual"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">TD Erorr and Bellman Residual</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#td-erorr-and-advantage"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">TD Erorr and Advantage</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#td-learning-for-action-value-function"><span class="nav-number">1.2.2.</span> <span class="nav-text">TD Learning for Action-Value Function</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#further"><span class="nav-number">2.</span> <span class="nav-text">Further</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -168,7 +168,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">43</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -181,7 +181,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -262,7 +262,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-05-16 20:52:06" itemprop="dateModified" datetime="2021-05-16T20:52:06+08:00">2021-05-16</time>
+        <time title="Modified: 2021-06-15 13:41:14" itemprop="dateModified" datetime="2021-06-15T13:41:14+08:00">2021-06-15</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -286,14 +286,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>4.7k</span>
+      <span>5.2k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
+      <span>5 mins.</span>
     </span>
 </div>
 
@@ -344,6 +344,7 @@ V_{t+1} (x) &amp;\leftarrow (1 - \alpha_t) V_t (x) + \alpha_t (\hat{T}^{\pi} V_t
 <p><span class="math display">\[V(X_t) \leftarrow V(X_t) + \alpha_t (X_t) [R_t + \gamma V(X_{t+1}) - V(X_t)]\]</span></p>
 <p>We can see that, at each time step, instead update <span class="math inline">\(V_{k+1} (x)\)</span> with <span class="math inline">\(T^{\pi} V_{k}\)</span>, we update it with the <code>empirical bellman operator</code> <span class="math inline">\(\hat{T}^{\pi} V_k\)</span> which is an unbiased estimate. The SA procedure seems a little strange because we are estimating the mean of a sequence of <span class="math inline">\(\hat{T}^{\pi} V_1, \hat{T}^{\pi} V_2, ...\)</span>, <strong>we will prove later that this update rule actually converge to <span class="math inline">\(V^{\pi}\)</span></strong>.</p>
 <h3 id="td-error">TD Error</h3>
+<h4 id="td-erorr-and-bellman-residual">TD Erorr and Bellman Residual</h4>
 <p>Moreover, the term:</p>
 <p><span class="math display">\[\delta_t = R_t + \gamma V(X_{t+1}) - V(X_t)\]</span></p>
 <p>is called <code>TD error</code>. It is a noisy measure of how close we are to <span class="math inline">\(V^{\pi}\)</span>. To see this more clearly, let us define the dependence on the <code>TD error</code> on its components more explicitly. Given transitions <span class="math inline">\((X, X^{\prime}, R)\)</span> and value function <span class="math inline">\(V\)</span>, policy <span class="math inline">\(\pi\)</span>, we define:</p>
@@ -351,6 +352,16 @@ V_{t+1} (x) &amp;\leftarrow (1 - \alpha_t) V_t (x) + \alpha_t (\hat{T}^{\pi} V_t
 <p>We have:</p>
 <p><span class="math display">\[E[\delta (X, R, X^{\prime}; V, \pi) | X=x] = T^{\pi} V (x) - V(x) = BR(V) (x)\]</span></p>
 <p>So in expectation, the TD error is equal to the Bellman residual of <span class="math inline">\(V\)</span>, evaluated at state <span class="math inline">\(x\)</span>. If BR = 0, we reach the fix point, so the algorithm reach the fix point.</p>
+<h4 id="td-erorr-and-advantage">TD Erorr and Advantage</h4>
+<p>The advantage function is defined as:</p>
+<p><span class="math display">\[A^{\pi}(x, a) = Q^{\pi} (x, a) - V^{\pi} (x)\]</span></p>
+<p>In expectation:</p>
+<span class="math display">\[\begin{aligned}
+E[\delta (X, R, X^{\prime}; V^{\pi}) | X=x, A=a] &amp;= E[R + \gamma V^{\pi}(X^{\prime}) - V^{\pi}(X) | X=x, A=a]\\
+&amp;= r(x, a) + \gamma \int_{x^{\prime}, a^{\prime}} P(x^{\prime} | x, a) \pi(a^{\prime} | x^{\prime})Q^{\pi} (x^{\prime}, a^{\prime}) - V^{\pi}(x)\\
+&amp;= Q^{\pi} (x, a) - V^{\pi} (x)
+\end{aligned}\]</span>
+<p>Thus, the <strong>true</strong> TD error is an unbiased estimator of the advantage function.</p>
 <h3 id="td-learning-for-action-value-function">TD Learning for Action-Value Function</h3>
 <p>We can use a similar procedure to estimate the action-value function which is often used in TD and MC.</p>
 <p>To evaluate <span class="math inline">\(\pi\)</span>, we need to have an estimate of <span class="math inline">\(T^{\pi} Q (x, a) \forall (x, a) \in X \times A\)</span>.</p>
@@ -441,13 +452,13 @@ V_{t+1} (x) &amp;\leftarrow (1 - \alpha_t) V_t (x) + \alpha_t (\hat{T}^{\pi} V_t
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">152k</span>
+    <span title="Symbols count total">181k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">2:18</span>
+    <span title="Reading time total">2:44</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
