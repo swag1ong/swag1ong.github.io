@@ -1016,7 +1016,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-16 16:03:08" itemprop="dateModified" datetime="2021-06-16T16:03:08+08:00">2021-06-16</time>
+        <time title="Modified: 2021-06-16 23:20:02" itemprop="dateModified" datetime="2021-06-16T23:20:02+08:00">2021-06-16</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1040,14 +1040,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>1.6k</span>
+      <span>3.1k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>3 mins.</span>
     </span>
 </div>
 
@@ -1069,16 +1069,31 @@
 <h3 id="trust-region-methods">Trust Region Methods</h3>
 <p>The optimization problem is defined as:</p>
 <span class="math display">\[\begin{aligned}
-\max_{\theta} \quad &amp; \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim q (\cdot | s)} [\frac{\pi_{\theta} (a | s)}{\pi_{old} (a | s)} \hat{A}_{\theta_{old}} (s, a)]\\
+\max_{\theta} \quad &amp; \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim \pi_{\theta_{old}}(\cdot | s)} [\frac{\pi_{\theta} (a | s)}{\pi_{\theta_{old}} (a | s)} \hat{A}_{\theta_{old}} (s, a)]\\
 \textrm{s.t.} \quad &amp; \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot)}[D_{KL} (\pi_{\theta_{old}} (\cdot | s) || \pi_{\theta} (\cdot | s))] \leq \delta
 \end{aligned}\]</span>
 <p></br></p>
 <p>It is also possible to remove the hard constraint and convert the problem to an unconstrained objective:</p>
 <span class="math display">\[\begin{aligned}
-\max_{\theta} \quad &amp; \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim q (\cdot | s)} [\frac{\pi_{\theta} (a | s)}{\pi_{old} (a | s)} \hat{A}_{\theta_{old}} (s, a) - \beta D_{KL}[\pi_{\theta_{old}} (\cdot | s) || \pi_{\theta} (\cdot | s))]]\\
+\max_{\theta} \quad &amp; \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim \pi_{\theta_{old}}(\cdot | s)} [\frac{\pi_{\theta} (a | s)}{\pi_{\theta_{old}} (a | s)} \hat{A}_{\theta_{old}} (s, a) - \beta D_{KL}[\pi_{\theta_{old}} (\cdot | s) || \pi_{\theta} (\cdot | s))]]\\
 \end{aligned}\]</span>
 <p></br></p>
-<p>The problem with this objective is that, the penalty prefers small steps, so it is very hard to choose an appropriate <span class="math inline">\(\beta\)</span> that performs well across different problems or even within</p>
+<p>The problem with this objective is that, the penalty prefers small steps, so it is very hard to choose an appropriate <span class="math inline">\(\beta\)</span> that performs well across different problems or even within a single problem where the characteristics change over the course of learning.</p>
+<h2 id="clipped-surrogate-objective">Clipped Surrogate Objective</h2>
+<p>Let <span class="math inline">\(r_t (\theta)\)</span> denotes the probability ratio <span class="math inline">\(r_t (\theta) = \frac{\pi_{\theta} (a_t | s_t)}{\pi_{\theta_{old}} (a_t | s_t)}\)</span>, so <span class="math inline">\(r (\theta_{old}) = 1\)</span>. The above unconstrained TRPO objective without penalty becomes:</p>
+<p><span class="math display">\[L^{CPI} (\theta) = \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim \pi_{\theta_{old}} (\cdot | s)} [r_{t} (\theta) \hat{A}_{\theta_{old}} (s, a)]\]</span></p>
+<p>Without the penalty, the step size can be super big maximizing <span class="math inline">\(L^{CPI}\)</span>, thus, we can add penalty to the changes to the policy that move <span class="math inline">\(r_t (\theta)\)</span> away from 1 (make big updates or take big step)</p>
+<p>The main objective is then:</p>
+<p><span class="math display">\[L^{CLIP} (\theta) = \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim \pi_{\theta_{old}} (\cdot | s)} [\min (r_{t} (\theta) \hat{A}_{\theta_{old}} (s, a), \text{clip}(r_t(\theta), 1 - \epsilon, 1 + \epsilon)\hat{A}_{\theta_{old}} (s, a))]\]</span> </br></p>
+<p>Notice here, the clipped objective gives a lower bound of the unclipped objective, to see this:</p>
+<ol type="1">
+<li>If <span class="math inline">\(A_t &lt; 0\)</span>, then one way to maximize the objective is to make <span class="math inline">\(r_t\)</span> very small, then we will have a really large step size, However, with clipped objective, the largest change is clipped to <span class="math inline">\(1 - \epsilon\)</span></li>
+<li>If <span class="math inline">\(A_t &gt; 0\)</span>, then one way to maximize the objective is to make <span class="math inline">\(r_t\)</span> very large, then we will have a really large step size. However, with clipped objective, the largest change is clipped to <span class="math inline">\(1 + \epsilon\)</span></li>
+</ol>
+<p>At the same time, the minimum gives the above behavior to account for <span class="math inline">\(A_t &gt; 0, A_t &lt; 0\)</span> situation.</p>
+<p><img src="/images/RL/pg/ppo_1.png" width="600"></p>
+<p><img src="/images/RL/pg/ppo_2.png" width="600"></p>
+<h2 id="adaptive-kl-penalty-coefficient">Adaptive KL Penalty Coefficient</h2>
 
       
     </div>
@@ -1241,13 +1256,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">181k</span>
+    <span title="Symbols count total">182k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">2:44</span>
+    <span title="Reading time total">2:46</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
