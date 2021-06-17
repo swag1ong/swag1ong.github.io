@@ -135,6 +135,69 @@
       </tags>
   </entry>
   <entry>
+    <title>Dueling Network Architectures for DRL</title>
+    <url>/2021/05/13/Dueling/</url>
+    <content><![CDATA[<h1 id="dueling-network-architectures-for-deep-reinforcement-learning">Dueling Network Architectures for Deep Reinforcement Learning</h1>
+<h2 id="introduction">Introduction</h2>
+<p>The authors introduce an innovating neural network architecture that is better suited for model-free RL. This paper advances a new network but uses already published algorithms.</p>
+<p>The proposed architecture is called dueling architecture, explicitly separates the representation of state values and state-dependent action advantages. The architecture consists of two streams that represent the value and advantage functions, while sharing a common convolutional feature learning module. The two streams are combined via a special aggregating layer to produce an estimate of the state-action value function <span class="math inline">\(Q\)</span>. This dueling network should be understood as a single Q network with two streams that replaces the popular single-stream Q-network in existing algorithms such as DQN. The dueling network automatically produces separate estimates of the state value function and advantage function, without any extra supervision.</p>
+<p><img src="/images/RL/papers/dueling_1.png"></p>
+<p>Intuitively, the dueling architecture can learn which states are (or are not) valuable, without having to learn the effect of each action for each state. (by taking the gradient wrt to the input) It can more quickly identify the correct action during policy evaluation as redundant or similar actions are added to the learning problem.</p>
+<span id="more"></span>
+<h2 id="background">Background</h2>
+<p><strong>random variables have subscript <span class="math inline">\(t\)</span>, <span class="math inline">\(E[ g(x_t, a_t) | x_t=x, a_t] = f(x, a)\)</span> is shorthanded as <span class="math inline">\(f(x, a) = E[g(x, a)]\)</span></strong></p>
+<p>In Atari domain, the agent perceives a video <span class="math inline">\(s_t\)</span> consisting of M image frames <span class="math inline">\(s_t = (x_{t-M+1}, ..., x_t) \in S\)</span> at time step <span class="math inline">\(t\)</span>. Then agent chooses an action from a discrete set <span class="math inline">\(a_t \in A\)</span> and observes a reward signal <span class="math inline">\(r_t\)</span> produced by the game emulator.</p>
+<p>The agent seeks to maximize the expected discounted return where we define the discounted return as <span class="math inline">\(R_t = \sum_{\tau=t}^{\infty} \gamma^{\tau - t} r_{\tau}\)</span> with <span class="math inline">\(\gamma \in [0, 1]\)</span>.</p>
+<p>For an agent behaving to a stochastic policy <span class="math inline">\(\pi\)</span>, the values of the state-action pair <span class="math inline">\((s, a)\)</span> and the state <span class="math inline">\(s\)</span> are defined as:</p>
+<p><span class="math display">\[Q^{\pi} (s, a) = E[R_t | s_t=s, a_t=a, \pi]\]</span></p>
+<p><span class="math display">\[V^{\pi} (s) = E_{a_t \sim \pi(\cdot | s)}[R_t | s_t=s, \pi] = E_{a_t \sim \pi(\cdot | s)}[E[R_t | s_t, a_t, \pi] | s_t=s] = E_{a_t \sim \pi(\cdot | s)}[ Q^{\pi}(s, a_t)]\]</span></p>
+<p>We know that we can rewrite <span class="math inline">\(Q^{\pi}\)</span> as:</p>
+<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
+<p>We also define:</p>
+<p><span class="math display">\[Q^{*} (s, a) = max_{\pi} Q^{\pi} (s, a), \forall (s, a) \in S X A\]</span></p>
+<p>Then:</p>
+<p><span class="math display">\[V^{*} (s) = max_{a} Q^{*} (s, a)\]</span></p>
+<p>And,</p>
+<p><span class="math display">\[Q^{*}(s, a) = E_{s^{\prime}} [r + \gamma max_{a^{\prime}} Q^{*} (s^{\prime}, a^{\prime}) | s, a]\]</span></p>
+<p>The advantage function is denoted as:</p>
+<p><span class="math display">\[A^{\pi} (s, a) = Q^{\pi} (s, a) - V^{\pi} (s)\]</span></p>
+<p><span class="math display">\[E_{a}[A^{\pi} (s, a) | s] = E_{a}[Q^{\pi} (s, a) | s] - V^{\pi} (s) = 0\]</span></p>
+<p>This means that the advantage at state <span class="math inline">\(s\)</span> weighted by policy <span class="math inline">\(\pi\)</span> is 0. Intuitively, the advantage function measures the relative importance for each action.</p>
+<h2 id="dueling-network-architecture">Dueling Network Architecture</h2>
+<p>Instead of following the convolutional layers with a single sequence of fully connected layers, they instead use two sequences (streams) of fully connected layers. The streams are constructed such that they have the capability of providing separate estimates of the value and advantage functions. Finally , the two streams are combined to produce a single output <span class="math inline">\(Q\)</span> function.</p>
+<p>From the advantage expression, we know that</p>
+<p><span class="math display">\[Q^{\pi} (s, a) = V^{\pi} (s) + A^{\pi} (s, a)\]</span></p>
+<p>If the policy is the deterministic policy, <span class="math inline">\(a^{*} = argmax_{a^{\prime} \in A} Q(s, a^{\prime})\)</span>, then:</p>
+<p><span class="math display">\[E_{a^{\prime}}[Q^{\pi} (s, a)] = Q^{\pi} (s, a^{*}) = V^{\pi} (s)\]</span> and hence <span class="math inline">\(A^{\pi}(s, a^{*}) = 0\)</span>$</p>
+<p>Let <span class="math inline">\(V(s; \theta, \beta), A(s, a; \theta, \alpha), Q(s, a; \theta, \alpha, \beta)\)</span> be parametrized version of <span class="math inline">\(V, A, Q\)</span> respectively. <span class="math inline">\(\theta\)</span> are the shared parameters, <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are the stream parameters for <span class="math inline">\(V, A\)</span>. We can calculate <span class="math inline">\(Q\)</span> directly using the formula:</p>
+<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha)\]</span></p>
+<p>However, these functions are just estimates of the true values, therefore are unidentifiable in the sense that given <span class="math inline">\(Q\)</span> we can not recover <span class="math inline">\(V, A\)</span> uniquely. (ie. given <span class="math inline">\(Q(s, a)\)</span> what is <span class="math inline">\(V(s), A(s, a)\)</span>?)</p>
+<p>To solve the problem, we can force the advantage function to have zero advantage at some chosen action, in this case the greedy action:</p>
+<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha) - max_{a^{\prime}} A(s, a^{\prime}; \theta, \alpha)\]</span></p>
+<p>Thus, if <span class="math inline">\(a^{*} = argmax_{a^{\prime} \in A} Q(s, a^{\prime})\)</span>, then</p>
+<p><span class="math display">\[Q(s, a^{*}; \theta, \alpha, \beta) = V(s; \theta, \beta)\]</span></p>
+<p>We can determine the <span class="math inline">\(V\)</span> given <span class="math inline">\(Q\)</span>.</p>
+<p>Or, we can have:</p>
+<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha) - \frac{1}{|A|} \sum_{a^{\prime}} A(s, a^{\prime}; \theta, \alpha)\]</span></p>
+<p>Take the expectation or average of <span class="math inline">\(Q\)</span>:</p>
+<p><span class="math display">\[E[Q(s, a; \theta, \alpha, \beta)] = V(s; \theta, \theta)\]</span></p>
+<p>On the one hand this loses the original semantics of <span class="math inline">\(V\)</span> and <span class="math inline">\(A\)</span> because they are now off-target by a constant, but on the other hand it increases the stability of the optimization. Note that while subtracting the mean or max helps with the identifiability, it does not change the relative rank of <span class="math inline">\(A, Q\)</span>, so the greedy action.</p>
+<h2 id="discussion">Discussion</h2>
+<p>The advantage of the dueling architecture lies partly in its ability to learn the state-value function efficiently. With every update of the <span class="math inline">\(Q\)</span> values in the dueling architecture, the value stream <span class="math inline">\(V\)</span> is updated – this contrasts with the updates in a single-stream architecture where only the value of one of actions is updated, the values of other actions are untouched. The advantage of the dueling architecture over single-stream <span class="math inline">\(Q\)</span> networks grows when the number of actions is large.</p>
+<h2 id="implementation">Implementation</h2>
+<p><em>One implementation of Dueling Architecture in PARL using PaddlPaddle for Atari Games</em></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> paddle.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AtariModel</span>(<span class="params">parl.Model</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, act_dim, dueling=<span class="literal">False</span></span>):</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line">        self.conv1 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">4</span>, out_channels=<span class="number">32</span>, kernel_size=<span class="number">5</span>, stride=<span class="number">1</span>, padding=<span class="number">2</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv2 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">32</span>, out_channels=<span class="number">32</span>, kernel_size=<span class="number">5</span>, stride=<span class="number">1</span>, padding=<span class="number">2</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv3 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">32</span>, out_channels=<span class="number">64</span>, kernel_size=<span class="number">4</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv4 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">64</span>, out_channels=<span class="number">64</span>, kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.relu = nn.ReLU()</span><br><span class="line">        self.max_pool = nn.MaxPool2D(kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>)</span><br><span class="line">        self.flatten = nn.Flatten()</span><br><span class="line"></span><br><span class="line">        self.dueling = dueling</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> dueling:</span><br><span class="line">            self.linear_1_adv = nn.Linear(in_features=<span class="number">6400</span>, out_features=<span class="number">512</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">            self.linear_2_adv = nn.Linear(in_features=<span class="number">512</span>, out_features=act_dim)</span><br><span class="line">            self.linear_1_val = nn.Linear(in_features=<span class="number">6400</span>, out_features=<span class="number">512</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">            self.linear_2_val = nn.Linear(in_features=<span class="number">512</span>, out_features=<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.linear_1 = nn.Linear(in_features=<span class="number">6400</span>, out_features=act_dim)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">value</span>(<span class="params">self, obs</span>):</span></span><br><span class="line"></span><br><span class="line">        obs = obs / <span class="number">255.0</span></span><br><span class="line">        out = self.max_pool(self.relu(self.conv1(obs)))</span><br><span class="line">        out = self.max_pool(self.relu(self.conv2(out)))</span><br><span class="line">        out = self.max_pool(self.relu(self.conv3(out)))</span><br><span class="line">        out = self.relu(self.conv4(out))</span><br><span class="line">        out = self.flatten(out)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.dueling:</span><br><span class="line">            As = self.relu(self.linear_1_adv(out))</span><br><span class="line">            As = self.linear_2_adv(As)</span><br><span class="line">            V = self.relu(self.linear_1_val(out))</span><br><span class="line">            V = self.linear_2_val(V)</span><br><span class="line">            Q = As + (V - As.mean(axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            Q = self.linear_1(out)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Q</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Continuous State Space</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Deterministic Policy Gradient</title>
     <url>/2021/05/06/DPG/</url>
     <content><![CDATA[<h1 id="deterministic-policy-gradient-algorithms">Deterministic Policy Gradient Algorithms</h1>
@@ -285,69 +348,6 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
       </tags>
   </entry>
   <entry>
-    <title>Dueling Network Architectures for DRL</title>
-    <url>/2021/05/13/Dueling/</url>
-    <content><![CDATA[<h1 id="dueling-network-architectures-for-deep-reinforcement-learning">Dueling Network Architectures for Deep Reinforcement Learning</h1>
-<h2 id="introduction">Introduction</h2>
-<p>The authors introduce an innovating neural network architecture that is better suited for model-free RL. This paper advances a new network but uses already published algorithms.</p>
-<p>The proposed architecture is called dueling architecture, explicitly separates the representation of state values and state-dependent action advantages. The architecture consists of two streams that represent the value and advantage functions, while sharing a common convolutional feature learning module. The two streams are combined via a special aggregating layer to produce an estimate of the state-action value function <span class="math inline">\(Q\)</span>. This dueling network should be understood as a single Q network with two streams that replaces the popular single-stream Q-network in existing algorithms such as DQN. The dueling network automatically produces separate estimates of the state value function and advantage function, without any extra supervision.</p>
-<p><img src="/images/RL/papers/dueling_1.png"></p>
-<p>Intuitively, the dueling architecture can learn which states are (or are not) valuable, without having to learn the effect of each action for each state. (by taking the gradient wrt to the input) It can more quickly identify the correct action during policy evaluation as redundant or similar actions are added to the learning problem.</p>
-<span id="more"></span>
-<h2 id="background">Background</h2>
-<p><strong>random variables have subscript <span class="math inline">\(t\)</span>, <span class="math inline">\(E[ g(x_t, a_t) | x_t=x, a_t] = f(x, a)\)</span> is shorthanded as <span class="math inline">\(f(x, a) = E[g(x, a)]\)</span></strong></p>
-<p>In Atari domain, the agent perceives a video <span class="math inline">\(s_t\)</span> consisting of M image frames <span class="math inline">\(s_t = (x_{t-M+1}, ..., x_t) \in S\)</span> at time step <span class="math inline">\(t\)</span>. Then agent chooses an action from a discrete set <span class="math inline">\(a_t \in A\)</span> and observes a reward signal <span class="math inline">\(r_t\)</span> produced by the game emulator.</p>
-<p>The agent seeks to maximize the expected discounted return where we define the discounted return as <span class="math inline">\(R_t = \sum_{\tau=t}^{\infty} \gamma^{\tau - t} r_{\tau}\)</span> with <span class="math inline">\(\gamma \in [0, 1]\)</span>.</p>
-<p>For an agent behaving to a stochastic policy <span class="math inline">\(\pi\)</span>, the values of the state-action pair <span class="math inline">\((s, a)\)</span> and the state <span class="math inline">\(s\)</span> are defined as:</p>
-<p><span class="math display">\[Q^{\pi} (s, a) = E[R_t | s_t=s, a_t=a, \pi]\]</span></p>
-<p><span class="math display">\[V^{\pi} (s) = E_{a_t \sim \pi(\cdot | s)}[R_t | s_t=s, \pi] = E_{a_t \sim \pi(\cdot | s)}[E[R_t | s_t, a_t, \pi] | s_t=s] = E_{a_t \sim \pi(\cdot | s)}[ Q^{\pi}(s, a_t)]\]</span></p>
-<p>We know that we can rewrite <span class="math inline">\(Q^{\pi}\)</span> as:</p>
-<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
-<p>We also define:</p>
-<p><span class="math display">\[Q^{*} (s, a) = max_{\pi} Q^{\pi} (s, a), \forall (s, a) \in S X A\]</span></p>
-<p>Then:</p>
-<p><span class="math display">\[V^{*} (s) = max_{a} Q^{*} (s, a)\]</span></p>
-<p>And,</p>
-<p><span class="math display">\[Q^{*}(s, a) = E_{s^{\prime}} [r + \gamma max_{a^{\prime}} Q^{*} (s^{\prime}, a^{\prime}) | s, a]\]</span></p>
-<p>The advantage function is denoted as:</p>
-<p><span class="math display">\[A^{\pi} (s, a) = Q^{\pi} (s, a) - V^{\pi} (s)\]</span></p>
-<p><span class="math display">\[E_{a}[A^{\pi} (s, a) | s] = E_{a}[Q^{\pi} (s, a) | s] - V^{\pi} (s) = 0\]</span></p>
-<p>This means that the advantage at state <span class="math inline">\(s\)</span> weighted by policy <span class="math inline">\(\pi\)</span> is 0. Intuitively, the advantage function measures the relative importance for each action.</p>
-<h2 id="dueling-network-architecture">Dueling Network Architecture</h2>
-<p>Instead of following the convolutional layers with a single sequence of fully connected layers, they instead use two sequences (streams) of fully connected layers. The streams are constructed such that they have the capability of providing separate estimates of the value and advantage functions. Finally , the two streams are combined to produce a single output <span class="math inline">\(Q\)</span> function.</p>
-<p>From the advantage expression, we know that</p>
-<p><span class="math display">\[Q^{\pi} (s, a) = V^{\pi} (s) + A^{\pi} (s, a)\]</span></p>
-<p>If the policy is the deterministic policy, <span class="math inline">\(a^{*} = argmax_{a^{\prime} \in A} Q(s, a^{\prime})\)</span>, then:</p>
-<p><span class="math display">\[E_{a^{\prime}}[Q^{\pi} (s, a)] = Q^{\pi} (s, a^{*}) = V^{\pi} (s)\]</span> and hence <span class="math inline">\(A^{\pi}(s, a^{*}) = 0\)</span>$</p>
-<p>Let <span class="math inline">\(V(s; \theta, \beta), A(s, a; \theta, \alpha), Q(s, a; \theta, \alpha, \beta)\)</span> be parametrized version of <span class="math inline">\(V, A, Q\)</span> respectively. <span class="math inline">\(\theta\)</span> are the shared parameters, <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are the stream parameters for <span class="math inline">\(V, A\)</span>. We can calculate <span class="math inline">\(Q\)</span> directly using the formula:</p>
-<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha)\]</span></p>
-<p>However, these functions are just estimates of the true values, therefore are unidentifiable in the sense that given <span class="math inline">\(Q\)</span> we can not recover <span class="math inline">\(V, A\)</span> uniquely. (ie. given <span class="math inline">\(Q(s, a)\)</span> what is <span class="math inline">\(V(s), A(s, a)\)</span>?)</p>
-<p>To solve the problem, we can force the advantage function to have zero advantage at some chosen action, in this case the greedy action:</p>
-<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha) - max_{a^{\prime}} A(s, a^{\prime}; \theta, \alpha)\]</span></p>
-<p>Thus, if <span class="math inline">\(a^{*} = argmax_{a^{\prime} \in A} Q(s, a^{\prime})\)</span>, then</p>
-<p><span class="math display">\[Q(s, a^{*}; \theta, \alpha, \beta) = V(s; \theta, \beta)\]</span></p>
-<p>We can determine the <span class="math inline">\(V\)</span> given <span class="math inline">\(Q\)</span>.</p>
-<p>Or, we can have:</p>
-<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha) - \frac{1}{|A|} \sum_{a^{\prime}} A(s, a^{\prime}; \theta, \alpha)\]</span></p>
-<p>Take the expectation or average of <span class="math inline">\(Q\)</span>:</p>
-<p><span class="math display">\[E[Q(s, a; \theta, \alpha, \beta)] = V(s; \theta, \theta)\]</span></p>
-<p>On the one hand this loses the original semantics of <span class="math inline">\(V\)</span> and <span class="math inline">\(A\)</span> because they are now off-target by a constant, but on the other hand it increases the stability of the optimization. Note that while subtracting the mean or max helps with the identifiability, it does not change the relative rank of <span class="math inline">\(A, Q\)</span>, so the greedy action.</p>
-<h2 id="discussion">Discussion</h2>
-<p>The advantage of the dueling architecture lies partly in its ability to learn the state-value function efficiently. With every update of the <span class="math inline">\(Q\)</span> values in the dueling architecture, the value stream <span class="math inline">\(V\)</span> is updated – this contrasts with the updates in a single-stream architecture where only the value of one of actions is updated, the values of other actions are untouched. The advantage of the dueling architecture over single-stream <span class="math inline">\(Q\)</span> networks grows when the number of actions is large.</p>
-<h2 id="implementation">Implementation</h2>
-<p><em>One implementation of Dueling Architecture in PARL using PaddlPaddle for Atari Games</em></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> paddle.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AtariModel</span>(<span class="params">parl.Model</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, act_dim, dueling=<span class="literal">False</span></span>):</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line">        self.conv1 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">4</span>, out_channels=<span class="number">32</span>, kernel_size=<span class="number">5</span>, stride=<span class="number">1</span>, padding=<span class="number">2</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv2 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">32</span>, out_channels=<span class="number">32</span>, kernel_size=<span class="number">5</span>, stride=<span class="number">1</span>, padding=<span class="number">2</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv3 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">32</span>, out_channels=<span class="number">64</span>, kernel_size=<span class="number">4</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv4 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">64</span>, out_channels=<span class="number">64</span>, kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.relu = nn.ReLU()</span><br><span class="line">        self.max_pool = nn.MaxPool2D(kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>)</span><br><span class="line">        self.flatten = nn.Flatten()</span><br><span class="line"></span><br><span class="line">        self.dueling = dueling</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> dueling:</span><br><span class="line">            self.linear_1_adv = nn.Linear(in_features=<span class="number">6400</span>, out_features=<span class="number">512</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">            self.linear_2_adv = nn.Linear(in_features=<span class="number">512</span>, out_features=act_dim)</span><br><span class="line">            self.linear_1_val = nn.Linear(in_features=<span class="number">6400</span>, out_features=<span class="number">512</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">            self.linear_2_val = nn.Linear(in_features=<span class="number">512</span>, out_features=<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.linear_1 = nn.Linear(in_features=<span class="number">6400</span>, out_features=act_dim)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">value</span>(<span class="params">self, obs</span>):</span></span><br><span class="line"></span><br><span class="line">        obs = obs / <span class="number">255.0</span></span><br><span class="line">        out = self.max_pool(self.relu(self.conv1(obs)))</span><br><span class="line">        out = self.max_pool(self.relu(self.conv2(out)))</span><br><span class="line">        out = self.max_pool(self.relu(self.conv3(out)))</span><br><span class="line">        out = self.relu(self.conv4(out))</span><br><span class="line">        out = self.flatten(out)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.dueling:</span><br><span class="line">            As = self.relu(self.linear_1_adv(out))</span><br><span class="line">            As = self.linear_2_adv(As)</span><br><span class="line">            V = self.relu(self.linear_1_val(out))</span><br><span class="line">            V = self.linear_2_val(V)</span><br><span class="line">            Q = As + (V - As.mean(axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            Q = self.linear_1(out)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Q</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>VFA</category>
-      </categories>
-      <tags>
-        <tag>Function Approximation</tag>
-        <tag>Continuous State Space</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Issues in Using Function Approximation for RL (under construction)</title>
     <url>/2021/05/07/FA-issues/</url>
     <content><![CDATA[<h1 id="issues-in-using-function-approximation-for-reinforcement-learning"><a href="https://www.ri.cmu.edu/pub_files/pub1/thrun_sebastian_1993_1/thrun_sebastian_1993_1.pdf">Issues in Using Function Approximation for Reinforcement Learning</a></h1>
@@ -360,129 +360,6 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
         <tag>Function Approximation</tag>
         <tag>Discussions</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>MDP</title>
-    <url>/2021/05/03/MDP/</url>
-    <content><![CDATA[<h1 id="mdp">MDP</h1>
-<p><span style="color:red"><em>Based on Prof Amir-massoud Farahmand's Lecture on RL</em> </span></p>
-<p>Define our MDP different from Introduction to RL book:</p>
-<p><img src='/images/RL/bellman_equation/mdp.png'></p>
-<p>Where <span class="math inline">\(M(X)\)</span> is the space of all probability distributions defined over the state space X <span id="more"></span></p>
-<p>So a sample of the process can be described as a rollout or trajectory:</p>
-<p><span class="math display">\[\tau = X_1, A_1, R_1, X_2, A_2, R_2, ...\]</span></p>
-<p>A deterministic dynamical system always behave exactly the same given the same starting state and action, that is, they can be described as a transition function <span class="math inline">\(f\)</span> instead of transition distribution <span class="math inline">\(P\)</span></p>
-<p><span class="math display">\[x_{t+1} = f(x, a)\]</span></p>
-<h2 id="policy">Policy</h2>
-<p><img src='/images/RL/bellman_equation/policy_1.png'></p>
-<p><img src='/images/RL/bellman_equation/policy.png'></p>
-<h2 id="policy-induced-transition-kernels">Policy induced Transition Kernels</h2>
-<p><img src='/images/RL/bellman_equation/transition_kernel.png'></p>
-<h2 id="rewards-and-returns">Rewards and Returns</h2>
-<p>Let's define expected reward as:</p>
-<p><span class="math display">\[r(x, a) = E[R | X=x, A=a]\]</span></p>
-<p>then the expected reward following policy pi is defined as</p>
-<p><span class="math display">\[r^{\pi} (x) = E_{a \sim \pi(a | x)} [R | X=x]\]</span></p>
-<p>Define return following policy <span class="math inline">\(\pi\)</span> as discounted sum of rewards starting from <span class="math inline">\(X_1\)</span>:</p>
-<p><span class="math display">\[G^{\pi} = R_1 + \gamma R_2 + ... + \gamma^{T-1} R_{T} = \sum^{\infty}_{k=t} \gamma^{k - t}R_{t}\]</span></p>
-<p>or any starting at any step <span class="math inline">\(X_{t}\)</span>:</p>
-<p><span class="math display">\[G^{\pi}_{t} = \sum^{\infty}_{k=t} \gamma^{k - t}R_{t}\]</span></p>
-<p>Note that <span class="math inline">\(\gamma\)</span> is a part of the problem setting, it is usually not a hyperparameter. <strong>One way to think about is as a constant probability of termination of <span class="math inline">\(1 - \gamma\)</span>. Or we can set <span class="math inline">\(\gamma = 1\)</span> when we have episodic tasks.</strong>.</p>
-<h2 id="example">Example</h2>
-<p>Finite horizon example:</p>
-<ul>
-<li>Start at <span class="math inline">\(X_1 \sim \rho\)</span></li>
-<li>Select <span class="math inline">\(A_1 \sim \pi(\cdot | X_1)\)</span></li>
-<li>Get <span class="math inline">\(R_1 \sim R(\cdot | A_1, X_1)\)</span></li>
-<li>Get <span class="math inline">\(X_2 \sim P(\cdot | A_1, X_1)\)</span></li>
-<li>...</li>
-<li>...</li>
-<li>Get <span class="math inline">\(R_{T} \sim R(\cdot | X_{T}, A_{T})\)</span></li>
-<li>Get <span class="math inline">\(X_{T+1} \sim P(\cdot | X_{T}, A_{T})\)</span> (This is the terminal state, which is often dropped because it has value of 0)</li>
-</ul>
-<p>The process stops!</p>
-<h2 id="value-functions">Value functions</h2>
-<p>Next we can define value functions as:</p>
-<p>State value function (alias: Value function, V, v) starting from state x and following policy <span class="math inline">\(\pi\)</span>:</p>
-<p><span class="math display">\[V^{\pi}(x) = E[G_1^{\pi} | X_{1} = x] = E[G^{\pi}_{t} | X_{t} = x] \text{    (Markov Property)}\]</span></p>
-<p>Action value function following policy <span class="math inline">\(\pi\)</span> starting from state x and taking action a:</p>
-<p><span class="math display">\[Q^{\pi} (x, a) = E[G_1^{\pi} | X_{1} = x, A_{1} = a] = E[G^{\pi}_{t} | X_{t} = x, A_{t} = a] \text{    (Markov Property)}\]</span></p>
-<p>in the <code>terminal formulation</code>, the value function <span class="math inline">\(V_{term}^{\pi}\)</span> can be written as:</p>
-<p><span class="math display">\[V_{term}^{\pi} = E[R_{1} + R_2 + .... + R_{t + T} | X_1 = x] \;\;\;\;\;\; \forall x \in X\]</span></p>
-<p>The process terminates at time <span class="math inline">\(t + T\)</span> according to <span class="math inline">\(\gamma\)</span>. In this case the termination should be assumed to always occur in a finite number of steps (ie. if we have episodic task we can set <span class="math inline">\(\gamma = 1\)</span>).</p>
-<h2 id="another-formulation">Another formulation</h2>
-<p>We can also define the T-step rollout or trajectory distribution <span class="math inline">\(P(\tau | \pi)\)</span> following policy <span class="math inline">\(\pi\)</span>:</p>
-<p><span class="math display">\[P(\tau | \pi) = \rho(X_1)\prod_{t=1}^{T} P(X_{t+1}| X_{t}, A_{t}) \pi(A_t | X_{t}) R(R_t | X_{t}, A_{t})\]</span></p>
-<p>Then:</p>
-<p><span class="math display">\[R(\tau) = G^{\pi}_{1} = \sum^{T}_{k=1} \gamma^{k - t}R_{t}\]</span></p>
-<p><span class="math display">\[J(\pi) = E_{\tau \sim P(\tau | \pi) }[R(\tau)] = \int R(\tau) P(d\tau | \pi)\]</span></p>
-<p><span class="math display">\[V^{\pi} (x) = E_{\tau \sim P(\tau | \pi, X_1=x)}[R(\tau) | X_1 = x]\]</span></p>
-<p>And:</p>
-<p><span class="math display">\[J(\pi) = \int V^{\pi} (x) d\rho(x)\]</span></p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>Basics</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>PPO</title>
-    <url>/2021/06/11/PPO/</url>
-    <content><![CDATA[<h1 id="proximal-policy-optimization-algorithms">Proximal Policy Optimization Algorithms</h1>
-<h2 id="notations-and-backgrounds">Notations and Backgrounds</h2>
-<h3 id="policy-gradient-estimator">Policy gradient estimator</h3>
-<p><span class="math display">\[\hat{g} = \hat{E}_t [\nabla_{\theta} \log \pi_{\theta} (a_t | s_t) \hat{A_t}]\]</span></p>
-<p>Where, <span class="math inline">\(\pi_{\theta}\)</span> is the stochastic policy and <span class="math inline">\(\hat{A_t}\)</span> is an estimate of advantage function at timestep <span class="math inline">\(t\)</span>. The expectation here <span class="math inline">\(\hat{E}_t\)</span> indicates the empirical average over a finite batch of samples, in an algorithm that alternates between sampling and optimization.</p>
-<p><span class="math inline">\(\hat{g}\)</span> is obtained by differentiating the objective</p>
-<p><span class="math display">\[L^{PG} (\theta) = \hat{E}_t [\log \pi_{\theta} (a_t | s_t) \hat{A_t}]\]</span></p>
-<p>While it is appealing to perform multiple steps of optimization on this loss <span class="math inline">\(L^{PG} (\theta)\)</span> (reuse the same samples to update <span class="math inline">\(\theta\)</span>), using the same trajectory, doing so is not well-justi ed, and empirically it often leads to destructively large policy updates.</p>
-<h3 id="trust-region-methods">Trust Region Methods</h3>
-<p>The optimization problem is defined as:</p>
-<span class="math display">\[\begin{aligned}
-\max_{\theta} \quad &amp; \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim \pi_{\theta_{old}}(\cdot | s)} [\frac{\pi_{\theta} (a | s)}{\pi_{\theta_{old}} (a | s)} \hat{A}_{\theta_{old}} (s, a)]\\
-\textrm{s.t.} \quad &amp; \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot)}[D_{KL} (\pi_{\theta_{old}} (\cdot | s) || \pi_{\theta} (\cdot | s))] \leq \delta
-\end{aligned}\]</span>
-<p></br></p>
-<p>It is also possible to remove the hard constraint and convert the problem to an unconstrained objective:</p>
-<span class="math display">\[\begin{aligned}
-\max_{\theta} \quad &amp; \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim \pi_{\theta_{old}}(\cdot | s)} [\frac{\pi_{\theta} (a | s)}{\pi_{\theta_{old}} (a | s)} \hat{A}_{\theta_{old}} (s, a) - \beta D_{KL}[\pi_{\theta_{old}} (\cdot | s) || \pi_{\theta} (\cdot | s))]]\\
-\end{aligned}\]</span>
-<p></br></p>
-<p>The problem with this objective is that, the penalty prefers small steps, so it is very hard to choose an appropriate <span class="math inline">\(\beta\)</span> that performs well across different problems or even within a single problem where the characteristics change over the course of learning.</p>
-<h2 id="clipped-surrogate-objective">Clipped Surrogate Objective</h2>
-<p>Let <span class="math inline">\(r_t (\theta)\)</span> denotes the probability ratio <span class="math inline">\(r_t (\theta) = \frac{\pi_{\theta} (a_t | s_t)}{\pi_{\theta_{old}} (a_t | s_t)}\)</span>, so <span class="math inline">\(r (\theta_{old}) = 1\)</span>. The above unconstrained TRPO objective without penalty becomes:</p>
-<p><span class="math display">\[L^{CPI} (\theta) = \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim \pi_{\theta_{old}} (\cdot | s)} [r_{t} (\theta) \hat{A}_{\theta_{old}} (s, a)]\]</span></p>
-<p>Without the penalty, the step size can be super big maximizing <span class="math inline">\(L^{CPI}\)</span>, thus, we can add penalty to the changes to the policy that move <span class="math inline">\(r_t (\theta)\)</span> away from 1 (make big updates or take big step)</p>
-<p>The main objective is then:</p>
-<p><span class="math display">\[L^{CLIP} (\theta) = \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim \pi_{\theta_{old}} (\cdot | s)} [\min (r_{t} (\theta) \hat{A}_{\theta_{old}} (s, a), \text{clip}(r_t(\theta), 1 - \epsilon, 1 + \epsilon)\hat{A}_{\theta_{old}} (s, a))]\]</span> </br></p>
-<p>Notice here, the clipped objective gives a lower bound of the unclipped objective, to see this:</p>
-<ol type="1">
-<li>If <span class="math inline">\(A_t &lt; 0\)</span>, then one way to maximize the objective is to make <span class="math inline">\(r_t\)</span> very small, then we will have a really large step size, However, with clipped objective, the largest change is clipped to <span class="math inline">\(1 - \epsilon\)</span></li>
-<li>If <span class="math inline">\(A_t &gt; 0\)</span>, then one way to maximize the objective is to make <span class="math inline">\(r_t\)</span> very large, then we will have a really large step size. However, with clipped objective, the largest change is clipped to <span class="math inline">\(1 + \epsilon\)</span></li>
-</ol>
-<p>At the same time, the minimum gives the above behavior to account for <span class="math inline">\(A_t &gt; 0, A_t &lt; 0\)</span> situation.</p>
-<p><img src="/images/RL/pg/ppo_1.png" width="600"></p>
-<p><img src="/images/RL/pg/ppo_2.png" width="600"></p>
-<h2 id="adaptive-kl-penalty-coefficient">Adaptive KL Penalty Coefficient</h2>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>PG</category>
-      </categories>
-      <tags>
-        <tag>Policy Gradient</tag>
-        <tag>Policy Search</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>actor_critic</title>
-    <url>/2021/06/14/actor-critic/</url>
-    <content><![CDATA[<h1 id="actor-critic-algorithms">Actor-Critic Algorithms</h1>
-<p><a href="https://papers.nips.cc/paper/1999/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf">Original Paper</a></p>
-]]></content>
   </entry>
   <entry>
     <title>TRPO</title>
@@ -644,6 +521,157 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
       <tags>
         <tag>Policy Search</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>PPO</title>
+    <url>/2021/06/11/PPO/</url>
+    <content><![CDATA[<h1 id="proximal-policy-optimization-algorithms">Proximal Policy Optimization Algorithms</h1>
+<h2 id="notations-and-backgrounds">Notations and Backgrounds</h2>
+<h3 id="policy-gradient-estimator">Policy gradient estimator</h3>
+<p><span class="math display">\[\hat{g} = \hat{E}_t [\nabla_{\theta} \log \pi_{\theta} (a_t | s_t) \hat{A_t}]\]</span></p>
+<p>Where, <span class="math inline">\(\pi_{\theta}\)</span> is the stochastic policy and <span class="math inline">\(\hat{A_t}\)</span> is an estimate of advantage function at timestep <span class="math inline">\(t\)</span>. The expectation here <span class="math inline">\(\hat{E}_t\)</span> indicates the empirical average over a finite batch of samples, in an algorithm that alternates between sampling and optimization.</p>
+<p><span class="math inline">\(\hat{g}\)</span> is obtained by differentiating the objective</p>
+<p><span class="math display">\[L^{PG} (\theta) = \hat{E}_t [\log \pi_{\theta} (a_t | s_t) \hat{A_t}]\]</span></p>
+<p>While it is appealing to perform multiple steps of optimization on this loss <span class="math inline">\(L^{PG} (\theta)\)</span> (reuse the same samples to update <span class="math inline">\(\theta\)</span>), using the same trajectory, doing so is not well-justi ed, and empirically it often leads to destructively large policy updates.</p>
+<h3 id="trust-region-methods">Trust Region Methods</h3>
+<p>The optimization problem is defined as:</p>
+<span class="math display">\[\begin{aligned}
+\max_{\theta} \quad &amp; \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim \pi_{\theta_{old}}(\cdot | s)} [\frac{\pi_{\theta} (a | s)}{\pi_{\theta_{old}} (a | s)} \hat{A}_{\theta_{old}} (s, a)]\\
+\textrm{s.t.} \quad &amp; \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot)}[D_{KL} (\pi_{\theta_{old}} (\cdot | s) || \pi_{\theta} (\cdot | s))] \leq \delta
+\end{aligned}\]</span>
+<p></br></p>
+<p>It is also possible to remove the hard constraint and convert the problem to an unconstrained objective:</p>
+<span class="math display">\[\begin{aligned}
+\max_{\theta} \quad &amp; \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim \pi_{\theta_{old}}(\cdot | s)} [\frac{\pi_{\theta} (a | s)}{\pi_{\theta_{old}} (a | s)} \hat{A}_{\theta_{old}} (s, a) - \beta D_{KL}[\pi_{\theta_{old}} (\cdot | s) || \pi_{\theta} (\cdot | s))]]\\
+\end{aligned}\]</span>
+<p></br></p>
+<p>The problem with this objective is that, the penalty prefers small steps, so it is very hard to choose an appropriate <span class="math inline">\(\beta\)</span> that performs well across different problems or even within a single problem where the characteristics change over the course of learning.</p>
+<h2 id="clipped-surrogate-objective">Clipped Surrogate Objective</h2>
+<p>Let <span class="math inline">\(r_t (\theta)\)</span> denotes the probability ratio <span class="math inline">\(r_t (\theta) = \frac{\pi_{\theta} (a_t | s_t)}{\pi_{\theta_{old}} (a_t | s_t)}\)</span>, so <span class="math inline">\(r (\theta_{old}) = 1\)</span>. The above unconstrained TRPO objective without penalty becomes:</p>
+<p><span class="math display">\[L^{CPI} (\theta) = \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim \pi_{\theta_{old}} (\cdot | s)} [r_{t} (\theta) \hat{A}_{\theta_{old}} (s, a)]\]</span></p>
+<p>Without the penalty, the step size can be super big maximizing <span class="math inline">\(L^{CPI}\)</span>, thus, we can add penalty to the changes to the policy that move <span class="math inline">\(r_t (\theta)\)</span> away from 1 (make big updates or take big step)</p>
+<p>The main objective is then:</p>
+<p><span class="math display">\[L^{CLIP} (\theta) = \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim \pi_{\theta_{old}} (\cdot | s)} [\min (r_{t} (\theta) \hat{A}_{\theta_{old}} (s, a), \text{clip}(r_t(\theta), 1 - \epsilon, 1 + \epsilon)\hat{A}_{\theta_{old}} (s, a))]\]</span> </br></p>
+<p>Notice here, the clipped objective gives a lower bound of the unclipped objective, to see this:</p>
+<ol type="1">
+<li>If <span class="math inline">\(A_t &lt; 0\)</span>, then one way to maximize the objective is to make <span class="math inline">\(r_t\)</span> very small, then we will have a really large step size, However, with clipped objective, the largest change is clipped to <span class="math inline">\(1 - \epsilon\)</span></li>
+<li>If <span class="math inline">\(A_t &gt; 0\)</span>, then one way to maximize the objective is to make <span class="math inline">\(r_t\)</span> very large, then we will have a really large step size. However, with clipped objective, the largest change is clipped to <span class="math inline">\(1 + \epsilon\)</span></li>
+</ol>
+<p>At the same time, the minimum gives the above behavior to account for <span class="math inline">\(A_t &gt; 0, A_t &lt; 0\)</span> situation.</p>
+<p><img src="/images/RL/pg/ppo_1.png" width="600"></p>
+<p><img src="/images/RL/pg/ppo_2.png" width="600"></p>
+<h2 id="adaptive-kl-penalty-coefficient">Adaptive KL Penalty Coefficient</h2>
+<p>Another approach, which can be used as an alternative to the clipped surrogate objective, or in additional to it is to use a penalty on KL divergence <span class="math inline">\(d_{targ}\)</span> each policy update. In practice, KL performs worse than the clipped surrogate objective.</p>
+<p>In the simplest instantiation of this algorithm, the following steps are used in each policy update:</p>
+<ul>
+<li><p>Using several epochs of mini-batch SGD, optimizing the KL-penalized objective:</p>
+<p><span class="math display">\[L^{KLPEN} (\theta) = \hat{E}_t [\frac{\pi_\theta (a_t | s_t)}{\pi_{\theta_{old}} (a_t | s_t)} \hat{A}_t - \beta_t D_{KL} (\pi_{\theta_{old}} (\cdot | s) || \pi_{\theta} (\cdot | s))]\]</span></p></li>
+<li><p>Compute and update <span class="math inline">\(\theta_{t+1}\)</span>:</p>
+<p><span class="math display">\[d = \hat{E}_t [\beta_t D_{KL} (\pi_{\theta_{old}} (\cdot | s) || \pi_{\theta} (\cdot | s))]\]</span></p>
+<ul>
+<li>If <span class="math inline">\(d &lt; d_{targ} \;/\; 1.5, \quad \beta_{t + 1} \leftarrow \beta_{t} \;/\; 2\)</span></li>
+<li>If <span class="math inline">\(d &gt; d_{targ} * 1.5, \quad \beta_{t + 1} \leftarrow \beta_{t} * 2\)</span></li>
+</ul></li>
+</ul>
+<p><span class="math inline">\(\beta_{t + 1}\)</span> is used in the next policy update. The algorithm is not very sensitive to the choice of <span class="math inline">\(2\)</span> and <span class="math inline">\(1.5\)</span> above. The initial value of <span class="math inline">\(\beta\)</span> is another hyperparameter but is not important in practice.</p>
+<h2 id="algorithm">Algorithm</h2>
+<p>The advantage function can be estimated using a separate value function <span class="math inline">\(V(x)\)</span>, or a shared parameter value and policy network can be used. If the parameters are shared between policy network and value network, we need to modify the objective by adding the value loss negative value function loss <span class="math inline">\(- L^{VF} (\theta)\)</span> and maybe an entropy term to promote exploration:</p>
+<p><span class="math display">\[L^{CLIP + VF + S} (\theta) = \hat{E} [L_t^{CLIP} (\theta) - c_1 L_t^{VF} (\theta) + c_2 S[\pi_{\theta}] (s_t)]\]</span> </br></p>
+<p>Where, <span class="math inline">\(c_1, c_2\)</span> are two coefficients, <span class="math inline">\(S[\pi_{\theta}] (s_t)\)</span> is the entropy bonus on <span class="math inline">\(s_t\)</span> and <span class="math inline">\(L_t^{VF} = \|V_{\theta} - V_t^{targ}\|^2\)</span> is the square loss.</p>
+<p>One style of advantage estimate is n-step TD estimate:</p>
+<p><span class="math display">\[\hat{A}_t = r_t + \gamma r_{t+1} + .... + \gamma^{T-t+1} r_{T-1} + \gamma^{T-t} V(s_T) - V(s_t)\]</span></p>
+<p>Where <span class="math inline">\(t\)</span> specifies the time index in <span class="math inline">\([0, T]\)</span>, within a given length-<span class="math inline">\(T\)</span> trajectory segment. Using this idea, we can use a truncated version of generalized advantage estimation:</p>
+<p><span class="math display">\[\hat{A}_t = \delta_t + \gamma \lambda \delta_{t+1} + .... + \lambda \gamma^{T-t+1}\delta_{T-1}\]</span></p>
+<p><span class="math display">\[\delta_t = r_t + \gamma V(s_{t+1}) - V(s_t)\]</span> </br></p>
+<p><img src="/images/RL/pg/ppo_3.png" width="600"> </br></p>
+<p>A PPO algorithm that uses fixed-length trajectory segments is shown above. Each iteration, each <span class="math inline">\(N\)</span> parallel actors collect <span class="math inline">\(T\)</span> timesteps of data. Then we construct the surrogate loss on these <span class="math inline">\(NT\)</span> timesteps of data and optimize it with mini-batch SGD for <span class="math inline">\(K\)</span> epochs.</p>
+<h2 id="implementation">Implementation</h2>
+<p>One implementation from parl</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   Copyright (c) 2021 PaddlePaddle Authors. All Rights Reserved.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></span><br><span class="line"><span class="comment"># you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"># You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"><span class="keyword">import</span> paddle</span><br><span class="line"><span class="keyword">import</span> paddle.optimizer <span class="keyword">as</span> optim</span><br><span class="line"><span class="keyword">import</span> paddle.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">from</span> paddle.distribution <span class="keyword">import</span> Normal</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PPO</span>(<span class="params">parl.Algorithm</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,</span></span></span><br><span class="line"><span class="function"><span class="params">                 model,</span></span></span><br><span class="line"><span class="function"><span class="params">                 clip_param,</span></span></span><br><span class="line"><span class="function"><span class="params">                 value_loss_coef,</span></span></span><br><span class="line"><span class="function"><span class="params">                 entropy_coef,</span></span></span><br><span class="line"><span class="function"><span class="params">                 initial_lr,</span></span></span><br><span class="line"><span class="function"><span class="params">                 eps=<span class="literal">None</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 max_grad_norm=<span class="literal">None</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 use_clipped_value_loss=<span class="literal">True</span></span>):</span></span><br><span class="line">        <span class="built_in">super</span>().__init__(model)</span><br><span class="line">        self.clip_param = clip_param</span><br><span class="line"></span><br><span class="line">        self.value_loss_coef = value_loss_coef  <span class="comment"># c_1</span></span><br><span class="line">        self.entropy_coef = entropy_coef  <span class="comment"># c_2</span></span><br><span class="line"></span><br><span class="line">        self.max_grad_norm = max_grad_norm</span><br><span class="line">        self.use_clipped_value_loss = use_clipped_value_loss</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> max_grad_norm:</span><br><span class="line">            clip = nn.ClipGradByNorm(self.max_grad_norm)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            clip = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">        self.optimizer = optim.Adam(parameters=model.parameters(),</span><br><span class="line">                                    learning_rate=initial_lr,</span><br><span class="line">                                    epsilon=eps,</span><br><span class="line">                                    grad_clip=clip)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self, obs_batch, actions_batch, value_preds_batch, return_batch,</span></span></span><br><span class="line"><span class="function"><span class="params">              old_action_log_probs_batch, adv_targ</span>):</span></span><br><span class="line">        values = self.model.value(obs_batch)</span><br><span class="line">        mean, log_std = self.model.policy(obs_batch)  <span class="comment"># log std so the std is always positive after e^&#123;log_std&#125;</span></span><br><span class="line">        dist = Normal(mean, log_std.exp())</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Continuous actions are usually considered to be independent,</span></span><br><span class="line">        <span class="comment"># so we can sum components of the ``log_prob`` or the entropy.</span></span><br><span class="line"></span><br><span class="line">        action_log_probs = dist.log_prob(actions_batch).<span class="built_in">sum</span>(axis=-<span class="number">1</span>, keepdim=<span class="literal">True</span>)  <span class="comment"># log are easier to deal with</span></span><br><span class="line">        dist_entropy = dist.entropy().<span class="built_in">sum</span>(axis=-<span class="number">1</span>, keepdim=<span class="literal">True</span>)  <span class="comment"># S(\pi)</span></span><br><span class="line"></span><br><span class="line">        ratio = paddle.exp(action_log_probs - old_action_log_probs_batch)</span><br><span class="line">        surr1 = ratio * adv_targ</span><br><span class="line">        surr2 = paddle.clip(ratio, <span class="number">1.0</span> - self.clip_param, <span class="number">1.0</span> + self.clip_param) * adv_targ</span><br><span class="line">        action_loss = -paddle.<span class="built_in">min</span>(surr1, surr2).mean()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># calculate value loss using semi gradient TD</span></span><br><span class="line">        <span class="keyword">if</span> self.use_clipped_value_loss:</span><br><span class="line">            value_pred_clipped = value_preds_batch + \</span><br><span class="line">                (values - value_preds_batch).clip(-self.clip_param, self.clip_param)</span><br><span class="line">            value_losses = (values - return_batch).<span class="built_in">pow</span>(<span class="number">2</span>)</span><br><span class="line">            value_losses_clipped = (value_pred_clipped - return_batch).<span class="built_in">pow</span>(<span class="number">2</span>)</span><br><span class="line">            value_loss = <span class="number">0.5</span> * paddle.<span class="built_in">max</span>(value_losses, value_losses_clipped).mean()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            value_loss = <span class="number">0.5</span> * (return_batch - values).<span class="built_in">pow</span>(<span class="number">2</span>).mean()</span><br><span class="line"></span><br><span class="line">        self.optimizer.clear_grad()</span><br><span class="line">        (value_loss * self.value_loss_coef + action_loss - dist_entropy * self.entropy_coef).backward()</span><br><span class="line">        self.optimizer.step()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> value_loss.numpy(), action_loss.numpy(), dist_entropy.numpy()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sample</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="comment"># sample from the stochastic policy</span></span><br><span class="line">        value = self.model.value(obs)</span><br><span class="line">        mean, log_std = self.model.policy(obs)</span><br><span class="line">        dist = Normal(mean, log_std.exp())</span><br><span class="line">        action = dist.sample([<span class="number">1</span>]).<span class="built_in">sum</span>(-<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">        action_log_probs = dist.log_prob(action)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> value, action, action_log_probs</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="comment"># choose the most confident action at test time</span></span><br><span class="line">        mean, _ = self.model.policy(obs)</span><br><span class="line">        <span class="keyword">return</span> mean</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">value</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="comment"># output value</span></span><br><span class="line">        <span class="keyword">return</span> self.model.value(obs)</span><br></pre></td></tr></table></figure>
+<h2 id="reference">Reference</h2>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>PG</category>
+      </categories>
+      <tags>
+        <tag>Policy Gradient</tag>
+        <tag>Policy Search</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MDP</title>
+    <url>/2021/05/03/MDP/</url>
+    <content><![CDATA[<h1 id="mdp">MDP</h1>
+<p><span style="color:red"><em>Based on Prof Amir-massoud Farahmand's Lecture on RL</em> </span></p>
+<p>Define our MDP different from Introduction to RL book:</p>
+<p><img src='/images/RL/bellman_equation/mdp.png'></p>
+<p>Where <span class="math inline">\(M(X)\)</span> is the space of all probability distributions defined over the state space X <span id="more"></span></p>
+<p>So a sample of the process can be described as a rollout or trajectory:</p>
+<p><span class="math display">\[\tau = X_1, A_1, R_1, X_2, A_2, R_2, ...\]</span></p>
+<p>A deterministic dynamical system always behave exactly the same given the same starting state and action, that is, they can be described as a transition function <span class="math inline">\(f\)</span> instead of transition distribution <span class="math inline">\(P\)</span></p>
+<p><span class="math display">\[x_{t+1} = f(x, a)\]</span></p>
+<h2 id="policy">Policy</h2>
+<p><img src='/images/RL/bellman_equation/policy_1.png'></p>
+<p><img src='/images/RL/bellman_equation/policy.png'></p>
+<h2 id="policy-induced-transition-kernels">Policy induced Transition Kernels</h2>
+<p><img src='/images/RL/bellman_equation/transition_kernel.png'></p>
+<h2 id="rewards-and-returns">Rewards and Returns</h2>
+<p>Let's define expected reward as:</p>
+<p><span class="math display">\[r(x, a) = E[R | X=x, A=a]\]</span></p>
+<p>then the expected reward following policy pi is defined as</p>
+<p><span class="math display">\[r^{\pi} (x) = E_{a \sim \pi(a | x)} [R | X=x]\]</span></p>
+<p>Define return following policy <span class="math inline">\(\pi\)</span> as discounted sum of rewards starting from <span class="math inline">\(X_1\)</span>:</p>
+<p><span class="math display">\[G^{\pi} = R_1 + \gamma R_2 + ... + \gamma^{T-1} R_{T} = \sum^{\infty}_{k=t} \gamma^{k - t}R_{t}\]</span></p>
+<p>or any starting at any step <span class="math inline">\(X_{t}\)</span>:</p>
+<p><span class="math display">\[G^{\pi}_{t} = \sum^{\infty}_{k=t} \gamma^{k - t}R_{t}\]</span></p>
+<p>Note that <span class="math inline">\(\gamma\)</span> is a part of the problem setting, it is usually not a hyperparameter. <strong>One way to think about is as a constant probability of termination of <span class="math inline">\(1 - \gamma\)</span>. Or we can set <span class="math inline">\(\gamma = 1\)</span> when we have episodic tasks.</strong>.</p>
+<h2 id="example">Example</h2>
+<p>Finite horizon example:</p>
+<ul>
+<li>Start at <span class="math inline">\(X_1 \sim \rho\)</span></li>
+<li>Select <span class="math inline">\(A_1 \sim \pi(\cdot | X_1)\)</span></li>
+<li>Get <span class="math inline">\(R_1 \sim R(\cdot | A_1, X_1)\)</span></li>
+<li>Get <span class="math inline">\(X_2 \sim P(\cdot | A_1, X_1)\)</span></li>
+<li>...</li>
+<li>...</li>
+<li>Get <span class="math inline">\(R_{T} \sim R(\cdot | X_{T}, A_{T})\)</span></li>
+<li>Get <span class="math inline">\(X_{T+1} \sim P(\cdot | X_{T}, A_{T})\)</span> (This is the terminal state, which is often dropped because it has value of 0)</li>
+</ul>
+<p>The process stops!</p>
+<h2 id="value-functions">Value functions</h2>
+<p>Next we can define value functions as:</p>
+<p>State value function (alias: Value function, V, v) starting from state x and following policy <span class="math inline">\(\pi\)</span>:</p>
+<p><span class="math display">\[V^{\pi}(x) = E[G_1^{\pi} | X_{1} = x] = E[G^{\pi}_{t} | X_{t} = x] \text{    (Markov Property)}\]</span></p>
+<p>Action value function following policy <span class="math inline">\(\pi\)</span> starting from state x and taking action a:</p>
+<p><span class="math display">\[Q^{\pi} (x, a) = E[G_1^{\pi} | X_{1} = x, A_{1} = a] = E[G^{\pi}_{t} | X_{t} = x, A_{t} = a] \text{    (Markov Property)}\]</span></p>
+<p>in the <code>terminal formulation</code>, the value function <span class="math inline">\(V_{term}^{\pi}\)</span> can be written as:</p>
+<p><span class="math display">\[V_{term}^{\pi} = E[R_{1} + R_2 + .... + R_{t + T} | X_1 = x] \;\;\;\;\;\; \forall x \in X\]</span></p>
+<p>The process terminates at time <span class="math inline">\(t + T\)</span> according to <span class="math inline">\(\gamma\)</span>. In this case the termination should be assumed to always occur in a finite number of steps (ie. if we have episodic task we can set <span class="math inline">\(\gamma = 1\)</span>).</p>
+<h2 id="another-formulation">Another formulation</h2>
+<p>We can also define the T-step rollout or trajectory distribution <span class="math inline">\(P(\tau | \pi)\)</span> following policy <span class="math inline">\(\pi\)</span>:</p>
+<p><span class="math display">\[P(\tau | \pi) = \rho(X_1)\prod_{t=1}^{T} P(X_{t+1}| X_{t}, A_{t}) \pi(A_t | X_{t}) R(R_t | X_{t}, A_{t})\]</span></p>
+<p>Then:</p>
+<p><span class="math display">\[R(\tau) = G^{\pi}_{1} = \sum^{T}_{k=1} \gamma^{k - t}R_{t}\]</span></p>
+<p><span class="math display">\[J(\pi) = E_{\tau \sim P(\tau | \pi) }[R(\tau)] = \int R(\tau) P(d\tau | \pi)\]</span></p>
+<p><span class="math display">\[V^{\pi} (x) = E_{\tau \sim P(\tau | \pi, X_1=x)}[R(\tau) | X_1 = x]\]</span></p>
+<p>And:</p>
+<p><span class="math display">\[J(\pi) = \int V^{\pi} (x) d\rho(x)\]</span></p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>Basics</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>actor_critic</title>
+    <url>/2021/06/14/actor-critic/</url>
+    <content><![CDATA[<h1 id="actor-critic-algorithms">Actor-Critic Algorithms</h1>
+<p><a href="https://papers.nips.cc/paper/1999/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf">Original Paper</a></p>
+]]></content>
   </entry>
   <entry>
     <title>average_reward_setting</title>
@@ -916,6 +944,25 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
+    <title>RL Cheat Sheet (under construction)</title>
+    <url>/2021/05/18/cheat-sheet/</url>
+    <content><![CDATA[<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
+<p><span class="math display">\[V^{*} (s) = max_{a} Q^{*} (s, a)\]</span></p>
+<p><span class="math display">\[Q^{*} (s, a) = max_{\pi} Q^{\pi} (s, a), \forall (s, a) \in S X A\]</span></p>
+<p><span class="math display">\[V^{\pi} (s) = E_{a_t \sim pi(\cdot | s)}[R_t | s_t=s, \pi] = E_{a_t \sim pi(\cdot | s)}[E[R_t | s_t, a_t, \pi] | s_t=s] = E_{a_t \sim pi(\cdot | s)}[ Q^{\pi}(s, a_t)]\]</span></p>
+<p><span class="math display">\[A^{\pi} (s, a) = Q^{\pi} (s, a) - V^{\pi} (s)\]</span></p>
+<p><span class="math display">\[E_{a}[A^{\pi} (s, a) | s] = E_{a}[Q^{\pi} (s, a) | s] - V^{\pi} (s) = 0\]</span></p>
+<p><span class="math display">\[E_{s^{\prime}}[R_t + \gamma V^{\pi}(s^{\prime}) - V^{\pi} (s)] = A^{\pi}(s, a)\]</span></p>
+<p>Express the expected return following <span class="math inline">\(\pi\)</span> in terms of the advantage over <span class="math inline">\(\tilde{\pi}\)</span>, accumulated over timesteps.</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Calculus</title>
     <url>/2021/06/14/calculus/</url>
     <content><![CDATA[<h1 id="multivariate-calculus-1">Multivariate Calculus (1)</h1>
@@ -967,31 +1014,6 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
-    <title>RL Cheat Sheet (under construction)</title>
-    <url>/2021/05/18/cheat-sheet/</url>
-    <content><![CDATA[<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
-<p><span class="math display">\[V^{*} (s) = max_{a} Q^{*} (s, a)\]</span></p>
-<p><span class="math display">\[Q^{*} (s, a) = max_{\pi} Q^{\pi} (s, a), \forall (s, a) \in S X A\]</span></p>
-<p><span class="math display">\[V^{\pi} (s) = E_{a_t \sim pi(\cdot | s)}[R_t | s_t=s, \pi] = E_{a_t \sim pi(\cdot | s)}[E[R_t | s_t, a_t, \pi] | s_t=s] = E_{a_t \sim pi(\cdot | s)}[ Q^{\pi}(s, a_t)]\]</span></p>
-<p><span class="math display">\[A^{\pi} (s, a) = Q^{\pi} (s, a) - V^{\pi} (s)\]</span></p>
-<p><span class="math display">\[E_{a}[A^{\pi} (s, a) | s] = E_{a}[Q^{\pi} (s, a) | s] - V^{\pi} (s) = 0\]</span></p>
-<p><span class="math display">\[E_{s^{\prime}}[R_t + \gamma V^{\pi}(s^{\prime}) - V^{\pi} (s)] = A^{\pi}(s, a)\]</span></p>
-<p>Express the expected return following <span class="math inline">\(\pi\)</span> in terms of the advantage over <span class="math inline">\(\tilde{\pi}\)</span>, accumulated over timesteps.</p>
-]]></content>
-      <categories>
-        <category>RL</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>convex_opt</title>
-    <url>/2021/06/14/convex-opt/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
     <title>Dynamic Programming</title>
     <url>/2021/05/03/dp/</url>
     <content><![CDATA[<h1 id="dynamic-programming">Dynamic Programming</h1>
@@ -1014,6 +1036,12 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
         <tag>RL Basics</tag>
         <tag>Dynamic Programming</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>convex_opt</title>
+    <url>/2021/06/14/convex-opt/</url>
+    <content><![CDATA[
+]]></content>
   </entry>
   <entry>
     <title>Dropout</title>
@@ -1126,6 +1154,18 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </tags>
   </entry>
   <entry>
+    <title>Leet Code (3)</title>
+    <url>/2021/06/16/leet-code-3/</url>
+    <content><![CDATA[<p><strong>题目库: <code>[]</code></strong></p>
+]]></content>
+      <categories>
+        <category>Others</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Monte Carlo Estimation</title>
     <url>/2021/05/15/mc/</url>
     <content><![CDATA[<h1 id="learning-from-stream-of-data-monte-carlo-methods">Learning From Stream of Data (Monte Carlo Methods)</h1>
@@ -1174,30 +1214,6 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </tags>
   </entry>
   <entry>
-    <title>Leet Code (3)</title>
-    <url>/2021/06/16/leet-code-3/</url>
-    <content><![CDATA[<p><strong>题目库: <code>[]</code></strong></p>
-]]></content>
-      <categories>
-        <category>Others</category>
-      </categories>
-      <tags>
-        <tag>LeetCode</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>natural-actor-critic</title>
-    <url>/2021/06/03/natural-actor-critic/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
-    <title>off-policy-actor-critic</title>
-    <url>/2021/06/03/off-policy-actor-critic/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
     <title>Notations</title>
     <url>/2030/05/30/notations/</url>
     <content><![CDATA[<h1 id="notations">Notations</h1>
@@ -1226,6 +1242,18 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </tags>
   </entry>
   <entry>
+    <title>natural-actor-critic</title>
+    <url>/2021/06/03/natural-actor-critic/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
+    <title>off-policy-actor-critic</title>
+    <url>/2021/06/03/off-policy-actor-critic/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
     <title>Policy Gradient (3)</title>
     <url>/2021/06/05/policy-gradient-3/</url>
     <content><![CDATA[<h1 id="policy-search-methods-reinforce">Policy Search Methods (REINFORCE)</h1>
@@ -1244,63 +1272,6 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
 </ul>
 <p><img src='/images/RL/pg/pg_5.png' width="600"></p>
 <h2 id="implementation">Implementation</h2>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>PG</category>
-      </categories>
-      <tags>
-        <tag>Policy Gradient</tag>
-        <tag>Continuous Action Space</tag>
-        <tag>Policy Search</tag>
-        <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Policy Gradient (1)</title>
-    <url>/2021/05/23/policy-gradient/</url>
-    <content><![CDATA[<h1 id="policy-search-methods-introduction">Policy Search Methods (Introduction)</h1>
-<p>So far, we have encountered methods for computing the optimal policy based on the computation of the value function. In this case, only value function was explicitly represented. There are also methods based on explicit representation of the policy and optimizing the performance of the agent by searching in the space of policies. These methods are called <strong>policy search methods</strong>.</p>
-<p>Consider a stochastic policy <span class="math inline">\(\pi_\theta: X \rightarrow M(A)\)</span> that maps state space to distribution defined over actions and parameterized by a <span class="math inline">\(\theta \in \Theta\)</span>. The set <span class="math inline">\(\Theta\)</span> is the parameter space. The space of all parameterized policies can be described as:</p>
-<p><span class="math display">\[\prod_\Theta = \{\pi_\theta: X \rightarrow M(A): \theta \in \Theta\}\]</span></p>
-<p>This space depends on the mapping <span class="math inline">\(\pi_\theta\)</span> and <span class="math inline">\(\Theta\)</span></p>
-<p>One example how we can parameterize policy by softmax distribution. Given a function mapping <span class="math inline">\(f_{\theta}: X \times A \rightarrow \mathbb{R}\)</span>, the probability of choosing action <span class="math inline">\(a\)</span> at state <span class="math inline">\(x\)</span> is:</p>
-<p><span class="math display">\[\pi_{\theta} (a | x) = \frac{exp(f_{\theta} (x, a))}{\sum_{a^{\prime}} exp(f_{\theta} (x, a^{\prime}))}\]</span></p>
-<p>or a normal distribution defined by <span class="math inline">\(\mu_\theta (x), \Sigma_\theta(x)\)</span>:</p>
-<p><span class="math display">\[\pi_{\theta} (\cdot | x) = N(\mu_\theta(x), \Sigma_{\theta} (x))\]</span></p>
-<span id="more"></span>
-<h2 id="why-parameterize-policy">Why Parameterize Policy?</h2>
-<p>Explicit parameterization of policy allows us to easily choose a continuous action. For example, if the policy is normal distribution defined over actions, we can just sample actions according to this distribution. For value based methods, this can be challenging:</p>
-<ul>
-<li>Even if we know <span class="math inline">\(Q^{*}\)</span>, computing the greedy policy is impossible over continuous action space.</li>
-<li>VI and PI requires repeated calculation of the greedy policy.</li>
-</ul>
-<h2 id="how-can-we-compare-policies">How Can We Compare Policies?</h2>
-<p>The performance can be measured in various ways. In VFA, we have bellman residuals, bellman errors, projected bellman errors and etc (But the ideas are all based on maximizing the expected return). In policy gradient methods, we also maximize the expected return following <span class="math inline">\(\pi_\theta\)</span>, at the same time, we incorporate the variance or some other risk measures.</p>
-<p><strong>Our goal is to find a policy that maximize this performance measure within the space of <span class="math inline">\(\prod_\Theta\)</span>.</strong></p>
-<h3 id="reasonable-choice-of-performance-measure">Reasonable Choice of Performance Measure</h3>
-<p>Assume that we only care about the performance at state <span class="math inline">\(x \in X\)</span> (We only care about one state). Then the goal of policy search:</p>
-<p><span class="math display">\[argmax_{\pi \in \prod_{\Theta}} V^{\pi} (x) = argmax_{\theta \in \Theta} V^{\pi_{\theta}} (x)\]</span></p>
-<p>In this case, we are interested only in state <span class="math inline">\(x\)</span>, its performance, measured according to its expected return, is maximized. We may want to find a policy that is only good at our starting state <span class="math inline">\(x\)</span> and ignore the performance at other states. The obtained policy is going to be initial-state-dependent. If we change <span class="math inline">\(x\)</span> to another state <span class="math inline">\(x^{\prime} \neq x\)</span>, we get a different optimal policy (according to this performance measure).</p>
-<p>Recall that, the optimal value function <span class="math inline">\(V^{*}\)</span> is optimal at every state. The optimal policy <span class="math inline">\(\pi^{*}\)</span> not only maximizes the value function at this particular state <span class="math inline">\(x\)</span>, but also at any other <span class="math inline">\(x^{\prime} \in X\)</span>. So, Instead of this extreme case of considering only the initial state <span class="math inline">\(x\)</span>, we can consider when the initial state is distributed according to some distribution <span class="math inline">\(\rho \sim M(X)\)</span> (This formulation is emphasized in the <a href="/2021/05/03/MDP/" title="MDP">MDP</a> blog, where trajectory starts by sampling from this initial distribution).</p>
-<p>The <strong>performance measure</strong> would be the average of following <span class="math inline">\(\pi_\theta\)</span> over initial state distribution <span class="math inline">\(X_1 \sim \rho\)</span>:</p>
-<p><span class="math display">\[J(\pi_\theta) = J_\rho(\pi_\theta) \triangleq \int_{x_1} V^{\pi_{\theta}} (x_1) d\rho(x_1) = E_{X_1 \sim \rho}[V^{\pi_{\theta}}(X_1)]\]</span></p>
-<p>In this case:</p>
-<ul>
-<li>The optimal policy maximizes <span class="math inline">\(J_\rho\)</span></li>
-<li><span class="math inline">\(J_\rho (\pi^*) \leq J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
-<li>If <span class="math inline">\(\pi^{*} \notin \prod_{\Theta}\)</span>, then <span class="math inline">\(J_\rho (\pi^*) &gt; J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
-</ul>
-<h2 id="goal">Goal</h2>
-<p>So, in policy search methods, we aim to find the policy that maximizes the performance measure within <span class="math inline">\(\prod_{\Theta}\)</span>:</p>
-<p><span class="math display">\[\bar{\pi} = argmax_{\pi_{\theta} \in \prod_{\Theta}} J_{\rho} (\pi_{\theta})\]</span></p>
-<ul>
-<li>The maximizer is denoted as <span class="math inline">\(\bar{\pi}\)</span> because the optimal policy <span class="math inline">\(\pi^{*}\)</span> may not lie in the space of <span class="math inline">\(\prod_{\Theta}\)</span></li>
-<li>For different <span class="math inline">\(\rho\)</span>, we may get different maximizes. However, if <span class="math inline">\(\pi^{*} \in \prod_{\Theta}\)</span>, <span class="math inline">\(\rho\)</span> does not matter.</li>
-<li>To emphasis the dependence of <span class="math inline">\(\bar{\pi}\)</span> on <span class="math inline">\(\rho\)</span>, <span class="math inline">\(\bar{\pi}_{\rho}\)</span> may be used.</li>
-<li>Sometimes, <span class="math inline">\(J(\pi(\theta))\)</span> or <span class="math inline">\(J_{\rho}(\pi_{\theta})\)</span> is denoted as <span class="math inline">\(J_{\rho} (\theta)\)</span> for simplification.</li>
-</ul>
-<h2 id="next-how-can-we-solve-for-barpi_rho">Next: How can we solve for <span class="math inline">\(\bar{\pi}_{\rho}\)</span>?</h2>
 ]]></content>
       <categories>
         <category>RL</category>
@@ -1393,65 +1364,6 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </tags>
   </entry>
   <entry>
-    <title>Prioritized Experience Replay</title>
-    <url>/2021/05/20/prior-exp-replay/</url>
-    <content><![CDATA[<h1 id="prioritized-experience-replay">Prioritized Experience Replay</h1>
-<h2 id="introduction">Introduction</h2>
-<p>In simplest form, RL agents observe a stream of experience and discard incoming data immediately, after a single update. Two issues with this are:</p>
-<ol type="1">
-<li>Strongly correlated updates that break the i.i.d assumptions of most stochastic-gradient-based algorithms</li>
-<li>The rapid forgetting of possibly rare experiences that would be useful later on (ie. some rare actions, rare states etc)</li>
-</ol>
-<p>Experience replay addresses both of these issues. In general, it can reduce the amount of experience required to learn, and replace it with more computation and more memory.</p>
-<p>However, RL gant can learn more effectively from some transitions than from others. Transitions may be more or less surprising, redundant, or task-relevant. Some transitions may not be immediately useful to the agent but might become so when the agent competence increases. Prioritized replay memory liberates agents from considering transitions uniformly. In particular, the authers propose to more frequently reply transitions with high <strong>expected learning progress</strong>, as measured by the magnitude of their TD error (on expectation, it is the <strong>BR</strong>). The bias will be corrected with importance sampling, loss of diversity will be alleviated with stochastic optimization.</p>
-<p>Using a replay memory leads to design choices at two levels: which experiences to store, and which experiences to replay (and how to do so). This paper addresses only the latter: <code>making the most effective use of the replay memory for learning</code>.</p>
-<span id="more"></span>
-<h2 id="prioritized-replay">Prioritized Replay</h2>
-<h3 id="prioritizing-with-td-error">Prioritizing with TD Error</h3>
-<p>The central component of prioritized replay is the criterion by which the importance of each transition is measured. One idealised criterion would be the amount the RL agent can learn from a transition in its current state (expected learning progress). While this measure is not directly accessible, a reasonable proxy is the magnitude of a transition's TD error <span class="math inline">\(\delta\)</span> (remember the <span class="math inline">\(E[\delta] = BR\)</span>, so <span class="math inline">\(\delta\)</span> is an unbiased estimate of BR). Which indicates how 'surprising' or unexpected the transition is, in order words, how far the value is from its next-step bootstrap estimate (i.e <span class="math inline">\(\hat{T} V\)</span>). However, TD-error can have high variance in some circumstances. Some possible alternatives for TD error:</p>
-<ol type="1">
-<li></li>
-<li></li>
-<li></li>
-</ol>
-<h3 id="greedy-td-error-prioritization">Greedy TD Error Prioritization</h3>
-<p>This algorithm stores the last encountered TD error along with each transition in the replay memory. The transition with the largest absolute TD error is replayed from the meomory. A Q-learning update is applied to this transition, which updates the weights in proportion to the TD error. New trains arrive without a known TD-error, so they put them at maximal priority in order to guarantee that all experience is seen at least once.</p>
-<p>Some issues:</p>
-<ol type="1">
-<li>TD errors are only updated for the transitions that are replayed or sampled from the memory. (to avoid expensive sweeps over the entire replay memory)</li>
-<li>The transitions that have a low TD error on first visit may not be replayed for a long time or never because they will have low priority.</li>
-<li>It is sensitive to noise spikes, which can be exacerbated by bootstrapping (a large update to <span class="math inline">\(Q(s, a)\)</span> may result in large updates in some other preceding states). When approximate error (<span class="math inline">\(\|Q^{\pi} - Q\|\)</span>) appear as another source of noise.</li>
-<li>Errors shrink slowly because the initally high error transitions get replayed frequently. This lack of diversity that makes the system prone to over-fitting to specific training transitions.</li>
-</ol>
-<h3 id="stochastic-prioritization">Stochastic Prioritization</h3>
-<p>To overcome these drawbacks, a stochastic sampling method that interpolates between pure greedy prioritization and uniform random sampling is introduced by the authors. like epsilon greedy policy, this method ensures that the probability of being sampled is monotonic in a transition's priority, while guaranteeing a non-zero probability even for the lowest-priority transition. The probability of sampling transition <span class="math inline">\(i\)</span> is defined as:</p>
-<p><span class="math display">\[P(i) = \frac{p^{\alpha}_i}{\sum_{k} p^{\alpha}_k}\]</span></p>
-<p>where <span class="math inline">\(p_i &gt; 0\)</span> is the priority of transition <span class="math inline">\(i\)</span>. The exponent <span class="math inline">\(\alpha\)</span> determines how much prioritization is used, which <span class="math inline">\(\alpha = 0\)</span> corresponding to the uniform case.</p>
-<p>There are several choice of priority measure <span class="math inline">\(p_i\)</span>:</p>
-<ol type="1">
-<li>absolute TD error: <span class="math inline">\(p_i = | \delta_i | + \epsilon\)</span>, where <span class="math inline">\(\epsilon\)</span> is a small positive constant that prevents the edge-case of transitions not being revisited once their error is 0.</li>
-<li>rank based: <span class="math inline">\(p_i = \frac{1}{rank(i)}\)</span>, where <span class="math inline">\(rank(i)\)</span> is the rank of transition <span class="math inline">\(i\)</span> when the replay memory is sorted according to <span class="math inline">\(|\delta_i|\)</span>. In this case, <span class="math inline">\(P\)</span> becomes a power law distribution with exponent <span class="math inline">\(\alpha\)</span>.</li>
-</ol>
-<p>Both distributions are monotonic in <span class="math inline">\(|\delta_i|\)</span>, but the latter is likely to be more robust because it is not sensitive to outliers.</p>
-<h3 id="implementation">Implementation</h3>
-<p>To efficiently sample from the distribution, the complexity cannot depend on <span class="math inline">\(N\)</span>. For a rank-based variant, we can approximate the cumulative density function with a piecewise linear function with <span class="math inline">\(k\)</span> segments of equal probability. The segment boundaries can be precomputed. At runtime, we can sample a segment and then sample uniformly among the transitions within it. This works particularly well with mini-batch based learning algorithm. Choose <span class="math inline">\(k\)</span> to be the size of the mini-batch the sample one transition from each segment (stratified sampling). The proportional variant is different, it is based on sum-tree data structure which can be efficiently updated and sampled from.</p>
-<p><img src="/images/RL/papers/prm_1.png"></p>
-<h2 id="importance-sampling-to-correct-bias">Importance Sampling to Correct Bias</h2>
-<p>The estimation of the expected value with stochastic updates relies on those updates corresponding to the same distribution as its expectation <strong>(I think they are talking about the DQN loss, <span class="math inline">\(E[\| \hat{T}Q_{k} - Q\|]\)</span>, where transitions are sampled from the replay memory, since the priority of transitions changes, the underlying distribution changes, in order to fix this, we need to remove some effect of the priority on the shift of distribution)</strong>. Prioritized replay introduces bias because it changes this distribution in an uncontrolled fashion, and therefore changes the solution that the estimates will converge to (even if the policy and state distribution are fixed). We can correct this bias by using importance-sampling (IS) weights:</p>
-<p><span class="math display">\[w_i = \frac{1}{N} \frac{1}{P(i)}\]</span></p>
-<p>Thus, if we have large <span class="math inline">\(P(i)\)</span>, we should make it smaller, so the distribution is uniform.</p>
-<p>These weights can be folded into the Q-learning update by using <span class="math inline">\(w_i \delta_i\)</span> instead of <span class="math inline">\(\delta\)</span>, for stability, they also normalize weights by <span class="math inline">\(\frac{1}{max_i w_i}\)</span></p>
-<h1 id="ref">Ref</h1>
-<p>https://danieltakeshi.github.io/2019/07/14/per/#:~:text=Prioritized%20replay%20introduces%20bias%20because,%2Dsampling%20(IS)%20weights.</p>
-]]></content>
-      <categories>
-        <category>RL</category>
-      </categories>
-      <tags>
-        <tag>Replay Memory</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Probability</title>
     <url>/2021/05/11/probability/</url>
     <content><![CDATA[<h1 id="probability-background">Probability Background</h1>
@@ -1533,6 +1445,148 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </categories>
       <tags>
         <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Policy Gradient (1)</title>
+    <url>/2021/05/23/policy-gradient/</url>
+    <content><![CDATA[<h1 id="policy-search-methods-introduction">Policy Search Methods (Introduction)</h1>
+<p>So far, we have encountered methods for computing the optimal policy based on the computation of the value function. In this case, only value function was explicitly represented. There are also methods based on explicit representation of the policy and optimizing the performance of the agent by searching in the space of policies. These methods are called <strong>policy search methods</strong>.</p>
+<p>Consider a stochastic policy <span class="math inline">\(\pi_\theta: X \rightarrow M(A)\)</span> that maps state space to distribution defined over actions and parameterized by a <span class="math inline">\(\theta \in \Theta\)</span>. The set <span class="math inline">\(\Theta\)</span> is the parameter space. The space of all parameterized policies can be described as:</p>
+<p><span class="math display">\[\prod_\Theta = \{\pi_\theta: X \rightarrow M(A): \theta \in \Theta\}\]</span></p>
+<p>This space depends on the mapping <span class="math inline">\(\pi_\theta\)</span> and <span class="math inline">\(\Theta\)</span></p>
+<p>One example how we can parameterize policy by softmax distribution. Given a function mapping <span class="math inline">\(f_{\theta}: X \times A \rightarrow \mathbb{R}\)</span>, the probability of choosing action <span class="math inline">\(a\)</span> at state <span class="math inline">\(x\)</span> is:</p>
+<p><span class="math display">\[\pi_{\theta} (a | x) = \frac{exp(f_{\theta} (x, a))}{\sum_{a^{\prime}} exp(f_{\theta} (x, a^{\prime}))}\]</span></p>
+<p>or a normal distribution defined by <span class="math inline">\(\mu_\theta (x), \Sigma_\theta(x)\)</span>:</p>
+<p><span class="math display">\[\pi_{\theta} (\cdot | x) = N(\mu_\theta(x), \Sigma_{\theta} (x))\]</span></p>
+<span id="more"></span>
+<h2 id="why-parameterize-policy">Why Parameterize Policy?</h2>
+<p>Explicit parameterization of policy allows us to easily choose a continuous action. For example, if the policy is normal distribution defined over actions, we can just sample actions according to this distribution. For value based methods, this can be challenging:</p>
+<ul>
+<li>Even if we know <span class="math inline">\(Q^{*}\)</span>, computing the greedy policy is impossible over continuous action space.</li>
+<li>VI and PI requires repeated calculation of the greedy policy.</li>
+</ul>
+<h2 id="how-can-we-compare-policies">How Can We Compare Policies?</h2>
+<p>The performance can be measured in various ways. In VFA, we have bellman residuals, bellman errors, projected bellman errors and etc (But the ideas are all based on maximizing the expected return). In policy gradient methods, we also maximize the expected return following <span class="math inline">\(\pi_\theta\)</span>, at the same time, we incorporate the variance or some other risk measures.</p>
+<p><strong>Our goal is to find a policy that maximize this performance measure within the space of <span class="math inline">\(\prod_\Theta\)</span>.</strong></p>
+<h3 id="reasonable-choice-of-performance-measure">Reasonable Choice of Performance Measure</h3>
+<p>Assume that we only care about the performance at state <span class="math inline">\(x \in X\)</span> (We only care about one state). Then the goal of policy search:</p>
+<p><span class="math display">\[argmax_{\pi \in \prod_{\Theta}} V^{\pi} (x) = argmax_{\theta \in \Theta} V^{\pi_{\theta}} (x)\]</span></p>
+<p>In this case, we are interested only in state <span class="math inline">\(x\)</span>, its performance, measured according to its expected return, is maximized. We may want to find a policy that is only good at our starting state <span class="math inline">\(x\)</span> and ignore the performance at other states. The obtained policy is going to be initial-state-dependent. If we change <span class="math inline">\(x\)</span> to another state <span class="math inline">\(x^{\prime} \neq x\)</span>, we get a different optimal policy (according to this performance measure).</p>
+<p>Recall that, the optimal value function <span class="math inline">\(V^{*}\)</span> is optimal at every state. The optimal policy <span class="math inline">\(\pi^{*}\)</span> not only maximizes the value function at this particular state <span class="math inline">\(x\)</span>, but also at any other <span class="math inline">\(x^{\prime} \in X\)</span>. So, Instead of this extreme case of considering only the initial state <span class="math inline">\(x\)</span>, we can consider when the initial state is distributed according to some distribution <span class="math inline">\(\rho \sim M(X)\)</span> (This formulation is emphasized in the <a href="/2021/05/03/MDP/" title="MDP">MDP</a> blog, where trajectory starts by sampling from this initial distribution).</p>
+<p>The <strong>performance measure</strong> would be the average of following <span class="math inline">\(\pi_\theta\)</span> over initial state distribution <span class="math inline">\(X_1 \sim \rho\)</span>:</p>
+<p><span class="math display">\[J(\pi_\theta) = J_\rho(\pi_\theta) \triangleq \int_{x_1} V^{\pi_{\theta}} (x_1) d\rho(x_1) = E_{X_1 \sim \rho}[V^{\pi_{\theta}}(X_1)]\]</span></p>
+<p>In this case:</p>
+<ul>
+<li>The optimal policy maximizes <span class="math inline">\(J_\rho\)</span></li>
+<li><span class="math inline">\(J_\rho (\pi^*) \leq J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
+<li>If <span class="math inline">\(\pi^{*} \notin \prod_{\Theta}\)</span>, then <span class="math inline">\(J_\rho (\pi^*) &gt; J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
+</ul>
+<h2 id="goal">Goal</h2>
+<p>So, in policy search methods, we aim to find the policy that maximizes the performance measure within <span class="math inline">\(\prod_{\Theta}\)</span>:</p>
+<p><span class="math display">\[\bar{\pi} = argmax_{\pi_{\theta} \in \prod_{\Theta}} J_{\rho} (\pi_{\theta})\]</span></p>
+<ul>
+<li>The maximizer is denoted as <span class="math inline">\(\bar{\pi}\)</span> because the optimal policy <span class="math inline">\(\pi^{*}\)</span> may not lie in the space of <span class="math inline">\(\prod_{\Theta}\)</span></li>
+<li>For different <span class="math inline">\(\rho\)</span>, we may get different maximizes. However, if <span class="math inline">\(\pi^{*} \in \prod_{\Theta}\)</span>, <span class="math inline">\(\rho\)</span> does not matter.</li>
+<li>To emphasis the dependence of <span class="math inline">\(\bar{\pi}\)</span> on <span class="math inline">\(\rho\)</span>, <span class="math inline">\(\bar{\pi}_{\rho}\)</span> may be used.</li>
+<li>Sometimes, <span class="math inline">\(J(\pi(\theta))\)</span> or <span class="math inline">\(J_{\rho}(\pi_{\theta})\)</span> is denoted as <span class="math inline">\(J_{\rho} (\theta)\)</span> for simplification.</li>
+</ul>
+<h2 id="next-how-can-we-solve-for-barpi_rho">Next: How can we solve for <span class="math inline">\(\bar{\pi}_{\rho}\)</span>?</h2>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>PG</category>
+      </categories>
+      <tags>
+        <tag>Policy Gradient</tag>
+        <tag>Continuous Action Space</tag>
+        <tag>Policy Search</tag>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SARSA</title>
+    <url>/2021/05/16/sarsa/</url>
+    <content><![CDATA[<h1 id="sarsa">SARSA</h1>
+<p>SARSA (State Action State Reward State Action) is an on-policy TD algorithm that follows a PI-like procedure:</p>
+<ol type="1">
+<li>Estimate <span class="math inline">\(Q^{\pi_k}\)</span> for a given policy <span class="math inline">\(\pi_k\)</span></li>
+<li>Perform policy improvement to obtain a new policy <span class="math inline">\(\pi_{k+1}\)</span></li>
+</ol>
+<p>Compare with usual Policy iteration, SARSA uses <code>Generalized policy iteration</code> to improve the policy before <span class="math inline">\(Q\)</span> converges to <span class="math inline">\(Q^{\pi_k}\)</span>.</p>
+<span id="more"></span>
+<h2 id="algorithm">Algorithm</h2>
+<p><img src="/images/RL/mc/td_6.png"></p>
+<p>Notice that, <span class="math inline">\(\pi_t\)</span> here is a <span class="math inline">\(\epsilon\)</span>-greedy policy because we want to ensure some exploration. The greedy part of the policy performs the policy improvement while the occasional random choice of actions allows the agent to have some exploration.</p>
+<h2 id="implementation">Implementation</h2>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>TD</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>Tabular Methods</tag>
+        <tag>TD</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Prioritized Experience Replay</title>
+    <url>/2021/05/20/prior-exp-replay/</url>
+    <content><![CDATA[<h1 id="prioritized-experience-replay">Prioritized Experience Replay</h1>
+<h2 id="introduction">Introduction</h2>
+<p>In simplest form, RL agents observe a stream of experience and discard incoming data immediately, after a single update. Two issues with this are:</p>
+<ol type="1">
+<li>Strongly correlated updates that break the i.i.d assumptions of most stochastic-gradient-based algorithms</li>
+<li>The rapid forgetting of possibly rare experiences that would be useful later on (ie. some rare actions, rare states etc)</li>
+</ol>
+<p>Experience replay addresses both of these issues. In general, it can reduce the amount of experience required to learn, and replace it with more computation and more memory.</p>
+<p>However, RL gant can learn more effectively from some transitions than from others. Transitions may be more or less surprising, redundant, or task-relevant. Some transitions may not be immediately useful to the agent but might become so when the agent competence increases. Prioritized replay memory liberates agents from considering transitions uniformly. In particular, the authers propose to more frequently reply transitions with high <strong>expected learning progress</strong>, as measured by the magnitude of their TD error (on expectation, it is the <strong>BR</strong>). The bias will be corrected with importance sampling, loss of diversity will be alleviated with stochastic optimization.</p>
+<p>Using a replay memory leads to design choices at two levels: which experiences to store, and which experiences to replay (and how to do so). This paper addresses only the latter: <code>making the most effective use of the replay memory for learning</code>.</p>
+<span id="more"></span>
+<h2 id="prioritized-replay">Prioritized Replay</h2>
+<h3 id="prioritizing-with-td-error">Prioritizing with TD Error</h3>
+<p>The central component of prioritized replay is the criterion by which the importance of each transition is measured. One idealised criterion would be the amount the RL agent can learn from a transition in its current state (expected learning progress). While this measure is not directly accessible, a reasonable proxy is the magnitude of a transition's TD error <span class="math inline">\(\delta\)</span> (remember the <span class="math inline">\(E[\delta] = BR\)</span>, so <span class="math inline">\(\delta\)</span> is an unbiased estimate of BR). Which indicates how 'surprising' or unexpected the transition is, in order words, how far the value is from its next-step bootstrap estimate (i.e <span class="math inline">\(\hat{T} V\)</span>). However, TD-error can have high variance in some circumstances. Some possible alternatives for TD error:</p>
+<ol type="1">
+<li></li>
+<li></li>
+<li></li>
+</ol>
+<h3 id="greedy-td-error-prioritization">Greedy TD Error Prioritization</h3>
+<p>This algorithm stores the last encountered TD error along with each transition in the replay memory. The transition with the largest absolute TD error is replayed from the meomory. A Q-learning update is applied to this transition, which updates the weights in proportion to the TD error. New trains arrive without a known TD-error, so they put them at maximal priority in order to guarantee that all experience is seen at least once.</p>
+<p>Some issues:</p>
+<ol type="1">
+<li>TD errors are only updated for the transitions that are replayed or sampled from the memory. (to avoid expensive sweeps over the entire replay memory)</li>
+<li>The transitions that have a low TD error on first visit may not be replayed for a long time or never because they will have low priority.</li>
+<li>It is sensitive to noise spikes, which can be exacerbated by bootstrapping (a large update to <span class="math inline">\(Q(s, a)\)</span> may result in large updates in some other preceding states). When approximate error (<span class="math inline">\(\|Q^{\pi} - Q\|\)</span>) appear as another source of noise.</li>
+<li>Errors shrink slowly because the initally high error transitions get replayed frequently. This lack of diversity that makes the system prone to over-fitting to specific training transitions.</li>
+</ol>
+<h3 id="stochastic-prioritization">Stochastic Prioritization</h3>
+<p>To overcome these drawbacks, a stochastic sampling method that interpolates between pure greedy prioritization and uniform random sampling is introduced by the authors. like epsilon greedy policy, this method ensures that the probability of being sampled is monotonic in a transition's priority, while guaranteeing a non-zero probability even for the lowest-priority transition. The probability of sampling transition <span class="math inline">\(i\)</span> is defined as:</p>
+<p><span class="math display">\[P(i) = \frac{p^{\alpha}_i}{\sum_{k} p^{\alpha}_k}\]</span></p>
+<p>where <span class="math inline">\(p_i &gt; 0\)</span> is the priority of transition <span class="math inline">\(i\)</span>. The exponent <span class="math inline">\(\alpha\)</span> determines how much prioritization is used, which <span class="math inline">\(\alpha = 0\)</span> corresponding to the uniform case.</p>
+<p>There are several choice of priority measure <span class="math inline">\(p_i\)</span>:</p>
+<ol type="1">
+<li>absolute TD error: <span class="math inline">\(p_i = | \delta_i | + \epsilon\)</span>, where <span class="math inline">\(\epsilon\)</span> is a small positive constant that prevents the edge-case of transitions not being revisited once their error is 0.</li>
+<li>rank based: <span class="math inline">\(p_i = \frac{1}{rank(i)}\)</span>, where <span class="math inline">\(rank(i)\)</span> is the rank of transition <span class="math inline">\(i\)</span> when the replay memory is sorted according to <span class="math inline">\(|\delta_i|\)</span>. In this case, <span class="math inline">\(P\)</span> becomes a power law distribution with exponent <span class="math inline">\(\alpha\)</span>.</li>
+</ol>
+<p>Both distributions are monotonic in <span class="math inline">\(|\delta_i|\)</span>, but the latter is likely to be more robust because it is not sensitive to outliers.</p>
+<h3 id="implementation">Implementation</h3>
+<p>To efficiently sample from the distribution, the complexity cannot depend on <span class="math inline">\(N\)</span>. For a rank-based variant, we can approximate the cumulative density function with a piecewise linear function with <span class="math inline">\(k\)</span> segments of equal probability. The segment boundaries can be precomputed. At runtime, we can sample a segment and then sample uniformly among the transitions within it. This works particularly well with mini-batch based learning algorithm. Choose <span class="math inline">\(k\)</span> to be the size of the mini-batch the sample one transition from each segment (stratified sampling). The proportional variant is different, it is based on sum-tree data structure which can be efficiently updated and sampled from.</p>
+<p><img src="/images/RL/papers/prm_1.png"></p>
+<h2 id="importance-sampling-to-correct-bias">Importance Sampling to Correct Bias</h2>
+<p>The estimation of the expected value with stochastic updates relies on those updates corresponding to the same distribution as its expectation <strong>(I think they are talking about the DQN loss, <span class="math inline">\(E[\| \hat{T}Q_{k} - Q\|]\)</span>, where transitions are sampled from the replay memory, since the priority of transitions changes, the underlying distribution changes, in order to fix this, we need to remove some effect of the priority on the shift of distribution)</strong>. Prioritized replay introduces bias because it changes this distribution in an uncontrolled fashion, and therefore changes the solution that the estimates will converge to (even if the policy and state distribution are fixed). We can correct this bias by using importance-sampling (IS) weights:</p>
+<p><span class="math display">\[w_i = \frac{1}{N} \frac{1}{P(i)}\]</span></p>
+<p>Thus, if we have large <span class="math inline">\(P(i)\)</span>, we should make it smaller, so the distribution is uniform.</p>
+<p>These weights can be folded into the Q-learning update by using <span class="math inline">\(w_i \delta_i\)</span> instead of <span class="math inline">\(\delta\)</span>, for stability, they also normalize weights by <span class="math inline">\(\frac{1}{max_i w_i}\)</span></p>
+<h1 id="ref">Ref</h1>
+<p>https://danieltakeshi.github.io/2019/07/14/per/#:~:text=Prioritized%20replay%20introduces%20bias%20because,%2Dsampling%20(IS)%20weights.</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+      </categories>
+      <tags>
+        <tag>Replay Memory</tag>
       </tags>
   </entry>
   <entry>
@@ -1634,32 +1688,6 @@ Var[max_{a^{\prime} \in A} Q_t (X^{\prime}, a^{\prime}) | X_t=x_t, A_t=a_t] &amp
 <li>A single learning rate suffices if the agent happens to visit all <span class="math inline">\((x, a) \in (X \times A)\)</span> frequent enough.</li>
 </ul>
 <h1 id="implementations">Implementations:</h1>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>TD</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>Tabular Methods</tag>
-        <tag>TD</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SARSA</title>
-    <url>/2021/05/16/sarsa/</url>
-    <content><![CDATA[<h1 id="sarsa">SARSA</h1>
-<p>SARSA (State Action State Reward State Action) is an on-policy TD algorithm that follows a PI-like procedure:</p>
-<ol type="1">
-<li>Estimate <span class="math inline">\(Q^{\pi_k}\)</span> for a given policy <span class="math inline">\(\pi_k\)</span></li>
-<li>Perform policy improvement to obtain a new policy <span class="math inline">\(\pi_{k+1}\)</span></li>
-</ol>
-<p>Compare with usual Policy iteration, SARSA uses <code>Generalized policy iteration</code> to improve the policy before <span class="math inline">\(Q\)</span> converges to <span class="math inline">\(Q^{\pi_k}\)</span>.</p>
-<span id="more"></span>
-<h2 id="algorithm">Algorithm</h2>
-<p><img src="/images/RL/mc/td_6.png"></p>
-<p>Notice that, <span class="math inline">\(\pi_t\)</span> here is a <span class="math inline">\(\epsilon\)</span>-greedy policy because we want to ensure some exploration. The greedy part of the policy performs the policy improvement while the occasional random choice of actions allows the agent to have some exploration.</p>
-<h2 id="implementation">Implementation</h2>
 ]]></content>
       <categories>
         <category>RL</category>
@@ -1995,6 +2023,63 @@ E[\delta (X, R, X^{\prime}; V^{\pi}) | X=x, A=a] &amp;= E[R + \gamma V^{\pi}(X^{
       </tags>
   </entry>
   <entry>
+    <title>Value Iteration</title>
+    <url>/2021/05/03/value-iteration/</url>
+    <content><![CDATA[<h1 id="value-iteration">Value Iteration</h1>
+<p>VI is one of the fundamental algorithms for planning. Many RL algorithms are essentially the sample-based variants of VI (DQN). We directly use the results of fixed points proposition and contraction property of the Bellman operator we proved in <a href="/2021/05/03/bellman-optimality-equations/" title="Bellman Optimality Equations">Bellman Optimality Equations</a>.</p>
+<h2 id="idea">Idea</h2>
+<p>Starting from <span class="math inline">\(V_0 \in B(X)\)</span>, we compute a sequence of <span class="math inline">\((V_{k})_{k \geq 0}\)</span> by:</p>
+<p><span class="math display">\[V_{k+1} \leftarrow T^{\pi} V_{k}\]</span></p>
+<p>By the contraction property of the Bellman operator and Uniqueness of fixed points proposition :</p>
+<p><span class="math display">\[lim_{k \rightarrow \infty} \| V_k - V^{\pi}\|_{\infty} = 0\]</span></p>
+<p>similar for <span class="math inline">\(Q\)</span>:</p>
+<p><span class="math display">\[lim_{k \rightarrow \infty} \| Q_k - Q^{\pi}\|_{\infty} = 0\]</span></p>
+<span id="more"></span>
+<p>Also, if we compute a sequence of <span class="math inline">\((V_{k})_{k \geq 0}\)</span> by:</p>
+<p><span class="math display">\[V_{k+1} \leftarrow T^{*} V_{k}\]</span></p>
+<p><span class="math display">\[Q_{k+1} \leftarrow T^{*} Q_{k}\]</span></p>
+<p>By the contraction property of the Bellman operator and Uniqueness of fixed points proposition, it is guaranteed that</p>
+<p><span class="math display">\[lim_{k \rightarrow \infty} \| V_k - V^{*}\|_{\infty} = 0\]</span></p>
+<p><span class="math display">\[lim_{k \rightarrow \infty} \| Q_k - Q^{*}\|_{\infty} = 0\]</span></p>
+<p><img src='/images/RL/dp/value_iteration_1.png'> <img src='/images/RL/dp/value_iteration_2.png'> <img src='/images/RL/dp/value_iteration_3.png'></p>
+<p>After finding <span class="math inline">\(Q^{*}\)</span>, finding optimal policy is straightforward:</p>
+<p><span class="math display">\[\pi^{*} (a | x) = argmax_{a \in A} Q^{*} (x, a)\]</span></p>
+<h2 id="algorithm">algorithm</h2>
+<p>One generic implementation can be found in intro to RL book:</p>
+<p><img src='/images/RL/dp/value-iteration.png'></p>
+<h2 id="implementation">Implementation</h2>
+<p>Below is one implementation of Value iteration (using Q):</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># part of code from rl-algo.dp</span></span><br><span class="line"><span class="comment"># link: https://github.com/swag1ong/rl-algo</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ValueIter</span>(<span class="params">DpBase</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">train</span>(<span class="params">self</span>):</span></span><br><span class="line"></span><br><span class="line">        dynamics = self.env.env.P</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line"></span><br><span class="line">            delta = <span class="number">0</span></span><br><span class="line">            <span class="comment"># Calculate Q^*, V^* (s) = max_a Q^* (s, a)</span></span><br><span class="line">            <span class="keyword">for</span> s <span class="keyword">in</span> dynamics.keys():</span><br><span class="line">                prev_val = self._val[s].copy()</span><br><span class="line">                curr_val = self._val[s]</span><br><span class="line"></span><br><span class="line">                <span class="keyword">for</span> a <span class="keyword">in</span> dynamics[s].keys():</span><br><span class="line">                    temp_val = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">                    <span class="keyword">for</span> p, s_prime, r, _ <span class="keyword">in</span> dynamics[s][a]:</span><br><span class="line">                        temp_val = temp_val + p * (r + self.gamma * np.<span class="built_in">max</span>(self._val[s_prime]))</span><br><span class="line"></span><br><span class="line">                    curr_val[a] = temp_val</span><br><span class="line"></span><br><span class="line">                curr_delta = np.linalg.norm(np.array(prev_val) - np.array(curr_val))</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> curr_delta &gt; delta:</span><br><span class="line">                    delta = curr_delta</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> delta &lt; self.threshold:</span><br><span class="line">                <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>DP</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>Dynamic Programming</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vfa-1</title>
+    <url>/2021/06/12/vfa-1/</url>
+    <content><![CDATA[<h1 id="value-function-approximation-introduction">Value Function Approximation (Introduction)</h1>
+<p>In real-world problem, the state space <span class="math inline">\(X\)</span> or the state-action space <span class="math inline">\(X \times A\)</span> is large that we cannot represent quantities such as the value function or policy exactly.</p>
+<ul>
+<li><span class="math inline">\(X \subseteq \mathbb{R}^d\)</span> with <span class="math inline">\(d \geq 1\)</span>. Exact representation of an arbitrary function on <span class="math inline">\(\mathbb{R}^d\)</span> on a computer is infeasible.</li>
+<li><span class="math inline">\(X\)</span> is finite, but very large (millions or billions)</li>
+</ul>
+<p>We need to approximate those functions using a representation that is feasible to manipulate on a computer. This is called <strong>function approximation</strong>.</p>
+<p>Function approximation also helps with the generalization.</p>
+<h2 id="linear-function-approximation">Linear Function Approximation</h2>
+<p>We may use a linear function approximator defined based on a set of basis functions:</p>
+<p><span class="math display">\[\hat{V} (x) = \phi (x)^T w = \sum^p_{i=1} \phi_i (x) w_i\]</span></p>
+<p>with <span class="math inline">\(w \in \mathbb{R}^p\)</span> and <span class="math inline">\(\phi: X \rightarrow \mathbb{R}^p\)</span></p>
+<p>Any <span class="math inline">\(\hat{V}\)</span> belongs to the space of functions <span class="math inline">\(\mathbf{F}\)</span>:</p>
+<p><span class="math display">\[\mathbf{F} = \{x \mapsto  \phi (x)^T w : w \in \mathbb{R}^p\}\]</span></p>
+]]></content>
+  </entry>
+  <entry>
     <title>tree</title>
     <url>/2021/06/14/tree/</url>
     <content><![CDATA[<h1 id="trees">Trees</h1>
@@ -2097,63 +2182,6 @@ Uniform(A), \text{w. p } \epsilon \\
         <tag>Tabular Methods</tag>
         <tag>TD</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Value Iteration</title>
-    <url>/2021/05/03/value-iteration/</url>
-    <content><![CDATA[<h1 id="value-iteration">Value Iteration</h1>
-<p>VI is one of the fundamental algorithms for planning. Many RL algorithms are essentially the sample-based variants of VI (DQN). We directly use the results of fixed points proposition and contraction property of the Bellman operator we proved in <a href="/2021/05/03/bellman-optimality-equations/" title="Bellman Optimality Equations">Bellman Optimality Equations</a>.</p>
-<h2 id="idea">Idea</h2>
-<p>Starting from <span class="math inline">\(V_0 \in B(X)\)</span>, we compute a sequence of <span class="math inline">\((V_{k})_{k \geq 0}\)</span> by:</p>
-<p><span class="math display">\[V_{k+1} \leftarrow T^{\pi} V_{k}\]</span></p>
-<p>By the contraction property of the Bellman operator and Uniqueness of fixed points proposition :</p>
-<p><span class="math display">\[lim_{k \rightarrow \infty} \| V_k - V^{\pi}\|_{\infty} = 0\]</span></p>
-<p>similar for <span class="math inline">\(Q\)</span>:</p>
-<p><span class="math display">\[lim_{k \rightarrow \infty} \| Q_k - Q^{\pi}\|_{\infty} = 0\]</span></p>
-<span id="more"></span>
-<p>Also, if we compute a sequence of <span class="math inline">\((V_{k})_{k \geq 0}\)</span> by:</p>
-<p><span class="math display">\[V_{k+1} \leftarrow T^{*} V_{k}\]</span></p>
-<p><span class="math display">\[Q_{k+1} \leftarrow T^{*} Q_{k}\]</span></p>
-<p>By the contraction property of the Bellman operator and Uniqueness of fixed points proposition, it is guaranteed that</p>
-<p><span class="math display">\[lim_{k \rightarrow \infty} \| V_k - V^{*}\|_{\infty} = 0\]</span></p>
-<p><span class="math display">\[lim_{k \rightarrow \infty} \| Q_k - Q^{*}\|_{\infty} = 0\]</span></p>
-<p><img src='/images/RL/dp/value_iteration_1.png'> <img src='/images/RL/dp/value_iteration_2.png'> <img src='/images/RL/dp/value_iteration_3.png'></p>
-<p>After finding <span class="math inline">\(Q^{*}\)</span>, finding optimal policy is straightforward:</p>
-<p><span class="math display">\[\pi^{*} (a | x) = argmax_{a \in A} Q^{*} (x, a)\]</span></p>
-<h2 id="algorithm">algorithm</h2>
-<p>One generic implementation can be found in intro to RL book:</p>
-<p><img src='/images/RL/dp/value-iteration.png'></p>
-<h2 id="implementation">Implementation</h2>
-<p>Below is one implementation of Value iteration (using Q):</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># part of code from rl-algo.dp</span></span><br><span class="line"><span class="comment"># link: https://github.com/swag1ong/rl-algo</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ValueIter</span>(<span class="params">DpBase</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">train</span>(<span class="params">self</span>):</span></span><br><span class="line"></span><br><span class="line">        dynamics = self.env.env.P</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line"></span><br><span class="line">            delta = <span class="number">0</span></span><br><span class="line">            <span class="comment"># Calculate Q^*, V^* (s) = max_a Q^* (s, a)</span></span><br><span class="line">            <span class="keyword">for</span> s <span class="keyword">in</span> dynamics.keys():</span><br><span class="line">                prev_val = self._val[s].copy()</span><br><span class="line">                curr_val = self._val[s]</span><br><span class="line"></span><br><span class="line">                <span class="keyword">for</span> a <span class="keyword">in</span> dynamics[s].keys():</span><br><span class="line">                    temp_val = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">                    <span class="keyword">for</span> p, s_prime, r, _ <span class="keyword">in</span> dynamics[s][a]:</span><br><span class="line">                        temp_val = temp_val + p * (r + self.gamma * np.<span class="built_in">max</span>(self._val[s_prime]))</span><br><span class="line"></span><br><span class="line">                    curr_val[a] = temp_val</span><br><span class="line"></span><br><span class="line">                curr_delta = np.linalg.norm(np.array(prev_val) - np.array(curr_val))</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> curr_delta &gt; delta:</span><br><span class="line">                    delta = curr_delta</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> delta &lt; self.threshold:</span><br><span class="line">                <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>DP</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>Dynamic Programming</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>vfa-1</title>
-    <url>/2021/06/12/vfa-1/</url>
-    <content><![CDATA[<h1 id="value-function-approximation-introduction">Value Function Approximation (Introduction)</h1>
-<p>In real-world problem, the state space <span class="math inline">\(X\)</span> or the state-action space <span class="math inline">\(X \times A\)</span> is large that we cannot represent quantities such as the value function or policy exactly.</p>
-<ul>
-<li><span class="math inline">\(X \subseteq \mathbb{R}^d\)</span> with <span class="math inline">\(d \geq 1\)</span>. Exact representation of an arbitrary function on <span class="math inline">\(\mathbb{R}^d\)</span> on a computer is infeasible.</li>
-<li><span class="math inline">\(X\)</span> is finite, but very large (millions or billions)</li>
-</ul>
-<p>We need to approximate those functions using a representation that is feasible to manipulate on a computer. This is called <strong>function approximation</strong>.</p>
-<p>Function approximation also helps with the generalization.</p>
-<h2 id="linear-function-approximation">Linear Function Approximation</h2>
-<p>We may use a linear function approximator defined based on a set of basis functions:</p>
-<p><span class="math display">\[\hat{V} (x) = \phi (x)^T w = \sum^p_{i=1} \phi_i (x) w_i\]</span></p>
-<p>with <span class="math inline">\(w \in \mathbb{R}^p\)</span> and <span class="math inline">\(\phi: X \rightarrow \mathbb{R}^p\)</span></p>
-<p>Any <span class="math inline">\(\hat{V}\)</span> belongs to the space of functions <span class="math inline">\(\mathbf{F}\)</span>:</p>
-<p><span class="math display">\[\mathbf{F} = \{x \mapsto  \phi (x)^T w : w \in \mathbb{R}^p\}\]</span></p>
-]]></content>
   </entry>
   <entry>
     <title>Leet Code (1)</title>
