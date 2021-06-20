@@ -1,57 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>DDQN</title>
-    <url>/2021/05/07/DDQN/</url>
-    <content><![CDATA[<h1 id="deep-reinforcement-learning-with-double-q-learning"><a href="https://arxiv.org/abs/1509.06461">Deep Reinforcement Learning with Double Q-Learning</a></h1>
-<h2 id="introduction">Introduction</h2>
-<p>The authors show that the double Q-learning algorithm which was first proposed in a tabular setting, can be generalized to arbitrary function approximation, including DNN. They use this to construct a new algorithm called double DQN to solve the overestimation problem in DQN.</p>
-<h2 id="notations">Notations</h2>
-<p>Define:</p>
-<p><span class="math display">\[Q_{\pi} (s, a) = E[R_1 + \gamma R_2 + ... | S_0=s, A_0=a, \pi]\]</span></p>
-<p><span class="math display">\[Q_{*} (s, a) = max_{\pi} Q_{\pi} (s, a)\]</span></p>
-<p><span class="math display">\[\pi_{*} (s) = argmax_{a \in A} Q_{*} (s, a)\]</span></p>
-<p>The Target:</p>
-<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma max_{a} Q(S_{t+1}, a; \theta_{t})\]</span></p>
-<p>A standard Q update using stochastic gradient decent is (Semi-gradient Q):</p>
-<p><span class="math display">\[\theta_{t+1} = \theta_t + \alpha (Y_{t}^{Q} - Q(S_t, A_t; \theta_t)) \nabla_{\theta_t} Q(S_t, A_t; \theta_t)\]</span></p>
-<p>Where <span class="math inline">\(\alpha\)</span> is a scalar step size.</p>
-<span id="more"></span>
-<h2 id="background">Background</h2>
-<h3 id="double-q-learning">Double Q-learning</h3>
-<p>The max operator in standard Q-learning and DQN uses the same values both to select and to evaluate an action (ie. same Q is used to select the max action and use the value of this max action to update the Value of the state action pair). This makes it more likely to select overestimated values, resulting in overoptimistic value estimates.</p>
-<p>In Double Q-learning, two value functions are learned by assigning experiences randomly to update one of the two value functions, resulting in two sets of weights, <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\theta^{\prime}\)</span>. For each update, one set of weights is used to determine the greedy action, and the other to determine its value.</p>
-<p>Previous Q target:</p>
-<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta_{t}})\]</span></p>
-<p>The double Q-learning target:</p>
-<p><span class="math display">\[Y_t^{\text{DoubleQ}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta^{\prime}_{t}})\]</span></p>
-<h3 id="maximization-problem">Maximization Problem</h3>
-<p><img src='/images/RL/papers/DDQN_1.png'></p>
-<p>This theorem shows that even if the value estimates are on average correct, estimation errors of any source can drive the estimates up and away from the true optimal values.</p>
-<p>The lower bound in Theorem 1 decreases with the number of actions. This is an artifact of considering the lower bound, which requires very specific values to be attained. More typically, the overoptimism increases with the number of actions.</p>
-<p><img src='/images/RL/papers/DDQN_2.png'></p>
-<p><span class="math display">\[E[Q(s, a) - V_{*}(s)] = E[V_{*}(s) - V_{*}(s) + \epsilon ] = 0\]</span></p>
-<p>But, Q-learning updates have large bias due to max operation, the phenomena is severer as number of actions increases.</p>
-<p>In function approximation setting:</p>
-<p><img src='/images/RL/papers/DDQN_3.png'></p>
-<h2 id="algorithm">Algorithm</h2>
-<p>The target network in the DQN architecture provides a natural candidate for the second value function, without having to introduce additional networks. Thus, we can evaluate the greedy policy according to the online network, but using the target network to estimate its value. The resulting update:</p>
-<p><span class="math display">\[Y_t^{\text{DoubleDQN}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a} Q(S_{t+1}, a; \theta_{t}), \theta_{t}^{-})\]</span></p>
-<h2 id="implementation">Implementation</h2>
-<p>This is an implementation of DDQN in PARL. This implementation is written using PaddlePaddle.</p>
-<p>https://github.com/PaddlePaddle/PARL</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></span><br><span class="line"><span class="comment"># you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"># You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> copy</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"><span class="keyword">import</span> paddle</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DQN</span>(<span class="params">parl.Algorithm</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, model, gamma=<span class="literal">None</span>, lr=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; DQN algorithm</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            model (parl.Model): forward neural network representing the Q function.</span></span><br><span class="line"><span class="string">            gamma (float): discounted factor for `accumulative` reward computation</span></span><br><span class="line"><span class="string">            lr (float): learning rate.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.model = model</span><br><span class="line">        self.target_model = copy.deepcopy(model)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(gamma, <span class="built_in">float</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(lr, <span class="built_in">float</span>)</span><br><span class="line">        self.gamma = gamma</span><br><span class="line">        self.lr = lr</span><br><span class="line"></span><br><span class="line">        self.mse_loss = paddle.nn.MSELoss(reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line">        self.optimizer = paddle.optimizer.Adam(</span><br><span class="line">            learning_rate=lr, parameters=self.model.parameters())</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; use self.model (Q function) to predict the action values</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.model.value(obs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self, obs, action, reward, next_obs, terminal</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; update the Q function (self.model) with DQN algorithm</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># Q</span></span><br><span class="line">        pred_values = self.model.value(obs)</span><br><span class="line">        action_dim = pred_values.shape[-<span class="number">1</span>]</span><br><span class="line">        action = paddle.squeeze(action, axis=-<span class="number">1</span>)</span><br><span class="line">        action_onehot = paddle.nn.functional.one_hot(</span><br><span class="line">            action, num_classes=action_dim)</span><br><span class="line">        pred_value = paddle.multiply(pred_values, action_onehot)</span><br><span class="line">        pred_value = paddle.<span class="built_in">sum</span>(pred_value, axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># target Q</span></span><br><span class="line">        <span class="keyword">with</span> paddle.no_grad():</span><br><span class="line">            greedy_actions = self.model.value(next_obs).argmax(<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">            max_v = self.target_model.value(next_obs).gather(index=greedy_actions, axis=<span class="number">1</span>)</span><br><span class="line">            target = reward + (<span class="number">1</span> - terminal) * self.gamma * max_v</span><br><span class="line"></span><br><span class="line">        loss = self.mse_loss(pred_value, target)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># optimize</span></span><br><span class="line">        self.optimizer.clear_grad()</span><br><span class="line">        loss.backward()</span><br><span class="line">        self.optimizer.step()</span><br><span class="line">        <span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sync_target</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.model.sync_weights_to(self.target_model)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>VFA</category>
-      </categories>
-      <tags>
-        <tag>Function Approximation</tag>
-        <tag>Continuous State Space</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Deep Deterministic Policy Gradient</title>
     <url>/2021/06/09/DDPG/</url>
     <content><![CDATA[<h1 id="continuous-control-with-deep-reinforcement-learning">Continuous Control with Deep Reinforcement Learning</h1>
@@ -132,6 +81,120 @@
         <tag>Policy Gradient</tag>
         <tag>Continuous Action Space</tag>
         <tag>Policy Search</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DDQN</title>
+    <url>/2021/05/07/DDQN/</url>
+    <content><![CDATA[<h1 id="deep-reinforcement-learning-with-double-q-learning"><a href="https://arxiv.org/abs/1509.06461">Deep Reinforcement Learning with Double Q-Learning</a></h1>
+<h2 id="introduction">Introduction</h2>
+<p>The authors show that the double Q-learning algorithm which was first proposed in a tabular setting, can be generalized to arbitrary function approximation, including DNN. They use this to construct a new algorithm called double DQN to solve the overestimation problem in DQN.</p>
+<h2 id="notations">Notations</h2>
+<p>Define:</p>
+<p><span class="math display">\[Q_{\pi} (s, a) = E[R_1 + \gamma R_2 + ... | S_0=s, A_0=a, \pi]\]</span></p>
+<p><span class="math display">\[Q_{*} (s, a) = max_{\pi} Q_{\pi} (s, a)\]</span></p>
+<p><span class="math display">\[\pi_{*} (s) = argmax_{a \in A} Q_{*} (s, a)\]</span></p>
+<p>The Target:</p>
+<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma max_{a} Q(S_{t+1}, a; \theta_{t})\]</span></p>
+<p>A standard Q update using stochastic gradient decent is (Semi-gradient Q):</p>
+<p><span class="math display">\[\theta_{t+1} = \theta_t + \alpha (Y_{t}^{Q} - Q(S_t, A_t; \theta_t)) \nabla_{\theta_t} Q(S_t, A_t; \theta_t)\]</span></p>
+<p>Where <span class="math inline">\(\alpha\)</span> is a scalar step size.</p>
+<span id="more"></span>
+<h2 id="background">Background</h2>
+<h3 id="double-q-learning">Double Q-learning</h3>
+<p>The max operator in standard Q-learning and DQN uses the same values both to select and to evaluate an action (ie. same Q is used to select the max action and use the value of this max action to update the Value of the state action pair). This makes it more likely to select overestimated values, resulting in overoptimistic value estimates.</p>
+<p>In Double Q-learning, two value functions are learned by assigning experiences randomly to update one of the two value functions, resulting in two sets of weights, <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\theta^{\prime}\)</span>. For each update, one set of weights is used to determine the greedy action, and the other to determine its value.</p>
+<p>Previous Q target:</p>
+<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta_{t}})\]</span></p>
+<p>The double Q-learning target:</p>
+<p><span class="math display">\[Y_t^{\text{DoubleQ}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta^{\prime}_{t}})\]</span></p>
+<h3 id="maximization-problem">Maximization Problem</h3>
+<p><img src='/images/RL/papers/DDQN_1.png'></p>
+<p>This theorem shows that even if the value estimates are on average correct, estimation errors of any source can drive the estimates up and away from the true optimal values.</p>
+<p>The lower bound in Theorem 1 decreases with the number of actions. This is an artifact of considering the lower bound, which requires very specific values to be attained. More typically, the overoptimism increases with the number of actions.</p>
+<p><img src='/images/RL/papers/DDQN_2.png'></p>
+<p><span class="math display">\[E[Q(s, a) - V_{*}(s)] = E[V_{*}(s) - V_{*}(s) + \epsilon ] = 0\]</span></p>
+<p>But, Q-learning updates have large bias due to max operation, the phenomena is severer as number of actions increases.</p>
+<p>In function approximation setting:</p>
+<p><img src='/images/RL/papers/DDQN_3.png'></p>
+<h2 id="algorithm">Algorithm</h2>
+<p>The target network in the DQN architecture provides a natural candidate for the second value function, without having to introduce additional networks. Thus, we can evaluate the greedy policy according to the online network, but using the target network to estimate its value. The resulting update:</p>
+<p><span class="math display">\[Y_t^{\text{DoubleDQN}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a} Q(S_{t+1}, a; \theta_{t}), \theta_{t}^{-})\]</span></p>
+<h2 id="implementation">Implementation</h2>
+<p>This is an implementation of DDQN in PARL. This implementation is written using PaddlePaddle.</p>
+<p>https://github.com/PaddlePaddle/PARL</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></span><br><span class="line"><span class="comment"># you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"># You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> copy</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"><span class="keyword">import</span> paddle</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DQN</span>(<span class="params">parl.Algorithm</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, model, gamma=<span class="literal">None</span>, lr=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; DQN algorithm</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            model (parl.Model): forward neural network representing the Q function.</span></span><br><span class="line"><span class="string">            gamma (float): discounted factor for `accumulative` reward computation</span></span><br><span class="line"><span class="string">            lr (float): learning rate.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.model = model</span><br><span class="line">        self.target_model = copy.deepcopy(model)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(gamma, <span class="built_in">float</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(lr, <span class="built_in">float</span>)</span><br><span class="line">        self.gamma = gamma</span><br><span class="line">        self.lr = lr</span><br><span class="line"></span><br><span class="line">        self.mse_loss = paddle.nn.MSELoss(reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line">        self.optimizer = paddle.optimizer.Adam(</span><br><span class="line">            learning_rate=lr, parameters=self.model.parameters())</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; use self.model (Q function) to predict the action values</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.model.value(obs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self, obs, action, reward, next_obs, terminal</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; update the Q function (self.model) with DQN algorithm</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># Q</span></span><br><span class="line">        pred_values = self.model.value(obs)</span><br><span class="line">        action_dim = pred_values.shape[-<span class="number">1</span>]</span><br><span class="line">        action = paddle.squeeze(action, axis=-<span class="number">1</span>)</span><br><span class="line">        action_onehot = paddle.nn.functional.one_hot(</span><br><span class="line">            action, num_classes=action_dim)</span><br><span class="line">        pred_value = paddle.multiply(pred_values, action_onehot)</span><br><span class="line">        pred_value = paddle.<span class="built_in">sum</span>(pred_value, axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># target Q</span></span><br><span class="line">        <span class="keyword">with</span> paddle.no_grad():</span><br><span class="line">            greedy_actions = self.model.value(next_obs).argmax(<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">            max_v = self.target_model.value(next_obs).gather(index=greedy_actions, axis=<span class="number">1</span>)</span><br><span class="line">            target = reward + (<span class="number">1</span> - terminal) * self.gamma * max_v</span><br><span class="line"></span><br><span class="line">        loss = self.mse_loss(pred_value, target)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># optimize</span></span><br><span class="line">        self.optimizer.clear_grad()</span><br><span class="line">        loss.backward()</span><br><span class="line">        self.optimizer.step()</span><br><span class="line">        <span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sync_target</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.model.sync_weights_to(self.target_model)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Continuous State Space</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Dueling Network Architectures for DRL</title>
+    <url>/2021/05/13/Dueling/</url>
+    <content><![CDATA[<h1 id="dueling-network-architectures-for-deep-reinforcement-learning">Dueling Network Architectures for Deep Reinforcement Learning</h1>
+<h2 id="introduction">Introduction</h2>
+<p>The authors introduce an innovating neural network architecture that is better suited for model-free RL. This paper advances a new network but uses already published algorithms.</p>
+<p>The proposed architecture is called dueling architecture, explicitly separates the representation of state values and state-dependent action advantages. The architecture consists of two streams that represent the value and advantage functions, while sharing a common convolutional feature learning module. The two streams are combined via a special aggregating layer to produce an estimate of the state-action value function <span class="math inline">\(Q\)</span>. This dueling network should be understood as a single Q network with two streams that replaces the popular single-stream Q-network in existing algorithms such as DQN. The dueling network automatically produces separate estimates of the state value function and advantage function, without any extra supervision.</p>
+<p><img src="/images/RL/papers/dueling_1.png"></p>
+<p>Intuitively, the dueling architecture can learn which states are (or are not) valuable, without having to learn the effect of each action for each state. (by taking the gradient wrt to the input) It can more quickly identify the correct action during policy evaluation as redundant or similar actions are added to the learning problem.</p>
+<span id="more"></span>
+<h2 id="background">Background</h2>
+<p><strong>random variables have subscript <span class="math inline">\(t\)</span>, <span class="math inline">\(E[ g(x_t, a_t) | x_t=x, a_t] = f(x, a)\)</span> is shorthanded as <span class="math inline">\(f(x, a) = E[g(x, a)]\)</span></strong></p>
+<p>In Atari domain, the agent perceives a video <span class="math inline">\(s_t\)</span> consisting of M image frames <span class="math inline">\(s_t = (x_{t-M+1}, ..., x_t) \in S\)</span> at time step <span class="math inline">\(t\)</span>. Then agent chooses an action from a discrete set <span class="math inline">\(a_t \in A\)</span> and observes a reward signal <span class="math inline">\(r_t\)</span> produced by the game emulator.</p>
+<p>The agent seeks to maximize the expected discounted return where we define the discounted return as <span class="math inline">\(R_t = \sum_{\tau=t}^{\infty} \gamma^{\tau - t} r_{\tau}\)</span> with <span class="math inline">\(\gamma \in [0, 1]\)</span>.</p>
+<p>For an agent behaving to a stochastic policy <span class="math inline">\(\pi\)</span>, the values of the state-action pair <span class="math inline">\((s, a)\)</span> and the state <span class="math inline">\(s\)</span> are defined as:</p>
+<p><span class="math display">\[Q^{\pi} (s, a) = E[R_t | s_t=s, a_t=a, \pi]\]</span></p>
+<p><span class="math display">\[V^{\pi} (s) = E_{a_t \sim \pi(\cdot | s)}[R_t | s_t=s, \pi] = E_{a_t \sim \pi(\cdot | s)}[E[R_t | s_t, a_t, \pi] | s_t=s] = E_{a_t \sim \pi(\cdot | s)}[ Q^{\pi}(s, a_t)]\]</span></p>
+<p>We know that we can rewrite <span class="math inline">\(Q^{\pi}\)</span> as:</p>
+<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
+<p>We also define:</p>
+<p><span class="math display">\[Q^{*} (s, a) = max_{\pi} Q^{\pi} (s, a), \forall (s, a) \in S X A\]</span></p>
+<p>Then:</p>
+<p><span class="math display">\[V^{*} (s) = max_{a} Q^{*} (s, a)\]</span></p>
+<p>And,</p>
+<p><span class="math display">\[Q^{*}(s, a) = E_{s^{\prime}} [r + \gamma max_{a^{\prime}} Q^{*} (s^{\prime}, a^{\prime}) | s, a]\]</span></p>
+<p>The advantage function is denoted as:</p>
+<p><span class="math display">\[A^{\pi} (s, a) = Q^{\pi} (s, a) - V^{\pi} (s)\]</span></p>
+<p><span class="math display">\[E_{a}[A^{\pi} (s, a) | s] = E_{a}[Q^{\pi} (s, a) | s] - V^{\pi} (s) = 0\]</span></p>
+<p>This means that the advantage at state <span class="math inline">\(s\)</span> weighted by policy <span class="math inline">\(\pi\)</span> is 0. Intuitively, the advantage function measures the relative importance for each action.</p>
+<h2 id="dueling-network-architecture">Dueling Network Architecture</h2>
+<p>Instead of following the convolutional layers with a single sequence of fully connected layers, they instead use two sequences (streams) of fully connected layers. The streams are constructed such that they have the capability of providing separate estimates of the value and advantage functions. Finally , the two streams are combined to produce a single output <span class="math inline">\(Q\)</span> function.</p>
+<p>From the advantage expression, we know that</p>
+<p><span class="math display">\[Q^{\pi} (s, a) = V^{\pi} (s) + A^{\pi} (s, a)\]</span></p>
+<p>If the policy is the deterministic policy, <span class="math inline">\(a^{*} = argmax_{a^{\prime} \in A} Q(s, a^{\prime})\)</span>, then:</p>
+<p><span class="math display">\[E_{a^{\prime}}[Q^{\pi} (s, a)] = Q^{\pi} (s, a^{*}) = V^{\pi} (s)\]</span> and hence <span class="math inline">\(A^{\pi}(s, a^{*}) = 0\)</span>$</p>
+<p>Let <span class="math inline">\(V(s; \theta, \beta), A(s, a; \theta, \alpha), Q(s, a; \theta, \alpha, \beta)\)</span> be parametrized version of <span class="math inline">\(V, A, Q\)</span> respectively. <span class="math inline">\(\theta\)</span> are the shared parameters, <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are the stream parameters for <span class="math inline">\(V, A\)</span>. We can calculate <span class="math inline">\(Q\)</span> directly using the formula:</p>
+<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha)\]</span></p>
+<p>However, these functions are just estimates of the true values, therefore are unidentifiable in the sense that given <span class="math inline">\(Q\)</span> we can not recover <span class="math inline">\(V, A\)</span> uniquely. (ie. given <span class="math inline">\(Q(s, a)\)</span> what is <span class="math inline">\(V(s), A(s, a)\)</span>?)</p>
+<p>To solve the problem, we can force the advantage function to have zero advantage at some chosen action, in this case the greedy action:</p>
+<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha) - max_{a^{\prime}} A(s, a^{\prime}; \theta, \alpha)\]</span></p>
+<p>Thus, if <span class="math inline">\(a^{*} = argmax_{a^{\prime} \in A} Q(s, a^{\prime})\)</span>, then</p>
+<p><span class="math display">\[Q(s, a^{*}; \theta, \alpha, \beta) = V(s; \theta, \beta)\]</span></p>
+<p>We can determine the <span class="math inline">\(V\)</span> given <span class="math inline">\(Q\)</span>.</p>
+<p>Or, we can have:</p>
+<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha) - \frac{1}{|A|} \sum_{a^{\prime}} A(s, a^{\prime}; \theta, \alpha)\]</span></p>
+<p>Take the expectation or average of <span class="math inline">\(Q\)</span>:</p>
+<p><span class="math display">\[E[Q(s, a; \theta, \alpha, \beta)] = V(s; \theta, \theta)\]</span></p>
+<p>On the one hand this loses the original semantics of <span class="math inline">\(V\)</span> and <span class="math inline">\(A\)</span> because they are now off-target by a constant, but on the other hand it increases the stability of the optimization. Note that while subtracting the mean or max helps with the identifiability, it does not change the relative rank of <span class="math inline">\(A, Q\)</span>, so the greedy action.</p>
+<h2 id="discussion">Discussion</h2>
+<p>The advantage of the dueling architecture lies partly in its ability to learn the state-value function efficiently. With every update of the <span class="math inline">\(Q\)</span> values in the dueling architecture, the value stream <span class="math inline">\(V\)</span> is updated – this contrasts with the updates in a single-stream architecture where only the value of one of actions is updated, the values of other actions are untouched. The advantage of the dueling architecture over single-stream <span class="math inline">\(Q\)</span> networks grows when the number of actions is large.</p>
+<h2 id="implementation">Implementation</h2>
+<p><em>One implementation of Dueling Architecture in PARL using PaddlPaddle for Atari Games</em></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> paddle.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AtariModel</span>(<span class="params">parl.Model</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, act_dim, dueling=<span class="literal">False</span></span>):</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line">        self.conv1 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">4</span>, out_channels=<span class="number">32</span>, kernel_size=<span class="number">5</span>, stride=<span class="number">1</span>, padding=<span class="number">2</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv2 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">32</span>, out_channels=<span class="number">32</span>, kernel_size=<span class="number">5</span>, stride=<span class="number">1</span>, padding=<span class="number">2</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv3 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">32</span>, out_channels=<span class="number">64</span>, kernel_size=<span class="number">4</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv4 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">64</span>, out_channels=<span class="number">64</span>, kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.relu = nn.ReLU()</span><br><span class="line">        self.max_pool = nn.MaxPool2D(kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>)</span><br><span class="line">        self.flatten = nn.Flatten()</span><br><span class="line"></span><br><span class="line">        self.dueling = dueling</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> dueling:</span><br><span class="line">            self.linear_1_adv = nn.Linear(in_features=<span class="number">6400</span>, out_features=<span class="number">512</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">            self.linear_2_adv = nn.Linear(in_features=<span class="number">512</span>, out_features=act_dim)</span><br><span class="line">            self.linear_1_val = nn.Linear(in_features=<span class="number">6400</span>, out_features=<span class="number">512</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">            self.linear_2_val = nn.Linear(in_features=<span class="number">512</span>, out_features=<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.linear_1 = nn.Linear(in_features=<span class="number">6400</span>, out_features=act_dim)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">value</span>(<span class="params">self, obs</span>):</span></span><br><span class="line"></span><br><span class="line">        obs = obs / <span class="number">255.0</span></span><br><span class="line">        out = self.max_pool(self.relu(self.conv1(obs)))</span><br><span class="line">        out = self.max_pool(self.relu(self.conv2(out)))</span><br><span class="line">        out = self.max_pool(self.relu(self.conv3(out)))</span><br><span class="line">        out = self.relu(self.conv4(out))</span><br><span class="line">        out = self.flatten(out)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.dueling:</span><br><span class="line">            As = self.relu(self.linear_1_adv(out))</span><br><span class="line">            As = self.linear_2_adv(As)</span><br><span class="line">            V = self.relu(self.linear_1_val(out))</span><br><span class="line">            V = self.linear_2_val(V)</span><br><span class="line">            Q = As + (V - As.mean(axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            Q = self.linear_1(out)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Q</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Continuous State Space</tag>
       </tags>
   </entry>
   <entry>
@@ -285,83 +348,6 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
       </tags>
   </entry>
   <entry>
-    <title>Dueling Network Architectures for DRL</title>
-    <url>/2021/05/13/Dueling/</url>
-    <content><![CDATA[<h1 id="dueling-network-architectures-for-deep-reinforcement-learning">Dueling Network Architectures for Deep Reinforcement Learning</h1>
-<h2 id="introduction">Introduction</h2>
-<p>The authors introduce an innovating neural network architecture that is better suited for model-free RL. This paper advances a new network but uses already published algorithms.</p>
-<p>The proposed architecture is called dueling architecture, explicitly separates the representation of state values and state-dependent action advantages. The architecture consists of two streams that represent the value and advantage functions, while sharing a common convolutional feature learning module. The two streams are combined via a special aggregating layer to produce an estimate of the state-action value function <span class="math inline">\(Q\)</span>. This dueling network should be understood as a single Q network with two streams that replaces the popular single-stream Q-network in existing algorithms such as DQN. The dueling network automatically produces separate estimates of the state value function and advantage function, without any extra supervision.</p>
-<p><img src="/images/RL/papers/dueling_1.png"></p>
-<p>Intuitively, the dueling architecture can learn which states are (or are not) valuable, without having to learn the effect of each action for each state. (by taking the gradient wrt to the input) It can more quickly identify the correct action during policy evaluation as redundant or similar actions are added to the learning problem.</p>
-<span id="more"></span>
-<h2 id="background">Background</h2>
-<p><strong>random variables have subscript <span class="math inline">\(t\)</span>, <span class="math inline">\(E[ g(x_t, a_t) | x_t=x, a_t] = f(x, a)\)</span> is shorthanded as <span class="math inline">\(f(x, a) = E[g(x, a)]\)</span></strong></p>
-<p>In Atari domain, the agent perceives a video <span class="math inline">\(s_t\)</span> consisting of M image frames <span class="math inline">\(s_t = (x_{t-M+1}, ..., x_t) \in S\)</span> at time step <span class="math inline">\(t\)</span>. Then agent chooses an action from a discrete set <span class="math inline">\(a_t \in A\)</span> and observes a reward signal <span class="math inline">\(r_t\)</span> produced by the game emulator.</p>
-<p>The agent seeks to maximize the expected discounted return where we define the discounted return as <span class="math inline">\(R_t = \sum_{\tau=t}^{\infty} \gamma^{\tau - t} r_{\tau}\)</span> with <span class="math inline">\(\gamma \in [0, 1]\)</span>.</p>
-<p>For an agent behaving to a stochastic policy <span class="math inline">\(\pi\)</span>, the values of the state-action pair <span class="math inline">\((s, a)\)</span> and the state <span class="math inline">\(s\)</span> are defined as:</p>
-<p><span class="math display">\[Q^{\pi} (s, a) = E[R_t | s_t=s, a_t=a, \pi]\]</span></p>
-<p><span class="math display">\[V^{\pi} (s) = E_{a_t \sim \pi(\cdot | s)}[R_t | s_t=s, \pi] = E_{a_t \sim \pi(\cdot | s)}[E[R_t | s_t, a_t, \pi] | s_t=s] = E_{a_t \sim \pi(\cdot | s)}[ Q^{\pi}(s, a_t)]\]</span></p>
-<p>We know that we can rewrite <span class="math inline">\(Q^{\pi}\)</span> as:</p>
-<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
-<p>We also define:</p>
-<p><span class="math display">\[Q^{*} (s, a) = max_{\pi} Q^{\pi} (s, a), \forall (s, a) \in S X A\]</span></p>
-<p>Then:</p>
-<p><span class="math display">\[V^{*} (s) = max_{a} Q^{*} (s, a)\]</span></p>
-<p>And,</p>
-<p><span class="math display">\[Q^{*}(s, a) = E_{s^{\prime}} [r + \gamma max_{a^{\prime}} Q^{*} (s^{\prime}, a^{\prime}) | s, a]\]</span></p>
-<p>The advantage function is denoted as:</p>
-<p><span class="math display">\[A^{\pi} (s, a) = Q^{\pi} (s, a) - V^{\pi} (s)\]</span></p>
-<p><span class="math display">\[E_{a}[A^{\pi} (s, a) | s] = E_{a}[Q^{\pi} (s, a) | s] - V^{\pi} (s) = 0\]</span></p>
-<p>This means that the advantage at state <span class="math inline">\(s\)</span> weighted by policy <span class="math inline">\(\pi\)</span> is 0. Intuitively, the advantage function measures the relative importance for each action.</p>
-<h2 id="dueling-network-architecture">Dueling Network Architecture</h2>
-<p>Instead of following the convolutional layers with a single sequence of fully connected layers, they instead use two sequences (streams) of fully connected layers. The streams are constructed such that they have the capability of providing separate estimates of the value and advantage functions. Finally , the two streams are combined to produce a single output <span class="math inline">\(Q\)</span> function.</p>
-<p>From the advantage expression, we know that</p>
-<p><span class="math display">\[Q^{\pi} (s, a) = V^{\pi} (s) + A^{\pi} (s, a)\]</span></p>
-<p>If the policy is the deterministic policy, <span class="math inline">\(a^{*} = argmax_{a^{\prime} \in A} Q(s, a^{\prime})\)</span>, then:</p>
-<p><span class="math display">\[E_{a^{\prime}}[Q^{\pi} (s, a)] = Q^{\pi} (s, a^{*}) = V^{\pi} (s)\]</span> and hence <span class="math inline">\(A^{\pi}(s, a^{*}) = 0\)</span>$</p>
-<p>Let <span class="math inline">\(V(s; \theta, \beta), A(s, a; \theta, \alpha), Q(s, a; \theta, \alpha, \beta)\)</span> be parametrized version of <span class="math inline">\(V, A, Q\)</span> respectively. <span class="math inline">\(\theta\)</span> are the shared parameters, <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are the stream parameters for <span class="math inline">\(V, A\)</span>. We can calculate <span class="math inline">\(Q\)</span> directly using the formula:</p>
-<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha)\]</span></p>
-<p>However, these functions are just estimates of the true values, therefore are unidentifiable in the sense that given <span class="math inline">\(Q\)</span> we can not recover <span class="math inline">\(V, A\)</span> uniquely. (ie. given <span class="math inline">\(Q(s, a)\)</span> what is <span class="math inline">\(V(s), A(s, a)\)</span>?)</p>
-<p>To solve the problem, we can force the advantage function to have zero advantage at some chosen action, in this case the greedy action:</p>
-<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha) - max_{a^{\prime}} A(s, a^{\prime}; \theta, \alpha)\]</span></p>
-<p>Thus, if <span class="math inline">\(a^{*} = argmax_{a^{\prime} \in A} Q(s, a^{\prime})\)</span>, then</p>
-<p><span class="math display">\[Q(s, a^{*}; \theta, \alpha, \beta) = V(s; \theta, \beta)\]</span></p>
-<p>We can determine the <span class="math inline">\(V\)</span> given <span class="math inline">\(Q\)</span>.</p>
-<p>Or, we can have:</p>
-<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha) - \frac{1}{|A|} \sum_{a^{\prime}} A(s, a^{\prime}; \theta, \alpha)\]</span></p>
-<p>Take the expectation or average of <span class="math inline">\(Q\)</span>:</p>
-<p><span class="math display">\[E[Q(s, a; \theta, \alpha, \beta)] = V(s; \theta, \theta)\]</span></p>
-<p>On the one hand this loses the original semantics of <span class="math inline">\(V\)</span> and <span class="math inline">\(A\)</span> because they are now off-target by a constant, but on the other hand it increases the stability of the optimization. Note that while subtracting the mean or max helps with the identifiability, it does not change the relative rank of <span class="math inline">\(A, Q\)</span>, so the greedy action.</p>
-<h2 id="discussion">Discussion</h2>
-<p>The advantage of the dueling architecture lies partly in its ability to learn the state-value function efficiently. With every update of the <span class="math inline">\(Q\)</span> values in the dueling architecture, the value stream <span class="math inline">\(V\)</span> is updated – this contrasts with the updates in a single-stream architecture where only the value of one of actions is updated, the values of other actions are untouched. The advantage of the dueling architecture over single-stream <span class="math inline">\(Q\)</span> networks grows when the number of actions is large.</p>
-<h2 id="implementation">Implementation</h2>
-<p><em>One implementation of Dueling Architecture in PARL using PaddlPaddle for Atari Games</em></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> paddle.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AtariModel</span>(<span class="params">parl.Model</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, act_dim, dueling=<span class="literal">False</span></span>):</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line">        self.conv1 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">4</span>, out_channels=<span class="number">32</span>, kernel_size=<span class="number">5</span>, stride=<span class="number">1</span>, padding=<span class="number">2</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv2 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">32</span>, out_channels=<span class="number">32</span>, kernel_size=<span class="number">5</span>, stride=<span class="number">1</span>, padding=<span class="number">2</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv3 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">32</span>, out_channels=<span class="number">64</span>, kernel_size=<span class="number">4</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv4 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">64</span>, out_channels=<span class="number">64</span>, kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.relu = nn.ReLU()</span><br><span class="line">        self.max_pool = nn.MaxPool2D(kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>)</span><br><span class="line">        self.flatten = nn.Flatten()</span><br><span class="line"></span><br><span class="line">        self.dueling = dueling</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> dueling:</span><br><span class="line">            self.linear_1_adv = nn.Linear(in_features=<span class="number">6400</span>, out_features=<span class="number">512</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">            self.linear_2_adv = nn.Linear(in_features=<span class="number">512</span>, out_features=act_dim)</span><br><span class="line">            self.linear_1_val = nn.Linear(in_features=<span class="number">6400</span>, out_features=<span class="number">512</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">            self.linear_2_val = nn.Linear(in_features=<span class="number">512</span>, out_features=<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.linear_1 = nn.Linear(in_features=<span class="number">6400</span>, out_features=act_dim)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">value</span>(<span class="params">self, obs</span>):</span></span><br><span class="line"></span><br><span class="line">        obs = obs / <span class="number">255.0</span></span><br><span class="line">        out = self.max_pool(self.relu(self.conv1(obs)))</span><br><span class="line">        out = self.max_pool(self.relu(self.conv2(out)))</span><br><span class="line">        out = self.max_pool(self.relu(self.conv3(out)))</span><br><span class="line">        out = self.relu(self.conv4(out))</span><br><span class="line">        out = self.flatten(out)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.dueling:</span><br><span class="line">            As = self.relu(self.linear_1_adv(out))</span><br><span class="line">            As = self.linear_2_adv(As)</span><br><span class="line">            V = self.relu(self.linear_1_val(out))</span><br><span class="line">            V = self.linear_2_val(V)</span><br><span class="line">            Q = As + (V - As.mean(axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            Q = self.linear_1(out)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Q</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>VFA</category>
-      </categories>
-      <tags>
-        <tag>Function Approximation</tag>
-        <tag>Continuous State Space</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Issues in Using Function Approximation for RL (under construction)</title>
-    <url>/2021/05/07/FA-issues/</url>
-    <content><![CDATA[<h1 id="issues-in-using-function-approximation-for-reinforcement-learning"><a href="https://www.ri.cmu.edu/pub_files/pub1/thrun_sebastian_1993_1/thrun_sebastian_1993_1.pdf">Issues in Using Function Approximation for Reinforcement Learning</a></h1>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>VFA</category>
-      </categories>
-      <tags>
-        <tag>Function Approximation</tag>
-        <tag>Discussions</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>MDP</title>
     <url>/2021/05/03/MDP/</url>
     <content><![CDATA[<h1 id="mdp">MDP</h1>
@@ -426,6 +412,20 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
       </categories>
       <tags>
         <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Issues in Using Function Approximation for RL (under construction)</title>
+    <url>/2021/05/07/FA-issues/</url>
+    <content><![CDATA[<h1 id="issues-in-using-function-approximation-for-reinforcement-learning"><a href="https://www.ri.cmu.edu/pub_files/pub1/thrun_sebastian_1993_1/thrun_sebastian_1993_1.pdf">Issues in Using Function Approximation for Reinforcement Learning</a></h1>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Discussions</tag>
       </tags>
   </entry>
   <entry>
@@ -668,16 +668,16 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
       </tags>
   </entry>
   <entry>
+    <title>average_reward_setting</title>
+    <url>/2021/05/30/average-reward-setting/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
     <title>actor_critic</title>
     <url>/2021/06/14/actor-critic/</url>
     <content><![CDATA[<h1 id="actor-critic-algorithms">Actor-Critic Algorithms</h1>
 <p><a href="https://papers.nips.cc/paper/1999/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf">Original Paper</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>average_reward_setting</title>
-    <url>/2021/05/30/average-reward-setting/</url>
-    <content><![CDATA[
 ]]></content>
   </entry>
   <entry>
@@ -748,6 +748,41 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
       <tags>
         <tag>Deep Learning</tag>
         <tag>Normalization</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Bellman Equations</title>
+    <url>/2021/05/03/bellman-equations/</url>
+    <content><![CDATA[<p><em>Please read post on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> prior this post</em></p>
+<h1 id="bellman-equations">Bellman Equations</h1>
+<p>By expanding value functions, we reveal the recursive property of return:</p>
+<p><span class="math display">\[
+\begin{aligned}
+V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
+&amp; = E[R_{t} + \gamma G^{\pi}_{t+1} | X_{t} = x]\\
+&amp; = E_{a \sim \pi(a | s)}[R_{t} | X_{t} = x] + \gamma E[G^{\pi}_{t+1} | X_{t} = x]\\
+&amp; = r^{\pi} (x) + \gamma E[V^{\pi} (X_{t+1}) | X_{t} = x]\\
+\end{aligned}
+\]</span> <span id="more"></span></p>
+<p>Where: <span class="math display">\[V^{\pi} (X_{t+1}) = E[G^{\pi}_{t+1} | X_{t+1}] \]</span></p>
+<p><span class="math display">\[\implies E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[V^{\pi} (X_{t+1}) | X_t=x_t] = E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[E[G^{\pi}_{t+1} | X_{t+1}] | X_{t}=x_t] = E[G^{\pi}_{t+1} | X_{t} = x_t]\]</span></p>
+<p>This implies that neither side is random, by expanding:</p>
+<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x]\]</span></p>
+<p>we get:</p>
+<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
+<p>Thus, the value function can be expressed as:</p>
+<p><span class="math display">\[V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
+<p>This is the <span style="color:red"><strong>bellman equation</strong> </span> for a policy <span class="math inline">\(\pi\)</span>, this can be interpreted as: The value of following a policy <span class="math inline">\(\pi\)</span> is the expected immediate reward that the <span class="math inline">\(\pi\)</span>-following agent receives at that state plus the discounted average(expected) value that the agent receives at the next-state.</p>
+<p>Same for action-value function, we have bellman equation:</p>
+<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (da^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
+<p>Compare with value function, we have expected reward base on action <span class="math inline">\(a\)</span> plus discounted average(expected) value that the agent receives at the next-state following <span class="math inline">\(\pi\)</span> (the choice of action is given at state <span class="math inline">\(s\)</span> in action value function)</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>Basics</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
       </tags>
   </entry>
   <entry>
@@ -900,41 +935,6 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
 \end{aligned}\]</span>
 <p><strong>Thus, we can conclude that <span class="math inline">\(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></strong></p>
 <p><span style="color:red"><strong>Together, we showed that <span class="math inline">\(V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^{*}}\)</span>, the solution of bellman optimality equation is the optimal value function</strong></span></p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>Basics</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Bellman Equations</title>
-    <url>/2021/05/03/bellman-equations/</url>
-    <content><![CDATA[<p><em>Please read post on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> prior this post</em></p>
-<h1 id="bellman-equations">Bellman Equations</h1>
-<p>By expanding value functions, we reveal the recursive property of return:</p>
-<p><span class="math display">\[
-\begin{aligned}
-V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
-&amp; = E[R_{t} + \gamma G^{\pi}_{t+1} | X_{t} = x]\\
-&amp; = E_{a \sim \pi(a | s)}[R_{t} | X_{t} = x] + \gamma E[G^{\pi}_{t+1} | X_{t} = x]\\
-&amp; = r^{\pi} (x) + \gamma E[V^{\pi} (X_{t+1}) | X_{t} = x]\\
-\end{aligned}
-\]</span> <span id="more"></span></p>
-<p>Where: <span class="math display">\[V^{\pi} (X_{t+1}) = E[G^{\pi}_{t+1} | X_{t+1}] \]</span></p>
-<p><span class="math display">\[\implies E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[V^{\pi} (X_{t+1}) | X_t=x_t] = E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[E[G^{\pi}_{t+1} | X_{t+1}] | X_{t}=x_t] = E[G^{\pi}_{t+1} | X_{t} = x_t]\]</span></p>
-<p>This implies that neither side is random, by expanding:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x]\]</span></p>
-<p>we get:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
-<p>Thus, the value function can be expressed as:</p>
-<p><span class="math display">\[V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
-<p>This is the <span style="color:red"><strong>bellman equation</strong> </span> for a policy <span class="math inline">\(\pi\)</span>, this can be interpreted as: The value of following a policy <span class="math inline">\(\pi\)</span> is the expected immediate reward that the <span class="math inline">\(\pi\)</span>-following agent receives at that state plus the discounted average(expected) value that the agent receives at the next-state.</p>
-<p>Same for action-value function, we have bellman equation:</p>
-<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (da^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
-<p>Compare with value function, we have expected reward base on action <span class="math inline">\(a\)</span> plus discounted average(expected) value that the agent receives at the next-state following <span class="math inline">\(\pi\)</span> (the choice of action is given at state <span class="math inline">\(s\)</span> in action value function)</p>
 ]]></content>
       <categories>
         <category>RL</category>
