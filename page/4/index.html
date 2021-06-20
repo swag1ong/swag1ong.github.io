@@ -219,7 +219,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/15/mc/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/14/calculus/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/others/favicon.jpeg">
@@ -232,7 +232,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/15/mc/" class="post-title-link" itemprop="url">Monte Carlo Estimation</a>
+          <a href="/2021/05/14/calculus/" class="post-title-link" itemprop="url">Calculus</a>
         </h2>
 
         <div class="post-meta-container">
@@ -243,14 +243,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2021-05-15 17:30:12" itemprop="dateCreated datePublished" datetime="2021-05-15T17:30:12+08:00">2021-05-15</time>
+      <time title="Created: 2021-05-14 21:34:18" itemprop="dateCreated datePublished" datetime="2021-05-14T21:34:18+08:00">2021-05-14</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-05-16 17:33:22" itemprop="dateModified" datetime="2021-05-16T17:33:22+08:00">2021-05-16</time>
+        <time title="Modified: 2021-06-17 22:33:30" itemprop="dateModified" datetime="2021-06-17T22:33:30+08:00">2021-06-17</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -258,11 +258,7 @@
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/MC/" itemprop="url" rel="index"><span itemprop="name">MC</span></a>
+          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
         </span>
     </span>
 
@@ -274,14 +270,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>3k</span>
+      <span>1.5k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
+      <span>1 mins.</span>
     </span>
 </div>
 
@@ -292,18 +288,16 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="learning-from-stream-of-data-monte-carlo-methods">Learning From Stream of Data (Monte Carlo Methods)</h1>
-<h2 id="mc-policy-evaluation">MC Policy Evaluation</h2>
-<p>The Goal is to learn or estimate the value function <span class="math inline">\(V^{\pi}\)</span> and <span class="math inline">\(Q^{\pi}\)</span> of a policy.</p>
-<p>Recall that:</p>
-<p><span class="math display">\[V^{\pi}(x) = E[G^{\pi}_{t} | X_t=x]\]</span></p>
-<p>This is the expected return starting from state <span class="math inline">\(x\)</span>. At the same time, obtain a sample from return <span class="math inline">\(G^{\pi}\)</span> is easy: if the agent starts at state <span class="math inline">\(x\)</span>, and follows <span class="math inline">\(\pi\)</span>, we can draw one sample of r.v <span class="math inline">\(G^{\pi}\)</span> by computing the cumulative sum of rewards collected during the episode starting from the state <span class="math inline">\(x\)</span>:</p>
-<p><span class="math display">\[\hat{G^{\pi}_{t}} = \sum^{\infty}_{k=t} \gamma^{k-t} R_{k}\]</span></p>
-<p>If we repeat this process from the same state, we get another draw of r.v <span class="math inline">\(G^{\pi}\)</span>, let us call these samples <span class="math inline">\(G^{\pi (1)} (x)\)</span>, <span class="math inline">\(G^{\pi (2)} (x)\)</span>, ...., <span class="math inline">\(G^{\pi (n)} (x)\)</span>. We can get an estimate <span class="math inline">\(\hat{V^{\pi}} (x)\)</span> of <span class="math inline">\(V^{\pi} (x)\)</span> by taking the average of the sample average:</p>
-<p><span class="math display">\[\hat{V^{\pi}} (x) = \frac{1}{n} \sum^{n}_{i=1} \hat{G}^{\pi(i)} (x)\]</span></p>
+          <h1 id="multivariate-calculus-1">Multivariate Calculus (1)</h1>
+<h2 id="vectors-and-the-geometric-of-space">Vectors and the Geometric of Space</h2>
+<h3 id="equation-of-a-sphere">Equation of a sphere</h3>
+<p>By definition, a sphere is the set of all points <span class="math inline">\(P(x, y, z)\)</span> whose distance from <span class="math inline">\(C\)</span> is <span class="math inline">\(r\)</span>, where <span class="math inline">\(C\)</span> is the center <span class="math inline">\(C(h, k, l)\)</span>. Thus, <span class="math inline">\(P\)</span> is on the sphere if and only if</p>
+<p><span class="math display">\[|PC| = r \implies |PC|^2 = r^2\]</span></p>
+<p><span class="math display">\[(x - h)^2 + (y - k)^2 + (z - l)^2 = r^2\]</span></p>
+<p><img src='/images/cal/12_1_1.png' width="600"></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/05/15/mc/#more" rel="contents">
+              <a class="btn" href="/2021/05/14/calculus/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1365,13 +1359,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">187k</span>
+    <span title="Symbols count total">192k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">2:50</span>
+    <span title="Reading time total">2:55</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
