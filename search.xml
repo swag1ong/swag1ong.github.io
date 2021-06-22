@@ -285,20 +285,6 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
       </tags>
   </entry>
   <entry>
-    <title>Issues in Using Function Approximation for RL (under construction)</title>
-    <url>/2021/05/07/FA-issues/</url>
-    <content><![CDATA[<h1 id="issues-in-using-function-approximation-for-reinforcement-learning"><a href="https://www.ri.cmu.edu/pub_files/pub1/thrun_sebastian_1993_1/thrun_sebastian_1993_1.pdf">Issues in Using Function Approximation for Reinforcement Learning</a></h1>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>VFA</category>
-      </categories>
-      <tags>
-        <tag>Function Approximation</tag>
-        <tag>Discussions</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Dueling Network Architectures for DRL</title>
     <url>/2021/05/13/Dueling/</url>
     <content><![CDATA[<h1 id="dueling-network-architectures-for-deep-reinforcement-learning">Dueling Network Architectures for Deep Reinforcement Learning</h1>
@@ -359,6 +345,20 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
       <tags>
         <tag>Function Approximation</tag>
         <tag>Continuous State Space</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Issues in Using Function Approximation for RL (under construction)</title>
+    <url>/2021/05/07/FA-issues/</url>
+    <content><![CDATA[<h1 id="issues-in-using-function-approximation-for-reinforcement-learning"><a href="https://www.ri.cmu.edu/pub_files/pub1/thrun_sebastian_1993_1/thrun_sebastian_1993_1.pdf">Issues in Using Function Approximation for Reinforcement Learning</a></h1>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Discussions</tag>
       </tags>
   </entry>
   <entry>
@@ -675,6 +675,87 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
 ]]></content>
   </entry>
   <entry>
+    <title>Alex Net</title>
+    <url>/2021/06/22/alex-net/</url>
+    <content><![CDATA[<h1 id="imagenet-classification-with-deep-convolutional-neural-networks">ImageNet Classification with Deep Convolutional Neural Networks</h1>
+<h2 id="the-dataset-image-preprocessing">The dataset, Image preprocessing</h2>
+<p>ImageNet is a dataset of over 15 million labeled high-resolutoin images. It consists of variable-resolution images, while the network requires a constant input dimensionality. Therefore, we down-sampled the images to a fixed resolution of <span class="math inline">\(256 \times 256\)</span>. Given a rectangular image, we first rescaled the image such that the shorter side was of length 256, and then cropped out the central <span class="math inline">\(256 \times 256\)</span> patch from the resulting image. We did not pre-process the images in any other way, except for subtracting the mean activity over the training set for each pixel (normalize each input pixel). So we trained our network on the centered raw RGB values of the pixels.</p>
+<span id="more"></span>
+<h2 id="the-architecture">The Architecture</h2>
+<h3 id="relu-nonlinearity">ReLU Nonlinearity</h3>
+<p>tanh and other saturating nonlinearities are much slower than the non-saturating nonlinearity <span class="math inline">\(f(x) = max(0, x)\)</span>. DNN with ReLUs train several times faster than their equivalents with tanh units.</p>
+<h3 id="training-on-multiple-gpus">Training on Multiple GPUs</h3>
+<p>We split half of the kernels (neurons) on each GPU, with one additional trick: the GPUs communicate only in certain layers. This means that, for examples, the kernels of layer 3 take input form all kernel maps in layer 2. However, kernels in layer 4 take input only from those kernel maps in layer 3 which reside on the same GPU. This allows us to precisely tune the amount of communication until it is an acceptable fraction of the amount of computation.</p>
+<h3 id="local-response-normalization">Local Response Normalization</h3>
+<p>Denoting by <span class="math inline">\(a^{i}_{x, y}\)</span> the activity of a neuron computed by applying kernel <span class="math inline">\(i\)</span> at position <span class="math inline">\((x, y)\)</span> and then applying the ReLU nonlinearity, the response-normalized activity <span class="math inline">\(b^i_{x,y}\)</span> is given by the expression:</p>
+<p><span class="math display">\[b^{i}_{x, y} = \frac{a^{i}_{(x, y)}}{(k + \alpha \sum_{j=\max(0 , \frac{i - n}{2})}^{\min(N - 1, \frac{i + n}{2})}(a^{i}_{(x, y)})^2)^\beta}\]</span></p>
+<p>Where the sum runs over <span class="math inline">\(N\)</span> adjacent kernel maps at the same spatial position, and <span class="math inline">\(N\)</span> is the total number of kernels in the layer. This normalization is applied after applying the ReLU nonlinearity in certain layers.</p>
+<h3 id="overlapping-pooling">Overlapping Pooling</h3>
+<p>Pooling layers in CNNs summarize the outputs of neurons in the same kernel map. Traditionally, the pooling units do not overlap. To be more precise, a pooling layer can be though of as consisting of a grid of pooling units spaced <span class="math inline">\(s\)</span> pixels apart, each summarizing a neighborhood of size <span class="math inline">\(z \times z\)</span> centered at the location of the pooling unit. If we set <span class="math inline">\(s = z\)</span>, we obtain traditional local pooling. If <span class="math inline">\(s &lt; z\)</span>, we obtain overlapping pooling. This is used in the network. We generally observe during training that models with overlapping pooling find it slightly more difficult to overfit.</p>
+<h2 id="reduce-overfitting">Reduce Overfitting</h2>
+<h3 id="data-augmentation">Data Augmentation</h3>
+<p>Two distinct forms of data augmentation:</p>
+<ol type="1">
+<li><p>Generating image translations and horizontal reflections. We do this by extracting random <span class="math inline">\(227 \times 227\)</span> patches, and their horizontal reflections from the <span class="math inline">\(256 \times 256\)</span> images and training our network on these extracted patches. At the test time, the network makes a prediction by extracting 5 <span class="math inline">\(227 \times 227\)</span> patches (4 corner patches and 1 center patch) as well as their horizontal reflections and average the predictions made by the network's softmax layer on the ten patches.</p></li>
+<li><p>Altering the intensities of the RGB channels in training images. Specifically, we perform PCA on the set of RGB pixel values throughout the imageNet training set. For each training image, we add multiples of the found principal components with magnitudes proportional to the corresponding eigenvalues times a random variable drawn from a Gaussian with mean zero and std 0.1.</p></li>
+</ol>
+<h3 id="dropout">Dropout</h3>
+<p>Model aggregation using dropout. Attest time, we use all the neurons but multiply their outputs by 0.5, which is a reasonable approximation to taking the geometric mean of the predictive distributions produced by the exponentially-many dropout networks.</p>
+<p>We use dropout in the first two fully-connected layers. Without dropout, our network exhibits substantial overfitting. Dropout roughly doubles the number of iterations required to converge.</p>
+<p><br></p>
+<h2 id="overall-architecture">Overall Architecture</h2>
+<p>The net contains eight layers with weights, the first five are convolutional and the remaining three are full-connected. The output of the last fully-connected layer is fed to a 1000-way softmax which produces a distribution over the 1000 class labels. The network maximizes the multinomial logistic regression objective (-cross entropy), which is equaivalent to maximizing the average across training cases of the log-probability of the correct label under the prediction distribution.</p>
+<p>The kernels of the second, fourth and fifth convolutional layers are connected only to those kernel maps in the previous layer which reside on the same GPU. The kernels of the third convolutional layer are connected to all kernel maps in the second layer. The neurons in the fully connected layers are connected to all neurons in the previous layer. Normalization layers follow the first and second convolutional layers. Max-pooling layers, of the kind with overlapping, follow both normalization layers and the fifth convolutional layer.</p>
+<p>The first convolutional layer filters the <span class="math inline">\(227 \times 227 \times 3\)</span> (random crop from <span class="math inline">\(256 \times 256 \times 3\)</span>) input images with 96 kernels of size <span class="math inline">\(11 \times 11 \times 3 = 363\)</span> weights in each kernel with a stride of 4 pixels.</p>
+<p>The second convolutional layer takes as input (normalized and max pooled) output of the first convolutional layer and filters it with <span class="math inline">\(256\)</span> kernels of size <span class="math inline">\(5 \times 5 \times 48\)</span>.</p>
+<p>The third convolutional layer has 384 kernels of size <span class="math inline">\(3 \times 3 \times 256\)</span> connected to the (normalized and max pooled) outputs of the second convolutional layer.</p>
+<p>The fourth convolutional layer has 384 kernels of size <span class="math inline">\(3 \times 3 \times 192\)</span>.</p>
+<p>The fifth convolutional layer has 256 kernels of size <span class="math inline">\(3 \times 3 \times 192\)</span>.</p>
+<p>The fully connected layers have 4096 neurons each.</p>
+<p><br></p>
+<p>Number of weights in each layer:</p>
+<ol type="1">
+<li><span class="math inline">\(11 * 11 * 3 * 96 = 34848\)</span></li>
+<li><span class="math inline">\(5 * 5 * 48 * 256 = 307200\)</span> (connected only to the Neurons reside in the same GPU)</li>
+<li><span class="math inline">\(3 * 3 * 256 * 384= 884736\)</span></li>
+<li><span class="math inline">\(3 * 3 * 192 * 384 = 663552\)</span> (connected only to the Neurons reside in the same GPU)</li>
+<li><span class="math inline">\(3 * 3 * 192 * 256 = 442368\)</span> (connected only to the Neurons reside in the same GPU)</li>
+</ol>
+<p>Number of Neurons (output):</p>
+<ol type="1">
+<li><span class="math inline">\(55 * 55 * 96 = 290400\)</span></li>
+<li><span class="math inline">\(27 * 27 * 256 = 186624\)</span></li>
+<li><span class="math inline">\(13 * 13 * 384 = 64896\)</span></li>
+<li><span class="math inline">\(13 * 13 * 384 = 64896\)</span></li>
+<li><span class="math inline">\(13 * 13 * 256 = 43264\)</span></li>
+</ol>
+<p><br></p>
+<p><img src='/images/ML/Alex_1.png' width="600"></p>
+<p><br></p>
+<h2 id="training-details">Training Details</h2>
+<p>Model is trained using SGD with:</p>
+<ol type="1">
+<li>batch size: 128</li>
+<li>momentum: 0.9</li>
+<li>weight decay: 0.0005</li>
+<li>epochs: 90</li>
+<li>lr start: 0.01. It is divided by 10 when the validation error rate stopped improving with the current learning rate and three times prior to termination.</li>
+</ol>
+<p>All weights initialized using a 0-mean and 0.01 std Gaussian distribution. Biases in the second, fourth and fifth convolutional layers are initialized to 1 as well as the bias in fully connected layers. Biases in remaining layers are initialized to 0. This initialization accelerates the early states of learning by providing the ReLUs with positive inputs.</p>
+<h1 id="reference">Reference</h1>
+<p>https://www.cs.toronto.edu/~rgrosse/courses/csc321_2018/tutorials/tut6_slides.pdf</p>
+<p>https://learnopencv.com/understanding-alexnet/#:~:text=The%20input%20to%20AlexNet%20is,of%20size%20256%C3%97256</p>
+]]></content>
+      <categories>
+        <category>DL</category>
+        <category>CNN</category>
+      </categories>
+      <tags>
+        <tag>Deep Learning</tag>
+        <tag>Neural Network Architectures</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>average_reward_setting</title>
     <url>/2021/05/30/average-reward-setting/</url>
     <content><![CDATA[
@@ -945,25 +1026,6 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
-    <title>RL Cheat Sheet (under construction)</title>
-    <url>/2021/05/18/cheat-sheet/</url>
-    <content><![CDATA[<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
-<p><span class="math display">\[V^{*} (s) = max_{a} Q^{*} (s, a)\]</span></p>
-<p><span class="math display">\[Q^{*} (s, a) = max_{\pi} Q^{\pi} (s, a), \forall (s, a) \in S X A\]</span></p>
-<p><span class="math display">\[V^{\pi} (s) = E_{a_t \sim pi(\cdot | s)}[R_t | s_t=s, \pi] = E_{a_t \sim pi(\cdot | s)}[E[R_t | s_t, a_t, \pi] | s_t=s] = E_{a_t \sim pi(\cdot | s)}[ Q^{\pi}(s, a_t)]\]</span></p>
-<p><span class="math display">\[A^{\pi} (s, a) = Q^{\pi} (s, a) - V^{\pi} (s)\]</span></p>
-<p><span class="math display">\[E_{a}[A^{\pi} (s, a) | s] = E_{a}[Q^{\pi} (s, a) | s] - V^{\pi} (s) = 0\]</span></p>
-<p><span class="math display">\[E_{s^{\prime}}[R_t + \gamma V^{\pi}(s^{\prime}) - V^{\pi} (s)] = A^{\pi}(s, a)\]</span></p>
-<p>Express the expected return following <span class="math inline">\(\pi\)</span> in terms of the advantage over <span class="math inline">\(\tilde{\pi}\)</span>, accumulated over timesteps.</p>
-]]></content>
-      <categories>
-        <category>RL</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Calculus</title>
     <url>/2021/05/14/calculus/</url>
     <content><![CDATA[<h1 id="multivariate-calculus-1">Multivariate Calculus (1)</h1>
@@ -977,6 +1039,7 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
 <h3 id="vectors">Vectors</h3>
 <p>The term vector is used by scientists to indicate a quantity that has both magnitude and direction.</p>
 <p><img src='/images/cal/12_2_1.png' width="600"></p>
+<p>In three dimensions, the vector <span class="math inline">\(a = \vec{OP}\)</span> is the <strong>position vector</strong> of the point <span class="math inline">\(P\)</span>. We can think of all geometric vectors as representation of the position vector of the point <span class="math inline">\(P\)</span>.</p>
 <h3 id="dot-product">Dot product</h3>
 <p><img src='/images/cal/12_3_1.png' width="600"></p>
 <h4 id="proof">Proof</h4>
@@ -1004,8 +1067,67 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
 <p><img src='/images/cal/12_4_2.png' width="600"></p>
 <p><img src='/images/cal/12_4_3.png' width="600"></p>
 <p><img src='/images/cal/12_4_4.png' width="600"></p>
-<p></br></p>
+<p><br></p>
 <p><strong>Two non-zero vectors <span class="math inline">\(a, b\)</span> are parallel if and only if <span class="math inline">\(a \times b = 0\)</span></strong></p>
+<h2 id="equations-of-lines-and-planes">Equations of Lines and Planes</h2>
+<p>A line on xy-plane is determined when a point on the line and the direction of the line. Likewise, a line <span class="math inline">\(L\)</span> in 3 dimensional space is determined when we know a point <span class="math inline">\(P_0 (x_0, y_0, z_0)\)</span> on <span class="math inline">\(L\)</span> and the direction of <span class="math inline">\(L\)</span>.</p>
+<p>In 3 d space the direction of the line is described as a vector, so we let <span class="math inline">\(v = \vec{OV}\)</span> be a vector parallel to <span class="math inline">\(L\)</span>. Let <span class="math inline">\(P(x, y, z)\)</span> be an arbitrary point on <span class="math inline">\(L\)</span> and let <span class="math inline">\(r_0 = \vec{OP_0}\)</span> and <span class="math inline">\(r= \vec{OP}\)</span> be the position vectors of Let <span class="math inline">\(a = \vec{P_0P}\)</span>, then</p>
+<p><span class="math display">\[\vec{P_0P} = \vec{OP} - \vec{OP_0} \implies r = r_0 + a\]</span></p>
+<p>Since <span class="math inline">\(a, v\)</span> are parallel vectors, there is a scalar such that <span class="math inline">\(a = tv\)</span>. Thus:</p>
+<p><span class="math display">\[r = r_0 + tv\]</span></p>
+<p>This is the <strong>vector equation</strong> of <span class="math inline">\(L\)</span> in 3 d. Each value of the parameter <span class="math inline">\(t\)</span> gives the position vector <span class="math inline">\(r\)</span> of a point on <span class="math inline">\(L\)</span>. So the line in 3 d is represented by a position vector on the line and a scalar multiple of direction vector <span class="math inline">\(tv\)</span>.</p>
+<p><br></p>
+<p>In component form <span class="math inline">\(r = &lt;x, y, z&gt;, r_0 = &lt;x_0, y_0, z_0&gt;, v=&lt;a, b, c&gt;\)</span>, each component is called <strong>parametric equation</strong> of the line <span class="math inline">\(L\)</span> through point <span class="math inline">\(P_0\)</span>:</p>
+<p><span class="math display">\[&lt;x, y, z&gt; = &lt;x_0 + ta, y_0 + tb, z_0 + tc&gt;\]</span> </br></p>
+<p><img src='/images/cal/12_5_1.png' width="600"></p>
+<p><br></p>
+<p>In general, we know that the vector equation of a line through the tip of the vector <span class="math inline">\(r_0\)</span> in the direction of a vector <span class="math inline">\(v\)</span> is <span class="math inline">\(r(t) = r_0 + tv\)</span>. If the line also passes through the tip of <span class="math inline">\(r_1\)</span>, then we can take <span class="math inline">\(v = r_1 - r_0\)</span> because <span class="math inline">\(v = r_1 - r_0\)</span> is parallel to the line <span class="math inline">\(L\)</span>, thus satisfies the vector equation of line:</p>
+<p><span class="math display">\[r(t) = r_0 + tv = r_0 + t(r_1 - r_0)\]</span></p>
+<p>If <span class="math inline">\(t = 1 \implies r = r_1\)</span>, if <span class="math inline">\(t = 0 \implies r = r_0\)</span>, the line segment from $r_0 $ to <span class="math inline">\(r_1\)</span> is ten given by the parameter interval <span class="math inline">\(0 \leq t \leq 1\)</span>:</p>
+<p><img src='/images/cal/12_5_2.png' width="600"></p>
+<h3 id="planes">Planes</h3>
+<p>Although a line in space is determined by a point and a direction, a plane in space is more difficult to describe.</p>
+<p>A plane in the space is determined by a point <span class="math inline">\(P_0\)</span> in the plane and a vector <span class="math inline">\(n\)</span> that is orthogonal to the plane. This orthogonal vector <span class="math inline">\(n\)</span> is called a <strong>normal vector</strong>.</p>
+<p>Let <span class="math inline">\(P(x, y, z), P_0 (x_0, y_0, z_0)\)</span> be an arbitrary point in the plane, and let <span class="math inline">\(r_0\)</span> and <span class="math inline">\(r\)</span> be the position vectors of <span class="math inline">\(P_0\)</span> and <span class="math inline">\(P\)</span>. Then the vector <span class="math inline">\(r - r_0 = \vec{P_0 P}\)</span> is on the plane. The normal vector <span class="math inline">\(n = &lt;a, b, c&gt;\)</span> is orthogonal to every vector on the plane, that is:</p>
+<p><span class="math display">\[n \cdot (r - r_0) = 0\]</span></p>
+<p>We can rewrite this as:</p>
+<p><span class="math display">\[n \cdot r = n \cdot r_0\]</span></p>
+<p>Either of these equations are called a <strong>vector equation of the plane</strong>.</p>
+<p>The <strong>scalar equation of the plane through <span class="math inline">\(P_0\)</span> with normal vector <span class="math inline">\(n\)</span></strong> can be written as:</p>
+<p><span class="math display">\[&lt;a, b, c&gt; \cdot &lt;x - x_0, y - y_0, z - z_0&gt; = 0 \implies a (x - x_0) + b (y - y_0) + c (z - z_0) = 0\]</span></p>
+<p>By collecting terms, we can have:</p>
+<p><span class="math display">\[ax + by + cz + d = 0\]</span></p>
+<p>Where <span class="math inline">\(d = -(ax_0 + by_0 + cz_0)\)</span>. If <span class="math inline">\(a, b, c\)</span> are not all zero, this equation can represent the plane.</p>
+<p><br></p>
+<p>Two planes are parallel if their normal vectors are parallel. If two planes are not parallel, then they intersact in a straight line and the angle between them is defined as the acute angle between their normal vectors.</p>
+<h4 id="the-distance-to-plane">The distance to plane</h4>
+<p><img src='/images/cal/12_5_3.png' width="600"></p>
+<p>We know that the <span class="math inline">\(D = comp_n b = \frac{n \cdot b}{|n|}\)</span>, since the distance is positive, we need to find <span class="math inline">\(|comp_n b|\)</span>:</p>
+<p><span class="math display">\[|D| = |comp_n b| = \frac{|n \cdot b|}{|n|}\]</span></p>
+<p><img src='/images/cal/12_5_4.png' width="600"></p>
+<h2 id="vector-functions">Vector Functions</h2>
+<h3 id="vector-functions-and-space-curves">Vector Functions and Space Curves</h3>
+<p>In general, a function is a rule that assigns to each element in the domain an element in the range. A <strong>vector-valued function</strong>, is simply a function whose domain is a set of real numbers and whose range is a set of vectors.</p>
+<p>We are most interested in vector functions <span class="math inline">\(r\)</span> whose values are three-dimensional vectors. This means that for every number <span class="math inline">\(t\)</span> in the domain of <span class="math inline">\(r\)</span> three is a unique vector in <span class="math inline">\(V_3\)</span> denoted by <span class="math inline">\(r(t)\)</span>. If <span class="math inline">\(f(t), g(t), h(t)\)</span> are the components of the vector <span class="math inline">\(r(t)\)</span>, then <span class="math inline">\(f, g\)</span> and <span class="math inline">\(h\)</span> are real-valued functions called the <strong>component functions</strong> of <span class="math inline">\(r\)</span> and we can write:</p>
+<p><span class="math display">\[r(t) = &lt;f(t), \;g(t), \;h(t)&gt;\]</span></p>
+<p><br></p>
+<p><img src='/images/cal/13_1_1.png' width="600"></p>
+<p><br></p>
+<p>if <span class="math inline">\(\lim_{t \rightarrow \infty} r(t) = L\)</span>, then this is equivalent to saying that the length and direction of the vector <span class="math inline">\(r(t)\)</span> approach the length and direction of the vector <span class="math inline">\(L\)</span>.</p>
+<p>A vector function <span class="math inline">\(r\)</span> is continuous at <span class="math inline">\(a\)</span> if:</p>
+<p><span class="math display">\[\lim_{t \rightarrow a} r(t) = r(a)\]</span></p>
+<p>That is, <span class="math inline">\(r(t)\)</span> is continuous at <span class="math inline">\(a\)</span> if and only if all the components are continuous at <span class="math inline">\(a\)</span>.</p>
+<h2 id="derivatives-and-integrals-of-vector-functions">Derivatives and Integrals of Vector Functions</h2>
+<h3 id="derivatives">Derivatives</h3>
+<p><img src='/images/cal/13_2_1.png' width="600"></p>
+<p>If the limit exists, let <span class="math inline">\(P, Q\)</span> with position vector <span class="math inline">\(r(t), r(t + h)\)</span>, then <span class="math inline">\(r(t + h) - r(t)\)</span> is the vector between them, <span class="math inline">\(\frac{r(t + h) - r(t)}{h}\)</span> has same direction as <span class="math inline">\(r(t + h) - r(t)\)</span>. As <span class="math inline">\(h \rightarrow 0\)</span>, <span class="math inline">\(r(t + h)\)</span> gets closer to <span class="math inline">\(r(t)\)</span> so <span class="math inline">\(\frac{r(t + h) - r(t)}{h}\)</span> becomes the <strong>tangent vector</strong> to the curve defined by <span class="math inline">\(r\)</span> at the point <span class="math inline">\(P\)</span>.</p>
+<p><img src='/images/cal/13_2_2.png' width="600"></p>
+<p>The <strong>tangent line</strong> at <span class="math inline">\(P\)</span> is defined to be the line through <span class="math inline">\(P\)</span> parallel to the tangent vector <span class="math inline">\(r^{\prime}(t)\)</span></p>
+<p><img src='/images/cal/13_2_3.png' width="600"></p>
+<h4 id="differentiation-rules">Differentiation Rules</h4>
+<p><img src='/images/cal/13_2_4.png' width="600"></p>
+<h3 id="integrals">Integrals</h3>
+<p><img src='/images/cal/13_2_5.png' width="600"></p>
 ]]></content>
       <categories>
         <category>Background</category>
@@ -1013,6 +1135,31 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       <tags>
         <tag>RL Basics</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>RL Cheat Sheet (under construction)</title>
+    <url>/2021/05/18/cheat-sheet/</url>
+    <content><![CDATA[<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
+<p><span class="math display">\[V^{*} (s) = max_{a} Q^{*} (s, a)\]</span></p>
+<p><span class="math display">\[Q^{*} (s, a) = max_{\pi} Q^{\pi} (s, a), \forall (s, a) \in S X A\]</span></p>
+<p><span class="math display">\[V^{\pi} (s) = E_{a_t \sim pi(\cdot | s)}[R_t | s_t=s, \pi] = E_{a_t \sim pi(\cdot | s)}[E[R_t | s_t, a_t, \pi] | s_t=s] = E_{a_t \sim pi(\cdot | s)}[ Q^{\pi}(s, a_t)]\]</span></p>
+<p><span class="math display">\[A^{\pi} (s, a) = Q^{\pi} (s, a) - V^{\pi} (s)\]</span></p>
+<p><span class="math display">\[E_{a}[A^{\pi} (s, a) | s] = E_{a}[Q^{\pi} (s, a) | s] - V^{\pi} (s) = 0\]</span></p>
+<p><span class="math display">\[E_{s^{\prime}}[R_t + \gamma V^{\pi}(s^{\prime}) - V^{\pi} (s)] = A^{\pi}(s, a)\]</span></p>
+<p>Express the expected return following <span class="math inline">\(\pi\)</span> in terms of the advantage over <span class="math inline">\(\tilde{\pi}\)</span>, accumulated over timesteps.</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>convex_opt</title>
+    <url>/2021/06/14/convex-opt/</url>
+    <content><![CDATA[
+]]></content>
   </entry>
   <entry>
     <title>Dynamic Programming</title>
@@ -1037,12 +1184,6 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
         <tag>RL Basics</tag>
         <tag>Dynamic Programming</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>convex_opt</title>
-    <url>/2021/06/14/convex-opt/</url>
-    <content><![CDATA[
-]]></content>
   </entry>
   <entry>
     <title>Dropout</title>
@@ -2047,6 +2188,15 @@ E[\delta (X, R, X^{\prime}; V^{\pi}) | X=x, A=a] &amp;= E[R + \gamma V^{\pi}(X^{
       </tags>
   </entry>
   <entry>
+    <title>tree</title>
+    <url>/2021/06/14/tree/</url>
+    <content><![CDATA[<h1 id="trees">Trees</h1>
+<h2 id="binary-search-tree">Binary Search Tree</h2>
+<h3 id="inorder-traversal">Inorder Traversal</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inorder</span>(<span class="params">root</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    inorder(root.left)</span><br><span class="line">    <span class="built_in">print</span>(root.val)</span><br><span class="line">    inorder(root.right)</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
     <title>Learning From Stream of Data</title>
     <url>/2021/05/07/value-function-learning/</url>
     <content><![CDATA[<h1 id="learning-from-stream-of-data-introduction">Learning From Stream of Data (Introduction)</h1>
@@ -2140,15 +2290,6 @@ Uniform(A), \text{w. p } \epsilon \\
         <tag>Tabular Methods</tag>
         <tag>TD</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>tree</title>
-    <url>/2021/06/14/tree/</url>
-    <content><![CDATA[<h1 id="trees">Trees</h1>
-<h2 id="binary-search-tree">Binary Search Tree</h2>
-<h3 id="inorder-traversal">Inorder Traversal</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inorder</span>(<span class="params">root</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    inorder(root.left)</span><br><span class="line">    <span class="built_in">print</span>(root.val)</span><br><span class="line">    inorder(root.right)</span><br></pre></td></tr></table></figure>
-]]></content>
   </entry>
   <entry>
     <title>Value Iteration</title>
