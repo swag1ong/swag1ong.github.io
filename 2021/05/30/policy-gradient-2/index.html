@@ -32,7 +32,7 @@
 <meta property="og:image" content="http://example.com/images/RL/pg/pg_4.png">
 <meta property="og:image" content="http://example.com/images/RL/pg/pg_2.png">
 <meta property="article:published_time" content="2021-05-30T07:03:48.000Z">
-<meta property="article:modified_time" content="2021-06-16T11:50:54.609Z">
+<meta property="article:modified_time" content="2021-06-24T11:13:25.600Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta property="article:tag" content="Policy Gradient">
 <meta property="article:tag" content="Continuous Action Space">
@@ -171,7 +171,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -265,7 +265,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-16 19:50:54" itemprop="dateModified" datetime="2021-06-16T19:50:54+08:00">2021-06-16</time>
+        <time title="Modified: 2021-06-24 19:13:25" itemprop="dateModified" datetime="2021-06-24T19:13:25+08:00">2021-06-24</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -411,19 +411,23 @@ J (\pi_\theta) &amp;= \lim_{n \rightarrow \infty}\frac{1}{n}E[R_1 + R_2, .... \;
 <h3 id="discounted-setting">Discounted Setting</h3>
 <p>In discounted setting, the objective is defined as long term discounted return starting from initial state distribution <span class="math inline">\(X_1 \sim \rho\)</span> following <span class="math inline">\(\pi_{\theta}\)</span>:</p>
 <p><span class="math display">\[J_{\rho} (\pi_\theta) = E_{X_1 \sim \rho} [V^{\pi_{\theta}} (X_1)]\]</span></p>
-Recall that <span class="math inline">\(P^{\pi_{\theta}} (\cdot | x; k) = P^{\pi_{\theta}} (\cdot | x)^k\)</span> is the <span class="math inline">\(k\)</span> step transition distribution:
+<p>Recall that <span class="math inline">\(P^{\pi_{\theta}} (\cdot | x; k) = P^{\pi_{\theta}} (\cdot | x)^k\)</span> is the <span class="math inline">\(k\)</span> step transition distribution:</p>
+<p><span class="math display">\[\sum^{\infty}_{k=0} \gamma^k P^{\pi_{\theta}} (X_{k + 1}=x | x_{1}) = P^{\pi_{\theta}}(X_{1} = x | x_{1}) + \gamma P^{\pi_{\theta}}(X_{2} = x | x_{1}) + ...\]</span></p>
+<p>By taking the expected value over initial state we have:</p>
 <span class="math display">\[\begin{aligned}
-\sum^{\infty}_{k=0} \gamma^k p^{\pi_{\theta}} (X_{k + 1}=x | x_{1}) &amp;= I(x=x_1)\rho(x) + \sum^{\infty}_{k=1} \gamma^k p^{\pi_{\theta}} (X_{k + 1}=x | x_{1})\\
-&amp;= I(x=x_1)\rho(x) + \sum^{\infty}_{k=1} \gamma^k \sum_{\bar{x}, a} \underbrace{p (X_{k+1} = x | X_{k}=\bar{x}, A_{k}=a)}_{\text{this does not depend on k, the memory less property}} \pi_{\theta}(a | \bar{x})p^{\pi_{\theta}}(X_{k}=\bar{x} | x_{1})\\
-&amp;= I(x=x_1)\rho(x) + \sum^{\infty}_{k=1} \gamma^k \sum_{\bar{x}, a} p (X^{\prime} = x | X=\bar{x}, A=a) \pi_{\theta}(a | \bar{x})p^{\pi_{\theta}}(X_{k}=\bar{x} | x_{1})\\
-&amp;= I(x=x_1)\rho(x) + \sum_{\bar{x}, a} p (X^{\prime} = x | X=\bar{x}, A=a) \pi_{\theta}(a | \bar{x}) \sum^{\infty}_{k=1} \gamma^k  p^{\pi_{\theta}}(X_{k}=\bar{x} | x_{1})\\
+E_{x_1} [\sum^{\infty}_{k=0} \gamma^k P^{\pi_{\theta}} (X_{k + 1}=x | x_{1})] &amp;= E_{x_1} [P^{\pi_{\theta}}(X_{1} = x | x_{1})] + \gamma E_{x_1} [P^{\pi_{\theta}}(X_{2} = x | x_{1})] \; + ...\\
+&amp;= \rho(x) + \gamma \sum_{x_1} P^{\pi_{\theta}}(X_{2} = x | x_{1}) \rho(x_1) \; + ...\\
+&amp;= \rho(x) + \gamma P^{\pi_{\theta}}(X_{2} = x) \; + ...\\
+&amp;= Pr(X_1 = x) + \gamma Pr(X_{2} = x) \; + ... \\
 \end{aligned}\]</span>
-<p>This is the <strong>expected number of time steps spend in state <span class="math inline">\(x\)</span> discounted by <span class="math inline">\(\gamma^k\)</span></strong> given we start at state <span class="math inline">\(X_1 \sim \rho = x_1\)</span> and <span class="math inline">\(\bar{x}\)</span> is the previous state.</p>
+<p>This is the <strong>expected number of time steps spend in state <span class="math inline">\(x\)</span> discounted by <span class="math inline">\(\gamma^k\)</span></strong> given we start at state <span class="math inline">\(X_1 \sim \rho\)</span>.</p>
 <p>Let's now define the <code>discounted future state distribution</code> (similar to stationary distribution but with discount and depend on initial state)starting from state <span class="math inline">\(x_1 \in X\)</span> following <span class="math inline">\(\pi_{\theta}\)</span>:</p>
-<p><span class="math display">\[\rho^{\pi}_{\gamma} (\cdot | x_1) \triangleq (1 - \gamma) \sum^{\infty}_{k=0} \gamma^k P^{\pi_{\theta}} (\cdot | x; k)\]</span></p>
+<p><span class="math display">\[\rho^{\pi}_{\gamma} (\cdot | x_1) \triangleq (1 - \gamma) \sum^{\infty}_{k=0} \gamma^k P^{\pi_{\theta}} (\cdot | x_1; k)\]</span></p>
 <p>Where , and <span class="math inline">\(1 - \gamma\)</span> is the normalization term. We can easily verify that this is a valid distribution. <strong>One interpretation of this distribution is that the agent starts at <span class="math inline">\(x_1\)</span> and at each time step <span class="math inline">\(t\)</span> terminate with probability <span class="math inline">\(1 - \gamma\)</span>. This accounts for the discounted factor inside the average counts. That is, we can sample from the state stationary distribution and terminate at each step with probability <span class="math inline">\(1 - \gamma\)</span>. Or instead, we could weight each samples by <span class="math inline">\(\gamma^k\)</span> to account for the termination.</strong></p>
 <p>We can also define the <code>discounted future-state distribution</code> of starting from <span class="math inline">\(\rho\)</span> and following <span class="math inline">\(\pi\)</span> as:</p>
 <p><span class="math display">\[\rho^{\pi}_{\gamma} (\cdot) = \int_{x_1} \rho^{\pi}_{\gamma} (\cdot | x_1) \rho (x_1) dx_1\]</span></p>
+<p><span class="math display">\[\rho^{\pi}_{\gamma} (x) = (1 - \gamma) E_{x_1} [\sum^{\infty}_{k=0} \gamma^k P^{\pi} (X_{k + 1}=x | x_{1})] = (1 - \gamma)(Pr(X_1 = x) + \gamma Pr(X_{2} = x) \; + ...) \]</span></p>
+<p><br></p>
 <h3 id="expected-reward-and-discounted-return">Expected Reward and Discounted Return</h3>
 <p>We can see the connection between expected reward and discounted return:</p>
 <span class="math display">\[\begin{aligned}
@@ -607,13 +611,13 @@ V^{\pi} (x) &amp;= E^{\pi}[\sum^{\infty}_{t = 1} \gamma^{t - 1} R_{t} \; |\; X_1
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">203k</span>
+    <span title="Symbols count total">219k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">3:04</span>
+    <span title="Reading time total">3:19</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
