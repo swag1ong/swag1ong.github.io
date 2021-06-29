@@ -84,6 +84,69 @@
       </tags>
   </entry>
   <entry>
+    <title>Dueling Network Architectures for DRL</title>
+    <url>/2021/05/13/Dueling/</url>
+    <content><![CDATA[<h1 id="dueling-network-architectures-for-deep-reinforcement-learning">Dueling Network Architectures for Deep Reinforcement Learning</h1>
+<h2 id="introduction">Introduction</h2>
+<p>The authors introduce an innovating neural network architecture that is better suited for model-free RL. This paper advances a new network but uses already published algorithms.</p>
+<p>The proposed architecture is called dueling architecture, explicitly separates the representation of state values and state-dependent action advantages. The architecture consists of two streams that represent the value and advantage functions, while sharing a common convolutional feature learning module. The two streams are combined via a special aggregating layer to produce an estimate of the state-action value function <span class="math inline">\(Q\)</span>. This dueling network should be understood as a single Q network with two streams that replaces the popular single-stream Q-network in existing algorithms such as DQN. The dueling network automatically produces separate estimates of the state value function and advantage function, without any extra supervision.</p>
+<p><img src="/images/RL/papers/dueling_1.png"></p>
+<p>Intuitively, the dueling architecture can learn which states are (or are not) valuable, without having to learn the effect of each action for each state. (by taking the gradient wrt to the input) It can more quickly identify the correct action during policy evaluation as redundant or similar actions are added to the learning problem.</p>
+<span id="more"></span>
+<h2 id="background">Background</h2>
+<p><strong>random variables have subscript <span class="math inline">\(t\)</span>, <span class="math inline">\(E[ g(x_t, a_t) | x_t=x, a_t] = f(x, a)\)</span> is shorthanded as <span class="math inline">\(f(x, a) = E[g(x, a)]\)</span></strong></p>
+<p>In Atari domain, the agent perceives a video <span class="math inline">\(s_t\)</span> consisting of M image frames <span class="math inline">\(s_t = (x_{t-M+1}, ..., x_t) \in S\)</span> at time step <span class="math inline">\(t\)</span>. Then agent chooses an action from a discrete set <span class="math inline">\(a_t \in A\)</span> and observes a reward signal <span class="math inline">\(r_t\)</span> produced by the game emulator.</p>
+<p>The agent seeks to maximize the expected discounted return where we define the discounted return as <span class="math inline">\(R_t = \sum_{\tau=t}^{\infty} \gamma^{\tau - t} r_{\tau}\)</span> with <span class="math inline">\(\gamma \in [0, 1]\)</span>.</p>
+<p>For an agent behaving to a stochastic policy <span class="math inline">\(\pi\)</span>, the values of the state-action pair <span class="math inline">\((s, a)\)</span> and the state <span class="math inline">\(s\)</span> are defined as:</p>
+<p><span class="math display">\[Q^{\pi} (s, a) = E[R_t | s_t=s, a_t=a, \pi]\]</span></p>
+<p><span class="math display">\[V^{\pi} (s) = E_{a_t \sim \pi(\cdot | s)}[R_t | s_t=s, \pi] = E_{a_t \sim \pi(\cdot | s)}[E[R_t | s_t, a_t, \pi] | s_t=s] = E_{a_t \sim \pi(\cdot | s)}[ Q^{\pi}(s, a_t)]\]</span></p>
+<p>We know that we can rewrite <span class="math inline">\(Q^{\pi}\)</span> as:</p>
+<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
+<p>We also define:</p>
+<p><span class="math display">\[Q^{*} (s, a) = max_{\pi} Q^{\pi} (s, a), \forall (s, a) \in S X A\]</span></p>
+<p>Then:</p>
+<p><span class="math display">\[V^{*} (s) = max_{a} Q^{*} (s, a)\]</span></p>
+<p>And,</p>
+<p><span class="math display">\[Q^{*}(s, a) = E_{s^{\prime}} [r + \gamma max_{a^{\prime}} Q^{*} (s^{\prime}, a^{\prime}) | s, a]\]</span></p>
+<p>The advantage function is denoted as:</p>
+<p><span class="math display">\[A^{\pi} (s, a) = Q^{\pi} (s, a) - V^{\pi} (s)\]</span></p>
+<p><span class="math display">\[E_{a}[A^{\pi} (s, a) | s] = E_{a}[Q^{\pi} (s, a) | s] - V^{\pi} (s) = 0\]</span></p>
+<p>This means that the advantage at state <span class="math inline">\(s\)</span> weighted by policy <span class="math inline">\(\pi\)</span> is 0. Intuitively, the advantage function measures the relative importance for each action.</p>
+<h2 id="dueling-network-architecture">Dueling Network Architecture</h2>
+<p>Instead of following the convolutional layers with a single sequence of fully connected layers, they instead use two sequences (streams) of fully connected layers. The streams are constructed such that they have the capability of providing separate estimates of the value and advantage functions. Finally , the two streams are combined to produce a single output <span class="math inline">\(Q\)</span> function.</p>
+<p>From the advantage expression, we know that</p>
+<p><span class="math display">\[Q^{\pi} (s, a) = V^{\pi} (s) + A^{\pi} (s, a)\]</span></p>
+<p>If the policy is the deterministic policy, <span class="math inline">\(a^{*} = argmax_{a^{\prime} \in A} Q(s, a^{\prime})\)</span>, then:</p>
+<p><span class="math display">\[E_{a^{\prime}}[Q^{\pi} (s, a)] = Q^{\pi} (s, a^{*}) = V^{\pi} (s)\]</span> and hence <span class="math inline">\(A^{\pi}(s, a^{*}) = 0\)</span>$</p>
+<p>Let <span class="math inline">\(V(s; \theta, \beta), A(s, a; \theta, \alpha), Q(s, a; \theta, \alpha, \beta)\)</span> be parametrized version of <span class="math inline">\(V, A, Q\)</span> respectively. <span class="math inline">\(\theta\)</span> are the shared parameters, <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are the stream parameters for <span class="math inline">\(V, A\)</span>. We can calculate <span class="math inline">\(Q\)</span> directly using the formula:</p>
+<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha)\]</span></p>
+<p>However, these functions are just estimates of the true values, therefore are unidentifiable in the sense that given <span class="math inline">\(Q\)</span> we can not recover <span class="math inline">\(V, A\)</span> uniquely. (ie. given <span class="math inline">\(Q(s, a)\)</span> what is <span class="math inline">\(V(s), A(s, a)\)</span>?)</p>
+<p>To solve the problem, we can force the advantage function to have zero advantage at some chosen action, in this case the greedy action:</p>
+<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha) - max_{a^{\prime}} A(s, a^{\prime}; \theta, \alpha)\]</span></p>
+<p>Thus, if <span class="math inline">\(a^{*} = argmax_{a^{\prime} \in A} Q(s, a^{\prime})\)</span>, then</p>
+<p><span class="math display">\[Q(s, a^{*}; \theta, \alpha, \beta) = V(s; \theta, \beta)\]</span></p>
+<p>We can determine the <span class="math inline">\(V\)</span> given <span class="math inline">\(Q\)</span>.</p>
+<p>Or, we can have:</p>
+<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha) - \frac{1}{|A|} \sum_{a^{\prime}} A(s, a^{\prime}; \theta, \alpha)\]</span></p>
+<p>Take the expectation or average of <span class="math inline">\(Q\)</span>:</p>
+<p><span class="math display">\[E[Q(s, a; \theta, \alpha, \beta)] = V(s; \theta, \theta)\]</span></p>
+<p>On the one hand this loses the original semantics of <span class="math inline">\(V\)</span> and <span class="math inline">\(A\)</span> because they are now off-target by a constant, but on the other hand it increases the stability of the optimization. Note that while subtracting the mean or max helps with the identifiability, it does not change the relative rank of <span class="math inline">\(A, Q\)</span>, so the greedy action.</p>
+<h2 id="discussion">Discussion</h2>
+<p>The advantage of the dueling architecture lies partly in its ability to learn the state-value function efficiently. With every update of the <span class="math inline">\(Q\)</span> values in the dueling architecture, the value stream <span class="math inline">\(V\)</span> is updated – this contrasts with the updates in a single-stream architecture where only the value of one of actions is updated, the values of other actions are untouched. The advantage of the dueling architecture over single-stream <span class="math inline">\(Q\)</span> networks grows when the number of actions is large.</p>
+<h2 id="implementation">Implementation</h2>
+<p><em>One implementation of Dueling Architecture in PARL using PaddlPaddle for Atari Games</em></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> paddle.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AtariModel</span>(<span class="params">parl.Model</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, act_dim, dueling=<span class="literal">False</span></span>):</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line">        self.conv1 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">4</span>, out_channels=<span class="number">32</span>, kernel_size=<span class="number">5</span>, stride=<span class="number">1</span>, padding=<span class="number">2</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv2 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">32</span>, out_channels=<span class="number">32</span>, kernel_size=<span class="number">5</span>, stride=<span class="number">1</span>, padding=<span class="number">2</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv3 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">32</span>, out_channels=<span class="number">64</span>, kernel_size=<span class="number">4</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv4 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">64</span>, out_channels=<span class="number">64</span>, kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.relu = nn.ReLU()</span><br><span class="line">        self.max_pool = nn.MaxPool2D(kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>)</span><br><span class="line">        self.flatten = nn.Flatten()</span><br><span class="line"></span><br><span class="line">        self.dueling = dueling</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> dueling:</span><br><span class="line">            self.linear_1_adv = nn.Linear(in_features=<span class="number">6400</span>, out_features=<span class="number">512</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">            self.linear_2_adv = nn.Linear(in_features=<span class="number">512</span>, out_features=act_dim)</span><br><span class="line">            self.linear_1_val = nn.Linear(in_features=<span class="number">6400</span>, out_features=<span class="number">512</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">            self.linear_2_val = nn.Linear(in_features=<span class="number">512</span>, out_features=<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.linear_1 = nn.Linear(in_features=<span class="number">6400</span>, out_features=act_dim)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">value</span>(<span class="params">self, obs</span>):</span></span><br><span class="line"></span><br><span class="line">        obs = obs / <span class="number">255.0</span></span><br><span class="line">        out = self.max_pool(self.relu(self.conv1(obs)))</span><br><span class="line">        out = self.max_pool(self.relu(self.conv2(out)))</span><br><span class="line">        out = self.max_pool(self.relu(self.conv3(out)))</span><br><span class="line">        out = self.relu(self.conv4(out))</span><br><span class="line">        out = self.flatten(out)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.dueling:</span><br><span class="line">            As = self.relu(self.linear_1_adv(out))</span><br><span class="line">            As = self.linear_2_adv(As)</span><br><span class="line">            V = self.relu(self.linear_1_val(out))</span><br><span class="line">            V = self.linear_2_val(V)</span><br><span class="line">            Q = As + (V - As.mean(axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            Q = self.linear_1(out)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Q</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Continuous State Space</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>DDQN</title>
     <url>/2021/05/07/DDQN/</url>
     <content><![CDATA[<h1 id="deep-reinforcement-learning-with-double-q-learning"><a href="https://arxiv.org/abs/1509.06461">Deep Reinforcement Learning with Double Q-Learning</a></h1>
@@ -132,6 +195,32 @@
       <tags>
         <tag>Function Approximation</tag>
         <tag>Continuous State Space</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Double Q Learning</title>
+    <url>/2021/05/07/FA-issues/</url>
+    <content><![CDATA[<h1 id="double-q-learning">Double Q-learning</h1>
+<h2 id="the-overestimation-phenomenon">The Overestimation Phenomenon</h2>
+<p>Assume the agent observes during learning that action <span class="math inline">\(a\)</span> and executed at state <span class="math inline">\(s\)</span> resulting in the state <span class="math inline">\(s^{\prime}\)</span> and some immediate reward <span class="math inline">\(r^{a}_{s}\)</span>. The Q-learning update can be written as:</p>
+<p><span class="math display">\[Q(s, a) \leftarrow r^{a}_{s} + \gamma \max_{\hat{a}} Q(s^{\prime}, \hat{a})\]</span></p>
+<p>It has been shown that repeated application of this update equation eventually yields <span class="math inline">\(Q\)</span>-values that give rise to a policy which maximizes the expected cumulative discounted reward. However, these results only apply when <span class="math inline">\(Q-\)</span>values are stored precisely. (e.g by a look up table)</p>
+<p>Assume, instead, let <span class="math inline">\(Q\)</span> be represented as a function approximator that induces some noise on the estimates of <span class="math inline">\(Q\)</span>. More specifically, let us assume that the current stored <span class="math inline">\(Q-\)</span>values, denoted by <span class="math inline">\(Q^{approx}\)</span>, represent some implicit target values <span class="math inline">\(Q^{target}\)</span>, corrupted by a noise term <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span>, which is due to the function approximator:</p>
+<p><span class="math display">\[Q^{approx} (s^{\prime}, \hat{a}) = Q^{target} (s^{\prime}, \hat{a}) + Y^{\hat{a}}_{s^{\prime}}\]</span></p>
+<p>Here the noise is modeled by the family of random variable <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span> with zero mean:</p>
+<span class="math display">\[\begin{aligned}
+Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) -  (r^{a}_{s} + \gamma \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a})) \\
+&amp;= \gamma (\max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) - \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a}))\\
+\end{aligned}\]</span>
+<p>Clearly, the noise causes some error on the left-hand side.</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Discussions</tag>
       </tags>
   </entry>
   <entry>
@@ -285,95 +374,6 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
       </tags>
   </entry>
   <entry>
-    <title>Dueling Network Architectures for DRL</title>
-    <url>/2021/05/13/Dueling/</url>
-    <content><![CDATA[<h1 id="dueling-network-architectures-for-deep-reinforcement-learning">Dueling Network Architectures for Deep Reinforcement Learning</h1>
-<h2 id="introduction">Introduction</h2>
-<p>The authors introduce an innovating neural network architecture that is better suited for model-free RL. This paper advances a new network but uses already published algorithms.</p>
-<p>The proposed architecture is called dueling architecture, explicitly separates the representation of state values and state-dependent action advantages. The architecture consists of two streams that represent the value and advantage functions, while sharing a common convolutional feature learning module. The two streams are combined via a special aggregating layer to produce an estimate of the state-action value function <span class="math inline">\(Q\)</span>. This dueling network should be understood as a single Q network with two streams that replaces the popular single-stream Q-network in existing algorithms such as DQN. The dueling network automatically produces separate estimates of the state value function and advantage function, without any extra supervision.</p>
-<p><img src="/images/RL/papers/dueling_1.png"></p>
-<p>Intuitively, the dueling architecture can learn which states are (or are not) valuable, without having to learn the effect of each action for each state. (by taking the gradient wrt to the input) It can more quickly identify the correct action during policy evaluation as redundant or similar actions are added to the learning problem.</p>
-<span id="more"></span>
-<h2 id="background">Background</h2>
-<p><strong>random variables have subscript <span class="math inline">\(t\)</span>, <span class="math inline">\(E[ g(x_t, a_t) | x_t=x, a_t] = f(x, a)\)</span> is shorthanded as <span class="math inline">\(f(x, a) = E[g(x, a)]\)</span></strong></p>
-<p>In Atari domain, the agent perceives a video <span class="math inline">\(s_t\)</span> consisting of M image frames <span class="math inline">\(s_t = (x_{t-M+1}, ..., x_t) \in S\)</span> at time step <span class="math inline">\(t\)</span>. Then agent chooses an action from a discrete set <span class="math inline">\(a_t \in A\)</span> and observes a reward signal <span class="math inline">\(r_t\)</span> produced by the game emulator.</p>
-<p>The agent seeks to maximize the expected discounted return where we define the discounted return as <span class="math inline">\(R_t = \sum_{\tau=t}^{\infty} \gamma^{\tau - t} r_{\tau}\)</span> with <span class="math inline">\(\gamma \in [0, 1]\)</span>.</p>
-<p>For an agent behaving to a stochastic policy <span class="math inline">\(\pi\)</span>, the values of the state-action pair <span class="math inline">\((s, a)\)</span> and the state <span class="math inline">\(s\)</span> are defined as:</p>
-<p><span class="math display">\[Q^{\pi} (s, a) = E[R_t | s_t=s, a_t=a, \pi]\]</span></p>
-<p><span class="math display">\[V^{\pi} (s) = E_{a_t \sim \pi(\cdot | s)}[R_t | s_t=s, \pi] = E_{a_t \sim \pi(\cdot | s)}[E[R_t | s_t, a_t, \pi] | s_t=s] = E_{a_t \sim \pi(\cdot | s)}[ Q^{\pi}(s, a_t)]\]</span></p>
-<p>We know that we can rewrite <span class="math inline">\(Q^{\pi}\)</span> as:</p>
-<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
-<p>We also define:</p>
-<p><span class="math display">\[Q^{*} (s, a) = max_{\pi} Q^{\pi} (s, a), \forall (s, a) \in S X A\]</span></p>
-<p>Then:</p>
-<p><span class="math display">\[V^{*} (s) = max_{a} Q^{*} (s, a)\]</span></p>
-<p>And,</p>
-<p><span class="math display">\[Q^{*}(s, a) = E_{s^{\prime}} [r + \gamma max_{a^{\prime}} Q^{*} (s^{\prime}, a^{\prime}) | s, a]\]</span></p>
-<p>The advantage function is denoted as:</p>
-<p><span class="math display">\[A^{\pi} (s, a) = Q^{\pi} (s, a) - V^{\pi} (s)\]</span></p>
-<p><span class="math display">\[E_{a}[A^{\pi} (s, a) | s] = E_{a}[Q^{\pi} (s, a) | s] - V^{\pi} (s) = 0\]</span></p>
-<p>This means that the advantage at state <span class="math inline">\(s\)</span> weighted by policy <span class="math inline">\(\pi\)</span> is 0. Intuitively, the advantage function measures the relative importance for each action.</p>
-<h2 id="dueling-network-architecture">Dueling Network Architecture</h2>
-<p>Instead of following the convolutional layers with a single sequence of fully connected layers, they instead use two sequences (streams) of fully connected layers. The streams are constructed such that they have the capability of providing separate estimates of the value and advantage functions. Finally , the two streams are combined to produce a single output <span class="math inline">\(Q\)</span> function.</p>
-<p>From the advantage expression, we know that</p>
-<p><span class="math display">\[Q^{\pi} (s, a) = V^{\pi} (s) + A^{\pi} (s, a)\]</span></p>
-<p>If the policy is the deterministic policy, <span class="math inline">\(a^{*} = argmax_{a^{\prime} \in A} Q(s, a^{\prime})\)</span>, then:</p>
-<p><span class="math display">\[E_{a^{\prime}}[Q^{\pi} (s, a)] = Q^{\pi} (s, a^{*}) = V^{\pi} (s)\]</span> and hence <span class="math inline">\(A^{\pi}(s, a^{*}) = 0\)</span>$</p>
-<p>Let <span class="math inline">\(V(s; \theta, \beta), A(s, a; \theta, \alpha), Q(s, a; \theta, \alpha, \beta)\)</span> be parametrized version of <span class="math inline">\(V, A, Q\)</span> respectively. <span class="math inline">\(\theta\)</span> are the shared parameters, <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are the stream parameters for <span class="math inline">\(V, A\)</span>. We can calculate <span class="math inline">\(Q\)</span> directly using the formula:</p>
-<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha)\]</span></p>
-<p>However, these functions are just estimates of the true values, therefore are unidentifiable in the sense that given <span class="math inline">\(Q\)</span> we can not recover <span class="math inline">\(V, A\)</span> uniquely. (ie. given <span class="math inline">\(Q(s, a)\)</span> what is <span class="math inline">\(V(s), A(s, a)\)</span>?)</p>
-<p>To solve the problem, we can force the advantage function to have zero advantage at some chosen action, in this case the greedy action:</p>
-<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha) - max_{a^{\prime}} A(s, a^{\prime}; \theta, \alpha)\]</span></p>
-<p>Thus, if <span class="math inline">\(a^{*} = argmax_{a^{\prime} \in A} Q(s, a^{\prime})\)</span>, then</p>
-<p><span class="math display">\[Q(s, a^{*}; \theta, \alpha, \beta) = V(s; \theta, \beta)\]</span></p>
-<p>We can determine the <span class="math inline">\(V\)</span> given <span class="math inline">\(Q\)</span>.</p>
-<p>Or, we can have:</p>
-<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha) - \frac{1}{|A|} \sum_{a^{\prime}} A(s, a^{\prime}; \theta, \alpha)\]</span></p>
-<p>Take the expectation or average of <span class="math inline">\(Q\)</span>:</p>
-<p><span class="math display">\[E[Q(s, a; \theta, \alpha, \beta)] = V(s; \theta, \theta)\]</span></p>
-<p>On the one hand this loses the original semantics of <span class="math inline">\(V\)</span> and <span class="math inline">\(A\)</span> because they are now off-target by a constant, but on the other hand it increases the stability of the optimization. Note that while subtracting the mean or max helps with the identifiability, it does not change the relative rank of <span class="math inline">\(A, Q\)</span>, so the greedy action.</p>
-<h2 id="discussion">Discussion</h2>
-<p>The advantage of the dueling architecture lies partly in its ability to learn the state-value function efficiently. With every update of the <span class="math inline">\(Q\)</span> values in the dueling architecture, the value stream <span class="math inline">\(V\)</span> is updated – this contrasts with the updates in a single-stream architecture where only the value of one of actions is updated, the values of other actions are untouched. The advantage of the dueling architecture over single-stream <span class="math inline">\(Q\)</span> networks grows when the number of actions is large.</p>
-<h2 id="implementation">Implementation</h2>
-<p><em>One implementation of Dueling Architecture in PARL using PaddlPaddle for Atari Games</em></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> paddle.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AtariModel</span>(<span class="params">parl.Model</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, act_dim, dueling=<span class="literal">False</span></span>):</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line">        self.conv1 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">4</span>, out_channels=<span class="number">32</span>, kernel_size=<span class="number">5</span>, stride=<span class="number">1</span>, padding=<span class="number">2</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv2 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">32</span>, out_channels=<span class="number">32</span>, kernel_size=<span class="number">5</span>, stride=<span class="number">1</span>, padding=<span class="number">2</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv3 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">32</span>, out_channels=<span class="number">64</span>, kernel_size=<span class="number">4</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv4 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">64</span>, out_channels=<span class="number">64</span>, kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.relu = nn.ReLU()</span><br><span class="line">        self.max_pool = nn.MaxPool2D(kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>)</span><br><span class="line">        self.flatten = nn.Flatten()</span><br><span class="line"></span><br><span class="line">        self.dueling = dueling</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> dueling:</span><br><span class="line">            self.linear_1_adv = nn.Linear(in_features=<span class="number">6400</span>, out_features=<span class="number">512</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">            self.linear_2_adv = nn.Linear(in_features=<span class="number">512</span>, out_features=act_dim)</span><br><span class="line">            self.linear_1_val = nn.Linear(in_features=<span class="number">6400</span>, out_features=<span class="number">512</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">            self.linear_2_val = nn.Linear(in_features=<span class="number">512</span>, out_features=<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.linear_1 = nn.Linear(in_features=<span class="number">6400</span>, out_features=act_dim)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">value</span>(<span class="params">self, obs</span>):</span></span><br><span class="line"></span><br><span class="line">        obs = obs / <span class="number">255.0</span></span><br><span class="line">        out = self.max_pool(self.relu(self.conv1(obs)))</span><br><span class="line">        out = self.max_pool(self.relu(self.conv2(out)))</span><br><span class="line">        out = self.max_pool(self.relu(self.conv3(out)))</span><br><span class="line">        out = self.relu(self.conv4(out))</span><br><span class="line">        out = self.flatten(out)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.dueling:</span><br><span class="line">            As = self.relu(self.linear_1_adv(out))</span><br><span class="line">            As = self.linear_2_adv(As)</span><br><span class="line">            V = self.relu(self.linear_1_val(out))</span><br><span class="line">            V = self.linear_2_val(V)</span><br><span class="line">            Q = As + (V - As.mean(axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            Q = self.linear_1(out)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Q</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>VFA</category>
-      </categories>
-      <tags>
-        <tag>Function Approximation</tag>
-        <tag>Continuous State Space</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Double Q Learning</title>
-    <url>/2021/05/07/FA-issues/</url>
-    <content><![CDATA[<h1 id="double-q-learning">Double Q-learning</h1>
-<h2 id="the-overestimation-phenomenon">The Overestimation Phenomenon</h2>
-<p>Assume the agent observes during learning that action <span class="math inline">\(a\)</span> and executed at state <span class="math inline">\(s\)</span> resulting in the state <span class="math inline">\(s^{\prime}\)</span> and some immediate reward <span class="math inline">\(r^{a}_{s}\)</span>. The Q-learning update can be written as:</p>
-<p><span class="math display">\[Q(s, a) \leftarrow r^{a}_{s} + \gamma \max_{\hat{a}} Q(s^{\prime}, \hat{a})\]</span></p>
-<p>It has been shown that repeated application of this update equation eventually yields <span class="math inline">\(Q\)</span>-values that give rise to a policy which maximizes the expected cumulative discounted reward. However, these results only apply when <span class="math inline">\(Q-\)</span>values are stored precisely. (e.g by a look up table)</p>
-<p>Assume, instead, let <span class="math inline">\(Q\)</span> be represented as a function approximator that induces some noise on the estimates of <span class="math inline">\(Q\)</span>. More specifically, let us assume that the current stored <span class="math inline">\(Q-\)</span>values, denoted by <span class="math inline">\(Q^{approx}\)</span>, represent some implicit target values <span class="math inline">\(Q^{target}\)</span>, corrupted by a noise term <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span>, which is due to the function approximator:</p>
-<p><span class="math display">\[Q^{approx} (s^{\prime}, \hat{a}) = Q^{target} (s^{\prime}, \hat{a}) + Y^{\hat{a}}_{s^{\prime}}\]</span></p>
-<p>Here the noise is modeled by the family of random variable <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span> with zero mean:</p>
-<span class="math display">\[\begin{aligned}
-Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) -  (r^{a}_{s} + \gamma \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a})) \\
-&amp;= \gamma (\max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) - \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a}))\\
-\end{aligned}\]</span>
-<p>Clearly, the noise causes some error on the left-hand side.</p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>VFA</category>
-      </categories>
-      <tags>
-        <tag>Function Approximation</tag>
-        <tag>Discussions</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>MDP</title>
     <url>/2021/05/03/MDP/</url>
     <content><![CDATA[<h1 id="mdp">MDP</h1>
@@ -516,6 +516,159 @@ Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \ha
       <tags>
         <tag>Policy Gradient</tag>
         <tag>Policy Search</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>VGG (Under Construction)</title>
+    <url>/2021/06/24/VGG/</url>
+    <content><![CDATA[<h1 id="very-deep-convolutional-networks-for-large-scale-image-recognition">Very Deep Convolutional Networks For Large-Scale Image Recognition</h1>
+<h2 id="generic-architecture">Generic Architecture</h2>
+<ol type="1">
+<li>Inputs are <span class="math inline">\(224 \times 224\)</span> RGB images with zero mean for each pixel.</li>
+<li>The convolutional layers have small filter sizes (<span class="math inline">\(3 \times 3\)</span>), one architecture with <span class="math inline">\(1 \times 1\)</span> filters (Network C).</li>
+<li>Padding 1 and stride 1 to maintain the original image size.</li>
+<li>5 max pooling layers with <span class="math inline">\(2 \times 2\)</span> window and stride 2.</li>
+<li>2 fully connected layers each with 4096 units, and the final fc output layer with 1000 units.</li>
+<li>ReLU activation function.</li>
+</ol>
+<h2 id="configurations">Configurations</h2>
+<ol type="1">
+<li><p>the shallowest network has 11 weight layers (8 conv layers and 3 FC layers), the deepest network has 19 weight layers (16 conv layers and 3 FC layers)</p></li>
+<li><p>The width of conv layers are relative small, starting from 64 in the first layer and then increasing by a factor of 2 each max-pooling layer, until it reaches 512.</p></li>
+</ol>
+<p><img src="/images/ML/vgg_1.png" width="600"></p>
+<span id="more"></span>
+<h2 id="discussion">Discussion</h2>
+<p>Instead of large filter size, we use small <span class="math inline">\(3 \times 3\)</span> filters. We can see that after 2 consecutive layers, the effective receptive field is <span class="math inline">\(5 \times 5\)</span>, after three consective layers, the effective receptive field is <span class="math inline">\(7 \times 7\)</span>. Comparing to a conv layer with <span class="math inline">\(7 \times 7\)</span> filter, 3 consecutive <span class="math inline">\(3 \times 3\)</span> filter conv layers have less parameters. To see this, assume each layer has input C channel and output C channel, then total parameters:</p>
+<ol type="1">
+<li>Single conv layer with <span class="math inline">\(7 \times 7\)</span> filter: <span class="math inline">\(7 * 7 * C * C = 49 C^2\)</span></li>
+<li>Three conv layer each with <span class="math inline">\(3 \times 3\)</span> filter: <span class="math inline">\(3 (3 * 3 * C * C) = 27 C^2\)</span></li>
+</ol>
+<p>This can be seen as imposing a regularisation on the <span class="math inline">\(7 \times 7\)</span> conv filters forcing them to have a decomposition through the <span class="math inline">\(3 \times 3\)</span> filters. This structure also have more discriminative power (3 non-linear functions compare to one).</p>
+<p>The <span class="math inline">\(1 \times 1\)</span> is one way to increase the non-linearity of the decision function without affecting the receptive fields of the conv layers.</p>
+<h2 id="classification-framework">Classification Framework</h2>
+<h3 id="training">Training</h3>
+<ol type="1">
+<li>Batch size 256, momentum 0.9, weight decay 0.0005</li>
+<li>Dropout is applied to the first two fully connected layers with rate of 0.5</li>
+</ol>
+<h4 id="initialization">Initialization</h4>
+<ol type="1">
+<li>Net <span class="math inline">\(A\)</span> is first trained with random initialization</li>
+<li>When training deeper architectures, we initialize the first four conv layers and last three fully connected layers with the layer of <span class="math inline">\(A\)</span></li>
+<li>The conv layers in the middle are initialized randomly with normal(0, 0.01)</li>
+</ol>
+<p>In spite of the larger number of parameters and the greater depth of our nets compare to AlexNet, the nets required less epochs to converge due to</p>
+<ol type="1">
+<li>implicit regularization imposed by greater depth and smaller filter size</li>
+<li>pre-initialization of certain layers</li>
+</ol>
+<h4 id="training-image-size-rescale">Training Image Size Rescale</h4>
+<p>Let <span class="math inline">\(S\)</span> (training scale) be the smallest side of an isotropically-rescaled training image from which the input image is cropped (The training input is first rescaled to smallest side = <span class="math inline">\(S\)</span> before cropping). For a fixed crop size <span class="math inline">\(224 \times 224\)</span>, if <span class="math inline">\(S=224\)</span>, the cropped image will span the smallest side of the training image. If <span class="math inline">\(S &gt;&gt; 224\)</span>, the crop will correspond to a small part of the image. There are two approaches setting up <span class="math inline">\(S\)</span></p>
+<ol type="1">
+<li>Single scale training: fix <span class="math inline">\(S=256, 384\)</span></li>
+<li>Multi-scale training: Each image is individually rescaled by randomly sampling <span class="math inline">\(S\)</span> from a certain range <span class="math inline">\([S_{min}, S_{max}] = [256, 512]\)</span>.</li>
+</ol>
+<p>Then the rescaled images is:</p>
+<ol type="1">
+<li>randomly cropped from rescaled training images (one crop per image per SGD iteration)</li>
+<li>the crops underwent random horizontal filpping and random RGB colour shift</li>
+</ol>
+<h3 id="testing">Testing</h3>
+<p>During Testing given a trained Conv Net and an input image:</p>
+<ol type="1">
+<li>It is first isotropically rescaled to a predefined smallest image side <span class="math inline">\(Q\)</span> (test scale, where <span class="math inline">\(S\)</span> is the training scale). <span class="math inline">\(Q\)</span> is not necessarily equal to the training scale <span class="math inline">\(S\)</span></li>
+<li></li>
+</ol>
+]]></content>
+      <categories>
+        <category>DL</category>
+        <category>CNN</category>
+      </categories>
+      <tags>
+        <tag>Deep Learning</tag>
+        <tag>Neural Network Architectures</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Alex Net</title>
+    <url>/2021/06/22/alex-net/</url>
+    <content><![CDATA[<h1 id="imagenet-classification-with-deep-convolutional-neural-networks">ImageNet Classification with Deep Convolutional Neural Networks</h1>
+<h2 id="the-dataset-image-preprocessing">The dataset, Image preprocessing</h2>
+<p>ImageNet is a dataset of over 15 million labeled high-resolutoin images. It consists of variable-resolution images, while the network requires a constant input dimensionality. Therefore, we down-sampled the images to a fixed resolution of <span class="math inline">\(256 \times 256\)</span>. Given a rectangular image, we first rescaled the image such that the shorter side was of length 256, and then cropped out the central <span class="math inline">\(256 \times 256\)</span> patch from the resulting image. We did not pre-process the images in any other way, except for subtracting the mean activity over the training set for each pixel (normalize each input pixel). So we trained our network on the centered raw RGB values of the pixels.</p>
+<span id="more"></span>
+<h2 id="the-architecture">The Architecture</h2>
+<h3 id="relu-nonlinearity">ReLU Nonlinearity</h3>
+<p>tanh and other saturating nonlinearities are much slower than the non-saturating nonlinearity <span class="math inline">\(f(x) = max(0, x)\)</span>. DNN with ReLUs train several times faster than their equivalents with tanh units.</p>
+<h3 id="training-on-multiple-gpus">Training on Multiple GPUs</h3>
+<p>We split half of the kernels (neurons) on each GPU, with one additional trick: the GPUs communicate only in certain layers. This means that, for examples, the kernels of layer 3 take input form all kernel maps in layer 2. However, kernels in layer 4 take input only from those kernel maps in layer 3 which reside on the same GPU. This allows us to precisely tune the amount of communication until it is an acceptable fraction of the amount of computation.</p>
+<h3 id="local-response-normalization">Local Response Normalization</h3>
+<p>Denoting by <span class="math inline">\(a^{i}_{x, y}\)</span> the activity of a neuron computed by applying kernel <span class="math inline">\(i\)</span> at position <span class="math inline">\((x, y)\)</span> and then applying the ReLU nonlinearity, the response-normalized activity <span class="math inline">\(b^i_{x,y}\)</span> is given by the expression:</p>
+<p><span class="math display">\[b^{i}_{x, y} = \frac{a^{i}_{(x, y)}}{(k + \alpha \sum_{j=\max(0 , \frac{i - n}{2})}^{\min(N - 1, \frac{i + n}{2})}(a^{i}_{(x, y)})^2)^\beta}\]</span></p>
+<p>Where the sum runs over <span class="math inline">\(N\)</span> adjacent kernel maps at the same spatial position, and <span class="math inline">\(N\)</span> is the total number of kernels in the layer. This normalization is applied after applying the ReLU nonlinearity in certain layers.</p>
+<h3 id="overlapping-pooling">Overlapping Pooling</h3>
+<p>Pooling layers in CNNs summarize the outputs of neurons in the same kernel map. Traditionally, the pooling units do not overlap. To be more precise, a pooling layer can be though of as consisting of a grid of pooling units spaced <span class="math inline">\(s\)</span> pixels apart, each summarizing a neighborhood of size <span class="math inline">\(z \times z\)</span> centered at the location of the pooling unit. If we set <span class="math inline">\(s = z\)</span>, we obtain traditional local pooling. If <span class="math inline">\(s &lt; z\)</span>, we obtain overlapping pooling. This is used in the network. We generally observe during training that models with overlapping pooling find it slightly more difficult to overfit.</p>
+<h2 id="reduce-overfitting">Reduce Overfitting</h2>
+<h3 id="data-augmentation">Data Augmentation</h3>
+<p>Two distinct forms of data augmentation:</p>
+<ol type="1">
+<li><p>Generating image translations and horizontal reflections. We do this by extracting random <span class="math inline">\(227 \times 227\)</span> patches, and their horizontal reflections from the <span class="math inline">\(256 \times 256\)</span> images and training our network on these extracted patches. At the test time, the network makes a prediction by extracting 5 <span class="math inline">\(227 \times 227\)</span> patches (4 corner patches and 1 center patch) as well as their horizontal reflections and average the predictions made by the network's softmax layer on the ten patches.</p></li>
+<li><p>Altering the intensities of the RGB channels in training images. Specifically, we perform PCA on the set of RGB pixel values throughout the imageNet training set. For each training image, we add multiples of the found principal components with magnitudes proportional to the corresponding eigenvalues times a random variable drawn from a Gaussian with mean zero and std 0.1.</p></li>
+</ol>
+<h3 id="dropout">Dropout</h3>
+<p>Model aggregation using dropout. Attest time, we use all the neurons but multiply their outputs by 0.5, which is a reasonable approximation to taking the geometric mean of the predictive distributions produced by the exponentially-many dropout networks.</p>
+<p>We use dropout in the first two fully-connected layers. Without dropout, our network exhibits substantial overfitting. Dropout roughly doubles the number of iterations required to converge.</p>
+<p><br></p>
+<h2 id="overall-architecture">Overall Architecture</h2>
+<p>The net contains eight layers with weights, the first five are convolutional and the remaining three are full-connected. The output of the last fully-connected layer is fed to a 1000-way softmax which produces a distribution over the 1000 class labels. The network maximizes the multinomial logistic regression objective (-cross entropy), which is equaivalent to maximizing the average across training cases of the log-probability of the correct label under the prediction distribution.</p>
+<p>The kernels of the second, fourth and fifth convolutional layers are connected only to those kernel maps in the previous layer which reside on the same GPU. The kernels of the third convolutional layer are connected to all kernel maps in the second layer. The neurons in the fully connected layers are connected to all neurons in the previous layer. Normalization layers follow the first and second convolutional layers. Max-pooling layers, of the kind with overlapping, follow both normalization layers and the fifth convolutional layer.</p>
+<p>The first convolutional layer filters the <span class="math inline">\(227 \times 227 \times 3\)</span> (random crop from <span class="math inline">\(256 \times 256 \times 3\)</span>) input images with 96 kernels of size <span class="math inline">\(11 \times 11 \times 3 = 363\)</span> weights in each kernel with a stride of 4 pixels.</p>
+<p>The second convolutional layer takes as input (normalized and max pooled) output of the first convolutional layer and filters it with <span class="math inline">\(256\)</span> kernels of size <span class="math inline">\(5 \times 5 \times 48\)</span>.</p>
+<p>The third convolutional layer has 384 kernels of size <span class="math inline">\(3 \times 3 \times 256\)</span> connected to the (normalized and max pooled) outputs of the second convolutional layer.</p>
+<p>The fourth convolutional layer has 384 kernels of size <span class="math inline">\(3 \times 3 \times 192\)</span>.</p>
+<p>The fifth convolutional layer has 256 kernels of size <span class="math inline">\(3 \times 3 \times 192\)</span>.</p>
+<p>The fully connected layers have 4096 neurons each.</p>
+<p><br></p>
+<p>Number of weights in each layer:</p>
+<ol type="1">
+<li><span class="math inline">\(11 * 11 * 3 * 96 = 34848\)</span></li>
+<li><span class="math inline">\(5 * 5 * 48 * 256 = 307200\)</span> (connected only to the Neurons reside in the same GPU)</li>
+<li><span class="math inline">\(3 * 3 * 256 * 384= 884736\)</span></li>
+<li><span class="math inline">\(3 * 3 * 192 * 384 = 663552\)</span> (connected only to the Neurons reside in the same GPU)</li>
+<li><span class="math inline">\(3 * 3 * 192 * 256 = 442368\)</span> (connected only to the Neurons reside in the same GPU)</li>
+</ol>
+<p>Number of Neurons (output):</p>
+<ol type="1">
+<li><span class="math inline">\(55 * 55 * 96 = 290400\)</span></li>
+<li><span class="math inline">\(27 * 27 * 256 = 186624\)</span></li>
+<li><span class="math inline">\(13 * 13 * 384 = 64896\)</span></li>
+<li><span class="math inline">\(13 * 13 * 384 = 64896\)</span></li>
+<li><span class="math inline">\(13 * 13 * 256 = 43264\)</span></li>
+</ol>
+<p><br></p>
+<p><img src='/images/ML/Alex_1.png' width="600"></p>
+<p><br></p>
+<h2 id="training-details">Training Details</h2>
+<p>Model is trained using SGD with:</p>
+<ol type="1">
+<li>batch size: 128</li>
+<li>momentum: 0.9</li>
+<li>weight decay: 0.0005</li>
+<li>epochs: 90</li>
+<li>lr start: 0.01. It is divided by 10 when the validation error rate stopped improving with the current learning rate and three times prior to termination.</li>
+</ol>
+<p>All weights initialized using a 0-mean and 0.01 std Gaussian distribution. Biases in the second, fourth and fifth convolutional layers are initialized to 1 as well as the bias in fully connected layers. Biases in remaining layers are initialized to 0. This initialization accelerates the early states of learning by providing the ReLUs with positive inputs.</p>
+<h1 id="reference">Reference</h1>
+<p>https://www.cs.toronto.edu/~rgrosse/courses/csc321_2018/tutorials/tut6_slides.pdf</p>
+<p>https://learnopencv.com/understanding-alexnet/#:~:text=The%20input%20to%20AlexNet%20is,of%20size%20256%C3%97256</p>
+]]></content>
+      <categories>
+        <category>DL</category>
+        <category>CNN</category>
+      </categories>
+      <tags>
+        <tag>Deep Learning</tag>
+        <tag>Neural Network Architectures</tag>
       </tags>
   </entry>
   <entry>
@@ -680,169 +833,10 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
       </tags>
   </entry>
   <entry>
-    <title>VGG (Under Construction)</title>
-    <url>/2021/06/24/VGG/</url>
-    <content><![CDATA[<h1 id="very-deep-convolutional-networks-for-large-scale-image-recognition">Very Deep Convolutional Networks For Large-Scale Image Recognition</h1>
-<h2 id="generic-architecture">Generic Architecture</h2>
-<ol type="1">
-<li>Inputs are <span class="math inline">\(224 \times 224\)</span> RGB images with zero mean for each pixel.</li>
-<li>The convolutional layers have small filter sizes (<span class="math inline">\(3 \times 3\)</span>), one architecture with <span class="math inline">\(1 \times 1\)</span> filters (Network C).</li>
-<li>Padding 1 and stride 1 to maintain the original image size.</li>
-<li>5 max pooling layers with <span class="math inline">\(2 \times 2\)</span> window and stride 2.</li>
-<li>2 fully connected layers each with 4096 units, and the final fc output layer with 1000 units.</li>
-<li>ReLU activation function.</li>
-</ol>
-<h2 id="configurations">Configurations</h2>
-<ol type="1">
-<li><p>the shallowest network has 11 weight layers (8 conv layers and 3 FC layers), the deepest network has 19 weight layers (16 conv layers and 3 FC layers)</p></li>
-<li><p>The width of conv layers are relative small, starting from 64 in the first layer and then increasing by a factor of 2 each max-pooling layer, until it reaches 512.</p></li>
-</ol>
-<p><img src="/images/ML/vgg_1.png" width="600"></p>
-<span id="more"></span>
-<h2 id="discussion">Discussion</h2>
-<p>Instead of large filter size, we use small <span class="math inline">\(3 \times 3\)</span> filters. We can see that after 2 consecutive layers, the effective receptive field is <span class="math inline">\(5 \times 5\)</span>, after three consective layers, the effective receptive field is <span class="math inline">\(7 \times 7\)</span>. Comparing to a conv layer with <span class="math inline">\(7 \times 7\)</span> filter, 3 consecutive <span class="math inline">\(3 \times 3\)</span> filter conv layers have less parameters. To see this, assume each layer has input C channel and output C channel, then total parameters:</p>
-<ol type="1">
-<li>Single conv layer with <span class="math inline">\(7 \times 7\)</span> filter: <span class="math inline">\(7 * 7 * C * C = 49 C^2\)</span></li>
-<li>Three conv layer each with <span class="math inline">\(3 \times 3\)</span> filter: <span class="math inline">\(3 (3 * 3 * C * C) = 27 C^2\)</span></li>
-</ol>
-<p>This can be seen as imposing a regularisation on the <span class="math inline">\(7 \times 7\)</span> conv filters forcing them to have a decomposition through the <span class="math inline">\(3 \times 3\)</span> filters. This structure also have more discriminative power (3 non-linear functions compare to one).</p>
-<p>The <span class="math inline">\(1 \times 1\)</span> is one way to increase the non-linearity of the decision function without affecting the receptive fields of the conv layers.</p>
-<h2 id="classification-framework">Classification Framework</h2>
-<h3 id="training">Training</h3>
-<ol type="1">
-<li>Batch size 256, momentum 0.9, weight decay 0.0005</li>
-<li>Dropout is applied to the first two fully connected layers with rate of 0.5</li>
-</ol>
-<h4 id="initialization">Initialization</h4>
-<ol type="1">
-<li>Net <span class="math inline">\(A\)</span> is first trained with random initialization</li>
-<li>When training deeper architectures, we initialize the first four conv layers and last three fully connected layers with the layer of <span class="math inline">\(A\)</span></li>
-<li>The conv layers in the middle are initialized randomly with normal(0, 0.01)</li>
-</ol>
-<p>In spite of the larger number of parameters and the greater depth of our nets compare to AlexNet, the nets required less epochs to converge due to</p>
-<ol type="1">
-<li>implicit regularization imposed by greater depth and smaller filter size</li>
-<li>pre-initialization of certain layers</li>
-</ol>
-<h4 id="training-image-size-rescale">Training Image Size Rescale</h4>
-<p>Let <span class="math inline">\(S\)</span> (training scale) be the smallest side of an isotropically-rescaled training image from which the input image is cropped (The training input is first rescaled to smallest side = <span class="math inline">\(S\)</span> before cropping). For a fixed crop size <span class="math inline">\(224 \times 224\)</span>, if <span class="math inline">\(S=224\)</span>, the cropped image will span the smallest side of the training image. If <span class="math inline">\(S &gt;&gt; 224\)</span>, the crop will correspond to a small part of the image. There are two approaches setting up <span class="math inline">\(S\)</span></p>
-<ol type="1">
-<li>Single scale training: fix <span class="math inline">\(S=256, 384\)</span></li>
-<li>Multi-scale training: Each image is individually rescaled by randomly sampling <span class="math inline">\(S\)</span> from a certain range <span class="math inline">\([S_{min}, S_{max}] = [256, 512]\)</span>.</li>
-</ol>
-<p>Then the rescaled images is:</p>
-<ol type="1">
-<li>randomly cropped from rescaled training images (one crop per image per SGD iteration)</li>
-<li>the crops underwent random horizontal filpping and random RGB colour shift</li>
-</ol>
-<h3 id="testing">Testing</h3>
-<p>During Testing given a trained Conv Net and an input image:</p>
-<ol type="1">
-<li>It is first isotropically rescaled to a predefined smallest image side <span class="math inline">\(Q\)</span> (test scale, where <span class="math inline">\(S\)</span> is the training scale). <span class="math inline">\(Q\)</span> is not necessarily equal to the training scale <span class="math inline">\(S\)</span></li>
-<li></li>
-</ol>
-]]></content>
-      <categories>
-        <category>DL</category>
-        <category>CNN</category>
-      </categories>
-      <tags>
-        <tag>Deep Learning</tag>
-        <tag>Neural Network Architectures</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>actor_critic</title>
     <url>/2021/06/14/actor-critic/</url>
     <content><![CDATA[<h1 id="actor-critic-algorithms">Actor-Critic Algorithms</h1>
 <p><a href="https://papers.nips.cc/paper/1999/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf">Original Paper</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>Alex Net</title>
-    <url>/2021/06/22/alex-net/</url>
-    <content><![CDATA[<h1 id="imagenet-classification-with-deep-convolutional-neural-networks">ImageNet Classification with Deep Convolutional Neural Networks</h1>
-<h2 id="the-dataset-image-preprocessing">The dataset, Image preprocessing</h2>
-<p>ImageNet is a dataset of over 15 million labeled high-resolutoin images. It consists of variable-resolution images, while the network requires a constant input dimensionality. Therefore, we down-sampled the images to a fixed resolution of <span class="math inline">\(256 \times 256\)</span>. Given a rectangular image, we first rescaled the image such that the shorter side was of length 256, and then cropped out the central <span class="math inline">\(256 \times 256\)</span> patch from the resulting image. We did not pre-process the images in any other way, except for subtracting the mean activity over the training set for each pixel (normalize each input pixel). So we trained our network on the centered raw RGB values of the pixels.</p>
-<span id="more"></span>
-<h2 id="the-architecture">The Architecture</h2>
-<h3 id="relu-nonlinearity">ReLU Nonlinearity</h3>
-<p>tanh and other saturating nonlinearities are much slower than the non-saturating nonlinearity <span class="math inline">\(f(x) = max(0, x)\)</span>. DNN with ReLUs train several times faster than their equivalents with tanh units.</p>
-<h3 id="training-on-multiple-gpus">Training on Multiple GPUs</h3>
-<p>We split half of the kernels (neurons) on each GPU, with one additional trick: the GPUs communicate only in certain layers. This means that, for examples, the kernels of layer 3 take input form all kernel maps in layer 2. However, kernels in layer 4 take input only from those kernel maps in layer 3 which reside on the same GPU. This allows us to precisely tune the amount of communication until it is an acceptable fraction of the amount of computation.</p>
-<h3 id="local-response-normalization">Local Response Normalization</h3>
-<p>Denoting by <span class="math inline">\(a^{i}_{x, y}\)</span> the activity of a neuron computed by applying kernel <span class="math inline">\(i\)</span> at position <span class="math inline">\((x, y)\)</span> and then applying the ReLU nonlinearity, the response-normalized activity <span class="math inline">\(b^i_{x,y}\)</span> is given by the expression:</p>
-<p><span class="math display">\[b^{i}_{x, y} = \frac{a^{i}_{(x, y)}}{(k + \alpha \sum_{j=\max(0 , \frac{i - n}{2})}^{\min(N - 1, \frac{i + n}{2})}(a^{i}_{(x, y)})^2)^\beta}\]</span></p>
-<p>Where the sum runs over <span class="math inline">\(N\)</span> adjacent kernel maps at the same spatial position, and <span class="math inline">\(N\)</span> is the total number of kernels in the layer. This normalization is applied after applying the ReLU nonlinearity in certain layers.</p>
-<h3 id="overlapping-pooling">Overlapping Pooling</h3>
-<p>Pooling layers in CNNs summarize the outputs of neurons in the same kernel map. Traditionally, the pooling units do not overlap. To be more precise, a pooling layer can be though of as consisting of a grid of pooling units spaced <span class="math inline">\(s\)</span> pixels apart, each summarizing a neighborhood of size <span class="math inline">\(z \times z\)</span> centered at the location of the pooling unit. If we set <span class="math inline">\(s = z\)</span>, we obtain traditional local pooling. If <span class="math inline">\(s &lt; z\)</span>, we obtain overlapping pooling. This is used in the network. We generally observe during training that models with overlapping pooling find it slightly more difficult to overfit.</p>
-<h2 id="reduce-overfitting">Reduce Overfitting</h2>
-<h3 id="data-augmentation">Data Augmentation</h3>
-<p>Two distinct forms of data augmentation:</p>
-<ol type="1">
-<li><p>Generating image translations and horizontal reflections. We do this by extracting random <span class="math inline">\(227 \times 227\)</span> patches, and their horizontal reflections from the <span class="math inline">\(256 \times 256\)</span> images and training our network on these extracted patches. At the test time, the network makes a prediction by extracting 5 <span class="math inline">\(227 \times 227\)</span> patches (4 corner patches and 1 center patch) as well as their horizontal reflections and average the predictions made by the network's softmax layer on the ten patches.</p></li>
-<li><p>Altering the intensities of the RGB channels in training images. Specifically, we perform PCA on the set of RGB pixel values throughout the imageNet training set. For each training image, we add multiples of the found principal components with magnitudes proportional to the corresponding eigenvalues times a random variable drawn from a Gaussian with mean zero and std 0.1.</p></li>
-</ol>
-<h3 id="dropout">Dropout</h3>
-<p>Model aggregation using dropout. Attest time, we use all the neurons but multiply their outputs by 0.5, which is a reasonable approximation to taking the geometric mean of the predictive distributions produced by the exponentially-many dropout networks.</p>
-<p>We use dropout in the first two fully-connected layers. Without dropout, our network exhibits substantial overfitting. Dropout roughly doubles the number of iterations required to converge.</p>
-<p><br></p>
-<h2 id="overall-architecture">Overall Architecture</h2>
-<p>The net contains eight layers with weights, the first five are convolutional and the remaining three are full-connected. The output of the last fully-connected layer is fed to a 1000-way softmax which produces a distribution over the 1000 class labels. The network maximizes the multinomial logistic regression objective (-cross entropy), which is equaivalent to maximizing the average across training cases of the log-probability of the correct label under the prediction distribution.</p>
-<p>The kernels of the second, fourth and fifth convolutional layers are connected only to those kernel maps in the previous layer which reside on the same GPU. The kernels of the third convolutional layer are connected to all kernel maps in the second layer. The neurons in the fully connected layers are connected to all neurons in the previous layer. Normalization layers follow the first and second convolutional layers. Max-pooling layers, of the kind with overlapping, follow both normalization layers and the fifth convolutional layer.</p>
-<p>The first convolutional layer filters the <span class="math inline">\(227 \times 227 \times 3\)</span> (random crop from <span class="math inline">\(256 \times 256 \times 3\)</span>) input images with 96 kernels of size <span class="math inline">\(11 \times 11 \times 3 = 363\)</span> weights in each kernel with a stride of 4 pixels.</p>
-<p>The second convolutional layer takes as input (normalized and max pooled) output of the first convolutional layer and filters it with <span class="math inline">\(256\)</span> kernels of size <span class="math inline">\(5 \times 5 \times 48\)</span>.</p>
-<p>The third convolutional layer has 384 kernels of size <span class="math inline">\(3 \times 3 \times 256\)</span> connected to the (normalized and max pooled) outputs of the second convolutional layer.</p>
-<p>The fourth convolutional layer has 384 kernels of size <span class="math inline">\(3 \times 3 \times 192\)</span>.</p>
-<p>The fifth convolutional layer has 256 kernels of size <span class="math inline">\(3 \times 3 \times 192\)</span>.</p>
-<p>The fully connected layers have 4096 neurons each.</p>
-<p><br></p>
-<p>Number of weights in each layer:</p>
-<ol type="1">
-<li><span class="math inline">\(11 * 11 * 3 * 96 = 34848\)</span></li>
-<li><span class="math inline">\(5 * 5 * 48 * 256 = 307200\)</span> (connected only to the Neurons reside in the same GPU)</li>
-<li><span class="math inline">\(3 * 3 * 256 * 384= 884736\)</span></li>
-<li><span class="math inline">\(3 * 3 * 192 * 384 = 663552\)</span> (connected only to the Neurons reside in the same GPU)</li>
-<li><span class="math inline">\(3 * 3 * 192 * 256 = 442368\)</span> (connected only to the Neurons reside in the same GPU)</li>
-</ol>
-<p>Number of Neurons (output):</p>
-<ol type="1">
-<li><span class="math inline">\(55 * 55 * 96 = 290400\)</span></li>
-<li><span class="math inline">\(27 * 27 * 256 = 186624\)</span></li>
-<li><span class="math inline">\(13 * 13 * 384 = 64896\)</span></li>
-<li><span class="math inline">\(13 * 13 * 384 = 64896\)</span></li>
-<li><span class="math inline">\(13 * 13 * 256 = 43264\)</span></li>
-</ol>
-<p><br></p>
-<p><img src='/images/ML/Alex_1.png' width="600"></p>
-<p><br></p>
-<h2 id="training-details">Training Details</h2>
-<p>Model is trained using SGD with:</p>
-<ol type="1">
-<li>batch size: 128</li>
-<li>momentum: 0.9</li>
-<li>weight decay: 0.0005</li>
-<li>epochs: 90</li>
-<li>lr start: 0.01. It is divided by 10 when the validation error rate stopped improving with the current learning rate and three times prior to termination.</li>
-</ol>
-<p>All weights initialized using a 0-mean and 0.01 std Gaussian distribution. Biases in the second, fourth and fifth convolutional layers are initialized to 1 as well as the bias in fully connected layers. Biases in remaining layers are initialized to 0. This initialization accelerates the early states of learning by providing the ReLUs with positive inputs.</p>
-<h1 id="reference">Reference</h1>
-<p>https://www.cs.toronto.edu/~rgrosse/courses/csc321_2018/tutorials/tut6_slides.pdf</p>
-<p>https://learnopencv.com/understanding-alexnet/#:~:text=The%20input%20to%20AlexNet%20is,of%20size%20256%C3%97256</p>
-]]></content>
-      <categories>
-        <category>DL</category>
-        <category>CNN</category>
-      </categories>
-      <tags>
-        <tag>Deep Learning</tag>
-        <tag>Neural Network Architectures</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>average_reward_setting</title>
-    <url>/2021/05/30/average-reward-setting/</url>
-    <content><![CDATA[
 ]]></content>
   </entry>
   <entry>
@@ -914,6 +908,12 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
         <tag>Deep Learning</tag>
         <tag>Normalization</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>average_reward_setting</title>
+    <url>/2021/05/30/average-reward-setting/</url>
+    <content><![CDATA[
+]]></content>
   </entry>
   <entry>
     <title>Bellman Equations</title>
@@ -1411,7 +1411,48 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
 </ol>
 <p>Both sparse and deceptive reward problems constitute "hard-exploration" problems.</p>
 <p><br></p>
+<p><strong>What is Derailment?</strong></p>
+<p>Typical IM agents have two layers of exploration mechanisms:</p>
+<ol type="1">
+<li>Higher level IR incentive that rewards when new states are reached, the IM agents rely on this mechanism to return to high IR promising states.</li>
+<li>A more basic exploratory mechanism such as epsilon-greedy exploration, action-space noise, or parameter-space noise. The IM agents rely on this mechanism to explore high IR states.</li>
+</ol>
+<p>However, to return to a previously discovered high IR state, a longer, more complex and more precise sequence of actions is needed. In this case, the lower level exploration mechanism (e.g epsilon greedy) will "derail" the agent from ever returning to that state (The needed precise actions are naively perturbed by the basic exploration mechanism).</p>
+<p><br></p>
 <p><strong>What is detachment?</strong></p>
+<p>Detachment is idea that an agent driven by Intrinsic Motivation could become detached from the frontiers of high intrinsic reward. IM is nearly always a consumable resource: a curious agent is curious about state to the extent that it has not often visited them. If an agent discovers multiple areas of the state space that produce high IR, its policy may in the short term focus on one such area. After exhausting some of the IR offered by that area, the policy may by chance begin consuming IR in another area. Once it has exhausted that IR, it is difficult for it to rediscover the frontier it detached from in the initial area, because it has already consumed the IR that led to that frontier and it likely will not remember how to return to that frontier due to catastrophic forgetting.</p>
+<p>In theory, a replay buffer could prevent detachment, but in practicce it would have to be large to prevent data about the abandoned frontier to not be purged before it becomes needed, and large replay buffers introduce their own optimization stability difficulties.</p>
+<p><img src="/images/RL/papers/go_explore.png" width="600"></p>
+<h2 id="go-explore-algorithm">Go Explore Algorithm</h2>
+<p>Go-Explore is an explicit response to both detachment and derailment that is also designed to achieve robust solutions in stochastic environments. To deal with:</p>
+<ol type="1">
+<li><strong>Detachment</strong>: The algorithm explicitly stores an archive of promising states visited so taht they can then be revisited and explored from later.</li>
+<li><strong>Derailment</strong>: The algorithm decomposes the basic exploration mechanism into first returning to a promising state without intentionally adding any exploration then exploring further from the promising state.</li>
+</ol>
+<p>The algorithm works in two phases:</p>
+<ol type="1">
+<li><p><strong>Phase 1</strong>: solve the problem in a way that may be brittle, such as solving a deterministic version of the problem. Phase 1 focuses on exploring infrequently visited states which forms the basis for dealing with sparse-reward and deceptive problems.</p>
+<ol type="a">
+<li>Add all interestingly different states visited so far into the archive</li>
+<li>Each time a state from the archive is selected to explore from, first <strong>GO</strong> back to the state without adding exploration, and then <strong>Explore</strong> further from that state in search of new states.</li>
+</ol></li>
+</ol>
+<p><br></p>
+<ol start="2" type="1">
+<li><p><strong>Phase 2</strong>: robustify (train to be able to reliably perform the solution in the presence of stochasticity) via imitation learning or learning from demonstrations. The only difference with Go-Explore is that the solution demonstrations are produced automatically by Phase 1 instead of being provided by humans. If in the first phase, we obtain a policy that is robust in stochastic environment, then we do not need this second phase.</p>
+<ul>
+<li><strong>Input</strong>: One or more high-performing trajectories from phase 1</li>
+<li><strong>Output</strong>: A robust policy able to consistently achieve similar performance.</li>
+</ul></li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>importance_sampling (under construction)</title>
+    <url>/2021/05/21/importance-sampling/</url>
+    <content><![CDATA[<h1 id="importance-sampling">Importance Sampling</h1>
+<h1 id="ref">Ref</h1>
+<p>https://www.quora.com/Why-doesn-t-DQN-use-importance-sampling-Dont-we-always-use-this-method-to-correct-the-sampling-error-produced-by-the-off-policy https://danieltakeshi.github.io/2019/01/25/deep-learning-01/</p>
 ]]></content>
   </entry>
   <entry>
@@ -1427,16 +1468,59 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
 <p>Psychologists call behavior intrinsically motivated when it is engaged in for its own sake rather than as a step toward solving a specific problem of clear practical value.</p>
 <h2 id="reinforcement-learning-of-skills">Reinforcement Learning of Skills</h2>
 <p><img src="/images/RL/papers/imrl_1.png" width="600"></p>
+<h3 id="options-skills">Options (Skills)</h3>
+<p>Starting from a finite MDP, which we call the core MDP, the simplest kind of <code>option</code> <span class="math inline">\(o\)</span> consists of:</p>
+<ol type="1">
+<li>A policy <span class="math inline">\(\pi^o: S \times \cup_{s \in S} A_s \rightarrow [0, 1]\)</span></li>
+<li>A termination condition <span class="math inline">\(\beta^o: S \rightarrow [0, 1]\)</span></li>
+<li>An input set <span class="math inline">\(I^o \subset S\)</span></li>
+</ol>
+<p>The <code>option</code> is defined by a triplet <span class="math inline">\(o = &lt;I^o, \pi^o, \beta^o&gt;\)</span>. This option is available in state <span class="math inline">\(s\)</span> if and only if <span class="math inline">\(s \in I^o\)</span>.</p>
+<p>If the option is executed, then actions are selected according to <span class="math inline">\(\pi^o\)</span> until the option terminates stochastically according to <span class="math inline">\(\beta^o\)</span>.</p>
+<p>Example:</p>
+<blockquote>
+<p>If the current state is <span class="math inline">\(s\)</span>, the next action is <span class="math inline">\(a\)</span> with probability <span class="math inline">\(\pi^o (s, a)\)</span>, the environment makes a transition to state <span class="math inline">\(s^{\prime}\)</span>, where the option either terminates with probability <span class="math inline">\(\beta^o (s^{\prime})\)</span> or else continues, determining the next action <span class="math inline">\(a^{\prime}\)</span> with probability <span class="math inline">\(\pi^o (s^{\prime}, a^{\prime})\)</span> and so on.</p>
+</blockquote>
+<p>When the option terminates, the agent can select another option from the set of those available at the termination state. Note that any action of the core MDP, a primitive action <span class="math inline">\(a \in \cup_{s \in S} A_s\)</span> is also an option, called an <code>one-step option</code>, with <span class="math inline">\(I = \{s: a \in A_s\}\)</span> and <span class="math inline">\(\beta (s) = 1\)</span> for all <span class="math inline">\(s \in S\)</span>. This one-step option can be regard as taking one step forward for all actions available at the state <span class="math inline">\(s\)</span>.</p>
+<p>A policy <span class="math inline">\(\mu\)</span> over options selects option <span class="math inline">\(o\)</span> in state <span class="math inline">\(s\)</span> with probability <span class="math inline">\(\mu(s, o)\)</span>. <span class="math inline">\(o\)</span>'s policy in turn selects other options until <span class="math inline">\(o\)</span> terminates. The policy of each of these selected options selects other options and so on, until one-step options are selected that correspond to actions of the core MDP.</p>
+<p>Example:</p>
+<blockquote>
+<p>We start at <span class="math inline">\(s_0\)</span>, select option <span class="math inline">\(o\)</span> according to <span class="math inline">\(\mu\)</span>, then we select <span class="math inline">\(o_1, ..., o_T\)</span> with probability <span class="math inline">\(\pi^{o} (s_0, o_1), ..., \pi^{o} (s_0, o_T)\)</span>, until option <span class="math inline">\(o_T\)</span> which is a one-step option with <span class="math inline">\(\pi^{o_T} (s_0, a) = 1\)</span> for some primitive action <span class="math inline">\(a\)</span>, then we reach state <span class="math inline">\(s^{\prime}\)</span> with probability <span class="math inline">\(P(s^{\prime} | s_0, a)\)</span>, the process for option <span class="math inline">\(o\)</span> terminates. Repeat for <span class="math inline">\(o_1, ...., o_{T-1}\)</span> and all the child process induced until termination.</p>
+</blockquote>
+<p>Adding any set of options to a core finite MDP yields a well-defined discrete-time semi-Markov decision process whose actions are the options and whose rewards are the return delivered over the course of an option's execution.</p>
+<p>One can define value functions corresponding to options in a manner analogous to how they are defined for simple MDPs. For example, the option-value function corresponding to <span class="math inline">\(\mu\)</span> is defined as:</p>
+<p><span class="math display">\[Q^{\mu} (s, o) = E[r_{t+1} + \gamma r_{t+2} + .... + \gamma^{\tau - 1} r_{t+\tau} + ... | \xi (o\mu, s, t)]\]</span></p>
+<p>Where <span class="math inline">\(\xi (o\mu, s, t)\)</span> is the event of <span class="math inline">\(o\)</span> being initiated at time <span class="math inline">\(t\)</span> in <span class="math inline">\(s\)</span> and being followed until it terminates after <span class="math inline">\(\tau\)</span> time steps, at which point control continues according to <span class="math inline">\(\mu\)</span>.</p>
+<p>A multi-time model of an option, which we can call an <code>option model</code>, generalizes the one-step model of a primitive action. For any option <span class="math inline">\(o\)</span>, let <span class="math inline">\(\xi (o, s, t)\)</span> denote the event of <span class="math inline">\(o\)</span> being initialized in state <span class="math inline">\(s\)</span> at time <span class="math inline">\(t\)</span>. Then the reward part of the option model of <span class="math inline">\(o\)</span> for any <span class="math inline">\(s \in S\)</span> is:</p>
+<p><span class="math display">\[R(s, o) = E[r_{t+1} + \gamma r_{t+2} + .... + \gamma^{\tau - 1} r_{t+\tau} | \xi (o, s, t)]\]</span></p>
+<p>Where <span class="math inline">\(t + \tau\)</span> is the random time at which <span class="math inline">\(o\)</span> terminates. The state prediction part of the model of <span class="math inline">\(o\)</span> for <span class="math inline">\(s\)</span> is:</p>
+<p><span class="math display">\[P(s^{\prime} | s, o) = \sum^{\infty}_{\tau = 1} p(s^{\prime}, \tau) \gamma^{\tau}\]</span></p>
+<p>For all <span class="math inline">\(s^{\prime} \in S\)</span>, where <span class="math inline">\(p(s^{\prime}, \tau)\)</span> is the probability that <span class="math inline">\(o\)</span> terminates in <span class="math inline">\(s^{\prime}\)</span> after <span class="math inline">\(\tau\)</span> step when initiated in <span class="math inline">\(s\)</span>. Though not itself a probability, <span class="math inline">\(P(s^{\prime} | s, o)\)</span> is a combination of the probability that <span class="math inline">\(s^{\prime}\)</span> is the state in which <span class="math inline">\(o\)</span> terminates together with a measure of how delayed that outcome is in terms of <span class="math inline">\(\gamma\)</span>.</p>
+<p>The quantities <span class="math inline">\(R(s, o), P(s^{\prime} | s, o)\)</span> generalize the reward and transition probabilities in core MDP respectively in such a way that it is possible to write a generalized form of the bellman optimality equation and extend RL methods to options.</p>
+<h2 id="intrinsic-rewards-and-options">Intrinsic Rewards and Options</h2>
+<p>Identify states that may usefully serve as 'subgoals' for a given task. An option is created whose policy, when it is fully learned, will control the environment to a subgoal state in an efficient manner, usually in minimum time, from any state in the option's input set, which may itself be learned.</p>
+<ul>
+<li>The option's termination condition is set to be the achievement of a subgoal state</li>
+<li>The option's policy is learned via a "pseudo reward function" (different from the reward function of the overall goal, it does not influence the behavior of the agent. It is used only to support the learning of the option's policy) which rewards the achievement of the subgoal and provides a small penalty to all other transitions.</li>
+</ul>
+<p>The connection between intrinsic motivation and options, is the idea of creating an option upon the occurrence of an intrinsically-rewarding event, where what constitutes an intrinsically-rewarding event can be defined:</p>
+<ul>
+<li>Intrinsic rewards influences agent behavior. The agent should change its behavior in such as way that it focuses exploration in order to quickly refine its skill in bringing about the intrinsically-rewarding event. A corollary to this is that intrinsic reward should diminish with continued repetition of the activity that generates it. (i.e the agent should eventually get bored and move on to create and learn another option)</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<ol type="1">
+<li>construction of temporally-extended skills (option) can confer clear advantages over learning solely with primitive actions.</li>
+<li>Defining an effective form of intrinsic reward is not as straightforward.</li>
+<li>Intrinsic reward can reduce the speed of learning by making the agent persist in behavior directed toward a salient event long after that behavior has been well learned.</li>
+<li>This kind of 'obsessive-compulsive' behavior hinders the attainment of extrinsic goals</li>
+<li>Intrinsic reward does not propagate well, tending to remain restricted to the immediate vicinty of the salient event that gave rise to it.</li>
+</ol>
 <h1 id="reference">Reference</h1>
 ]]></content>
-  </entry>
-  <entry>
-    <title>importance_sampling (under construction)</title>
-    <url>/2021/05/21/importance-sampling/</url>
-    <content><![CDATA[<h1 id="importance-sampling">Importance Sampling</h1>
-<h1 id="ref">Ref</h1>
-<p>https://www.quora.com/Why-doesn-t-DQN-use-importance-sampling-Dont-we-always-use-this-method-to-correct-the-sampling-error-produced-by-the-off-policy https://danieltakeshi.github.io/2019/01/25/deep-learning-01/</p>
-]]></content>
+      <categories>
+        <category>RL</category>
+        <category>Basics</category>
+      </categories>
   </entry>
   <entry>
     <title>kaiming_init</title>
@@ -1608,6 +1692,12 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </tags>
   </entry>
   <entry>
+    <title>natural-actor-critic</title>
+    <url>/2021/06/03/natural-actor-critic/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
     <title>Notations</title>
     <url>/2030/05/30/notations/</url>
     <content><![CDATA[<h1 id="notations">Notations</h1>
@@ -1636,12 +1726,6 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       <tags>
         <tag>RL Basics</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>natural-actor-critic</title>
-    <url>/2021/06/03/natural-actor-critic/</url>
-    <content><![CDATA[
-]]></content>
   </entry>
   <entry>
     <title>off-policy-actor-critic</title>
@@ -1882,204 +1966,6 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </tags>
   </entry>
   <entry>
-    <title>Probability</title>
-    <url>/2021/05/11/probability/</url>
-    <content><![CDATA[<h1 id="probability-background">Probability Background</h1>
-<h2 id="sets">Sets</h2>
-<p>A set is a collection of objects, which are the elements of set. If S is a set and <span class="math inline">\(x\)</span> is an element of <span class="math inline">\(S\)</span>, we write <span class="math inline">\(x \in S\)</span>. If <span class="math inline">\(x\)</span> is not an element of <span class="math inline">\(S\)</span>, we write <span class="math inline">\(x \notin S\)</span>. A set can have no elements, in which case it is called the empty set, denoted by <span class="math inline">\(\emptyset\)</span>.</p>
-<h3 id="finite-countable-uncountable">Finite, Countable, Uncountable</h3>
-<p>If <span class="math inline">\(S\)</span> contains a finite number of elements, say <span class="math inline">\(x_1, x_2, ..., x_n\)</span>, we write it as list of the elements in braces:</p>
-<p><span class="math display">\[S = \{x_1, x_2, ...., x_n\}\]</span></p>
-<p>if <span class="math inline">\(S\)</span> contains countable infinitely many elements <span class="math inline">\(x_1, x_2, ...\)</span>, we can write:</p>
-<p><span class="math display">\[S = \{x_1, x_2, ... \}\]</span></p>
-<p><span class="math inline">\(S\)</span> is countable infinite, if the set is countable but has infinitely many elements. However, a set with uncountable elements can not be written down in a list.</p>
-<p>We can denote set of all <span class="math inline">\(x\)</span> that have certain property <span class="math inline">\(P\)</span>:</p>
-<p><span class="math display">\[\{x | x \text{ satisfies } P\}\]</span></p>
-<p>ie. the set of even integers can be written as <span class="math inline">\(\{k | k/2 \text{ is integer}\}\)</span>, <span class="math inline">\(\{x | 0 \leq x \leq 1\}\)</span> (uncountable)</p>
-<span id="more"></span>
-<h3 id="subsets-and-universal-set">Subsets and Universal set</h3>
-<p>If every element of a set <span class="math inline">\(S\)</span> is also an element of a set <span class="math inline">\(T\)</span>, then <span class="math inline">\(S\)</span> is a subset of <span class="math inline">\(T\)</span>, we denote as <span class="math inline">\(S \subset T\)</span> or <span class="math inline">\(T \subset S\)</span>. If <span class="math inline">\(S \subset T\)</span> and <span class="math inline">\(T \subset S\)</span>, the two sets are equal. We also denote universal set to be <span class="math inline">\(\Omega\)</span> which contains all objects that could conceivably be of interest in a particular context.</p>
-<h3 id="set-functions">Set Functions</h3>
-<p>Many of the functions used in calculus are functions that map real numbers into real numbers. We are concerned also with functions that map sets into real numbers. Such functions are naturally called functions of a set or more simply <strong>set functions</strong>. They are usually used to measure subsets of a given set.</p>
-<p>Examples:</p>
-<blockquote>
-<p>Let <span class="math inline">\(C=\mathbf{R}\)</span>, the set of real numbers. For a subset <span class="math inline">\(A \in C\)</span>, let <span class="math inline">\(Q(A)\)</span> be equal to the number of points in <span class="math inline">\(A\)</span> that correspond to positive integers. Then <span class="math inline">\(Q(A)\)</span> is a set function of the set <span class="math inline">\(A\)</span>. Thus, if <span class="math inline">\(A = \{x: 0 &lt; x &lt; 5\} \implies Q(A) = 4\)</span></p>
-</blockquote>
-<p>Often our set functions are defined in terms of sums or integrals, the symbol:</p>
-<p><span class="math display">\[\int_A f(x) dx\]</span></p>
-<p>means the ordinary integral of <span class="math inline">\(f(x)\)</span> over a prescribed one-dimensional set <span class="math inline">\(A\)</span>, and the symbol</p>
-<p><span class="math display">\[\underset{A}{\int\int} g(x, y) dx dy\]</span></p>
-<p>means the integral of <span class="math inline">\(g(x, y)\)</span> over a prescribed two-dimensional set <span class="math inline">\(A\)</span>.</p>
-<p>Examples:</p>
-<blockquote>
-<p>Let <span class="math inline">\(C\)</span> be the set of all nonnegative integers and let <span class="math inline">\(A\)</span> be a subset of <span class="math inline">\(C\)</span>. Define the set function <span class="math inline">\(Q\)</span> by <span class="math display">\[Q(A) = \sum_{n \in A} 3^{n}\]</span></p>
-</blockquote>
-<blockquote>
-<p>Let <span class="math inline">\(C\)</span> be the interval of positive real numbers, <span class="math inline">\(C = (0, \infty)\)</span>. Let <span class="math inline">\(A\)</span> be a subset of <span class="math inline">\(C\)</span>. Define the set function <span class="math inline">\(Q\)</span> by <span class="math display">\[Q(A = \int_{A} e^{-x} dx\]</span> <span class="math display">\[Q((1, 3)) = \int^{3}_{1} e^{-x} dx\]</span> <span class="math display">\[Q(C) = \int^{\infty}_{0} e^{-x} dx = 1\]</span></p>
-</blockquote>
-<h2 id="probability-models">Probability Models</h2>
-<p>A probabilistic model is a mathematical description of an uncertain situation.</p>
-<p><img src='/images/RL/background/prob_1.png' width="600"></p>
-<h3 id="sample-spaces-and-events">Sample Spaces and Events</h3>
-<p>Every probabilistic model involves an underlying process, called the <strong>experiment</strong>, that will produce exactly <strong>one</strong> out of several possible outcomes. The set of all possible outcomes is called the sample space of the experiment, and is denoted by <span class="math inline">\(\Omega\)</span> (Universal Set). A subset of the sample space, that is, a collection of possible outcomes, is called an <strong>event</strong>. Any collection of possible outcomes, including the entire sample space <span class="math inline">\(\Omega\)</span> and its complement the empty set. There is no restriction on what constitutes an experiment. (ie. it can be one toss of the coin, three tosses of coin, or an infinite sequence of tosses). However, in this formulation, there is only one experiment (three tosses is one experiment rather than three experiments).</p>
-<p>The sample space of an experiment may consist of a finite, or an infinite number of possible outcomes.</p>
-<p>Regardless of their number. different elements of the sample space should be <strong>distinct and mutually exclusive</strong>, so that when the experiment is carried out there is a unique outcome. For example, the sample space associated with the roll of a die cannot contain "1 or 3" as a possible outcome and also "1 or 4" as another possible outcome. If it did, we would not be able to assign a unique outcome when the roll is a 1.</p>
-<p>A given physical situation may be modeled in several ways, depending pending on the kind of questions that we are interested in . Generally, the sample space chosen for a probabilistic model must be <strong>collectively exhaustive</strong>, in the sense that no matter what happens in the experiment, we always obtain an outcome that has been included in the sample space. In addition, the sample space should have enough detail to distinguish between all outcomes of interest to the modeler, while avoiding irrelevant details.</p>
-<p><img src="/images/RL/background/prob_2.png" width="600"> <img src="/images/RL/background/prob_3.png" width="600"></p>
-<h3 id="probability-laws-and-probability-set-function">Probability Laws and Probability Set Function</h3>
-<p>Given an experiment, let <span class="math inline">\(C\)</span> denotes the sample space of all possible outcomes. We assume that in all cases:</p>
-<ol type="1">
-<li>The collection of events is sufficiently rich to include all possible events of interest.</li>
-<li>The collection is closed under complements and countable unions of these events.</li>
-<li>The collection is closed under countable intersections.</li>
-</ol>
-<p>Technically, such a collection of events <span class="math inline">\(\mathbb{B}\)</span> is called a <strong><span class="math inline">\(\sigma-\)</span>field of subsets</strong>.</p>
-<p><img src="/images/RL/background/prob_15.png" width="600"></p>
-<p><img src="/images/RL/background/prob_14.png" width="600"></p>
-<p>In order to visualize a probability law. Consider a unit of mass which is spread over the sample space. Then, <span class="math inline">\(P(A)\)</span> is simply the total mass that was assigned collectively to the elements of A. For example, <span class="math inline">\(\Omega = {1, 2, 3, 4, 5, 6}, A = {1, 2}\)</span>, <span class="math inline">\(P(A) = \frac{1}{3}\)</span></p>
-<p>A collection of events whose members are pairwise disjoint, is said to be a mutually exclusive collection and its union is often referred to as a disjoint union. The collection is further said to be <strong>exhaustive</strong> if the union of its events is the sample space. in which case <span class="math inline">\(\sum^{\infty}_{n=1} P(A_n) = 1\)</span>. We often say that a mutually exclusive and exhaustive collection of events forms a <strong>partition</strong> of the sample space <span class="math inline">\(C\)</span>.</p>
-<p>The probability set function <span class="math inline">\(P: \mathbb{B} \rightarrow \mathbb{R}\)</span> tells us how the probability is distributed over the set of events, <span class="math inline">\(\mathbb{B}\)</span>. In this sense, we speak of a distribution of probability. We often drop the word set and refer to <span class="math inline">\(P\)</span> as the probability function.</p>
-<h4 id="discrete-model">Discrete Model</h4>
-<p><img src="/images/RL/background/prob_4.png" width="600"> <img src="/images/RL/background/prob_5.png" width="600"></p>
-<h3 id="additional-properties-of-probability">Additional Properties of Probability</h3>
-<p><img src="/images/RL/background/prob_16.png" width="600"></p>
-<p><img src="/images/RL/background/prob_17.png" width="600"></p>
-<p><br></p>
-<p>The <strong>Inclusion Exclusion Formula</strong>:</p>
-<p><span class="math display">\[P(C_1 \cup C_2 \cup C_3) = p_1 - p_2 + p_3\]</span></p>
-<p>Where:</p>
-<p><span class="math display">\[p_1 = P(C_1) + P(C_2) + P(C_3)\]</span></p>
-<p><span class="math display">\[p_2 = P(C_1 \cap C_2) + P(C_1 \cap C_3) + P(C_2 \bigcap C_3)\]</span></p>
-<p><span class="math display">\[p_3 = P(C_1 \cap C_2 \cap C_3)\]</span></p>
-<p>The <strong>Bonferroni's inequality</strong>:</p>
-<p><span class="math display">\[P(C_1 \cap C_2) \geq P(C_1) + P(C_2) - 1\]</span></p>
-<h2 id="conditional-probability">Conditional Probability</h2>
-<p>In some random experiment, we are interested only in those outcomes that are elements of a subset <span class="math inline">\(A\)</span> of the sample space <span class="math inline">\(C\)</span>. This means, for our purposes, that the sample space is effectively the subset <span class="math inline">\(A\)</span>.</p>
-<p>Let the probability set function <span class="math inline">\(P(A)\)</span> be defined on the sample space <span class="math inline">\(C\)</span> and let <span class="math inline">\(A\)</span> be a subset of <span class="math inline">\(C\)</span> such that <span class="math inline">\(P(A &gt; 0)\)</span>. We only take those outcomes of the random experiment that are elements of <span class="math inline">\(A\)</span> to be the sample space. Let <span class="math inline">\(B\)</span> be another subset of <span class="math inline">\(C\)</span>. The <strong>conditional probability</strong> of event <span class="math inline">\(B\)</span> given <span class="math inline">\(A\)</span> is denoted by the symbol <span class="math inline">\(P(B | A)\)</span> .</p>
-<p>Since <span class="math inline">\(A\)</span> is now the sample space, the only elements of <span class="math inline">\(B\)</span> that concern us are those that are also elements of <span class="math inline">\(A\)</span>, that is the elements of <span class="math inline">\(A \cap B\)</span> and <span class="math inline">\(A\)</span>, relative to the space <span class="math inline">\(A\)</span>, be the same as the ratio of the probabilities of these events relative to the space <span class="math inline">\(C\)</span>, that is, we should have:</p>
-<p><span class="math display">\[P(A | A) = 1 \;\;\;\;\;\; P(A \cap B | A) = P(B | A)\]</span></p>
-<p>Moreover, it would seem logically inconsistent if we did not require that the ratio of the probabilities of the events <span class="math inline">\(A \cap B\)</span> and <span class="math inline">\(A\)</span>, relative to the space <span class="math inline">\(A\)</span>, be the same as the ratio of the probabilities of these events relative to the space <span class="math inline">\(C\)</span> (ie. if <span class="math inline">\(P(A) = 0.5, P(B) = 0.2, P(A \cap B) = 0.1, P(A) / P(C) = 1 / 2, P(A \cap B | A) = 0.2\)</span>), that is, we should have:</p>
-<p><span class="math display">\[\frac{P(A \cap B | A) }{P(A | A)} = \frac{P(A \cap B)}{P(A)}\]</span></p>
-<p><img src="/images/RL/background/prob_18.png" width="600"></p>
-<p><br></p>
-<p><span class="math inline">\(P(B|A)\)</span> the conditional probability set function, defined for subsets of <span class="math inline">\(A\)</span>.</p>
-<p>Conditional probability provides us with a way to reason about the outcome of an experiment, based on <strong>partial information</strong>. In more precise terms, given an experiment, a corresponding sample space, and a probability law, suppose that we know that the outcome is within some given event <span class="math inline">\(B\)</span>. We wish to quantify the likelihood that the outcome also belongs to some other given event <span class="math inline">\(A\)</span>. This concept specifies the conditional probability of <span class="math inline">\(A\)</span> given <span class="math inline">\(B\)</span>, denoted by <span class="math inline">\(P(A | B)\)</span>.</p>
-<p>Furthermore, for a fixed event <span class="math inline">\(B\)</span>, it can be verified that the conditional probabilities <span class="math inline">\(P(A | B), \forall A\)</span> form a legitimate probability law that satisfies the requirements.</p>
-<h3 id="chain-rule">Chain Rule</h3>
-<p><img src="/images/RL/background/prob_7.png" width="600"></p>
-<h3 id="law-of-total-probability">Law of Total Probability</h3>
-<p><img src="/images/RL/background/prob_8.png" width="600"></p>
-<h3 id="bayes-rule">Bayes' Rule</h3>
-<p><img src="/images/RL/background/prob_9.png" width="600"></p>
-<h2 id="random-variables">Random Variables</h2>
-<p>Given an experiment and the corresponding set of possible outcomes (the sample space), a <strong>random variable</strong> is a real-valued <strong>function</strong> (max, min etc.) of experiment outcome that associates a <strong>particular number with each outcome</strong>. We refer to this number as the numerical value or simply the value of the random variable.</p>
-<p><img src="/images/RL/background/prob_19.png" width="600"> <img src="/images/RL/background/prob_11.png" width="600"> <img src="/images/RL/background/prob_10.png" width="600"></p>
-<h4 id="distribution-of-random-variable">Distribution of Random Variable</h4>
-<p>Given a random variable <span class="math inline">\(X\)</span>, its range <span class="math inline">\(\mathbb{D}\)</span> becomes <strong>the sample space of interest</strong>. Besides, inducing the sample space <span class="math inline">\(\mathbb{D}\)</span>, <span class="math inline">\(X\)</span> also induces a probability which we call the distribution of <span class="math inline">\(X\)</span>.</p>
-<p>Assume <span class="math inline">\(X\)</span> is a discrete random variable with a finite space <span class="math inline">\(\mathbb{D} = \{d_1, ...., d_m\}\)</span>. Define the function <span class="math inline">\(p_{X} (d_i)\)</span> on <span class="math inline">\(\mathbb{D}\)</span> by:</p>
-<p><span class="math display">\[p_X(d_i) = P[\{c: X(c) = d_i\}], \quad \quad \forall i=1, .... ,m\]</span></p>
-<p><br></p>
-<p>Which is the probability of event that contains the outcomes with value <span class="math inline">\(X(c) = d_i\)</span>, this is called the <strong>probability mass function</strong> of <span class="math inline">\(X\)</span>. Then the <strong>induced probability distribution</strong>, <span class="math inline">\(P_X (\cdot): D \rightarrow \mathbb{R}\)</span>, of <span class="math inline">\(X\)</span> is:</p>
-<p><span class="math display">\[P_X (D) = \sum_{d_i \in D} p_X (d_i), \quad \quad D \subset \mathbb{D}\]</span></p>
-<p>Similar to <span class="math inline">\(P\)</span> which is defined on <span class="math inline">\(\mathbb{B}\)</span>. This <span class="math inline">\(P_X (\cdot)\)</span> is basically the probability distribution of events defined on sets <span class="math inline">\(D\)</span>, <span class="math inline">\(P_X (D)\)</span> is the probability of event <span class="math inline">\(D\)</span> defined on <span class="math inline">\(\mathbb{D}\)</span>.</p>
-<h4 id="cumulative-distribution-function">Cumulative Distribution Function</h4>
-<p>The pmf of discrete random variable and the pdf of a continuous random variable are quite different entities. The distribution function, though, uniquely determines the probability distribution of a random variable:</p>
-<p><img src="/images/RL/background/prob_20.png" width="600"></p>
-<p><strong>Note that, cdf is defined <span class="math inline">\(\quad \forall x \in \mathbb{R}\)</span>.</strong></p>
-<p>Remember that <span class="math inline">\(P_X (\cdot)\)</span> is the probability set function (distribution) of the random variable <span class="math inline">\(X\)</span>. The cdf is the probability of event (subset of <span class="math inline">\(\mathbb{D}\)</span>, the random variable range space): <span class="math inline">\(\{a: a \leq x, a \in \mathbb{D}\}\)</span>, this is the same as the event (defined on sample space): <span class="math inline">\(\{c: X(c) \leq x, c \in \mathbb{B}\}\)</span>.</p>
-<p><br></p>
-<h4 id="equal-in-distribution">Equal in Distribution</h4>
-<p>Let <span class="math inline">\(X, Y\)</span> be two random variables. We say that <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are <strong>equal in distribution</strong> and write:</p>
-<p><span class="math display">\[X \overset{D}{=} Y\]</span></p>
-<p>IFF:</p>
-<p><span class="math display">\[F_X(x) = F_Y (x), \quad \quad \quad \forall x \in \mathbb{R}\]</span></p>
-<p>Notice that, equal in distribution does not mean the random variables are the same. For examples, let <span class="math inline">\(X\)</span> be a random variable sampled from range <span class="math inline">\([0, 1)\)</span>, let <span class="math inline">\(Y = 1 - X\)</span>, then <span class="math inline">\(Y\)</span> also has range <span class="math inline">\([0, 1)\)</span>. At the same time, for <span class="math inline">\(x &lt; 0\)</span>, the cdf for both random variables is 0, for <span class="math inline">\(x &lt; 0\)</span>, the cdf for both random variables is 1. And, for <span class="math inline">\(0 \leq x &lt; 1\)</span>, the cdf is <span class="math inline">\(x\)</span> for both random variables. But this two random variables are clearly different.</p>
-<p><img src="/images/RL/background/prob_21.png" width="600"></p>
-<p><br></p>
-<h4 id="theorems-for-cdf">Theorems for CDF</h4>
-<p><img src="/images/RL/background/prob_22.png" width="600"></p>
-<p><img src="/images/RL/background/prob_23.png" width="600"></p>
-<p><strong>Proof of Theorem 1.5.2</strong></p>
-<p>Note that the event <span class="math inline">\(\{-\infty &lt; X \leq b\} = \{-\infty &lt; X \leq a\} \cup \{a &lt; X \leq b\}\)</span>, Then <span class="math inline">\(\{-\infty &lt; X \leq a\} \cup \{a &lt; X \leq b\}\)</span> are disjoint events, which means:</p>
-<p><span class="math display">\[P_X(\{-\infty &lt; X \leq a\} \cup \{a &lt; X \leq b\}) = P_X(\{-\infty &lt; X \leq a\}) + P_X(\{a &lt; X \leq b\})\]</span></p>
-<p>Then,</p>
-<span class="math display">\[\begin{aligned}
-P(\{-\infty &lt; X \leq b\}) &amp;= P_X(\{-\infty &lt; X \leq a\}) + P_X(\{a &lt; X \leq b\})\\
-\implies F_X (b) &amp;= F_X(a) + P_X(\{a &lt; X \leq b\})\\
-\end{aligned}\]</span>
-<p><br></p>
-<p><img src="/images/RL/background/prob_24.png" width="600"></p>
-<p>This basically means that the discontinuities of a cdf have mass. That is, if <span class="math inline">\(x\)</span> is a point of discontinuity of <span class="math inline">\(F_x\)</span>, then we have <span class="math inline">\(P(X=x) &gt; 0\)</span>.</p>
-<p>Example:</p>
-<blockquote>
-<p>Let <span class="math inline">\(X\)</span> have discontinuous cdf: <span class="math display">\[
-F_X(x)=
-\begin{cases}
-0, \quad &amp;x &lt; 0\\
-\frac{x}{2}, \quad &amp;0 \leq x &lt; 1\\
-1, \quad &amp;1 \leq x
-\end{cases}
-\]</span> Then: <span class="math display">\[P(X=1) = F_X (1) - F_X(1 - ) = 1 - \frac{1}{2} = \frac{1}{2}\]</span></p>
-</blockquote>
-<h3 id="discrete-random-variables">Discrete Random Variables</h3>
-<h4 id="pmf">PMF</h4>
-<p>For discrete R.V <span class="math inline">\(X\)</span>, the probability is captured by the <strong>probability mass function</strong> of <span class="math inline">\(X\)</span> denoted by <span class="math inline">\(p_X\)</span>. In particular, if <span class="math inline">\(x\)</span> is any possible value of <span class="math inline">\(X\)</span>, the probability mass of <span class="math inline">\(x\)</span>, , denoted <span class="math inline">\(p_X(x)\)</span>, is the probability of the event <span class="math inline">\(\{X = x\}\)</span> consisting of all outcomes that give rise to a value of <span class="math inline">\(X = x\)</span>:</p>
-<p><span class="math display">\[p_X (x) = P(\{X = x\})\]</span></p>
-<p>The braces from the event/set notation is often omit when no ambiguity can arise:</p>
-<p><span class="math display">\[p_X (x) = P(\{X = x\}) = P(X=x)\]</span></p>
-<p>Note that:</p>
-<p><span class="math display">\[\sum_x p_{X} (x) = 1\]</span></p>
-<p>Where in the summation, <span class="math inline">\(x\)</span> ranges over all the possible numerical values of <span class="math inline">\(X\)</span>. This follows from the additivity and normalization properties: as <span class="math inline">\(x\)</span> ranges over all possible values of <span class="math inline">\(X\)</span>, the events <span class="math inline">\(\{X=x\}\)</span> are disjoint and form a partition of the sample space.</p>
-<h3 id="functions-of-random-variables">Functions of Random Variables</h3>
-<p>Given a R.V <span class="math inline">\(X\)</span>, one may generate other R.V by applying various transformation on <span class="math inline">\(X\)</span>. For example, <span class="math inline">\(Y = g(X) = a + bX\)</span>. <span class="math inline">\(Y=g(X)\)</span> here is also a R.V, since it provides a numerical value for each possible outcome. This is because every outcome in the sample space defines a numerical value <span class="math inline">\(x\)</span> for <span class="math inline">\(X\)</span> and hence also the numerical value <span class="math inline">\(y = g(x)\)</span> for <span class="math inline">\(Y\)</span>. If <span class="math inline">\(X\)</span> is discrete and its PMF <span class="math inline">\(p_Y\)</span> can be calculated using the PMF of <span class="math inline">\(X\)</span>:</p>
-<p><span class="math display">\[p_Y(y) = \sum_{\{x | g(x) = y\}} p_X (x)\]</span></p>
-<h3 id="expectation">Expectation</h3>
-<p>Expectation of <span class="math inline">\(X\)</span> is a weighted (in proportion to probabilities) average of the possible values of <span class="math inline">\(X\)</span>.</p>
-<p>Discrete:</p>
-<p><img src="/images/RL/background/prob_13.png" width="600"></p>
-<h4 id="well-defined-expectation">Well-Defined Expectation</h4>
-<p>When dealing with R.V that takes a countably infinite number of values, one has to deal with the possibility that the infinite sum <span class="math inline">\(\sum_x xp_X(x)\)</span> is not well-defined. More concretely, the expectation is well-defined if</p>
-<p><span class="math display">\[\sum_x |x| p_X(x) &lt; \infty\]</span></p>
-<h1 id="reference">Reference</h1>
-<ol type="1">
-<li>D. P. Bertsekas and J. N. Tsitsiklis, Introduction to Probability, NH, Nashua:Athena Scientific, 2008.</li>
-<li></li>
-</ol>
-]]></content>
-      <categories>
-        <category>Background</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SARSA</title>
-    <url>/2021/05/16/sarsa/</url>
-    <content><![CDATA[<h1 id="sarsa">SARSA</h1>
-<p>SARSA (State Action State Reward State Action) is an on-policy TD algorithm that follows a PI-like procedure:</p>
-<ol type="1">
-<li>Estimate <span class="math inline">\(Q^{\pi_k}\)</span> for a given policy <span class="math inline">\(\pi_k\)</span></li>
-<li>Perform policy improvement to obtain a new policy <span class="math inline">\(\pi_{k+1}\)</span></li>
-</ol>
-<p>Compare with usual Policy iteration, SARSA uses <code>Generalized policy iteration</code> to improve the policy before <span class="math inline">\(Q\)</span> converges to <span class="math inline">\(Q^{\pi_k}\)</span>.</p>
-<span id="more"></span>
-<h2 id="algorithm">Algorithm</h2>
-<p><img src="/images/RL/mc/td_6.png"></p>
-<p>Notice that, <span class="math inline">\(\pi_t\)</span> here is a <span class="math inline">\(\epsilon\)</span>-greedy policy because we want to ensure some exploration. The greedy part of the policy performs the policy improvement while the occasional random choice of actions allows the agent to have some exploration.</p>
-<h2 id="implementation">Implementation</h2>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>TD</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>Tabular Methods</tag>
-        <tag>TD</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Q-Learning</title>
     <url>/2021/05/16/q-learning/</url>
     <content><![CDATA[<h1 id="temporal-difference-learning-for-control-q-learning">Temporal Difference Learning for Control: Q-Learning</h1>
@@ -2190,6 +2076,32 @@ Var[max_{a^{\prime} \in A} Q_t (X^{\prime}, a^{\prime}) | X_t=x_t, A_t=a_t] &amp
       </tags>
   </entry>
   <entry>
+    <title>SARSA</title>
+    <url>/2021/05/16/sarsa/</url>
+    <content><![CDATA[<h1 id="sarsa">SARSA</h1>
+<p>SARSA (State Action State Reward State Action) is an on-policy TD algorithm that follows a PI-like procedure:</p>
+<ol type="1">
+<li>Estimate <span class="math inline">\(Q^{\pi_k}\)</span> for a given policy <span class="math inline">\(\pi_k\)</span></li>
+<li>Perform policy improvement to obtain a new policy <span class="math inline">\(\pi_{k+1}\)</span></li>
+</ol>
+<p>Compare with usual Policy iteration, SARSA uses <code>Generalized policy iteration</code> to improve the policy before <span class="math inline">\(Q\)</span> converges to <span class="math inline">\(Q^{\pi_k}\)</span>.</p>
+<span id="more"></span>
+<h2 id="algorithm">Algorithm</h2>
+<p><img src="/images/RL/mc/td_6.png"></p>
+<p>Notice that, <span class="math inline">\(\pi_t\)</span> here is a <span class="math inline">\(\epsilon\)</span>-greedy policy because we want to ensure some exploration. The greedy part of the policy performs the policy improvement while the occasional random choice of actions allows the agent to have some exploration.</p>
+<h2 id="implementation">Implementation</h2>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>TD</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>Tabular Methods</tag>
+        <tag>TD</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Search</title>
     <url>/2021/06/13/search/</url>
     <content><![CDATA[<h1 id="search">Search</h1>
@@ -2222,6 +2134,12 @@ Var[max_{a^{\prime} \in A} Q_t (X^{\prime}, a^{\prime}) | X_t=x_t, A_t=a_t] &amp
       <tags>
         <tag>Algorithms</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>semi-mdp</title>
+    <url>/2021/06/28/semi-mdp/</url>
+    <content><![CDATA[
+]]></content>
   </entry>
   <entry>
     <title>Sorts</title>
@@ -2513,18 +2431,18 @@ E[\delta (X, R, X^{\prime}; V^{\pi}) | X=x, A=a] &amp;= E[R + \gamma V^{\pi}(X^{
       </tags>
   </entry>
   <entry>
+    <title>td3</title>
+    <url>/2021/06/23/td3/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
     <title>tree</title>
     <url>/2021/06/14/tree/</url>
     <content><![CDATA[<h1 id="trees">Trees</h1>
 <h2 id="binary-search-tree">Binary Search Tree</h2>
 <h3 id="inorder-traversal">Inorder Traversal</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inorder</span>(<span class="params">root</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    inorder(root.left)</span><br><span class="line">    <span class="built_in">print</span>(root.val)</span><br><span class="line">    inorder(root.right)</span><br></pre></td></tr></table></figure>
-]]></content>
-  </entry>
-  <entry>
-    <title>td3</title>
-    <url>/2021/06/23/td3/</url>
-    <content><![CDATA[
 ]]></content>
   </entry>
   <entry>
@@ -3112,6 +3030,211 @@ V^{\pi} (x) &amp;= E^{\pi}[\sum^{\infty}_{t = 1} \gamma^{t - 1} R_{t} \; |\; X_1
         <tag>Policy Gradient</tag>
         <tag>Continuous Action Space</tag>
         <tag>Policy Search</tag>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Probability</title>
+    <url>/2021/05/11/probability/</url>
+    <content><![CDATA[<h1 id="probability-background">Probability Background</h1>
+<h2 id="sets">Sets</h2>
+<p>A set is a collection of objects, which are the elements of set. If S is a set and <span class="math inline">\(x\)</span> is an element of <span class="math inline">\(S\)</span>, we write <span class="math inline">\(x \in S\)</span>. If <span class="math inline">\(x\)</span> is not an element of <span class="math inline">\(S\)</span>, we write <span class="math inline">\(x \notin S\)</span>. A set can have no elements, in which case it is called the empty set, denoted by <span class="math inline">\(\emptyset\)</span>.</p>
+<h3 id="finite-countable-uncountable">Finite, Countable, Uncountable</h3>
+<p>If <span class="math inline">\(S\)</span> contains a finite number of elements, say <span class="math inline">\(x_1, x_2, ..., x_n\)</span>, we write it as list of the elements in braces:</p>
+<p><span class="math display">\[S = \{x_1, x_2, ...., x_n\}\]</span></p>
+<p>if <span class="math inline">\(S\)</span> contains countable infinitely many elements <span class="math inline">\(x_1, x_2, ...\)</span>, we can write:</p>
+<p><span class="math display">\[S = \{x_1, x_2, ... \}\]</span></p>
+<p><span class="math inline">\(S\)</span> is countable infinite, if the set is countable but has infinitely many elements. However, a set with uncountable elements can not be written down in a list.</p>
+<p>We can denote set of all <span class="math inline">\(x\)</span> that have certain property <span class="math inline">\(P\)</span>:</p>
+<p><span class="math display">\[\{x | x \text{ satisfies } P\}\]</span></p>
+<p>ie. the set of even integers can be written as <span class="math inline">\(\{k | k/2 \text{ is integer}\}\)</span>, <span class="math inline">\(\{x | 0 \leq x \leq 1\}\)</span> (uncountable)</p>
+<span id="more"></span>
+<h3 id="subsets-and-universal-set">Subsets and Universal set</h3>
+<p>If every element of a set <span class="math inline">\(S\)</span> is also an element of a set <span class="math inline">\(T\)</span>, then <span class="math inline">\(S\)</span> is a subset of <span class="math inline">\(T\)</span>, we denote as <span class="math inline">\(S \subset T\)</span> or <span class="math inline">\(T \subset S\)</span>. If <span class="math inline">\(S \subset T\)</span> and <span class="math inline">\(T \subset S\)</span>, the two sets are equal. We also denote universal set to be <span class="math inline">\(\Omega\)</span> which contains all objects that could conceivably be of interest in a particular context.</p>
+<h3 id="set-functions">Set Functions</h3>
+<p>Many of the functions used in calculus are functions that map real numbers into real numbers. We are concerned also with functions that map sets into real numbers. Such functions are naturally called functions of a set or more simply <strong>set functions</strong>. They are usually used to measure subsets of a given set.</p>
+<p>Examples:</p>
+<blockquote>
+<p>Let <span class="math inline">\(C=\mathbf{R}\)</span>, the set of real numbers. For a subset <span class="math inline">\(A \in C\)</span>, let <span class="math inline">\(Q(A)\)</span> be equal to the number of points in <span class="math inline">\(A\)</span> that correspond to positive integers. Then <span class="math inline">\(Q(A)\)</span> is a set function of the set <span class="math inline">\(A\)</span>. Thus, if <span class="math inline">\(A = \{x: 0 &lt; x &lt; 5\} \implies Q(A) = 4\)</span></p>
+</blockquote>
+<p>Often our set functions are defined in terms of sums or integrals, the symbol:</p>
+<p><span class="math display">\[\int_A f(x) dx\]</span></p>
+<p>means the ordinary integral of <span class="math inline">\(f(x)\)</span> over a prescribed one-dimensional set <span class="math inline">\(A\)</span>, and the symbol</p>
+<p><span class="math display">\[\underset{A}{\int\int} g(x, y) dx dy\]</span></p>
+<p>means the integral of <span class="math inline">\(g(x, y)\)</span> over a prescribed two-dimensional set <span class="math inline">\(A\)</span>.</p>
+<p>Examples:</p>
+<blockquote>
+<p>Let <span class="math inline">\(C\)</span> be the set of all nonnegative integers and let <span class="math inline">\(A\)</span> be a subset of <span class="math inline">\(C\)</span>. Define the set function <span class="math inline">\(Q\)</span> by <span class="math display">\[Q(A) = \sum_{n \in A} 3^{n}\]</span></p>
+</blockquote>
+<blockquote>
+<p>Let <span class="math inline">\(C\)</span> be the interval of positive real numbers, <span class="math inline">\(C = (0, \infty)\)</span>. Let <span class="math inline">\(A\)</span> be a subset of <span class="math inline">\(C\)</span>. Define the set function <span class="math inline">\(Q\)</span> by <span class="math display">\[Q(A = \int_{A} e^{-x} dx\]</span> <span class="math display">\[Q((1, 3)) = \int^{3}_{1} e^{-x} dx\]</span> <span class="math display">\[Q(C) = \int^{\infty}_{0} e^{-x} dx = 1\]</span></p>
+</blockquote>
+<h2 id="probability-models">Probability Models</h2>
+<p>A probabilistic model is a mathematical description of an uncertain situation.</p>
+<p><img src='/images/RL/background/prob_1.png' width="600"></p>
+<h3 id="sample-spaces-and-events">Sample Spaces and Events</h3>
+<p>Every probabilistic model involves an underlying process, called the <strong>experiment</strong>, that will produce exactly <strong>one</strong> out of several possible outcomes. The set of all possible outcomes is called the sample space of the experiment, and is denoted by <span class="math inline">\(\Omega\)</span> (Universal Set). A subset of the sample space, that is, a collection of possible outcomes, is called an <strong>event</strong>. Any collection of possible outcomes, including the entire sample space <span class="math inline">\(\Omega\)</span> and its complement the empty set. There is no restriction on what constitutes an experiment. (ie. it can be one toss of the coin, three tosses of coin, or an infinite sequence of tosses). However, in this formulation, there is only one experiment (three tosses is one experiment rather than three experiments).</p>
+<p>The sample space of an experiment may consist of a finite, or an infinite number of possible outcomes.</p>
+<p>Regardless of their number. different elements of the sample space should be <strong>distinct and mutually exclusive</strong>, so that when the experiment is carried out there is a unique outcome. For example, the sample space associated with the roll of a die cannot contain "1 or 3" as a possible outcome and also "1 or 4" as another possible outcome. If it did, we would not be able to assign a unique outcome when the roll is a 1.</p>
+<p>A given physical situation may be modeled in several ways, depending pending on the kind of questions that we are interested in . Generally, the sample space chosen for a probabilistic model must be <strong>collectively exhaustive</strong>, in the sense that no matter what happens in the experiment, we always obtain an outcome that has been included in the sample space. In addition, the sample space should have enough detail to distinguish between all outcomes of interest to the modeler, while avoiding irrelevant details.</p>
+<p><img src="/images/RL/background/prob_2.png" width="600"> <img src="/images/RL/background/prob_3.png" width="600"></p>
+<h3 id="probability-laws-and-probability-set-function">Probability Laws and Probability Set Function</h3>
+<p>Given an experiment, let <span class="math inline">\(C\)</span> denotes the sample space of all possible outcomes. We assume that in all cases:</p>
+<ol type="1">
+<li>The collection of events is sufficiently rich to include all possible events of interest.</li>
+<li>The collection is closed under complements and countable unions of these events.</li>
+<li>The collection is closed under countable intersections.</li>
+</ol>
+<p>Technically, such a collection of events <span class="math inline">\(\mathbb{B}\)</span> is called a <strong><span class="math inline">\(\sigma-\)</span>field of subsets</strong>.</p>
+<p><img src="/images/RL/background/prob_15.png" width="600"></p>
+<p><img src="/images/RL/background/prob_14.png" width="600"></p>
+<p>In order to visualize a probability law. Consider a unit of mass which is spread over the sample space. Then, <span class="math inline">\(P(A)\)</span> is simply the total mass that was assigned collectively to the elements of A. For example, <span class="math inline">\(\Omega = {1, 2, 3, 4, 5, 6}, A = {1, 2}\)</span>, <span class="math inline">\(P(A) = \frac{1}{3}\)</span></p>
+<p>A collection of events whose members are pairwise disjoint, is said to be a mutually exclusive collection and its union is often referred to as a disjoint union. The collection is further said to be <strong>exhaustive</strong> if the union of its events is the sample space. in which case <span class="math inline">\(\sum^{\infty}_{n=1} P(A_n) = 1\)</span>. We often say that a mutually exclusive and exhaustive collection of events forms a <strong>partition</strong> of the sample space <span class="math inline">\(C\)</span>.</p>
+<p>The probability set function <span class="math inline">\(P: \mathbb{B} \rightarrow \mathbb{R}\)</span> tells us how the probability is distributed over the set of events, <span class="math inline">\(\mathbb{B}\)</span>. In this sense, we speak of a distribution of probability. We often drop the word set and refer to <span class="math inline">\(P\)</span> as the probability function.</p>
+<h4 id="discrete-model">Discrete Model</h4>
+<p><img src="/images/RL/background/prob_4.png" width="600"> <img src="/images/RL/background/prob_5.png" width="600"></p>
+<h3 id="additional-properties-of-probability">Additional Properties of Probability</h3>
+<p><img src="/images/RL/background/prob_16.png" width="600"></p>
+<p><img src="/images/RL/background/prob_17.png" width="600"></p>
+<p><br></p>
+<p>The <strong>Inclusion Exclusion Formula</strong>:</p>
+<p><span class="math display">\[P(C_1 \cup C_2 \cup C_3) = p_1 - p_2 + p_3\]</span></p>
+<p>Where:</p>
+<p><span class="math display">\[p_1 = P(C_1) + P(C_2) + P(C_3)\]</span></p>
+<p><span class="math display">\[p_2 = P(C_1 \cap C_2) + P(C_1 \cap C_3) + P(C_2 \bigcap C_3)\]</span></p>
+<p><span class="math display">\[p_3 = P(C_1 \cap C_2 \cap C_3)\]</span></p>
+<p>The <strong>Bonferroni's inequality</strong>:</p>
+<p><span class="math display">\[P(C_1 \cap C_2) \geq P(C_1) + P(C_2) - 1\]</span></p>
+<h2 id="conditional-probability">Conditional Probability</h2>
+<p>In some random experiment, we are interested only in those outcomes that are elements of a subset <span class="math inline">\(A\)</span> of the sample space <span class="math inline">\(C\)</span>. This means, for our purposes, that the sample space is effectively the subset <span class="math inline">\(A\)</span>.</p>
+<p>Let the probability set function <span class="math inline">\(P(A)\)</span> be defined on the sample space <span class="math inline">\(C\)</span> and let <span class="math inline">\(A\)</span> be a subset of <span class="math inline">\(C\)</span> such that <span class="math inline">\(P(A &gt; 0)\)</span>. We only take those outcomes of the random experiment that are elements of <span class="math inline">\(A\)</span> to be the sample space. Let <span class="math inline">\(B\)</span> be another subset of <span class="math inline">\(C\)</span>. The <strong>conditional probability</strong> of event <span class="math inline">\(B\)</span> given <span class="math inline">\(A\)</span> is denoted by the symbol <span class="math inline">\(P(B | A)\)</span> .</p>
+<p>Since <span class="math inline">\(A\)</span> is now the sample space, the only elements of <span class="math inline">\(B\)</span> that concern us are those that are also elements of <span class="math inline">\(A\)</span>, that is the elements of <span class="math inline">\(A \cap B\)</span> and <span class="math inline">\(A\)</span>, relative to the space <span class="math inline">\(A\)</span>, be the same as the ratio of the probabilities of these events relative to the space <span class="math inline">\(C\)</span>, that is, we should have:</p>
+<p><span class="math display">\[P(A | A) = 1 \;\;\;\;\;\; P(A \cap B | A) = P(B | A)\]</span></p>
+<p>Moreover, it would seem logically inconsistent if we did not require that the ratio of the probabilities of the events <span class="math inline">\(A \cap B\)</span> and <span class="math inline">\(A\)</span>, relative to the space <span class="math inline">\(A\)</span>, be the same as the ratio of the probabilities of these events relative to the space <span class="math inline">\(C\)</span> (ie. if <span class="math inline">\(P(A) = 0.5, P(B) = 0.2, P(A \cap B) = 0.1, P(A) / P(C) = 1 / 2, P(A \cap B | A) = 0.2\)</span>), that is, we should have:</p>
+<p><span class="math display">\[\frac{P(A \cap B | A) }{P(A | A)} = \frac{P(A \cap B)}{P(A)}\]</span></p>
+<p><img src="/images/RL/background/prob_18.png" width="600"></p>
+<p><br></p>
+<p><span class="math inline">\(P(B|A)\)</span> the conditional probability set function, defined for subsets of <span class="math inline">\(A\)</span>.</p>
+<p>Conditional probability provides us with a way to reason about the outcome of an experiment, based on <strong>partial information</strong>. In more precise terms, given an experiment, a corresponding sample space, and a probability law, suppose that we know that the outcome is within some given event <span class="math inline">\(B\)</span>. We wish to quantify the likelihood that the outcome also belongs to some other given event <span class="math inline">\(A\)</span>. This concept specifies the conditional probability of <span class="math inline">\(A\)</span> given <span class="math inline">\(B\)</span>, denoted by <span class="math inline">\(P(A | B)\)</span>.</p>
+<p>Furthermore, for a fixed event <span class="math inline">\(B\)</span>, it can be verified that the conditional probabilities <span class="math inline">\(P(A | B), \forall A\)</span> form a legitimate probability law that satisfies the requirements.</p>
+<h3 id="chain-rule">Chain Rule</h3>
+<p><img src="/images/RL/background/prob_7.png" width="600"></p>
+<h3 id="law-of-total-probability">Law of Total Probability</h3>
+<p><img src="/images/RL/background/prob_8.png" width="600"></p>
+<h3 id="bayes-rule">Bayes' Rule</h3>
+<p><img src="/images/RL/background/prob_9.png" width="600"></p>
+<h2 id="random-variables">Random Variables</h2>
+<p>Given an experiment and the corresponding set of possible outcomes (the sample space), a <strong>random variable</strong> is a real-valued <strong>function</strong> (max, min etc.) of experiment outcome that associates a <strong>particular number with each outcome</strong>. We refer to this number as the numerical value or simply the value of the random variable.</p>
+<p><img src="/images/RL/background/prob_19.png" width="600"> <img src="/images/RL/background/prob_11.png" width="600"> <img src="/images/RL/background/prob_10.png" width="600"></p>
+<h4 id="distribution-of-random-variable">Distribution of Random Variable</h4>
+<p>Given a random variable <span class="math inline">\(X\)</span>, its range <span class="math inline">\(\mathbb{D}\)</span> becomes <strong>the sample space of interest</strong>. Besides, inducing the sample space <span class="math inline">\(\mathbb{D}\)</span>, <span class="math inline">\(X\)</span> also induces a probability which we call the distribution of <span class="math inline">\(X\)</span>.</p>
+<p>Assume <span class="math inline">\(X\)</span> is a discrete random variable with a finite space <span class="math inline">\(\mathbb{D} = \{d_1, ...., d_m\}\)</span>. Define the function <span class="math inline">\(p_{X} (d_i)\)</span> on <span class="math inline">\(\mathbb{D}\)</span> by:</p>
+<p><span class="math display">\[p_X(d_i) = P[\{c: X(c) = d_i\}], \quad \quad \forall i=1, .... ,m\]</span></p>
+<p><br></p>
+<p>Which is the probability of event that contains the outcomes with value <span class="math inline">\(X(c) = d_i\)</span>, this is called the <strong>probability mass function</strong> of <span class="math inline">\(X\)</span>. Then the <strong>induced probability distribution</strong>, <span class="math inline">\(P_X (\cdot): D \rightarrow \mathbb{R}\)</span>, of <span class="math inline">\(X\)</span> is:</p>
+<p><span class="math display">\[P_X (D) = \sum_{d_i \in D} p_X (d_i), \quad \quad D \subset \mathbb{D}\]</span></p>
+<p>Similar to <span class="math inline">\(P\)</span> which is defined on <span class="math inline">\(\mathbb{B}\)</span>. This <span class="math inline">\(P_X (\cdot)\)</span> is basically the probability distribution of events defined on sets <span class="math inline">\(D\)</span>, <span class="math inline">\(P_X (D)\)</span> is the probability of event <span class="math inline">\(D\)</span> defined on <span class="math inline">\(\mathbb{D}\)</span>.</p>
+<h4 id="cumulative-distribution-function">Cumulative Distribution Function</h4>
+<p>The pmf of discrete random variable and the pdf of a continuous random variable are quite different entities. The distribution function, though, uniquely determines the probability distribution of a random variable:</p>
+<p><img src="/images/RL/background/prob_20.png" width="600"></p>
+<p><strong>Note that, cdf is defined <span class="math inline">\(\quad \forall x \in \mathbb{R}\)</span>.</strong></p>
+<p>Remember that <span class="math inline">\(P_X (\cdot)\)</span> is the probability set function (distribution) of the random variable <span class="math inline">\(X\)</span>. The cdf is the probability of event (subset of <span class="math inline">\(\mathbb{D}\)</span>, the random variable range space): <span class="math inline">\(\{a: a \leq x, a \in \mathbb{D}\}\)</span>, this is the same as the event (defined on sample space): <span class="math inline">\(\{c: X(c) \leq x, c \in \mathbb{B}\}\)</span>.</p>
+<p><br></p>
+<h4 id="equal-in-distribution">Equal in Distribution</h4>
+<p>Let <span class="math inline">\(X, Y\)</span> be two random variables. We say that <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are <strong>equal in distribution</strong> and write:</p>
+<p><span class="math display">\[X \overset{D}{=} Y\]</span></p>
+<p>IFF:</p>
+<p><span class="math display">\[F_X(x) = F_Y (x), \quad \quad \quad \forall x \in \mathbb{R}\]</span></p>
+<p>Notice that, equal in distribution does not mean the random variables are the same. For examples, let <span class="math inline">\(X\)</span> be a random variable sampled from range <span class="math inline">\([0, 1)\)</span>, let <span class="math inline">\(Y = 1 - X\)</span>, then <span class="math inline">\(Y\)</span> also has range <span class="math inline">\([0, 1)\)</span>. At the same time, for <span class="math inline">\(x &lt; 0\)</span>, the cdf for both random variables is 0, for <span class="math inline">\(x &lt; 0\)</span>, the cdf for both random variables is 1. And, for <span class="math inline">\(0 \leq x &lt; 1\)</span>, the cdf is <span class="math inline">\(x\)</span> for both random variables. But this two random variables are clearly different.</p>
+<p><img src="/images/RL/background/prob_21.png" width="600"></p>
+<p><br></p>
+<h4 id="theorems-for-cdf">Theorems for CDF</h4>
+<p><img src="/images/RL/background/prob_22.png" width="600"></p>
+<p><img src="/images/RL/background/prob_23.png" width="600"></p>
+<p><strong>Proof of Theorem 1.5.2</strong></p>
+<p>Note that the event <span class="math inline">\(\{-\infty &lt; X \leq b\} = \{-\infty &lt; X \leq a\} \cup \{a &lt; X \leq b\}\)</span>, Then <span class="math inline">\(\{-\infty &lt; X \leq a\} \cup \{a &lt; X \leq b\}\)</span> are disjoint events, which means:</p>
+<p><span class="math display">\[P_X(\{-\infty &lt; X \leq a\} \cup \{a &lt; X \leq b\}) = P_X(\{-\infty &lt; X \leq a\}) + P_X(\{a &lt; X \leq b\})\]</span></p>
+<p>Then,</p>
+<span class="math display">\[\begin{aligned}
+P(\{-\infty &lt; X \leq b\}) &amp;= P_X(\{-\infty &lt; X \leq a\}) + P_X(\{a &lt; X \leq b\})\\
+\implies F_X (b) &amp;= F_X(a) + P_X(\{a &lt; X \leq b\})\\
+\end{aligned}\]</span>
+<p><br></p>
+<p><img src="/images/RL/background/prob_24.png" width="600"></p>
+<p>This basically means that the discontinuities of a cdf have mass. That is, if <span class="math inline">\(x\)</span> is a point of discontinuity of <span class="math inline">\(F_x\)</span>, then we have <span class="math inline">\(P(X=x) &gt; 0\)</span>.</p>
+<p>Example:</p>
+<blockquote>
+<p>Let <span class="math inline">\(X\)</span> have discontinuous cdf: <span class="math display">\[
+F_X(x)=
+\begin{cases}
+0, \quad &amp;x &lt; 0\\
+\frac{x}{2}, \quad &amp;0 \leq x &lt; 1\\
+1, \quad &amp;1 \leq x
+\end{cases}
+\]</span> Then: <span class="math display">\[P(X=1) = F_X (1) - F_X(1 - ) = 1 - \frac{1}{2} = \frac{1}{2}\]</span></p>
+</blockquote>
+<h3 id="discrete-random-variables">Discrete Random Variables</h3>
+<p><img src="/images/RL/background/prob_25.png" width="600"></p>
+<p><img src="/images/RL/background/prob_26.png" width="600"></p>
+<p>If a function satisfies properties 1, 2 of the pmf, then this function <span class="math inline">\(p_X\)</span> uniquely determines the distribution (probability set function) of a random variable <span class="math inline">\(P_X\)</span>.</p>
+<h4 id="support">Support</h4>
+<p>Let <span class="math inline">\(X\)</span> be a discrete random variable with space <span class="math inline">\(\mathbb{D}\)</span>. We define the <code>support</code> of a discrete random variable <span class="math inline">\(X\)</span> to be the points in the space (range) of <span class="math inline">\(X\)</span> which have positive probability. We often denote <span class="math inline">\(S\)</span> as the support of <span class="math inline">\(X\)</span>. Note that <span class="math inline">\(S \in \mathbb{D}\)</span>, but it may be that <span class="math inline">\(S = \mathbb{D}\)</span>.</p>
+<p>If <span class="math inline">\(x \in S\)</span>, then <span class="math inline">\(p_X (x)\)</span> is equal to the size of the discontinuity of <span class="math inline">\(F_X\)</span> at <span class="math inline">\(x\)</span>. If <span class="math inline">\(x \neq S\)</span> then <span class="math inline">\(P[X=x] = 0\)</span> and hence, <span class="math inline">\(F_X\)</span> is continues at this <span class="math inline">\(x\)</span>.</p>
+<h4 id="transformations">Transformations</h4>
+<p>If we have a random variable <span class="math inline">\(X\)</span> and we know its distribution (<span class="math inline">\(P_X, p_X\)</span>). We are interested, though, in a random variable <span class="math inline">\(Y\)</span> which is some transformation of <span class="math inline">\(X\)</span> say <span class="math inline">\(g(X) = Y\)</span>. In particular, we want to determine the distribution of <span class="math inline">\(Y\)</span>. Assume <span class="math inline">\(X\)</span> is discrete with space <span class="math inline">\(\mathbb{D}_X\)</span>. Then the space of <span class="math inline">\(Y\)</span> is <span class="math inline">\(D_Y = {g(x): x \in \mathbb{D}_X}\)</span>. We consider two case of <span class="math inline">\(g\)</span>:</p>
+<ol type="1">
+<li><p>If <span class="math inline">\(g\)</span> is one to one. Then, clearly, the pmf of <span class="math inline">\(Y\)</span> is:</p>
+<p><span class="math display">\[p_Y (y) = P_Y(Y = y) = P_X(g(X) = y) = p_X (X = g^{-1} (y)) = p_X (g^{-1} (y))\]</span></p></li>
+<li><p>If <span class="math inline">\(g\)</span> is not one to one. We basically infer the pmf of <span class="math inline">\(Y\)</span> in a straight forward manner: For each value of <span class="math inline">\(Y=y\)</span>, we infer it:</p>
+<p><span class="math display">\[P_X(\{x: g(x) = y, x \in \mathbb{D}\})\]</span></p></li>
+</ol>
+<p><br></p>
+<p>Example (case 1):</p>
+<blockquote>
+<p>Let X have the pmf: <span class="math display">\[
+p_X(x)=
+\begin{cases}
+\frac{3!}{x!(3 - x)!} {\frac{2}{3}}^x {\frac{1}{3}}^{3 - x}, \quad &amp;x = 0, 1, 2, 3\\
+0, \quad &amp;\text{o. w}\\
+\end{cases}
+\]</span> If <span class="math inline">\(Y = 2X\)</span>, then this is a one to one mapping and <span class="math inline">\(\frac{1}{2} Y = X\)</span>, the pmf of <span class="math inline">\(Y\)</span>: <span class="math display">\[p_Y (y) = p_X (\frac{1}{2} y)\]</span> That is: <span class="math display">\[
+p_Y(y)=
+\begin{cases}
+\frac{3!}{(\frac{1}{2} y)!(3 - \frac{1}{2} y)!} {\frac{2}{3}}^x {\frac{1}{3}}^{3 - \frac{1}{2} y}, \quad &amp;y = 0, \frac{1}{2}, 1, \frac{3}{2}\\
+0, \quad &amp;\text{o. w}\\
+\end{cases}
+\]</span></p>
+</blockquote>
+<p>Example (case 2):</p>
+<blockquote>
+<p>If <span class="math inline">\(Y = X^2\)</span>, for <span class="math inline">\(\mathbb{D_X} = \{-1, 1\}\)</span>. Then the pmf of <span class="math inline">\(Y\)</span>: <span class="math display">\[
+p_Y(y)=
+\begin{cases}
+P_X (\{-1, 1\}) = \underset{x \in \{-1, 1\}}{\sum} p_X (x), \quad &amp;y = 1\\
+0, \quad &amp;\text{o. w}\\
+\end{cases}
+\]</span></p>
+</blockquote>
+<h3 id="functions-of-random-variables">Functions of Random Variables</h3>
+<p>Given a R.V <span class="math inline">\(X\)</span>, one may generate other R.V by applying various transformation on <span class="math inline">\(X\)</span>. For example, <span class="math inline">\(Y = g(X) = a + bX\)</span>. <span class="math inline">\(Y=g(X)\)</span> here is also a R.V, since it provides a numerical value for each possible outcome. This is because every outcome in the sample space defines a numerical value <span class="math inline">\(x\)</span> for <span class="math inline">\(X\)</span> and hence also the numerical value <span class="math inline">\(y = g(x)\)</span> for <span class="math inline">\(Y\)</span>. If <span class="math inline">\(X\)</span> is discrete and its PMF <span class="math inline">\(p_Y\)</span> can be calculated using the PMF of <span class="math inline">\(X\)</span>:</p>
+<p><span class="math display">\[p_Y(y) = \sum_{\{x | g(x) = y\}} p_X (x)\]</span></p>
+<h3 id="expectation">Expectation</h3>
+<p>Expectation of <span class="math inline">\(X\)</span> is a weighted (in proportion to probabilities) average of the possible values of <span class="math inline">\(X\)</span>.</p>
+<p>Discrete:</p>
+<p><img src="/images/RL/background/prob_13.png" width="600"></p>
+<h4 id="well-defined-expectation">Well-Defined Expectation</h4>
+<p>When dealing with R.V that takes a countably infinite number of values, one has to deal with the possibility that the infinite sum <span class="math inline">\(\sum_x xp_X(x)\)</span> is not well-defined. More concretely, the expectation is well-defined if</p>
+<p><span class="math display">\[\sum_x |x| p_X(x) &lt; \infty\]</span></p>
+<h1 id="reference">Reference</h1>
+<ol type="1">
+<li>D. P. Bertsekas and J. N. Tsitsiklis, Introduction to Probability, NH, Nashua:Athena Scientific, 2008.</li>
+<li></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Background</category>
+      </categories>
+      <tags>
         <tag>RL Basics</tag>
       </tags>
   </entry>
