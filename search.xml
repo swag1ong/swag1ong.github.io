@@ -285,6 +285,32 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
       </tags>
   </entry>
   <entry>
+    <title>Double Q Learning</title>
+    <url>/2021/05/07/FA-issues/</url>
+    <content><![CDATA[<h1 id="double-q-learning">Double Q-learning</h1>
+<h2 id="the-overestimation-phenomenon">The Overestimation Phenomenon</h2>
+<p>Assume the agent observes during learning that action <span class="math inline">\(a\)</span> and executed at state <span class="math inline">\(s\)</span> resulting in the state <span class="math inline">\(s^{\prime}\)</span> and some immediate reward <span class="math inline">\(r^{a}_{s}\)</span>. The Q-learning update can be written as:</p>
+<p><span class="math display">\[Q(s, a) \leftarrow r^{a}_{s} + \gamma \max_{\hat{a}} Q(s^{\prime}, \hat{a})\]</span></p>
+<p>It has been shown that repeated application of this update equation eventually yields <span class="math inline">\(Q\)</span>-values that give rise to a policy which maximizes the expected cumulative discounted reward. However, these results only apply when <span class="math inline">\(Q-\)</span>values are stored precisely. (e.g by a look up table)</p>
+<p>Assume, instead, let <span class="math inline">\(Q\)</span> be represented as a function approximator that induces some noise on the estimates of <span class="math inline">\(Q\)</span>. More specifically, let us assume that the current stored <span class="math inline">\(Q-\)</span>values, denoted by <span class="math inline">\(Q^{approx}\)</span>, represent some implicit target values <span class="math inline">\(Q^{target}\)</span>, corrupted by a noise term <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span>, which is due to the function approximator:</p>
+<p><span class="math display">\[Q^{approx} (s^{\prime}, \hat{a}) = Q^{target} (s^{\prime}, \hat{a}) + Y^{\hat{a}}_{s^{\prime}}\]</span></p>
+<p>Here the noise is modeled by the family of random variable <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span> with zero mean:</p>
+<span class="math display">\[\begin{aligned}
+Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) -  (r^{a}_{s} + \gamma \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a})) \\
+&amp;= \gamma (\max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) - \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a}))\\
+\end{aligned}\]</span>
+<p>Clearly, the noise causes some error on the left-hand side.</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Discussions</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Dueling Network Architectures for DRL</title>
     <url>/2021/05/13/Dueling/</url>
     <content><![CDATA[<h1 id="dueling-network-architectures-for-deep-reinforcement-learning">Dueling Network Architectures for Deep Reinforcement Learning</h1>
@@ -345,32 +371,6 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
       <tags>
         <tag>Function Approximation</tag>
         <tag>Continuous State Space</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Double Q Learning</title>
-    <url>/2021/05/07/FA-issues/</url>
-    <content><![CDATA[<h1 id="double-q-learning">Double Q-learning</h1>
-<h2 id="the-overestimation-phenomenon">The Overestimation Phenomenon</h2>
-<p>Assume the agent observes during learning that action <span class="math inline">\(a\)</span> and executed at state <span class="math inline">\(s\)</span> resulting in the state <span class="math inline">\(s^{\prime}\)</span> and some immediate reward <span class="math inline">\(r^{a}_{s}\)</span>. The Q-learning update can be written as:</p>
-<p><span class="math display">\[Q(s, a) \leftarrow r^{a}_{s} + \gamma \max_{\hat{a}} Q(s^{\prime}, \hat{a})\]</span></p>
-<p>It has been shown that repeated application of this update equation eventually yields <span class="math inline">\(Q\)</span>-values that give rise to a policy which maximizes the expected cumulative discounted reward. However, these results only apply when <span class="math inline">\(Q-\)</span>values are stored precisely. (e.g by a look up table)</p>
-<p>Assume, instead, let <span class="math inline">\(Q\)</span> be represented as a function approximator that induces some noise on the estimates of <span class="math inline">\(Q\)</span>. More specifically, let us assume that the current stored <span class="math inline">\(Q-\)</span>values, denoted by <span class="math inline">\(Q^{approx}\)</span>, represent some implicit target values <span class="math inline">\(Q^{target}\)</span>, corrupted by a noise term <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span>, which is due to the function approximator:</p>
-<p><span class="math display">\[Q^{approx} (s^{\prime}, \hat{a}) = Q^{target} (s^{\prime}, \hat{a}) + Y^{\hat{a}}_{s^{\prime}}\]</span></p>
-<p>Here the noise is modeled by the family of random variable <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span> with zero mean:</p>
-<span class="math display">\[\begin{aligned}
-Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) -  (r^{a}_{s} + \gamma \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a})) \\
-&amp;= \gamma (\max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) - \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a}))\\
-\end{aligned}\]</span>
-<p>Clearly, the noise causes some error on the left-hand side.</p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>VFA</category>
-      </categories>
-      <tags>
-        <tag>Function Approximation</tag>
-        <tag>Discussions</tag>
       </tags>
   </entry>
   <entry>
@@ -1319,6 +1319,12 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
+    <title>convex_opt</title>
+    <url>/2021/06/14/convex-opt/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
     <title>Dynamic Programming</title>
     <url>/2021/05/03/dp/</url>
     <content><![CDATA[<h1 id="dynamic-programming">Dynamic Programming</h1>
@@ -1341,12 +1347,6 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
         <tag>RL Basics</tag>
         <tag>Dynamic Programming</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>convex_opt</title>
-    <url>/2021/06/14/convex-opt/</url>
-    <content><![CDATA[
-]]></content>
   </entry>
   <entry>
     <title>Dropout</title>
@@ -1822,63 +1822,6 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </tags>
   </entry>
   <entry>
-    <title>Policy Gradient (1)</title>
-    <url>/2021/05/23/policy-gradient/</url>
-    <content><![CDATA[<h1 id="policy-search-methods-introduction">Policy Search Methods (Introduction)</h1>
-<p>So far, we have encountered methods for computing the optimal policy based on the computation of the value function. In this case, only value function was explicitly represented. There are also methods based on explicit representation of the policy and optimizing the performance of the agent by searching in the space of policies. These methods are called <strong>policy search methods</strong>.</p>
-<p>Consider a stochastic policy <span class="math inline">\(\pi_\theta: X \rightarrow M(A)\)</span> that maps state space to distribution defined over actions and parameterized by a <span class="math inline">\(\theta \in \Theta\)</span>. The set <span class="math inline">\(\Theta\)</span> is the parameter space. The space of all parameterized policies can be described as:</p>
-<p><span class="math display">\[\prod_\Theta = \{\pi_\theta: X \rightarrow M(A): \theta \in \Theta\}\]</span></p>
-<p>This space depends on the mapping <span class="math inline">\(\pi_\theta\)</span> and <span class="math inline">\(\Theta\)</span></p>
-<p>One example how we can parameterize policy by softmax distribution. Given a function mapping <span class="math inline">\(f_{\theta}: X \times A \rightarrow \mathbb{R}\)</span>, the probability of choosing action <span class="math inline">\(a\)</span> at state <span class="math inline">\(x\)</span> is:</p>
-<p><span class="math display">\[\pi_{\theta} (a | x) = \frac{exp(f_{\theta} (x, a))}{\sum_{a^{\prime}} exp(f_{\theta} (x, a^{\prime}))}\]</span></p>
-<p>or a normal distribution defined by <span class="math inline">\(\mu_\theta (x), \Sigma_\theta(x)\)</span>:</p>
-<p><span class="math display">\[\pi_{\theta} (\cdot | x) = N(\mu_\theta(x), \Sigma_{\theta} (x))\]</span></p>
-<span id="more"></span>
-<h2 id="why-parameterize-policy">Why Parameterize Policy?</h2>
-<p>Explicit parameterization of policy allows us to easily choose a continuous action. For example, if the policy is normal distribution defined over actions, we can just sample actions according to this distribution. For value based methods, this can be challenging:</p>
-<ul>
-<li>Even if we know <span class="math inline">\(Q^{*}\)</span>, computing the greedy policy is impossible over continuous action space.</li>
-<li>VI and PI requires repeated calculation of the greedy policy.</li>
-</ul>
-<h2 id="how-can-we-compare-policies">How Can We Compare Policies?</h2>
-<p>The performance can be measured in various ways. In VFA, we have bellman residuals, bellman errors, projected bellman errors and etc (But the ideas are all based on maximizing the expected return). In policy gradient methods, we also maximize the expected return following <span class="math inline">\(\pi_\theta\)</span>, at the same time, we incorporate the variance or some other risk measures.</p>
-<p><strong>Our goal is to find a policy that maximize this performance measure within the space of <span class="math inline">\(\prod_\Theta\)</span>.</strong></p>
-<h3 id="reasonable-choice-of-performance-measure">Reasonable Choice of Performance Measure</h3>
-<p>Assume that we only care about the performance at state <span class="math inline">\(x \in X\)</span> (We only care about one state). Then the goal of policy search:</p>
-<p><span class="math display">\[argmax_{\pi \in \prod_{\Theta}} V^{\pi} (x) = argmax_{\theta \in \Theta} V^{\pi_{\theta}} (x)\]</span></p>
-<p>In this case, we are interested only in state <span class="math inline">\(x\)</span>, its performance, measured according to its expected return, is maximized. We may want to find a policy that is only good at our starting state <span class="math inline">\(x\)</span> and ignore the performance at other states. The obtained policy is going to be initial-state-dependent. If we change <span class="math inline">\(x\)</span> to another state <span class="math inline">\(x^{\prime} \neq x\)</span>, we get a different optimal policy (according to this performance measure).</p>
-<p>Recall that, the optimal value function <span class="math inline">\(V^{*}\)</span> is optimal at every state. The optimal policy <span class="math inline">\(\pi^{*}\)</span> not only maximizes the value function at this particular state <span class="math inline">\(x\)</span>, but also at any other <span class="math inline">\(x^{\prime} \in X\)</span>. So, Instead of this extreme case of considering only the initial state <span class="math inline">\(x\)</span>, we can consider when the initial state is distributed according to some distribution <span class="math inline">\(\rho \sim M(X)\)</span> (This formulation is emphasized in the <a href="/2021/05/03/MDP/" title="MDP">MDP</a> blog, where trajectory starts by sampling from this initial distribution).</p>
-<p>The <strong>performance measure</strong> would be the average of following <span class="math inline">\(\pi_\theta\)</span> over initial state distribution <span class="math inline">\(X_1 \sim \rho\)</span>:</p>
-<p><span class="math display">\[J(\pi_\theta) = J_\rho(\pi_\theta) \triangleq \int_{x_1} V^{\pi_{\theta}} (x_1) d\rho(x_1) = E_{X_1 \sim \rho}[V^{\pi_{\theta}}(X_1)]\]</span></p>
-<p>In this case:</p>
-<ul>
-<li>The optimal policy maximizes <span class="math inline">\(J_\rho\)</span></li>
-<li><span class="math inline">\(J_\rho (\pi^*) \leq J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
-<li>If <span class="math inline">\(\pi^{*} \notin \prod_{\Theta}\)</span>, then <span class="math inline">\(J_\rho (\pi^*) &gt; J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
-</ul>
-<h2 id="goal">Goal</h2>
-<p>So, in policy search methods, we aim to find the policy that maximizes the performance measure within <span class="math inline">\(\prod_{\Theta}\)</span>:</p>
-<p><span class="math display">\[\bar{\pi} = argmax_{\pi_{\theta} \in \prod_{\Theta}} J_{\rho} (\pi_{\theta})\]</span></p>
-<ul>
-<li>The maximizer is denoted as <span class="math inline">\(\bar{\pi}\)</span> because the optimal policy <span class="math inline">\(\pi^{*}\)</span> may not lie in the space of <span class="math inline">\(\prod_{\Theta}\)</span></li>
-<li>For different <span class="math inline">\(\rho\)</span>, we may get different maximizes. However, if <span class="math inline">\(\pi^{*} \in \prod_{\Theta}\)</span>, <span class="math inline">\(\rho\)</span> does not matter.</li>
-<li>To emphasis the dependence of <span class="math inline">\(\bar{\pi}\)</span> on <span class="math inline">\(\rho\)</span>, <span class="math inline">\(\bar{\pi}_{\rho}\)</span> may be used.</li>
-<li>Sometimes, <span class="math inline">\(J(\pi(\theta))\)</span> or <span class="math inline">\(J_{\rho}(\pi_{\theta})\)</span> is denoted as <span class="math inline">\(J_{\rho} (\theta)\)</span> for simplification.</li>
-</ul>
-<h2 id="next-how-can-we-solve-for-barpi_rho">Next: How can we solve for <span class="math inline">\(\bar{\pi}_{\rho}\)</span>?</h2>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>PG</category>
-      </categories>
-      <tags>
-        <tag>Policy Gradient</tag>
-        <tag>Continuous Action Space</tag>
-        <tag>Policy Search</tag>
-        <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Policy Iteration</title>
     <url>/2021/05/03/policy-iteration/</url>
     <content><![CDATA[<h1 id="policy-iteration">Policy Iteration</h1>
@@ -1955,6 +1898,63 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       <tags>
         <tag>RL Basics</tag>
         <tag>Dynamic Programming</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Policy Gradient (1)</title>
+    <url>/2021/05/23/policy-gradient/</url>
+    <content><![CDATA[<h1 id="policy-search-methods-introduction">Policy Search Methods (Introduction)</h1>
+<p>So far, we have encountered methods for computing the optimal policy based on the computation of the value function. In this case, only value function was explicitly represented. There are also methods based on explicit representation of the policy and optimizing the performance of the agent by searching in the space of policies. These methods are called <strong>policy search methods</strong>.</p>
+<p>Consider a stochastic policy <span class="math inline">\(\pi_\theta: X \rightarrow M(A)\)</span> that maps state space to distribution defined over actions and parameterized by a <span class="math inline">\(\theta \in \Theta\)</span>. The set <span class="math inline">\(\Theta\)</span> is the parameter space. The space of all parameterized policies can be described as:</p>
+<p><span class="math display">\[\prod_\Theta = \{\pi_\theta: X \rightarrow M(A): \theta \in \Theta\}\]</span></p>
+<p>This space depends on the mapping <span class="math inline">\(\pi_\theta\)</span> and <span class="math inline">\(\Theta\)</span></p>
+<p>One example how we can parameterize policy by softmax distribution. Given a function mapping <span class="math inline">\(f_{\theta}: X \times A \rightarrow \mathbb{R}\)</span>, the probability of choosing action <span class="math inline">\(a\)</span> at state <span class="math inline">\(x\)</span> is:</p>
+<p><span class="math display">\[\pi_{\theta} (a | x) = \frac{exp(f_{\theta} (x, a))}{\sum_{a^{\prime}} exp(f_{\theta} (x, a^{\prime}))}\]</span></p>
+<p>or a normal distribution defined by <span class="math inline">\(\mu_\theta (x), \Sigma_\theta(x)\)</span>:</p>
+<p><span class="math display">\[\pi_{\theta} (\cdot | x) = N(\mu_\theta(x), \Sigma_{\theta} (x))\]</span></p>
+<span id="more"></span>
+<h2 id="why-parameterize-policy">Why Parameterize Policy?</h2>
+<p>Explicit parameterization of policy allows us to easily choose a continuous action. For example, if the policy is normal distribution defined over actions, we can just sample actions according to this distribution. For value based methods, this can be challenging:</p>
+<ul>
+<li>Even if we know <span class="math inline">\(Q^{*}\)</span>, computing the greedy policy is impossible over continuous action space.</li>
+<li>VI and PI requires repeated calculation of the greedy policy.</li>
+</ul>
+<h2 id="how-can-we-compare-policies">How Can We Compare Policies?</h2>
+<p>The performance can be measured in various ways. In VFA, we have bellman residuals, bellman errors, projected bellman errors and etc (But the ideas are all based on maximizing the expected return). In policy gradient methods, we also maximize the expected return following <span class="math inline">\(\pi_\theta\)</span>, at the same time, we incorporate the variance or some other risk measures.</p>
+<p><strong>Our goal is to find a policy that maximize this performance measure within the space of <span class="math inline">\(\prod_\Theta\)</span>.</strong></p>
+<h3 id="reasonable-choice-of-performance-measure">Reasonable Choice of Performance Measure</h3>
+<p>Assume that we only care about the performance at state <span class="math inline">\(x \in X\)</span> (We only care about one state). Then the goal of policy search:</p>
+<p><span class="math display">\[argmax_{\pi \in \prod_{\Theta}} V^{\pi} (x) = argmax_{\theta \in \Theta} V^{\pi_{\theta}} (x)\]</span></p>
+<p>In this case, we are interested only in state <span class="math inline">\(x\)</span>, its performance, measured according to its expected return, is maximized. We may want to find a policy that is only good at our starting state <span class="math inline">\(x\)</span> and ignore the performance at other states. The obtained policy is going to be initial-state-dependent. If we change <span class="math inline">\(x\)</span> to another state <span class="math inline">\(x^{\prime} \neq x\)</span>, we get a different optimal policy (according to this performance measure).</p>
+<p>Recall that, the optimal value function <span class="math inline">\(V^{*}\)</span> is optimal at every state. The optimal policy <span class="math inline">\(\pi^{*}\)</span> not only maximizes the value function at this particular state <span class="math inline">\(x\)</span>, but also at any other <span class="math inline">\(x^{\prime} \in X\)</span>. So, Instead of this extreme case of considering only the initial state <span class="math inline">\(x\)</span>, we can consider when the initial state is distributed according to some distribution <span class="math inline">\(\rho \sim M(X)\)</span> (This formulation is emphasized in the <a href="/2021/05/03/MDP/" title="MDP">MDP</a> blog, where trajectory starts by sampling from this initial distribution).</p>
+<p>The <strong>performance measure</strong> would be the average of following <span class="math inline">\(\pi_\theta\)</span> over initial state distribution <span class="math inline">\(X_1 \sim \rho\)</span>:</p>
+<p><span class="math display">\[J(\pi_\theta) = J_\rho(\pi_\theta) \triangleq \int_{x_1} V^{\pi_{\theta}} (x_1) d\rho(x_1) = E_{X_1 \sim \rho}[V^{\pi_{\theta}}(X_1)]\]</span></p>
+<p>In this case:</p>
+<ul>
+<li>The optimal policy maximizes <span class="math inline">\(J_\rho\)</span></li>
+<li><span class="math inline">\(J_\rho (\pi^*) \leq J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
+<li>If <span class="math inline">\(\pi^{*} \notin \prod_{\Theta}\)</span>, then <span class="math inline">\(J_\rho (\pi^*) &gt; J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
+</ul>
+<h2 id="goal">Goal</h2>
+<p>So, in policy search methods, we aim to find the policy that maximizes the performance measure within <span class="math inline">\(\prod_{\Theta}\)</span>:</p>
+<p><span class="math display">\[\bar{\pi} = argmax_{\pi_{\theta} \in \prod_{\Theta}} J_{\rho} (\pi_{\theta})\]</span></p>
+<ul>
+<li>The maximizer is denoted as <span class="math inline">\(\bar{\pi}\)</span> because the optimal policy <span class="math inline">\(\pi^{*}\)</span> may not lie in the space of <span class="math inline">\(\prod_{\Theta}\)</span></li>
+<li>For different <span class="math inline">\(\rho\)</span>, we may get different maximizes. However, if <span class="math inline">\(\pi^{*} \in \prod_{\Theta}\)</span>, <span class="math inline">\(\rho\)</span> does not matter.</li>
+<li>To emphasis the dependence of <span class="math inline">\(\bar{\pi}\)</span> on <span class="math inline">\(\rho\)</span>, <span class="math inline">\(\bar{\pi}_{\rho}\)</span> may be used.</li>
+<li>Sometimes, <span class="math inline">\(J(\pi(\theta))\)</span> or <span class="math inline">\(J_{\rho}(\pi_{\theta})\)</span> is denoted as <span class="math inline">\(J_{\rho} (\theta)\)</span> for simplification.</li>
+</ul>
+<h2 id="next-how-can-we-solve-for-barpi_rho">Next: How can we solve for <span class="math inline">\(\bar{\pi}_{\rho}\)</span>?</h2>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>PG</category>
+      </categories>
+      <tags>
+        <tag>Policy Gradient</tag>
+        <tag>Continuous Action Space</tag>
+        <tag>Policy Search</tag>
+        <tag>RL Basics</tag>
       </tags>
   </entry>
   <entry>
@@ -2509,6 +2509,25 @@ E[\delta (X, R, X^{\prime}; V^{\pi}) | X=x, A=a] &amp;= E[R + \gamma V^{\pi}(X^{
 ]]></content>
   </entry>
   <entry>
+    <title>vfa-1</title>
+    <url>/2021/06/12/vfa-1/</url>
+    <content><![CDATA[<h1 id="value-function-approximation-introduction">Value Function Approximation (Introduction)</h1>
+<p>In real-world problem, the state space <span class="math inline">\(X\)</span> or the state-action space <span class="math inline">\(X \times A\)</span> is large that we cannot represent quantities such as the value function or policy exactly.</p>
+<ul>
+<li><span class="math inline">\(X \subseteq \mathbb{R}^d\)</span> with <span class="math inline">\(d \geq 1\)</span>. Exact representation of an arbitrary function on <span class="math inline">\(\mathbb{R}^d\)</span> on a computer is infeasible.</li>
+<li><span class="math inline">\(X\)</span> is finite, but very large (millions or billions)</li>
+</ul>
+<p>We need to approximate those functions using a representation that is feasible to manipulate on a computer. This is called <strong>function approximation</strong>.</p>
+<p>Function approximation also helps with the generalization.</p>
+<h2 id="linear-function-approximation">Linear Function Approximation</h2>
+<p>We may use a linear function approximator defined based on a set of basis functions:</p>
+<p><span class="math display">\[\hat{V} (x) = \phi (x)^T w = \sum^p_{i=1} \phi_i (x) w_i\]</span></p>
+<p>with <span class="math inline">\(w \in \mathbb{R}^p\)</span> and <span class="math inline">\(\phi: X \rightarrow \mathbb{R}^p\)</span></p>
+<p>Any <span class="math inline">\(\hat{V}\)</span> belongs to the space of functions <span class="math inline">\(\mathbf{F}\)</span>:</p>
+<p><span class="math display">\[\mathbf{F} = \{x \mapsto  \phi (x)^T w : w \in \mathbb{R}^p\}\]</span></p>
+]]></content>
+  </entry>
+  <entry>
     <title>Learning From Stream of Data</title>
     <url>/2021/05/07/value-function-learning/</url>
     <content><![CDATA[<h1 id="learning-from-stream-of-data-introduction">Learning From Stream of Data (Introduction)</h1>
@@ -2640,25 +2659,6 @@ Uniform(A), \text{w. p } \epsilon \\
         <tag>RL Basics</tag>
         <tag>Dynamic Programming</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>vfa-1</title>
-    <url>/2021/06/12/vfa-1/</url>
-    <content><![CDATA[<h1 id="value-function-approximation-introduction">Value Function Approximation (Introduction)</h1>
-<p>In real-world problem, the state space <span class="math inline">\(X\)</span> or the state-action space <span class="math inline">\(X \times A\)</span> is large that we cannot represent quantities such as the value function or policy exactly.</p>
-<ul>
-<li><span class="math inline">\(X \subseteq \mathbb{R}^d\)</span> with <span class="math inline">\(d \geq 1\)</span>. Exact representation of an arbitrary function on <span class="math inline">\(\mathbb{R}^d\)</span> on a computer is infeasible.</li>
-<li><span class="math inline">\(X\)</span> is finite, but very large (millions or billions)</li>
-</ul>
-<p>We need to approximate those functions using a representation that is feasible to manipulate on a computer. This is called <strong>function approximation</strong>.</p>
-<p>Function approximation also helps with the generalization.</p>
-<h2 id="linear-function-approximation">Linear Function Approximation</h2>
-<p>We may use a linear function approximator defined based on a set of basis functions:</p>
-<p><span class="math display">\[\hat{V} (x) = \phi (x)^T w = \sum^p_{i=1} \phi_i (x) w_i\]</span></p>
-<p>with <span class="math inline">\(w \in \mathbb{R}^p\)</span> and <span class="math inline">\(\phi: X \rightarrow \mathbb{R}^p\)</span></p>
-<p>Any <span class="math inline">\(\hat{V}\)</span> belongs to the space of functions <span class="math inline">\(\mathbf{F}\)</span>:</p>
-<p><span class="math display">\[\mathbf{F} = \{x \mapsto  \phi (x)^T w : w \in \mathbb{R}^p\}\]</span></p>
-]]></content>
   </entry>
   <entry>
     <title>Leet Code (1)</title>
