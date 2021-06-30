@@ -348,6 +348,32 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
       </tags>
   </entry>
   <entry>
+    <title>Double Q Learning</title>
+    <url>/2021/05/07/FA-issues/</url>
+    <content><![CDATA[<h1 id="double-q-learning">Double Q-learning</h1>
+<h2 id="the-overestimation-phenomenon">The Overestimation Phenomenon</h2>
+<p>Assume the agent observes during learning that action <span class="math inline">\(a\)</span> and executed at state <span class="math inline">\(s\)</span> resulting in the state <span class="math inline">\(s^{\prime}\)</span> and some immediate reward <span class="math inline">\(r^{a}_{s}\)</span>. The Q-learning update can be written as:</p>
+<p><span class="math display">\[Q(s, a) \leftarrow r^{a}_{s} + \gamma \max_{\hat{a}} Q(s^{\prime}, \hat{a})\]</span></p>
+<p>It has been shown that repeated application of this update equation eventually yields <span class="math inline">\(Q\)</span>-values that give rise to a policy which maximizes the expected cumulative discounted reward. However, these results only apply when <span class="math inline">\(Q-\)</span>values are stored precisely. (e.g by a look up table)</p>
+<p>Assume, instead, let <span class="math inline">\(Q\)</span> be represented as a function approximator that induces some noise on the estimates of <span class="math inline">\(Q\)</span>. More specifically, let us assume that the current stored <span class="math inline">\(Q-\)</span>values, denoted by <span class="math inline">\(Q^{approx}\)</span>, represent some implicit target values <span class="math inline">\(Q^{target}\)</span>, corrupted by a noise term <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span>, which is due to the function approximator:</p>
+<p><span class="math display">\[Q^{approx} (s^{\prime}, \hat{a}) = Q^{target} (s^{\prime}, \hat{a}) + Y^{\hat{a}}_{s^{\prime}}\]</span></p>
+<p>Here the noise is modeled by the family of random variable <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span> with zero mean:</p>
+<span class="math display">\[\begin{aligned}
+Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) -  (r^{a}_{s} + \gamma \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a})) \\
+&amp;= \gamma (\max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) - \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a}))\\
+\end{aligned}\]</span>
+<p>Clearly, the noise causes some error on the left-hand side.</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Discussions</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MDP</title>
     <url>/2021/05/03/MDP/</url>
     <content><![CDATA[<h1 id="mdp">MDP</h1>
@@ -412,32 +438,6 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
       </categories>
       <tags>
         <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Double Q Learning</title>
-    <url>/2021/05/07/FA-issues/</url>
-    <content><![CDATA[<h1 id="double-q-learning">Double Q-learning</h1>
-<h2 id="the-overestimation-phenomenon">The Overestimation Phenomenon</h2>
-<p>Assume the agent observes during learning that action <span class="math inline">\(a\)</span> and executed at state <span class="math inline">\(s\)</span> resulting in the state <span class="math inline">\(s^{\prime}\)</span> and some immediate reward <span class="math inline">\(r^{a}_{s}\)</span>. The Q-learning update can be written as:</p>
-<p><span class="math display">\[Q(s, a) \leftarrow r^{a}_{s} + \gamma \max_{\hat{a}} Q(s^{\prime}, \hat{a})\]</span></p>
-<p>It has been shown that repeated application of this update equation eventually yields <span class="math inline">\(Q\)</span>-values that give rise to a policy which maximizes the expected cumulative discounted reward. However, these results only apply when <span class="math inline">\(Q-\)</span>values are stored precisely. (e.g by a look up table)</p>
-<p>Assume, instead, let <span class="math inline">\(Q\)</span> be represented as a function approximator that induces some noise on the estimates of <span class="math inline">\(Q\)</span>. More specifically, let us assume that the current stored <span class="math inline">\(Q-\)</span>values, denoted by <span class="math inline">\(Q^{approx}\)</span>, represent some implicit target values <span class="math inline">\(Q^{target}\)</span>, corrupted by a noise term <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span>, which is due to the function approximator:</p>
-<p><span class="math display">\[Q^{approx} (s^{\prime}, \hat{a}) = Q^{target} (s^{\prime}, \hat{a}) + Y^{\hat{a}}_{s^{\prime}}\]</span></p>
-<p>Here the noise is modeled by the family of random variable <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span> with zero mean:</p>
-<span class="math display">\[\begin{aligned}
-Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) -  (r^{a}_{s} + \gamma \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a})) \\
-&amp;= \gamma (\max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) - \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a}))\\
-\end{aligned}\]</span>
-<p>Clearly, the noise causes some error on the left-hand side.</p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>VFA</category>
-      </categories>
-      <tags>
-        <tag>Function Approximation</tag>
-        <tag>Discussions</tag>
       </tags>
   </entry>
   <entry>
@@ -1325,6 +1325,30 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
 ]]></content>
   </entry>
   <entry>
+    <title>Dynamic Programming</title>
+    <url>/2021/05/03/dp/</url>
+    <content><![CDATA[<h1 id="dynamic-programming">Dynamic Programming</h1>
+<p>We have defined concepts and properties such as value functions, bellman equations, bellman operators and etc. The question is <strong>how we can find the the optimal policy?</strong> Before we start, we assume that the dynamics of the MDP is given, that is, we know our transition distribution <span class="math inline">\(P\)</span> and immediate reward distribution <span class="math inline">\(R\)</span>. The assumption of knowing the dynamics do not hold in the RL setting, but designing methods for finding the optimal policy with known model provides the foundation for developing methods for the RL setting.</p>
+<p>DP methods benefit from the structure of the MDP such as the recursive structure encoded in the Bellman equation, in order to compute the value function.</p>
+<span id="more"></span>
+<h2 id="policy-evaluation">Policy Evaluation</h2>
+<p>Policy Evaluation is the problem of computing the value function of a given policy <span class="math inline">\(\pi\)</span> (i.e. find <span class="math inline">\(V^{\pi}\)</span> or <span class="math inline">\(Q^{\pi}\)</span>). This is not the ultimate goal of an RL agent (Finding the optimal policy is the goal), but is often needed as an intermediate step in finding the optimal policy</p>
+<p>Given an MDP (<span class="math inline">\(X, A, P, R, \gamma\)</span>) and a policy <span class="math inline">\(\pi\)</span>, we would like to compute <span class="math inline">\(V^{\pi}, Q^{\pi}\)</span>:</p>
+<p><span class="math display">\[V^{\pi} (x) = E^{\pi}[\sum_{t=1}^{\infty} \gamma^{t-1} R_{t} | X_0 = x]\]</span></p>
+<p><em><img src='/images/RL/dp/tree_structure.png'></em></p>
+<h2 id="control">Control</h2>
+<p>Control is the problem of finding the optimal value function <span class="math inline">\(V^{*}, Q^{*}\)</span> or <span class="math inline">\(\pi^{*}\)</span></p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>DP</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>Dynamic Programming</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Dropout</title>
     <url>/2021/05/25/drop-out/</url>
     <content><![CDATA[<h1 id="dropout-a-simple-way-to-prevent-neural-networks-from-overfitting">Dropout: A Simple Way to Prevent Neural Networks from Overfitting</h1>
@@ -1376,28 +1400,12 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
-    <title>Dynamic Programming</title>
-    <url>/2021/05/03/dp/</url>
-    <content><![CDATA[<h1 id="dynamic-programming">Dynamic Programming</h1>
-<p>We have defined concepts and properties such as value functions, bellman equations, bellman operators and etc. The question is <strong>how we can find the the optimal policy?</strong> Before we start, we assume that the dynamics of the MDP is given, that is, we know our transition distribution <span class="math inline">\(P\)</span> and immediate reward distribution <span class="math inline">\(R\)</span>. The assumption of knowing the dynamics do not hold in the RL setting, but designing methods for finding the optimal policy with known model provides the foundation for developing methods for the RL setting.</p>
-<p>DP methods benefit from the structure of the MDP such as the recursive structure encoded in the Bellman equation, in order to compute the value function.</p>
-<span id="more"></span>
-<h2 id="policy-evaluation">Policy Evaluation</h2>
-<p>Policy Evaluation is the problem of computing the value function of a given policy <span class="math inline">\(\pi\)</span> (i.e. find <span class="math inline">\(V^{\pi}\)</span> or <span class="math inline">\(Q^{\pi}\)</span>). This is not the ultimate goal of an RL agent (Finding the optimal policy is the goal), but is often needed as an intermediate step in finding the optimal policy</p>
-<p>Given an MDP (<span class="math inline">\(X, A, P, R, \gamma\)</span>) and a policy <span class="math inline">\(\pi\)</span>, we would like to compute <span class="math inline">\(V^{\pi}, Q^{\pi}\)</span>:</p>
-<p><span class="math display">\[V^{\pi} (x) = E^{\pi}[\sum_{t=1}^{\infty} \gamma^{t-1} R_{t} | X_0 = x]\]</span></p>
-<p><em><img src='/images/RL/dp/tree_structure.png'></em></p>
-<h2 id="control">Control</h2>
-<p>Control is the problem of finding the optimal value function <span class="math inline">\(V^{*}, Q^{*}\)</span> or <span class="math inline">\(\pi^{*}\)</span></p>
+    <title>importance_sampling (under construction)</title>
+    <url>/2021/05/21/importance-sampling/</url>
+    <content><![CDATA[<h1 id="importance-sampling">Importance Sampling</h1>
+<h1 id="ref">Ref</h1>
+<p>https://www.quora.com/Why-doesn-t-DQN-use-importance-sampling-Dont-we-always-use-this-method-to-correct-the-sampling-error-produced-by-the-off-policy https://danieltakeshi.github.io/2019/01/25/deep-learning-01/</p>
 ]]></content>
-      <categories>
-        <category>RL</category>
-        <category>DP</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>Dynamic Programming</tag>
-      </tags>
   </entry>
   <entry>
     <title>go_explore</title>
@@ -1559,14 +1567,6 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
 </ol>
 <h4 id="batch-implementation">Batch Implementation</h4>
 <p>Phase 1 is implemented in parallel to take advantage of multiple CPUs. At each step, a batch of <span class="math inline">\(b\)</span> cells is selected with replacement and exploration from each of these cells proceeds in parallel. A high <span class="math inline">\(b\)</span> saves time of recomputing cell selection probabilities less frequently, which is important as this computation accounts for a significant portion of run time as the archive gets large.</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>importance_sampling (under construction)</title>
-    <url>/2021/05/21/importance-sampling/</url>
-    <content><![CDATA[<h1 id="importance-sampling">Importance Sampling</h1>
-<h1 id="ref">Ref</h1>
-<p>https://www.quora.com/Why-doesn-t-DQN-use-importance-sampling-Dont-we-always-use-this-method-to-correct-the-sampling-error-produced-by-the-off-policy https://danieltakeshi.github.io/2019/01/25/deep-learning-01/</p>
 ]]></content>
   </entry>
   <entry>
@@ -2029,32 +2029,6 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </tags>
   </entry>
   <entry>
-    <title>SARSA</title>
-    <url>/2021/05/16/sarsa/</url>
-    <content><![CDATA[<h1 id="sarsa">SARSA</h1>
-<p>SARSA (State Action State Reward State Action) is an on-policy TD algorithm that follows a PI-like procedure:</p>
-<ol type="1">
-<li>Estimate <span class="math inline">\(Q^{\pi_k}\)</span> for a given policy <span class="math inline">\(\pi_k\)</span></li>
-<li>Perform policy improvement to obtain a new policy <span class="math inline">\(\pi_{k+1}\)</span></li>
-</ol>
-<p>Compare with usual Policy iteration, SARSA uses <code>Generalized policy iteration</code> to improve the policy before <span class="math inline">\(Q\)</span> converges to <span class="math inline">\(Q^{\pi_k}\)</span>.</p>
-<span id="more"></span>
-<h2 id="algorithm">Algorithm</h2>
-<p><img src="/images/RL/mc/td_6.png"></p>
-<p>Notice that, <span class="math inline">\(\pi_t\)</span> here is a <span class="math inline">\(\epsilon\)</span>-greedy policy because we want to ensure some exploration. The greedy part of the policy performs the policy improvement while the occasional random choice of actions allows the agent to have some exploration.</p>
-<h2 id="implementation">Implementation</h2>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>TD</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>Tabular Methods</tag>
-        <tag>TD</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Q-Learning</title>
     <url>/2021/05/16/q-learning/</url>
     <content><![CDATA[<h1 id="temporal-difference-learning-for-control-q-learning">Temporal Difference Learning for Control: Q-Learning</h1>
@@ -2153,6 +2127,32 @@ Var[max_{a^{\prime} \in A} Q_t (X^{\prime}, a^{\prime}) | X_t=x_t, A_t=a_t] &amp
 <li>A single learning rate suffices if the agent happens to visit all <span class="math inline">\((x, a) \in (X \times A)\)</span> frequent enough.</li>
 </ul>
 <h1 id="implementations">Implementations:</h1>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>TD</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>Tabular Methods</tag>
+        <tag>TD</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SARSA</title>
+    <url>/2021/05/16/sarsa/</url>
+    <content><![CDATA[<h1 id="sarsa">SARSA</h1>
+<p>SARSA (State Action State Reward State Action) is an on-policy TD algorithm that follows a PI-like procedure:</p>
+<ol type="1">
+<li>Estimate <span class="math inline">\(Q^{\pi_k}\)</span> for a given policy <span class="math inline">\(\pi_k\)</span></li>
+<li>Perform policy improvement to obtain a new policy <span class="math inline">\(\pi_{k+1}\)</span></li>
+</ol>
+<p>Compare with usual Policy iteration, SARSA uses <code>Generalized policy iteration</code> to improve the policy before <span class="math inline">\(Q\)</span> converges to <span class="math inline">\(Q^{\pi_k}\)</span>.</p>
+<span id="more"></span>
+<h2 id="algorithm">Algorithm</h2>
+<p><img src="/images/RL/mc/td_6.png"></p>
+<p>Notice that, <span class="math inline">\(\pi_t\)</span> here is a <span class="math inline">\(\epsilon\)</span>-greedy policy because we want to ensure some exploration. The greedy part of the policy performs the policy improvement while the occasional random choice of actions allows the agent to have some exploration.</p>
+<h2 id="implementation">Implementation</h2>
 ]]></content>
       <categories>
         <category>RL</category>
