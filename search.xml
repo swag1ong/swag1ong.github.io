@@ -1,57 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>DDQN</title>
-    <url>/2021/05/07/DDQN/</url>
-    <content><![CDATA[<h1 id="deep-reinforcement-learning-with-double-q-learning"><a href="https://arxiv.org/abs/1509.06461">Deep Reinforcement Learning with Double Q-Learning</a></h1>
-<h2 id="introduction">Introduction</h2>
-<p>The authors show that the double Q-learning algorithm which was first proposed in a tabular setting, can be generalized to arbitrary function approximation, including DNN. They use this to construct a new algorithm called double DQN to solve the overestimation problem in DQN.</p>
-<h2 id="notations">Notations</h2>
-<p>Define:</p>
-<p><span class="math display">\[Q_{\pi} (s, a) = E[R_1 + \gamma R_2 + ... | S_0=s, A_0=a, \pi]\]</span></p>
-<p><span class="math display">\[Q_{*} (s, a) = max_{\pi} Q_{\pi} (s, a)\]</span></p>
-<p><span class="math display">\[\pi_{*} (s) = argmax_{a \in A} Q_{*} (s, a)\]</span></p>
-<p>The Target:</p>
-<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma max_{a} Q(S_{t+1}, a; \theta_{t})\]</span></p>
-<p>A standard Q update using stochastic gradient decent is (Semi-gradient Q):</p>
-<p><span class="math display">\[\theta_{t+1} = \theta_t + \alpha (Y_{t}^{Q} - Q(S_t, A_t; \theta_t)) \nabla_{\theta_t} Q(S_t, A_t; \theta_t)\]</span></p>
-<p>Where <span class="math inline">\(\alpha\)</span> is a scalar step size.</p>
-<span id="more"></span>
-<h2 id="background">Background</h2>
-<h3 id="double-q-learning">Double Q-learning</h3>
-<p>The max operator in standard Q-learning and DQN uses the same values both to select and to evaluate an action (ie. same Q is used to select the max action and use the value of this max action to update the Value of the state action pair). This makes it more likely to select overestimated values, resulting in overoptimistic value estimates.</p>
-<p>In Double Q-learning, two value functions are learned by assigning experiences randomly to update one of the two value functions, resulting in two sets of weights, <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\theta^{\prime}\)</span>. For each update, one set of weights is used to determine the greedy action, and the other to determine its value.</p>
-<p>Previous Q target:</p>
-<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta_{t}})\]</span></p>
-<p>The double Q-learning target:</p>
-<p><span class="math display">\[Y_t^{\text{DoubleQ}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta^{\prime}_{t}})\]</span></p>
-<h3 id="maximization-problem">Maximization Problem</h3>
-<p><img src='/images/RL/papers/DDQN_1.png'></p>
-<p>This theorem shows that even if the value estimates are on average correct, estimation errors of any source can drive the estimates up and away from the true optimal values.</p>
-<p>The lower bound in Theorem 1 decreases with the number of actions. This is an artifact of considering the lower bound, which requires very specific values to be attained. More typically, the overoptimism increases with the number of actions.</p>
-<p><img src='/images/RL/papers/DDQN_2.png'></p>
-<p><span class="math display">\[E[Q(s, a) - V_{*}(s)] = E[V_{*}(s) - V_{*}(s) + \epsilon ] = 0\]</span></p>
-<p>But, Q-learning updates have large bias due to max operation, the phenomena is severer as number of actions increases.</p>
-<p>In function approximation setting:</p>
-<p><img src='/images/RL/papers/DDQN_3.png'></p>
-<h2 id="algorithm">Algorithm</h2>
-<p>The target network in the DQN architecture provides a natural candidate for the second value function, without having to introduce additional networks. Thus, we can evaluate the greedy policy according to the online network, but using the target network to estimate its value. The resulting update:</p>
-<p><span class="math display">\[Y_t^{\text{DoubleDQN}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a} Q(S_{t+1}, a; \theta_{t}), \theta_{t}^{-})\]</span></p>
-<h2 id="implementation">Implementation</h2>
-<p>This is an implementation of DDQN in PARL. This implementation is written using PaddlePaddle.</p>
-<p>https://github.com/PaddlePaddle/PARL</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></span><br><span class="line"><span class="comment"># you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"># You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> copy</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"><span class="keyword">import</span> paddle</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DQN</span>(<span class="params">parl.Algorithm</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, model, gamma=<span class="literal">None</span>, lr=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; DQN algorithm</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            model (parl.Model): forward neural network representing the Q function.</span></span><br><span class="line"><span class="string">            gamma (float): discounted factor for `accumulative` reward computation</span></span><br><span class="line"><span class="string">            lr (float): learning rate.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.model = model</span><br><span class="line">        self.target_model = copy.deepcopy(model)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(gamma, <span class="built_in">float</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(lr, <span class="built_in">float</span>)</span><br><span class="line">        self.gamma = gamma</span><br><span class="line">        self.lr = lr</span><br><span class="line"></span><br><span class="line">        self.mse_loss = paddle.nn.MSELoss(reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line">        self.optimizer = paddle.optimizer.Adam(</span><br><span class="line">            learning_rate=lr, parameters=self.model.parameters())</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; use self.model (Q function) to predict the action values</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.model.value(obs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self, obs, action, reward, next_obs, terminal</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; update the Q function (self.model) with DQN algorithm</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># Q</span></span><br><span class="line">        pred_values = self.model.value(obs)</span><br><span class="line">        action_dim = pred_values.shape[-<span class="number">1</span>]</span><br><span class="line">        action = paddle.squeeze(action, axis=-<span class="number">1</span>)</span><br><span class="line">        action_onehot = paddle.nn.functional.one_hot(</span><br><span class="line">            action, num_classes=action_dim)</span><br><span class="line">        pred_value = paddle.multiply(pred_values, action_onehot)</span><br><span class="line">        pred_value = paddle.<span class="built_in">sum</span>(pred_value, axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># target Q</span></span><br><span class="line">        <span class="keyword">with</span> paddle.no_grad():</span><br><span class="line">            greedy_actions = self.model.value(next_obs).argmax(<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">            max_v = self.target_model.value(next_obs).gather(index=greedy_actions, axis=<span class="number">1</span>)</span><br><span class="line">            target = reward + (<span class="number">1</span> - terminal) * self.gamma * max_v</span><br><span class="line"></span><br><span class="line">        loss = self.mse_loss(pred_value, target)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># optimize</span></span><br><span class="line">        self.optimizer.clear_grad()</span><br><span class="line">        loss.backward()</span><br><span class="line">        self.optimizer.step()</span><br><span class="line">        <span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sync_target</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.model.sync_weights_to(self.target_model)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>VFA</category>
-      </categories>
-      <tags>
-        <tag>Function Approximation</tag>
-        <tag>Continuous State Space</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Deep Deterministic Policy Gradient</title>
     <url>/2021/06/09/DDPG/</url>
     <content><![CDATA[<h1 id="continuous-control-with-deep-reinforcement-learning">Continuous Control with Deep Reinforcement Learning</h1>
@@ -132,6 +81,57 @@
         <tag>Policy Gradient</tag>
         <tag>Continuous Action Space</tag>
         <tag>Policy Search</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DDQN</title>
+    <url>/2021/05/07/DDQN/</url>
+    <content><![CDATA[<h1 id="deep-reinforcement-learning-with-double-q-learning"><a href="https://arxiv.org/abs/1509.06461">Deep Reinforcement Learning with Double Q-Learning</a></h1>
+<h2 id="introduction">Introduction</h2>
+<p>The authors show that the double Q-learning algorithm which was first proposed in a tabular setting, can be generalized to arbitrary function approximation, including DNN. They use this to construct a new algorithm called double DQN to solve the overestimation problem in DQN.</p>
+<h2 id="notations">Notations</h2>
+<p>Define:</p>
+<p><span class="math display">\[Q_{\pi} (s, a) = E[R_1 + \gamma R_2 + ... | S_0=s, A_0=a, \pi]\]</span></p>
+<p><span class="math display">\[Q_{*} (s, a) = max_{\pi} Q_{\pi} (s, a)\]</span></p>
+<p><span class="math display">\[\pi_{*} (s) = argmax_{a \in A} Q_{*} (s, a)\]</span></p>
+<p>The Target:</p>
+<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma max_{a} Q(S_{t+1}, a; \theta_{t})\]</span></p>
+<p>A standard Q update using stochastic gradient decent is (Semi-gradient Q):</p>
+<p><span class="math display">\[\theta_{t+1} = \theta_t + \alpha (Y_{t}^{Q} - Q(S_t, A_t; \theta_t)) \nabla_{\theta_t} Q(S_t, A_t; \theta_t)\]</span></p>
+<p>Where <span class="math inline">\(\alpha\)</span> is a scalar step size.</p>
+<span id="more"></span>
+<h2 id="background">Background</h2>
+<h3 id="double-q-learning">Double Q-learning</h3>
+<p>The max operator in standard Q-learning and DQN uses the same values both to select and to evaluate an action (ie. same Q is used to select the max action and use the value of this max action to update the Value of the state action pair). This makes it more likely to select overestimated values, resulting in overoptimistic value estimates.</p>
+<p>In Double Q-learning, two value functions are learned by assigning experiences randomly to update one of the two value functions, resulting in two sets of weights, <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\theta^{\prime}\)</span>. For each update, one set of weights is used to determine the greedy action, and the other to determine its value.</p>
+<p>Previous Q target:</p>
+<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta_{t}})\]</span></p>
+<p>The double Q-learning target:</p>
+<p><span class="math display">\[Y_t^{\text{DoubleQ}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta^{\prime}_{t}})\]</span></p>
+<h3 id="maximization-problem">Maximization Problem</h3>
+<p><img src='/images/RL/papers/DDQN_1.png'></p>
+<p>This theorem shows that even if the value estimates are on average correct, estimation errors of any source can drive the estimates up and away from the true optimal values.</p>
+<p>The lower bound in Theorem 1 decreases with the number of actions. This is an artifact of considering the lower bound, which requires very specific values to be attained. More typically, the overoptimism increases with the number of actions.</p>
+<p><img src='/images/RL/papers/DDQN_2.png'></p>
+<p><span class="math display">\[E[Q(s, a) - V_{*}(s)] = E[V_{*}(s) - V_{*}(s) + \epsilon ] = 0\]</span></p>
+<p>But, Q-learning updates have large bias due to max operation, the phenomena is severer as number of actions increases.</p>
+<p>In function approximation setting:</p>
+<p><img src='/images/RL/papers/DDQN_3.png'></p>
+<h2 id="algorithm">Algorithm</h2>
+<p>The target network in the DQN architecture provides a natural candidate for the second value function, without having to introduce additional networks. Thus, we can evaluate the greedy policy according to the online network, but using the target network to estimate its value. The resulting update:</p>
+<p><span class="math display">\[Y_t^{\text{DoubleDQN}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a} Q(S_{t+1}, a; \theta_{t}), \theta_{t}^{-})\]</span></p>
+<h2 id="implementation">Implementation</h2>
+<p>This is an implementation of DDQN in PARL. This implementation is written using PaddlePaddle.</p>
+<p>https://github.com/PaddlePaddle/PARL</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></span><br><span class="line"><span class="comment"># you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"># You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> copy</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"><span class="keyword">import</span> paddle</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DQN</span>(<span class="params">parl.Algorithm</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, model, gamma=<span class="literal">None</span>, lr=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; DQN algorithm</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            model (parl.Model): forward neural network representing the Q function.</span></span><br><span class="line"><span class="string">            gamma (float): discounted factor for `accumulative` reward computation</span></span><br><span class="line"><span class="string">            lr (float): learning rate.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.model = model</span><br><span class="line">        self.target_model = copy.deepcopy(model)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(gamma, <span class="built_in">float</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(lr, <span class="built_in">float</span>)</span><br><span class="line">        self.gamma = gamma</span><br><span class="line">        self.lr = lr</span><br><span class="line"></span><br><span class="line">        self.mse_loss = paddle.nn.MSELoss(reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line">        self.optimizer = paddle.optimizer.Adam(</span><br><span class="line">            learning_rate=lr, parameters=self.model.parameters())</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; use self.model (Q function) to predict the action values</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.model.value(obs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self, obs, action, reward, next_obs, terminal</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; update the Q function (self.model) with DQN algorithm</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># Q</span></span><br><span class="line">        pred_values = self.model.value(obs)</span><br><span class="line">        action_dim = pred_values.shape[-<span class="number">1</span>]</span><br><span class="line">        action = paddle.squeeze(action, axis=-<span class="number">1</span>)</span><br><span class="line">        action_onehot = paddle.nn.functional.one_hot(</span><br><span class="line">            action, num_classes=action_dim)</span><br><span class="line">        pred_value = paddle.multiply(pred_values, action_onehot)</span><br><span class="line">        pred_value = paddle.<span class="built_in">sum</span>(pred_value, axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># target Q</span></span><br><span class="line">        <span class="keyword">with</span> paddle.no_grad():</span><br><span class="line">            greedy_actions = self.model.value(next_obs).argmax(<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">            max_v = self.target_model.value(next_obs).gather(index=greedy_actions, axis=<span class="number">1</span>)</span><br><span class="line">            target = reward + (<span class="number">1</span> - terminal) * self.gamma * max_v</span><br><span class="line"></span><br><span class="line">        loss = self.mse_loss(pred_value, target)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># optimize</span></span><br><span class="line">        self.optimizer.clear_grad()</span><br><span class="line">        loss.backward()</span><br><span class="line">        self.optimizer.step()</span><br><span class="line">        <span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sync_target</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.model.sync_weights_to(self.target_model)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Continuous State Space</tag>
       </tags>
   </entry>
   <entry>
@@ -519,6 +519,78 @@ Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \ha
       </tags>
   </entry>
   <entry>
+    <title>VGG (Under Construction)</title>
+    <url>/2021/06/24/VGG/</url>
+    <content><![CDATA[<h1 id="very-deep-convolutional-networks-for-large-scale-image-recognition">Very Deep Convolutional Networks For Large-Scale Image Recognition</h1>
+<h2 id="generic-architecture">Generic Architecture</h2>
+<ol type="1">
+<li>Inputs are <span class="math inline">\(224 \times 224\)</span> RGB images with zero mean for each pixel.</li>
+<li>The convolutional layers have small filter sizes (<span class="math inline">\(3 \times 3\)</span>), one architecture with <span class="math inline">\(1 \times 1\)</span> filters (Network C).</li>
+<li>Padding 1 and stride 1 to maintain the original image size.</li>
+<li>5 max pooling layers with <span class="math inline">\(2 \times 2\)</span> window and stride 2.</li>
+<li>2 fully connected layers each with 4096 units, and the final fc output layer with 1000 units.</li>
+<li>ReLU activation function.</li>
+</ol>
+<h2 id="configurations">Configurations</h2>
+<ol type="1">
+<li><p>the shallowest network has 11 weight layers (8 conv layers and 3 FC layers), the deepest network has 19 weight layers (16 conv layers and 3 FC layers)</p></li>
+<li><p>The width of conv layers are relative small, starting from 64 in the first layer and then increasing by a factor of 2 each max-pooling layer, until it reaches 512.</p></li>
+</ol>
+<p><img src="/images/ML/vgg_1.png" width="600"></p>
+<span id="more"></span>
+<h2 id="discussion">Discussion</h2>
+<p>Instead of large filter size, we use small <span class="math inline">\(3 \times 3\)</span> filters. We can see that after 2 consecutive layers, the effective receptive field is <span class="math inline">\(5 \times 5\)</span>, after three consective layers, the effective receptive field is <span class="math inline">\(7 \times 7\)</span>. Comparing to a conv layer with <span class="math inline">\(7 \times 7\)</span> filter, 3 consecutive <span class="math inline">\(3 \times 3\)</span> filter conv layers have less parameters. To see this, assume each layer has input C channel and output C channel, then total parameters:</p>
+<ol type="1">
+<li>Single conv layer with <span class="math inline">\(7 \times 7\)</span> filter: <span class="math inline">\(7 * 7 * C * C = 49 C^2\)</span></li>
+<li>Three conv layer each with <span class="math inline">\(3 \times 3\)</span> filter: <span class="math inline">\(3 (3 * 3 * C * C) = 27 C^2\)</span></li>
+</ol>
+<p>This can be seen as imposing a regularisation on the <span class="math inline">\(7 \times 7\)</span> conv filters forcing them to have a decomposition through the <span class="math inline">\(3 \times 3\)</span> filters. This structure also have more discriminative power (3 non-linear functions compare to one).</p>
+<p>The <span class="math inline">\(1 \times 1\)</span> is one way to increase the non-linearity of the decision function without affecting the receptive fields of the conv layers.</p>
+<h2 id="classification-framework">Classification Framework</h2>
+<h3 id="training">Training</h3>
+<ol type="1">
+<li>Batch size 256, momentum 0.9, weight decay 0.0005</li>
+<li>Dropout is applied to the first two fully connected layers with rate of 0.5</li>
+</ol>
+<h4 id="initialization">Initialization</h4>
+<ol type="1">
+<li>Net <span class="math inline">\(A\)</span> is first trained with random initialization</li>
+<li>When training deeper architectures, we initialize the first four conv layers and last three fully connected layers with the layer of <span class="math inline">\(A\)</span></li>
+<li>The conv layers in the middle are initialized randomly with normal(0, 0.01)</li>
+</ol>
+<p>In spite of the larger number of parameters and the greater depth of our nets compare to AlexNet, the nets required less epochs to converge due to</p>
+<ol type="1">
+<li>implicit regularization imposed by greater depth and smaller filter size</li>
+<li>pre-initialization of certain layers</li>
+</ol>
+<h4 id="training-image-size-rescale">Training Image Size Rescale</h4>
+<p>Let <span class="math inline">\(S\)</span> (training scale) be the smallest side of an isotropically-rescaled training image from which the input image is cropped (The training input is first rescaled to smallest side = <span class="math inline">\(S\)</span> before cropping). For a fixed crop size <span class="math inline">\(224 \times 224\)</span>, if <span class="math inline">\(S=224\)</span>, the cropped image will span the smallest side of the training image. If <span class="math inline">\(S &gt;&gt; 224\)</span>, the crop will correspond to a small part of the image. There are two approaches setting up <span class="math inline">\(S\)</span></p>
+<ol type="1">
+<li>Single scale training: fix <span class="math inline">\(S=256, 384\)</span></li>
+<li>Multi-scale training: Each image is individually rescaled by randomly sampling <span class="math inline">\(S\)</span> from a certain range <span class="math inline">\([S_{min}, S_{max}] = [256, 512]\)</span>.</li>
+</ol>
+<p>Then the rescaled images is:</p>
+<ol type="1">
+<li>randomly cropped from rescaled training images (one crop per image per SGD iteration)</li>
+<li>the crops underwent random horizontal filpping and random RGB colour shift</li>
+</ol>
+<h3 id="testing">Testing</h3>
+<p>During Testing given a trained Conv Net and an input image:</p>
+<ol type="1">
+<li>It is first isotropically rescaled to a predefined smallest image side <span class="math inline">\(Q\)</span> (test scale, where <span class="math inline">\(S\)</span> is the training scale). <span class="math inline">\(Q\)</span> is not necessarily equal to the training scale <span class="math inline">\(S\)</span></li>
+<li></li>
+</ol>
+]]></content>
+      <categories>
+        <category>DL</category>
+        <category>CNN</category>
+      </categories>
+      <tags>
+        <tag>Deep Learning</tag>
+        <tag>Neural Network Architectures</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>TRPO</title>
     <url>/2021/06/11/TRPO/</url>
     <content><![CDATA[<h1 id="trust-region-policy-optimization">Trust Region Policy Optimization</h1>
@@ -677,78 +749,6 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
       </categories>
       <tags>
         <tag>Policy Search</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>VGG (Under Construction)</title>
-    <url>/2021/06/24/VGG/</url>
-    <content><![CDATA[<h1 id="very-deep-convolutional-networks-for-large-scale-image-recognition">Very Deep Convolutional Networks For Large-Scale Image Recognition</h1>
-<h2 id="generic-architecture">Generic Architecture</h2>
-<ol type="1">
-<li>Inputs are <span class="math inline">\(224 \times 224\)</span> RGB images with zero mean for each pixel.</li>
-<li>The convolutional layers have small filter sizes (<span class="math inline">\(3 \times 3\)</span>), one architecture with <span class="math inline">\(1 \times 1\)</span> filters (Network C).</li>
-<li>Padding 1 and stride 1 to maintain the original image size.</li>
-<li>5 max pooling layers with <span class="math inline">\(2 \times 2\)</span> window and stride 2.</li>
-<li>2 fully connected layers each with 4096 units, and the final fc output layer with 1000 units.</li>
-<li>ReLU activation function.</li>
-</ol>
-<h2 id="configurations">Configurations</h2>
-<ol type="1">
-<li><p>the shallowest network has 11 weight layers (8 conv layers and 3 FC layers), the deepest network has 19 weight layers (16 conv layers and 3 FC layers)</p></li>
-<li><p>The width of conv layers are relative small, starting from 64 in the first layer and then increasing by a factor of 2 each max-pooling layer, until it reaches 512.</p></li>
-</ol>
-<p><img src="/images/ML/vgg_1.png" width="600"></p>
-<span id="more"></span>
-<h2 id="discussion">Discussion</h2>
-<p>Instead of large filter size, we use small <span class="math inline">\(3 \times 3\)</span> filters. We can see that after 2 consecutive layers, the effective receptive field is <span class="math inline">\(5 \times 5\)</span>, after three consective layers, the effective receptive field is <span class="math inline">\(7 \times 7\)</span>. Comparing to a conv layer with <span class="math inline">\(7 \times 7\)</span> filter, 3 consecutive <span class="math inline">\(3 \times 3\)</span> filter conv layers have less parameters. To see this, assume each layer has input C channel and output C channel, then total parameters:</p>
-<ol type="1">
-<li>Single conv layer with <span class="math inline">\(7 \times 7\)</span> filter: <span class="math inline">\(7 * 7 * C * C = 49 C^2\)</span></li>
-<li>Three conv layer each with <span class="math inline">\(3 \times 3\)</span> filter: <span class="math inline">\(3 (3 * 3 * C * C) = 27 C^2\)</span></li>
-</ol>
-<p>This can be seen as imposing a regularisation on the <span class="math inline">\(7 \times 7\)</span> conv filters forcing them to have a decomposition through the <span class="math inline">\(3 \times 3\)</span> filters. This structure also have more discriminative power (3 non-linear functions compare to one).</p>
-<p>The <span class="math inline">\(1 \times 1\)</span> is one way to increase the non-linearity of the decision function without affecting the receptive fields of the conv layers.</p>
-<h2 id="classification-framework">Classification Framework</h2>
-<h3 id="training">Training</h3>
-<ol type="1">
-<li>Batch size 256, momentum 0.9, weight decay 0.0005</li>
-<li>Dropout is applied to the first two fully connected layers with rate of 0.5</li>
-</ol>
-<h4 id="initialization">Initialization</h4>
-<ol type="1">
-<li>Net <span class="math inline">\(A\)</span> is first trained with random initialization</li>
-<li>When training deeper architectures, we initialize the first four conv layers and last three fully connected layers with the layer of <span class="math inline">\(A\)</span></li>
-<li>The conv layers in the middle are initialized randomly with normal(0, 0.01)</li>
-</ol>
-<p>In spite of the larger number of parameters and the greater depth of our nets compare to AlexNet, the nets required less epochs to converge due to</p>
-<ol type="1">
-<li>implicit regularization imposed by greater depth and smaller filter size</li>
-<li>pre-initialization of certain layers</li>
-</ol>
-<h4 id="training-image-size-rescale">Training Image Size Rescale</h4>
-<p>Let <span class="math inline">\(S\)</span> (training scale) be the smallest side of an isotropically-rescaled training image from which the input image is cropped (The training input is first rescaled to smallest side = <span class="math inline">\(S\)</span> before cropping). For a fixed crop size <span class="math inline">\(224 \times 224\)</span>, if <span class="math inline">\(S=224\)</span>, the cropped image will span the smallest side of the training image. If <span class="math inline">\(S &gt;&gt; 224\)</span>, the crop will correspond to a small part of the image. There are two approaches setting up <span class="math inline">\(S\)</span></p>
-<ol type="1">
-<li>Single scale training: fix <span class="math inline">\(S=256, 384\)</span></li>
-<li>Multi-scale training: Each image is individually rescaled by randomly sampling <span class="math inline">\(S\)</span> from a certain range <span class="math inline">\([S_{min}, S_{max}] = [256, 512]\)</span>.</li>
-</ol>
-<p>Then the rescaled images is:</p>
-<ol type="1">
-<li>randomly cropped from rescaled training images (one crop per image per SGD iteration)</li>
-<li>the crops underwent random horizontal filpping and random RGB colour shift</li>
-</ol>
-<h3 id="testing">Testing</h3>
-<p>During Testing given a trained Conv Net and an input image:</p>
-<ol type="1">
-<li>It is first isotropically rescaled to a predefined smallest image side <span class="math inline">\(Q\)</span> (test scale, where <span class="math inline">\(S\)</span> is the training scale). <span class="math inline">\(Q\)</span> is not necessarily equal to the training scale <span class="math inline">\(S\)</span></li>
-<li></li>
-</ol>
-]]></content>
-      <categories>
-        <category>DL</category>
-        <category>CNN</category>
-      </categories>
-      <tags>
-        <tag>Deep Learning</tag>
-        <tag>Neural Network Architectures</tag>
       </tags>
   </entry>
   <entry>
@@ -1570,12 +1570,6 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
 ]]></content>
   </entry>
   <entry>
-    <title>kaiming_init</title>
-    <url>/2021/06/23/kaiming-init/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
     <title>instrinsic_motivation</title>
     <url>/2021/06/25/instrinsic-motivation/</url>
     <content><![CDATA[<h1 id="intrinsically-motivated-reinforcement-learning">Intrinsically Motivated Reinforcement Learning</h1>
@@ -1642,6 +1636,12 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
         <category>RL</category>
         <category>Basics</category>
       </categories>
+  </entry>
+  <entry>
+    <title>kaiming_init</title>
+    <url>/2021/06/23/kaiming-init/</url>
+    <content><![CDATA[
+]]></content>
   </entry>
   <entry>
     <title>Layer Normalization</title>
@@ -1779,14 +1779,14 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </tags>
   </entry>
   <entry>
-    <title>off-policy-actor-critic</title>
-    <url>/2021/06/03/off-policy-actor-critic/</url>
+    <title>overfeat</title>
+    <url>/2021/06/25/overfeat/</url>
     <content><![CDATA[
 ]]></content>
   </entry>
   <entry>
-    <title>overfeat</title>
-    <url>/2021/06/25/overfeat/</url>
+    <title>off-policy-actor-critic</title>
+    <url>/2021/06/03/off-policy-actor-critic/</url>
     <content><![CDATA[
 ]]></content>
   </entry>
@@ -1809,63 +1809,6 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
 </ul>
 <p><img src='/images/RL/pg/pg_5.png' width="600"></p>
 <h2 id="implementation">Implementation</h2>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>PG</category>
-      </categories>
-      <tags>
-        <tag>Policy Gradient</tag>
-        <tag>Continuous Action Space</tag>
-        <tag>Policy Search</tag>
-        <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Policy Gradient (1)</title>
-    <url>/2021/05/23/policy-gradient/</url>
-    <content><![CDATA[<h1 id="policy-search-methods-introduction">Policy Search Methods (Introduction)</h1>
-<p>So far, we have encountered methods for computing the optimal policy based on the computation of the value function. In this case, only value function was explicitly represented. There are also methods based on explicit representation of the policy and optimizing the performance of the agent by searching in the space of policies. These methods are called <strong>policy search methods</strong>.</p>
-<p>Consider a stochastic policy <span class="math inline">\(\pi_\theta: X \rightarrow M(A)\)</span> that maps state space to distribution defined over actions and parameterized by a <span class="math inline">\(\theta \in \Theta\)</span>. The set <span class="math inline">\(\Theta\)</span> is the parameter space. The space of all parameterized policies can be described as:</p>
-<p><span class="math display">\[\prod_\Theta = \{\pi_\theta: X \rightarrow M(A): \theta \in \Theta\}\]</span></p>
-<p>This space depends on the mapping <span class="math inline">\(\pi_\theta\)</span> and <span class="math inline">\(\Theta\)</span></p>
-<p>One example how we can parameterize policy by softmax distribution. Given a function mapping <span class="math inline">\(f_{\theta}: X \times A \rightarrow \mathbb{R}\)</span>, the probability of choosing action <span class="math inline">\(a\)</span> at state <span class="math inline">\(x\)</span> is:</p>
-<p><span class="math display">\[\pi_{\theta} (a | x) = \frac{exp(f_{\theta} (x, a))}{\sum_{a^{\prime}} exp(f_{\theta} (x, a^{\prime}))}\]</span></p>
-<p>or a normal distribution defined by <span class="math inline">\(\mu_\theta (x), \Sigma_\theta(x)\)</span>:</p>
-<p><span class="math display">\[\pi_{\theta} (\cdot | x) = N(\mu_\theta(x), \Sigma_{\theta} (x))\]</span></p>
-<span id="more"></span>
-<h2 id="why-parameterize-policy">Why Parameterize Policy?</h2>
-<p>Explicit parameterization of policy allows us to easily choose a continuous action. For example, if the policy is normal distribution defined over actions, we can just sample actions according to this distribution. For value based methods, this can be challenging:</p>
-<ul>
-<li>Even if we know <span class="math inline">\(Q^{*}\)</span>, computing the greedy policy is impossible over continuous action space.</li>
-<li>VI and PI requires repeated calculation of the greedy policy.</li>
-</ul>
-<h2 id="how-can-we-compare-policies">How Can We Compare Policies?</h2>
-<p>The performance can be measured in various ways. In VFA, we have bellman residuals, bellman errors, projected bellman errors and etc (But the ideas are all based on maximizing the expected return). In policy gradient methods, we also maximize the expected return following <span class="math inline">\(\pi_\theta\)</span>, at the same time, we incorporate the variance or some other risk measures.</p>
-<p><strong>Our goal is to find a policy that maximize this performance measure within the space of <span class="math inline">\(\prod_\Theta\)</span>.</strong></p>
-<h3 id="reasonable-choice-of-performance-measure">Reasonable Choice of Performance Measure</h3>
-<p>Assume that we only care about the performance at state <span class="math inline">\(x \in X\)</span> (We only care about one state). Then the goal of policy search:</p>
-<p><span class="math display">\[argmax_{\pi \in \prod_{\Theta}} V^{\pi} (x) = argmax_{\theta \in \Theta} V^{\pi_{\theta}} (x)\]</span></p>
-<p>In this case, we are interested only in state <span class="math inline">\(x\)</span>, its performance, measured according to its expected return, is maximized. We may want to find a policy that is only good at our starting state <span class="math inline">\(x\)</span> and ignore the performance at other states. The obtained policy is going to be initial-state-dependent. If we change <span class="math inline">\(x\)</span> to another state <span class="math inline">\(x^{\prime} \neq x\)</span>, we get a different optimal policy (according to this performance measure).</p>
-<p>Recall that, the optimal value function <span class="math inline">\(V^{*}\)</span> is optimal at every state. The optimal policy <span class="math inline">\(\pi^{*}\)</span> not only maximizes the value function at this particular state <span class="math inline">\(x\)</span>, but also at any other <span class="math inline">\(x^{\prime} \in X\)</span>. So, Instead of this extreme case of considering only the initial state <span class="math inline">\(x\)</span>, we can consider when the initial state is distributed according to some distribution <span class="math inline">\(\rho \sim M(X)\)</span> (This formulation is emphasized in the <a href="/2021/05/03/MDP/" title="MDP">MDP</a> blog, where trajectory starts by sampling from this initial distribution).</p>
-<p>The <strong>performance measure</strong> would be the average of following <span class="math inline">\(\pi_\theta\)</span> over initial state distribution <span class="math inline">\(X_1 \sim \rho\)</span>:</p>
-<p><span class="math display">\[J(\pi_\theta) = J_\rho(\pi_\theta) \triangleq \int_{x_1} V^{\pi_{\theta}} (x_1) d\rho(x_1) = E_{X_1 \sim \rho}[V^{\pi_{\theta}}(X_1)]\]</span></p>
-<p>In this case:</p>
-<ul>
-<li>The optimal policy maximizes <span class="math inline">\(J_\rho\)</span></li>
-<li><span class="math inline">\(J_\rho (\pi^*) \leq J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
-<li>If <span class="math inline">\(\pi^{*} \notin \prod_{\Theta}\)</span>, then <span class="math inline">\(J_\rho (\pi^*) &gt; J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
-</ul>
-<h2 id="goal">Goal</h2>
-<p>So, in policy search methods, we aim to find the policy that maximizes the performance measure within <span class="math inline">\(\prod_{\Theta}\)</span>:</p>
-<p><span class="math display">\[\bar{\pi} = argmax_{\pi_{\theta} \in \prod_{\Theta}} J_{\rho} (\pi_{\theta})\]</span></p>
-<ul>
-<li>The maximizer is denoted as <span class="math inline">\(\bar{\pi}\)</span> because the optimal policy <span class="math inline">\(\pi^{*}\)</span> may not lie in the space of <span class="math inline">\(\prod_{\Theta}\)</span></li>
-<li>For different <span class="math inline">\(\rho\)</span>, we may get different maximizes. However, if <span class="math inline">\(\pi^{*} \in \prod_{\Theta}\)</span>, <span class="math inline">\(\rho\)</span> does not matter.</li>
-<li>To emphasis the dependence of <span class="math inline">\(\bar{\pi}\)</span> on <span class="math inline">\(\rho\)</span>, <span class="math inline">\(\bar{\pi}_{\rho}\)</span> may be used.</li>
-<li>Sometimes, <span class="math inline">\(J(\pi(\theta))\)</span> or <span class="math inline">\(J_{\rho}(\pi_{\theta})\)</span> is denoted as <span class="math inline">\(J_{\rho} (\theta)\)</span> for simplification.</li>
-</ul>
-<h2 id="next-how-can-we-solve-for-barpi_rho">Next: How can we solve for <span class="math inline">\(\bar{\pi}_{\rho}\)</span>?</h2>
 ]]></content>
       <categories>
         <category>RL</category>
@@ -1955,6 +1898,63 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       <tags>
         <tag>RL Basics</tag>
         <tag>Dynamic Programming</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Policy Gradient (1)</title>
+    <url>/2021/05/23/policy-gradient/</url>
+    <content><![CDATA[<h1 id="policy-search-methods-introduction">Policy Search Methods (Introduction)</h1>
+<p>So far, we have encountered methods for computing the optimal policy based on the computation of the value function. In this case, only value function was explicitly represented. There are also methods based on explicit representation of the policy and optimizing the performance of the agent by searching in the space of policies. These methods are called <strong>policy search methods</strong>.</p>
+<p>Consider a stochastic policy <span class="math inline">\(\pi_\theta: X \rightarrow M(A)\)</span> that maps state space to distribution defined over actions and parameterized by a <span class="math inline">\(\theta \in \Theta\)</span>. The set <span class="math inline">\(\Theta\)</span> is the parameter space. The space of all parameterized policies can be described as:</p>
+<p><span class="math display">\[\prod_\Theta = \{\pi_\theta: X \rightarrow M(A): \theta \in \Theta\}\]</span></p>
+<p>This space depends on the mapping <span class="math inline">\(\pi_\theta\)</span> and <span class="math inline">\(\Theta\)</span></p>
+<p>One example how we can parameterize policy by softmax distribution. Given a function mapping <span class="math inline">\(f_{\theta}: X \times A \rightarrow \mathbb{R}\)</span>, the probability of choosing action <span class="math inline">\(a\)</span> at state <span class="math inline">\(x\)</span> is:</p>
+<p><span class="math display">\[\pi_{\theta} (a | x) = \frac{exp(f_{\theta} (x, a))}{\sum_{a^{\prime}} exp(f_{\theta} (x, a^{\prime}))}\]</span></p>
+<p>or a normal distribution defined by <span class="math inline">\(\mu_\theta (x), \Sigma_\theta(x)\)</span>:</p>
+<p><span class="math display">\[\pi_{\theta} (\cdot | x) = N(\mu_\theta(x), \Sigma_{\theta} (x))\]</span></p>
+<span id="more"></span>
+<h2 id="why-parameterize-policy">Why Parameterize Policy?</h2>
+<p>Explicit parameterization of policy allows us to easily choose a continuous action. For example, if the policy is normal distribution defined over actions, we can just sample actions according to this distribution. For value based methods, this can be challenging:</p>
+<ul>
+<li>Even if we know <span class="math inline">\(Q^{*}\)</span>, computing the greedy policy is impossible over continuous action space.</li>
+<li>VI and PI requires repeated calculation of the greedy policy.</li>
+</ul>
+<h2 id="how-can-we-compare-policies">How Can We Compare Policies?</h2>
+<p>The performance can be measured in various ways. In VFA, we have bellman residuals, bellman errors, projected bellman errors and etc (But the ideas are all based on maximizing the expected return). In policy gradient methods, we also maximize the expected return following <span class="math inline">\(\pi_\theta\)</span>, at the same time, we incorporate the variance or some other risk measures.</p>
+<p><strong>Our goal is to find a policy that maximize this performance measure within the space of <span class="math inline">\(\prod_\Theta\)</span>.</strong></p>
+<h3 id="reasonable-choice-of-performance-measure">Reasonable Choice of Performance Measure</h3>
+<p>Assume that we only care about the performance at state <span class="math inline">\(x \in X\)</span> (We only care about one state). Then the goal of policy search:</p>
+<p><span class="math display">\[argmax_{\pi \in \prod_{\Theta}} V^{\pi} (x) = argmax_{\theta \in \Theta} V^{\pi_{\theta}} (x)\]</span></p>
+<p>In this case, we are interested only in state <span class="math inline">\(x\)</span>, its performance, measured according to its expected return, is maximized. We may want to find a policy that is only good at our starting state <span class="math inline">\(x\)</span> and ignore the performance at other states. The obtained policy is going to be initial-state-dependent. If we change <span class="math inline">\(x\)</span> to another state <span class="math inline">\(x^{\prime} \neq x\)</span>, we get a different optimal policy (according to this performance measure).</p>
+<p>Recall that, the optimal value function <span class="math inline">\(V^{*}\)</span> is optimal at every state. The optimal policy <span class="math inline">\(\pi^{*}\)</span> not only maximizes the value function at this particular state <span class="math inline">\(x\)</span>, but also at any other <span class="math inline">\(x^{\prime} \in X\)</span>. So, Instead of this extreme case of considering only the initial state <span class="math inline">\(x\)</span>, we can consider when the initial state is distributed according to some distribution <span class="math inline">\(\rho \sim M(X)\)</span> (This formulation is emphasized in the <a href="/2021/05/03/MDP/" title="MDP">MDP</a> blog, where trajectory starts by sampling from this initial distribution).</p>
+<p>The <strong>performance measure</strong> would be the average of following <span class="math inline">\(\pi_\theta\)</span> over initial state distribution <span class="math inline">\(X_1 \sim \rho\)</span>:</p>
+<p><span class="math display">\[J(\pi_\theta) = J_\rho(\pi_\theta) \triangleq \int_{x_1} V^{\pi_{\theta}} (x_1) d\rho(x_1) = E_{X_1 \sim \rho}[V^{\pi_{\theta}}(X_1)]\]</span></p>
+<p>In this case:</p>
+<ul>
+<li>The optimal policy maximizes <span class="math inline">\(J_\rho\)</span></li>
+<li><span class="math inline">\(J_\rho (\pi^*) \leq J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
+<li>If <span class="math inline">\(\pi^{*} \notin \prod_{\Theta}\)</span>, then <span class="math inline">\(J_\rho (\pi^*) &gt; J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
+</ul>
+<h2 id="goal">Goal</h2>
+<p>So, in policy search methods, we aim to find the policy that maximizes the performance measure within <span class="math inline">\(\prod_{\Theta}\)</span>:</p>
+<p><span class="math display">\[\bar{\pi} = argmax_{\pi_{\theta} \in \prod_{\Theta}} J_{\rho} (\pi_{\theta})\]</span></p>
+<ul>
+<li>The maximizer is denoted as <span class="math inline">\(\bar{\pi}\)</span> because the optimal policy <span class="math inline">\(\pi^{*}\)</span> may not lie in the space of <span class="math inline">\(\prod_{\Theta}\)</span></li>
+<li>For different <span class="math inline">\(\rho\)</span>, we may get different maximizes. However, if <span class="math inline">\(\pi^{*} \in \prod_{\Theta}\)</span>, <span class="math inline">\(\rho\)</span> does not matter.</li>
+<li>To emphasis the dependence of <span class="math inline">\(\bar{\pi}\)</span> on <span class="math inline">\(\rho\)</span>, <span class="math inline">\(\bar{\pi}_{\rho}\)</span> may be used.</li>
+<li>Sometimes, <span class="math inline">\(J(\pi(\theta))\)</span> or <span class="math inline">\(J_{\rho}(\pi_{\theta})\)</span> is denoted as <span class="math inline">\(J_{\rho} (\theta)\)</span> for simplification.</li>
+</ul>
+<h2 id="next-how-can-we-solve-for-barpi_rho">Next: How can we solve for <span class="math inline">\(\bar{\pi}_{\rho}\)</span>?</h2>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>PG</category>
+      </categories>
+      <tags>
+        <tag>Policy Gradient</tag>
+        <tag>Continuous Action Space</tag>
+        <tag>Policy Search</tag>
+        <tag>RL Basics</tag>
       </tags>
   </entry>
   <entry>
