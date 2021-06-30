@@ -28,8 +28,9 @@
 <meta property="og:description" content="Go-Explore: a New Approach for Hard-Exploration Problems Definitions What is hard-exploration problem?  Sparse rewards: precise sequences of many actions must be taken between obtaining rewards. Decep">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/RL/papers/go_explore.png">
+<meta property="og:image" content="http://example.com/images/RL/papers/go_explore_2.png">
 <meta property="article:published_time" content="2021-06-25T06:44:26.000Z">
-<meta property="article:modified_time" content="2021-06-29T06:33:32.901Z">
+<meta property="article:modified_time" content="2021-06-29T11:59:10.397Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://example.com/images/RL/papers/go_explore.png">
@@ -149,7 +150,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#go-explore-a-new-approach-for-hard-exploration-problems"><span class="nav-number">1.</span> <span class="nav-text">Go-Explore: a New Approach for Hard-Exploration Problems</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#definitions"><span class="nav-number">1.1.</span> <span class="nav-text">Definitions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#go-explore-algorithm"><span class="nav-number">1.2.</span> <span class="nav-text">Go Explore Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#phase-1-explore-until-solved"><span class="nav-number">1.2.1.</span> <span class="nav-text">Phase 1: Explore until solved</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#go-explore-a-new-approach-for-hard-exploration-problems"><span class="nav-number">1.</span> <span class="nav-text">Go-Explore: a New Approach for Hard-Exploration Problems</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#definitions"><span class="nav-number">1.1.</span> <span class="nav-text">Definitions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#go-explore-algorithm"><span class="nav-number">1.2.</span> <span class="nav-text">Go Explore Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#phase-1-explore-until-solved"><span class="nav-number">1.2.1.</span> <span class="nav-text">Phase 1: Explore until solved</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#cell-representations"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Cell representations</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#selecting-cells"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Selecting cells</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#count-subscore"><span class="nav-number">1.2.1.2.0.1.</span> <span class="nav-text">Count Subscore</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#neighbor-subscore"><span class="nav-number">1.2.1.2.0.2.</span> <span class="nav-text">Neighbor Subscore</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#level-weight-only-montezumas-revenge"><span class="nav-number">1.2.1.2.0.3.</span> <span class="nav-text">Level Weight (Only Montezuma&#39;s Revenge)</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#final-score-and-final-cell-probability"><span class="nav-number">1.2.1.2.1.</span> <span class="nav-text">Final Score and Final Cell Probability</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#returning-to-cells-and-opportunities-to-exploit-deterministic-simulators"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">Returning to cells and opportunities to exploit deterministic simulators</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#exploration-from-cells"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">Exploration from cells</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#updating-the-archive"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">Updating the archive</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#batch-implementation"><span class="nav-number">1.2.1.6.</span> <span class="nav-text">Batch Implementation</span></a></li></ol></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -258,7 +259,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-29 14:33:32" itemprop="dateModified" datetime="2021-06-29T14:33:32+08:00">2021-06-29</time>
+        <time title="Modified: 2021-06-29 19:59:10" itemprop="dateModified" datetime="2021-06-29T19:59:10+08:00">2021-06-29</time>
       </span>
 
   
@@ -276,14 +277,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>3.8k</span>
+      <span>12k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
+      <span>11 mins.</span>
     </span>
 </div>
 
@@ -343,8 +344,114 @@
 <ol type="1">
 <li><p>choose a cell from the current archive</p></li>
 <li><p>return to that cell without adding any stochastic exploration</p></li>
-<li><p>explore from that locatio nstochastically</p></li>
+<li><p>explore from that location stochastically</p></li>
 </ol>
+<h4 id="cell-representations">Cell representations</h4>
+<p>In theory, one can store high-dimensional states as cell with one cell representing one state. However, this is intractable in practice. To be tractable in high-dimensional state spaces, we need to reduce the dimensionality of the state space (although the final policy will still play in the same original state space). Thus, we want the cell representation to conflate similar states while not conflating states that are meaningfully different.</p>
+<p><br></p>
+<p><strong>Cell representations without domain knowledge</strong></p>
+<p>We found that a very simple dimensionality reduction procedure produces surprisingly good results on Montezuma's Revenge. The main idea is to downsample the current game frame. Specifically:</p>
+<ol type="1">
+<li>Convert each game frame image to grayscale</li>
+<li><strong>Downscale</strong> it to an <span class="math inline">\(11 \times 8\)</span> image with area interpolation (i.e using the average piel value in the area of the downsampled pixel)</li>
+<li>rescale <strong>pixel intensities</strong> so that they are integers between 0 and 8, instead of original 0 to 255.</li>
+</ol>
+<p>The downscaling dimensions and pixel-intensity range were found by grid search.</p>
+<p><img src="/images/RL/papers/go_explore_2.png" width="600"></p>
+<p><br></p>
+<p><strong>Cell representations with domain knowledge</strong></p>
+<p>In <strong>Montezuma's Revenge</strong>, domain knowledge is provided as unique combinations of:</p>
+<ol type="1">
+<li><p>the <span class="math inline">\(x, y\)</span> position of the agent (descretized into a grid in which each cell is <span class="math inline">\(16 \times 16\)</span> pixels)</p></li>
+<li><p>room number</p></li>
+<li><p>level number</p></li>
+<li><p>rooms that the currently-held keys were found</p></li>
+</ol>
+<p>In <strong>Pitfall</strong>, only the <span class="math inline">\(x, y\)</span> position of the agent and room number is used.</p>
+<p>All of this information was extracted directly from pixels with simple hand-coded classifiers to detect objects such as the main character's location combined with our knowledge of the map structure in the two games.</p>
+<p>While Phase 1 provides the opportunity to leverage domain knowledge in the cell representation, the robustified Neural Network produced by Phase 2 still plays directly form pixels only.</p>
+<h4 id="selecting-cells">Selecting cells</h4>
+<p>In each iteration of Phase 1, a cell is chosen from the archive to explore from. This choice could be made:</p>
+<ol type="1">
+<li>Uniformly at random</li>
+<li>Assign a positive weight to each cell that is higher for cells that are deemed more promising (less often visited cells, have recently contributed to discovering a new cell, expected to be near undiscovered cells and etc..). The weights of all cells are normalized to represent the probability distribution over the current cell space. No cell is ever given a weight of 0.</li>
+</ol>
+<h6 id="count-subscore">Count Subscore</h6>
+<p>The score of a cell is the sum of separate subscores. One important set of such subscores is called the <code>count subscore</code>s. <code>Count subscore</code>s are computed from attributes of cells that represent the number of times a cell was interacted with in different ways. Specifically:</p>
+<ol type="1">
+<li><p>The number of times the cell has already been chosen (i.e selected as a cell to explore from)</p></li>
+<li><p>The number of times the cell was visited at any point during the exploration phase</p></li>
+<li><p>the number of times a cell has been chosen since exploration from it last produced the discovery of a new or better cell.</p></li>
+</ol>
+<p>Lower counts of these attributes indicate a more promising cell to explore from (e.g. a cell that has been chosen more times already is less likely to lead to new cells than a cell that has been chosen fewer times). The <code>count subscore</code> for each of these attribute is given by:</p>
+<p><span class="math display">\[CntScore (c, a) = w_a \cdot (\frac{1}{v(c, a) + \epsilon_1})^{p_a} + \epsilon_2\]</span></p>
+<p>Here:</p>
+<ul>
+<li><p><span class="math inline">\(c\)</span> is the cell for which we are calculating the score</p></li>
+<li><p><span class="math inline">\(v(c, a)\)</span> is the value of attribute <span class="math inline">\(a\)</span> for cell <span class="math inline">\(c\)</span></p></li>
+<li><p><span class="math inline">\(w_a\)</span> is the weight hyperparameter for attribute <span class="math inline">\(a\)</span></p></li>
+<li><p><span class="math inline">\(p_a\)</span> is the power hyperparameter for attribute <span class="math inline">\(a\)</span></p></li>
+<li><p><span class="math inline">\(\epsilon_1\)</span> is a normalization parameter to prevent zero division</p></li>
+<li><p><span class="math inline">\(\epsilon_2\)</span> helps guarantee that no cell ever has a 0 probability of being chosen</p>
+<p><span class="math inline">\(\epsilon_1=0.001, \epsilon_2=0.00001\)</span> are the default values.</p></li>
+</ul>
+<h6 id="neighbor-subscore">Neighbor Subscore</h6>
+<p>Given the position of <span class="math inline">\(x, y\)</span>, it is possible to determine the possible neighbors of given cells and whether these neighbors are already present in the archive. For these cases, we define a set of <code>neighbor subscore</code>s. Each neighbor subscore is defined as <span class="math inline">\(w_n\)</span> if neighbor <span class="math inline">\(n\)</span> does not exist in the archive, 0 if the does exist.</p>
+<p>The motivation of neighbor subscore is that the cells that are lacking neighbors are likely at the edge of the current frontier of knowledge and are thus more likely to yield new cells. We consider 3 types of neighbors:</p>
+<ol type="1">
+<li>Vertical (2)</li>
+<li>Horizontal (2)</li>
+<li>cells taht are in the same level, room, <span class="math inline">\(x, y\)</span> position, but are holding a larger number of keys</li>
+</ol>
+<p>Neighbors of the same type share the same value for <span class="math inline">\(w_n\)</span>, then the score is calculated by:</p>
+<p><span class="math display">\[NeighScore(c, n) = w_n * (1 - HasNeighbor(c, n))\]</span></p>
+<p>Where <span class="math inline">\(c\)</span> is current cell and <span class="math inline">\(n \in Vertical \cup Horizontal \cup MoreKeys\)</span> is current neighbor. In cases without domain knowledge, it is unclear what exactly would constitute a cell's neighbor, and so <code>neighbor score</code> is defined as 0.</p>
+<h6 id="level-weight-only-montezumas-revenge">Level Weight (Only Montezuma's Revenge)</h6>
+<p>In the case of Montezuma's Revenge with domain knowledge, cells are exponentially downweighted based on the distance to the maximum level currently reached, thereby favoring progress in the furthest level reached, while skill keeping open the possibility of improving previous level's trajectories:</p>
+<p><span class="math display">\[LevelWeight (c) = 0.1^{MaxLevel - Level(c)}\]</span></p>
+<p>In the case of no domain knowledge, <span class="math inline">\(LevelWeight (c) = 1, \quad \forall c\)</span></p>
+<h5 id="final-score-and-final-cell-probability">Final Score and Final Cell Probability</h5>
+<p>The final score is then:</p>
+<p><span class="math display">\[CellScore (c) = LevelWeight (c) \cdot [(\sum_n NeighScore (c, n)) + \sum_a CntScore (c, a) + 1]\]</span></p>
+<p>The final probability is then:</p>
+<p><span class="math display">\[CellProb (c) = \frac{CellScore (c)}{\sum_{c^{\prime}}CellScore (c^{\prime})}\]</span></p>
+<p><br></p>
+<h4 id="returning-to-cells-and-opportunities-to-exploit-deterministic-simulators">Returning to cells and opportunities to exploit deterministic simulators</h4>
+<p>The easiest way to return to a cell is if the world is deterministic and resettable, such that one can reset the state of the simulator to a previous visit to that cell. The ability to harness determinism and perform such resets forces us to recognize that there are two different types of problems we wish to solve with RL algorithms:</p>
+<ol type="1">
+<li>Require stochasticity at test time only</li>
+<li>Require stochasticity during both testing and training time (further research)</li>
+<li>Environment that prevents return to cells (further research)</li>
+</ol>
+<p>We can take advantage of the fact simulators can be made deterministic to improve performance, especially on hard-exploration problems. For many types of problems, we want a reliable final solution (e.g. a robot that reliably finds survivors after a natural disaster) and there is no principled reason to care whether we obtain this solution via initially deterministic training. If we can solve previously unsolvable problems, including ones that are stochastic at evaluation (test) time, via making simulators deterministic, we should take advantage of this opportunity.</p>
+<p>There are also cases where a simulator is not available and where learning algorithms must confront stochasticity during training. We can train goal-conditioned policies that reliably return to cells in the archive during the exploration phase. This strategy would result in a fully trained policy at the end of the exploration phase meaning there would be no need for a phase 2 at the end.</p>
+<p>For problems in which all we care about is a reliable policy at test time, a key insight behind Go-Explore is that we can first solve the problem (Phase 1), and then (if necessary) deal with making the solution more robust later (Phase 2).</p>
+<p>Due to the fact that the present version of Go-Explore operates in a deterministic setting during Phase 1, each cell is associated with an open-loop sequence of instructions that lead to it given the <strong>initial state</strong>, not a proper policy that maps any state to an action. A true policy is produced during robustification in Phase 2.</p>
+<p><strong>Sequence of actions and states are stored for each cell</strong></p>
+<p><br></p>
+<h4 id="exploration-from-cells">Exploration from cells</h4>
+<p>Once a cell is reached, any exploration method can be applied to find new cells. In this work, the agent explores by taking random actions <span class="math inline">\(k = 100\)</span> training frames, with a 95% probability of repeating the previous action at each training frame. Besides reaching the <span class="math inline">\(k = 100\)</span> training frame limit for exploration, exploration is also aborted at the episodes' end, and the action that led to the episode ending is ignored because it does not produce a destination cell.</p>
+<p>This exploration does not require a neural network or other controller.</p>
+<p><br></p>
+<h4 id="updating-the-archive">Updating the archive</h4>
+<p>While an agent is exploring from a cell, the archive updates in two conditions:</p>
+<ol type="1">
+<li><p>When the agent visits a cell that was no yet in the archive (which can happen multiple times while exploring from a given cell). In this case, , that cell is added to the archive with four associated pieces of meta data:</p>
+<ul>
+<li>A full trajectory from the starting state to that cell (states and actions)</li>
+<li>The state of the environment at the time of discovering the cell (if the environment supports such an operation)</li>
+<li>The cumulative score of that trajectory</li>
+<li>The length of that trajectory</li>
+</ul></li>
+<li><p>The second condition is when a newly-encountered trajectory is "better" than that belonging to a cell already in the archive. We define a new trajectory is "better" than an existing trajectory when the new trajectory either has:</p>
+<ul>
+<li>A higher cumulative score</li>
+<li>A shorter trajectory with the same score</li>
+</ul>
+<p>In either case, we update the existing cell in the archive with new trajectory, new trajectory length, new environment state and new score. In addition, information regarding the likelihood of this cell being chosen resets including the total number of times the cell has been chosen and the number of times the cell has been chosen since leading to the discovery of another cell. Resetting these values is beneficial when cells conflate many different states because a new way of reaching a cell may actually be a more promising stepping stone to explore from (so we want to encourage its selection).</p></li>
+</ol>
+<h4 id="batch-implementation">Batch Implementation</h4>
+<p>Phase 1 is implemented in parallel to take advantage of multiple CPUs. At each step, a batch of <span class="math inline">\(b\)</span> cells is selected with replacement and exploration from each of these cells proceeds in parallel. A high <span class="math inline">\(b\)</span> saves time of recomputing cell selection probabilities less frequently, which is important as this computation accounts for a significant portion of run time as the archive gets large.</p>
 
     </div>
 
@@ -399,13 +506,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">234k</span>
+    <span title="Symbols count total">244k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">3:33</span>
+    <span title="Reading time total">3:42</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
@@ -430,14 +537,14 @@
 
   <script src="https://cdn.jsdelivr.net/npm/firebase@8.4.2/firebase-app.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/firebase@8.4.2/firebase-firestore.js"></script>
-  <script class="next-config" data-name="firestore" type="application/json">{&quot;enable&quot;:true,&quot;collection&quot;:&quot;default-rtdb&quot;,&quot;apiKey&quot;:&quot;wkMXyCVQafRHSTTBsMoFZACqKUnTEslhQmrnD1RR&quot;,&quot;projectId&quot;:&quot;light-sunup-307413&quot;}</script>
+  <script class="next-config" data-name="firestore" type="application/json">{&quot;enable&quot;:true,&quot;collection&quot;:&quot;articles&quot;,&quot;apiKey&quot;:&quot;AIzaSyA8IPb2-WbQLv1f4ppddBKzhbh60iuss3w&quot;,&quot;projectId&quot;:&quot;light-sunup-307413&quot;}</script>
   <script src="/js/third-party/statistics/firestore.js"></script>
 
 
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
 <script src="/js/third-party/math/mathjax.js"></script>
 
 

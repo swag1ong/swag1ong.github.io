@@ -840,6 +840,12 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
       </tags>
   </entry>
   <entry>
+    <title>average_reward_setting</title>
+    <url>/2021/05/30/average-reward-setting/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
     <title>Batch Normalization</title>
     <url>/2021/05/26/batch-norm/</url>
     <content><![CDATA[<h1 id="batch-normalization-accelerating-deep-network-training-by-reducing-internal-covariate-shift">Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift</h1>
@@ -908,12 +914,6 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
         <tag>Deep Learning</tag>
         <tag>Normalization</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>average_reward_setting</title>
-    <url>/2021/05/30/average-reward-setting/</url>
-    <content><![CDATA[
-]]></content>
   </entry>
   <entry>
     <title>Bellman Equations</title>
@@ -1451,8 +1451,114 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
 <ol type="1">
 <li><p>choose a cell from the current archive</p></li>
 <li><p>return to that cell without adding any stochastic exploration</p></li>
-<li><p>explore from that locatio nstochastically</p></li>
+<li><p>explore from that location stochastically</p></li>
 </ol>
+<h4 id="cell-representations">Cell representations</h4>
+<p>In theory, one can store high-dimensional states as cell with one cell representing one state. However, this is intractable in practice. To be tractable in high-dimensional state spaces, we need to reduce the dimensionality of the state space (although the final policy will still play in the same original state space). Thus, we want the cell representation to conflate similar states while not conflating states that are meaningfully different.</p>
+<p><br></p>
+<p><strong>Cell representations without domain knowledge</strong></p>
+<p>We found that a very simple dimensionality reduction procedure produces surprisingly good results on Montezuma's Revenge. The main idea is to downsample the current game frame. Specifically:</p>
+<ol type="1">
+<li>Convert each game frame image to grayscale</li>
+<li><strong>Downscale</strong> it to an <span class="math inline">\(11 \times 8\)</span> image with area interpolation (i.e using the average piel value in the area of the downsampled pixel)</li>
+<li>rescale <strong>pixel intensities</strong> so that they are integers between 0 and 8, instead of original 0 to 255.</li>
+</ol>
+<p>The downscaling dimensions and pixel-intensity range were found by grid search.</p>
+<p><img src="/images/RL/papers/go_explore_2.png" width="600"></p>
+<p><br></p>
+<p><strong>Cell representations with domain knowledge</strong></p>
+<p>In <strong>Montezuma's Revenge</strong>, domain knowledge is provided as unique combinations of:</p>
+<ol type="1">
+<li><p>the <span class="math inline">\(x, y\)</span> position of the agent (descretized into a grid in which each cell is <span class="math inline">\(16 \times 16\)</span> pixels)</p></li>
+<li><p>room number</p></li>
+<li><p>level number</p></li>
+<li><p>rooms that the currently-held keys were found</p></li>
+</ol>
+<p>In <strong>Pitfall</strong>, only the <span class="math inline">\(x, y\)</span> position of the agent and room number is used.</p>
+<p>All of this information was extracted directly from pixels with simple hand-coded classifiers to detect objects such as the main character's location combined with our knowledge of the map structure in the two games.</p>
+<p>While Phase 1 provides the opportunity to leverage domain knowledge in the cell representation, the robustified Neural Network produced by Phase 2 still plays directly form pixels only.</p>
+<h4 id="selecting-cells">Selecting cells</h4>
+<p>In each iteration of Phase 1, a cell is chosen from the archive to explore from. This choice could be made:</p>
+<ol type="1">
+<li>Uniformly at random</li>
+<li>Assign a positive weight to each cell that is higher for cells that are deemed more promising (less often visited cells, have recently contributed to discovering a new cell, expected to be near undiscovered cells and etc..). The weights of all cells are normalized to represent the probability distribution over the current cell space. No cell is ever given a weight of 0.</li>
+</ol>
+<h6 id="count-subscore">Count Subscore</h6>
+<p>The score of a cell is the sum of separate subscores. One important set of such subscores is called the <code>count subscore</code>s. <code>Count subscore</code>s are computed from attributes of cells that represent the number of times a cell was interacted with in different ways. Specifically:</p>
+<ol type="1">
+<li><p>The number of times the cell has already been chosen (i.e selected as a cell to explore from)</p></li>
+<li><p>The number of times the cell was visited at any point during the exploration phase</p></li>
+<li><p>the number of times a cell has been chosen since exploration from it last produced the discovery of a new or better cell.</p></li>
+</ol>
+<p>Lower counts of these attributes indicate a more promising cell to explore from (e.g. a cell that has been chosen more times already is less likely to lead to new cells than a cell that has been chosen fewer times). The <code>count subscore</code> for each of these attribute is given by:</p>
+<p><span class="math display">\[CntScore (c, a) = w_a \cdot (\frac{1}{v(c, a) + \epsilon_1})^{p_a} + \epsilon_2\]</span></p>
+<p>Here:</p>
+<ul>
+<li><p><span class="math inline">\(c\)</span> is the cell for which we are calculating the score</p></li>
+<li><p><span class="math inline">\(v(c, a)\)</span> is the value of attribute <span class="math inline">\(a\)</span> for cell <span class="math inline">\(c\)</span></p></li>
+<li><p><span class="math inline">\(w_a\)</span> is the weight hyperparameter for attribute <span class="math inline">\(a\)</span></p></li>
+<li><p><span class="math inline">\(p_a\)</span> is the power hyperparameter for attribute <span class="math inline">\(a\)</span></p></li>
+<li><p><span class="math inline">\(\epsilon_1\)</span> is a normalization parameter to prevent zero division</p></li>
+<li><p><span class="math inline">\(\epsilon_2\)</span> helps guarantee that no cell ever has a 0 probability of being chosen</p>
+<p><span class="math inline">\(\epsilon_1=0.001, \epsilon_2=0.00001\)</span> are the default values.</p></li>
+</ul>
+<h6 id="neighbor-subscore">Neighbor Subscore</h6>
+<p>Given the position of <span class="math inline">\(x, y\)</span>, it is possible to determine the possible neighbors of given cells and whether these neighbors are already present in the archive. For these cases, we define a set of <code>neighbor subscore</code>s. Each neighbor subscore is defined as <span class="math inline">\(w_n\)</span> if neighbor <span class="math inline">\(n\)</span> does not exist in the archive, 0 if the does exist.</p>
+<p>The motivation of neighbor subscore is that the cells that are lacking neighbors are likely at the edge of the current frontier of knowledge and are thus more likely to yield new cells. We consider 3 types of neighbors:</p>
+<ol type="1">
+<li>Vertical (2)</li>
+<li>Horizontal (2)</li>
+<li>cells taht are in the same level, room, <span class="math inline">\(x, y\)</span> position, but are holding a larger number of keys</li>
+</ol>
+<p>Neighbors of the same type share the same value for <span class="math inline">\(w_n\)</span>, then the score is calculated by:</p>
+<p><span class="math display">\[NeighScore(c, n) = w_n * (1 - HasNeighbor(c, n))\]</span></p>
+<p>Where <span class="math inline">\(c\)</span> is current cell and <span class="math inline">\(n \in Vertical \cup Horizontal \cup MoreKeys\)</span> is current neighbor. In cases without domain knowledge, it is unclear what exactly would constitute a cell's neighbor, and so <code>neighbor score</code> is defined as 0.</p>
+<h6 id="level-weight-only-montezumas-revenge">Level Weight (Only Montezuma's Revenge)</h6>
+<p>In the case of Montezuma's Revenge with domain knowledge, cells are exponentially downweighted based on the distance to the maximum level currently reached, thereby favoring progress in the furthest level reached, while skill keeping open the possibility of improving previous level's trajectories:</p>
+<p><span class="math display">\[LevelWeight (c) = 0.1^{MaxLevel - Level(c)}\]</span></p>
+<p>In the case of no domain knowledge, <span class="math inline">\(LevelWeight (c) = 1, \quad \forall c\)</span></p>
+<h5 id="final-score-and-final-cell-probability">Final Score and Final Cell Probability</h5>
+<p>The final score is then:</p>
+<p><span class="math display">\[CellScore (c) = LevelWeight (c) \cdot [(\sum_n NeighScore (c, n)) + \sum_a CntScore (c, a) + 1]\]</span></p>
+<p>The final probability is then:</p>
+<p><span class="math display">\[CellProb (c) = \frac{CellScore (c)}{\sum_{c^{\prime}}CellScore (c^{\prime})}\]</span></p>
+<p><br></p>
+<h4 id="returning-to-cells-and-opportunities-to-exploit-deterministic-simulators">Returning to cells and opportunities to exploit deterministic simulators</h4>
+<p>The easiest way to return to a cell is if the world is deterministic and resettable, such that one can reset the state of the simulator to a previous visit to that cell. The ability to harness determinism and perform such resets forces us to recognize that there are two different types of problems we wish to solve with RL algorithms:</p>
+<ol type="1">
+<li>Require stochasticity at test time only</li>
+<li>Require stochasticity during both testing and training time (further research)</li>
+<li>Environment that prevents return to cells (further research)</li>
+</ol>
+<p>We can take advantage of the fact simulators can be made deterministic to improve performance, especially on hard-exploration problems. For many types of problems, we want a reliable final solution (e.g. a robot that reliably finds survivors after a natural disaster) and there is no principled reason to care whether we obtain this solution via initially deterministic training. If we can solve previously unsolvable problems, including ones that are stochastic at evaluation (test) time, via making simulators deterministic, we should take advantage of this opportunity.</p>
+<p>There are also cases where a simulator is not available and where learning algorithms must confront stochasticity during training. We can train goal-conditioned policies that reliably return to cells in the archive during the exploration phase. This strategy would result in a fully trained policy at the end of the exploration phase meaning there would be no need for a phase 2 at the end.</p>
+<p>For problems in which all we care about is a reliable policy at test time, a key insight behind Go-Explore is that we can first solve the problem (Phase 1), and then (if necessary) deal with making the solution more robust later (Phase 2).</p>
+<p>Due to the fact that the present version of Go-Explore operates in a deterministic setting during Phase 1, each cell is associated with an open-loop sequence of instructions that lead to it given the <strong>initial state</strong>, not a proper policy that maps any state to an action. A true policy is produced during robustification in Phase 2.</p>
+<p><strong>Sequence of actions and states are stored for each cell</strong></p>
+<p><br></p>
+<h4 id="exploration-from-cells">Exploration from cells</h4>
+<p>Once a cell is reached, any exploration method can be applied to find new cells. In this work, the agent explores by taking random actions <span class="math inline">\(k = 100\)</span> training frames, with a 95% probability of repeating the previous action at each training frame. Besides reaching the <span class="math inline">\(k = 100\)</span> training frame limit for exploration, exploration is also aborted at the episodes' end, and the action that led to the episode ending is ignored because it does not produce a destination cell.</p>
+<p>This exploration does not require a neural network or other controller.</p>
+<p><br></p>
+<h4 id="updating-the-archive">Updating the archive</h4>
+<p>While an agent is exploring from a cell, the archive updates in two conditions:</p>
+<ol type="1">
+<li><p>When the agent visits a cell that was no yet in the archive (which can happen multiple times while exploring from a given cell). In this case, , that cell is added to the archive with four associated pieces of meta data:</p>
+<ul>
+<li>A full trajectory from the starting state to that cell (states and actions)</li>
+<li>The state of the environment at the time of discovering the cell (if the environment supports such an operation)</li>
+<li>The cumulative score of that trajectory</li>
+<li>The length of that trajectory</li>
+</ul></li>
+<li><p>The second condition is when a newly-encountered trajectory is "better" than that belonging to a cell already in the archive. We define a new trajectory is "better" than an existing trajectory when the new trajectory either has:</p>
+<ul>
+<li>A higher cumulative score</li>
+<li>A shorter trajectory with the same score</li>
+</ul>
+<p>In either case, we update the existing cell in the archive with new trajectory, new trajectory length, new environment state and new score. In addition, information regarding the likelihood of this cell being chosen resets including the total number of times the cell has been chosen and the number of times the cell has been chosen since leading to the discovery of another cell. Resetting these values is beneficial when cells conflate many different states because a new way of reaching a cell may actually be a more promising stepping stone to explore from (so we want to encourage its selection).</p></li>
+</ol>
+<h4 id="batch-implementation">Batch Implementation</h4>
+<p>Phase 1 is implemented in parallel to take advantage of multiple CPUs. At each step, a batch of <span class="math inline">\(b\)</span> cells is selected with replacement and exploration from each of these cells proceeds in parallel. A high <span class="math inline">\(b\)</span> saves time of recomputing cell selection probabilities less frequently, which is important as this computation accounts for a significant portion of run time as the archive gets large.</p>
 ]]></content>
   </entry>
   <entry>
@@ -1461,12 +1567,6 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
     <content><![CDATA[<h1 id="importance-sampling">Importance Sampling</h1>
 <h1 id="ref">Ref</h1>
 <p>https://www.quora.com/Why-doesn-t-DQN-use-importance-sampling-Dont-we-always-use-this-method-to-correct-the-sampling-error-produced-by-the-off-policy https://danieltakeshi.github.io/2019/01/25/deep-learning-01/</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>kaiming_init</title>
-    <url>/2021/06/23/kaiming-init/</url>
-    <content><![CDATA[
 ]]></content>
   </entry>
   <entry>
@@ -1536,6 +1636,12 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
         <category>RL</category>
         <category>Basics</category>
       </categories>
+  </entry>
+  <entry>
+    <title>kaiming_init</title>
+    <url>/2021/06/23/kaiming-init/</url>
+    <content><![CDATA[
+]]></content>
   </entry>
   <entry>
     <title>Layer Normalization</title>
@@ -1837,85 +1943,6 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </tags>
   </entry>
   <entry>
-    <title>Policy Iteration</title>
-    <url>/2021/05/03/policy-iteration/</url>
-    <content><![CDATA[<h1 id="policy-iteration">Policy Iteration</h1>
-<p>A different approach is based on the iterative application of:</p>
-<ol type="1">
-<li>Policy Evaluation: Given a policy <span class="math inline">\(\pi_k\)</span>, compute <span class="math inline">\(V^{\pi_k}, Q^{\pi_k}\)</span></li>
-<li>Policy Improvement: Find a new policy <span class="math inline">\(\pi_{k+1}\)</span> that is better than <span class="math inline">\(\pi_{k}\)</span>, i.e., <span class="math inline">\(V^{\pi_{k+1}} \geq V^{\pi_k}\)</span> (with a strict inequality in at least one state, unless at convergence)</li>
-</ol>
-<p><img src='/images/RL/dp/policy_iteration.png'></p>
-<span id="more"></span>
-<p>So, how do we perform policy evaluation and policy improvement?</p>
-<ol type="1">
-<li><p>Policy Evaluation: We can use the policy evaluation part of VI (<span class="math inline">\(V_{k+1} \leftarrow T^{\pi} V_{k}\)</span>) to compute the value of a policy <span class="math inline">\(\pi_k\)</span></p></li>
-<li><p>Policy Improvement: We take the <strong>greedy policy</strong>,</p>
-<p><span class="math display">\[\pi_{k+1} \leftarrow \pi_g (x; Q^{\pi_k}) = argmax_{a \in A} Q^{\pi_k} (x, a), \forall x \in X\]</span></p></li>
-</ol>
-<h2 id="why-greedy-policy-intuition">Why Greedy Policy? (Intuition)</h2>
-<p>Assume that at state <span class="math inline">\(x\)</span>, we act according to greedy policy <span class="math inline">\(\pi_g (x; Q^{\pi_{k}})\)</span>, and afterwards, we follow <span class="math inline">\(\pi_{k}\)</span>. (we modify our policy at state <span class="math inline">\(x\)</span> to choose the greedy action)</p>
-<p>The value of this new policy is:</p>
-<p><span class="math display">\[Q^{\pi_k} (x, \pi_g (x; Q^{\pi_{k}})) = Q^{\pi_k} (x, argmax_{a \in A} Q^{\pi_k} (x, a)) = max_{a \in A} Q^{\pi_k} (x, a)\]</span></p>
-<p>Compare <span class="math inline">\(max_{a \in A} Q^{\pi_k} (x, a)\)</span> with <span class="math inline">\(V^{\pi_k} (x) = Q^{\pi_k} (x, \underbrace{\pi_k (x)}_{\text{any deterministic policy}})\)</span>, we can see that:</p>
-<p><span class="math display">\[max_{a \in A} Q^{\pi_k} (x, a) = Q^{\pi_k} (x, \pi_g (x; Q^{\pi_{k}})) \geq Q^{\pi_k} (x, \underbrace{\pi_k (x)}_{\text{any deterministic policy}}) = V^{\pi_k} (x)\]</span></p>
-<p>So this new policy is equal to or better than <span class="math inline">\(\pi_k\)</span> at state <span class="math inline">\(x\)</span>.</p>
-<h2 id="algorithm">Algorithm</h2>
-<p>Recall that:</p>
-<ul>
-<li><p><span class="math inline">\(V^{\pi_k}\)</span> is an unique fixed point of bellman operator <span class="math inline">\(T^{\pi_{k}}\)</span></p></li>
-<li><p>The greedy policy <span class="math inline">\(\pi_{k+1}\)</span> satisfies:</p>
-<span class="math display">\[\begin{aligned}
-  T^{\pi_{k+1}} Q^{\pi_k} &amp;= r(x, a) + \int P(dx^{\prime} | x, a) \underbrace{\pi_{k+1} (da^{\prime} | x^{\prime})}_{\text{This policy is greedy policy}} Q^{\pi_k} (x^{\prime}, a^{\prime})\\ 
-  &amp;= r(x, a) + \int P(dx^{\prime} | x, a) Q^{\pi_k} (x^{\prime}, argmax_{a^{\prime} \in A} Q^{\pi_k} (x^{\prime}, a^{\prime})\\
-  &amp;= r(x, a) + \int P(dx^{\prime} | x, a) max_{a^{\prime} \in A} Q^{\pi_k} (x^{\prime}, a^{\prime})\\
-  &amp;= T^{*} Q^{\pi_{k}}
-  \end{aligned}\]</span></li>
-</ul>
-<p>We can summarize each iteration of the Policy iteration algorithm as:</p>
-<ul>
-<li><p>(<strong>Policy Evaluation</strong>) Given <span class="math inline">\(\pi_k\)</span>, compute Q^{_k}, i.e find a Q that satisfies <span class="math inline">\(Q = T^{\pi_k} Q\)</span></p></li>
-<li><p>(<strong>Policy Improvement</strong>) Obtain <span class="math inline">\(\pi_{k+1}\)</span> as a policy that satisfies (select greedy policy at each state <span class="math inline">\(x\)</span>):</p>
-<p><span class="math display">\[T^{\pi_{k+1}} Q^{\pi_k} = T^{*} Q^{\pi_{k}}\]</span></p></li>
-</ul>
-<p>We also have approximate policy iteration algorithms too, where policy evaluation or improvement steps (Truncate evaluation step, function approximation) are performed approximately:</p>
-<p><span class="math display">\[Q \approx T^{\pi_k} Q\]</span></p>
-<p><span class="math display">\[T^{\pi_{k+1}} Q^{\pi_k} \approx T^{*} Q^{\pi_{k}}\]</span></p>
-<p>A generic algorithm can be found in Intro to RL book:</p>
-<p><img src='/images/RL/dp/pi.png'></p>
-<h3 id="implementation">Implementation</h3>
-<h2 id="convergence-of-policy-iteration">Convergence of Policy Iteration</h2>
-<p>We can guarantee that the policy iteration algorithm converges to the optimal policy. For finite MDPs, the convergence happens in a finite number of iterations.</p>
-<h3 id="policy-improvement-theorem">Policy Improvement Theorem</h3>
-<p><img src='/images/RL/dp/pit.png'></p>
-<p>In other words, if we choose <span class="math inline">\(\pi^{\prime}\)</span> to be the greedy policy, then we are guaranteed to have a better policy.</p>
-<h4 id="poof">Poof</h4>
-<p>We have <span class="math inline">\(T^{*} Q^{\pi} \geq T^{\pi} Q^{\pi} = Q^{\pi}\)</span> because for any <span class="math inline">\((x, a) \in X \times A\)</span> it holds that:</p>
-<p>Deterministic Policy <span class="math inline">\(\pi(x)\)</span> <span class="math display">\[r(x, a) + \gamma \int P(dx^{\prime} | x, a) max_{a^{\prime} \in A} Q^{\pi} (x^\prime, a^\prime) \geq r(x, a) + \gamma \int P(dx^{\prime} | x, a) Q^{\pi} (x^{\prime}, \pi(x^{\prime}))) \]</span></p>
-<p>Stochastic Policy <span class="math inline">\(\pi(a | x)\)</span></p>
-<p><span class="math display">\[r(x, a) + \gamma \int P(dx^{\prime} | x, a) max_{a^{\prime} \in A} Q^{\pi} (x^\prime, a^\prime) \geq r(x, a) + \gamma \int P(dx^{\prime} | x, a) \pi(da^{\prime} | x^{\prime}) Q^{\pi} (x^{\prime}, a^{\prime}))) \]</span></p>
-<p>Thus, <span class="math display">\[T^{\pi^{\prime}} Q^{\pi} = T^{*} Q^{\pi} \geq T^{\pi} Q^{\pi} = Q^{\pi}\]</span></p>
-<p>We have:</p>
-<p><span class="math display">\[T^{\pi^{\prime}} Q^{\pi} \geq Q^{\pi}\]</span></p>
-<p>Then, we apply <span class="math inline">\(T^{\pi^\prime}\)</span> to both sides, by monotonic property of bellman operator, we have:</p>
-<p><span class="math display">\[T^{\pi^{\prime}}(T^{\pi^{\prime}} Q^{\pi}) \geq T^{\pi^{\prime}} Q^{\pi} = T^{*} Q^{\pi} \geq Q^{\pi}\]</span></p>
-<p>Repeat this, we have for any <span class="math inline">\(m \geq 1\)</span>:</p>
-<p><span class="math display">\[(T^{\pi^{\prime}})^{m} Q^{\pi} \geq T^{*} Q^{\pi} \geq Q^{\pi}\]</span></p>
-<p>As <span class="math inline">\(m \rightarrow \infty\)</span>:</p>
-<p><span class="math display">\[lim_{m \rightarrow \infty} (T^{\pi^{\prime}})^{m} Q^{\pi} = Q^{\pi^\prime}\]</span></p>
-<p><span class="math display">\[\implies Q^{\pi^\prime} = lim_{m \rightarrow \infty} (T^{\pi^{\prime}})^{m} Q^{\pi} \geq Q^{\pi}\]</span></p>
-<h3 id="proof-convergence-of-policy-iteration">Proof: Convergence of Policy Iteration</h3>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>DP</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>Dynamic Programming</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Prioritized Experience Replay</title>
     <url>/2021/05/20/prior-exp-replay/</url>
     <content><![CDATA[<h1 id="prioritized-experience-replay">Prioritized Experience Replay</h1>
@@ -1972,32 +1999,6 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </categories>
       <tags>
         <tag>Replay Memory</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SARSA</title>
-    <url>/2021/05/16/sarsa/</url>
-    <content><![CDATA[<h1 id="sarsa">SARSA</h1>
-<p>SARSA (State Action State Reward State Action) is an on-policy TD algorithm that follows a PI-like procedure:</p>
-<ol type="1">
-<li>Estimate <span class="math inline">\(Q^{\pi_k}\)</span> for a given policy <span class="math inline">\(\pi_k\)</span></li>
-<li>Perform policy improvement to obtain a new policy <span class="math inline">\(\pi_{k+1}\)</span></li>
-</ol>
-<p>Compare with usual Policy iteration, SARSA uses <code>Generalized policy iteration</code> to improve the policy before <span class="math inline">\(Q\)</span> converges to <span class="math inline">\(Q^{\pi_k}\)</span>.</p>
-<span id="more"></span>
-<h2 id="algorithm">Algorithm</h2>
-<p><img src="/images/RL/mc/td_6.png"></p>
-<p>Notice that, <span class="math inline">\(\pi_t\)</span> here is a <span class="math inline">\(\epsilon\)</span>-greedy policy because we want to ensure some exploration. The greedy part of the policy performs the policy improvement while the occasional random choice of actions allows the agent to have some exploration.</p>
-<h2 id="implementation">Implementation</h2>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>TD</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>Tabular Methods</tag>
-        <tag>TD</tag>
       </tags>
   </entry>
   <entry>
@@ -2111,6 +2112,145 @@ Var[max_{a^{\prime} \in A} Q_t (X^{\prime}, a^{\prime}) | X_t=x_t, A_t=a_t] &amp
       </tags>
   </entry>
   <entry>
+    <title>Policy Iteration</title>
+    <url>/2021/05/03/policy-iteration/</url>
+    <content><![CDATA[<h1 id="policy-iteration">Policy Iteration</h1>
+<p>A different approach is based on the iterative application of:</p>
+<ol type="1">
+<li>Policy Evaluation: Given a policy <span class="math inline">\(\pi_k\)</span>, compute <span class="math inline">\(V^{\pi_k}, Q^{\pi_k}\)</span></li>
+<li>Policy Improvement: Find a new policy <span class="math inline">\(\pi_{k+1}\)</span> that is better than <span class="math inline">\(\pi_{k}\)</span>, i.e., <span class="math inline">\(V^{\pi_{k+1}} \geq V^{\pi_k}\)</span> (with a strict inequality in at least one state, unless at convergence)</li>
+</ol>
+<p><img src='/images/RL/dp/policy_iteration.png'></p>
+<span id="more"></span>
+<p>So, how do we perform policy evaluation and policy improvement?</p>
+<ol type="1">
+<li><p>Policy Evaluation: We can use the policy evaluation part of VI (<span class="math inline">\(V_{k+1} \leftarrow T^{\pi} V_{k}\)</span>) to compute the value of a policy <span class="math inline">\(\pi_k\)</span></p></li>
+<li><p>Policy Improvement: We take the <strong>greedy policy</strong>,</p>
+<p><span class="math display">\[\pi_{k+1} \leftarrow \pi_g (x; Q^{\pi_k}) = argmax_{a \in A} Q^{\pi_k} (x, a), \forall x \in X\]</span></p></li>
+</ol>
+<h2 id="why-greedy-policy-intuition">Why Greedy Policy? (Intuition)</h2>
+<p>Assume that at state <span class="math inline">\(x\)</span>, we act according to greedy policy <span class="math inline">\(\pi_g (x; Q^{\pi_{k}})\)</span>, and afterwards, we follow <span class="math inline">\(\pi_{k}\)</span>. (we modify our policy at state <span class="math inline">\(x\)</span> to choose the greedy action)</p>
+<p>The value of this new policy is:</p>
+<p><span class="math display">\[Q^{\pi_k} (x, \pi_g (x; Q^{\pi_{k}})) = Q^{\pi_k} (x, argmax_{a \in A} Q^{\pi_k} (x, a)) = max_{a \in A} Q^{\pi_k} (x, a)\]</span></p>
+<p>Compare <span class="math inline">\(max_{a \in A} Q^{\pi_k} (x, a)\)</span> with <span class="math inline">\(V^{\pi_k} (x) = Q^{\pi_k} (x, \underbrace{\pi_k (x)}_{\text{any deterministic policy}})\)</span>, we can see that:</p>
+<p><span class="math display">\[max_{a \in A} Q^{\pi_k} (x, a) = Q^{\pi_k} (x, \pi_g (x; Q^{\pi_{k}})) \geq Q^{\pi_k} (x, \underbrace{\pi_k (x)}_{\text{any deterministic policy}}) = V^{\pi_k} (x)\]</span></p>
+<p>So this new policy is equal to or better than <span class="math inline">\(\pi_k\)</span> at state <span class="math inline">\(x\)</span>.</p>
+<h2 id="algorithm">Algorithm</h2>
+<p>Recall that:</p>
+<ul>
+<li><p><span class="math inline">\(V^{\pi_k}\)</span> is an unique fixed point of bellman operator <span class="math inline">\(T^{\pi_{k}}\)</span></p></li>
+<li><p>The greedy policy <span class="math inline">\(\pi_{k+1}\)</span> satisfies:</p>
+<span class="math display">\[\begin{aligned}
+  T^{\pi_{k+1}} Q^{\pi_k} &amp;= r(x, a) + \int P(dx^{\prime} | x, a) \underbrace{\pi_{k+1} (da^{\prime} | x^{\prime})}_{\text{This policy is greedy policy}} Q^{\pi_k} (x^{\prime}, a^{\prime})\\ 
+  &amp;= r(x, a) + \int P(dx^{\prime} | x, a) Q^{\pi_k} (x^{\prime}, argmax_{a^{\prime} \in A} Q^{\pi_k} (x^{\prime}, a^{\prime})\\
+  &amp;= r(x, a) + \int P(dx^{\prime} | x, a) max_{a^{\prime} \in A} Q^{\pi_k} (x^{\prime}, a^{\prime})\\
+  &amp;= T^{*} Q^{\pi_{k}}
+  \end{aligned}\]</span></li>
+</ul>
+<p>We can summarize each iteration of the Policy iteration algorithm as:</p>
+<ul>
+<li><p>(<strong>Policy Evaluation</strong>) Given <span class="math inline">\(\pi_k\)</span>, compute Q^{_k}, i.e find a Q that satisfies <span class="math inline">\(Q = T^{\pi_k} Q\)</span></p></li>
+<li><p>(<strong>Policy Improvement</strong>) Obtain <span class="math inline">\(\pi_{k+1}\)</span> as a policy that satisfies (select greedy policy at each state <span class="math inline">\(x\)</span>):</p>
+<p><span class="math display">\[T^{\pi_{k+1}} Q^{\pi_k} = T^{*} Q^{\pi_{k}}\]</span></p></li>
+</ul>
+<p>We also have approximate policy iteration algorithms too, where policy evaluation or improvement steps (Truncate evaluation step, function approximation) are performed approximately:</p>
+<p><span class="math display">\[Q \approx T^{\pi_k} Q\]</span></p>
+<p><span class="math display">\[T^{\pi_{k+1}} Q^{\pi_k} \approx T^{*} Q^{\pi_{k}}\]</span></p>
+<p>A generic algorithm can be found in Intro to RL book:</p>
+<p><img src='/images/RL/dp/pi.png'></p>
+<h3 id="implementation">Implementation</h3>
+<h2 id="convergence-of-policy-iteration">Convergence of Policy Iteration</h2>
+<p>We can guarantee that the policy iteration algorithm converges to the optimal policy. For finite MDPs, the convergence happens in a finite number of iterations.</p>
+<h3 id="policy-improvement-theorem">Policy Improvement Theorem</h3>
+<p><img src='/images/RL/dp/pit.png'></p>
+<p>In other words, if we choose <span class="math inline">\(\pi^{\prime}\)</span> to be the greedy policy, then we are guaranteed to have a better policy.</p>
+<h4 id="poof">Poof</h4>
+<p>We have <span class="math inline">\(T^{*} Q^{\pi} \geq T^{\pi} Q^{\pi} = Q^{\pi}\)</span> because for any <span class="math inline">\((x, a) \in X \times A\)</span> it holds that:</p>
+<p>Deterministic Policy <span class="math inline">\(\pi(x)\)</span> <span class="math display">\[r(x, a) + \gamma \int P(dx^{\prime} | x, a) max_{a^{\prime} \in A} Q^{\pi} (x^\prime, a^\prime) \geq r(x, a) + \gamma \int P(dx^{\prime} | x, a) Q^{\pi} (x^{\prime}, \pi(x^{\prime}))) \]</span></p>
+<p>Stochastic Policy <span class="math inline">\(\pi(a | x)\)</span></p>
+<p><span class="math display">\[r(x, a) + \gamma \int P(dx^{\prime} | x, a) max_{a^{\prime} \in A} Q^{\pi} (x^\prime, a^\prime) \geq r(x, a) + \gamma \int P(dx^{\prime} | x, a) \pi(da^{\prime} | x^{\prime}) Q^{\pi} (x^{\prime}, a^{\prime}))) \]</span></p>
+<p>Thus, <span class="math display">\[T^{\pi^{\prime}} Q^{\pi} = T^{*} Q^{\pi} \geq T^{\pi} Q^{\pi} = Q^{\pi}\]</span></p>
+<p>We have:</p>
+<p><span class="math display">\[T^{\pi^{\prime}} Q^{\pi} \geq Q^{\pi}\]</span></p>
+<p>Then, we apply <span class="math inline">\(T^{\pi^\prime}\)</span> to both sides, by monotonic property of bellman operator, we have:</p>
+<p><span class="math display">\[T^{\pi^{\prime}}(T^{\pi^{\prime}} Q^{\pi}) \geq T^{\pi^{\prime}} Q^{\pi} = T^{*} Q^{\pi} \geq Q^{\pi}\]</span></p>
+<p>Repeat this, we have for any <span class="math inline">\(m \geq 1\)</span>:</p>
+<p><span class="math display">\[(T^{\pi^{\prime}})^{m} Q^{\pi} \geq T^{*} Q^{\pi} \geq Q^{\pi}\]</span></p>
+<p>As <span class="math inline">\(m \rightarrow \infty\)</span>:</p>
+<p><span class="math display">\[lim_{m \rightarrow \infty} (T^{\pi^{\prime}})^{m} Q^{\pi} = Q^{\pi^\prime}\]</span></p>
+<p><span class="math display">\[\implies Q^{\pi^\prime} = lim_{m \rightarrow \infty} (T^{\pi^{\prime}})^{m} Q^{\pi} \geq Q^{\pi}\]</span></p>
+<h3 id="proof-convergence-of-policy-iteration">Proof: Convergence of Policy Iteration</h3>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>DP</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>Dynamic Programming</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SARSA</title>
+    <url>/2021/05/16/sarsa/</url>
+    <content><![CDATA[<h1 id="sarsa">SARSA</h1>
+<p>SARSA (State Action State Reward State Action) is an on-policy TD algorithm that follows a PI-like procedure:</p>
+<ol type="1">
+<li>Estimate <span class="math inline">\(Q^{\pi_k}\)</span> for a given policy <span class="math inline">\(\pi_k\)</span></li>
+<li>Perform policy improvement to obtain a new policy <span class="math inline">\(\pi_{k+1}\)</span></li>
+</ol>
+<p>Compare with usual Policy iteration, SARSA uses <code>Generalized policy iteration</code> to improve the policy before <span class="math inline">\(Q\)</span> converges to <span class="math inline">\(Q^{\pi_k}\)</span>.</p>
+<span id="more"></span>
+<h2 id="algorithm">Algorithm</h2>
+<p><img src="/images/RL/mc/td_6.png"></p>
+<p>Notice that, <span class="math inline">\(\pi_t\)</span> here is a <span class="math inline">\(\epsilon\)</span>-greedy policy because we want to ensure some exploration. The greedy part of the policy performs the policy improvement while the occasional random choice of actions allows the agent to have some exploration.</p>
+<h2 id="implementation">Implementation</h2>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>TD</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>Tabular Methods</tag>
+        <tag>TD</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Search</title>
+    <url>/2021/06/13/search/</url>
+    <content><![CDATA[<h1 id="search">Search</h1>
+<h1 id="breath-first-search">Breath First Search</h1>
+<p>Breadth First Search (BFS) algorithm traverses a graph in a breadthward motion and uses a queue to remember to get the next vertex to start a search, when a dead end occurs in any iteration.</p>
+<p><img src="/images/algo/dfs_1.png" width="600px"></p>
+<p>As in the example given above, BFS algorithm traverses from A to B to E to F first then to C and G lastly to D. It employs the following rules:</p>
+<ul>
+<li>Visit the adjacent unvisited vertex. Mark it as visited. Display it. Insert it in a queue.</li>
+<li>If no adjacent vertex is found, remove the first vertex from the queue, and set this vertex as the head.</li>
+<li>Repeat Rule 1 and Rule 2 until the queue is empty.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BinaryTreeNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, key=<span class="literal">None</span>, parent=<span class="literal">None</span>, left_child=<span class="literal">None</span>, right_child=<span class="literal">None</span></span>):</span></span><br><span class="line">        self.key = key</span><br><span class="line">        self.parent = parent</span><br><span class="line">        self.left_child = left_child</span><br><span class="line">        self.right_child = right_child</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tree</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, tree=<span class="literal">None</span></span>):</span></span><br><span class="line">        self.root = tree</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bfs</span>(<span class="params">tree</span>):</span></span><br><span class="line">    <span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line">    q = deque()</span><br><span class="line">    q.append(tree)</span><br><span class="line">    <span class="keyword">while</span> q:</span><br><span class="line">        head = q.popleft()</span><br><span class="line">        <span class="built_in">print</span>(head.key)</span><br><span class="line">        <span class="keyword">if</span> head.left_child:</span><br><span class="line">            q.append(head.left_child)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">if</span> head.right_child:</span><br><span class="line">            q.append(head.right_child)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="depth-first-search">Depth First Search</h1>
+<p>Depth First Search (DFS) algorithm traverses a graph in a depthward motion and uses a stack to remember to get the next vertex to start a search, when a dead end occurs in any iteration.</p>
+<p><img src="/images/algo/dfs_2.png" width="600px"></p>
+<p>As in the example given above, DFS algorithm traverses from S to A to D to G to E to B first, then to F and lastly to C. It employs the following rules:</p>
+<ul>
+<li>Visit the adjacent unvisited vertex. Mark it as visited. Display it. Push it in a stack.</li>
+<li>If no adjacent vertex is found, pop up a vertex from the stack. (It will pop up all the vertices from the stack, which do not have adjacent vertices.)</li>
+<li>Repeat Rule 1 and Rule 2 until the stack is empty.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dfs</span>(<span class="params">tree</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> tree.left_child <span class="keyword">and</span> <span class="keyword">not</span> tree.right_child:</span><br><span class="line">        <span class="built_in">print</span>(tree.key)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(tree.key)</span><br><span class="line">        <span class="keyword">if</span> tree.left_child:</span><br><span class="line">            dfs(tree.left_child)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> tree.right_child:</span><br><span class="line">            dfs(tree.right_child)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dfs_stack</span>(<span class="params">tree</span>):</span></span><br><span class="line">    stack = [tree]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        head = stack.pop()</span><br><span class="line">        <span class="built_in">print</span>(head.key)</span><br><span class="line">        <span class="keyword">if</span> head.right_child:</span><br><span class="line">            stack.append(head.right_child)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> head.left_child:</span><br><span class="line">            stack.append(head.left_child)</span><br></pre></td></tr></table></figure>
+<h1 id="reference">Reference</h1>
+<p>https://www.tutorialspoint.com/data_structures_algorithms/depth_first_traversal.htm</p>
+]]></content>
+      <categories>
+        <category>CS Basics</category>
+      </categories>
+      <tags>
+        <tag>Algorithms</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Sorts</title>
     <url>/2021/06/06/sort/</url>
     <content><![CDATA[<h1 id="sorts">Sorts</h1>
@@ -2194,44 +2334,95 @@ Var[max_{a^{\prime} \in A} Q_t (X^{\prime}, a^{\prime}) | X_t=x_t, A_t=a_t] &amp
       </tags>
   </entry>
   <entry>
-    <title>Search</title>
-    <url>/2021/06/13/search/</url>
-    <content><![CDATA[<h1 id="search">Search</h1>
-<h1 id="breath-first-search">Breath First Search</h1>
-<p>Breadth First Search (BFS) algorithm traverses a graph in a breadthward motion and uses a queue to remember to get the next vertex to start a search, when a dead end occurs in any iteration.</p>
-<p><img src="/images/algo/dfs_1.png" width="600px"></p>
-<p>As in the example given above, BFS algorithm traverses from A to B to E to F first then to C and G lastly to D. It employs the following rules:</p>
-<ul>
-<li>Visit the adjacent unvisited vertex. Mark it as visited. Display it. Insert it in a queue.</li>
-<li>If no adjacent vertex is found, remove the first vertex from the queue, and set this vertex as the head.</li>
-<li>Repeat Rule 1 and Rule 2 until the queue is empty.</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BinaryTreeNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, key=<span class="literal">None</span>, parent=<span class="literal">None</span>, left_child=<span class="literal">None</span>, right_child=<span class="literal">None</span></span>):</span></span><br><span class="line">        self.key = key</span><br><span class="line">        self.parent = parent</span><br><span class="line">        self.left_child = left_child</span><br><span class="line">        self.right_child = right_child</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tree</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, tree=<span class="literal">None</span></span>):</span></span><br><span class="line">        self.root = tree</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bfs</span>(<span class="params">tree</span>):</span></span><br><span class="line">    <span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line">    q = deque()</span><br><span class="line">    q.append(tree)</span><br><span class="line">    <span class="keyword">while</span> q:</span><br><span class="line">        head = q.popleft()</span><br><span class="line">        <span class="built_in">print</span>(head.key)</span><br><span class="line">        <span class="keyword">if</span> head.left_child:</span><br><span class="line">            q.append(head.left_child)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">if</span> head.right_child:</span><br><span class="line">            q.append(head.right_child)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h1 id="depth-first-search">Depth First Search</h1>
-<p>Depth First Search (DFS) algorithm traverses a graph in a depthward motion and uses a stack to remember to get the next vertex to start a search, when a dead end occurs in any iteration.</p>
-<p><img src="/images/algo/dfs_2.png" width="600px"></p>
-<p>As in the example given above, DFS algorithm traverses from S to A to D to G to E to B first, then to F and lastly to C. It employs the following rules:</p>
-<ul>
-<li>Visit the adjacent unvisited vertex. Mark it as visited. Display it. Push it in a stack.</li>
-<li>If no adjacent vertex is found, pop up a vertex from the stack. (It will pop up all the vertices from the stack, which do not have adjacent vertices.)</li>
-<li>Repeat Rule 1 and Rule 2 until the stack is empty.</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dfs</span>(<span class="params">tree</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> tree.left_child <span class="keyword">and</span> <span class="keyword">not</span> tree.right_child:</span><br><span class="line">        <span class="built_in">print</span>(tree.key)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(tree.key)</span><br><span class="line">        <span class="keyword">if</span> tree.left_child:</span><br><span class="line">            dfs(tree.left_child)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> tree.right_child:</span><br><span class="line">            dfs(tree.right_child)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dfs_stack</span>(<span class="params">tree</span>):</span></span><br><span class="line">    stack = [tree]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        head = stack.pop()</span><br><span class="line">        <span class="built_in">print</span>(head.key)</span><br><span class="line">        <span class="keyword">if</span> head.right_child:</span><br><span class="line">            stack.append(head.right_child)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> head.left_child:</span><br><span class="line">            stack.append(head.left_child)</span><br></pre></td></tr></table></figure>
-<h1 id="reference">Reference</h1>
-<p>https://www.tutorialspoint.com/data_structures_algorithms/depth_first_traversal.htm</p>
-]]></content>
-      <categories>
-        <category>CS Basics</category>
-      </categories>
-      <tags>
-        <tag>Algorithms</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>semi-mdp</title>
     <url>/2021/06/28/semi-mdp/</url>
     <content><![CDATA[
 ]]></content>
+  </entry>
+  <entry>
+    <title>Temporal Difference Learning</title>
+    <url>/2021/05/15/td/</url>
+    <content><![CDATA[<h1 id="learning-from-stream-of-data-temporal-difference-learning-methods">Learning From Stream of Data (Temporal Difference Learning Methods)</h1>
+<p>We can see that from MC algorithm, in order to update <span class="math inline">\(\hat{Q^{\pi}}_{k+1} (x, a)\)</span>, we need to calculate the entire <span class="math inline">\(\hat{G^{\pi}_{k}}\)</span> which involves sum over product of rewards. If each episode is long or even continuous, the calculation of <span class="math inline">\(\hat{G^{\pi}_{k}}\)</span> will be hard or impossible. In general, MC is agnostic to the MDP structure, if the problem is an MDP, it does not benefit from the recursive property of the value functions.</p>
+<p>TD methods benefit from the structure of the MDP even if we do not know the environment dynamics <span class="math inline">\(P\)</span> and <span class="math inline">\(R\)</span>.</p>
+<h2 id="td-for-policy-evaluation">TD for Policy Evaluation</h2>
+<p>We first focus on VI for PE: at each state <span class="math inline">\(x\)</span>, the procedure is:</p>
+<p><span class="math display">\[V_{k+1} (x) = T^{\pi} V_{k} (x) = r^{\pi} (x) + \gamma \int P(dx^{\prime} | x, a) \pi(da | x) V_{k} (x^{\prime})\]</span></p>
+<p>If we do not know <span class="math inline">\(r^{\pi}, P\)</span>, we cannot compute this. Suppose that we have n samples starting from state <span class="math inline">\(x\)</span>, <span class="math inline">\(A_i \sim \pi(\cdot | x), X^{\prime}_i \sim P(\cdot | x, A_i), R_i \sim R(\cdot | x, A_i)\)</span>, using these samples and <span class="math inline">\(V_{k}\)</span>, we compute:</p>
+<p><span class="math display">\[Y_i = R_i + \gamma V_{k} (X_i^{\prime})\]</span></p>
+<p>Now, notice that:</p>
+<p><span class="math display">\[E[R_i | X=x] = r^{\pi} (x)\]</span></p>
+<p>and</p>
+<p><span class="math display">\[E[V_{k} (X^{\prime}_i) | X=x] = \int P(dx^{\prime} | x, a) \pi(da | x)V_{k} (x^{\prime})\]</span></p>
+<p>so the r.v $Y_i (x) $ (emphasis starting from state <span class="math inline">\(x\)</span> )satisfies:</p>
+<p><span class="math display">\[E[Y_i | X=x] = E[R_i + \gamma V_{k} (X_i^{\prime}) | X=x] = E[R_i | X=x] + \gamma E[V_{k} (X_i^{\prime}) | X=x] = T^{\pi} V_{k} (x)\]</span></p>
+<p>This implies that <span class="math inline">\(Y_i\)</span> is an unbiased estimator of <span class="math inline">\(T^{\pi} V_{k}\)</span> evaluated at <span class="math inline">\(x\)</span>. Thus, we can use a sample mean of <span class="math inline">\(Y_i\)</span> starting from <span class="math inline">\(x\)</span> to estimate <span class="math inline">\(T^{\pi} V_k (x)\)</span>, or we can use SA procedure.</p>
+<p><span class="math display">\[T^{\pi}V^{t+1}_{k} (x) \leftarrow  (1 - \alpha_t) T^{\pi}V^{t}_{k} (x) + \alpha Y_i\]</span></p>
+<span id="more"></span>
+<h3 id="empirical-bellman-operator">Empirical Bellman Operator</h3>
+<p>This <span class="math inline">\(Y_i\)</span> is called <code>empirical Bellman operator</code> (this (x) notation emphasises that we are starting from x):</p>
+<p><span class="math display">\[\hat{T}^{\pi} V_{k} (x) = Y_i (x) = R(x) + \gamma V_{k} (X^{\prime} (x))\]</span></p>
+<p>This operator is an unbiased estimate of <span class="math inline">\(T^{\pi} V_{k} (x)\)</span>:</p>
+<p><span class="math display">\[E[\hat{T}^{\pi} V_k (X) | X=x] = T^{\pi} V_{k} (x)\]</span></p>
+<p>The empirical version of the VI for Policy evaluation with some noise:</p>
+<p><span class="math display">\[V_{k+1} (x) \leftarrow \hat{T}^{\pi} V_k (x) = \underbrace{T^{\pi} V_{k} (x)}_{\text{deterministic part}} + \underbrace{(\hat{T}^{\pi} V_k (x) - T^{\pi} V_{k} (x))}_{\text{the stochastic part, the noise}}\]</span></p>
+<p>On average, this noise is 0.</p>
+<h2 id="generic-td-algorithms">Generic TD algorithms</h2>
+<p>A synchronous version of generic TD algorithm updates all states at the same time:</p>
+<p><img src="/images/RL/mc/td_1.png"></p>
+<p>However, we do not need to update all states at the same time, an asynchronous version of generic TD algorithm:</p>
+<p><img src="/images/RL/mc/td_2.png"></p>
+<p>From the above generic algorithms, we can see that the update following policy <span class="math inline">\(\pi\)</span> in general is :</p>
+<span class="math display">\[\begin{aligned}
+V_{t+1} (x) &amp;\leftarrow (1 - \alpha_t) V_t (x) + \alpha_t (\hat{T}^{\pi} V_t (x)) \\
+&amp;\leftarrow (1 - \alpha_t) V_t (x) + \alpha_t (R(x) + \gamma V_t (X^{\prime} (x)))\\
+&amp;\leftarrow V_t (x) + \alpha_t (x) [R_t (x) + \gamma V_t(X^{\prime} (x)) - V_t (x)]
+\end{aligned}\]</span>
+<p>The update rule could be written in perhaps a simpler but less precise, form of:</p>
+<p><span class="math display">\[V(X_t) \leftarrow V(X_t) + \alpha_t (X_t) [R_t + \gamma V(X_{t+1}) - V(X_t)]\]</span></p>
+<p>We can see that, at each time step, instead update <span class="math inline">\(V_{k+1} (x)\)</span> with <span class="math inline">\(T^{\pi} V_{k}\)</span>, we update it with the <code>empirical bellman operator</code> <span class="math inline">\(\hat{T}^{\pi} V_k\)</span> which is an unbiased estimate. The SA procedure seems a little strange because we are estimating the mean of a sequence of <span class="math inline">\(\hat{T}^{\pi} V_1, \hat{T}^{\pi} V_2, ...\)</span>, <strong>we will prove later that this update rule actually converge to <span class="math inline">\(V^{\pi}\)</span></strong>.</p>
+<h3 id="td-error">TD Error</h3>
+<h4 id="td-erorr-and-bellman-residual">TD Erorr and Bellman Residual</h4>
+<p>Moreover, the term:</p>
+<p><span class="math display">\[\delta_t = R_t + \gamma V(X_{t+1}) - V(X_t)\]</span></p>
+<p>is called <code>TD error</code>. It is a noisy measure of how close we are to <span class="math inline">\(V^{\pi}\)</span>. To see this more clearly, let us define the dependence on the <code>TD error</code> on its components more explicitly. Given transitions <span class="math inline">\((X, X^{\prime}, R)\)</span> and value function <span class="math inline">\(V\)</span>, policy <span class="math inline">\(\pi\)</span>, we define:</p>
+<p><span class="math display">\[\delta (R, X^{\prime}, X; V, \pi) = R + \gamma V(X^{\prime}) - V(X)\]</span></p>
+<p>We have:</p>
+<p><span class="math display">\[E[\delta (X, R, X^{\prime}; V, \pi) | X=x] = T^{\pi} V (x) - V(x) = BR(V) (x)\]</span></p>
+<p>So in expectation, the TD error is equal to the Bellman residual of <span class="math inline">\(V\)</span>, evaluated at state <span class="math inline">\(x\)</span>. If BR = 0, we reach the fix point, so the algorithm reach the fix point.</p>
+<h4 id="td-erorr-and-advantage">TD Erorr and Advantage</h4>
+<p>The advantage function is defined as:</p>
+<p><span class="math display">\[A^{\pi}(x, a) = Q^{\pi} (x, a) - V^{\pi} (x)\]</span></p>
+<p>In expectation:</p>
+<span class="math display">\[\begin{aligned}
+E[\delta (X, R, X^{\prime}; V^{\pi}) | X=x, A=a] &amp;= E[R + \gamma V^{\pi}(X^{\prime}) - V^{\pi}(X) | X=x, A=a]\\
+&amp;= r(x, a) + \gamma \int_{x^{\prime}, a^{\prime}} P(x^{\prime} | x, a) \pi(a^{\prime} | x^{\prime})Q^{\pi} (x^{\prime}, a^{\prime}) - V^{\pi}(x)\\
+&amp;= Q^{\pi} (x, a) - V^{\pi} (x)
+\end{aligned}\]</span>
+<p>Thus, the <strong>true</strong> TD error is an unbiased estimator of the advantage function.</p>
+<h3 id="td-learning-for-action-value-function">TD Learning for Action-Value Function</h3>
+<p>We can use a similar procedure to estimate the action-value function which is often used in TD and MC.</p>
+<p>To evaluate <span class="math inline">\(\pi\)</span>, we need to have an estimate of <span class="math inline">\(T^{\pi} Q (x, a) \forall (x, a) \in X \times A\)</span>.</p>
+<p>Suppose that <span class="math inline">\((X_t, A_t) \sim \mu\)</span> (where <span class="math inline">\(\mu\)</span> is some stationary distribution or initial distribution) and <span class="math inline">\(X^{\prime}_t \sim P(\cdot | X_t, A_t)\)</span> and <span class="math inline">\(R_t \sim R(\cdot | X_t, A_t), A^{\prime} \sim \pi(\cdot | X^{\prime})\)</span></p>
+<p>The update rule would be:</p>
+<p><span class="math display">\[Q_{t+1} (X_t, A_t) \leftarrow Q_t(X_t, A_t) + \alpha_t (X_t, A_t) [R_t + \gamma Q_t (X^{\prime}_t, A^{\prime}) - Q_t(X_t, A_t)]\]</span></p>
+<p>and</p>
+<p><span class="math display">\[Q_{t+1} (x, a) \leftarrow Q_t (x, a)\]</span></p>
+<p>for all other <span class="math inline">\((x, a) \neq (X_t, A_t)\)</span></p>
+<p>It is easy to see that following the same procedure for <span class="math inline">\(\hat{T}^{\pi} V\)</span>:</p>
+<p><span class="math display">\[E[\hat{T}^{\pi} Q (X_t, A_t) | X_t=x, A_t=a] = T^{\pi} Q (x, a)\]</span></p>
+<h1 id="further">Further</h1>
+<p>In this post, we have some basic understanding of generic TD methods and basic framework of TD Policy evaluation. Next, we will explore some popular TD methods for solving control problems. We will see that TD learning methods can be generalized to both on-policy sampling scenario (ie. SARSA) and off-policy sampling scenario (ie. Q-learning). At the same time, we will prove the update rule for each algorithm.</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>TD</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>Tabular Methods</tag>
+        <tag>TD</tag>
+      </tags>
   </entry>
   <entry>
     <title>Stochastic Graph</title>
@@ -2355,97 +2546,6 @@ E_{v \in S, v \prec c}[c] &amp;= \int_{v} p(v_1 \; | \; \text{DEPS}_{v_1}) p(v_2
       </tags>
   </entry>
   <entry>
-    <title>Temporal Difference Learning</title>
-    <url>/2021/05/15/td/</url>
-    <content><![CDATA[<h1 id="learning-from-stream-of-data-temporal-difference-learning-methods">Learning From Stream of Data (Temporal Difference Learning Methods)</h1>
-<p>We can see that from MC algorithm, in order to update <span class="math inline">\(\hat{Q^{\pi}}_{k+1} (x, a)\)</span>, we need to calculate the entire <span class="math inline">\(\hat{G^{\pi}_{k}}\)</span> which involves sum over product of rewards. If each episode is long or even continuous, the calculation of <span class="math inline">\(\hat{G^{\pi}_{k}}\)</span> will be hard or impossible. In general, MC is agnostic to the MDP structure, if the problem is an MDP, it does not benefit from the recursive property of the value functions.</p>
-<p>TD methods benefit from the structure of the MDP even if we do not know the environment dynamics <span class="math inline">\(P\)</span> and <span class="math inline">\(R\)</span>.</p>
-<h2 id="td-for-policy-evaluation">TD for Policy Evaluation</h2>
-<p>We first focus on VI for PE: at each state <span class="math inline">\(x\)</span>, the procedure is:</p>
-<p><span class="math display">\[V_{k+1} (x) = T^{\pi} V_{k} (x) = r^{\pi} (x) + \gamma \int P(dx^{\prime} | x, a) \pi(da | x) V_{k} (x^{\prime})\]</span></p>
-<p>If we do not know <span class="math inline">\(r^{\pi}, P\)</span>, we cannot compute this. Suppose that we have n samples starting from state <span class="math inline">\(x\)</span>, <span class="math inline">\(A_i \sim \pi(\cdot | x), X^{\prime}_i \sim P(\cdot | x, A_i), R_i \sim R(\cdot | x, A_i)\)</span>, using these samples and <span class="math inline">\(V_{k}\)</span>, we compute:</p>
-<p><span class="math display">\[Y_i = R_i + \gamma V_{k} (X_i^{\prime})\]</span></p>
-<p>Now, notice that:</p>
-<p><span class="math display">\[E[R_i | X=x] = r^{\pi} (x)\]</span></p>
-<p>and</p>
-<p><span class="math display">\[E[V_{k} (X^{\prime}_i) | X=x] = \int P(dx^{\prime} | x, a) \pi(da | x)V_{k} (x^{\prime})\]</span></p>
-<p>so the r.v $Y_i (x) $ (emphasis starting from state <span class="math inline">\(x\)</span> )satisfies:</p>
-<p><span class="math display">\[E[Y_i | X=x] = E[R_i + \gamma V_{k} (X_i^{\prime}) | X=x] = E[R_i | X=x] + \gamma E[V_{k} (X_i^{\prime}) | X=x] = T^{\pi} V_{k} (x)\]</span></p>
-<p>This implies that <span class="math inline">\(Y_i\)</span> is an unbiased estimator of <span class="math inline">\(T^{\pi} V_{k}\)</span> evaluated at <span class="math inline">\(x\)</span>. Thus, we can use a sample mean of <span class="math inline">\(Y_i\)</span> starting from <span class="math inline">\(x\)</span> to estimate <span class="math inline">\(T^{\pi} V_k (x)\)</span>, or we can use SA procedure.</p>
-<p><span class="math display">\[T^{\pi}V^{t+1}_{k} (x) \leftarrow  (1 - \alpha_t) T^{\pi}V^{t}_{k} (x) + \alpha Y_i\]</span></p>
-<span id="more"></span>
-<h3 id="empirical-bellman-operator">Empirical Bellman Operator</h3>
-<p>This <span class="math inline">\(Y_i\)</span> is called <code>empirical Bellman operator</code> (this (x) notation emphasises that we are starting from x):</p>
-<p><span class="math display">\[\hat{T}^{\pi} V_{k} (x) = Y_i (x) = R(x) + \gamma V_{k} (X^{\prime} (x))\]</span></p>
-<p>This operator is an unbiased estimate of <span class="math inline">\(T^{\pi} V_{k} (x)\)</span>:</p>
-<p><span class="math display">\[E[\hat{T}^{\pi} V_k (X) | X=x] = T^{\pi} V_{k} (x)\]</span></p>
-<p>The empirical version of the VI for Policy evaluation with some noise:</p>
-<p><span class="math display">\[V_{k+1} (x) \leftarrow \hat{T}^{\pi} V_k (x) = \underbrace{T^{\pi} V_{k} (x)}_{\text{deterministic part}} + \underbrace{(\hat{T}^{\pi} V_k (x) - T^{\pi} V_{k} (x))}_{\text{the stochastic part, the noise}}\]</span></p>
-<p>On average, this noise is 0.</p>
-<h2 id="generic-td-algorithms">Generic TD algorithms</h2>
-<p>A synchronous version of generic TD algorithm updates all states at the same time:</p>
-<p><img src="/images/RL/mc/td_1.png"></p>
-<p>However, we do not need to update all states at the same time, an asynchronous version of generic TD algorithm:</p>
-<p><img src="/images/RL/mc/td_2.png"></p>
-<p>From the above generic algorithms, we can see that the update following policy <span class="math inline">\(\pi\)</span> in general is :</p>
-<span class="math display">\[\begin{aligned}
-V_{t+1} (x) &amp;\leftarrow (1 - \alpha_t) V_t (x) + \alpha_t (\hat{T}^{\pi} V_t (x)) \\
-&amp;\leftarrow (1 - \alpha_t) V_t (x) + \alpha_t (R(x) + \gamma V_t (X^{\prime} (x)))\\
-&amp;\leftarrow V_t (x) + \alpha_t (x) [R_t (x) + \gamma V_t(X^{\prime} (x)) - V_t (x)]
-\end{aligned}\]</span>
-<p>The update rule could be written in perhaps a simpler but less precise, form of:</p>
-<p><span class="math display">\[V(X_t) \leftarrow V(X_t) + \alpha_t (X_t) [R_t + \gamma V(X_{t+1}) - V(X_t)]\]</span></p>
-<p>We can see that, at each time step, instead update <span class="math inline">\(V_{k+1} (x)\)</span> with <span class="math inline">\(T^{\pi} V_{k}\)</span>, we update it with the <code>empirical bellman operator</code> <span class="math inline">\(\hat{T}^{\pi} V_k\)</span> which is an unbiased estimate. The SA procedure seems a little strange because we are estimating the mean of a sequence of <span class="math inline">\(\hat{T}^{\pi} V_1, \hat{T}^{\pi} V_2, ...\)</span>, <strong>we will prove later that this update rule actually converge to <span class="math inline">\(V^{\pi}\)</span></strong>.</p>
-<h3 id="td-error">TD Error</h3>
-<h4 id="td-erorr-and-bellman-residual">TD Erorr and Bellman Residual</h4>
-<p>Moreover, the term:</p>
-<p><span class="math display">\[\delta_t = R_t + \gamma V(X_{t+1}) - V(X_t)\]</span></p>
-<p>is called <code>TD error</code>. It is a noisy measure of how close we are to <span class="math inline">\(V^{\pi}\)</span>. To see this more clearly, let us define the dependence on the <code>TD error</code> on its components more explicitly. Given transitions <span class="math inline">\((X, X^{\prime}, R)\)</span> and value function <span class="math inline">\(V\)</span>, policy <span class="math inline">\(\pi\)</span>, we define:</p>
-<p><span class="math display">\[\delta (R, X^{\prime}, X; V, \pi) = R + \gamma V(X^{\prime}) - V(X)\]</span></p>
-<p>We have:</p>
-<p><span class="math display">\[E[\delta (X, R, X^{\prime}; V, \pi) | X=x] = T^{\pi} V (x) - V(x) = BR(V) (x)\]</span></p>
-<p>So in expectation, the TD error is equal to the Bellman residual of <span class="math inline">\(V\)</span>, evaluated at state <span class="math inline">\(x\)</span>. If BR = 0, we reach the fix point, so the algorithm reach the fix point.</p>
-<h4 id="td-erorr-and-advantage">TD Erorr and Advantage</h4>
-<p>The advantage function is defined as:</p>
-<p><span class="math display">\[A^{\pi}(x, a) = Q^{\pi} (x, a) - V^{\pi} (x)\]</span></p>
-<p>In expectation:</p>
-<span class="math display">\[\begin{aligned}
-E[\delta (X, R, X^{\prime}; V^{\pi}) | X=x, A=a] &amp;= E[R + \gamma V^{\pi}(X^{\prime}) - V^{\pi}(X) | X=x, A=a]\\
-&amp;= r(x, a) + \gamma \int_{x^{\prime}, a^{\prime}} P(x^{\prime} | x, a) \pi(a^{\prime} | x^{\prime})Q^{\pi} (x^{\prime}, a^{\prime}) - V^{\pi}(x)\\
-&amp;= Q^{\pi} (x, a) - V^{\pi} (x)
-\end{aligned}\]</span>
-<p>Thus, the <strong>true</strong> TD error is an unbiased estimator of the advantage function.</p>
-<h3 id="td-learning-for-action-value-function">TD Learning for Action-Value Function</h3>
-<p>We can use a similar procedure to estimate the action-value function which is often used in TD and MC.</p>
-<p>To evaluate <span class="math inline">\(\pi\)</span>, we need to have an estimate of <span class="math inline">\(T^{\pi} Q (x, a) \forall (x, a) \in X \times A\)</span>.</p>
-<p>Suppose that <span class="math inline">\((X_t, A_t) \sim \mu\)</span> (where <span class="math inline">\(\mu\)</span> is some stationary distribution or initial distribution) and <span class="math inline">\(X^{\prime}_t \sim P(\cdot | X_t, A_t)\)</span> and <span class="math inline">\(R_t \sim R(\cdot | X_t, A_t), A^{\prime} \sim \pi(\cdot | X^{\prime})\)</span></p>
-<p>The update rule would be:</p>
-<p><span class="math display">\[Q_{t+1} (X_t, A_t) \leftarrow Q_t(X_t, A_t) + \alpha_t (X_t, A_t) [R_t + \gamma Q_t (X^{\prime}_t, A^{\prime}) - Q_t(X_t, A_t)]\]</span></p>
-<p>and</p>
-<p><span class="math display">\[Q_{t+1} (x, a) \leftarrow Q_t (x, a)\]</span></p>
-<p>for all other <span class="math inline">\((x, a) \neq (X_t, A_t)\)</span></p>
-<p>It is easy to see that following the same procedure for <span class="math inline">\(\hat{T}^{\pi} V\)</span>:</p>
-<p><span class="math display">\[E[\hat{T}^{\pi} Q (X_t, A_t) | X_t=x, A_t=a] = T^{\pi} Q (x, a)\]</span></p>
-<h1 id="further">Further</h1>
-<p>In this post, we have some basic understanding of generic TD methods and basic framework of TD Policy evaluation. Next, we will explore some popular TD methods for solving control problems. We will see that TD learning methods can be generalized to both on-policy sampling scenario (ie. SARSA) and off-policy sampling scenario (ie. Q-learning). At the same time, we will prove the update rule for each algorithm.</p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>TD</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>Tabular Methods</tag>
-        <tag>TD</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>td3</title>
-    <url>/2021/06/23/td3/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
     <title>tree</title>
     <url>/2021/06/14/tree/</url>
     <content><![CDATA[<h1 id="trees">Trees</h1>
@@ -2548,6 +2648,12 @@ Uniform(A), \text{w. p } \epsilon \\
         <tag>Tabular Methods</tag>
         <tag>TD</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>td3</title>
+    <url>/2021/06/23/td3/</url>
+    <content><![CDATA[
+]]></content>
   </entry>
   <entry>
     <title>Value Iteration</title>
@@ -3135,7 +3241,7 @@ V^{\pi} (x) &amp;= E^{\pi}[\sum^{\infty}_{t = 1} \gamma^{t - 1} R_{t} \; |\; X_1
 <h2 id="random-variables">Random Variables</h2>
 <p>Given an experiment and the corresponding set of possible outcomes (the sample space), a <strong>random variable</strong> is a real-valued <strong>function</strong> (max, min etc.) of experiment outcome that associates a <strong>particular number with each outcome</strong>. We refer to this number as the numerical value or simply the value of the random variable.</p>
 <p><img src="/images/RL/background/prob_19.png" width="600"> <img src="/images/RL/background/prob_11.png" width="600"> <img src="/images/RL/background/prob_10.png" width="600"></p>
-<h4 id="distribution-of-random-variable">Distribution of Random Variable</h4>
+<h3 id="distribution-of-random-variable">Distribution of Random Variable</h3>
 <p>Given a random variable <span class="math inline">\(X\)</span>, its range <span class="math inline">\(\mathbb{D}\)</span> becomes <strong>the sample space of interest</strong>. Besides, inducing the sample space <span class="math inline">\(\mathbb{D}\)</span>, <span class="math inline">\(X\)</span> also induces a probability which we call the distribution of <span class="math inline">\(X\)</span>.</p>
 <p>Assume <span class="math inline">\(X\)</span> is a discrete random variable with a finite space <span class="math inline">\(\mathbb{D} = \{d_1, ...., d_m\}\)</span>. Define the function <span class="math inline">\(p_{X} (d_i)\)</span> on <span class="math inline">\(\mathbb{D}\)</span> by:</p>
 <p><span class="math display">\[p_X(d_i) = P[\{c: X(c) = d_i\}], \quad \quad \forall i=1, .... ,m\]</span></p>
@@ -3143,13 +3249,13 @@ V^{\pi} (x) &amp;= E^{\pi}[\sum^{\infty}_{t = 1} \gamma^{t - 1} R_{t} \; |\; X_1
 <p>Which is the probability of event that contains the outcomes with value <span class="math inline">\(X(c) = d_i\)</span>, this is called the <strong>probability mass function</strong> of <span class="math inline">\(X\)</span>. Then the <strong>induced probability distribution</strong>, <span class="math inline">\(P_X (\cdot): D \rightarrow \mathbb{R}\)</span>, of <span class="math inline">\(X\)</span> is:</p>
 <p><span class="math display">\[P_X (D) = \sum_{d_i \in D} p_X (d_i), \quad \quad D \subset \mathbb{D}\]</span></p>
 <p>Similar to <span class="math inline">\(P\)</span> which is defined on <span class="math inline">\(\mathbb{B}\)</span>. This <span class="math inline">\(P_X (\cdot)\)</span> is basically the probability distribution of events defined on sets <span class="math inline">\(D\)</span>, <span class="math inline">\(P_X (D)\)</span> is the probability of event <span class="math inline">\(D\)</span> defined on <span class="math inline">\(\mathbb{D}\)</span>.</p>
-<h4 id="cumulative-distribution-function">Cumulative Distribution Function</h4>
+<h3 id="cumulative-distribution-function">Cumulative Distribution Function</h3>
 <p>The pmf of discrete random variable and the pdf of a continuous random variable are quite different entities. The distribution function, though, uniquely determines the probability distribution of a random variable:</p>
 <p><img src="/images/RL/background/prob_20.png" width="600"></p>
 <p><strong>Note that, cdf is defined <span class="math inline">\(\quad \forall x \in \mathbb{R}\)</span>.</strong></p>
 <p>Remember that <span class="math inline">\(P_X (\cdot)\)</span> is the probability set function (distribution) of the random variable <span class="math inline">\(X\)</span>. The cdf is the probability of event (subset of <span class="math inline">\(\mathbb{D}\)</span>, the random variable range space): <span class="math inline">\(\{a: a \leq x, a \in \mathbb{D}\}\)</span>, this is the same as the event (defined on sample space): <span class="math inline">\(\{c: X(c) \leq x, c \in \mathbb{B}\}\)</span>.</p>
 <p><br></p>
-<h4 id="equal-in-distribution">Equal in Distribution</h4>
+<h3 id="equal-in-distribution">Equal in Distribution</h3>
 <p>Let <span class="math inline">\(X, Y\)</span> be two random variables. We say that <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are <strong>equal in distribution</strong> and write:</p>
 <p><span class="math display">\[X \overset{D}{=} Y\]</span></p>
 <p>IFF:</p>
@@ -3157,7 +3263,7 @@ V^{\pi} (x) &amp;= E^{\pi}[\sum^{\infty}_{t = 1} \gamma^{t - 1} R_{t} \; |\; X_1
 <p>Notice that, equal in distribution does not mean the random variables are the same. For examples, let <span class="math inline">\(X\)</span> be a random variable sampled from range <span class="math inline">\([0, 1)\)</span>, let <span class="math inline">\(Y = 1 - X\)</span>, then <span class="math inline">\(Y\)</span> also has range <span class="math inline">\([0, 1)\)</span>. At the same time, for <span class="math inline">\(x &lt; 0\)</span>, the cdf for both random variables is 0, for <span class="math inline">\(x &lt; 0\)</span>, the cdf for both random variables is 1. And, for <span class="math inline">\(0 \leq x &lt; 1\)</span>, the cdf is <span class="math inline">\(x\)</span> for both random variables. But this two random variables are clearly different.</p>
 <p><img src="/images/RL/background/prob_21.png" width="600"></p>
 <p><br></p>
-<h4 id="theorems-for-cdf">Theorems for CDF</h4>
+<h3 id="theorems-for-cdf">Theorems for CDF</h3>
 <p><img src="/images/RL/background/prob_22.png" width="600"></p>
 <p><img src="/images/RL/background/prob_23.png" width="600"></p>
 <p><strong>Proof of Theorem 1.5.2</strong></p>
@@ -3224,6 +3330,24 @@ P_X (\{-1, 1\}) = \underset{x \in \{-1, 1\}}{\sum} p_X (x), \quad &amp;y = 1\\
 \end{cases}
 \]</span></p>
 </blockquote>
+<h3 id="continuous-random-variables">Continuous Random Variables</h3>
+<p><img src="/images/RL/background/prob_27.png" width="600"></p>
+<p>Recall that, a point of discontinuity in cdf has <span class="math inline">\(P(X=x) = F_X(x) - F_X (x -) &gt; 0\)</span>, for any random variable. Hence, for a continuous random variable <span class="math inline">\(X\)</span>, there are no points of discrete mass <span class="math inline">\(\implies P(X=x) =0, \quad \forall x \in \mathbb{R}\)</span>. Most continuous random variables are <code>absolutely continuous</code>:</p>
+<p><span class="math display">\[F_X (x) = \int^{x}_{-\infty} f_X(t) dt\]</span></p>
+<p>For some function <span class="math inline">\(f_X\)</span> or <span class="math inline">\(f_X (t)\)</span>. The function <span class="math inline">\(f_X (t)\)</span> is called a <code>probabability density function</code> (pdf) of <span class="math inline">\(X\)</span>. If <span class="math inline">\(f_X (x)\)</span> is also continuous, then the fundamental theorem of calculus implies that:</p>
+<p><span class="math display">\[\frac{d}{dx}F_X (x) = \frac{d}{dx}\int^{x}_{-\infty} f_X(t) dt = f_X (x)\]</span></p>
+<p><br></p>
+<p>The <code>support</code> <span class="math inline">\(S\)</span> of a continuous random variable <span class="math inline">\(X\)</span> consists of all points <span class="math inline">\(x\)</span> such that <span class="math inline">\(f_X(x) &gt; 0\)</span>.</p>
+<p>If <span class="math inline">\(X\)</span> is a continuous random variable, then probabilities can be obtained by integration:</p>
+<p><span class="math display">\[P_X (a &lt; X \leq b) = F_{X} (b) - F_{X} (a) = \int^{b}_{-\infty} f_X(t) dt - \int^{a}_{-\infty} f_X(t) dt = \int^{b}_{a} f_X(t) dt\]</span></p>
+<p>Also, for continuous random variables:</p>
+<p><span class="math display">\[P_X(a &lt; X \leq b) = P_X(a \leq X \leq b) = P_X (a \leq X &lt; b) = P_X(a &lt; X &lt; b)\]</span></p>
+<p>The pdfs satisfy two properties:</p>
+<p><span class="math display">\[f_X(x) \leq 0 \quad \quad \quad \int^{\infty}_{-\infty} f_X(t) dt = 1\]</span></p>
+<p>At the same time, if a function satisfies the above two properties then it is a pdf for a continuous random variable.</p>
+<h4 id="quantiles">Quantiles</h4>
+<p><code>Quantile</code> (percentiles) are easily interpretable characteristics of a distribution.</p>
+<p><img src="/images/RL/background/prob_28.png" width="600"></p>
 <h3 id="functions-of-random-variables">Functions of Random Variables</h3>
 <p>Given a R.V <span class="math inline">\(X\)</span>, one may generate other R.V by applying various transformation on <span class="math inline">\(X\)</span>. For example, <span class="math inline">\(Y = g(X) = a + bX\)</span>. <span class="math inline">\(Y=g(X)\)</span> here is also a R.V, since it provides a numerical value for each possible outcome. This is because every outcome in the sample space defines a numerical value <span class="math inline">\(x\)</span> for <span class="math inline">\(X\)</span> and hence also the numerical value <span class="math inline">\(y = g(x)\)</span> for <span class="math inline">\(Y\)</span>. If <span class="math inline">\(X\)</span> is discrete and its PMF <span class="math inline">\(p_Y\)</span> can be calculated using the PMF of <span class="math inline">\(X\)</span>:</p>
 <p><span class="math display">\[p_Y(y) = \sum_{\{x | g(x) = y\}} p_X (x)\]</span></p>
