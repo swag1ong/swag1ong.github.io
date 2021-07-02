@@ -252,7 +252,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-30 23:50:53" itemprop="dateModified" datetime="2021-06-30T23:50:53+08:00">2021-06-30</time>
+        <time title="Modified: 2021-07-02 00:26:52" itemprop="dateModified" datetime="2021-07-02T00:26:52+08:00">2021-07-02</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -279,14 +279,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>0</span>
+      <span>1.7k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>2 mins.</span>
     </span>
 </div>
 
@@ -297,7 +297,25 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          
+          <h1 id="probability-background-2">Probability Background (2)</h1>
+<h2 id="distribution-of-two-random-variables">Distribution of Two Random Variables</h2>
+<p>Intuitive Example:</p>
+<blockquote>
+<p>Let our experiment be flipping a coin 3 times. Then our sample space <span class="math inline">\(\Omega = \{HHH, THH, TTH, TTT, THT, HTH, HTT, HHT\}\)</span>. Let <span class="math inline">\(X_1\)</span> be the number of head on the first two tosses and <span class="math inline">\(X_2\)</span> be the number of heads on all three tosses. Then, our interest can be represented by the pair of random variables (X_1, X_2), for example <span class="math inline">\((X_1 (HTH), X_2(HTH)) = (1, 2)\)</span>. Continuing this way, <span class="math inline">\(X_1, X_2\)</span> are real-valued functions defined on the sample space <span class="math inline">\(\Omega\)</span>, which take the outcome and map from sample space to ordered number pairs: <span class="math display">\[\mathbb{D} = \{(0, 0), (0, 1), (1, 1), (1, 2), (2, 2), (2, 3)\}\]</span></p>
+<p>One the other hand, we can regard this ordered pair of functions as a vector function <span class="math inline">\(f: \Omega \rightarrow \mathbb{D} \subset \mathbb{R}^2\)</span> defined by <span class="math inline">\(f(x) = &lt;X_1(x), \; X_2(x)&gt;, \quad x \in \Omega\)</span>.</p>
+</blockquote>
+<p><img src="/images/RL/background/prob_33.png" width="600"></p>
+<p>We often denote random vectors using vector notations <span class="math inline">\(\mathbf{X} = (X_1, X_2)^{\prime}\)</span> as a column vector.</p>
+<p>Let <span class="math inline">\(\mathbb{D}\)</span> be the range space of <span class="math inline">\((X_1, X_2)\)</span>. Let <span class="math inline">\(A\)</span> be a subset of <span class="math inline">\(\mathbb{D}\)</span>. We can uniquely define the distribution of this random vector <span class="math inline">\(P_{X_1, X_2}\)</span> in terms of the <code>CDF</code>:</p>
+<p><span class="math display">\[F_{X_1, X_2} (x_1, x_2) = P_{X_1, X_2}((X_1 \leq x_1) \cap (X_2 \leq x_2)) = P_{X_1, X_2}(X_1 \leq x_1, \; X_2 \leq x_2)\]</span></p>
+<p>For all <span class="math inline">\((x_1, x_2) \in \mathbb{R}^2\)</span>. At the same time:</p>
+<p><span class="math display">\[P_{X_1, X_2}(a_1 &lt; X_1 \leq b_1, \; a_2 &lt; X_2 \leq b_2) = F_{X_1, X_2} (b_1, b_2) -  F_{X_1, X_2} (a_1, b_2) -  F_{X_1, X_2} (b_1, a_2) +  F_{X_1, X_2} (a_1, a_2)\]</span></p>
+<p>Hence, all induced probabilities can be formulated in terms of the cdf. We often call this cdf the <code>joint cumulative distribution</code>.</p>
+<p><br></p>
+<h4 id="discrete-random-vector">Discrete Random Vector</h4>
+<p>A random vector <span class="math inline">\((X_1, X_2)\)</span> is <code>discrete random vector</code> if its range space <span class="math inline">\(\mathbb{D}\)</span> is finite or countable. Hence, <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> are <strong>both discrete</strong>. The <code>joint probability mass function</code> of <span class="math inline">\((X_1, X_2)\)</span> <span class="math inline">\(p_{X_1, X_2}\)</span> is defined by:</p>
+<p><span class="math display">\[p_{X_1, X_2} (x_1, x_2) = P(\{c_1: X_1 (c_1) = x_1\} \cap \{c_2: X_2 (c_2) = x_2\})\]</span></p>
+<p>for all <span class="math inline">\((x_1, x_2) \in \mathbb{D}\)</span></p>
 
       
     </div>
@@ -355,7 +373,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-30 23:49:52" itemprop="dateModified" datetime="2021-06-30T23:49:52+08:00">2021-06-30</time>
+        <time title="Modified: 2021-07-01 23:39:08" itemprop="dateModified" datetime="2021-07-01T23:39:08+08:00">2021-07-01</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -400,7 +418,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h1 id="probability-background">Probability Background</h1>
+          <h1 id="probability-background-1">Probability Background (1)</h1>
 <h2 id="sets">Sets</h2>
 <p>A set is a collection of objects, which are the elements of set. If S is a set and <span class="math inline">\(x\)</span> is an element of <span class="math inline">\(S\)</span>, we write <span class="math inline">\(x \in S\)</span>. If <span class="math inline">\(x\)</span> is not an element of <span class="math inline">\(S\)</span>, we write <span class="math inline">\(x \notin S\)</span>. A set can have no elements, in which case it is called the empty set, denoted by <span class="math inline">\(\emptyset\)</span>.</p>
 <h3 id="finite-countable-uncountable">Finite, Countable, Uncountable</h3>
@@ -1422,13 +1440,13 @@ Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \ha
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">248k</span>
+    <span title="Symbols count total">257k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">3:45</span>
+    <span title="Reading time total">3:53</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

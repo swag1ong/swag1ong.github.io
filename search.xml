@@ -285,32 +285,6 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
       </tags>
   </entry>
   <entry>
-    <title>Double Q Learning</title>
-    <url>/2021/05/07/FA-issues/</url>
-    <content><![CDATA[<h1 id="double-q-learning">Double Q-learning</h1>
-<h2 id="the-overestimation-phenomenon">The Overestimation Phenomenon</h2>
-<p>Assume the agent observes during learning that action <span class="math inline">\(a\)</span> and executed at state <span class="math inline">\(s\)</span> resulting in the state <span class="math inline">\(s^{\prime}\)</span> and some immediate reward <span class="math inline">\(r^{a}_{s}\)</span>. The Q-learning update can be written as:</p>
-<p><span class="math display">\[Q(s, a) \leftarrow r^{a}_{s} + \gamma \max_{\hat{a}} Q(s^{\prime}, \hat{a})\]</span></p>
-<p>It has been shown that repeated application of this update equation eventually yields <span class="math inline">\(Q\)</span>-values that give rise to a policy which maximizes the expected cumulative discounted reward. However, these results only apply when <span class="math inline">\(Q-\)</span>values are stored precisely. (e.g by a look up table)</p>
-<p>Assume, instead, let <span class="math inline">\(Q\)</span> be represented as a function approximator that induces some noise on the estimates of <span class="math inline">\(Q\)</span>. More specifically, let us assume that the current stored <span class="math inline">\(Q-\)</span>values, denoted by <span class="math inline">\(Q^{approx}\)</span>, represent some implicit target values <span class="math inline">\(Q^{target}\)</span>, corrupted by a noise term <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span>, which is due to the function approximator:</p>
-<p><span class="math display">\[Q^{approx} (s^{\prime}, \hat{a}) = Q^{target} (s^{\prime}, \hat{a}) + Y^{\hat{a}}_{s^{\prime}}\]</span></p>
-<p>Here the noise is modeled by the family of random variable <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span> with zero mean:</p>
-<span class="math display">\[\begin{aligned}
-Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) -  (r^{a}_{s} + \gamma \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a})) \\
-&amp;= \gamma (\max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) - \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a}))\\
-\end{aligned}\]</span>
-<p>Clearly, the noise causes some error on the left-hand side.</p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>VFA</category>
-      </categories>
-      <tags>
-        <tag>Function Approximation</tag>
-        <tag>Discussions</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Dueling Network Architectures for DRL</title>
     <url>/2021/05/13/Dueling/</url>
     <content><![CDATA[<h1 id="dueling-network-architectures-for-deep-reinforcement-learning">Dueling Network Architectures for Deep Reinforcement Learning</h1>
@@ -371,6 +345,32 @@ Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \ha
       <tags>
         <tag>Function Approximation</tag>
         <tag>Continuous State Space</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Double Q Learning</title>
+    <url>/2021/05/07/FA-issues/</url>
+    <content><![CDATA[<h1 id="double-q-learning">Double Q-learning</h1>
+<h2 id="the-overestimation-phenomenon">The Overestimation Phenomenon</h2>
+<p>Assume the agent observes during learning that action <span class="math inline">\(a\)</span> and executed at state <span class="math inline">\(s\)</span> resulting in the state <span class="math inline">\(s^{\prime}\)</span> and some immediate reward <span class="math inline">\(r^{a}_{s}\)</span>. The Q-learning update can be written as:</p>
+<p><span class="math display">\[Q(s, a) \leftarrow r^{a}_{s} + \gamma \max_{\hat{a}} Q(s^{\prime}, \hat{a})\]</span></p>
+<p>It has been shown that repeated application of this update equation eventually yields <span class="math inline">\(Q\)</span>-values that give rise to a policy which maximizes the expected cumulative discounted reward. However, these results only apply when <span class="math inline">\(Q-\)</span>values are stored precisely. (e.g by a look up table)</p>
+<p>Assume, instead, let <span class="math inline">\(Q\)</span> be represented as a function approximator that induces some noise on the estimates of <span class="math inline">\(Q\)</span>. More specifically, let us assume that the current stored <span class="math inline">\(Q-\)</span>values, denoted by <span class="math inline">\(Q^{approx}\)</span>, represent some implicit target values <span class="math inline">\(Q^{target}\)</span>, corrupted by a noise term <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span>, which is due to the function approximator:</p>
+<p><span class="math display">\[Q^{approx} (s^{\prime}, \hat{a}) = Q^{target} (s^{\prime}, \hat{a}) + Y^{\hat{a}}_{s^{\prime}}\]</span></p>
+<p>Here the noise is modeled by the family of random variable <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span> with zero mean:</p>
+<span class="math display">\[\begin{aligned}
+Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) -  (r^{a}_{s} + \gamma \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a})) \\
+&amp;= \gamma (\max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) - \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a}))\\
+\end{aligned}\]</span>
+<p>Clearly, the noise causes some error on the left-hand side.</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Discussions</tag>
       </tags>
   </entry>
   <entry>
@@ -916,6 +916,41 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
       </tags>
   </entry>
   <entry>
+    <title>Bellman Equations</title>
+    <url>/2021/05/03/bellman-equations/</url>
+    <content><![CDATA[<p><em>Please read post on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> prior this post</em></p>
+<h1 id="bellman-equations">Bellman Equations</h1>
+<p>By expanding value functions, we reveal the recursive property of return:</p>
+<p><span class="math display">\[
+\begin{aligned}
+V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
+&amp; = E[R_{t} + \gamma G^{\pi}_{t+1} | X_{t} = x]\\
+&amp; = E_{a \sim \pi(a | s)}[R_{t} | X_{t} = x] + \gamma E[G^{\pi}_{t+1} | X_{t} = x]\\
+&amp; = r^{\pi} (x) + \gamma E[V^{\pi} (X_{t+1}) | X_{t} = x]\\
+\end{aligned}
+\]</span> <span id="more"></span></p>
+<p>Where: <span class="math display">\[V^{\pi} (X_{t+1}) = E[G^{\pi}_{t+1} | X_{t+1}] \]</span></p>
+<p><span class="math display">\[\implies E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[V^{\pi} (X_{t+1}) | X_t=x_t] = E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[E[G^{\pi}_{t+1} | X_{t+1}] | X_{t}=x_t] = E[G^{\pi}_{t+1} | X_{t} = x_t]\]</span></p>
+<p>This implies that neither side is random, by expanding:</p>
+<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x]\]</span></p>
+<p>we get:</p>
+<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
+<p>Thus, the value function can be expressed as:</p>
+<p><span class="math display">\[V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
+<p>This is the <span style="color:red"><strong>bellman equation</strong> </span> for a policy <span class="math inline">\(\pi\)</span>, this can be interpreted as: The value of following a policy <span class="math inline">\(\pi\)</span> is the expected immediate reward that the <span class="math inline">\(\pi\)</span>-following agent receives at that state plus the discounted average(expected) value that the agent receives at the next-state.</p>
+<p>Same for action-value function, we have bellman equation:</p>
+<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (da^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
+<p>Compare with value function, we have expected reward base on action <span class="math inline">\(a\)</span> plus discounted average(expected) value that the agent receives at the next-state following <span class="math inline">\(\pi\)</span> (the choice of action is given at state <span class="math inline">\(s\)</span> in action value function)</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>Basics</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Bellman Equations for Optimal Value Functions</title>
     <url>/2021/05/03/bellman-optimality-equations/</url>
     <content><![CDATA[<p><em>Please read posts on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> and <a href="/2021/05/03/bellman-equations/" title="Bellman Equations">Bellman Equations</a> prior this post.</em></p>
@@ -1065,41 +1100,6 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
 \end{aligned}\]</span>
 <p><strong>Thus, we can conclude that <span class="math inline">\(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></strong></p>
 <p><span style="color:red"><strong>Together, we showed that <span class="math inline">\(V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^{*}}\)</span>, the solution of bellman optimality equation is the optimal value function</strong></span></p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>Basics</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Bellman Equations</title>
-    <url>/2021/05/03/bellman-equations/</url>
-    <content><![CDATA[<p><em>Please read post on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> prior this post</em></p>
-<h1 id="bellman-equations">Bellman Equations</h1>
-<p>By expanding value functions, we reveal the recursive property of return:</p>
-<p><span class="math display">\[
-\begin{aligned}
-V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
-&amp; = E[R_{t} + \gamma G^{\pi}_{t+1} | X_{t} = x]\\
-&amp; = E_{a \sim \pi(a | s)}[R_{t} | X_{t} = x] + \gamma E[G^{\pi}_{t+1} | X_{t} = x]\\
-&amp; = r^{\pi} (x) + \gamma E[V^{\pi} (X_{t+1}) | X_{t} = x]\\
-\end{aligned}
-\]</span> <span id="more"></span></p>
-<p>Where: <span class="math display">\[V^{\pi} (X_{t+1}) = E[G^{\pi}_{t+1} | X_{t+1}] \]</span></p>
-<p><span class="math display">\[\implies E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[V^{\pi} (X_{t+1}) | X_t=x_t] = E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[E[G^{\pi}_{t+1} | X_{t+1}] | X_{t}=x_t] = E[G^{\pi}_{t+1} | X_{t} = x_t]\]</span></p>
-<p>This implies that neither side is random, by expanding:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x]\]</span></p>
-<p>we get:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
-<p>Thus, the value function can be expressed as:</p>
-<p><span class="math display">\[V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
-<p>This is the <span style="color:red"><strong>bellman equation</strong> </span> for a policy <span class="math inline">\(\pi\)</span>, this can be interpreted as: The value of following a policy <span class="math inline">\(\pi\)</span> is the expected immediate reward that the <span class="math inline">\(\pi\)</span>-following agent receives at that state plus the discounted average(expected) value that the agent receives at the next-state.</p>
-<p>Same for action-value function, we have bellman equation:</p>
-<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (da^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
-<p>Compare with value function, we have expected reward base on action <span class="math inline">\(a\)</span> plus discounted average(expected) value that the agent receives at the next-state following <span class="math inline">\(\pi\)</span> (the choice of action is given at state <span class="math inline">\(s\)</span> in action value function)</p>
 ]]></content>
       <categories>
         <category>RL</category>
@@ -1400,168 +1400,6 @@ V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
       </tags>
   </entry>
   <entry>
-    <title>go_explore</title>
-    <url>/2021/06/25/go-explore/</url>
-    <content><![CDATA[<h1 id="go-explore-a-new-approach-for-hard-exploration-problems">Go-Explore: a New Approach for Hard-Exploration Problems</h1>
-<h2 id="definitions">Definitions</h2>
-<p><strong>What is hard-exploration problem?</strong></p>
-<ol type="1">
-<li>Sparse rewards: precise sequences of many actions must be taken between obtaining rewards.</li>
-<li>Deceptive rewards: the reward function provides misleading feedback for reaching overall global objective.</li>
-</ol>
-<p>Both sparse and deceptive reward problems constitute "hard-exploration" problems.</p>
-<p><br></p>
-<p><strong>What is Derailment?</strong></p>
-<p>Typical IM agents have two layers of exploration mechanisms:</p>
-<ol type="1">
-<li>Higher level IR incentive that rewards when new states are reached, the IM agents rely on this mechanism to return to high IR promising states.</li>
-<li>A more basic exploratory mechanism such as epsilon-greedy exploration, action-space noise, or parameter-space noise. The IM agents rely on this mechanism to explore high IR states.</li>
-</ol>
-<p>However, to return to a previously discovered high IR state, a longer, more complex and more precise sequence of actions is needed. In this case, the lower level exploration mechanism (e.g epsilon greedy) will "derail" the agent from ever returning to that state (The needed precise actions are naively perturbed by the basic exploration mechanism).</p>
-<p><br></p>
-<p><strong>What is detachment?</strong></p>
-<p>Detachment is idea that an agent driven by Intrinsic Motivation could become detached from the frontiers of high intrinsic reward. IM is nearly always a consumable resource: a curious agent is curious about state to the extent that it has not often visited them. If an agent discovers multiple areas of the state space that produce high IR, its policy may in the short term focus on one such area. After exhausting some of the IR offered by that area, the policy may by chance begin consuming IR in another area. Once it has exhausted that IR, it is difficult for it to rediscover the frontier it detached from in the initial area, because it has already consumed the IR that led to that frontier and it likely will not remember how to return to that frontier due to catastrophic forgetting.</p>
-<p>In theory, a replay buffer could prevent detachment, but in practicce it would have to be large to prevent data about the abandoned frontier to not be purged before it becomes needed, and large replay buffers introduce their own optimization stability difficulties.</p>
-<p><img src="/images/RL/papers/go_explore.png" width="600"></p>
-<span id="more"></span>
-<h2 id="go-explore-algorithm">Go Explore Algorithm</h2>
-<p>Go-Explore is an explicit response to both detachment and derailment that is also designed to achieve robust solutions in stochastic environments. To deal with:</p>
-<ol type="1">
-<li><strong>Detachment</strong>: The algorithm explicitly stores an archive of promising states visited so taht they can then be revisited and explored from later.</li>
-<li><strong>Derailment</strong>: The algorithm decomposes the basic exploration mechanism into first returning to a promising state without intentionally adding any exploration then exploring further from the promising state.</li>
-</ol>
-<p>The algorithm works in two phases:</p>
-<ol type="1">
-<li><p><strong>Phase 1</strong>: solve the problem in a way that may be brittle, such as solving a deterministic version of the problem. Phase 1 focuses on exploring infrequently visited states which forms the basis for dealing with sparse-reward and deceptive problems.</p>
-<ol type="a">
-<li>Add all interestingly different states visited so far into the archive</li>
-<li>Each time a state from the archive is selected to explore from, first <strong>GO</strong> back to the state without adding exploration, and then <strong>Explore</strong> further from that state in search of new states.</li>
-</ol></li>
-</ol>
-<p><br></p>
-<ol start="2" type="1">
-<li><p><strong>Phase 2</strong>: robustify (train to be able to reliably perform the solution in the presence of stochasticity) via imitation learning or learning from demonstrations. The only difference with Go-Explore is that the solution demonstrations are produced automatically by Phase 1 instead of being provided by humans. If in the first phase, we obtain a policy that is robust in stochastic environment, then we do not need this second phase.</p>
-<ul>
-<li><strong>Input</strong>: One or more high-performing trajectories from phase 1</li>
-<li><strong>Output</strong>: A robust policy able to consistently achieve similar performance.</li>
-</ul></li>
-</ol>
-<h3 id="phase-1-explore-until-solved">Phase 1: Explore until solved</h3>
-<p>The purpose of Phase 1 is to explore the state space and find one or model high-performing trajectories that can later be turned into a robust policy in Phase 2. To do this, phase 1 builds up an archive of interestingly different game states, which we call <code>cells</code>, and the trajectories that lead to them. It starts with an archive that only contains the starting state. From there, it builds the archive by repeating the following procedure:</p>
-<ol type="1">
-<li><p>choose a cell from the current archive</p></li>
-<li><p>return to that cell without adding any stochastic exploration</p></li>
-<li><p>explore from that location stochastically</p></li>
-</ol>
-<h4 id="cell-representations">Cell representations</h4>
-<p>In theory, one can store high-dimensional states as cell with one cell representing one state. However, this is intractable in practice. To be tractable in high-dimensional state spaces, we need to reduce the dimensionality of the state space (although the final policy will still play in the same original state space). Thus, we want the cell representation to conflate similar states while not conflating states that are meaningfully different.</p>
-<p><br></p>
-<p><strong>Cell representations without domain knowledge</strong></p>
-<p>We found that a very simple dimensionality reduction procedure produces surprisingly good results on Montezuma's Revenge. The main idea is to downsample the current game frame. Specifically:</p>
-<ol type="1">
-<li>Convert each game frame image to grayscale</li>
-<li><strong>Downscale</strong> it to an <span class="math inline">\(11 \times 8\)</span> image with area interpolation (i.e using the average piel value in the area of the downsampled pixel)</li>
-<li>rescale <strong>pixel intensities</strong> so that they are integers between 0 and 8, instead of original 0 to 255.</li>
-</ol>
-<p>The downscaling dimensions and pixel-intensity range were found by grid search.</p>
-<p><img src="/images/RL/papers/go_explore_2.png" width="600"></p>
-<p><br></p>
-<p><strong>Cell representations with domain knowledge</strong></p>
-<p>In <strong>Montezuma's Revenge</strong>, domain knowledge is provided as unique combinations of:</p>
-<ol type="1">
-<li><p>the <span class="math inline">\(x, y\)</span> position of the agent (descretized into a grid in which each cell is <span class="math inline">\(16 \times 16\)</span> pixels)</p></li>
-<li><p>room number</p></li>
-<li><p>level number</p></li>
-<li><p>rooms that the currently-held keys were found</p></li>
-</ol>
-<p>In <strong>Pitfall</strong>, only the <span class="math inline">\(x, y\)</span> position of the agent and room number is used.</p>
-<p>All of this information was extracted directly from pixels with simple hand-coded classifiers to detect objects such as the main character's location combined with our knowledge of the map structure in the two games.</p>
-<p>While Phase 1 provides the opportunity to leverage domain knowledge in the cell representation, the robustified Neural Network produced by Phase 2 still plays directly form pixels only.</p>
-<h4 id="selecting-cells">Selecting cells</h4>
-<p>In each iteration of Phase 1, a cell is chosen from the archive to explore from. This choice could be made:</p>
-<ol type="1">
-<li>Uniformly at random</li>
-<li>Assign a positive weight to each cell that is higher for cells that are deemed more promising (less often visited cells, have recently contributed to discovering a new cell, expected to be near undiscovered cells and etc..). The weights of all cells are normalized to represent the probability distribution over the current cell space. No cell is ever given a weight of 0.</li>
-</ol>
-<h6 id="count-subscore">Count Subscore</h6>
-<p>The score of a cell is the sum of separate subscores. One important set of such subscores is called the <code>count subscore</code>s. <code>Count subscore</code>s are computed from attributes of cells that represent the number of times a cell was interacted with in different ways. Specifically:</p>
-<ol type="1">
-<li><p>The number of times the cell has already been chosen (i.e selected as a cell to explore from)</p></li>
-<li><p>The number of times the cell was visited at any point during the exploration phase</p></li>
-<li><p>the number of times a cell has been chosen since exploration from it last produced the discovery of a new or better cell.</p></li>
-</ol>
-<p>Lower counts of these attributes indicate a more promising cell to explore from (e.g. a cell that has been chosen more times already is less likely to lead to new cells than a cell that has been chosen fewer times). The <code>count subscore</code> for each of these attribute is given by:</p>
-<p><span class="math display">\[CntScore (c, a) = w_a \cdot (\frac{1}{v(c, a) + \epsilon_1})^{p_a} + \epsilon_2\]</span></p>
-<p>Here:</p>
-<ul>
-<li><p><span class="math inline">\(c\)</span> is the cell for which we are calculating the score</p></li>
-<li><p><span class="math inline">\(v(c, a)\)</span> is the value of attribute <span class="math inline">\(a\)</span> for cell <span class="math inline">\(c\)</span></p></li>
-<li><p><span class="math inline">\(w_a\)</span> is the weight hyperparameter for attribute <span class="math inline">\(a\)</span></p></li>
-<li><p><span class="math inline">\(p_a\)</span> is the power hyperparameter for attribute <span class="math inline">\(a\)</span></p></li>
-<li><p><span class="math inline">\(\epsilon_1\)</span> is a normalization parameter to prevent zero division</p></li>
-<li><p><span class="math inline">\(\epsilon_2\)</span> helps guarantee that no cell ever has a 0 probability of being chosen</p>
-<p><span class="math inline">\(\epsilon_1=0.001, \epsilon_2=0.00001\)</span> are the default values.</p></li>
-</ul>
-<h6 id="neighbor-subscore">Neighbor Subscore</h6>
-<p>Given the position of <span class="math inline">\(x, y\)</span>, it is possible to determine the possible neighbors of given cells and whether these neighbors are already present in the archive. For these cases, we define a set of <code>neighbor subscore</code>s. Each neighbor subscore is defined as <span class="math inline">\(w_n\)</span> if neighbor <span class="math inline">\(n\)</span> does not exist in the archive, 0 if the does exist.</p>
-<p>The motivation of neighbor subscore is that the cells that are lacking neighbors are likely at the edge of the current frontier of knowledge and are thus more likely to yield new cells. We consider 3 types of neighbors:</p>
-<ol type="1">
-<li>Vertical (2)</li>
-<li>Horizontal (2)</li>
-<li>cells taht are in the same level, room, <span class="math inline">\(x, y\)</span> position, but are holding a larger number of keys</li>
-</ol>
-<p>Neighbors of the same type share the same value for <span class="math inline">\(w_n\)</span>, then the score is calculated by:</p>
-<p><span class="math display">\[NeighScore(c, n) = w_n * (1 - HasNeighbor(c, n))\]</span></p>
-<p>Where <span class="math inline">\(c\)</span> is current cell and <span class="math inline">\(n \in Vertical \cup Horizontal \cup MoreKeys\)</span> is current neighbor. In cases without domain knowledge, it is unclear what exactly would constitute a cell's neighbor, and so <code>neighbor score</code> is defined as 0.</p>
-<h6 id="level-weight-only-montezumas-revenge">Level Weight (Only Montezuma's Revenge)</h6>
-<p>In the case of Montezuma's Revenge with domain knowledge, cells are exponentially downweighted based on the distance to the maximum level currently reached, thereby favoring progress in the furthest level reached, while skill keeping open the possibility of improving previous level's trajectories:</p>
-<p><span class="math display">\[LevelWeight (c) = 0.1^{MaxLevel - Level(c)}\]</span></p>
-<p>In the case of no domain knowledge, <span class="math inline">\(LevelWeight (c) = 1, \quad \forall c\)</span></p>
-<h5 id="final-score-and-final-cell-probability">Final Score and Final Cell Probability</h5>
-<p>The final score is then:</p>
-<p><span class="math display">\[CellScore (c) = LevelWeight (c) \cdot [(\sum_n NeighScore (c, n)) + \sum_a CntScore (c, a) + 1]\]</span></p>
-<p>The final probability is then:</p>
-<p><span class="math display">\[CellProb (c) = \frac{CellScore (c)}{\sum_{c^{\prime}}CellScore (c^{\prime})}\]</span></p>
-<p><br></p>
-<h4 id="returning-to-cells-and-opportunities-to-exploit-deterministic-simulators">Returning to cells and opportunities to exploit deterministic simulators</h4>
-<p>The easiest way to return to a cell is if the world is deterministic and resettable, such that one can reset the state of the simulator to a previous visit to that cell. The ability to harness determinism and perform such resets forces us to recognize that there are two different types of problems we wish to solve with RL algorithms:</p>
-<ol type="1">
-<li>Require stochasticity at test time only</li>
-<li>Require stochasticity during both testing and training time (further research)</li>
-<li>Environment that prevents return to cells (further research)</li>
-</ol>
-<p>We can take advantage of the fact simulators can be made deterministic to improve performance, especially on hard-exploration problems. For many types of problems, we want a reliable final solution (e.g. a robot that reliably finds survivors after a natural disaster) and there is no principled reason to care whether we obtain this solution via initially deterministic training. If we can solve previously unsolvable problems, including ones that are stochastic at evaluation (test) time, via making simulators deterministic, we should take advantage of this opportunity.</p>
-<p>There are also cases where a simulator is not available and where learning algorithms must confront stochasticity during training. We can train goal-conditioned policies that reliably return to cells in the archive during the exploration phase. This strategy would result in a fully trained policy at the end of the exploration phase meaning there would be no need for a phase 2 at the end.</p>
-<p>For problems in which all we care about is a reliable policy at test time, a key insight behind Go-Explore is that we can first solve the problem (Phase 1), and then (if necessary) deal with making the solution more robust later (Phase 2).</p>
-<p>Due to the fact that the present version of Go-Explore operates in a deterministic setting during Phase 1, each cell is associated with an open-loop sequence of instructions that lead to it given the <strong>initial state</strong>, not a proper policy that maps any state to an action. A true policy is produced during robustification in Phase 2.</p>
-<p><strong>Sequence of actions and states are stored for each cell</strong></p>
-<p><br></p>
-<h4 id="exploration-from-cells">Exploration from cells</h4>
-<p>Once a cell is reached, any exploration method can be applied to find new cells. In this work, the agent explores by taking random actions <span class="math inline">\(k = 100\)</span> training frames, with a 95% probability of repeating the previous action at each training frame. Besides reaching the <span class="math inline">\(k = 100\)</span> training frame limit for exploration, exploration is also aborted at the episodes' end, and the action that led to the episode ending is ignored because it does not produce a destination cell.</p>
-<p>This exploration does not require a neural network or other controller.</p>
-<p><br></p>
-<h4 id="updating-the-archive">Updating the archive</h4>
-<p>While an agent is exploring from a cell, the archive updates in two conditions:</p>
-<ol type="1">
-<li><p>When the agent visits a cell that was no yet in the archive (which can happen multiple times while exploring from a given cell). In this case, , that cell is added to the archive with four associated pieces of meta data:</p>
-<ul>
-<li>A full trajectory from the starting state to that cell (states and actions)</li>
-<li>The state of the environment at the time of discovering the cell (if the environment supports such an operation)</li>
-<li>The cumulative score of that trajectory</li>
-<li>The length of that trajectory</li>
-</ul></li>
-<li><p>The second condition is when a newly-encountered trajectory is "better" than that belonging to a cell already in the archive. We define a new trajectory is "better" than an existing trajectory when the new trajectory either has:</p>
-<ul>
-<li>A higher cumulative score</li>
-<li>A shorter trajectory with the same score</li>
-</ul>
-<p>In either case, we update the existing cell in the archive with new trajectory, new trajectory length, new environment state and new score. In addition, information regarding the likelihood of this cell being chosen resets including the total number of times the cell has been chosen and the number of times the cell has been chosen since leading to the discovery of another cell. Resetting these values is beneficial when cells conflate many different states because a new way of reaching a cell may actually be a more promising stepping stone to explore from (so we want to encourage its selection).</p></li>
-</ol>
-<h4 id="batch-implementation">Batch Implementation</h4>
-<p>Phase 1 is implemented in parallel to take advantage of multiple CPUs. At each step, a batch of <span class="math inline">\(b\)</span> cells is selected with replacement and exploration from each of these cells proceeds in parallel. A high <span class="math inline">\(b\)</span> saves time of recomputing cell selection probabilities less frequently, which is important as this computation accounts for a significant portion of run time as the archive gets large.</p>
-]]></content>
-  </entry>
-  <entry>
     <title>importance_sampling (under construction)</title>
     <url>/2021/05/21/importance-sampling/</url>
     <content><![CDATA[<h1 id="importance-sampling">Importance Sampling</h1>
@@ -1752,7 +1590,18 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
     <title>Notations</title>
     <url>/2030/05/30/notations/</url>
     <content><![CDATA[<h1 id="notations">Notations</h1>
-<p>I try to make notations consistent and organized, but everything can happen (Sorry, if this did happen). So I decide to keep things here for reference.</p>
+<p>I try to make notations consistent and organized, but everything can happen (Sorry, if this did happen). At the same time, I have some very wired usages of notations (redundancy, misuse and etc). So I decide to keep things here for reference.</p>
+<p><strong>Some backgrounds</strong>:</p>
+<ol type="1">
+<li><a href="/2021/05/11/probability/" title="probability (1)">probability (1)</a></li>
+<li><a href="/2021/05/11/probability-2/" title="probability (2)">probability (2)</a></li>
+<li><a href="/2021/05/14/calculus/" title="calculus (1)">calculus (1)</a></li>
+</ol>
+<h2 id="probabilies">Probabilies</h2>
+<p>To avoid confusion (Maybe redundant, but personal preference), I would only use <span class="math inline">\(P\)</span> to represent the probability distribution of events (subsets of the sample space <span class="math inline">\(\Omega\)</span>) defined over event space <span class="math inline">\(\mathbb{B}\)</span> (i.e <span class="math inline">\(P(A), \; A \in \mathbb{B}\)</span>) but not events that are subsets of range space of random variables (i.e CDF will be represented as <span class="math inline">\(F_X (x) = P_X (X \leq x)\)</span>, the subscript <span class="math inline">\(X\)</span> is used in <span class="math inline">\(P\)</span>). However, for simplicity, I will use <span class="math inline">\(P\)</span> for all probability functions. For example, the induced probability distribution of random variable <span class="math inline">\(X\)</span>, <span class="math inline">\(P_X\)</span> can be write in short <span class="math inline">\(P(X)\)</span>, so the probability at <span class="math inline">\(x\)</span>:</p>
+<p><span class="math display">\[P_X(x) = P(X=x)\]</span></p>
+<p>The joint probability distribution at <span class="math inline">\((x_1, x_2)\)</span>:</p>
+<p><span class="math display">\[P_{X_1, X_2}(x_1, x_2) = P(X_1 = x, X_2=x_2)\]</span></p>
 <h2 id="simplifications">Simplifications</h2>
 <p>Sometimes expectation over distribution of <span class="math inline">\(X\)</span> is ignored for simplification. If not specified, <span class="math inline">\(P_X = P_X (\cdot)\)</span> is the distribution for <span class="math inline">\(X\)</span>, <span class="math inline">\(p_X(x)\)</span> is the density or probability mass function at specific <span class="math inline">\(X=x\)</span>.</p>
 <p><span class="math display">\[E[X] = E_{X \sim P_X (\cdot)}[X] = E_{X \sim P_X}[X] = E_X [X]\]</span></p>
@@ -1765,7 +1614,7 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
 <p><span class="math display">\[E_X[f(X, Y)| Y] = E_X[f(X, Y)] = g(Y)\]</span></p>
 <h2 id="functions">Functions</h2>
 <p>Sometimes, if <span class="math inline">\(f\)</span> is a function defined by <span class="math inline">\(f(x)\)</span>, then I just interchange <span class="math inline">\(f, f(\cdot), f(x)\)</span> when using the term "function".</p>
-<h2 id="random-variablesx">Random Variablesx</h2>
+<h2 id="random-variables">Random Variables</h2>
 <p>I use capital letters <span class="math inline">\(X, Y, Z, ..\)</span> for random variables and lower case letters <span class="math inline">\(x, y, z, ...\)</span> for their realizations. I use <span class="math inline">\(R(X, Y)\)</span> to emphasize that the function <span class="math inline">\(R\)</span> is a random variable with random variable <span class="math inline">\(X, Y\)</span> as inputs.</p>
 <h2 id="integrals">Integrals</h2>
 <p><span class="math display">\[E[X] = \int_x p_X(x) x dx = \int_x x dp_X(x) = \int_x x p_X(dx)\]</span></p>
@@ -2019,7 +1868,25 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
   <entry>
     <title>probability (2)</title>
     <url>/2021/05/11/probability-2/</url>
-    <content><![CDATA[
+    <content><![CDATA[<h1 id="probability-background-2">Probability Background (2)</h1>
+<h2 id="distribution-of-two-random-variables">Distribution of Two Random Variables</h2>
+<p>Intuitive Example:</p>
+<blockquote>
+<p>Let our experiment be flipping a coin 3 times. Then our sample space <span class="math inline">\(\Omega = \{HHH, THH, TTH, TTT, THT, HTH, HTT, HHT\}\)</span>. Let <span class="math inline">\(X_1\)</span> be the number of head on the first two tosses and <span class="math inline">\(X_2\)</span> be the number of heads on all three tosses. Then, our interest can be represented by the pair of random variables (X_1, X_2), for example <span class="math inline">\((X_1 (HTH), X_2(HTH)) = (1, 2)\)</span>. Continuing this way, <span class="math inline">\(X_1, X_2\)</span> are real-valued functions defined on the sample space <span class="math inline">\(\Omega\)</span>, which take the outcome and map from sample space to ordered number pairs: <span class="math display">\[\mathbb{D} = \{(0, 0), (0, 1), (1, 1), (1, 2), (2, 2), (2, 3)\}\]</span></p>
+<p>One the other hand, we can regard this ordered pair of functions as a vector function <span class="math inline">\(f: \Omega \rightarrow \mathbb{D} \subset \mathbb{R}^2\)</span> defined by <span class="math inline">\(f(x) = &lt;X_1(x), \; X_2(x)&gt;, \quad x \in \Omega\)</span>.</p>
+</blockquote>
+<p><img src="/images/RL/background/prob_33.png" width="600"></p>
+<p>We often denote random vectors using vector notations <span class="math inline">\(\mathbf{X} = (X_1, X_2)^{\prime}\)</span> as a column vector.</p>
+<p>Let <span class="math inline">\(\mathbb{D}\)</span> be the range space of <span class="math inline">\((X_1, X_2)\)</span>. Let <span class="math inline">\(A\)</span> be a subset of <span class="math inline">\(\mathbb{D}\)</span>. We can uniquely define the distribution of this random vector <span class="math inline">\(P_{X_1, X_2}\)</span> in terms of the <code>CDF</code>:</p>
+<p><span class="math display">\[F_{X_1, X_2} (x_1, x_2) = P_{X_1, X_2}((X_1 \leq x_1) \cap (X_2 \leq x_2)) = P_{X_1, X_2}(X_1 \leq x_1, \; X_2 \leq x_2)\]</span></p>
+<p>For all <span class="math inline">\((x_1, x_2) \in \mathbb{R}^2\)</span>. At the same time:</p>
+<p><span class="math display">\[P_{X_1, X_2}(a_1 &lt; X_1 \leq b_1, \; a_2 &lt; X_2 \leq b_2) = F_{X_1, X_2} (b_1, b_2) -  F_{X_1, X_2} (a_1, b_2) -  F_{X_1, X_2} (b_1, a_2) +  F_{X_1, X_2} (a_1, a_2)\]</span></p>
+<p>Hence, all induced probabilities can be formulated in terms of the cdf. We often call this cdf the <code>joint cumulative distribution</code>.</p>
+<p><br></p>
+<h4 id="discrete-random-vector">Discrete Random Vector</h4>
+<p>A random vector <span class="math inline">\((X_1, X_2)\)</span> is <code>discrete random vector</code> if its range space <span class="math inline">\(\mathbb{D}\)</span> is finite or countable. Hence, <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> are <strong>both discrete</strong>. The <code>joint probability mass function</code> of <span class="math inline">\((X_1, X_2)\)</span> <span class="math inline">\(p_{X_1, X_2}\)</span> is defined by:</p>
+<p><span class="math display">\[p_{X_1, X_2} (x_1, x_2) = P(\{c_1: X_1 (c_1) = x_1\} \cap \{c_2: X_2 (c_2) = x_2\})\]</span></p>
+<p>for all <span class="math inline">\((x_1, x_2) \in \mathbb{D}\)</span></p>
 ]]></content>
       <categories>
         <category>Background</category>
@@ -2409,6 +2276,21 @@ E_{v \in S, v \prec c}[c] &amp;= \int_{v} p(v_1 \; | \; \text{DEPS}_{v_1}) p(v_2
       </tags>
   </entry>
   <entry>
+    <title>td3</title>
+    <url>/2021/06/23/td3/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
+    <title>tree</title>
+    <url>/2021/06/14/tree/</url>
+    <content><![CDATA[<h1 id="trees">Trees</h1>
+<h2 id="binary-search-tree">Binary Search Tree</h2>
+<h3 id="inorder-traversal">Inorder Traversal</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inorder</span>(<span class="params">root</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    inorder(root.left)</span><br><span class="line">    <span class="built_in">print</span>(root.val)</span><br><span class="line">    inorder(root.right)</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
     <title>Temporal Difference Learning</title>
     <url>/2021/05/15/td/</url>
     <content><![CDATA[<h1 id="learning-from-stream-of-data-temporal-difference-learning-methods">Learning From Stream of Data (Temporal Difference Learning Methods)</h1>
@@ -2492,21 +2374,6 @@ E[\delta (X, R, X^{\prime}; V^{\pi}) | X=x, A=a] &amp;= E[R + \gamma V^{\pi}(X^{
         <tag>Tabular Methods</tag>
         <tag>TD</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>td3</title>
-    <url>/2021/06/23/td3/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
-    <title>tree</title>
-    <url>/2021/06/14/tree/</url>
-    <content><![CDATA[<h1 id="trees">Trees</h1>
-<h2 id="binary-search-tree">Binary Search Tree</h2>
-<h3 id="inorder-traversal">Inorder Traversal</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inorder</span>(<span class="params">root</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    inorder(root.left)</span><br><span class="line">    <span class="built_in">print</span>(root.val)</span><br><span class="line">    inorder(root.right)</span><br></pre></td></tr></table></figure>
-]]></content>
   </entry>
   <entry>
     <title>Learning From Stream of Data</title>
@@ -2658,6 +2525,215 @@ Uniform(A), \text{w. p } \epsilon \\
 <p>with <span class="math inline">\(w \in \mathbb{R}^p\)</span> and <span class="math inline">\(\phi: X \rightarrow \mathbb{R}^p\)</span></p>
 <p>Any <span class="math inline">\(\hat{V}\)</span> belongs to the space of functions <span class="math inline">\(\mathbf{F}\)</span>:</p>
 <p><span class="math display">\[\mathbf{F} = \{x \mapsto  \phi (x)^T w : w \in \mathbb{R}^p\}\]</span></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>go_explore</title>
+    <url>/2021/06/25/go-explore/</url>
+    <content><![CDATA[<h1 id="go-explore-a-new-approach-for-hard-exploration-problems">Go-Explore: a New Approach for Hard-Exploration Problems</h1>
+<h2 id="definitions">Definitions</h2>
+<p><strong>What is hard-exploration problem?</strong></p>
+<ol type="1">
+<li>Sparse rewards: precise sequences of many actions must be taken between obtaining rewards.</li>
+<li>Deceptive rewards: the reward function provides misleading feedback for reaching overall global objective.</li>
+</ol>
+<p>Both sparse and deceptive reward problems constitute "hard-exploration" problems.</p>
+<p><br></p>
+<p><strong>What is Derailment?</strong></p>
+<p>Typical IM agents have two layers of exploration mechanisms:</p>
+<ol type="1">
+<li>Higher level IR incentive that rewards when new states are reached, the IM agents rely on this mechanism to return to high IR promising states.</li>
+<li>A more basic exploratory mechanism such as epsilon-greedy exploration, action-space noise, or parameter-space noise. The IM agents rely on this mechanism to explore high IR states.</li>
+</ol>
+<p>However, to return to a previously discovered high IR state, a longer, more complex and more precise sequence of actions is needed. In this case, the lower level exploration mechanism (e.g epsilon greedy) will "derail" the agent from ever returning to that state (The needed precise actions are naively perturbed by the basic exploration mechanism).</p>
+<p><br></p>
+<p><strong>What is detachment?</strong></p>
+<p>Detachment is idea that an agent driven by Intrinsic Motivation could become detached from the frontiers of high intrinsic reward. IM is nearly always a consumable resource: a curious agent is curious about state to the extent that it has not often visited them. If an agent discovers multiple areas of the state space that produce high IR, its policy may in the short term focus on one such area. After exhausting some of the IR offered by that area, the policy may by chance begin consuming IR in another area. Once it has exhausted that IR, it is difficult for it to rediscover the frontier it detached from in the initial area, because it has already consumed the IR that led to that frontier and it likely will not remember how to return to that frontier due to catastrophic forgetting.</p>
+<p>In theory, a replay buffer could prevent detachment, but in practicce it would have to be large to prevent data about the abandoned frontier to not be purged before it becomes needed, and large replay buffers introduce their own optimization stability difficulties.</p>
+<p><img src="/images/RL/papers/go_explore.png" width="600"></p>
+<span id="more"></span>
+<h2 id="go-explore-algorithm">Go Explore Algorithm</h2>
+<p>Go-Explore is an explicit response to both detachment and derailment that is also designed to achieve robust solutions in stochastic environments. To deal with:</p>
+<ol type="1">
+<li><strong>Detachment</strong>: The algorithm explicitly stores an archive of promising states visited so taht they can then be revisited and explored from later.</li>
+<li><strong>Derailment</strong>: The algorithm decomposes the basic exploration mechanism into first returning to a promising state without intentionally adding any exploration then exploring further from the promising state.</li>
+</ol>
+<p>The algorithm works in two phases:</p>
+<ol type="1">
+<li><p><strong>Phase 1</strong>: solve the problem in a way that may be brittle, such as solving a deterministic version of the problem. Phase 1 focuses on exploring infrequently visited states which forms the basis for dealing with sparse-reward and deceptive problems.</p>
+<ol type="a">
+<li>Add all interestingly different states visited so far into the archive</li>
+<li>Each time a state from the archive is selected to explore from, first <strong>GO</strong> back to the state without adding exploration, and then <strong>Explore</strong> further from that state in search of new states.</li>
+</ol></li>
+</ol>
+<p><br></p>
+<ol start="2" type="1">
+<li><p><strong>Phase 2</strong>: robustify (train to be able to reliably perform the solution in the presence of stochasticity) via imitation learning or learning from demonstrations. The only difference with Go-Explore is that the solution demonstrations are produced automatically by Phase 1 instead of being provided by humans. If in the first phase, we obtain a policy that is robust in stochastic environment, then we do not need this second phase.</p>
+<ul>
+<li><strong>Input</strong>: One or more high-performing trajectories from phase 1</li>
+<li><strong>Output</strong>: A robust policy able to consistently achieve similar performance.</li>
+</ul></li>
+</ol>
+<h3 id="phase-1-explore-until-solved">Phase 1: Explore until solved</h3>
+<p>The purpose of Phase 1 is to explore the state space and find one or model high-performing trajectories that can later be turned into a robust policy in Phase 2. To do this, phase 1 builds up an archive of interestingly different game states, which we call <code>cells</code>, and the trajectories that lead to them. It starts with an archive that only contains the starting state. From there, it builds the archive by repeating the following procedure:</p>
+<ol type="1">
+<li><p>choose a cell from the current archive</p></li>
+<li><p>return to that cell without adding any stochastic exploration</p></li>
+<li><p>explore from that location stochastically</p></li>
+</ol>
+<h4 id="cell-representations">Cell representations</h4>
+<p>In theory, one can store high-dimensional states as cell with one cell representing one state. However, this is intractable in practice. To be tractable in high-dimensional state spaces, we need to reduce the dimensionality of the state space (although the final policy will still play in the same original state space). Thus, we want the cell representation to conflate similar states while not conflating states that are meaningfully different (aggregating similar frames to one frame).</p>
+<p>Since appropriate downscaling parameters can vary across games and even as exploration progresses within a given game, such parameters are optimized <strong>dynamically</strong> at regular intervals by maximizing the objective function over a sample of recently discovered frames.</p>
+<p><br></p>
+<p><strong>Cell representations without domain knowledge</strong></p>
+<p>We found that a very simple dimensionality reduction procedure produces surprisingly good results on Montezuma's Revenge. Specifically:</p>
+<ol type="1">
+<li>Convert each game frame image to grayscale</li>
+<li><strong>Downscale</strong> it to an <span class="math inline">\(w \leq 160, \; h \leq 120\)</span> image with area interpolation (i.e using the average pixel value in the area of the downsampled pixel)</li>
+<li>rescale <strong>pixel intensities</strong> <span class="math inline">\(d \leq 255\)</span> using the formula <span class="math inline">\(\lfloor \frac{d\cdot p}{255} \rfloor\)</span>, instead of original 0 to 255.</li>
+</ol>
+<p>The downscaling dimensions and pixel-intensity range <span class="math inline">\(w, h, d\)</span> are updated <strong>dynamically</strong> by proposing different values for each, calculating how a sample of recent frames would be grouped into cells under these proposed parameters, and then selecting the values that result in the best cell distribution as determined by the objective function:</p>
+<p>The objective function for candidate downscaling parameters is calculated based on:</p>
+<ol type="1">
+<li><p>A target number of cells <span class="math inline">\(T\)</span>, where <span class="math inline">\(T\)</span> is a fixed fraction of the number of cells in the sample (target groups of frames formed from the samples of frames)</p></li>
+<li><p>The actual number of cells produced by the parameters currently considered, <span class="math inline">\(n\)</span> (actual groups of frames formed from the samples)</p></li>
+<li><p>The distribution of sample frames over cells <span class="math inline">\(\mathbf{p}\)</span></p></li>
+</ol>
+<p><span class="math display">\[O(\mathbf{p}, n) = \frac{H_n (\mathbf{p})}{L(n, T)}\]</span></p>
+<p>Where:</p>
+<ol type="1">
+<li><p><strong>Cell number control</strong>: <span class="math inline">\(L(n, T)\)</span> measures the discrepancy between the number of cells under the current parameters <span class="math inline">\(n\)</span> and the target number of cells <span class="math inline">\(T\)</span>. It prevents the representation that is discovered from aggregating too many frames together, which would result in low exploration, or from aggregating too few frames together, which would result in an intractable time and memory complexity.</p>
+<p><span class="math display">\[L(n, T) = \sqrt{|\frac{n}{T} - 1| + 1}\]</span></p>
+<p>If <span class="math inline">\(n &gt;&gt; T \implies L(n, T) \rightarrow \infty\)</span>, if <span class="math inline">\(n &lt;&lt; T \implies L(n, T) \rightarrow \sqrt{2}\)</span>, more penalty on large number of groups.</p></li>
+<li><p><strong>Frame distribution control</strong>: <span class="math inline">\(H_n (\mathbf{p})\)</span> is the ratio of the entropy of how frames were distributed across cells to the entropy of the discrete uniform distribution of size <span class="math inline">\(n\)</span>.</p>
+<p><span class="math display">\[H_n (\mathbf{p}) = - \sum^{n}_{i=1} \frac{p_i \log(p_i)}{\log(n)}\]</span></p>
+<p>Larger entropy gives a uniform distribution, that is, the objective encourages frames to be distributed as uniformly as possible across cells. Normalized entropy is comparable across different number of cells, allowing the number of cells to be controlled solely by <span class="math inline">\(L(n, T)\)</span>.</p></li>
+</ol>
+<p><br></p>
+<p>At each step of the randomized search, new values of each tuple of parameter <span class="math inline">\(w, h, d\)</span> are proposed by sampling from a geometric distribution (close to zero values have higher probability of being selected) whose mean (<span class="math inline">\(\mu = \frac{1}{p}\)</span>) is the current best known value of the given parameter. If the current best known value is lower than a heuristic minimum mean <span class="math inline">\(w=8, h=10.5, d=12\)</span>, then the minimum mean is used as the mean of the geometric distribution. New parameter values are resampled if they fall outside of the valid range for the parameter. Then, the scaled frames are grouped into groups and objective are calculated.</p>
+<p>The sample of frames are obtained by maintaining a set of recently seen smaple frames as GO-Explore runs: each time a frame not realy in the set is seen during the explore step, it is added to the running set with a probability of 1%. If the resulting set contains more than 10,000 frames, the oldest frame it contains is removed.</p>
+<p><strong>Cell representations with domain knowledge</strong></p>
+<p>In <strong>Montezuma's Revenge</strong>, domain knowledge is provided as unique combinations of:</p>
+<ol type="1">
+<li><p>the <span class="math inline">\(x, y\)</span> position of the agent (descretized into a grid in which each cell is <span class="math inline">\(16 \times 16\)</span> pixels)</p></li>
+<li><p>room number</p></li>
+<li><p>level number</p></li>
+<li><p>rooms that the currently-held keys were found</p></li>
+</ol>
+<p>In <strong>Pitfall</strong>, only the <span class="math inline">\(x, y\)</span> position of the agent and room number is used.</p>
+<p>All of this information was extracted directly from pixels with simple hand-coded classifiers to detect objects such as the main character's location combined with our knowledge of the map structure in the two games.</p>
+<p>While Phase 1 provides the opportunity to leverage domain knowledge in the cell representation, the robustified Neural Network produced by Phase 2 still plays directly form pixels only.</p>
+<h4 id="selecting-cells">Selecting cells</h4>
+<p>In each iteration of Phase 1, a cell is chosen from the archive to explore from. This choice could be made:</p>
+<ol type="1">
+<li>Uniformly at random</li>
+<li>Assign a positive weight to each cell that is higher for cells that are deemed more promising (less often visited cells, have recently contributed to discovering a new cell, expected to be near undiscovered cells and etc..). The weights of all cells are normalized to represent the probability distribution over the current cell space. No cell is ever given a weight of 0.</li>
+</ol>
+<h6 id="count-subscore">Count Subscore</h6>
+<p>The score of a cell is the sum of separate subscores. One important set of such subscores is called the <code>count subscore</code>s. <code>Count subscore</code>s are computed from attributes of cells that represent the number of times a cell was interacted with in different ways. Specifically:</p>
+<ol type="1">
+<li><p>The number of times the cell has already been chosen (i.e selected as a cell to explore from)</p></li>
+<li><p>The number of times the cell was visited at any point during the exploration phase</p></li>
+<li><p>the number of times a cell has been chosen since exploration from it last produced the discovery of a new or better cell.</p></li>
+</ol>
+<p>Lower counts of these attributes indicate a more promising cell to explore from (e.g. a cell that has been chosen more times already is less likely to lead to new cells than a cell that has been chosen fewer times). The <code>count subscore</code> for each of these attribute is given by:</p>
+<p><span class="math display">\[CntScore (c, a) = w_a \cdot (\frac{1}{v(c, a) + \epsilon_1})^{p_a} + \epsilon_2\]</span></p>
+<p>Here:</p>
+<ul>
+<li><p><span class="math inline">\(c\)</span> is the cell for which we are calculating the score</p></li>
+<li><p><span class="math inline">\(v(c, a)\)</span> is the value of attribute <span class="math inline">\(a\)</span> for cell <span class="math inline">\(c\)</span></p></li>
+<li><p><span class="math inline">\(w_a\)</span> is the weight hyperparameter for attribute <span class="math inline">\(a\)</span></p></li>
+<li><p><span class="math inline">\(p_a\)</span> is the power hyperparameter for attribute <span class="math inline">\(a\)</span></p></li>
+<li><p><span class="math inline">\(\epsilon_1\)</span> is a normalization parameter to prevent zero division</p></li>
+<li><p><span class="math inline">\(\epsilon_2\)</span> helps guarantee that no cell ever has a 0 probability of being chosen</p>
+<p><span class="math inline">\(\epsilon_1=0.001, \epsilon_2=0.00001\)</span> are the default values.</p></li>
+</ul>
+<h6 id="neighbor-subscore">Neighbor Subscore</h6>
+<p>Given the position of <span class="math inline">\(x, y\)</span>, it is possible to determine the possible neighbors of given cells and whether these neighbors are already present in the archive. For these cases, we define a set of <code>neighbor subscore</code>s. Each neighbor subscore is defined as <span class="math inline">\(w_n\)</span> if neighbor <span class="math inline">\(n\)</span> does not exist in the archive, 0 if the does exist.</p>
+<p>The motivation of neighbor subscore is that the cells that are lacking neighbors are likely at the edge of the current frontier of knowledge and are thus more likely to yield new cells. We consider 3 types of neighbors:</p>
+<ol type="1">
+<li>Vertical (2)</li>
+<li>Horizontal (2)</li>
+<li>Cells that are in the same level, room, <span class="math inline">\(x, y\)</span> position, but are holding a larger number of keys</li>
+</ol>
+<p>Neighbors of the same type share the same value for <span class="math inline">\(w_n\)</span>, then the score is calculated by:</p>
+<p><span class="math display">\[NeighScore(c, n) = w_n * (1 - HasNeighbor(c, n))\]</span></p>
+<p>Where <span class="math inline">\(c\)</span> is current cell and <span class="math inline">\(n \in Vertical \cup Horizontal \cup MoreKeys\)</span> is current neighbor. In cases without domain knowledge, it is unclear what exactly would constitute a cell's neighbor, and so <code>neighbor score</code> is defined as 0.</p>
+<h6 id="level-weight-only-montezumas-revenge">Level Weight (Only Montezuma's Revenge)</h6>
+<p>In the case of Montezuma's Revenge with domain knowledge, cells are exponentially downweighted based on the distance to the maximum level currently reached, thereby favoring progress in the furthest level reached, while skill keeping open the possibility of improving previous level's trajectories:</p>
+<p><span class="math display">\[LevelWeight (c) = 0.1^{MaxLevel - Level(c)}\]</span></p>
+<p>In the case of no domain knowledge, <span class="math inline">\(LevelWeight (c) = 1, \quad \forall c\)</span></p>
+<h5 id="final-score-and-final-cell-probability">Final Score and Final Cell Probability</h5>
+<p>The final score is then:</p>
+<p><span class="math display">\[CellScore (c) = LevelWeight (c) \cdot [(\sum_n NeighScore (c, n)) + \sum_a CntScore (c, a) + 1]\]</span></p>
+<p>The final probability is then:</p>
+<p><span class="math display">\[CellProb (c) = \frac{CellScore (c)}{\sum_{c^{\prime}}CellScore (c^{\prime})}\]</span></p>
+<p><br></p>
+<h5 id="new-version">New Version</h5>
+<p><strong>In the new version (except Montezuma's Revenge with domain knowledge but without a return policy), the selection weight (score) is reduced to:</strong></p>
+<p><span class="math display">\[W = \frac{1}{\sqrt{C_{seen} + 1}}\]</span></p>
+<p>In case of Montezuma's Revenge with domain knowledge but without a return policy, three addtional domain knowledge features further contribute to the weight:</p>
+<ol type="1">
+<li><p>The number of horizontal neighbours to the cell present in the archive (<span class="math inline">\(h\)</span>).</p></li>
+<li><p>A key bonus: for each location (defined by level, room, and x, y position), the cell with the largest number of keys at that location gets a bonus of <span class="math inline">\(k=1\)</span> (<span class="math inline">\(k=0\)</span> for other cells).</p></li>
+<li><p>The current level.</p>
+<p><span class="math display">\[W_{location} = \frac{2 - h}{10} + k\]</span> <span class="math display">\[W_{mont_domain} = 0.1^{L-l}(W + W_{location})\]</span></p></li>
+</ol>
+<p>Where, <span class="math inline">\(l\)</span> is the level given current cell and the maximum level in the archive <span class="math inline">\(L\)</span>.</p>
+<p><br></p>
+<h4 id="returning-to-cells-and-opportunities-to-exploit-deterministic-simulators">Returning to cells and opportunities to exploit deterministic simulators</h4>
+<p>The easiest way to return to a cell is if the world is deterministic and resettable, such that one can reset the state of the simulator to a previous visit to that cell. The ability to harness determinism and perform such resets forces us to recognize that there are two different types of problems we wish to solve with RL algorithms:</p>
+<ol type="1">
+<li>Require stochasticity at test time only</li>
+<li>Require stochasticity during both testing and training time (further research)</li>
+<li>Environment that prevents return to cells (further research)</li>
+</ol>
+<p>We can take advantage of the fact simulators can be made deterministic to improve performance, especially on hard-exploration problems. For many types of problems, we want a reliable final solution (e.g. a robot that reliably finds survivors after a natural disaster) and there is no principled reason to care whether we obtain this solution via initially deterministic training. If we can solve previously unsolvable problems, including ones that are stochastic at evaluation (test) time, via making simulators deterministic, we should take advantage of this opportunity.</p>
+<p>There are also cases where a simulator is not available and where learning algorithms must confront stochasticity during training. We can train goal-conditioned policies that reliably return to cells in the archive during the exploration phase. This strategy would result in a fully trained policy at the end of the exploration phase meaning there would be no need for a phase 2 at the end.</p>
+<p>For problems in which all we care about is a reliable policy at test time, a key insight behind Go-Explore is that we can first solve the problem (Phase 1), and then (if necessary) deal with making the solution more robust later (Phase 2).</p>
+<p>Due to the fact that the present version of Go-Explore operates in a deterministic setting during Phase 1, each cell is associated with an open-loop sequence of instructions that lead to it given the <strong>initial state</strong>, not a proper policy that maps any state to an action. A true policy is produced during robustification in Phase 2.</p>
+<p><strong>Sequence of actions and states are stored for each cell</strong></p>
+<p><br></p>
+<h4 id="exploration-from-cells">Exploration from cells</h4>
+<p>Once a cell is reached, any exploration method can be applied to find new cells. In this work, the agent explores by taking random actions <span class="math inline">\(k = 100\)</span> training frames, with a 95% probability of repeating the previous action at each training frame. Besides reaching the <span class="math inline">\(k = 100\)</span> training frame limit for exploration, exploration is also aborted at the episodes' end, and the action that led to the episode ending is ignored because it does not produce a destination cell.</p>
+<p>This exploration does not require a neural network or other controller.</p>
+<p><br></p>
+<h4 id="updating-the-archive">Updating the archive</h4>
+<p>While an agent is exploring from a cell, the archive updates in two conditions:</p>
+<ol type="1">
+<li><p>When the agent visits a cell that was no yet in the archive (which can happen multiple times while exploring from a given cell). In this case, , that cell is added to the archive with four associated pieces of meta data:</p>
+<ul>
+<li>A full trajectory from the starting state to that cell (states and actions)</li>
+<li>The state of the environment at the time of discovering the cell (if the environment supports such an operation)</li>
+<li>The cumulative score of that trajectory</li>
+<li>The length of that trajectory</li>
+</ul></li>
+<li><p>The second condition is when a newly-encountered trajectory is "better" than that belonging to a cell already in the archive. We define a new trajectory is "better" than an existing trajectory when the new trajectory either has:</p>
+<ul>
+<li>A higher cumulative score</li>
+<li>A shorter trajectory with the same score</li>
+</ul>
+<p>In either case, we update the existing cell in the archive with new trajectory, new trajectory length, new environment state and new score. In addition, information regarding the likelihood of this cell being chosen resets including the total number of times the cell has been chosen and the number of times the cell has been chosen since leading to the discovery of another cell. Resetting these values is beneficial when cells conflate many different states because a new way of reaching a cell may actually be a more promising stepping stone to explore from (so we want to encourage its selection).</p></li>
+</ol>
+<h4 id="batch-implementation">Batch Implementation</h4>
+<p>Phase 1 is implemented in parallel to take advantage of multiple CPUs. At each step, a batch of <span class="math inline">\(b\)</span> cells is selected with replacement and exploration from each of these cells proceeds in parallel. A high <span class="math inline">\(b\)</span> saves time of recomputing cell selection probabilities less frequently, which is important as this computation accounts for a significant portion of run time as the archive gets large.</p>
+<h3 id="phase-2">Phase 2</h3>
+<p>If successful, the result of Phase 1 is one or more high-performing trajectories. However, if Phase 1 of Go-Explore harness ed determinism in a simulator, such trajectories will not be robust to any stochasticity, which is present at test time. Phase 2 addresses this gap by creating a policy robust to noise via imitation learning. Thus, the policy that is trained has to lean how to mimic or perform as well as the trajectory obtained from the Go-Explore exploration phase while simultaneously dealing with circumstances that were not present in the original trajectory.</p>
+<p>The <code>Backward Algorithm</code> is used for imitation learning. It works by starting the agent near the last state in the trajectory, and then running an ordinary RL algorithm from there (In this case <code>PPO</code>). Once the algorithm has learned to obtain the same or a higher reward than the example trajectory from that starting place near the end of the trajectory, the algorithm backs the agent's starting point up to a slightly earlier place along the trajectory and repeats the process until eventually the agent has learned to obtain a score greater than or equal to the example trajectory all the way from the initial state.</p>
+<p><strong>Advantages</strong>:</p>
+<ol type="1">
+<li>The policy is only optimized to maximize its own score, and not actually forced to accurately mimic the trajectory, for this reason, this phase is able to further optimize the expert trajectories as well as generalize beyond them.</li>
+<li>RL algorithms with discounting factor that prizes near-term rewards more than those gathered later. Thus, if the original trajectory contains unnecessary actions, such behavior could be eliminated during robustification.</li>
+</ol>
+<h2 id="policy-based-go-explore">Policy-based Go-Explore</h2>
+<p>In policy-based Go-Explore, a goal-conditioned (i.e conditioned on the cell to return to) policy <span class="math inline">\(\pi_{\theta} (a | s, g)\)</span> is trained during the exploration phase with <code>PPO</code>. Instead of training the policy to directly reach cells in the archive, the policy is trained to follow the best trajectory of cells that previously led to the selected state (cell). The goal-conditioned policy has the potential to greatly improve exploration effectiveness over random actions. In addition to returning to previously visited cells, the policy can also be queried during the explore step by presenting it with additional goals, including goals not already in the archive. Such goal cells are chosen according to a simple strategy that either:</p>
+<ol type="1">
+<li><p>Chooses a cell adjacent to the current position of the agent, possibly leading to a new cell.</p></li>
+<li><p>Randomly selects a cell from the archive, potentially repositioning the agent within the archive or finding new cells while trying to do so.</p></li>
+</ol>
+<p><strong>Every time post-return exploration (after reaching the selected cell from archive) is started, the algorithm randomly commits with equal probability to either take random actions or sampling from the policy for the duration of the post-return exploration step.</strong></p>
+<p>The total reward <span class="math inline">\(r_t\)</span> is the sum of the trajectory reward <span class="math inline">\(r^{\tau}_t\)</span> and the environment reward <span class="math inline">\(r^e_t\)</span>, where <span class="math inline">\(r^e_t\)</span> is clipped to the <span class="math inline">\([-2, 2]\)</span> range. Policy based Go-Explore also includes self-imitation learning, where self-initation actors follow the same procedure as regular actors, except that they replay the trajectory associated with the cell they select from the archive.</p>
+<p><img src="/images/RL/papers/go_explore_3.png" width="600"></p>
 ]]></content>
   </entry>
   <entry>
@@ -3175,7 +3251,7 @@ V^{\pi} (x) &amp;= E^{\pi}[\sum^{\infty}_{t = 1} \gamma^{t - 1} R_{t} \; |\; X_1
   <entry>
     <title>Probability (1)</title>
     <url>/2021/05/11/probability/</url>
-    <content><![CDATA[<h1 id="probability-background">Probability Background</h1>
+    <content><![CDATA[<h1 id="probability-background-1">Probability Background (1)</h1>
 <h2 id="sets">Sets</h2>
 <p>A set is a collection of objects, which are the elements of set. If S is a set and <span class="math inline">\(x\)</span> is an element of <span class="math inline">\(S\)</span>, we write <span class="math inline">\(x \in S\)</span>. If <span class="math inline">\(x\)</span> is not an element of <span class="math inline">\(S\)</span>, we write <span class="math inline">\(x \notin S\)</span>. A set can have no elements, in which case it is called the empty set, denoted by <span class="math inline">\(\emptyset\)</span>.</p>
 <h3 id="finite-countable-uncountable">Finite, Countable, Uncountable</h3>
@@ -3387,7 +3463,7 @@ f(x)=
 \]</span></p>
 </blockquote>
 <p><br></p>
-<p>If, however, a quantile, say $is in the support of an absolutely continuous random variable <span class="math inline">\(X\)</span> with cdf <span class="math inline">\(F_X(x)\)</span> then $is unique solution to the equation:</p>
+<p>If, however, a quantile, say <span class="math inline">\(\xi\)</span> is in the support of an absolutely continuous random variable <span class="math inline">\(X\)</span> with cdf <span class="math inline">\(F_X(x)\)</span> then <span class="math inline">\(\xi\)</span> is unique solution to the equation:</p>
 <p><span class="math display">\[P_X (X &lt; \xi) = p \implies F_X (\xi) = p \implies \xi = F^{-1}_X (p)\]</span></p>
 <h4 id="transformations-1">Transformations</h4>
 <p>Let <span class="math inline">\(X\)</span> be a continuous random variable with pdf <span class="math inline">\(f_X\)</span>. Let <span class="math inline">\(Y = g(X)\)</span> be some transformation of <span class="math inline">\(X\)</span>. We can obtain the pdf of <span class="math inline">\(Y\)</span> by first obtain its cdf.</p>
