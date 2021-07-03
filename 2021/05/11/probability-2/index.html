@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/RL/background/prob_33.png">
 <meta property="article:published_time" content="2021-05-11T15:50:10.000Z">
-<meta property="article:modified_time" content="2021-07-01T16:26:52.340Z">
+<meta property="article:modified_time" content="2021-07-03T17:04:21.233Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta property="article:tag" content="RL Basics">
 <meta name="twitter:card" content="summary">
@@ -93,7 +93,7 @@
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
         <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">52</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">14</span></a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">18</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">20</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
@@ -151,7 +151,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#probability-background-2"><span class="nav-number">1.</span> <span class="nav-text">Probability Background (2)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#distribution-of-two-random-variables"><span class="nav-number">1.1.</span> <span class="nav-text">Distribution of Two Random Variables</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#discrete-random-vector"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">Discrete Random Vector</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#probability-background-2"><span class="nav-number">1.</span> <span class="nav-text">Probability Background (2)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#distribution-of-two-random-variables"><span class="nav-number">1.1.</span> <span class="nav-text">Distribution of Two Random Variables</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#discrete-random-vector"><span class="nav-number">1.1.1.</span> <span class="nav-text">Discrete Random Vector</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#continuous-random-vector"><span class="nav-number">1.1.2.</span> <span class="nav-text">Continuous Random Vector</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#marginal-distributions"><span class="nav-number">1.1.3.</span> <span class="nav-text">Marginal Distributions</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#marginal-pmf"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">Marginal PMF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#marginal-pdf"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">Marginal PDF</span></a></li></ol></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -180,7 +180,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -261,7 +261,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-07-02 00:26:52" itemprop="dateModified" datetime="2021-07-02T00:26:52+08:00">2021-07-02</time>
+        <time title="Modified: 2021-07-04 01:04:21" itemprop="dateModified" datetime="2021-07-04T01:04:21+08:00">2021-07-04</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -288,14 +288,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>1.7k</span>
+      <span>4.7k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
+      <span>4 mins.</span>
     </span>
 </div>
 
@@ -321,10 +321,46 @@
 <p><span class="math display">\[P_{X_1, X_2}(a_1 &lt; X_1 \leq b_1, \; a_2 &lt; X_2 \leq b_2) = F_{X_1, X_2} (b_1, b_2) -  F_{X_1, X_2} (a_1, b_2) -  F_{X_1, X_2} (b_1, a_2) +  F_{X_1, X_2} (a_1, a_2)\]</span></p>
 <p>Hence, all induced probabilities can be formulated in terms of the cdf. We often call this cdf the <code>joint cumulative distribution</code>.</p>
 <p><br></p>
-<h4 id="discrete-random-vector">Discrete Random Vector</h4>
+<h3 id="discrete-random-vector">Discrete Random Vector</h3>
 <p>A random vector <span class="math inline">\((X_1, X_2)\)</span> is <code>discrete random vector</code> if its range space <span class="math inline">\(\mathbb{D}\)</span> is finite or countable. Hence, <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> are <strong>both discrete</strong>. The <code>joint probability mass function</code> of <span class="math inline">\((X_1, X_2)\)</span> <span class="math inline">\(p_{X_1, X_2}\)</span> is defined by:</p>
-<p><span class="math display">\[p_{X_1, X_2} (x_1, x_2) = P(\{c_1: X_1 (c_1) = x_1\} \cap \{c_2: X_2 (c_2) = x_2\})\]</span></p>
-<p>for all <span class="math inline">\((x_1, x_2) \in \mathbb{D}\)</span></p>
+<p><span class="math display">\[p_{X_1, X_2} (x_1, x_2) = P(\{c_1: X_1 (c_1) = x_1\} \cap \{c_2: X_2 (c_2) = x_2\}) = P(X_1 = x_1, X_2 = x_2)\]</span></p>
+<p>for all <span class="math inline">\((x_1, x_2) \in \mathbb{D}\)</span>. The pmf uniquely defines the cdf, it also is characterized by the two properties:</p>
+<p><span class="math display">\[0 \leq p_{X_1, X_2} (x_1, x_2) \leq 1, \quad \quad \underset{D}{\sum \sum} p_{X_1, X_2} (x_1, x_2) = 1\]</span></p>
+<p>For an event <span class="math inline">\(B \subset \mathbb{D}\)</span>, we have:</p>
+<p><span class="math display">\[P_{X_1, X_2} (B) = P((X_1, X_2) \in B) = \underset{B}{\sum \sum} p_{x_1, X_2} (x_1, x_2)\]</span></p>
+<p>The <code>support</code> of a discrete random vector <span class="math inline">\((X_1, X_2)\)</span> is defined as all points <span class="math inline">\((x_1, x_2)\)</span> in the range space of <span class="math inline">\((X_1, X_2)\)</span> such that <span class="math inline">\(p_{X_1, X_2} (x_1, x_2) &gt; 0\)</span>.</p>
+<p><br></p>
+<h3 id="continuous-random-vector">Continuous Random Vector</h3>
+<p>We say a random vector <span class="math inline">\((X_1, X_2)\)</span> with range space <span class="math inline">\(\mathbb{D}\)</span> is of the <code>continuous</code> type if its cdf <span class="math inline">\(F_{X_1, X_2} (x_1, x_2)\)</span> is continuous:</p>
+<p><span class="math display">\[F_{X_1, X_2} (x_1, x_2) = \int^{x_1}_{-\infty} \int^{x_2}_{-\infty} f_{X_1, X_2} (w_1, w_2) dw_1 dw_2\]</span></p>
+<p>For all <span class="math inline">\((x_1, x_2) \in \mathbb{R}^2\)</span>. We call <span class="math inline">\(f_{X_1, X_2}\)</span> the <code>joint probability density function</code> of <span class="math inline">\((X_1, X_2)\)</span>. Then:</p>
+<p><span class="math display">\[\frac{\partial^2 F_{X_1, X_2} (x_1, x_2)}{\partial x_1 \partial x_2} = f_{X_1, X_2} (x_1, x_2)\]</span></p>
+<p>The pdf is essentially characterized by the two properties:</p>
+<p><span class="math display">\[0 \leq f_{X_1, X_2} (x_1, x_2), \quad \quad \int^{\infty}_{-\infty} \int^{\infty}_{-\infty}  f_{X_1, X_2} (x_1, x_2) dx_1dx_2= 1\]</span></p>
+<p>Then, the probability distribution <span class="math inline">\(P_{X_1, X_2}\)</span> is defined as:</p>
+<p><span class="math display">\[P_{X_1, X_2} (A) = P((X_1, X_2) \in A) = \underset{A}{\int \int} f_{X_1, X_2} (x_1, x_2) dx_1dx_2\]</span></p>
+<p>Note that <span class="math inline">\(P((X_1, X_2) \in A)\)</span> is just the volumn under the surface (graph) <span class="math inline">\(z = f_{X_1, X_2} (x_1, x_2)\)</span> over the set <span class="math inline">\(A\)</span> (uncountable).</p>
+<p>For continuous random vector the <code>support</code> of <span class="math inline">\((X_1, X_2)\)</span> contains all points <span class="math inline">\((x_1, x_2)\)</span> for which <span class="math inline">\(f(x_1, x_2) &gt; 0\)</span></p>
+<h3 id="marginal-distributions">Marginal Distributions</h3>
+<p>Let <span class="math inline">\((X_1, X_2)\)</span> be a random vector, we can obtain their individual distributions in terms of the joint distribution.</p>
+<p>Consider events which defined the cdf of <span class="math inline">\(X_1\)</span> at <span class="math inline">\(x_1\)</span> is <span class="math inline">\(\{X_1 \leq x_1\}\)</span>, in scenario of random vector, this is the same as no limitation on <span class="math inline">\(X_2\)</span>:</p>
+<p><span class="math display">\[\{X_1 \leq x_1\} \cap \{-\infty &lt; X_2 &lt; \infty\}\]</span></p>
+<p>Taking the joint probability:</p>
+<p><span class="math display">\[P(\{X_1 \leq x_1\} \cap \{-\infty &lt; X_2 &lt; \infty\}) = F_{X_1} (x_1) = \lim_{x_2 \rightarrow \infty} F_{X_1, X_2} (x_1, x_2)\]</span></p>
+<p>For all <span class="math inline">\(x_1 \in \mathbb{R}\)</span>.</p>
+<h4 id="marginal-pmf">Marginal PMF</h4>
+<p>Now, we have the relationship between the cdfs. Let <span class="math inline">\(\mathbb{D}_1\)</span> be the support of <span class="math inline">\(X_1\)</span> and <span class="math inline">\(w_1 \in \mathbb{D}_1\)</span>, let <span class="math inline">\(\mathbb{D}_2\)</span> be the support of <span class="math inline">\(X_2\)</span> and <span class="math inline">\(x_2 \in \mathbb{D}_2\)</span>, we can extend pmf:</p>
+<p><span class="math display">\[P(\{X_1 \leq x_1\} \cap \{-\infty &lt; X_2 &lt; \infty\}) = \sum_{w_1 \leq x_1} \sum_{x_2 \in \mathbb{D}_2} p_{X_1, X_2} (w_1, x_2)\]</span></p>
+<p>Then, by <strong>the uniqueness of cdfs</strong>, the quantity <span class="math inline">\(\sum_{x_2 \in \mathbb{D}_2} p_{X_1, X_2} (w_1, x_2)\)</span> is the pmf of <span class="math inline">\(X_1\)</span> evaluated at <span class="math inline">\(w_1\)</span>:</p>
+<p><span class="math display">\[p_{X_1}(x_1) = \sum_{x_2 \in \mathbb{D}_2} p_{X_1, X_2} (x_1, x_2)\]</span></p>
+<p>For all <span class="math inline">\(x_1 \in \mathbb{D}_{1}\)</span>.</p>
+<p>That is, to find <span class="math inline">\(p_{X_1}(x_1)\)</span> we can fix <span class="math inline">\(x_1\)</span> and sum <span class="math inline">\(p_{X_1, X_2}\)</span> over all the values of <span class="math inline">\(x_2\)</span>. Same is for <span class="math inline">\(X_2\)</span>. These individual pmfs are called the <code>marginal pmfs</code>.</p>
+<h4 id="marginal-pdf">Marginal PDF</h4>
+<p>For continuous case:</p>
+<p><span class="math display">\[P(\{X_1 \leq x_1\} \cap \{-\infty &lt; X_2 &lt; \infty\}) = \int^{x_1}_{-\infty} \int^{\infty}_{-\infty} f_{X_1, X_2} (w_1, x_2) dx_2 dw_1\]</span></p>
+<p>Then, by <strong>the uniqueness of cdfs</strong>, the quantity in braces must be the pdf of <span class="math inline">\(X_1\)</span>, evaluated at <span class="math inline">\(w_1\)</span>:</p>
+<p><span class="math display">\[f_{X_1} (x_1) = \int^{\infty}_{-\infty} f_{X_1, X_2} (x_1, x_2) dx_2\]</span></p>
+<p>That is, in the continuous case the <code>marginal pdf</code> of <span class="math inline">\(X_1\)</span> is found by integrating out <span class="math inline">\(x_2\)</span>. Same is for <span class="math inline">\(X_2\)</span></p>
 
     </div>
 
@@ -347,7 +383,7 @@
       <div class="popular-posts-title"><a href="/2021/05/18/cheat-sheet/" rel="bookmark">RL Cheat Sheet (under construction)</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/05/14/calculus/" rel="bookmark">Calculus</a></div>
+      <div class="popular-posts-title"><a href="/2021/05/03/dp/" rel="bookmark">Dynamic Programming</a></div>
     </li>
   </ul>
 
@@ -400,13 +436,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">257k</span>
+    <span title="Symbols count total">263k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">3:53</span>
+    <span title="Reading time total">3:59</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
