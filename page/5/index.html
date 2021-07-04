@@ -252,7 +252,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-07-04 01:04:21" itemprop="dateModified" datetime="2021-07-04T01:04:21+08:00">2021-07-04</time>
+        <time title="Modified: 2021-07-04 19:30:04" itemprop="dateModified" datetime="2021-07-04T19:30:04+08:00">2021-07-04</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -279,14 +279,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>4.7k</span>
+      <span>6k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
+      <span>5 mins.</span>
     </span>
 </div>
 
@@ -352,6 +352,30 @@
 <p>Then, by <strong>the uniqueness of cdfs</strong>, the quantity in braces must be the pdf of <span class="math inline">\(X_1\)</span>, evaluated at <span class="math inline">\(w_1\)</span>:</p>
 <p><span class="math display">\[f_{X_1} (x_1) = \int^{\infty}_{-\infty} f_{X_1, X_2} (x_1, x_2) dx_2\]</span></p>
 <p>That is, in the continuous case the <code>marginal pdf</code> of <span class="math inline">\(X_1\)</span> is found by integrating out <span class="math inline">\(x_2\)</span>. Same is for <span class="math inline">\(X_2\)</span></p>
+<h2 id="expectation">Expectation</h2>
+<p>Let <span class="math inline">\((X_1, X_2)\)</span> be continuous random vector, let <span class="math inline">\(Y = g(X_1, X_2)\)</span> where <span class="math inline">\(g: \mathbb{R}^2 \rightarrow \mathbb{R}\)</span>. Then the expectation of <span class="math inline">\(Y\)</span>, <span class="math inline">\(E[Y]\)</span> exists if:</p>
+<p><span class="math display">\[\int^{\infty}_{-\infty}\int^{\infty}_{-\infty} |g(x_1, x_2)| f_{X_1, X_2} (x_1, x_2) dx_1 dx_2 &lt; \infty\]</span></p>
+<p>Then,</p>
+<p><span class="math display">\[E[Y] = \int^{\infty}_{-\infty}\int^{\infty}_{-\infty} g(x_1, x_2) f_{X_1, X_2} (x_1, x_2) dx_1 dx_2\]</span></p>
+<p>Likewise, if <span class="math inline">\((X_1, X_2)\)</span> is discrete, then:</p>
+<p><span class="math display">\[E[Y] = \sum_{x_1} \sum_{x_2} g(x_1, x_2) p_{X_1, X_2} (x_1, x_2)\]</span></p>
+<p><br></p>
+<p><img src="/images/RL/background/prob_34.png" width="600"></p>
+<p><br></p>
+<p>The expectation of function of individual random variable <span class="math inline">\(X_1\)</span> can be found in two ways:</p>
+<p><span class="math display">\[E[g(X_1)] = \int^{\infty}_{-\infty}\int^{\infty}_{-\infty} g(x_1) f_{X_1, X_2} (x_1, x_2) dx_1 dx_2 = \int^{\infty}_{-\infty} g(x_1) f_{X_1} (x_1) dx_1\]</span></p>
+<p><br></p>
+<p><img src="/images/RL/background/prob_35.png" width="600"></p>
+<p><br></p>
+<p>If <code>moment generating function</code> exists, then it uniquely determines the distribution of random vector <span class="math inline">\(\mathbf{X}\)</span>. Let <span class="math inline">\(\mathbf{t} = (t_1, t_2)^{\prime}\)</span>, then the moment generating function can be rewritten as:</p>
+<p><span class="math display">\[M_{X_1, X_2} (\mathbf{t}) = E[e^{\mathbf{t^{\prime}} \mathbf{X}}]\]</span></p>
+<p>With <span class="math inline">\(t_2 = 0\)</span> or <span class="math inline">\(t_1 = 0\)</span>, we recover the MGFs for individual random variables.</p>
+<p><br></p>
+<p><img src="/images/RL/background/prob_36.png" width="600"></p>
+<p>This is saying that, the expectation of a random vector is a vector function of expectation.</p>
+<h2 id="transformation-bivariate-random-variables">Transformation: Bivariate Random Variables</h2>
+<h2 id="conditional-distributions-and-expectations">Conditional Distributions and Expectations</h2>
+<p>Let <span class="math inline">\(X_1, X_2\)</span> denote random variables of the discrete type, which have the joint pmf <span class="math inline">\(p_{X_1, X_2} (x_1, x_2)\)</span> that is positive on the support set</p>
 
       
     </div>
@@ -1476,13 +1500,13 @@ Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \ha
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">263k</span>
+    <span title="Symbols count total">269k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">3:59</span>
+    <span title="Reading time total">4:04</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
