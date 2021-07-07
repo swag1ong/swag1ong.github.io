@@ -84,7 +84,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">52</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">55</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">14</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">20</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -159,7 +159,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-count">55</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -212,6 +212,406 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/09/DDPG/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/09/DDPG/" class="post-title-link" itemprop="url">Deep Deterministic Policy Gradient</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-06-09 11:13:00" itemprop="dateCreated datePublished" datetime="2021-06-09T11:13:00+08:00">2021-06-09</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-16 19:55:03" itemprop="dateModified" datetime="2021-06-16T19:55:03+08:00">2021-06-16</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/PG/" itemprop="url" rel="index"><span itemprop="name">PG</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="firestore-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>5.3k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="continuous-control-with-deep-reinforcement-learning">Continuous Control with Deep Reinforcement Learning</h1>
+<h2 id="notations">Notations</h2>
+<p>A trajectory is defined as <span class="math inline">\((s_1, a_1, r_1, ...)\)</span></p>
+<p>The initial state distribution: <span class="math inline">\(\rho (s_1)\)</span></p>
+<p>Transition dynamics <span class="math inline">\(p(s_{t+1} | s_t, a_t)\)</span></p>
+<p>Reward function <span class="math inline">\(r(s_t, a_t)\)</span></p>
+<p>The return from a state is defined as the sum of discounted future reward:</p>
+<p><span class="math display">\[R_t = \sum_{i=t}^{T} \gamma^{i - t} r(s_i, a_i)\]</span></p>
+<p>The discounted state distribution following <span class="math inline">\(\pi\)</span> is denoted as <span class="math inline">\(\rho^{\pi}\)</span></p>
+<p>The action-value function:</p>
+<p><span class="math display">\[Q^{\pi} (s_t, a_t) = E_{r_{i \geq t}, s_{i &gt; t} \sim P, a_{i &gt;t} \sim \pi} [R_t | s_t, a_t]\]</span></p>
+<p>And the action-value function can be expanded using bellman equation:</p>
+<p><span class="math display">\[Q^{\pi} (s_t, a_t) = E_{r_{t}, s_{t+1} \sim P} [r(s_t, a_t) + \gamma E_{a_{t+1} \sim \pi (\cdot | s_{t+1})}[Q^{\pi} (s_{t+1}, a_{t+1})] | s_t, a_t]\]</span></p>
+<p>If we have deterministic policy <span class="math inline">\(\mu: S \rightarrow A\)</span>, we can remove the integral over next actions and have:</p>
+<p><span class="math display">\[Q^{\mu} (s_t, a_t) = E_{r_{t}, s_{t+1} \sim P} [r(s_t, a_t) + \gamma Q^{\mu} (s_{t+1}, \mu(s_{t + 1})) | s_t, a_t]\]</span></p>
+<p>This implies that we can learn <span class="math inline">\(Q^{\mu}\)</span> off policy using state samples from another behavior policy <span class="math inline">\(\beta\)</span>.</p>
+<p>The off policy loss for parameterized function approximators <span class="math inline">\(\theta^Q\)</span> Bellman Residual Minimization is:</p>
+<p><span class="math display">\[L(\theta^{Q}) = E_{s_t \sim \rho^\beta. a_t \sim \beta, r_t} [(Q(s_t, a_t | \theta^{Q}) - y_t)^2]\]</span></p>
+<p>where:</p>
+<p><span class="math display">\[y_t = r(s_t, a_t) + \gamma Q(s_{t+1}, \mu(s_{t+1}) | \theta^{Q})\]</span></p>
+<p>The use of large, non-linear function approximators for learning value or action-value functions has often been avoided in the past since theoretical performance guarantees are impossible, and practically learning tends to be unstable.</p>
+<p>The off policy deterministic policy gradient:</p>
+<p><span class="math display">\[\nabla_{\theta^{\mu}} J \approx E_{s_{t} \sim \rho^{\beta}} [\nabla_{a} Q(s, a | \theta^Q) |_{s=s_t, a=\mu(s_t)}\nabla_{\theta_{\mu}} \mu(s | \theta^\mu) |_{s=s_t}]\]</span></p>
+<p>As with Q learning, introducing non-linear function approximators means that convergence is no longer guaranteed for off-policy deterministic policy gradient.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/09/DDPG/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/06/sort/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/06/sort/" class="post-title-link" itemprop="url">Sorts</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-06-06 10:20:21" itemprop="dateCreated datePublished" datetime="2021-06-06T10:20:21+08:00">2021-06-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-13 14:28:39" itemprop="dateModified" datetime="2021-06-13T14:28:39+08:00">2021-06-13</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/CS-Basics/" itemprop="url" rel="index"><span itemprop="name">CS Basics</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="firestore-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>5.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="sorts">Sorts</h1>
+<p><img src="/images/algo/complex.png" width="600px"></p>
+<h2 id="insetion-sort">Insetion Sort</h2>
+<p>The insertion sort algorithm iterates through an input array and removes one element per iteration, finds the place the element belongs in the array, and then places it there. This process grows a sorted list from left to right. The algorithm is as follows:</p>
+<p>To sort an array of size n in ascending order:</p>
+<ol type="1">
+<li><p>Iterate from arr[1] to arr[n] over the array.</p></li>
+<li><p>Compare the current element (key) to its predecessor.</p></li>
+<li><p>If the key element is smaller than its predecessor, compare it to the elements before. Move the greater elements one position up to make space for the swapped element.</p></li>
+</ol>
+<p>The key is that: arr[i - 1] is always sorted.</p>
+<p><img src="/images/algo/insertion_sort.png" width="600px"></p>
+<h3 id="implementation">Implementation</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insertion_sort</span>(<span class="params">lst</span>):</span></span><br><span class="line">    <span class="comment"># assume len(lst) &gt; 1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(lst)):</span><br><span class="line">        <span class="comment"># swap lst[i - 1] and lst[i] if lst[i - 1] &gt; lst[i]</span></span><br><span class="line">        <span class="comment"># we stop at i &lt; 1 because we know arr[0] is the smallest</span></span><br><span class="line">        <span class="keyword">while</span> (i &gt;= <span class="number">1</span>) <span class="keyword">and</span> (lst[i] &lt; lst[i - <span class="number">1</span>]):</span><br><span class="line">            val = lst[i]</span><br><span class="line">            lst[i] = lst[i - <span class="number">1</span>]</span><br><span class="line">            lst[i - <span class="number">1</span>] = val</span><br><span class="line">            i = i - <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> lst</span><br></pre></td></tr></table></figure>
+<h2 id="merge-sort">Merge Sort</h2>
+<p>Mergesort has two steps: merging and sorting. The algorithm uses a divide-and-conquer approach to merge and sort a list.</p>
+<p>Divide and conquer is a technique used for breaking algorithms down into subproblems, solving the subproblems, and then combining the results back together to solve the original problem. It can be helpful to think of this method as divide, conquer, and combine.</p>
+<p>The mergesort algorithm focuses on how to merge together two pre-sorted arrays such that the resulting array is also sorted. Mergesort can be implemented either recursively or iteratively.</p>
+<p>Here is the recursive mergesort algorithm:</p>
+<ol type="1">
+<li>If the list has only one element, return the list and terminate. (Base case)</li>
+<li>Split the list into two halves that are as equal in length as possible. (Divide)</li>
+<li>Using recursion, sort both lists using mergesort. (Conquer)</li>
+<li><strong>Merge</strong> the two sorted lists and return the result. (Combine)</li>
+</ol>
+<p>The merge step:</p>
+<ol type="1">
+<li>Create an empty list called the result list.</li>
+<li>Do the following until one of the input lists is empty: Remove the first element of the list that has a lesser first element and append it to the result list.</li>
+<li>When one of the lists is empty, append all elements of the other list to the result.</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge_sort</span>(<span class="params">lst</span>):</span></span><br><span class="line">    <span class="comment"># base case</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(lst) == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> lst</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        sorted_lst = []</span><br><span class="line">        mid = <span class="built_in">len</span>(lst) // <span class="number">2</span></span><br><span class="line">        left_lst = merge_sort(lst[:mid])</span><br><span class="line">        right_lst = merge_sort(lst[mid:])</span><br><span class="line">        <span class="comment"># left_lst and right_lst will return two sorted lists, so we need to merge them</span></span><br><span class="line">        <span class="comment"># if left_lst[0] &gt; right_lst[0], we remove first element from right_lst and append to </span></span><br><span class="line">        <span class="comment"># the sorted_lst, if one of the lst is empty, we extend the another list to sorted_lst and exist the loop</span></span><br><span class="line">        <span class="keyword">while</span> left_lst <span class="keyword">or</span> right_lst:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> left_lst <span class="keyword">or</span> <span class="keyword">not</span> right_lst:</span><br><span class="line">                sorted_lst.extend(left_lst)</span><br><span class="line">                sorted_lst.extend(right_lst)</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">elif</span> left_lst[<span class="number">0</span>] &gt; right_lst[<span class="number">0</span>]:</span><br><span class="line">                sorted_lst.append(right_lst.pop(<span class="number">0</span>))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                sorted_lst.append(left_lst.pop(<span class="number">0</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> sorted_lst</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/06/sort/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/05/policy-gradient-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/05/policy-gradient-3/" class="post-title-link" itemprop="url">Policy Gradient (3)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-06-05 20:14:44" itemprop="dateCreated datePublished" datetime="2021-06-05T20:14:44+08:00">2021-06-05</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-16 19:50:54" itemprop="dateModified" datetime="2021-06-16T19:50:54+08:00">2021-06-16</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/PG/" itemprop="url" rel="index"><span itemprop="name">PG</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="firestore-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="policy-search-methods-reinforce">Policy Search Methods (REINFORCE)</h1>
+<p>We already now that, if we have sampled from the correct distribution and have an estimate for <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>, we have an unbiased sample of the policy gradient (Discounted Setting):</p>
+<p><span class="math display">\[\gamma^{k} \nabla \log \pi_{\theta}(A | X) Q^{\pi_{\theta}} (X, A)\]</span></p>
+<p>The remaining issue is the computation of <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>. This is essentially a Policy Evaluation problem, and we may use various action-value function estimators.</p>
+<h2 id="reinforce">REINFORCE</h2>
+<p>A simple approach uses MC estimates to estimate <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>. This would lead to what is known as the REINFORCE algorithm:</p>
+<p>In the on-policy setting when agent follows <span class="math inline">\(\pi_{\theta}\)</span>:</p>
+<ul>
+<li>It generates the sequence <span class="math inline">\(X_1, A_1, R_1\)</span> with <span class="math inline">\(A_{t} \sim \pi_{\theta} (\cdot | X_t), X_t \sim \rho^{\pi_{\theta}}\)</span>.</li>
+<li>Then <span class="math inline">\(G_{t}^{\pi_{\theta}} = \sum_{k \geq t} \gamma^{k - t} R_{k}\)</span> is an unbiased estimator of <span class="math inline">\(Q^{\pi_{\theta}} (X_t, A_t)\)</span>.</li>
+<li>We replace the action-value function with the estimate.</li>
+<li>The return however has high variance even though it is unbiased.</li>
+<li>We can use a state dependent baseline function (usually the value function) to reduce the variance.</li>
+</ul>
+<p><img src='/images/RL/pg/pg_5.png' width="600"></p>
+<h2 id="implementation">Implementation</h2>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -964,364 +1364,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/26/batch-norm/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/26/batch-norm/" class="post-title-link" itemprop="url">Batch Normalization</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-05-26 10:10:03" itemprop="dateCreated datePublished" datetime="2021-05-26T10:10:03+08:00">2021-05-26</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-02 16:41:04" itemprop="dateModified" datetime="2021-06-02T16:41:04+08:00">2021-06-02</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DL/" itemprop="url" rel="index"><span itemprop="name">DL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DL/Techniques/" itemprop="url" rel="index"><span itemprop="name">Techniques</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="firestore-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>6.6k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>6 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="batch-normalization-accelerating-deep-network-training-by-reducing-internal-covariate-shift">Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift</h1>
-<p><strong>Internal covariate shift</strong> describes the phenomenon in training DNN that the distribution of each layer's inputs changes during training, as the parameters of the previous layer change. This slow down the training by requiring lower learning rates and careful parameter initialization, and makes it notoriously hard to train models with saturating non-linearities (tanh, sigmoid). This problem can be addressed by normalizing the layer inputs.</p>
-<h2 id="introduction">Introduction</h2>
-<p>To see the input distribution shift in terms of sub-network or a layer. Consider a network computing:</p>
-<p><span class="math display">\[l = F_2(F_1(\textbf{u}, \Theta_1), \Theta_2)\]</span></p>
-<p>Where <span class="math inline">\(F_1\)</span> and <span class="math inline">\(F_2\)</span> are arbitrary transformations, and the parameters <span class="math inline">\(\Theta_1, \Theta_2\)</span> are to be learned to minimize the loss <span class="math inline">\(l\)</span>. Learning <span class="math inline">\(\Theta_2\)</span> can be viewed as if inputs <span class="math inline">\(\textbf{x} = F_1(\textbf{u}, \Theta_1)\)</span> and fed into the sub-network:</p>
-<p><span class="math display">\[l = F_2(\textbf{x}, \Theta_2)\]</span></p>
-<p>Thus, a fixed input distribution (ie. the distribution of <span class="math inline">\(\textbf{x}\)</span>) would make the training more effective, because <span class="math inline">\(\Theta_2\)</span> does not need to adapt to the new distribution. At the same time, if the mapping <span class="math inline">\(F_2\)</span> is saturating non-linearity, a fixed-distribution will help to prevent the gradient of parameters from vanishing.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/05/26/batch-norm/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/25/drop-out/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/25/drop-out/" class="post-title-link" itemprop="url">Dropout</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-05-25 10:28:12 / Modified: 23:36:02" itemprop="dateCreated datePublished" datetime="2021-05-25T10:28:12+08:00">2021-05-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DL/" itemprop="url" rel="index"><span itemprop="name">DL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DL/Techniques/" itemprop="url" rel="index"><span itemprop="name">Techniques</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="firestore-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>4.2k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="dropout-a-simple-way-to-prevent-neural-networks-from-overfitting">Dropout: A Simple Way to Prevent Neural Networks from Overfitting</h1>
-<p>The key idea of drop out is to randomly drop units along with their connections from the neural network during training to prevent overfitting. It can be interpreted as a way of regularizing a NN by adding noise to its hidden units.</p>
-<h2 id="introduction">Introduction</h2>
-<p>With unlimited computation, the best way to "regularize" a fixed-sized model is to average the predictions of all possible settings of the parameters, weighting each setting by the posterior probability given the training data (<span class="math inline">\(P(\theta | X)\)</span>). This approach is not feasible in real life especially when there is large computational cost for training neural networks and training data are limited.Dropout prevents overfitting and provides a way of approximately combining exponentially many neural network architectures effectively.</p>
-<p>Dropout temporarily removes units from the network along with all their incoming and outgoing connections. The choice of which units to drop is random.</p>
-<p><img src="/images/ML/dropout_1.png"></p>
-<p><strong>At training time</strong>, for a NN with <span class="math inline">\(n\)</span> units, Dropout can be seen as training a collection of <span class="math inline">\(2^n\)</span> (each unit can be retained or removed by dropout, so <span class="math inline">\(2^n\)</span> different combinations) thinned networks (some units are dropped by dropout) with extensive weight sharing where each thinned network gets trained very rarely.</p>
-<p><strong>At test time</strong>, it is not feasible to explicitly average the predictions form exponentially many thinned models. However, we use a single NN without dropout by scaling-down the weights of this network. If an unit is retained with probability <span class="math inline">\(p\)</span> during traning, the outgoing weights of that unit are multiplied by <span class="math inline">\(p\)</span> at the test time. This ensures that the expected output is the same as the actual output at the test time (we use expected output at test time).</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/05/25/drop-out/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/23/policy-gradient/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/23/policy-gradient/" class="post-title-link" itemprop="url">Policy Gradient (1)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-05-23 20:26:38" itemprop="dateCreated datePublished" datetime="2021-05-23T20:26:38+08:00">2021-05-23</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-16 19:50:59" itemprop="dateModified" datetime="2021-06-16T19:50:59+08:00">2021-06-16</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/PG/" itemprop="url" rel="index"><span itemprop="name">PG</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="firestore-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>4k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="policy-search-methods-introduction">Policy Search Methods (Introduction)</h1>
-<p>So far, we have encountered methods for computing the optimal policy based on the computation of the value function. In this case, only value function was explicitly represented. There are also methods based on explicit representation of the policy and optimizing the performance of the agent by searching in the space of policies. These methods are called <strong>policy search methods</strong>.</p>
-<p>Consider a stochastic policy <span class="math inline">\(\pi_\theta: X \rightarrow M(A)\)</span> that maps state space to distribution defined over actions and parameterized by a <span class="math inline">\(\theta \in \Theta\)</span>. The set <span class="math inline">\(\Theta\)</span> is the parameter space. The space of all parameterized policies can be described as:</p>
-<p><span class="math display">\[\prod_\Theta = \{\pi_\theta: X \rightarrow M(A): \theta \in \Theta\}\]</span></p>
-<p>This space depends on the mapping <span class="math inline">\(\pi_\theta\)</span> and <span class="math inline">\(\Theta\)</span></p>
-<p>One example how we can parameterize policy by softmax distribution. Given a function mapping <span class="math inline">\(f_{\theta}: X \times A \rightarrow \mathbb{R}\)</span>, the probability of choosing action <span class="math inline">\(a\)</span> at state <span class="math inline">\(x\)</span> is:</p>
-<p><span class="math display">\[\pi_{\theta} (a | x) = \frac{exp(f_{\theta} (x, a))}{\sum_{a^{\prime}} exp(f_{\theta} (x, a^{\prime}))}\]</span></p>
-<p>or a normal distribution defined by <span class="math inline">\(\mu_\theta (x), \Sigma_\theta(x)\)</span>:</p>
-<p><span class="math display">\[\pi_{\theta} (\cdot | x) = N(\mu_\theta(x), \Sigma_{\theta} (x))\]</span></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/05/23/policy-gradient/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1346,13 +1388,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">269k</span>
+    <span title="Symbols count total">280k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">4:04</span>
+    <span title="Reading time total">4:15</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
