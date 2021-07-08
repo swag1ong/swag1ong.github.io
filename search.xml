@@ -686,6 +686,13 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
       </tags>
   </entry>
   <entry>
+    <title>actor_critic</title>
+    <url>/2021/06/14/actor-critic/</url>
+    <content><![CDATA[<h1 id="actor-critic-algorithms">Actor-Critic Algorithms</h1>
+<p><a href="https://papers.nips.cc/paper/1999/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf">Original Paper</a></p>
+]]></content>
+  </entry>
+  <entry>
     <title>VGG (Under Construction)</title>
     <url>/2021/06/24/VGG/</url>
     <content><![CDATA[<h1 id="very-deep-convolutional-networks-for-large-scale-image-recognition">Very Deep Convolutional Networks For Large-Scale Image Recognition</h1>
@@ -756,13 +763,6 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
         <tag>Deep Learning</tag>
         <tag>Neural Network Architectures</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>actor_critic</title>
-    <url>/2021/06/14/actor-critic/</url>
-    <content><![CDATA[<h1 id="actor-critic-algorithms">Actor-Critic Algorithms</h1>
-<p><a href="https://papers.nips.cc/paper/1999/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf">Original Paper</a></p>
-]]></content>
   </entry>
   <entry>
     <title>Alex Net</title>
@@ -852,41 +852,6 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
 ]]></content>
   </entry>
   <entry>
-    <title>Bellman Equations</title>
-    <url>/2021/05/03/bellman-equations/</url>
-    <content><![CDATA[<p><em>Please read post on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> prior this post</em></p>
-<h1 id="bellman-equations">Bellman Equations</h1>
-<p>By expanding value functions, we reveal the recursive property of return:</p>
-<p><span class="math display">\[
-\begin{aligned}
-V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
-&amp; = E[R_{t} + \gamma G^{\pi}_{t+1} | X_{t} = x]\\
-&amp; = E_{a \sim \pi(a | s)}[R_{t} | X_{t} = x] + \gamma E[G^{\pi}_{t+1} | X_{t} = x]\\
-&amp; = r^{\pi} (x) + \gamma E[V^{\pi} (X_{t+1}) | X_{t} = x]\\
-\end{aligned}
-\]</span> <span id="more"></span></p>
-<p>Where: <span class="math display">\[V^{\pi} (X_{t+1}) = E[G^{\pi}_{t+1} | X_{t+1}] \]</span></p>
-<p><span class="math display">\[\implies E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[V^{\pi} (X_{t+1}) | X_t=x_t] = E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[E[G^{\pi}_{t+1} | X_{t+1}] | X_{t}=x_t] = E[G^{\pi}_{t+1} | X_{t} = x_t]\]</span></p>
-<p>This implies that neither side is random, by expanding:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x]\]</span></p>
-<p>we get:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
-<p>Thus, the value function can be expressed as:</p>
-<p><span class="math display">\[V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
-<p>This is the <span style="color:red"><strong>bellman equation</strong> </span> for a policy <span class="math inline">\(\pi\)</span>, this can be interpreted as: The value of following a policy <span class="math inline">\(\pi\)</span> is the expected immediate reward that the <span class="math inline">\(\pi\)</span>-following agent receives at that state plus the discounted average(expected) value that the agent receives at the next-state.</p>
-<p>Same for action-value function, we have bellman equation:</p>
-<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (da^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
-<p>Compare with value function, we have expected reward base on action <span class="math inline">\(a\)</span> plus discounted average(expected) value that the agent receives at the next-state following <span class="math inline">\(\pi\)</span> (the choice of action is given at state <span class="math inline">\(s\)</span> in action value function)</p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>Basics</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Batch Normalization</title>
     <url>/2021/05/26/batch-norm/</url>
     <content><![CDATA[<h1 id="batch-normalization-accelerating-deep-network-training-by-reducing-internal-covariate-shift">Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift</h1>
@@ -955,6 +920,173 @@ V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
         <tag>Deep Learning</tag>
         <tag>Normalization</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Bellman Equations</title>
+    <url>/2021/05/03/bellman-equations/</url>
+    <content><![CDATA[<p><em>Please read post on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> prior this post</em></p>
+<h1 id="bellman-equations">Bellman Equations</h1>
+<p>By expanding value functions, we reveal the recursive property of return:</p>
+<p><span class="math display">\[
+\begin{aligned}
+V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
+&amp; = E[R_{t} + \gamma G^{\pi}_{t+1} | X_{t} = x]\\
+&amp; = E_{a \sim \pi(a | s)}[R_{t} | X_{t} = x] + \gamma E[G^{\pi}_{t+1} | X_{t} = x]\\
+&amp; = r^{\pi} (x) + \gamma E[V^{\pi} (X_{t+1}) | X_{t} = x]\\
+\end{aligned}
+\]</span> <span id="more"></span></p>
+<p>Where: <span class="math display">\[V^{\pi} (X_{t+1}) = E[G^{\pi}_{t+1} | X_{t+1}] \]</span></p>
+<p><span class="math display">\[\implies E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[V^{\pi} (X_{t+1}) | X_t=x_t] = E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[E[G^{\pi}_{t+1} | X_{t+1}] | X_{t}=x_t] = E[G^{\pi}_{t+1} | X_{t} = x_t]\]</span></p>
+<p>This implies that neither side is random, by expanding:</p>
+<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x]\]</span></p>
+<p>we get:</p>
+<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
+<p>Thus, the value function can be expressed as:</p>
+<p><span class="math display">\[V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
+<p>This is the <span style="color:red"><strong>bellman equation</strong> </span> for a policy <span class="math inline">\(\pi\)</span>, this can be interpreted as: The value of following a policy <span class="math inline">\(\pi\)</span> is the expected immediate reward that the <span class="math inline">\(\pi\)</span>-following agent receives at that state plus the discounted average(expected) value that the agent receives at the next-state.</p>
+<p>Same for action-value function, we have bellman equation:</p>
+<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (da^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
+<p>Compare with value function, we have expected reward base on action <span class="math inline">\(a\)</span> plus discounted average(expected) value that the agent receives at the next-state following <span class="math inline">\(\pi\)</span> (the choice of action is given at state <span class="math inline">\(s\)</span> in action value function)</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>Basics</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Calculus (2)</title>
+    <url>/2021/07/06/cal-2/</url>
+    <content><![CDATA[<h1 id="multivariate-calculus-2">Multivariate Calculus (2)</h1>
+<h2 id="vector-and-matrix-differentiation">Vector and Matrix Differentiation</h2>
+<h3 id="numerator-layout">Numerator Layout</h3>
+<p>Let:</p>
+<p><span class="math display">\[\mathbf{y} = \psi(\mathbf{x})\]</span></p>
+<p>Where, <span class="math inline">\(\mathbf{x}, \mathbf{y}\)</span> are column vectors with size <span class="math inline">\(n, m\)</span> respectively. Then the partial derivative of <span class="math inline">\(\mathbf{y}\)</span> w.r.t <span class="math inline">\(\mathbf{x}\)</span> is a <span class="math inline">\(m \times n\)</span> matrix:</p>
+<p><span class="math display">\[
+\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
+\begin{bmatrix}
+\frac{\partial y_1}{\partial x_1} &amp; \frac{\partial y_1}{\partial x_2} &amp; .... &amp; \frac{\partial y_1}{\partial x_n}\\
+.\\
+.\\
+.\\
+\frac{\partial y_m}{\partial x_1} &amp; \frac{\partial y_m}{\partial x_2} &amp; .... &amp; \frac{\partial y_m}{\partial x_n}
+\end{bmatrix}_{m \times n}
+\]</span></p>
+<p>This matrix is called the <code>Jacobian Matrix</code>. Notice that, each row of this matrix is a gradient vector <span class="math inline">\(\frac{\partial y_1}{\partial \mathbf{x}}\)</span>, thus, we can rewrite <code>Jacobian Matrix</code> as:</p>
+<p><span class="math display">\[
+\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
+\begin{bmatrix}
+\nabla_{\mathbf{x}} y_1\\
+.\\
+.\\
+.\\
+\nabla_{\mathbf{x}} y_m
+\end{bmatrix}_{m \times n}
+\]</span></p>
+<p>Notice that, single gradient vector <span class="math inline">\(\nabla_{\mathbf{x}} y_i\)</span> is a row vector, we can represent it as a column vector by</p>
+<p><span class="math display">\[\nabla^T_{\mathbf{x}} y_i = \frac{\partial y_i}{\partial \mathbf{x}^T} = (\frac{\partial y_i}{\partial \mathbf{x}})^T\]</span></p>
+<p>At the same time:</p>
+<p><span class="math display">\[
+\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
+\begin{bmatrix}
+\frac{\partial \mathbf{y}}{\partial x_1} &amp; ..... &amp; \frac{\partial \mathbf{y}}{\partial x_n}\\
+\end{bmatrix}
+\]</span></p>
+<p>Where:</p>
+<p><span class="math display">\[
+\frac{\partial \mathbf{y}}{\partial x_i} = 
+\begin{bmatrix}
+\frac{\partial y_1}{\partial x_i}\\
+.\\
+.\\
+.\\
+\frac{\partial y_m}{\partial x_i}
+\end{bmatrix}
+\]</span></p>
+<h3 id="denominator-layout">Denominator Layout</h3>
+<p><span class="math display">\[\mathbf{y} = \psi(\mathbf{x})\]</span></p>
+<p>Where, <span class="math inline">\(\mathbf{x}, \mathbf{y}\)</span> are <strong>row</strong> vectors with size <span class="math inline">\(n, m\)</span> respectively. Then the partial derivative of <span class="math inline">\(\mathbf{y}\)</span> w.r.t <span class="math inline">\(\mathbf{x}\)</span> is a <span class="math inline">\(n \times m\)</span> matrix:</p>
+<p><span class="math display">\[
+\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
+\begin{bmatrix}
+\frac{\partial y_1}{\partial x_1} &amp; \frac{\partial y_2}{\partial x_1} &amp; .... &amp; \frac{\partial y_m}{\partial x_1}\\
+.\\
+.\\
+.\\
+\frac{\partial y_1}{\partial x_n} &amp; \frac{\partial y_2}{\partial x_n} &amp; .... &amp; \frac{\partial y_m}{\partial x_n}
+\end{bmatrix}_{n \times m}
+\]</span></p>
+<p>In terms of gradient vectors (<strong>to be consistent with the layout, they are column vectors now. It is possible to represent gradient vectors as row vectors while using denominator layout just by adding transpose to the formula below</strong> ):</p>
+<p><span class="math display">\[
+\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
+\begin{bmatrix}
+\nabla_{\mathbf{x}} y_1 &amp; .... &amp; \nabla_{\mathbf{x}} y_m\\
+\end{bmatrix}_{n \times m}
+\]</span></p>
+<p>At the same time:</p>
+<p><span class="math display">\[
+\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
+\begin{bmatrix}
+\frac{\partial \mathbf{y}}{\partial x_1} \\
+.\\
+.\\
+.\\
+\frac{\partial \mathbf{y}}{\partial x_n}\\
+\end{bmatrix}
+\]</span></p>
+<p>Where <span class="math inline">\(\frac{\partial \mathbf{y}}{\partial x_i}\)</span> is now a row vector:</p>
+<p><span class="math display">\[
+\frac{\partial \mathbf{y}}{\partial x_i} = 
+\begin{bmatrix}
+\frac{\partial y_1}{\partial x_i} &amp; .... &amp; \frac{\partial y_m}{\partial x_i}\\
+\end{bmatrix}_{n \times m}
+\]</span></p>
+<p><br></p>
+<h3 id="derivative-of-function-of-the-form-mathbfy-amathbfx">Derivative of Function of the Form: <span class="math inline">\(\; \mathbf{y} = A\mathbf{x}\)</span></h3>
+<p><img src='/images/cal/matrix_5_2_1.png' width="600"></p>
+<p><br></p>
+<p><strong>Proof</strong>:</p>
+<blockquote>
+<p>Since <span class="math inline">\(y_i = \sum^{n}_{k=1} a_{ik} x_k \implies \frac{\partial y_i}{\partial x_j} = a_{ij}\)</span></p>
+<p>Thus, the <code>Jacobian Matrix</code> is:</p>
+<p><span class="math display">\[
+\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
+\begin{bmatrix}
+\nabla_{\mathbf{x}} y_1\\
+.\\
+.\\
+.\\
+\nabla_{\mathbf{x}} y_m
+\end{bmatrix}_{m \times n}
+= A
+\]</span></p>
+</blockquote>
+<p><br></p>
+<p>Now, let <span class="math inline">\(\mathbf{x} = f(\mathbf{\alpha})\)</span>, where <span class="math inline">\(\mathbf{\alpha}\)</span> is a <span class="math inline">\(r\)</span> dimensional vector, then the above results can be extended using chain rule:</p>
+<p><span class="math display">\[\frac{\partial \mathbf{y}}{\partial \mathbf{r}} = \frac{\partial \mathbf{y}}{\partial \mathbf{x}}\frac{\partial \mathbf{x}}{\partial \mathbf{\alpha}} = [A \frac{\partial \mathbf{x}}{\partial \mathbf{\alpha}}]_{m \times r}\]</span></p>
+<p><br></p>
+<p><strong>Proof</strong>:</p>
+<blockquote>
+<p>Since <span class="math inline">\(y_i = \sum^{n}_{k=1} a_{ik} x_k(\alpha_1, ...., \alpha_r) \implies \frac{\partial y_i}{\partial r_j} = \sum^{n}_{k=1} a_{ik} \frac{\partial y_i}{\partial x_k}\frac{\partial x_k}{\partial \alpha_j} = \sum^{n}_{k=1} a_{ik} \frac{\partial x_k}{\partial \alpha_j}\)</span></p>
+<p>Thus, the <code>Jacobian Matrix</code> is:</p>
+<p><span class="math display">\[
+\frac{\partial \mathbf{y}}{\partial \mathbf{\alpha}} = 
+\begin{bmatrix}
+\sum^{n}_{k=1} a_{1k} \frac{\partial x_k}{\partial \alpha_1} &amp; ... &amp; \sum^{n}_{k=1} a_{1k} \frac{\partial x_k}{\partial \alpha_r}\\
+.\\
+.\\
+.\\
+\sum^{n}_{k=1} a_{mk} \frac{\partial x_k}{\partial \alpha_1} &amp; ... &amp; \sum^{n}_{k=1} a_{mk} \frac{\partial x_k}{\partial \alpha_r}
+\end{bmatrix}_{m \times n}
+= [A \frac{\partial \mathbf{x}}{\partial \mathbf{\alpha}}]_{m \times r}
+\]</span></p>
+</blockquote>
+<p><br></p>
+<h1 id="ref">Ref</h1>
+]]></content>
   </entry>
   <entry>
     <title>Bellman Equations for Optimal Value Functions</title>
@@ -1116,144 +1248,6 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
-    <title>Calculus (2)</title>
-    <url>/2021/07/06/cal-2/</url>
-    <content><![CDATA[<h1 id="multivariate-calculus-2">Multivariate Calculus (2)</h1>
-<h2 id="vector-and-matrix-differentiation">Vector and Matrix Differentiation</h2>
-<h3 id="numerator-layout">Numerator Layout</h3>
-<p>Let:</p>
-<p><span class="math display">\[\mathbf{y} = \psi(\mathbf{x})\]</span></p>
-<p>Where, <span class="math inline">\(\mathbf{x}, \mathbf{y}\)</span> are column vectors with size <span class="math inline">\(n, m\)</span> respectively. Then the partial derivative of <span class="math inline">\(\mathbf{y}\)</span> w.r.t <span class="math inline">\(\mathbf{x}\)</span> is a <span class="math inline">\(m \times n\)</span> matrix:</p>
-<p><span class="math display">\[
-\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
-\begin{bmatrix}
-\frac{\partial y_1}{\partial x_1} &amp; \frac{\partial y_1}{\partial x_2} &amp; .... &amp; \frac{\partial y_1}{\partial x_n}\\
-.\\
-.\\
-.\\
-\frac{\partial y_m}{\partial x_1} &amp; \frac{\partial y_m}{\partial x_2} &amp; .... &amp; \frac{\partial y_m}{\partial x_n}
-\end{bmatrix}_{m \times n}
-\]</span></p>
-<p>This matrix is called the <code>Jacobian Matrix</code>. Notice that, each row of this matrix is a gradient vector <span class="math inline">\(\frac{\partial y_1}{\partial \mathbf{x}}\)</span>, thus, we can rewrite <code>Jacobian Matrix</code> as:</p>
-<p><span class="math display">\[
-\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
-\begin{bmatrix}
-\nabla_{\mathbf{x}} y_1\\
-.\\
-.\\
-.\\
-\nabla_{\mathbf{x}} y_m
-\end{bmatrix}_{m \times n}
-\]</span></p>
-<p>Notice that, single gradient vector <span class="math inline">\(\nabla_{\mathbf{x}} y_i\)</span> is a row vector, we can represent it as a column vector by</p>
-<p><span class="math display">\[\nabla^T_{\mathbf{x}} y_i = \frac{\partial y_i}{\partial \mathbf{x}^T} = (\frac{\partial y_i}{\partial \mathbf{x}})^T\]</span></p>
-<p>At the same time:</p>
-<p><span class="math display">\[
-\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
-\begin{bmatrix}
-\frac{\partial \mathbf{y}}{\partial x_1} &amp; ..... &amp; \frac{\partial \mathbf{y}}{\partial x_n}\\
-\end{bmatrix}
-\]</span></p>
-<p>Where:</p>
-<p><span class="math display">\[
-\frac{\partial \mathbf{y}}{\partial x_i} = 
-\begin{bmatrix}
-\frac{\partial y_1}{\partial x_i}\\
-.\\
-.\\
-.\\
-\frac{\partial y_m}{\partial x_i}
-\end{bmatrix}
-\]</span></p>
-<h3 id="denominator-layout">Denominator Layout</h3>
-<p><span class="math display">\[\mathbf{y} = \psi(\mathbf{x})\]</span></p>
-<p>Where, <span class="math inline">\(\mathbf{x}, \mathbf{y}\)</span> are <strong>row</strong> vectors with size <span class="math inline">\(n, m\)</span> respectively. Then the partial derivative of <span class="math inline">\(\mathbf{y}\)</span> w.r.t <span class="math inline">\(\mathbf{x}\)</span> is a <span class="math inline">\(n \times m\)</span> matrix:</p>
-<p><span class="math display">\[
-\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
-\begin{bmatrix}
-\frac{\partial y_1}{\partial x_1} &amp; \frac{\partial y_2}{\partial x_1} &amp; .... &amp; \frac{\partial y_m}{\partial x_1}\\
-.\\
-.\\
-.\\
-\frac{\partial y_1}{\partial x_n} &amp; \frac{\partial y_2}{\partial x_n} &amp; .... &amp; \frac{\partial y_m}{\partial x_n}
-\end{bmatrix}_{n \times m}
-\]</span></p>
-<p>In terms of gradient vectors (<strong>to be consistent with the layout, they are column vectors now. It is possible to represent gradient vectors as row vectors while using denominator layout just by adding transpose to the formula below</strong> ):</p>
-<p><span class="math display">\[
-\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
-\begin{bmatrix}
-\nabla_{\mathbf{x}} y_1 &amp; .... &amp; \nabla_{\mathbf{x}} y_m\\
-\end{bmatrix}_{n \times m}
-\]</span></p>
-<p>At the same time:</p>
-<p><span class="math display">\[
-\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
-\begin{bmatrix}
-\frac{\partial \mathbf{y}}{\partial x_1} \\
-.\\
-.\\
-.\\
-\frac{\partial \mathbf{y}}{\partial x_n}\\
-\end{bmatrix}
-\]</span></p>
-<p>Where <span class="math inline">\(\frac{\partial \mathbf{y}}{\partial x_i}\)</span> is now a row vector:</p>
-<p><span class="math display">\[
-\frac{\partial \mathbf{y}}{\partial x_i} = 
-\begin{bmatrix}
-\frac{\partial y_1}{\partial x_i} &amp; .... &amp; \frac{\partial y_m}{\partial x_i}\\
-\end{bmatrix}_{n \times m}
-\]</span></p>
-<p><br></p>
-<h3 id="derivative-of-function-of-the-form-mathbfy-amathbfx">Derivative of Function of the Form: <span class="math inline">\(\; \mathbf{y} = A\mathbf{x}\)</span></h3>
-<p><img src='/images/cal/matrix_5_2_1.png' width="600"></p>
-<p><br></p>
-<p><strong>Proof</strong>:</p>
-<blockquote>
-<p>Since <span class="math inline">\(y_i = \sum^{n}_{k=1} a_{ik} x_k \implies \frac{\partial y_i}{\partial x_j} = a_{ij}\)</span></p>
-<p>Thus, the <code>Jacobian Matrix</code> is:</p>
-<p><span class="math display">\[
-\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
-\begin{bmatrix}
-\nabla_{\mathbf{x}} y_1\\
-.\\
-.\\
-.\\
-\nabla_{\mathbf{x}} y_m
-\end{bmatrix}_{m \times n}
-= A
-\]</span></p>
-</blockquote>
-<p><br></p>
-<p>Now, let <span class="math inline">\(\mathbf{x} = f(\mathbf{\alpha})\)</span>, where <span class="math inline">\(\mathbf{\alpha}\)</span> is a <span class="math inline">\(r\)</span> dimensional vector, then the above results can be extended using chain rule:</p>
-<p><span class="math display">\[\frac{\partial \mathbf{y}}{\partial \mathbf{r}} = \frac{\partial \mathbf{y}}{\partial \mathbf{x}}\frac{\partial \mathbf{x}}{\partial \mathbf{\alpha}} = [A \frac{\partial \mathbf{x}}{\partial \mathbf{\alpha}}]_{m \times r}\]</span></p>
-<p><br></p>
-<p><strong>Proof</strong>:</p>
-<blockquote>
-<p>Since <span class="math inline">\(y_i = \sum^{n}_{k=1} a_{ik} x_k(\alpha_1, ...., \alpha_r) \implies \frac{\partial y_i}{\partial r_j} = \sum^{n}_{k=1} a_{ik} \frac{\partial y_i}{\partial x_k}\frac{\partial x_k}{\partial \alpha_j} = \sum^{n}_{k=1} a_{ik} \frac{\partial x_k}{\partial \alpha_j}\)</span></p>
-<p>Thus, the <code>Jacobian Matrix</code> is:</p>
-<p><span class="math display">\[
-\frac{\partial \mathbf{y}}{\partial \mathbf{\alpha}} = 
-\begin{bmatrix}
-\sum^{n}_{k=1} a_{1k} \frac{\partial x_k}{\partial \alpha_1} &amp; ... &amp; \sum^{n}_{k=1} a_{1k} \frac{\partial x_k}{\partial \alpha_r}\\
-.\\
-.\\
-.\\
-\sum^{n}_{k=1} a_{mk} \frac{\partial x_k}{\partial \alpha_1} &amp; ... &amp; \sum^{n}_{k=1} a_{mk} \frac{\partial x_k}{\partial \alpha_r}
-\end{bmatrix}_{m \times n}
-= [A \frac{\partial \mathbf{x}}{\partial \mathbf{\alpha}}]_{m \times r}
-\]</span></p>
-</blockquote>
-<p><br></p>
-<h1 id="ref">Ref</h1>
-]]></content>
-  </entry>
-  <entry>
-    <title>convex_opt</title>
-    <url>/2021/06/14/convex-opt/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
     <title>RL Cheat Sheet (under construction)</title>
     <url>/2021/05/18/cheat-sheet/</url>
     <content><![CDATA[<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
@@ -1271,6 +1265,12 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       <tags>
         <tag>RL Basics</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>convex_opt</title>
+    <url>/2021/06/14/convex-opt/</url>
+    <content><![CDATA[
+]]></content>
   </entry>
   <entry>
     <title>Dynamic Programming</title>
@@ -1356,77 +1356,6 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
 ]]></content>
   </entry>
   <entry>
-    <title>kaiming_init</title>
-    <url>/2021/06/23/kaiming-init/</url>
-    <content><![CDATA[<h1 id="delving-deep-into-rectifiers-surpassing-human-level-performance-on-imagenet-classification">Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification</h1>
-<h2 id="prelu">PReLU</h2>
-<h3 id="parametric-rectifiers">Parametric Rectifiers</h3>
-<p>Formally, we consider an activation function defined as: <span class="math display">\[
-f(y_i)=
-\begin{cases}
-y_i, \quad &amp; y_i &gt; 0\\
-a_i y_i, \quad &amp; y_i \leq 0\\
-\end{cases}
-\]</span></p>
-<p>Here <span class="math inline">\(y_i\)</span> is the input of the nonlinear activation <span class="math inline">\(f\)</span> on the <span class="math inline">\(i\)</span>th channel, and <span class="math inline">\(a_i\)</span> is a coefficient controlling the slop of the negative part of the function. The subscript <span class="math inline">\(i\)</span> in <span class="math inline">\(a_i\)</span> indicates that we allow the nonlinear activation to vary on different channels. When <span class="math inline">\(a_i = 0\)</span>, it becomes ReLU. When <span class="math inline">\(a_i\)</span> is small and fixed value, we have <code>LReLU</code>. When <span class="math inline">\(a_i\)</span> is a learnable parameter, we call this <code>Parametric ReLU (PReLU)</code>.</p>
-<p><img src='/images/ML/kaiming_init.png' width="600"></p>
-<p>We can also rewrite the above formula as:</p>
-<p><span class="math display">\[f(y_i) = \max (0, y_i) + a_i \min (0, y_i)\]</span></p>
-<p>The <code>PReLU</code> only introduces one parameter per channel for each layer which is negligible when considering the total number of weights. At the same time, if we do not consider channels, we can use one <span class="math inline">\(a\)</span> for all channels in same layer, the parameter number reduces to 1.</p>
-<h3 id="optimization">Optimization</h3>
-<p><code>PReLU</code> can be trained using backpropagation and optimized simultaneously with other layers. For single layer:</p>
-<p><span class="math display">\[\frac{\partial L}{\partial a_i} = \sum_{y_i} \frac{\partial L}{\partial f(y_i)} \frac{\partial f(y_i)}{\partial a_i}\]</span></p>
-<p>Where <span class="math inline">\(L\)</span> is the objective function, <span class="math inline">\(f(y_1), ...., f(y_N)\)</span> are PReLU transformations. The gradient of PReLU transformation on single activation is given by:</p>
-<p><span class="math display">\[
-\frac{\partial f(y_i)}{\partial a_i} =
-\begin{cases}
-0, \quad &amp; y_i &gt; 0\\
-y_i, \quad &amp; y_i \leq 0\\
-\end{cases}
-\]</span></p>
-<p>For channel shared version (single <span class="math inline">\(a\)</span> for all channels in a layer):</p>
-<p><span class="math display">\[\frac{\partial L}{\partial a} = \sum_{i} \sum_{y_i} \frac{\partial L}{\partial f(y_i)} \frac{\partial f(y_i)}{\partial a}\]</span></p>
-<p>When, we can use any gradient based methods to update the parameter (e.g Momentum in this case):</p>
-<p><span class="math display">\[a_i = \mu a_i + \epsilon \frac{\partial L}{\partial a_i}\]</span></p>
-<h2 id="initialization-of-filter-weights-for-rectifiers">Initialization of Filter Weights for Rectifiers</h2>
-<p>The main idea of the derivation is to investigate the variance of the response in each layer.</p>
-<h3 id="forward-propagation-case">Forward Propagation Case</h3>
-<p>For a conv layer, a response is:</p>
-<p><span class="math display">\[\mathbf{y_l} = W_{l} \mathbf{x}_l + \mathbf{b}_l\]</span></p>
-<p>Where:</p>
-<ul>
-<li><span class="math inline">\(\mathbf{x}\)</span> is a <span class="math inline">\(k^2c \times 1\)</span> vector that represents co-located <span class="math inline">\(k \times k\)</span> pixels in <span class="math inline">\(c\)</span> input channels and <span class="math inline">\(k\)</span> is the kernel size (the volume after applying one kernel on the input feature maps).</li>
-<li><span class="math inline">\(n = k^2c\)</span></li>
-<li><span class="math inline">\(W\)</span> is a <span class="math inline">\(d \times n\)</span> weight matrix represents the weights in each kernel flattened in to row in <span class="math inline">\(W\)</span>.</li>
-<li><span class="math inline">\(\mathbf{b}\)</span> is a <span class="math inline">\(b \times 1\)</span> bias vector, one dimension for each kernel.</li>
-<li><span class="math inline">\(\mathbf{y}\)</span> is the response at a pixel of the output feature map (volume <span class="math inline">\(1 \times 1 \times d\)</span>).</li>
-<li><span class="math inline">\(l\)</span> is used to index layers.</li>
-<li><span class="math inline">\(x_l = f(y_{l - 1})\)</span> where <span class="math inline">\(f\)</span> is the activation function.</li>
-<li><span class="math inline">\(c_l = d_{l - 1}\)</span> (input feature maps number is the same as kernel numbers in the previous layer).</li>
-</ul>
-<p><strong>The general idea in words is:</strong></p>
-<p><span class="math inline">\(1 \times 1 \times d\)</span> volumn of the output feature map after applying <span class="math inline">\(d\)</span> kernels on the corresponding <span class="math inline">\(k \times k\)</span> region of <span class="math inline">\(c\)</span> input feature maps.</p>
-<p><br></p>
-<p>We Assume:</p>
-<ol type="1">
-<li><p>The initialized elements in <span class="math inline">\(W_l\)</span> be mutually independent random variables draw from the same distribution.</p></li>
-<li><p>The elements in <span class="math inline">\(\mathbf{x}_l\)</span> are also mutually independent random variables draw from the same distribution.</p></li>
-<li><p>(1) and (2) are independent.</p></li>
-</ol>
-<p>Thus, we have:</p>
-<p><span class="math display">\[Var(y_l) = Var(\mathbf{w}_l \cdot \mathbf{x}_l) = n_l Var(w_l x_l)\]</span></p>
-<p>Where <span class="math inline">\(y_l, \; \mathbf{w}_l\)</span> are rows of <span class="math inline">\(\mathbf{y}, \; W_l\)</span> respectively, <span class="math inline">\(w_l, \; x_l\)</span> are elements of <span class="math inline">\(\mathbf{w}_l, \; \mathbf{x}_l\)</span></p>
-<p>If <span class="math inline">\(w_l\)</span> has zero mean, then:</p>
-<span class="math display">\[\begin{aligned}
-Var(y_l) &amp;= n_l Var(w_l x_l) \\
-&amp;= n_l Var(w_l) Var(x_l) + Var(w_l)E^{2}[x_l]\\
-&amp;= n_l Var(w_l) [Var(x_l) + E^{2}[x_l]]\\
-&amp;= n_l Var(w_l) E[x^{2}_l]
-\end{aligned}\]</span>
-<p>If we let <span class="math inline">\(w_{l - 1}\)</span></p>
-]]></content>
-  </entry>
-  <entry>
     <title>Intrinsic Motivation</title>
     <url>/2021/06/25/instrinsic-motivation/</url>
     <content><![CDATA[<h1 id="intrinsically-motivated-reinforcement-learning">Intrinsically Motivated Reinforcement Learning</h1>
@@ -1498,6 +1427,85 @@ Var(y_l) &amp;= n_l Var(w_l x_l) \\
       </tags>
   </entry>
   <entry>
+    <title>kaiming_init</title>
+    <url>/2021/06/23/kaiming-init/</url>
+    <content><![CDATA[<h1 id="delving-deep-into-rectifiers-surpassing-human-level-performance-on-imagenet-classification">Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification</h1>
+<h2 id="prelu">PReLU</h2>
+<h3 id="parametric-rectifiers">Parametric Rectifiers</h3>
+<p>Formally, we consider an activation function defined as: <span class="math display">\[
+f(y_i)=
+\begin{cases}
+y_i, \quad &amp; y_i &gt; 0\\
+a_i y_i, \quad &amp; y_i \leq 0\\
+\end{cases}
+\]</span></p>
+<p>Here <span class="math inline">\(y_i\)</span> is the input of the nonlinear activation <span class="math inline">\(f\)</span> on the <span class="math inline">\(i\)</span>th channel, and <span class="math inline">\(a_i\)</span> is a coefficient controlling the slop of the negative part of the function. The subscript <span class="math inline">\(i\)</span> in <span class="math inline">\(a_i\)</span> indicates that we allow the nonlinear activation to vary on different channels. When <span class="math inline">\(a_i = 0\)</span>, it becomes ReLU. When <span class="math inline">\(a_i\)</span> is small and fixed value, we have <code>LReLU</code>. When <span class="math inline">\(a_i\)</span> is a learnable parameter, we call this <code>Parametric ReLU (PReLU)</code>.</p>
+<p><img src='/images/ML/kaiming_init.png' width="600"></p>
+<span id="more"></span>
+<p>We can also rewrite the above formula as:</p>
+<p><span class="math display">\[f(y_i) = \max (0, y_i) + a_i \min (0, y_i)\]</span></p>
+<p>The <code>PReLU</code> only introduces one parameter per channel for each layer which is negligible when considering the total number of weights. At the same time, if we do not consider channels, we can use one <span class="math inline">\(a\)</span> for all channels in same layer, the parameter number reduces to 1.</p>
+<h3 id="optimization">Optimization</h3>
+<p><code>PReLU</code> can be trained using backpropagation and optimized simultaneously with other layers. For single layer:</p>
+<p><span class="math display">\[\frac{\partial L}{\partial a_i} = \sum_{y_i} \frac{\partial L}{\partial f(y_i)} \frac{\partial f(y_i)}{\partial a_i}\]</span></p>
+<p>Where <span class="math inline">\(L\)</span> is the objective function, <span class="math inline">\(f(y_1), ...., f(y_N)\)</span> are PReLU transformations. The gradient of PReLU transformation on single activation is given by:</p>
+<p><span class="math display">\[
+\frac{\partial f(y_i)}{\partial a_i} =
+\begin{cases}
+0, \quad &amp; y_i &gt; 0\\
+y_i, \quad &amp; y_i \leq 0\\
+\end{cases}
+\]</span></p>
+<p>For channel shared version (single <span class="math inline">\(a\)</span> for all channels in a layer):</p>
+<p><span class="math display">\[\frac{\partial L}{\partial a} = \sum_{i} \sum_{y_i} \frac{\partial L}{\partial f(y_i)} \frac{\partial f(y_i)}{\partial a}\]</span></p>
+<p>When, we can use any gradient based methods to update the parameter (e.g Momentum in this case):</p>
+<p><span class="math display">\[a_i = \mu a_i + \epsilon \frac{\partial L}{\partial a_i}\]</span></p>
+<h2 id="initialization-of-filter-weights-for-rectifiers">Initialization of Filter Weights for Rectifiers</h2>
+<p>The main idea of the derivation is to investigate the variance of the response in each layer.</p>
+<h3 id="forward-propagation-case">Forward Propagation Case</h3>
+<p>For a conv layer, a response is:</p>
+<p><span class="math display">\[\mathbf{y_l} = W_{l} \mathbf{x}_l + \mathbf{b}_l\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(\mathbf{x}\)</span> is a <span class="math inline">\(k^2c \times 1\)</span> vector that represents co-located <span class="math inline">\(k \times k\)</span> pixels in <span class="math inline">\(c\)</span> input channels and <span class="math inline">\(k\)</span> is the kernel size (the volume after applying one kernel on the input feature maps).</li>
+<li><span class="math inline">\(n = k^2c\)</span></li>
+<li><span class="math inline">\(W\)</span> is a <span class="math inline">\(d \times n\)</span> weight matrix represents the weights in each kernel flattened in to row in <span class="math inline">\(W\)</span>.</li>
+<li><span class="math inline">\(\mathbf{b}\)</span> is a <span class="math inline">\(b \times 1\)</span> bias vector, one dimension for each kernel.</li>
+<li><span class="math inline">\(\mathbf{y}\)</span> is the response at a pixel of the output feature map (volume <span class="math inline">\(1 \times 1 \times d\)</span>).</li>
+<li><span class="math inline">\(l\)</span> is used to index layers.</li>
+<li><span class="math inline">\(x_l = f(y_{l - 1})\)</span> where <span class="math inline">\(f\)</span> is the activation function.</li>
+<li><span class="math inline">\(c_l = d_{l - 1}\)</span> (input feature maps number is the same as kernel numbers in the previous layer).</li>
+</ul>
+<p><strong>The general idea in words is:</strong></p>
+<p><span class="math inline">\(1 \times 1 \times d\)</span> volumn of the output feature map after applying <span class="math inline">\(d\)</span> kernels on the corresponding <span class="math inline">\(k \times k\)</span> region of <span class="math inline">\(c\)</span> input feature maps.</p>
+<p><br></p>
+<p>We Assume:</p>
+<ol type="1">
+<li><p>The initialized elements in <span class="math inline">\(W_l\)</span> be mutually independent random variables draw from the same distribution.</p></li>
+<li><p>The elements in <span class="math inline">\(\mathbf{x}_l\)</span> are also mutually independent random variables draw from the same distribution.</p></li>
+<li><p>(1) and (2) are independent.</p></li>
+</ol>
+<p>Thus, we have:</p>
+<p><span class="math display">\[Var(y_l) = Var(\mathbf{w}_l \cdot \mathbf{x}_l) = n_l Var(w_l x_l)\]</span></p>
+<p>Where <span class="math inline">\(y_l, \; \mathbf{w}_l\)</span> are rows of <span class="math inline">\(\mathbf{y}, \; W_l\)</span> respectively, <span class="math inline">\(w_l, \; x_l\)</span> are elements of <span class="math inline">\(\mathbf{w}_l, \; \mathbf{x}_l\)</span></p>
+<p>If <span class="math inline">\(w_l\)</span> has zero mean, then:</p>
+<span class="math display">\[\begin{aligned}
+Var(y_l) &amp;= n_l Var(w_l x_l) \\
+&amp;= n_l Var(w_l) Var(x_l) + Var(w_l)E^{2}[x_l]\\
+&amp;= n_l Var(w_l) [Var(x_l) + E^{2}[x_l]]\\
+&amp;= n_l Var(w_l) E[x^{2}_l]
+\end{aligned}\]</span>
+<p>If we let <span class="math inline">\(w_{l - 1}\)</span></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>knapsack</title>
+    <url>/2021/07/08/knapsack/</url>
+    <content><![CDATA[<h1 id="knapsack-problem">knapsack Problem</h1>
+<h2 id="knapsack-problem-1">0–1 knapsack problem</h2>
+]]></content>
+  </entry>
+  <entry>
     <title>Layer Normalization</title>
     <url>/2021/06/02/layer-norm/</url>
     <content><![CDATA[<h1 id="layer-normalization">Layer Normalization</h1>
@@ -1547,6 +1555,12 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
         <tag>Deep Learning</tag>
         <tag>Normalization</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>natural-actor-critic</title>
+    <url>/2021/06/03/natural-actor-critic/</url>
+    <content><![CDATA[
+]]></content>
   </entry>
   <entry>
     <title>Monte Carlo Estimation</title>
@@ -1636,12 +1650,6 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       <tags>
         <tag>RL Basics</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>natural-actor-critic</title>
-    <url>/2021/06/03/natural-actor-critic/</url>
-    <content><![CDATA[
-]]></content>
   </entry>
   <entry>
     <title>off-policy-actor-critic</title>
@@ -1972,66 +1980,6 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </tags>
   </entry>
   <entry>
-    <title>SARSA</title>
-    <url>/2021/05/16/sarsa/</url>
-    <content><![CDATA[<h1 id="sarsa">SARSA</h1>
-<p>SARSA (State Action State Reward State Action) is an on-policy TD algorithm that follows a PI-like procedure:</p>
-<ol type="1">
-<li>Estimate <span class="math inline">\(Q^{\pi_k}\)</span> for a given policy <span class="math inline">\(\pi_k\)</span></li>
-<li>Perform policy improvement to obtain a new policy <span class="math inline">\(\pi_{k+1}\)</span></li>
-</ol>
-<p>Compare with usual Policy iteration, SARSA uses <code>Generalized policy iteration</code> to improve the policy before <span class="math inline">\(Q\)</span> converges to <span class="math inline">\(Q^{\pi_k}\)</span>.</p>
-<span id="more"></span>
-<h2 id="algorithm">Algorithm</h2>
-<p><img src="/images/RL/mc/td_6.png"></p>
-<p>Notice that, <span class="math inline">\(\pi_t\)</span> here is a <span class="math inline">\(\epsilon\)</span>-greedy policy because we want to ensure some exploration. The greedy part of the policy performs the policy improvement while the occasional random choice of actions allows the agent to have some exploration.</p>
-<h2 id="implementation">Implementation</h2>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>TD</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>Tabular Methods</tag>
-        <tag>TD</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Search</title>
-    <url>/2021/06/13/search/</url>
-    <content><![CDATA[<h1 id="search">Search</h1>
-<h1 id="breath-first-search">Breath First Search</h1>
-<p>Breadth First Search (BFS) algorithm traverses a graph in a breadthward motion and uses a queue to remember to get the next vertex to start a search, when a dead end occurs in any iteration.</p>
-<p><img src="/images/algo/dfs_1.png" width="600px"></p>
-<p>As in the example given above, BFS algorithm traverses from A to B to E to F first then to C and G lastly to D. It employs the following rules:</p>
-<ul>
-<li>Visit the adjacent unvisited vertex. Mark it as visited. Display it. Insert it in a queue.</li>
-<li>If no adjacent vertex is found, remove the first vertex from the queue, and set this vertex as the head.</li>
-<li>Repeat Rule 1 and Rule 2 until the queue is empty.</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BinaryTreeNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, key=<span class="literal">None</span>, parent=<span class="literal">None</span>, left_child=<span class="literal">None</span>, right_child=<span class="literal">None</span></span>):</span></span><br><span class="line">        self.key = key</span><br><span class="line">        self.parent = parent</span><br><span class="line">        self.left_child = left_child</span><br><span class="line">        self.right_child = right_child</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tree</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, tree=<span class="literal">None</span></span>):</span></span><br><span class="line">        self.root = tree</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bfs</span>(<span class="params">tree</span>):</span></span><br><span class="line">    <span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line">    q = deque()</span><br><span class="line">    q.append(tree)</span><br><span class="line">    <span class="keyword">while</span> q:</span><br><span class="line">        head = q.popleft()</span><br><span class="line">        <span class="built_in">print</span>(head.key)</span><br><span class="line">        <span class="keyword">if</span> head.left_child:</span><br><span class="line">            q.append(head.left_child)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">if</span> head.right_child:</span><br><span class="line">            q.append(head.right_child)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h1 id="depth-first-search">Depth First Search</h1>
-<p>Depth First Search (DFS) algorithm traverses a graph in a depthward motion and uses a stack to remember to get the next vertex to start a search, when a dead end occurs in any iteration.</p>
-<p><img src="/images/algo/dfs_2.png" width="600px"></p>
-<p>As in the example given above, DFS algorithm traverses from S to A to D to G to E to B first, then to F and lastly to C. It employs the following rules:</p>
-<ul>
-<li>Visit the adjacent unvisited vertex. Mark it as visited. Display it. Push it in a stack.</li>
-<li>If no adjacent vertex is found, pop up a vertex from the stack. (It will pop up all the vertices from the stack, which do not have adjacent vertices.)</li>
-<li>Repeat Rule 1 and Rule 2 until the stack is empty.</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dfs</span>(<span class="params">tree</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> tree.left_child <span class="keyword">and</span> <span class="keyword">not</span> tree.right_child:</span><br><span class="line">        <span class="built_in">print</span>(tree.key)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(tree.key)</span><br><span class="line">        <span class="keyword">if</span> tree.left_child:</span><br><span class="line">            dfs(tree.left_child)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> tree.right_child:</span><br><span class="line">            dfs(tree.right_child)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dfs_stack</span>(<span class="params">tree</span>):</span></span><br><span class="line">    stack = [tree]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        head = stack.pop()</span><br><span class="line">        <span class="built_in">print</span>(head.key)</span><br><span class="line">        <span class="keyword">if</span> head.right_child:</span><br><span class="line">            stack.append(head.right_child)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> head.left_child:</span><br><span class="line">            stack.append(head.left_child)</span><br></pre></td></tr></table></figure>
-<h1 id="reference">Reference</h1>
-<p>https://www.tutorialspoint.com/data_structures_algorithms/depth_first_traversal.htm</p>
-]]></content>
-      <categories>
-        <category>CS Basics</category>
-      </categories>
-      <tags>
-        <tag>Algorithms</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Q-Learning</title>
     <url>/2021/05/16/q-learning/</url>
     <content><![CDATA[<h1 id="temporal-difference-learning-for-control-q-learning">Temporal Difference Learning for Control: Q-Learning</h1>
@@ -2139,6 +2087,66 @@ Var[max_{a^{\prime} \in A} Q_t (X^{\prime}, a^{\prime}) | X_t=x_t, A_t=a_t] &amp
         <tag>RL Basics</tag>
         <tag>Tabular Methods</tag>
         <tag>TD</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SARSA</title>
+    <url>/2021/05/16/sarsa/</url>
+    <content><![CDATA[<h1 id="sarsa">SARSA</h1>
+<p>SARSA (State Action State Reward State Action) is an on-policy TD algorithm that follows a PI-like procedure:</p>
+<ol type="1">
+<li>Estimate <span class="math inline">\(Q^{\pi_k}\)</span> for a given policy <span class="math inline">\(\pi_k\)</span></li>
+<li>Perform policy improvement to obtain a new policy <span class="math inline">\(\pi_{k+1}\)</span></li>
+</ol>
+<p>Compare with usual Policy iteration, SARSA uses <code>Generalized policy iteration</code> to improve the policy before <span class="math inline">\(Q\)</span> converges to <span class="math inline">\(Q^{\pi_k}\)</span>.</p>
+<span id="more"></span>
+<h2 id="algorithm">Algorithm</h2>
+<p><img src="/images/RL/mc/td_6.png"></p>
+<p>Notice that, <span class="math inline">\(\pi_t\)</span> here is a <span class="math inline">\(\epsilon\)</span>-greedy policy because we want to ensure some exploration. The greedy part of the policy performs the policy improvement while the occasional random choice of actions allows the agent to have some exploration.</p>
+<h2 id="implementation">Implementation</h2>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>TD</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>Tabular Methods</tag>
+        <tag>TD</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Search</title>
+    <url>/2021/06/13/search/</url>
+    <content><![CDATA[<h1 id="search">Search</h1>
+<h1 id="breath-first-search">Breath First Search</h1>
+<p>Breadth First Search (BFS) algorithm traverses a graph in a breadthward motion and uses a queue to remember to get the next vertex to start a search, when a dead end occurs in any iteration.</p>
+<p><img src="/images/algo/dfs_1.png" width="600px"></p>
+<p>As in the example given above, BFS algorithm traverses from A to B to E to F first then to C and G lastly to D. It employs the following rules:</p>
+<ul>
+<li>Visit the adjacent unvisited vertex. Mark it as visited. Display it. Insert it in a queue.</li>
+<li>If no adjacent vertex is found, remove the first vertex from the queue, and set this vertex as the head.</li>
+<li>Repeat Rule 1 and Rule 2 until the queue is empty.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BinaryTreeNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, key=<span class="literal">None</span>, parent=<span class="literal">None</span>, left_child=<span class="literal">None</span>, right_child=<span class="literal">None</span></span>):</span></span><br><span class="line">        self.key = key</span><br><span class="line">        self.parent = parent</span><br><span class="line">        self.left_child = left_child</span><br><span class="line">        self.right_child = right_child</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tree</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, tree=<span class="literal">None</span></span>):</span></span><br><span class="line">        self.root = tree</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bfs</span>(<span class="params">tree</span>):</span></span><br><span class="line">    <span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line">    q = deque()</span><br><span class="line">    q.append(tree)</span><br><span class="line">    <span class="keyword">while</span> q:</span><br><span class="line">        head = q.popleft()</span><br><span class="line">        <span class="built_in">print</span>(head.key)</span><br><span class="line">        <span class="keyword">if</span> head.left_child:</span><br><span class="line">            q.append(head.left_child)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">if</span> head.right_child:</span><br><span class="line">            q.append(head.right_child)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="depth-first-search">Depth First Search</h1>
+<p>Depth First Search (DFS) algorithm traverses a graph in a depthward motion and uses a stack to remember to get the next vertex to start a search, when a dead end occurs in any iteration.</p>
+<p><img src="/images/algo/dfs_2.png" width="600px"></p>
+<p>As in the example given above, DFS algorithm traverses from S to A to D to G to E to B first, then to F and lastly to C. It employs the following rules:</p>
+<ul>
+<li>Visit the adjacent unvisited vertex. Mark it as visited. Display it. Push it in a stack.</li>
+<li>If no adjacent vertex is found, pop up a vertex from the stack. (It will pop up all the vertices from the stack, which do not have adjacent vertices.)</li>
+<li>Repeat Rule 1 and Rule 2 until the stack is empty.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dfs</span>(<span class="params">tree</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> tree.left_child <span class="keyword">and</span> <span class="keyword">not</span> tree.right_child:</span><br><span class="line">        <span class="built_in">print</span>(tree.key)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(tree.key)</span><br><span class="line">        <span class="keyword">if</span> tree.left_child:</span><br><span class="line">            dfs(tree.left_child)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> tree.right_child:</span><br><span class="line">            dfs(tree.right_child)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dfs_stack</span>(<span class="params">tree</span>):</span></span><br><span class="line">    stack = [tree]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        head = stack.pop()</span><br><span class="line">        <span class="built_in">print</span>(head.key)</span><br><span class="line">        <span class="keyword">if</span> head.right_child:</span><br><span class="line">            stack.append(head.right_child)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> head.left_child:</span><br><span class="line">            stack.append(head.left_child)</span><br></pre></td></tr></table></figure>
+<h1 id="reference">Reference</h1>
+<p>https://www.tutorialspoint.com/data_structures_algorithms/depth_first_traversal.htm</p>
+]]></content>
+      <categories>
+        <category>CS Basics</category>
+      </categories>
+      <tags>
+        <tag>Algorithms</tag>
       </tags>
   </entry>
   <entry>
@@ -2437,18 +2445,18 @@ E[\delta (X, R, X^{\prime}; V^{\pi}) | X=x, A=a] &amp;= E[R + \gamma V^{\pi}(X^{
       </tags>
   </entry>
   <entry>
+    <title>td3</title>
+    <url>/2021/06/23/td3/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
     <title>tree</title>
     <url>/2021/06/14/tree/</url>
     <content><![CDATA[<h1 id="trees">Trees</h1>
 <h2 id="binary-search-tree">Binary Search Tree</h2>
 <h3 id="inorder-traversal">Inorder Traversal</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inorder</span>(<span class="params">root</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    inorder(root.left)</span><br><span class="line">    <span class="built_in">print</span>(root.val)</span><br><span class="line">    inorder(root.right)</span><br></pre></td></tr></table></figure>
-]]></content>
-  </entry>
-  <entry>
-    <title>td3</title>
-    <url>/2021/06/23/td3/</url>
-    <content><![CDATA[
 ]]></content>
   </entry>
   <entry>
@@ -2604,7 +2612,7 @@ Uniform(A), \text{w. p } \epsilon \\
 ]]></content>
   </entry>
   <entry>
-    <title>xavier</title>
+    <title>Xavier Initialization</title>
     <url>/2021/07/05/xavier/</url>
     <content><![CDATA[<h1 id="understanding-the-difficulty-of-training-deep-feedforward-neural-networks">Understanding the Difficulty of Training Deep Feedforward Neural Networks</h1>
 <p>The analysis is driven by investigative experiments to monitor activations (watching for saturation of hidden units) and gradients, across layers and across training iterations.</p>
@@ -2617,6 +2625,7 @@ Uniform(A), \text{w. p } \epsilon \\
 <li>Softsign: <span class="math inline">\(\frac{x}{(1 + |x|)}\)</span> (similar to tanh but approaches asymptotes much slower, softer slope)</li>
 </ol>
 <p>The initial weights <span class="math inline">\(W_{i, j} \sim U[-\frac{1}{\sqrt{n}}, \frac{1}{\sqrt{n}}]\)</span>, biases are initialized to 0. Where <span class="math inline">\(n\)</span> is the size of the previous layer.</p>
+<span id="more"></span>
 <h2 id="effect-of-activation-functions-and-saturation-during-training">Effect of Activation Functions and Saturation During Training</h2>
 <h3 id="experiments-with-the-sigmoid">Experiments with the Sigmoid</h3>
 <p><img src='/images/ML/xavier_1.png' width="600"></p>
@@ -2628,17 +2637,89 @@ Uniform(A), \text{w. p } \epsilon \\
 <p>The softsign is similar to tanh but behave differently in terms of saturation because of its smoother asymptotes. We can see that the saturation does not occur one layer after the other like for the tanh, it is faster at the beginning and then slow, and all layers move together towards larger weights.</p>
 <p><img src='/images/ML/xavier_3.png' width="600"></p>
 <h2 id="studying-gradients-and-their-propagation">Studying Gradients and their Propagation</h2>
-<h2 id="effect-of-the-cost-function">Effect of the Cost Function</h2>
+<h3 id="effect-of-the-cost-function">Effect of the Cost Function</h3>
 <p>The loss function is very important in terms of better learning. In classification, cross entropy (negative log-likelihood) couped with softmax outputs worked much better than quadratic cost. The plateaus in the traning criterion are less present with the log-likelihood cost-function.</p>
 <p><img src='/images/ML/xavier_4.png' width="600"></p>
-<p>For a dense artificial NN using symmetric activation function <span class="math inline">\(f\)</span> with unit derivative at 0 (ie. <span class="math inline">\(f^{\prime} (0) = 1\)</span>). If we write <span class="math inline">\(\mathbf{z}^{i}\)</span> for the activation vector of layer <span class="math inline">\(i\)</span> (row vector), and <span class="math inline">\(\mathbf{s}^i\)</span> the argument vector of the activation function at layer <span class="math inline">\(i\)</span>, we have:</p>
-<p><span class="math display">\[\mathbf{s}^{i} = \mathbf{z}^{i} W^i + \mathbf{b}^{i}\]</span></p>
+<h3 id="gradients-at-initialization">Gradients at Initialization</h3>
+<p>We will start by studying the linear regime (activation). For a dense artificial NN using symmetric activation function <span class="math inline">\(f\)</span> with unit derivative at 0 (ie. <span class="math inline">\(f^{\prime} (0) = 1\)</span>). If we write <span class="math inline">\(\mathbf{z}^{i}\)</span> for the activation vector of layer <span class="math inline">\(i\)</span> (row vector), and <span class="math inline">\(\mathbf{s}^i\)</span> the argument vector of the activation function at layer <span class="math inline">\(i\)</span>, we have (<strong>denominator layout</strong>):</p>
+<p><span class="math display">\[\mathbf{s}^{i}_{1 \times d} = \mathbf{z}^{i} W^i + \mathbf{b}^{i}\]</span></p>
 <p>and <span class="math inline">\(\mathbf{z}^{i+1} = f(\mathbf{s}^{i})\)</span>, Then:</p>
 <span class="math display">\[\begin{aligned}
-\frac{\partial Cost}{\partial \mathbf{s}^{i}} &amp;= \frac{\partial Cost}{\partial \mathbf{s}^{i+1}} \frac{\partial \mathbf{s}^{i+1}}{\partial \mathbf{z}^{i + 1}}\frac{\partial \mathbf{z}^{i + 1}}{\partial \mathbf{s}^{i}}\\
-&amp;= \frac{\partial Cost}{\partial \mathbf{s}^{i+1}} W^{i} f^{\prime} (\mathbf{s}^{i}) I\\
+{\frac{\partial Cost}{\partial s^{i}_{k}}}_{1 \times 1} &amp;= \frac{\partial \mathbf{z}^{i + 1}}{\partial s^{i}_{k}}\frac{\partial \mathbf{s}^{i+1}}{\partial \mathbf{z}^{i + 1}}\frac{\partial Cost}{\partial \mathbf{s}^{i+1}}\\
+&amp;= [\frac{\partial z^{i + 1}_1}{\partial s^{i}_{k}} ... \frac{\partial z^{i + 1}_k}{\partial s^{i}_{k}} ... \frac{\partial z^{i + 1}_d}{\partial s^{i}_{k}}] W^{i} \frac{\partial Cost}{\partial \mathbf{s}^{i+1}}\\
+&amp;= [0 ... f^{\prime} (s^{i}_{k}) ... 0] W^{i + 1} \frac{\partial Cost}{\partial \mathbf{s}^{i+1}}\\
+&amp;= [f^{\prime} (s^{i}_{k}) W^{i + 1}_{k, \cdot}]_{1 \times d} \frac{\partial Cost}{\partial \mathbf{s}^{i+1}}_{d \times 1}\\
+\\
+\frac{\partial Cost}{\partial w^{i}_{l, k}}_{1 \times 1} &amp;= \frac{\partial \mathbf{s}^{i}}{\partial w^{i}_{l, k}}_{1 \times d} \frac{\partial Cost}{\partial \mathbf{s}^{i}}_{d \times 1}\\
+&amp;= [0 ... \frac{\partial s^{i}_{k}}{\partial w^{i}_{l, k}} ... 0] \frac{\partial Cost}{\partial \mathbf{s}^{i}}\\
+&amp;= z^{i}_{l} \frac{\partial Cost}{\partial s^{i}_{k}}\\
 \end{aligned}\]</span>
+<p>Assume that we are in a linear regime (activation) at the initialization, that the weights are initialized i.i.d with mean zero , same variance (i.e <span class="math inline">\(Var[w^{l}_1] = Var[w^l_i] = Var[w^l]\)</span>) and that the inputs features have mean zero and variances are the same (i.e <span class="math inline">\(Var[x_1] = Var[x_i] = Var[x]\)</span>), we can say that with <span class="math inline">\(n_i\)</span> the size of layer <span class="math inline">\(i\)</span> and <span class="math inline">\(\mathbf{x}\)</span> the network input:</p>
+<p><span class="math display">\[f^{\prime} (s^i_k) \approx 1\]</span></p>
+<p><span class="math display">\[Var[\mathbf{z}^{1}] = Var[\mathbf{x}W^{0} + \mathbf{b}^{0}] = n_{0}[Var[x]Var[w^{0}]]_{1 \times d} = n_0 Var[\mathbf{x}] Var[W^0]\]</span></p>
+<p><span class="math display">\[Var[\mathbf{z}^{i}] = Var[\mathbf{z^{i - 1}}W^{i - 1} + \mathbf{b}^{i - 1}] = Var[\mathbf{x}] \prod^{i - 1}_{i^{\prime} = 0} n_{i^{\prime}}Var[W]^{i^{\prime}}\]</span></p>
+<p>Where <span class="math inline">\(Var[W^{l}] = [Var[w^l]]_{n_{l - 1} \times n_{l}}\)</span> is the shared scalar variance of all weights at layer <span class="math inline">\(l\)</span>. Then for a network with <span class="math inline">\(d\)</span> layers:</p>
+<span class="math display">\[\begin{aligned}
+Var[\frac{\partial Cost}{\partial \mathbf{s}^{i}}] &amp;= Var[\frac{\partial \mathbf{z}^{i + 1}}{\partial \mathbf{s}^{i}} W^{i + 1} \frac{\partial Cost}{\partial \mathbf{s}^{i+1}}]\\
+&amp;= Var[W^{i + 1} \frac{\partial Cost}{\partial \mathbf{s}^{i+1}}]\\
+&amp;= Var[W^{i + 1}W^{i + 2}\frac{\partial Cost}{\partial \mathbf{s}^{i+2}}]\\
+&amp;= (\prod^{d}_{i^{\prime} = i} n_{i^{\prime} + 1} Var[W^{i^{\prime}}]) Var[\frac{\partial Cost}{\partial \mathbf{s}^{d}}] 
+\\
+\\
+\\
+Var[\frac{\partial Cost}{\partial w^{i}_{l, k}}] &amp;= Var[z^{i}_{l} \frac{\partial Cost}{\partial s^{i}_{k}}]\\
+&amp;= Var[x] \prod^{i - 1}_{i^{\prime} = 0} n_{i^{\prime}} Var[w^{i^{\prime}}]  \prod^{d}_{i^{\prime} = i} n_{i^{\prime} + 1} Var[w^{i^{\prime}}]\\
+&amp;= \prod^{i - 1}_{i^{\prime} = 0} n_{i^{\prime}} Var[w^{i^{\prime}}] \prod^{d}_{i^{\prime} = i} n_{i^{\prime} + 1}  Var[w^{i^{\prime}}] \times Var[x] Var[\frac{\partial Cost}{\partial s^{d}}]
+\end{aligned}\]</span>
+<p><br></p>
+<p>From a forward-propagation point of view (We want to make sure that we have similar variance initialization at deeper layers as all layers, so we do not stuck at small gradients at beginning), we would like to keep things flowing (want inputs to have similar mean and variance, similar distribution):</p>
+<p><span class="math display">\[Var[z^{i}] = Var[z^{i^{\prime}}]\]</span></p>
+<p>This transforms to:</p>
+<p><span class="math display">\[Var[x] \prod^{i - 1}_{k = 0} n_{k} Var[w^{k}] = Var[x] \prod^{i^{\prime} - 1}_{j = 0} n_{j} Var[w^{j}]\]</span></p>
+<p><span class="math display">\[\implies \prod^{\max (i - 1, i^{\prime} - 1)}_{j = \max (i - 1, i^{\prime} - 1) - \min (i - 1, i^{\prime} - 1)} n_j Var(w^j) = 1 \]</span></p>
+<p>If we let <span class="math inline">\(Var[w^i] = \frac{1}{n_i}\)</span>, then the above condition is satisfied for <span class="math inline">\((i, i^{\prime})\)</span>.</p>
+<p><br></p>
+<p>From a back-propagation point of view (We want to have similar variance so no gradients exploding or vanishing at the beginning), we would similarly like to have the gradients to have similar variance as we backpropagate through layers:</p>
+<p><span class="math display">\[Var[\frac{\partial Cost}{\partial s^{i^{\prime}}}] = Var[\frac{\partial Cost}{\partial s^{i}}]\]</span></p>
+<p><span class="math display">\[\implies (\prod^{d}_{j = i^{\prime}} n_{j + 1} Var[w^{j}]) Var[\frac{\partial Cost}{\partial s^{d}}] = (\prod^{d}_{k = i} n_{k + 1} Var[w^{k}]) Var[\frac{\partial Cost}{\partial s^{d}}]\]</span></p>
+<p><span class="math display">\[\implies \prod^{\max (i - 1, i^{\prime} - 1)}_{j = \min (i - 1, i^{\prime} - 1)} n_{j + 1} Var(w^j) = 1\]</span></p>
+<p>If we let <span class="math inline">\(Var[w^i] = \frac{1}{n_{i + 1}}\)</span>, then the above condition is satisfied for <span class="math inline">\((i, i^{\prime})\)</span>.</p>
+<p><br></p>
+<p>Thus, we have two conditions (to ensure no gradient exploding and vanishing):</p>
+<p><span class="math display">\[Var[w^i] = \frac{1}{n_{i + 1}} \quad \quad Var[w^i] = \frac{1}{n_i}\]</span></p>
+<p>When all layers have same size, we can satisfy both conditions. However, in most cases, we do not have this condition satisfied. Thus, by combining and compromising, we have:</p>
+<p><span class="math display">\[Var[w^i] = \frac{2}{n_{i} + n_{i + 1}}\]</span></p>
+<p>This initialization is called <code>normalized initialization</code>.</p>
+<p><br></p>
+<p>Example:</p>
+<blockquote>
+<p>If we have initialization <span class="math inline">\(w^{i} \sim U[-\frac{1}{\sqrt{n_{i - 1}}}, \frac{1}{\sqrt{n_{i - 1}}}]\)</span>, then the variance is <span class="math inline">\(Var[w^{i}] = \frac{1}{3 n_{i - 1}}\)</span>. <strong>This will cause the variance to depend on the layer and decreasing</strong>. The normalization factor may therefore be important when initializing deep networks because of the multiplicative effect through layers. Thus, we can refine this to be: <span class="math display">\[w^{i} \sim U[-\frac{\sqrt{6}}{\sqrt{n_{i + 1} + n_{i}}}, \frac{\sqrt{6}}{\sqrt{n_{i + 1} + n_{i}}}]\]</span> then the variance <span class="math inline">\(Var[w^{i}] = \frac{2}{n_{i} + n_{i + 1}}\)</span></p>
+</blockquote>
+<h3 id="back-propagated-gradients-during-learning">Back-propagated Gradients During Learning</h3>
+<p>The dynamic of learning in NN is complex and we would like to develop better tools to analyze and track it. In particular, we cannot use simple variance calculations like above because the weights values are not anymore independent of the activation values and the linearity hypothesis is also violated.</p>
+<p><img src='/images/ML/xavier_5.png' width="600"></p>
+<p>From the above graph, we can see that at the beginning of training:</p>
+<ol type="1">
+<li>The gradient variance gets smaller as it is propagated downwards.</li>
+<li>The distribution of gradient is roughly the same using <code>normalized initialization</code>.</li>
+</ol>
+<h2 id="conclusions">Conclusions</h2>
+<ol type="1">
+<li>The more classical NN with sigmoid or hyperbolic tangent units and standard initialization fare rather poorly, converging more slowly and apparently towards ultimately poorer local minima.</li>
+<li>The softsign networks seem to be more robust to the initialization procedure than the tanh network.</li>
+<li>For tanh networks, the proposed <code>normalized initialization</code> can be quite helpful, because the layer to layer transformation maintain magnitudes of activations and gradients.</li>
+<li>Sigmoid activations should be avoided when initializing from small random weights, because they yield poor learning dynamics with initial saturation of the top hidden layer.</li>
+<li>Keeping the layer to layer transformations such that both activations and gradients flow well (i.e with a jacobian around 1) appears helpful.</li>
+</ol>
 ]]></content>
+      <categories>
+        <category>DL</category>
+        <category>Techniques</category>
+      </categories>
+      <tags>
+        <tag>Deep Learning</tag>
+        <tag>Initialization</tag>
+      </tags>
   </entry>
   <entry>
     <title>Calculus (1)</title>
@@ -2930,7 +3011,29 @@ Uniform(A), \text{w. p } \epsilon \\
 <p>If the inequalities in definition 1 hold for all points <span class="math inline">\((x, y)\)</span> in the domain of <span class="math inline">\(f\)</span>, then <span class="math inline">\(f\)</span> has an <code>absolute maximum or absolute minimum</code>at <span class="math inline">\((a, b)\)</span>.</p>
 <p><br></p>
 <p><img src='/images/cal/14_7_2.png' width="600"></p>
-<p>If <span class="math inline">\(f_x(a, b) = 0\)</span></p>
+<p>If <span class="math inline">\(f_x(a, b) = 0, \; f_y (a, b) = 0\)</span>, then the tangent plane at point <span class="math inline">\((a, b)\)</span> is:</p>
+<p><span class="math display">\[f_x(a, b) (x - a) + f_y (a, b) (y - b) - (z - z_0) = 0 \implies z = z_0\]</span></p>
+<p>Thus, if <span class="math inline">\(f\)</span> has a local maximum or minimum at point <span class="math inline">\((a, b)\)</span>, then the tangent plane at this point on the graph must be horizontal (<span class="math inline">\(z = z_0\)</span>).</p>
+<p>This point <span class="math inline">\((a, b)\)</span> is called <code>critical point or stationary point</code> of <span class="math inline">\(f\)</span> if <span class="math inline">\(f_x(a, b) = 0, \; f_y (a, b) = 0\)</span> (has gradient 0) or <strong>if one of these partial derivatives does not exist.</strong> All local maximum and minimum are critical points, however, not all critical points are local maximum or minimum.</p>
+<p>Example:</p>
+<blockquote>
+<p>Consider the example <span class="math inline">\(f(x, y) = y^2 - x^2\)</span>, then <span class="math inline">\(f_x = -2x, \; f_y = 2y\)</span>. This implies there is only one critical point <span class="math inline">\((0, 0)\)</span> for function <span class="math inline">\(f\)</span>. We compute <span class="math inline">\(x &gt; 0\)</span> for <span class="math inline">\(y = 0\)</span>, we have <span class="math inline">\(f(x, y) &lt; 0\)</span>. If we compute <span class="math inline">\(y &gt; 0\)</span> for <span class="math inline">\(x = 0\)</span>, we have <span class="math inline">\(f(x, y) &gt; 0\)</span>. Thus, we do not have a minimum, or a maximum at this critical point.</p>
+</blockquote>
+<p><img src='/images/cal/14_7_3.png' width="600"></p>
+<p><br></p>
+<p>In this case, we have maximum in the direction of <span class="math inline">\(x\)</span> but minimum in the direction of <span class="math inline">\(y\)</span>, thus, we have a <code>saddle point</code> at <span class="math inline">\((0, 0)\)</span>.</p>
+<p>In order to distinguish between critical points, we can use <code>second derivative test</code>:</p>
+<p><img src='/images/cal/14_7_4.png' width="600"></p>
+<p>Notes:</p>
+<ol type="1">
+<li>In case c, the point <span class="math inline">\((a, b)\)</span> is the saddle point of <span class="math inline">\(f\)</span> and the graph of <span class="math inline">\(f\)</span> crosses its tangent plane at <span class="math inline">\((a, b)\)</span>.</li>
+<li>If <span class="math inline">\(D = 0\)</span>, the test is useless.</li>
+<li><span class="math inline">\(D\)</span> is actually the determinant of the Hessian matrix</li>
+</ol>
+<h4 id="absolute-maximum-and-minimum-values">Absolute Maximum and Minimum Values</h4>
+<p>A <code>bounded set</code> in <span class="math inline">\(\mathbb{R}^2\)</span> is one that is contained within some disk (less than and greater than some real numbers). In other words, it is finite in extent. A <code>close set</code> in <span class="math inline">\(\mathbb{R}^2\)</span> is one that contains all its boundary points.</p>
+<p><img src='/images/cal/14_7_5.png' width="600"></p>
+<p><img src='/images/cal/14_7_6.png' width="600"></p>
 ]]></content>
       <categories>
         <category>Background</category>
