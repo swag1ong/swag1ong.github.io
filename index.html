@@ -252,7 +252,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-07-02 01:05:02" itemprop="dateModified" datetime="2021-07-02T01:05:02+08:00">2021-07-02</time>
+        <time title="Modified: 2021-07-12 18:53:33" itemprop="dateModified" datetime="2021-07-12T18:53:33+08:00">2021-07-12</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -308,6 +308,7 @@
 <li><a href="/2021/05/11/probability/" title="probability (1)">probability (1)</a></li>
 <li><a href="/2021/05/11/probability-2/" title="probability (2)">probability (2)</a></li>
 <li><a href="/2021/05/14/calculus/" title="calculus (1)">calculus (1)</a></li>
+<li><a href="/2021/07/06/cal-2/" title="calculus (2)">calculus (2)</a></li>
 </ol>
 <h2 id="probabilies">Probabilies</h2>
 <p>To avoid confusion (Maybe redundant, but personal preference), I would only use <span class="math inline">\(P\)</span> to represent the probability distribution of events (subsets of the sample space <span class="math inline">\(\Omega\)</span>) defined over event space <span class="math inline">\(\mathbb{B}\)</span> (i.e <span class="math inline">\(P(A), \; A \in \mathbb{B}\)</span>) but not events that are subsets of range space of random variables (i.e CDF will be represented as <span class="math inline">\(F_X (x) = P_X (X \leq x)\)</span>, the subscript <span class="math inline">\(X\)</span> is used in <span class="math inline">\(P\)</span>). However, for simplicity, I will use <span class="math inline">\(P\)</span> for all probability functions. For example, the induced probability distribution of random variable <span class="math inline">\(X\)</span>, <span class="math inline">\(P_X\)</span> can be write in short <span class="math inline">\(P(X)\)</span>, so the probability at <span class="math inline">\(x\)</span>:</p>
@@ -379,10 +380,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-07-08 22:40:37 / Modified: 22:43:37" itemprop="dateCreated datePublished" datetime="2021-07-08T22:40:37+08:00">2021-07-08</time>
+      <time title="Created: 2021-07-08 22:40:37" itemprop="dateCreated datePublished" datetime="2021-07-08T22:40:37+08:00">2021-07-08</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-09 22:23:51" itemprop="dateModified" datetime="2021-07-09T22:23:51+08:00">2021-07-09</time>
+      </span>
 
   
     <span class="post-meta-item" title="Views">
@@ -399,14 +406,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>33</span>
+      <span>2.8k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>3 mins.</span>
     </span>
 </div>
 
@@ -419,6 +426,47 @@
     <div class="post-body" itemprop="articleBody">
           <h1 id="knapsack-problem">knapsack Problem</h1>
 <h2 id="knapsack-problem-1">0–1 knapsack problem</h2>
+<p>Given weights and values of <span class="math inline">\(n\)</span> items, put these items in a knapsack of capacity <span class="math inline">\(W\)</span> to get the maximum total value in the knapsack.</p>
+<p><span class="math inline">\(f(i, j):\)</span> using only first <span class="math inline">\(i\)</span> items, with maximum capacity of <span class="math inline">\(j\)</span>, the maximum total value you can get.</p>
+<p>Then, we can write our base cases:</p>
+<ul>
+<li><span class="math inline">\(f(0, :) = 0\)</span></li>
+<li><span class="math inline">\(f(:, 0) = 0\)</span></li>
+</ul>
+<p>0 items have values 0 and no items can be put into knapsack with capacity of 0.</p>
+<p>At <span class="math inline">\(f(i, j)\)</span>, comparing it to <span class="math inline">\(f(i - 1, j)\)</span>, we can choose to include item <span class="math inline">\(i\)</span> or not. So, we can write out of transition function <span class="math inline">\(f(i, j)\)</span>:</p>
+<ol type="1">
+<li><p>If there is still extra capacity for item <span class="math inline">\(i\)</span> with total capacity <span class="math inline">\(j\)</span> (i.e <span class="math inline">\(sum(weights[: i + 1]) \leq j)\)</span>), then we can just simply add values of item <span class="math inline">\(i\)</span>. <span class="math display">\[f(i, j) = f(i - 1, j) + values(i)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> and the current weight <span class="math inline">\(weight[i] &gt; j\)</span>, then we only need to keep the previous maximum values because the item <span class="math inline">\(i\)</span> won't fit whatsoever: <span class="math display">\[f(i, j) = f(i - 1, j)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> but <span class="math inline">\(weight[i] \leq j\)</span>, then we can choose to include this item and discard some past items, or move on without considering this item:</p>
+<ol type="1">
+<li><p>The total values if we include this item (<span class="math inline">\(\text{current value } + \text{ The maximum value we can get after we fill the capacity j with i}\)</span> (we need to <code>exclude</code> the current item)): <span class="math display">\[\text{total}_{include} = values[i] + f(i - 1, j - weights[i])\]</span></p></li>
+<li><p>The maximum value exclude current item: <span class="math display">\[f(i - 1, j)\]</span></p></li>
+</ol>
+<p>By taking the maximum over these two, we have:</p>
+<p><span class="math display">\[f(i, j) = \max(f(i - 1, j), \; values[i] + f(i - 1, j - weights[i]))\]</span></p></li>
+</ol>
+<h2 id="unbounded-knapsack-problem">Unbounded knapsack problem</h2>
+<p>Given a knapsack weight <span class="math inline">\(W\)</span> and a set of <span class="math inline">\(n\)</span> items with certain value <span class="math inline">\(v_i\)</span> and weight <span class="math inline">\(w_i\)</span>, we need to calculate the maximum amount that could make up this quantity exactly. This is different from classical Knapsack problem, here we are allowed to use unlimited number of instances of an item.</p>
+<p><span class="math inline">\(f(i, j):\)</span> using only first <span class="math inline">\(i\)</span> items, with maximum capacity of <span class="math inline">\(j\)</span>, the maximum total value you can get.</p>
+<p>Then, we can write our base cases:</p>
+<ul>
+<li><span class="math inline">\(f(0, :) = 0\)</span></li>
+<li><span class="math inline">\(f(:, 0) = 0\)</span></li>
+</ul>
+<p>0 items have values 0 and no items can be put into knapsack with capacity of 0.</p>
+<p>At <span class="math inline">\(f(i, j)\)</span>, comparing it to <span class="math inline">\(f(i - 1, j)\)</span>, we can choose to include item <span class="math inline">\(i\)</span> or not. So, we can write out of transition function <span class="math inline">\(f(i, j)\)</span>:</p>
+<ol type="1">
+<li><p>If there is still extra capacity for item <span class="math inline">\(i\)</span> with total capacity <span class="math inline">\(j\)</span> (i.e <span class="math inline">\(sum(weights[: i + 1]) \leq j)\)</span>), then we can just simply add values of item <span class="math inline">\(i\)</span>. <span class="math display">\[f(i, j) = f(i - 1, j) + values(i)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> and the current weight <span class="math inline">\(weight[i] &gt; j\)</span>, then we only need to keep the previous maximum values because the item <span class="math inline">\(i\)</span> won't fit whatsoever: <span class="math display">\[f(i, j) = f(i - 1, j)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> but <span class="math inline">\(weight[i] \leq j\)</span>, then we can choose to include this item and discard some past items, or move on without considering this item:</p>
+<ol type="1">
+<li><p>The total values if we include this item (<span class="math inline">\(\text{current value } + \text{ The maximum value we have can get after we fill the capacity j with i}\)</span> (we need to <code>include</code> the current item)): <span class="math display">\[\text{total}_{include} = values[i] + f(i, j - weights[i])\]</span></p></li>
+<li><p>The maximum value exclude current item: <span class="math display">\[f(i - 1, j)\]</span></p></li>
+</ol>
+<p>By taking the maximum over these two, we have:</p>
+<p><span class="math display">\[f(i, j) = \max(f(i - 1, j), \; values[i] + f(i, j - weights[i]))\]</span></p></li>
+</ol>
 
       
     </div>
@@ -476,7 +524,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-07-07 00:54:58" itemprop="dateModified" datetime="2021-07-07T00:54:58+08:00">2021-07-07</time>
+        <time title="Modified: 2021-07-12 22:59:17" itemprop="dateModified" datetime="2021-07-12T22:59:17+08:00">2021-07-12</time>
       </span>
 
   
@@ -494,14 +542,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>4.1k</span>
+      <span>8.2k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
+      <span>7 mins.</span>
     </span>
 </div>
 
@@ -513,133 +561,30 @@
     
     <div class="post-body" itemprop="articleBody">
           <h1 id="multivariate-calculus-2">Multivariate Calculus (2)</h1>
-<h2 id="vector-and-matrix-differentiation">Vector and Matrix Differentiation</h2>
-<h3 id="numerator-layout">Numerator Layout</h3>
-<p>Let:</p>
-<p><span class="math display">\[\mathbf{y} = \psi(\mathbf{x})\]</span></p>
-<p>Where, <span class="math inline">\(\mathbf{x}, \mathbf{y}\)</span> are column vectors with size <span class="math inline">\(n, m\)</span> respectively. Then the partial derivative of <span class="math inline">\(\mathbf{y}\)</span> w.r.t <span class="math inline">\(\mathbf{x}\)</span> is a <span class="math inline">\(m \times n\)</span> matrix:</p>
-<p><span class="math display">\[
-\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
-\begin{bmatrix}
-\frac{\partial y_1}{\partial x_1} &amp; \frac{\partial y_1}{\partial x_2} &amp; .... &amp; \frac{\partial y_1}{\partial x_n}\\
-.\\
-.\\
-.\\
-\frac{\partial y_m}{\partial x_1} &amp; \frac{\partial y_m}{\partial x_2} &amp; .... &amp; \frac{\partial y_m}{\partial x_n}
-\end{bmatrix}_{m \times n}
-\]</span></p>
-<p>This matrix is called the <code>Jacobian Matrix</code>. Notice that, each row of this matrix is a gradient vector <span class="math inline">\(\frac{\partial y_1}{\partial \mathbf{x}}\)</span>, thus, we can rewrite <code>Jacobian Matrix</code> as:</p>
-<p><span class="math display">\[
-\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
-\begin{bmatrix}
-\nabla_{\mathbf{x}} y_1\\
-.\\
-.\\
-.\\
-\nabla_{\mathbf{x}} y_m
-\end{bmatrix}_{m \times n}
-\]</span></p>
-<p>Notice that, single gradient vector <span class="math inline">\(\nabla_{\mathbf{x}} y_i\)</span> is a row vector, we can represent it as a column vector by</p>
-<p><span class="math display">\[\nabla^T_{\mathbf{x}} y_i = \frac{\partial y_i}{\partial \mathbf{x}^T} = (\frac{\partial y_i}{\partial \mathbf{x}})^T\]</span></p>
-<p>At the same time:</p>
-<p><span class="math display">\[
-\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
-\begin{bmatrix}
-\frac{\partial \mathbf{y}}{\partial x_1} &amp; ..... &amp; \frac{\partial \mathbf{y}}{\partial x_n}\\
-\end{bmatrix}
-\]</span></p>
-<p>Where:</p>
-<p><span class="math display">\[
-\frac{\partial \mathbf{y}}{\partial x_i} = 
-\begin{bmatrix}
-\frac{\partial y_1}{\partial x_i}\\
-.\\
-.\\
-.\\
-\frac{\partial y_m}{\partial x_i}
-\end{bmatrix}
-\]</span></p>
-<h3 id="denominator-layout">Denominator Layout</h3>
-<p><span class="math display">\[\mathbf{y} = \psi(\mathbf{x})\]</span></p>
-<p>Where, <span class="math inline">\(\mathbf{x}, \mathbf{y}\)</span> are <strong>row</strong> vectors with size <span class="math inline">\(n, m\)</span> respectively. Then the partial derivative of <span class="math inline">\(\mathbf{y}\)</span> w.r.t <span class="math inline">\(\mathbf{x}\)</span> is a <span class="math inline">\(n \times m\)</span> matrix:</p>
-<p><span class="math display">\[
-\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
-\begin{bmatrix}
-\frac{\partial y_1}{\partial x_1} &amp; \frac{\partial y_2}{\partial x_1} &amp; .... &amp; \frac{\partial y_m}{\partial x_1}\\
-.\\
-.\\
-.\\
-\frac{\partial y_1}{\partial x_n} &amp; \frac{\partial y_2}{\partial x_n} &amp; .... &amp; \frac{\partial y_m}{\partial x_n}
-\end{bmatrix}_{n \times m}
-\]</span></p>
-<p>In terms of gradient vectors (<strong>to be consistent with the layout, they are column vectors now. It is possible to represent gradient vectors as row vectors while using denominator layout just by adding transpose to the formula below</strong> ):</p>
-<p><span class="math display">\[
-\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
-\begin{bmatrix}
-\nabla_{\mathbf{x}} y_1 &amp; .... &amp; \nabla_{\mathbf{x}} y_m\\
-\end{bmatrix}_{n \times m}
-\]</span></p>
-<p>At the same time:</p>
-<p><span class="math display">\[
-\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
-\begin{bmatrix}
-\frac{\partial \mathbf{y}}{\partial x_1} \\
-.\\
-.\\
-.\\
-\frac{\partial \mathbf{y}}{\partial x_n}\\
-\end{bmatrix}
-\]</span></p>
-<p>Where <span class="math inline">\(\frac{\partial \mathbf{y}}{\partial x_i}\)</span> is now a row vector:</p>
-<p><span class="math display">\[
-\frac{\partial \mathbf{y}}{\partial x_i} = 
-\begin{bmatrix}
-\frac{\partial y_1}{\partial x_i} &amp; .... &amp; \frac{\partial y_m}{\partial x_i}\\
-\end{bmatrix}_{n \times m}
-\]</span></p>
-<p><br></p>
-<h3 id="derivative-of-function-of-the-form-mathbfy-amathbfx">Derivative of Function of the Form: <span class="math inline">\(\; \mathbf{y} = A\mathbf{x}\)</span></h3>
-<p><img src='/images/cal/matrix_5_2_1.png' width="600"></p>
-<p><br></p>
-<p><strong>Proof</strong>:</p>
-<blockquote>
-<p>Since <span class="math inline">\(y_i = \sum^{n}_{k=1} a_{ik} x_k \implies \frac{\partial y_i}{\partial x_j} = a_{ij}\)</span></p>
-<p>Thus, the <code>Jacobian Matrix</code> is:</p>
-<p><span class="math display">\[
-\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
-\begin{bmatrix}
-\nabla_{\mathbf{x}} y_1\\
-.\\
-.\\
-.\\
-\nabla_{\mathbf{x}} y_m
-\end{bmatrix}_{m \times n}
-= A
-\]</span></p>
-</blockquote>
-<p><br></p>
-<p>Now, let <span class="math inline">\(\mathbf{x} = f(\mathbf{\alpha})\)</span>, where <span class="math inline">\(\mathbf{\alpha}\)</span> is a <span class="math inline">\(r\)</span> dimensional vector, then the above results can be extended using chain rule:</p>
-<p><span class="math display">\[\frac{\partial \mathbf{y}}{\partial \mathbf{r}} = \frac{\partial \mathbf{y}}{\partial \mathbf{x}}\frac{\partial \mathbf{x}}{\partial \mathbf{\alpha}} = [A \frac{\partial \mathbf{x}}{\partial \mathbf{\alpha}}]_{m \times r}\]</span></p>
-<p><br></p>
-<p><strong>Proof</strong>:</p>
-<blockquote>
-<p>Since <span class="math inline">\(y_i = \sum^{n}_{k=1} a_{ik} x_k(\alpha_1, ...., \alpha_r) \implies \frac{\partial y_i}{\partial r_j} = \sum^{n}_{k=1} a_{ik} \frac{\partial y_i}{\partial x_k}\frac{\partial x_k}{\partial \alpha_j} = \sum^{n}_{k=1} a_{ik} \frac{\partial x_k}{\partial \alpha_j}\)</span></p>
-<p>Thus, the <code>Jacobian Matrix</code> is:</p>
-<p><span class="math display">\[
-\frac{\partial \mathbf{y}}{\partial \mathbf{\alpha}} = 
-\begin{bmatrix}
-\sum^{n}_{k=1} a_{1k} \frac{\partial x_k}{\partial \alpha_1} &amp; ... &amp; \sum^{n}_{k=1} a_{1k} \frac{\partial x_k}{\partial \alpha_r}\\
-.\\
-.\\
-.\\
-\sum^{n}_{k=1} a_{mk} \frac{\partial x_k}{\partial \alpha_1} &amp; ... &amp; \sum^{n}_{k=1} a_{mk} \frac{\partial x_k}{\partial \alpha_r}
-\end{bmatrix}_{m \times n}
-= [A \frac{\partial \mathbf{x}}{\partial \mathbf{\alpha}}]_{m \times r}
-\]</span></p>
-</blockquote>
-<p><br></p>
-<h1 id="ref">Ref</h1>
-
+<h2 id="double-integrals">Double Integrals</h2>
+<h3 id="double-integrals-over-rectangles">Double Integrals over Rectangles</h3>
+<p>In a similar manner as definite integral, we consider a function <span class="math inline">\(f\)</span> of two variables defined on a closed rectangle:</p>
+<p><span class="math display">\[R = [a, b] \times [c, d] = \{(x, y, z) \in \mathbb{R}^2 | a \leq x \leq b, c \leq y \leq d\}\]</span></p>
+<p>and we first suppose that <span class="math inline">\(f(x, y) \leq 0\)</span>. The graph of <span class="math inline">\(f\)</span> is a surface with equation <span class="math inline">\(z = f(x, y)\)</span>. Let <span class="math inline">\(S\)</span> be the solid that lies above <span class="math inline">\(R\)</span> and under the graph of <span class="math inline">\(f\)</span>:</p>
+<p><span class="math display">\[S = \{(x, y, z) \in \mathbb{R}^3 | a \leq x \leq b, c \leq y \leq d, 0 \leq z \leq f(x, y)\}\]</span></p>
+<p>We first divide the <span class="math inline">\(R\)</span> into subrectangles. We accomplish this by dividing the interval <span class="math inline">\([a, b]\)</span> into <span class="math inline">\(m\)</span> subintervals <span class="math inline">\([x_{i-1}, x_{i}]\)</span> of equal width <span class="math inline">\(\Delta x = \frac{(b - a)}{m}\)</span> and dividing <span class="math inline">\([c, d]\)</span> into <span class="math inline">\(n\)</span> subintervals <span class="math inline">\([y_{j - 1}, y_j]\)</span> of equal width <span class="math inline">\(\Delta y = \frac{(d - c)}{n}\)</span>. Then the subrectangles are defined as:</p>
+<p><span class="math display">\[R_{i, j} = [x_{i - 1}, x_i] \times [y_{j - 1}, y_j] = \{(x, y) | x_{i - 1} \leq x \leq x_i, y_{j - 1} \leq y leq y_j\}\]</span></p>
+<p>Then the area of individual subrectangle is:</p>
+<p><span class="math display">\[\Delta A = \Delta x \Delta y\]</span></p>
+<p>If we choose a sample point <span class="math inline">\((x^{*}_{i, j}, y^{*}_{i, j}) \in R_{i, j}\)</span>, then we can approximate the part of <span class="math inline">\(S\)</span> that lies above each <span class="math inline">\(R_{i, j}\)</span> (The volume) by a column with height <span class="math inline">\(f(x^{*}_{i, j}, y^{*}_{i, j})\)</span> and base area <span class="math inline">\(\Delta A\)</span>. The volume of the column:</p>
+<p><span class="math display">\[f(x^{*}_{i, j}, y^{*}_{i, j})\Delta A\]</span></p>
+<p><img src='/images/cal/15_1_2.png' width="600"></p>
+<p>Then the volume (<strong>only when <span class="math inline">\(f(x, y) \leq 0 \; \forall (x, y) \in S\)</span></strong>) of <span class="math inline">\(S\)</span> can be approximated:</p>
+<p><span class="math display">\[V \approx \sum^{m}_{i=1} \sum^{n}_{j=1}f(x^{*}_{i, j}, y^{*}_{i, j})\Delta A\]</span></p>
+<p>This sum is called <code>double Riemann sum</code>.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/06/cal-2/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1452,13 +1397,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">287k</span>
+    <span title="Symbols count total">304k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">4:21</span>
+    <span title="Reading time total">4:36</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

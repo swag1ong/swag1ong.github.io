@@ -348,12 +348,6 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
       </tags>
   </entry>
   <entry>
-    <title>LReLU</title>
-    <url>/2021/07/05/LReLU/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
     <title>Double Q Learning</title>
     <url>/2021/05/07/FA-issues/</url>
     <content><![CDATA[<h1 id="double-q-learning">Double Q-learning</h1>
@@ -447,6 +441,12 @@ Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \ha
       </tags>
   </entry>
   <entry>
+    <title>LReLU</title>
+    <url>/2021/07/05/LReLU/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
     <title>PPO</title>
     <url>/2021/06/11/PPO/</url>
     <content><![CDATA[<h1 id="proximal-policy-optimization-algorithms">Proximal Policy Optimization Algorithms</h1>
@@ -522,6 +522,78 @@ Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \ha
       <tags>
         <tag>Policy Gradient</tag>
         <tag>Policy Search</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>VGG (Under Construction)</title>
+    <url>/2021/06/24/VGG/</url>
+    <content><![CDATA[<h1 id="very-deep-convolutional-networks-for-large-scale-image-recognition">Very Deep Convolutional Networks For Large-Scale Image Recognition</h1>
+<h2 id="generic-architecture">Generic Architecture</h2>
+<ol type="1">
+<li>Inputs are <span class="math inline">\(224 \times 224\)</span> RGB images with zero mean for each pixel.</li>
+<li>The convolutional layers have small filter sizes (<span class="math inline">\(3 \times 3\)</span>), one architecture with <span class="math inline">\(1 \times 1\)</span> filters (Network C).</li>
+<li>Padding 1 and stride 1 to maintain the original image size.</li>
+<li>5 max pooling layers with <span class="math inline">\(2 \times 2\)</span> window and stride 2.</li>
+<li>2 fully connected layers each with 4096 units, and the final fc output layer with 1000 units.</li>
+<li>ReLU activation function.</li>
+</ol>
+<h2 id="configurations">Configurations</h2>
+<ol type="1">
+<li><p>the shallowest network has 11 weight layers (8 conv layers and 3 FC layers), the deepest network has 19 weight layers (16 conv layers and 3 FC layers)</p></li>
+<li><p>The width of conv layers are relative small, starting from 64 in the first layer and then increasing by a factor of 2 each max-pooling layer, until it reaches 512.</p></li>
+</ol>
+<p><img src="/images/ML/vgg_1.png" width="600"></p>
+<span id="more"></span>
+<h2 id="discussion">Discussion</h2>
+<p>Instead of large filter size, we use small <span class="math inline">\(3 \times 3\)</span> filters. We can see that after 2 consecutive layers, the effective receptive field is <span class="math inline">\(5 \times 5\)</span>, after three consective layers, the effective receptive field is <span class="math inline">\(7 \times 7\)</span>. Comparing to a conv layer with <span class="math inline">\(7 \times 7\)</span> filter, 3 consecutive <span class="math inline">\(3 \times 3\)</span> filter conv layers have less parameters. To see this, assume each layer has input C channel and output C channel, then total parameters:</p>
+<ol type="1">
+<li>Single conv layer with <span class="math inline">\(7 \times 7\)</span> filter: <span class="math inline">\(7 * 7 * C * C = 49 C^2\)</span></li>
+<li>Three conv layer each with <span class="math inline">\(3 \times 3\)</span> filter: <span class="math inline">\(3 (3 * 3 * C * C) = 27 C^2\)</span></li>
+</ol>
+<p>This can be seen as imposing a regularisation on the <span class="math inline">\(7 \times 7\)</span> conv filters forcing them to have a decomposition through the <span class="math inline">\(3 \times 3\)</span> filters. This structure also have more discriminative power (3 non-linear functions compare to one).</p>
+<p>The <span class="math inline">\(1 \times 1\)</span> is one way to increase the non-linearity of the decision function without affecting the receptive fields of the conv layers.</p>
+<h2 id="classification-framework">Classification Framework</h2>
+<h3 id="training">Training</h3>
+<ol type="1">
+<li>Batch size 256, momentum 0.9, weight decay 0.0005</li>
+<li>Dropout is applied to the first two fully connected layers with rate of 0.5</li>
+</ol>
+<h4 id="initialization">Initialization</h4>
+<ol type="1">
+<li>Net <span class="math inline">\(A\)</span> is first trained with random initialization</li>
+<li>When training deeper architectures, we initialize the first four conv layers and last three fully connected layers with the layer of <span class="math inline">\(A\)</span></li>
+<li>The conv layers in the middle are initialized randomly with normal(0, 0.01)</li>
+</ol>
+<p>In spite of the larger number of parameters and the greater depth of our nets compare to AlexNet, the nets required less epochs to converge due to</p>
+<ol type="1">
+<li>implicit regularization imposed by greater depth and smaller filter size</li>
+<li>pre-initialization of certain layers</li>
+</ol>
+<h4 id="training-image-size-rescale">Training Image Size Rescale</h4>
+<p>Let <span class="math inline">\(S\)</span> (training scale) be the smallest side of an isotropically-rescaled training image from which the input image is cropped (The training input is first rescaled to smallest side = <span class="math inline">\(S\)</span> before cropping). For a fixed crop size <span class="math inline">\(224 \times 224\)</span>, if <span class="math inline">\(S=224\)</span>, the cropped image will span the smallest side of the training image. If <span class="math inline">\(S &gt;&gt; 224\)</span>, the crop will correspond to a small part of the image. There are two approaches setting up <span class="math inline">\(S\)</span></p>
+<ol type="1">
+<li>Single scale training: fix <span class="math inline">\(S=256, 384\)</span></li>
+<li>Multi-scale training: Each image is individually rescaled by randomly sampling <span class="math inline">\(S\)</span> from a certain range <span class="math inline">\([S_{min}, S_{max}] = [256, 512]\)</span>.</li>
+</ol>
+<p>Then the rescaled images is:</p>
+<ol type="1">
+<li>randomly cropped from rescaled training images (one crop per image per SGD iteration)</li>
+<li>the crops underwent random horizontal filpping and random RGB colour shift</li>
+</ol>
+<h3 id="testing">Testing</h3>
+<p>During Testing given a trained Conv Net and an input image:</p>
+<ol type="1">
+<li>It is first isotropically rescaled to a predefined smallest image side <span class="math inline">\(Q\)</span> (test scale, where <span class="math inline">\(S\)</span> is the training scale). <span class="math inline">\(Q\)</span> is not necessarily equal to the training scale <span class="math inline">\(S\)</span></li>
+<li></li>
+</ol>
+]]></content>
+      <categories>
+        <category>DL</category>
+        <category>CNN</category>
+      </categories>
+      <tags>
+        <tag>Deep Learning</tag>
+        <tag>Neural Network Architectures</tag>
       </tags>
   </entry>
   <entry>
@@ -686,88 +758,10 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
       </tags>
   </entry>
   <entry>
-    <title>VGG (Under Construction)</title>
-    <url>/2021/06/24/VGG/</url>
-    <content><![CDATA[<h1 id="very-deep-convolutional-networks-for-large-scale-image-recognition">Very Deep Convolutional Networks For Large-Scale Image Recognition</h1>
-<h2 id="generic-architecture">Generic Architecture</h2>
-<ol type="1">
-<li>Inputs are <span class="math inline">\(224 \times 224\)</span> RGB images with zero mean for each pixel.</li>
-<li>The convolutional layers have small filter sizes (<span class="math inline">\(3 \times 3\)</span>), one architecture with <span class="math inline">\(1 \times 1\)</span> filters (Network C).</li>
-<li>Padding 1 and stride 1 to maintain the original image size.</li>
-<li>5 max pooling layers with <span class="math inline">\(2 \times 2\)</span> window and stride 2.</li>
-<li>2 fully connected layers each with 4096 units, and the final fc output layer with 1000 units.</li>
-<li>ReLU activation function.</li>
-</ol>
-<h2 id="configurations">Configurations</h2>
-<ol type="1">
-<li><p>the shallowest network has 11 weight layers (8 conv layers and 3 FC layers), the deepest network has 19 weight layers (16 conv layers and 3 FC layers)</p></li>
-<li><p>The width of conv layers are relative small, starting from 64 in the first layer and then increasing by a factor of 2 each max-pooling layer, until it reaches 512.</p></li>
-</ol>
-<p><img src="/images/ML/vgg_1.png" width="600"></p>
-<span id="more"></span>
-<h2 id="discussion">Discussion</h2>
-<p>Instead of large filter size, we use small <span class="math inline">\(3 \times 3\)</span> filters. We can see that after 2 consecutive layers, the effective receptive field is <span class="math inline">\(5 \times 5\)</span>, after three consective layers, the effective receptive field is <span class="math inline">\(7 \times 7\)</span>. Comparing to a conv layer with <span class="math inline">\(7 \times 7\)</span> filter, 3 consecutive <span class="math inline">\(3 \times 3\)</span> filter conv layers have less parameters. To see this, assume each layer has input C channel and output C channel, then total parameters:</p>
-<ol type="1">
-<li>Single conv layer with <span class="math inline">\(7 \times 7\)</span> filter: <span class="math inline">\(7 * 7 * C * C = 49 C^2\)</span></li>
-<li>Three conv layer each with <span class="math inline">\(3 \times 3\)</span> filter: <span class="math inline">\(3 (3 * 3 * C * C) = 27 C^2\)</span></li>
-</ol>
-<p>This can be seen as imposing a regularisation on the <span class="math inline">\(7 \times 7\)</span> conv filters forcing them to have a decomposition through the <span class="math inline">\(3 \times 3\)</span> filters. This structure also have more discriminative power (3 non-linear functions compare to one).</p>
-<p>The <span class="math inline">\(1 \times 1\)</span> is one way to increase the non-linearity of the decision function without affecting the receptive fields of the conv layers.</p>
-<h2 id="classification-framework">Classification Framework</h2>
-<h3 id="training">Training</h3>
-<ol type="1">
-<li>Batch size 256, momentum 0.9, weight decay 0.0005</li>
-<li>Dropout is applied to the first two fully connected layers with rate of 0.5</li>
-</ol>
-<h4 id="initialization">Initialization</h4>
-<ol type="1">
-<li>Net <span class="math inline">\(A\)</span> is first trained with random initialization</li>
-<li>When training deeper architectures, we initialize the first four conv layers and last three fully connected layers with the layer of <span class="math inline">\(A\)</span></li>
-<li>The conv layers in the middle are initialized randomly with normal(0, 0.01)</li>
-</ol>
-<p>In spite of the larger number of parameters and the greater depth of our nets compare to AlexNet, the nets required less epochs to converge due to</p>
-<ol type="1">
-<li>implicit regularization imposed by greater depth and smaller filter size</li>
-<li>pre-initialization of certain layers</li>
-</ol>
-<h4 id="training-image-size-rescale">Training Image Size Rescale</h4>
-<p>Let <span class="math inline">\(S\)</span> (training scale) be the smallest side of an isotropically-rescaled training image from which the input image is cropped (The training input is first rescaled to smallest side = <span class="math inline">\(S\)</span> before cropping). For a fixed crop size <span class="math inline">\(224 \times 224\)</span>, if <span class="math inline">\(S=224\)</span>, the cropped image will span the smallest side of the training image. If <span class="math inline">\(S &gt;&gt; 224\)</span>, the crop will correspond to a small part of the image. There are two approaches setting up <span class="math inline">\(S\)</span></p>
-<ol type="1">
-<li>Single scale training: fix <span class="math inline">\(S=256, 384\)</span></li>
-<li>Multi-scale training: Each image is individually rescaled by randomly sampling <span class="math inline">\(S\)</span> from a certain range <span class="math inline">\([S_{min}, S_{max}] = [256, 512]\)</span>.</li>
-</ol>
-<p>Then the rescaled images is:</p>
-<ol type="1">
-<li>randomly cropped from rescaled training images (one crop per image per SGD iteration)</li>
-<li>the crops underwent random horizontal filpping and random RGB colour shift</li>
-</ol>
-<h3 id="testing">Testing</h3>
-<p>During Testing given a trained Conv Net and an input image:</p>
-<ol type="1">
-<li>It is first isotropically rescaled to a predefined smallest image side <span class="math inline">\(Q\)</span> (test scale, where <span class="math inline">\(S\)</span> is the training scale). <span class="math inline">\(Q\)</span> is not necessarily equal to the training scale <span class="math inline">\(S\)</span></li>
-<li></li>
-</ol>
-]]></content>
-      <categories>
-        <category>DL</category>
-        <category>CNN</category>
-      </categories>
-      <tags>
-        <tag>Deep Learning</tag>
-        <tag>Neural Network Architectures</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>actor_critic</title>
     <url>/2021/06/14/actor-critic/</url>
     <content><![CDATA[<h1 id="actor-critic-algorithms">Actor-Critic Algorithms</h1>
 <p><a href="https://papers.nips.cc/paper/1999/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf">Original Paper</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>average_reward_setting</title>
-    <url>/2021/05/30/average-reward-setting/</url>
-    <content><![CDATA[
 ]]></content>
   </entry>
   <entry>
@@ -850,6 +844,12 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
         <tag>Deep Learning</tag>
         <tag>Neural Network Architectures</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>average_reward_setting</title>
+    <url>/2021/05/30/average-reward-setting/</url>
+    <content><![CDATA[
+]]></content>
   </entry>
   <entry>
     <title>Batch Normalization</title>
@@ -960,6 +960,82 @@ V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
     <title>Calculus (2)</title>
     <url>/2021/07/06/cal-2/</url>
     <content><![CDATA[<h1 id="multivariate-calculus-2">Multivariate Calculus (2)</h1>
+<h2 id="double-integrals">Double Integrals</h2>
+<h3 id="double-integrals-over-rectangles">Double Integrals over Rectangles</h3>
+<p>In a similar manner as definite integral, we consider a function <span class="math inline">\(f\)</span> of two variables defined on a closed rectangle:</p>
+<p><span class="math display">\[R = [a, b] \times [c, d] = \{(x, y, z) \in \mathbb{R}^2 | a \leq x \leq b, c \leq y \leq d\}\]</span></p>
+<p>and we first suppose that <span class="math inline">\(f(x, y) \leq 0\)</span>. The graph of <span class="math inline">\(f\)</span> is a surface with equation <span class="math inline">\(z = f(x, y)\)</span>. Let <span class="math inline">\(S\)</span> be the solid that lies above <span class="math inline">\(R\)</span> and under the graph of <span class="math inline">\(f\)</span>:</p>
+<p><span class="math display">\[S = \{(x, y, z) \in \mathbb{R}^3 | a \leq x \leq b, c \leq y \leq d, 0 \leq z \leq f(x, y)\}\]</span></p>
+<p>We first divide the <span class="math inline">\(R\)</span> into subrectangles. We accomplish this by dividing the interval <span class="math inline">\([a, b]\)</span> into <span class="math inline">\(m\)</span> subintervals <span class="math inline">\([x_{i-1}, x_{i}]\)</span> of equal width <span class="math inline">\(\Delta x = \frac{(b - a)}{m}\)</span> and dividing <span class="math inline">\([c, d]\)</span> into <span class="math inline">\(n\)</span> subintervals <span class="math inline">\([y_{j - 1}, y_j]\)</span> of equal width <span class="math inline">\(\Delta y = \frac{(d - c)}{n}\)</span>. Then the subrectangles are defined as:</p>
+<p><span class="math display">\[R_{i, j} = [x_{i - 1}, x_i] \times [y_{j - 1}, y_j] = \{(x, y) | x_{i - 1} \leq x \leq x_i, y_{j - 1} \leq y leq y_j\}\]</span></p>
+<p>Then the area of individual subrectangle is:</p>
+<p><span class="math display">\[\Delta A = \Delta x \Delta y\]</span></p>
+<p>If we choose a sample point <span class="math inline">\((x^{*}_{i, j}, y^{*}_{i, j}) \in R_{i, j}\)</span>, then we can approximate the part of <span class="math inline">\(S\)</span> that lies above each <span class="math inline">\(R_{i, j}\)</span> (The volume) by a column with height <span class="math inline">\(f(x^{*}_{i, j}, y^{*}_{i, j})\)</span> and base area <span class="math inline">\(\Delta A\)</span>. The volume of the column:</p>
+<p><span class="math display">\[f(x^{*}_{i, j}, y^{*}_{i, j})\Delta A\]</span></p>
+<p><img src='/images/cal/15_1_2.png' width="600"></p>
+<p>Then the volume (<strong>only when <span class="math inline">\(f(x, y) \leq 0 \; \forall (x, y) \in S\)</span></strong>) of <span class="math inline">\(S\)</span> can be approximated:</p>
+<p><span class="math display">\[V \approx \sum^{m}_{i=1} \sum^{n}_{j=1}f(x^{*}_{i, j}, y^{*}_{i, j})\Delta A\]</span></p>
+<p>This sum is called <code>double Riemann sum</code>.</p>
+<span id="more"></span>
+<p>Then the approximation becomes better as <span class="math inline">\(n, m \rightarrow \infty\)</span>:</p>
+<p><span class="math display">\[V = \lim_{n, m \rightarrow \infty} \sum^{m}_{i=1} \sum^{n}_{j=1}f(x^{*}_{i, j}, y^{*}_{i, j})\Delta A\]</span></p>
+<p><img src='/images/cal/15_1_3.png' width="600"></p>
+<p>A function <span class="math inline">\(f\)</span> is called <code>integrable</code> if the limit above exists, it can be showed that <strong>all continuous functions are integrable.</strong> If <span class="math inline">\(f\)</span> is bounded (<span class="math inline">\(\exists \; M, \; s.t \; |f(x, y)| \leq M, \; \forall (x, y) \in R\)</span>), then if <span class="math inline">\(f\)</span> is continuous there, except on a finite number of smooth curves, then <span class="math inline">\(f\)</span> is integrable over <span class="math inline">\(R\)</span>.</p>
+<p><img src='/images/cal/15_1_4.png' width="600"></p>
+<h2 id="iterated-integral">Iterated Integral</h2>
+<p>Suppose that <span class="math inline">\(f\)</span> is a function of two variables that is integrable on the rectangle <span class="math inline">\(R = [a, b] \times [c, d]\)</span>. Now, <span class="math inline">\(\int^{d}_{c} f(x, y) dy\)</span> is a function that depends on the value of <span class="math inline">\(x\)</span>:</p>
+<p><span class="math display">\[A(x) = \int^{d}_{c} f(x, y) dy\]</span></p>
+<p>If we now integrate the function <span class="math inline">\(A\)</span> w.r.t <span class="math inline">\(x\)</span> from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span>, we have:</p>
+<p><span class="math display">\[\int^{b}_{a} A(x) dx = \int^{b}_{a} \int^{d}_{c} f(x, y) dy dx\]</span></p>
+<p>This integral on the right side is called <code>iterated integral</code> means that we first integrate w.r.t <span class="math inline">\(y\)</span> from <span class="math inline">\(c\)</span> to <span class="math inline">\(d\)</span>, then we integral w.r.t <span class="math inline">\(x\)</span> from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span>.</p>
+<p><img src='/images/cal/15_2_1.png' width="600"></p>
+<p><br></p>
+<p>If <span class="math inline">\(f(x, y)\)</span> can be factored s.t <span class="math inline">\(f(x, y) = g(x)h(y)\)</span>, then:</p>
+<p><span class="math display">\[\int^{b}_{a} \int^{d}_{c} f(x, y) dy dx = \int^{b}_{a} g(x) dx \int^{d}_{c} h(y) dy\]</span></p>
+<p><br></p>
+<h2 id="double-integrals-over-general-regions">Double Integrals over General Regions</h2>
+<p>We want to extend the previous idea from region of rectangle (<span class="math inline">\(R = [a, b] \times [c, d]\)</span>) to a bounded region <span class="math inline">\(D\)</span> (<span class="math inline">\(D\)</span> can be enclosed in a rectangular region <span class="math inline">\(R\)</span>) of more general shape. Then we define a new function <span class="math inline">\(F\)</span> with domain <span class="math inline">\(R\)</span> by:</p>
+<p><span class="math display">\[
+F(x, y)=
+\begin{cases}
+f(x, y), &amp; (x, y) \in D\\
+0, \quad &amp; (x, y) \notin D \; \text{ but } \in R
+\end{cases}
+\]</span></p>
+<p>If <span class="math inline">\(F\)</span> is integrable over <span class="math inline">\(R\)</span>, then we define the <code>double integral of $f$ over $D$</code> by:</p>
+<p><span class="math display">\[\underset{D}{\int\int} f(x, y) dA = \underset{R}{\int\int} F(x, y) dA\]</span></p>
+<p><img src='/images/cal/15_2_2.png' width="600"></p>
+<p>This makes sense because:</p>
+<ol type="1">
+<li>The rectangle version has been previously defined.</li>
+<li><span class="math inline">\(F(x, y) = 0\)</span> when <span class="math inline">\((x, y) \notin D\)</span>, so it contributes nothing to the integral.</li>
+</ol>
+<p>Notice here that <span class="math inline">\(D\)</span> might have discontinuities at the boundary points. However, if the boundary curve of <span class="math inline">\(D\)</span> is <code>well-behaved</code> ("Any function for which the mathematical theorem I am about to quote is true, only I don't remember exactly which functions these are"), it can be shown that <span class="math inline">\(\underset{R}{\int\int} F(x, y) dA\)</span> exists and <span class="math inline">\(\underset{D}{\int\int} f(x, y) dA\)</span> exists.</p>
+<p>A plane region <span class="math inline">\(D\)</span> is said to be of <code>type I</code> if it lies between the graphs of two continuous function of <span class="math inline">\(x\)</span>:</p>
+<p><span class="math display">\[D = \{(x, y) | a \leq x \leq b, g_1(x) \leq y \leq g_2(x)\}\]</span></p>
+<p>Where <span class="math inline">\(g_1\)</span>, <span class="math inline">\(g_2\)</span> are continuous on <span class="math inline">\([a, b]\)</span>.</p>
+<p><img src='/images/cal/15_2_3.png' width="600"></p>
+<p>Then:</p>
+<p><img src='/images/cal/15_2_4.png' width="600"></p>
+<p><br></p>
+<p>A plane region <span class="math inline">\(D\)</span> is said to be of <code>type II</code> if it is defined as:</p>
+<p><span class="math display">\[D = \{(x, y) | c \leq y \leq d, h_1(y) \leq x \leq h_2(y)\}\]</span></p>
+<p>Where <span class="math inline">\(h_1, h_2\)</span> are continuous.</p>
+<p><img src='/images/cal/15_2_5.png' width="600"></p>
+<p>Then:</p>
+<p><img src='/images/cal/15_2_6.png' width="600"></p>
+<h3 id="properties-of-double-expectation">Properties of Double Expectation</h3>
+<p><img src='/images/cal/15_1_5.png' width="600"></p>
+<p>If <span class="math inline">\(D = D_1 \cup D_2\)</span> where <span class="math inline">\(D_1\)</span> and <span class="math inline">\(D_2\)</span> don't overlap except perhaps on their boundaries, then:</p>
+<p><span class="math display">\[\underset{D}{\int\int} f(x, y) dA = \underset{D_1}{\int\int} f(x, y) dA + \underset{D_2}{\int\int} f(x, y) dA\]</span></p>
+<p>This property can be used to evaluate double integrals over regions <span class="math inline">\(D\)</span> that are neither <code>type I</code> nor <code>type II</code> by converting it to regions of type I or type II.</p>
+<p><br></p>
+<p>If we integrate the constant function <span class="math inline">\(f(x, y) = 1\)</span> over a region <span class="math inline">\(D\)</span>, we end up with the area of <span class="math inline">\(D\)</span>:</p>
+<p><span class="math display">\[A(D) = \underset{D}{\int\int} 1 dA\]</span></p>
+<p><img src='/images/cal/15_2_7.png' width="600"></p>
+<h3 id="surface-area">Surface Area</h3>
+<h3 id="triple-integral">Triple Integral</h3>
+<h3 id="change-of-variable">Change of Variable</h3>
 <h2 id="vector-and-matrix-differentiation">Vector and Matrix Differentiation</h2>
 <h3 id="numerator-layout">Numerator Layout</h3>
 <p>Let:</p>
@@ -1248,36 +1324,6 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
-    <title>Dynamic Programming</title>
-    <url>/2021/05/03/dp/</url>
-    <content><![CDATA[<h1 id="dynamic-programming">Dynamic Programming</h1>
-<p>We have defined concepts and properties such as value functions, bellman equations, bellman operators and etc. The question is <strong>how we can find the the optimal policy?</strong> Before we start, we assume that the dynamics of the MDP is given, that is, we know our transition distribution <span class="math inline">\(P\)</span> and immediate reward distribution <span class="math inline">\(R\)</span>. The assumption of knowing the dynamics do not hold in the RL setting, but designing methods for finding the optimal policy with known model provides the foundation for developing methods for the RL setting.</p>
-<p>DP methods benefit from the structure of the MDP such as the recursive structure encoded in the Bellman equation, in order to compute the value function.</p>
-<span id="more"></span>
-<h2 id="policy-evaluation">Policy Evaluation</h2>
-<p>Policy Evaluation is the problem of computing the value function of a given policy <span class="math inline">\(\pi\)</span> (i.e. find <span class="math inline">\(V^{\pi}\)</span> or <span class="math inline">\(Q^{\pi}\)</span>). This is not the ultimate goal of an RL agent (Finding the optimal policy is the goal), but is often needed as an intermediate step in finding the optimal policy</p>
-<p>Given an MDP (<span class="math inline">\(X, A, P, R, \gamma\)</span>) and a policy <span class="math inline">\(\pi\)</span>, we would like to compute <span class="math inline">\(V^{\pi}, Q^{\pi}\)</span>:</p>
-<p><span class="math display">\[V^{\pi} (x) = E^{\pi}[\sum_{t=1}^{\infty} \gamma^{t-1} R_{t} | X_0 = x]\]</span></p>
-<p><em><img src='/images/RL/dp/tree_structure.png'></em></p>
-<h2 id="control">Control</h2>
-<p>Control is the problem of finding the optimal value function <span class="math inline">\(V^{*}, Q^{*}\)</span> or <span class="math inline">\(\pi^{*}\)</span></p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>DP</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>Dynamic Programming</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>convex_opt</title>
-    <url>/2021/06/14/convex-opt/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
     <title>RL Cheat Sheet (under construction)</title>
     <url>/2021/05/18/cheat-sheet/</url>
     <content><![CDATA[<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
@@ -1295,6 +1341,12 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       <tags>
         <tag>RL Basics</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>convex_opt</title>
+    <url>/2021/06/14/convex-opt/</url>
+    <content><![CDATA[
+]]></content>
   </entry>
   <entry>
     <title>Dropout</title>
@@ -1348,75 +1400,35 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
       </tags>
   </entry>
   <entry>
-    <title>kaiming_init</title>
-    <url>/2021/06/23/kaiming-init/</url>
-    <content><![CDATA[<h1 id="delving-deep-into-rectifiers-surpassing-human-level-performance-on-imagenet-classification">Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification</h1>
-<h2 id="prelu">PReLU</h2>
-<h3 id="parametric-rectifiers">Parametric Rectifiers</h3>
-<p>Formally, we consider an activation function defined as: <span class="math display">\[
-f(y_i)=
-\begin{cases}
-y_i, \quad &amp; y_i &gt; 0\\
-a_i y_i, \quad &amp; y_i \leq 0\\
-\end{cases}
-\]</span></p>
-<p>Here <span class="math inline">\(y_i\)</span> is the input of the nonlinear activation <span class="math inline">\(f\)</span> on the <span class="math inline">\(i\)</span>th channel, and <span class="math inline">\(a_i\)</span> is a coefficient controlling the slop of the negative part of the function. The subscript <span class="math inline">\(i\)</span> in <span class="math inline">\(a_i\)</span> indicates that we allow the nonlinear activation to vary on different channels. When <span class="math inline">\(a_i = 0\)</span>, it becomes ReLU. When <span class="math inline">\(a_i\)</span> is small and fixed value, we have <code>LReLU</code>. When <span class="math inline">\(a_i\)</span> is a learnable parameter, we call this <code>Parametric ReLU (PReLU)</code>.</p>
-<p><img src='/images/ML/kaiming_init.png' width="600"></p>
+    <title>Dynamic Programming</title>
+    <url>/2021/05/03/dp/</url>
+    <content><![CDATA[<h1 id="dynamic-programming">Dynamic Programming</h1>
+<p>We have defined concepts and properties such as value functions, bellman equations, bellman operators and etc. The question is <strong>how we can find the the optimal policy?</strong> Before we start, we assume that the dynamics of the MDP is given, that is, we know our transition distribution <span class="math inline">\(P\)</span> and immediate reward distribution <span class="math inline">\(R\)</span>. The assumption of knowing the dynamics do not hold in the RL setting, but designing methods for finding the optimal policy with known model provides the foundation for developing methods for the RL setting.</p>
+<p>DP methods benefit from the structure of the MDP such as the recursive structure encoded in the Bellman equation, in order to compute the value function.</p>
 <span id="more"></span>
-<p>We can also rewrite the above formula as:</p>
-<p><span class="math display">\[f(y_i) = \max (0, y_i) + a_i \min (0, y_i)\]</span></p>
-<p>The <code>PReLU</code> only introduces one parameter per channel for each layer which is negligible when considering the total number of weights. At the same time, if we do not consider channels, we can use one <span class="math inline">\(a\)</span> for all channels in same layer, the parameter number reduces to 1.</p>
-<h3 id="optimization">Optimization</h3>
-<p><code>PReLU</code> can be trained using backpropagation and optimized simultaneously with other layers. For single layer:</p>
-<p><span class="math display">\[\frac{\partial L}{\partial a_i} = \sum_{y_i} \frac{\partial L}{\partial f(y_i)} \frac{\partial f(y_i)}{\partial a_i}\]</span></p>
-<p>Where <span class="math inline">\(L\)</span> is the objective function, <span class="math inline">\(f(y_1), ...., f(y_N)\)</span> are PReLU transformations. The gradient of PReLU transformation on single activation is given by:</p>
-<p><span class="math display">\[
-\frac{\partial f(y_i)}{\partial a_i} =
-\begin{cases}
-0, \quad &amp; y_i &gt; 0\\
-y_i, \quad &amp; y_i \leq 0\\
-\end{cases}
-\]</span></p>
-<p>For channel shared version (single <span class="math inline">\(a\)</span> for all channels in a layer):</p>
-<p><span class="math display">\[\frac{\partial L}{\partial a} = \sum_{i} \sum_{y_i} \frac{\partial L}{\partial f(y_i)} \frac{\partial f(y_i)}{\partial a}\]</span></p>
-<p>When, we can use any gradient based methods to update the parameter (e.g Momentum in this case):</p>
-<p><span class="math display">\[a_i = \mu a_i + \epsilon \frac{\partial L}{\partial a_i}\]</span></p>
-<h2 id="initialization-of-filter-weights-for-rectifiers">Initialization of Filter Weights for Rectifiers</h2>
-<p>The main idea of the derivation is to investigate the variance of the response in each layer.</p>
-<h3 id="forward-propagation-case">Forward Propagation Case</h3>
-<p>For a conv layer, a response is:</p>
-<p><span class="math display">\[\mathbf{y_l} = W_{l} \mathbf{x}_l + \mathbf{b}_l\]</span></p>
-<p>Where:</p>
-<ul>
-<li><span class="math inline">\(\mathbf{x}\)</span> is a <span class="math inline">\(k^2c \times 1\)</span> vector that represents co-located <span class="math inline">\(k \times k\)</span> pixels in <span class="math inline">\(c\)</span> input channels and <span class="math inline">\(k\)</span> is the kernel size (the volume after applying one kernel on the input feature maps).</li>
-<li><span class="math inline">\(n = k^2c\)</span></li>
-<li><span class="math inline">\(W\)</span> is a <span class="math inline">\(d \times n\)</span> weight matrix represents the weights in each kernel flattened in to row in <span class="math inline">\(W\)</span>.</li>
-<li><span class="math inline">\(\mathbf{b}\)</span> is a <span class="math inline">\(b \times 1\)</span> bias vector, one dimension for each kernel.</li>
-<li><span class="math inline">\(\mathbf{y}\)</span> is the response at a pixel of the output feature map (volume <span class="math inline">\(1 \times 1 \times d\)</span>).</li>
-<li><span class="math inline">\(l\)</span> is used to index layers.</li>
-<li><span class="math inline">\(x_l = f(y_{l - 1})\)</span> where <span class="math inline">\(f\)</span> is the activation function.</li>
-<li><span class="math inline">\(c_l = d_{l - 1}\)</span> (input feature maps number is the same as kernel numbers in the previous layer).</li>
-</ul>
-<p><strong>The general idea in words is:</strong></p>
-<p><span class="math inline">\(1 \times 1 \times d\)</span> volumn of the output feature map after applying <span class="math inline">\(d\)</span> kernels on the corresponding <span class="math inline">\(k \times k\)</span> region of <span class="math inline">\(c\)</span> input feature maps.</p>
-<p><br></p>
-<p>We Assume:</p>
-<ol type="1">
-<li><p>The initialized elements in <span class="math inline">\(W_l\)</span> be mutually independent random variables draw from the same distribution.</p></li>
-<li><p>The elements in <span class="math inline">\(\mathbf{x}_l\)</span> are also mutually independent random variables draw from the same distribution.</p></li>
-<li><p>(1) and (2) are independent.</p></li>
-</ol>
-<p>Thus, we have:</p>
-<p><span class="math display">\[Var(y_l) = Var(\mathbf{w}_l \cdot \mathbf{x}_l) = n_l Var(w_l x_l)\]</span></p>
-<p>Where <span class="math inline">\(y_l, \; \mathbf{w}_l\)</span> are rows of <span class="math inline">\(\mathbf{y}, \; W_l\)</span> respectively, <span class="math inline">\(w_l, \; x_l\)</span> are elements of <span class="math inline">\(\mathbf{w}_l, \; \mathbf{x}_l\)</span></p>
-<p>If <span class="math inline">\(w_l\)</span> has zero mean, then:</p>
-<span class="math display">\[\begin{aligned}
-Var(y_l) &amp;= n_l Var(w_l x_l) \\
-&amp;= n_l Var(w_l) Var(x_l) + Var(w_l)E^{2}[x_l]\\
-&amp;= n_l Var(w_l) [Var(x_l) + E^{2}[x_l]]\\
-&amp;= n_l Var(w_l) E[x^{2}_l]
-\end{aligned}\]</span>
-<p>If we let <span class="math inline">\(w_{l - 1}\)</span></p>
+<h2 id="policy-evaluation">Policy Evaluation</h2>
+<p>Policy Evaluation is the problem of computing the value function of a given policy <span class="math inline">\(\pi\)</span> (i.e. find <span class="math inline">\(V^{\pi}\)</span> or <span class="math inline">\(Q^{\pi}\)</span>). This is not the ultimate goal of an RL agent (Finding the optimal policy is the goal), but is often needed as an intermediate step in finding the optimal policy</p>
+<p>Given an MDP (<span class="math inline">\(X, A, P, R, \gamma\)</span>) and a policy <span class="math inline">\(\pi\)</span>, we would like to compute <span class="math inline">\(V^{\pi}, Q^{\pi}\)</span>:</p>
+<p><span class="math display">\[V^{\pi} (x) = E^{\pi}[\sum_{t=1}^{\infty} \gamma^{t-1} R_{t} | X_0 = x]\]</span></p>
+<p><em><img src='/images/RL/dp/tree_structure.png'></em></p>
+<h2 id="control">Control</h2>
+<p>Control is the problem of finding the optimal value function <span class="math inline">\(V^{*}, Q^{*}\)</span> or <span class="math inline">\(\pi^{*}\)</span></p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>DP</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>Dynamic Programming</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>importance_sampling (under construction)</title>
+    <url>/2021/05/21/importance-sampling/</url>
+    <content><![CDATA[<h1 id="importance-sampling">Importance Sampling</h1>
+<h1 id="ref">Ref</h1>
+<p>https://www.quora.com/Why-doesn-t-DQN-use-importance-sampling-Dont-we-always-use-this-method-to-correct-the-sampling-error-produced-by-the-off-policy https://danieltakeshi.github.io/2019/01/25/deep-learning-01/</p>
 ]]></content>
   </entry>
   <entry>
@@ -1491,11 +1503,77 @@ Var(y_l) &amp;= n_l Var(w_l x_l) \\
       </tags>
   </entry>
   <entry>
-    <title>importance_sampling (under construction)</title>
-    <url>/2021/05/21/importance-sampling/</url>
-    <content><![CDATA[<h1 id="importance-sampling">Importance Sampling</h1>
-<h1 id="ref">Ref</h1>
-<p>https://www.quora.com/Why-doesn-t-DQN-use-importance-sampling-Dont-we-always-use-this-method-to-correct-the-sampling-error-produced-by-the-off-policy https://danieltakeshi.github.io/2019/01/25/deep-learning-01/</p>
+    <title>kaiming_init</title>
+    <url>/2021/06/23/kaiming-init/</url>
+    <content><![CDATA[<h1 id="delving-deep-into-rectifiers-surpassing-human-level-performance-on-imagenet-classification">Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification</h1>
+<h2 id="prelu">PReLU</h2>
+<h3 id="parametric-rectifiers">Parametric Rectifiers</h3>
+<p>Formally, we consider an activation function defined as: <span class="math display">\[
+f(y_i)=
+\begin{cases}
+y_i, \quad &amp; y_i &gt; 0\\
+a_i y_i, \quad &amp; y_i \leq 0\\
+\end{cases}
+\]</span></p>
+<p>Here <span class="math inline">\(y_i\)</span> is the input of the nonlinear activation <span class="math inline">\(f\)</span> on the <span class="math inline">\(i\)</span>th channel, and <span class="math inline">\(a_i\)</span> is a coefficient controlling the slop of the negative part of the function. The subscript <span class="math inline">\(i\)</span> in <span class="math inline">\(a_i\)</span> indicates that we allow the nonlinear activation to vary on different channels. When <span class="math inline">\(a_i = 0\)</span>, it becomes ReLU. When <span class="math inline">\(a_i\)</span> is small and fixed value, we have <code>LReLU</code>. When <span class="math inline">\(a_i\)</span> is a learnable parameter, we call this <code>Parametric ReLU (PReLU)</code>.</p>
+<p><img src='/images/ML/kaiming_init.png' width="600"></p>
+<span id="more"></span>
+<p>We can also rewrite the above formula as:</p>
+<p><span class="math display">\[f(y_i) = \max (0, y_i) + a_i \min (0, y_i)\]</span></p>
+<p>The <code>PReLU</code> only introduces one parameter per channel for each layer which is negligible when considering the total number of weights. At the same time, if we do not consider channels, we can use one <span class="math inline">\(a\)</span> for all channels in same layer, the parameter number reduces to 1.</p>
+<h3 id="optimization">Optimization</h3>
+<p><code>PReLU</code> can be trained using backpropagation and optimized simultaneously with other layers. For single layer:</p>
+<p><span class="math display">\[\frac{\partial L}{\partial a_i} = \sum_{y_i} \frac{\partial L}{\partial f(y_i)} \frac{\partial f(y_i)}{\partial a_i}\]</span></p>
+<p>Where <span class="math inline">\(L\)</span> is the objective function, <span class="math inline">\(f(y_1), ...., f(y_N)\)</span> are PReLU transformations. The gradient of PReLU transformation on single activation is given by:</p>
+<p><span class="math display">\[
+\frac{\partial f(y_i)}{\partial a_i} =
+\begin{cases}
+0, \quad &amp; y_i &gt; 0\\
+y_i, \quad &amp; y_i \leq 0\\
+\end{cases}
+\]</span></p>
+<p>For channel shared version (single <span class="math inline">\(a\)</span> for all channels in a layer):</p>
+<p><span class="math display">\[\frac{\partial L}{\partial a} = \sum_{i} \sum_{y_i} \frac{\partial L}{\partial f(y_i)} \frac{\partial f(y_i)}{\partial a}\]</span></p>
+<p>When, we can use any gradient based methods to update the parameter (e.g Momentum in this case):</p>
+<p><span class="math display">\[a_i = \mu a_i + \epsilon \frac{\partial L}{\partial a_i}\]</span></p>
+<h2 id="initialization-of-filter-weights-for-rectifiers">Initialization of Filter Weights for Rectifiers</h2>
+<p>The main idea of the derivation is to investigate the variance of the response in each layer.</p>
+<h3 id="forward-propagation-case">Forward Propagation Case</h3>
+<p>For a conv layer, a response is:</p>
+<p><span class="math display">\[\mathbf{y_l} = W_{l} \mathbf{x}_l + \mathbf{b}_l\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(\mathbf{x}\)</span> is a <span class="math inline">\(k^2c \times 1\)</span> vector that represents co-located <span class="math inline">\(k \times k\)</span> pixels in <span class="math inline">\(c\)</span> input channels and <span class="math inline">\(k\)</span> is the kernel size (the volume after applying one kernel on the input feature maps).</li>
+<li><span class="math inline">\(n = k^2c\)</span></li>
+<li><span class="math inline">\(W\)</span> is a <span class="math inline">\(d \times n\)</span> weight matrix represents the weights in each kernel flattened in to row in <span class="math inline">\(W\)</span>.</li>
+<li><span class="math inline">\(\mathbf{b}\)</span> is a <span class="math inline">\(b \times 1\)</span> bias vector, one dimension for each kernel.</li>
+<li><span class="math inline">\(\mathbf{y}\)</span> is the response at a pixel of the output feature map (volume <span class="math inline">\(1 \times 1 \times d\)</span>).</li>
+<li><span class="math inline">\(l\)</span> is used to index layers.</li>
+<li><span class="math inline">\(x_l = f(y_{l - 1})\)</span> where <span class="math inline">\(f\)</span> is the activation function.</li>
+<li><span class="math inline">\(c_l = d_{l - 1}\)</span> (input feature maps number is the same as kernel numbers in the previous layer).</li>
+</ul>
+<p><strong>The general idea in words is:</strong></p>
+<p><span class="math inline">\(1 \times 1 \times d\)</span> volumn of the output feature map after applying <span class="math inline">\(d\)</span> kernels on the corresponding <span class="math inline">\(k \times k\)</span> region of <span class="math inline">\(c\)</span> input feature maps.</p>
+<p><br></p>
+<p>We Assume:</p>
+<ol type="1">
+<li><p>The initialized elements in <span class="math inline">\(W_l\)</span> be mutually independent random variables draw from the same distribution.</p></li>
+<li><p>The elements in <span class="math inline">\(\mathbf{x}_l\)</span> are also mutually independent random variables draw from the same distribution.</p></li>
+<li><p>(1) and (2) are independent.</p></li>
+</ol>
+<p>Thus, we have:</p>
+<p><span class="math display">\[Var(y_l) = Var(\mathbf{w}_l \cdot \mathbf{x}_l) = n_l Var(w_l x_l)\]</span></p>
+<p>Where <span class="math inline">\(y_l, \; \mathbf{w}_l\)</span> are rows of <span class="math inline">\(\mathbf{y}, \; W_l\)</span> respectively, <span class="math inline">\(w_l, \; x_l\)</span> are elements of <span class="math inline">\(\mathbf{w}_l, \; \mathbf{x}_l\)</span></p>
+<p>If <span class="math inline">\(w_l\)</span> has zero mean, then:</p>
+<span class="math display">\[\begin{aligned}
+Var(y_l) &amp;= n_l Var(w_l x_l) \\
+&amp;= n_l Var(w_l) Var(x_l) + Var(w_l)E^{2}[x_l]\\
+&amp;= n_l Var(w_l) [Var(x_l) + E^{2}[x_l]]\\
+&amp;= n_l Var(w_l) E[x^{2}_l]
+\end{aligned}\]</span>
+<p>Note here, in Xavier Initialization, we have <span class="math inline">\(E[x_l] = 0\)</span> because random variables with zero means after tanh function have zero mean. For ReLU activation, we have <span class="math inline">\(x_l = max(0, y_{l - 1})\)</span> and thus it does not have zero mean.</p>
+<p>If we let <span class="math inline">\(w_{l - 1}\)</span> have a symmetric distribution around zero (<span class="math inline">\(E[w_{l-1}] = 0\)</span>) and <span class="math inline">\(b_{l - 1} = 0\)</span>, then:</p>
+<p><span class="math display">\[E[y_{l - 1}] = E[w_l]E[x_l] = 0\]</span></p>
 ]]></content>
   </entry>
   <entry>
@@ -1503,6 +1581,47 @@ Var(y_l) &amp;= n_l Var(w_l x_l) \\
     <url>/2021/07/08/knapsack/</url>
     <content><![CDATA[<h1 id="knapsack-problem">knapsack Problem</h1>
 <h2 id="knapsack-problem-1">0–1 knapsack problem</h2>
+<p>Given weights and values of <span class="math inline">\(n\)</span> items, put these items in a knapsack of capacity <span class="math inline">\(W\)</span> to get the maximum total value in the knapsack.</p>
+<p><span class="math inline">\(f(i, j):\)</span> using only first <span class="math inline">\(i\)</span> items, with maximum capacity of <span class="math inline">\(j\)</span>, the maximum total value you can get.</p>
+<p>Then, we can write our base cases:</p>
+<ul>
+<li><span class="math inline">\(f(0, :) = 0\)</span></li>
+<li><span class="math inline">\(f(:, 0) = 0\)</span></li>
+</ul>
+<p>0 items have values 0 and no items can be put into knapsack with capacity of 0.</p>
+<p>At <span class="math inline">\(f(i, j)\)</span>, comparing it to <span class="math inline">\(f(i - 1, j)\)</span>, we can choose to include item <span class="math inline">\(i\)</span> or not. So, we can write out of transition function <span class="math inline">\(f(i, j)\)</span>:</p>
+<ol type="1">
+<li><p>If there is still extra capacity for item <span class="math inline">\(i\)</span> with total capacity <span class="math inline">\(j\)</span> (i.e <span class="math inline">\(sum(weights[: i + 1]) \leq j)\)</span>), then we can just simply add values of item <span class="math inline">\(i\)</span>. <span class="math display">\[f(i, j) = f(i - 1, j) + values(i)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> and the current weight <span class="math inline">\(weight[i] &gt; j\)</span>, then we only need to keep the previous maximum values because the item <span class="math inline">\(i\)</span> won't fit whatsoever: <span class="math display">\[f(i, j) = f(i - 1, j)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> but <span class="math inline">\(weight[i] \leq j\)</span>, then we can choose to include this item and discard some past items, or move on without considering this item:</p>
+<ol type="1">
+<li><p>The total values if we include this item (<span class="math inline">\(\text{current value } + \text{ The maximum value we can get after we fill the capacity j with i}\)</span> (we need to <code>exclude</code> the current item)): <span class="math display">\[\text{total}_{include} = values[i] + f(i - 1, j - weights[i])\]</span></p></li>
+<li><p>The maximum value exclude current item: <span class="math display">\[f(i - 1, j)\]</span></p></li>
+</ol>
+<p>By taking the maximum over these two, we have:</p>
+<p><span class="math display">\[f(i, j) = \max(f(i - 1, j), \; values[i] + f(i - 1, j - weights[i]))\]</span></p></li>
+</ol>
+<h2 id="unbounded-knapsack-problem">Unbounded knapsack problem</h2>
+<p>Given a knapsack weight <span class="math inline">\(W\)</span> and a set of <span class="math inline">\(n\)</span> items with certain value <span class="math inline">\(v_i\)</span> and weight <span class="math inline">\(w_i\)</span>, we need to calculate the maximum amount that could make up this quantity exactly. This is different from classical Knapsack problem, here we are allowed to use unlimited number of instances of an item.</p>
+<p><span class="math inline">\(f(i, j):\)</span> using only first <span class="math inline">\(i\)</span> items, with maximum capacity of <span class="math inline">\(j\)</span>, the maximum total value you can get.</p>
+<p>Then, we can write our base cases:</p>
+<ul>
+<li><span class="math inline">\(f(0, :) = 0\)</span></li>
+<li><span class="math inline">\(f(:, 0) = 0\)</span></li>
+</ul>
+<p>0 items have values 0 and no items can be put into knapsack with capacity of 0.</p>
+<p>At <span class="math inline">\(f(i, j)\)</span>, comparing it to <span class="math inline">\(f(i - 1, j)\)</span>, we can choose to include item <span class="math inline">\(i\)</span> or not. So, we can write out of transition function <span class="math inline">\(f(i, j)\)</span>:</p>
+<ol type="1">
+<li><p>If there is still extra capacity for item <span class="math inline">\(i\)</span> with total capacity <span class="math inline">\(j\)</span> (i.e <span class="math inline">\(sum(weights[: i + 1]) \leq j)\)</span>), then we can just simply add values of item <span class="math inline">\(i\)</span>. <span class="math display">\[f(i, j) = f(i - 1, j) + values(i)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> and the current weight <span class="math inline">\(weight[i] &gt; j\)</span>, then we only need to keep the previous maximum values because the item <span class="math inline">\(i\)</span> won't fit whatsoever: <span class="math display">\[f(i, j) = f(i - 1, j)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> but <span class="math inline">\(weight[i] \leq j\)</span>, then we can choose to include this item and discard some past items, or move on without considering this item:</p>
+<ol type="1">
+<li><p>The total values if we include this item (<span class="math inline">\(\text{current value } + \text{ The maximum value we have can get after we fill the capacity j with i}\)</span> (we need to <code>include</code> the current item)): <span class="math display">\[\text{total}_{include} = values[i] + f(i, j - weights[i])\]</span></p></li>
+<li><p>The maximum value exclude current item: <span class="math display">\[f(i - 1, j)\]</span></p></li>
+</ol>
+<p>By taking the maximum over these two, we have:</p>
+<p><span class="math display">\[f(i, j) = \max(f(i - 1, j), \; values[i] + f(i, j - weights[i]))\]</span></p></li>
+</ol>
 ]]></content>
   </entry>
   <entry>
@@ -1605,12 +1724,6 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </tags>
   </entry>
   <entry>
-    <title>overfeat</title>
-    <url>/2021/06/25/overfeat/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
     <title>natural-actor-critic</title>
     <url>/2021/06/03/natural-actor-critic/</url>
     <content><![CDATA[
@@ -1632,6 +1745,7 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
 <li><a href="/2021/05/11/probability/" title="probability (1)">probability (1)</a></li>
 <li><a href="/2021/05/11/probability-2/" title="probability (2)">probability (2)</a></li>
 <li><a href="/2021/05/14/calculus/" title="calculus (1)">calculus (1)</a></li>
+<li><a href="/2021/07/06/cal-2/" title="calculus (2)">calculus (2)</a></li>
 </ol>
 <h2 id="probabilies">Probabilies</h2>
 <p>To avoid confusion (Maybe redundant, but personal preference), I would only use <span class="math inline">\(P\)</span> to represent the probability distribution of events (subsets of the sample space <span class="math inline">\(\Omega\)</span>) defined over event space <span class="math inline">\(\mathbb{B}\)</span> (i.e <span class="math inline">\(P(A), \; A \in \mathbb{B}\)</span>) but not events that are subsets of range space of random variables (i.e CDF will be represented as <span class="math inline">\(F_X (x) = P_X (X \leq x)\)</span>, the subscript <span class="math inline">\(X\)</span> is used in <span class="math inline">\(P\)</span>). However, for simplicity, I will use <span class="math inline">\(P\)</span> for all probability functions. For example, the induced probability distribution of random variable <span class="math inline">\(X\)</span>, <span class="math inline">\(P_X\)</span> can be write in short <span class="math inline">\(P(X)\)</span>, so the probability at <span class="math inline">\(x\)</span>:</p>
@@ -1660,6 +1774,43 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
         <category>Background</category>
       </categories>
       <tags>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>overfeat</title>
+    <url>/2021/06/25/overfeat/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
+    <title>Policy Gradient (3)</title>
+    <url>/2021/06/05/policy-gradient-3/</url>
+    <content><![CDATA[<h1 id="policy-search-methods-reinforce">Policy Search Methods (REINFORCE)</h1>
+<p>We already now that, if we have sampled from the correct distribution and have an estimate for <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>, we have an unbiased sample of the policy gradient (Discounted Setting):</p>
+<p><span class="math display">\[\gamma^{k} \nabla \log \pi_{\theta}(A | X) Q^{\pi_{\theta}} (X, A)\]</span></p>
+<p>The remaining issue is the computation of <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>. This is essentially a Policy Evaluation problem, and we may use various action-value function estimators.</p>
+<h2 id="reinforce">REINFORCE</h2>
+<p>A simple approach uses MC estimates to estimate <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>. This would lead to what is known as the REINFORCE algorithm:</p>
+<p>In the on-policy setting when agent follows <span class="math inline">\(\pi_{\theta}\)</span>:</p>
+<ul>
+<li>It generates the sequence <span class="math inline">\(X_1, A_1, R_1\)</span> with <span class="math inline">\(A_{t} \sim \pi_{\theta} (\cdot | X_t), X_t \sim \rho^{\pi_{\theta}}\)</span>.</li>
+<li>Then <span class="math inline">\(G_{t}^{\pi_{\theta}} = \sum_{k \geq t} \gamma^{k - t} R_{k}\)</span> is an unbiased estimator of <span class="math inline">\(Q^{\pi_{\theta}} (X_t, A_t)\)</span>.</li>
+<li>We replace the action-value function with the estimate.</li>
+<li>The return however has high variance even though it is unbiased.</li>
+<li>We can use a state dependent baseline function (usually the value function) to reduce the variance.</li>
+</ul>
+<p><img src='/images/RL/pg/pg_5.png' width="600"></p>
+<h2 id="implementation">Implementation</h2>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>PG</category>
+      </categories>
+      <tags>
+        <tag>Policy Gradient</tag>
+        <tag>Continuous Action Space</tag>
+        <tag>Policy Search</tag>
         <tag>RL Basics</tag>
       </tags>
   </entry>
@@ -1800,37 +1951,6 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </tags>
   </entry>
   <entry>
-    <title>Policy Gradient (3)</title>
-    <url>/2021/06/05/policy-gradient-3/</url>
-    <content><![CDATA[<h1 id="policy-search-methods-reinforce">Policy Search Methods (REINFORCE)</h1>
-<p>We already now that, if we have sampled from the correct distribution and have an estimate for <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>, we have an unbiased sample of the policy gradient (Discounted Setting):</p>
-<p><span class="math display">\[\gamma^{k} \nabla \log \pi_{\theta}(A | X) Q^{\pi_{\theta}} (X, A)\]</span></p>
-<p>The remaining issue is the computation of <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>. This is essentially a Policy Evaluation problem, and we may use various action-value function estimators.</p>
-<h2 id="reinforce">REINFORCE</h2>
-<p>A simple approach uses MC estimates to estimate <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>. This would lead to what is known as the REINFORCE algorithm:</p>
-<p>In the on-policy setting when agent follows <span class="math inline">\(\pi_{\theta}\)</span>:</p>
-<ul>
-<li>It generates the sequence <span class="math inline">\(X_1, A_1, R_1\)</span> with <span class="math inline">\(A_{t} \sim \pi_{\theta} (\cdot | X_t), X_t \sim \rho^{\pi_{\theta}}\)</span>.</li>
-<li>Then <span class="math inline">\(G_{t}^{\pi_{\theta}} = \sum_{k \geq t} \gamma^{k - t} R_{k}\)</span> is an unbiased estimator of <span class="math inline">\(Q^{\pi_{\theta}} (X_t, A_t)\)</span>.</li>
-<li>We replace the action-value function with the estimate.</li>
-<li>The return however has high variance even though it is unbiased.</li>
-<li>We can use a state dependent baseline function (usually the value function) to reduce the variance.</li>
-</ul>
-<p><img src='/images/RL/pg/pg_5.png' width="600"></p>
-<h2 id="implementation">Implementation</h2>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>PG</category>
-      </categories>
-      <tags>
-        <tag>Policy Gradient</tag>
-        <tag>Continuous Action Space</tag>
-        <tag>Policy Search</tag>
-        <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Prioritized Experience Replay</title>
     <url>/2021/05/20/prior-exp-replay/</url>
     <content><![CDATA[<h1 id="prioritized-experience-replay">Prioritized Experience Replay</h1>
@@ -1896,7 +2016,7 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
 <h2 id="distribution-of-two-random-variables">Distribution of Two Random Variables</h2>
 <p>Intuitive Example:</p>
 <blockquote>
-<p>Let our experiment be flipping a coin 3 times. Then our sample space <span class="math inline">\(\Omega = \{HHH, THH, TTH, TTT, THT, HTH, HTT, HHT\}\)</span>. Let <span class="math inline">\(X_1\)</span> be the number of head on the first two tosses and <span class="math inline">\(X_2\)</span> be the number of heads on all three tosses. Then, our interest can be represented by the pair of random variables (X_1, X_2), for example <span class="math inline">\((X_1 (HTH), X_2(HTH)) = (1, 2)\)</span>. Continuing this way, <span class="math inline">\(X_1, X_2\)</span> are real-valued functions defined on the sample space <span class="math inline">\(\Omega\)</span>, which take the outcome and map from sample space to ordered number pairs: <span class="math display">\[\mathbb{D} = \{(0, 0), (0, 1), (1, 1), (1, 2), (2, 2), (2, 3)\}\]</span></p>
+<p>Let our experiment be flipping a coin 3 times. Then our sample space <span class="math inline">\(\Omega = \{HHH, THH, TTH, TTT, THT, HTH, HTT, HHT\}\)</span>. Let <span class="math inline">\(X_1\)</span> be the number of head on the first two tosses and <span class="math inline">\(X_2\)</span> be the number of heads on all three tosses. Then, our interest can be represented by the pair of random variables <span class="math inline">\((X_1, X_2)\)</span>, for example <span class="math inline">\((X_1 (HTH), X_2(HTH)) = (1, 2)\)</span>. Continuing this way, <span class="math inline">\(X_1, X_2\)</span> are real-valued functions defined on the sample space <span class="math inline">\(\Omega\)</span>, which take the outcome and map from sample space to ordered number pairs: <span class="math display">\[\mathbb{D} = \{(0, 0), (0, 1), (1, 1), (1, 2), (2, 2), (2, 3)\}\]</span></p>
 <p>One the other hand, we can regard this ordered pair of functions as a vector function <span class="math inline">\(f: \Omega \rightarrow \mathbb{D} \subset \mathbb{R}^2\)</span> defined by <span class="math inline">\(f(x) = &lt;X_1(x), \; X_2(x)&gt;, \quad x \in \Omega\)</span>.</p>
 </blockquote>
 <p><img src="/images/RL/background/prob_33.png" width="600"></p>
@@ -1906,6 +2026,7 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
 <p>For all <span class="math inline">\((x_1, x_2) \in \mathbb{R}^2\)</span>. At the same time:</p>
 <p><span class="math display">\[P_{X_1, X_2}(a_1 &lt; X_1 \leq b_1, \; a_2 &lt; X_2 \leq b_2) = F_{X_1, X_2} (b_1, b_2) -  F_{X_1, X_2} (a_1, b_2) -  F_{X_1, X_2} (b_1, a_2) +  F_{X_1, X_2} (a_1, a_2)\]</span></p>
 <p>Hence, all induced probabilities can be formulated in terms of the cdf. We often call this cdf the <code>joint cumulative distribution</code>.</p>
+<span id="more"></span>
 <p><br></p>
 <h3 id="discrete-random-vector">Discrete Random Vector</h3>
 <p>A random vector <span class="math inline">\((X_1, X_2)\)</span> is <code>discrete random vector</code> if its range space <span class="math inline">\(\mathbb{D}\)</span> is finite or countable. Hence, <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> are <strong>both discrete</strong>. The <code>joint probability mass function</code> of <span class="math inline">\((X_1, X_2)\)</span> <span class="math inline">\(p_{X_1, X_2}\)</span> is defined by:</p>
@@ -1942,7 +2063,7 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
 <p>For all <span class="math inline">\(x_1 \in \mathbb{D}_{1}\)</span>.</p>
 <p>That is, to find <span class="math inline">\(p_{X_1}(x_1)\)</span> we can fix <span class="math inline">\(x_1\)</span> and sum <span class="math inline">\(p_{X_1, X_2}\)</span> over all the values of <span class="math inline">\(x_2\)</span>. Same is for <span class="math inline">\(X_2\)</span>. These individual pmfs are called the <code>marginal pmfs</code>.</p>
 <h4 id="marginal-pdf">Marginal PDF</h4>
-<p>For continuous case:</p>
+<p>For continuous <code>case</code>:</p>
 <p><span class="math display">\[P(\{X_1 \leq x_1\} \cap \{-\infty &lt; X_2 &lt; \infty\}) = \int^{x_1}_{-\infty} \int^{\infty}_{-\infty} f_{X_1, X_2} (w_1, x_2) dx_2 dw_1\]</span></p>
 <p>Then, by <strong>the uniqueness of cdfs</strong>, the quantity in braces must be the pdf of <span class="math inline">\(X_1\)</span>, evaluated at <span class="math inline">\(w_1\)</span>:</p>
 <p><span class="math display">\[f_{X_1} (x_1) = \int^{\infty}_{-\infty} f_{X_1, X_2} (x_1, x_2) dx_2\]</span></p>
@@ -1969,8 +2090,48 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
 <p><img src="/images/RL/background/prob_36.png" width="600"></p>
 <p>This is saying that, the expectation of a random vector is a vector function of expectation.</p>
 <h2 id="transformation-bivariate-random-variables">Transformation: Bivariate Random Variables</h2>
+<p>Let <span class="math inline">\(X_1, X_2\)</span> denote random variables of the discrete type, which have the joint pmf <span class="math inline">\(p_{X_1, X_2} (x_1, x_2)\)</span> that is positive on the support set <span class="math inline">\(S\)</span>. Let <span class="math inline">\(y_1 = u_1(x_1, x_2)\)</span> and <span class="math inline">\(y_2 = u_2(x_1, x_2)\)</span> define a one-to-one transformation that maps <span class="math inline">\(S\)</span> onto <span class="math inline">\(T\)</span>. The joint pmf of the two new random variables <span class="math inline">\(Y_1 = u_1 (X_1, X_2)\)</span> and <span class="math inline">\(Y_2 = u_2(X_1, X_2)\)</span> is given by:</p>
+<p><span class="math display">\[
+p_{Y_1, Y_2}(y_1, y_2)=
+\begin{cases}
+p_{X_1, X_2} (w_1(y_1, y_2), w_2 (y_1, y_2)), \quad &amp;(y_1, y_2) \in T\\
+0, \quad &amp;o.w
+\end{cases}
+\]</span></p>
+<p>Where <span class="math inline">\(w_1(y_1, y_2) = x_1\)</span>, <span class="math inline">\(w_2(y_1, y_2) = x_2\)</span> is the single-valued inverse of <span class="math inline">\(y_1 = u_1(x_1, x_2)\)</span> and <span class="math inline">\(y_2 = u_2 (x_1, x_2)\)</span> (form function of <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> using <span class="math inline">\(y_1\)</span> and <span class="math inline">\(y_2\)</span>).</p>
 <h2 id="conditional-distributions-and-expectations">Conditional Distributions and Expectations</h2>
-<p>Let <span class="math inline">\(X_1, X_2\)</span> denote random variables of the discrete type, which have the joint pmf <span class="math inline">\(p_{X_1, X_2} (x_1, x_2)\)</span> that is positive on the support set</p>
+<h3 id="discrete-conditional-pmf">Discrete Conditional PMF</h3>
+<p>Let <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> denote random variables of the discrete type, which have the joint pmf defined to be <span class="math inline">\(p_{X_1, X_2} (x_1, x_2)\)</span> that is positive on the support set <span class="math inline">\(S\)</span> and is zero elsewhere. Let <span class="math inline">\(p_{X_1} (x_1)\)</span> and <span class="math inline">\(p_{X_2} (x_2)\)</span> denote, respectively the marginal probability mass function of <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span>. Let <span class="math inline">\(x_1\)</span> be a point in the support of <span class="math inline">\(X_1\)</span>, then <span class="math inline">\(p_{X_1} (x_1) &gt; 0\)</span>. We have:</p>
+<p><span class="math display">\[P(X_2 = x_2 | X_1 = x_1) = \frac{P(X_1=x, X_2=x_2)}{P(X_1 = x_1)} = \frac{p_{X_1, X_2}(x_1, x_2)}{p_{X_1}(x_1)}\]</span></p>
+<p>For all <span class="math inline">\(x_2\)</span> in the support of <span class="math inline">\(S_{X_2}\)</span>. Then we define this function as:</p>
+<p><span class="math display">\[p_{X_2 | X_1} (x_2 | x_1) = \frac{p_{X_1, X_2}(x_1, x_2)}{p_{X_1}(x_1)}, \quad x_2 \in S_{X_2}\]</span></p>
+<p>For any fixed <span class="math inline">\(x_1\)</span> with <span class="math inline">\(p_{X_1} (x_1) &gt; 0\)</span>, this function has the conditions of being a pmf of the discrete type becuase:</p>
+<ol type="1">
+<li><p><span class="math inline">\(p_{X_2 | X_1} (x_2 | x_1)\)</span> is non-negative: <span class="math display">\[p_{X_1} (x_1) &gt; 0, \quad p_{X_1, X_2} (x_1, x_2) &gt; 0, \; \forall (x_1, x_2) \in (S_{X_1} \times S_{X_2})\]</span></p></li>
+<li><p><span class="math inline">\(\sum_{x_2} p_{X_2 | X_1} (x_2 | x_1) = \sum_{x_2} \frac{p_{X_1, X_2}(x_1, x_2)}{p_{X_1}(x_1)} = \frac{\sum_{x_2}p_{X_1, X_2}(x_1, x_2)}{p_{X_1}(x_1)} = 1\)</span></p></li>
+</ol>
+<p>We call <span class="math inline">\(p_{X_2 | X_1} (x_2 | x_1)\)</span> the <code>conditional pmf</code> of discrete type of random variable <span class="math inline">\(X_2\)</span> given the discrete type of random variable <span class="math inline">\(X_1 = x_1\)</span>. Similar formula can be derived for conditional pmf of <span class="math inline">\(X_1\)</span> given <span class="math inline">\(X_2 = x_2\)</span>.</p>
+<p><br></p>
+<h3 id="continuous-conditional-pmf">Continuous Conditional PMF</h3>
+<p>Now, let <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> be random variables of continuous type and have the joint pdf defined as <span class="math inline">\(f_{X_1, X_2} (x_1, x_2)\)</span> and the marginal pdf defined as <span class="math inline">\(f_{X_1}(x_1)\)</span> and <span class="math inline">\(f_{X_2} (x_2)\)</span>. When <span class="math inline">\(f_{X_1}(x_1) &gt; 0\)</span>, we defined the function <span class="math inline">\(f_{X_1, X_2}\)</span> as:</p>
+<p><span class="math display">\[f_{X_2 | X_1} (x_2 | x_1) = \frac{f_{X_1, X_2}(x_1, x_2)}{f_{X_1}(x_1)}\]</span></p>
+<p>Then, this function has the conditions of being a pdf of the continuous type becuase:</p>
+<ol type="1">
+<li><p><span class="math inline">\(f_{X_2 | X_1} (x_2 | x_1)\)</span> is non-negative: <span class="math display">\[f_{X_1} (x_1) &gt; 0, \quad f_{X_1, X_2} (x_1, x_2) &gt; 0, \; \forall (x_1, x_2) \in (S_{X_1} \times S_{X_2})\]</span></p></li>
+<li><p><span class="math inline">\(\int^{\infty}_{-\infty} f_{X_2 | X_1} (x_2 | x_1) dx_2 = \int^{\infty}_{-\infty} \frac{p_{X_1, X_2}(x_1, x_2)}{p_{X_1}(x_1)} dx_2 = \frac{\int^{\infty}_{-\infty} f_{X_1, X_2}(x_1, x_2) dx_2}{f_{X_1}(x_1)} = 1\)</span></p></li>
+</ol>
+<p>That is, this function is called <code>conditional pdf</code> of the continuous type of random variable <span class="math inline">\(X_2\)</span>, given that the continuous type of random variable <span class="math inline">\(X_1=x_1\)</span>. Similar formula can be derived for conditional pdf of <span class="math inline">\(X_1\)</span> given <span class="math inline">\(X_2 = x_2\)</span>.</p>
+<p>Since each of the pdfs <span class="math inline">\(f_{X_2 | X_1} (x_2 | x_1), f_{X_1 | X_2} (x_1 | x_2)\)</span> is a pdf of one variable, each has all the propertiees of such a pdf. Thus we can compute probabilities and mathmetical expectations. If the random variables are of the continuous type, the probability:</p>
+<p><span class="math display">\[P(a &lt; X_2 &lt; b | X_1 = x_1) = \int^{b}_{a} f_{X_2 | X_1} (x_2 | x_1) dx_2\]</span></p>
+<p>This is called <strong>the conditional probability that <span class="math inline">\(a &lt; X_2 &lt; b\)</span>, given that <span class="math inline">\(X_1 = x_1\)</span></strong></p>
+<h3 id="conditional-expectation-and-variance">Conditional Expectation and Variance</h3>
+<p>If <span class="math inline">\(u(X_2)\)</span> is a function of <span class="math inline">\(X_2\)</span>, the <code>conditional expectation (continuous case)</code> of <span class="math inline">\(u(X_2)\)</span>, given taht <span class="math inline">\(X_1=x_1\)</span>, if it exists, is given by:</p>
+<p><span class="math display">\[E_{X_2 | X_1}[u(X_2) | X_1=x_1] = \int^{\infty}_{-\infty} u(x_2) f_{X_2 | X_2} (x_2 | x_1) dx_2\]</span></p>
+<p>Notice that, the conditional expectation <span class="math inline">\(E_{X_2 | X_1}[X_2 | X_1=x_1]\)</span> is function of <span class="math inline">\(x_1\)</span>. If they do exist, then <span class="math inline">\(E_{X_2 | X_1}[X_2 | X_1=x_1]\)</span> is the mean and:</p>
+<p><span class="math display">\[Var(X_2 | x_1) = E_{X_2 | X_1}[(X_2 - E_{X_2 | X_1}[X_2 | X_1=x_1])^2 | X_1 = x_1]\]</span></p>
+<p>is the <code>conditional variance</code> of the conditional distribution of <span class="math inline">\(X_2\)</span>, given <span class="math inline">\(X_1 = x_1\)</span>.</p>
+<p>The similar rule holds for conditional variance:</p>
+<p><span class="math display">\[Var(X_2 | x_1) = E_{X_2 | X_1}[X_2^2 | X_1=x_1]- (E_{X_2 | X_1}[X_2 | X_1=x_1])^2\]</span></p>
 ]]></content>
       <categories>
         <category>Background</category>
@@ -2152,12 +2313,6 @@ Var[max_{a^{\prime} \in A} Q_t (X^{\prime}, a^{\prime}) | X_t=x_t, A_t=a_t] &amp
   <entry>
     <title>semi-mdp</title>
     <url>/2021/06/28/semi-mdp/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
-    <title>td3</title>
-    <url>/2021/06/23/td3/</url>
     <content><![CDATA[
 ]]></content>
   </entry>
@@ -2451,6 +2606,12 @@ E[\delta (X, R, X^{\prime}; V^{\pi}) | X=x, A=a] &amp;= E[R + \gamma V^{\pi}(X^{
       </tags>
   </entry>
   <entry>
+    <title>td3</title>
+    <url>/2021/06/23/td3/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
     <title>tree</title>
     <url>/2021/06/14/tree/</url>
     <content><![CDATA[<h1 id="trees">Trees</h1>
@@ -2458,6 +2619,101 @@ E[\delta (X, R, X^{\prime}; V^{\pi}) | X=x, A=a] &amp;= E[R + \gamma V^{\pi}(X^{
 <h3 id="inorder-traversal">Inorder Traversal</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inorder</span>(<span class="params">root</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    inorder(root.left)</span><br><span class="line">    <span class="built_in">print</span>(root.val)</span><br><span class="line">    inorder(root.right)</span><br></pre></td></tr></table></figure>
 ]]></content>
+  </entry>
+  <entry>
+    <title>Learning From Stream of Data</title>
+    <url>/2021/05/07/value-function-learning/</url>
+    <content><![CDATA[<h1 id="learning-from-stream-of-data-introduction">Learning From Stream of Data (Introduction)</h1>
+<p>In previous DP settings, we know the transition distribution <span class="math inline">\(P\)</span> and reward distribution <span class="math inline">\(R\)</span>. Everything about the environment dynamics are given. However, in RL setting, we have no access to the environment dynamics, instead, we observe data from agent interacting with its environment.</p>
+<p>A stream of data (rollout or trajectory):</p>
+<p><span class="math display">\[X_1, A_1, R_1, X_2, A_2, R_2, ...\]</span></p>
+<p>with <span class="math inline">\(A_t \sim \pi(\cdot | X_t), X_{t+1} \sim P(\cdot | A_t, X_t), X_1 \sim \rho(\cdot), R_t \sim R(\cdot | X_t, A_t)\)</span></p>
+<p>The questions are:</p>
+<ol type="1">
+<li>How can we learn a value of a policy <span class="math inline">\(\pi\)</span>?</li>
+<li>How can we find the optimal policy <span class="math inline">\(\pi^{*}\)</span>?</li>
+</ol>
+<span id="more"></span>
+<h2 id="stochastic-approximation-of-mean">Stochastic Approximation of Mean</h2>
+<p>Let <span class="math inline">\(Z_1, ..., Z_t\)</span> be i.i.d R.V drawn from distribution <span class="math inline">\(v\)</span>, how can we estimate the expectation of <span class="math inline">\(Z_i\)</span>? One way is stochastic approximation.</p>
+<p>Define:</p>
+<p><span class="math display">\[\theta_{t+1} = (1 - \alpha_t)\theta_t + \alpha_t Z_t\]</span></p>
+<p>Note that <span class="math inline">\(\theta_{t+1}\)</span> is a random variable, because <span class="math inline">\(Z_t\)</span> is a random variable.</p>
+<h3 id="expectation">Expectation</h3>
+<p>Assume <span class="math inline">\(\alpha_t = \alpha\)</span> is fixed, <span class="math inline">\(E[Z_t] = m\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+E[\theta_{t+1}] &amp;= E[(1 - \alpha) \theta_t + \alpha Z_t]\\
+&amp;= (1 - \alpha) E[\theta_t] + \alpha E[Z_t]\\
+&amp;= (1 - \alpha) E[\theta_t] + \alpha m\\
+\end{aligned}\]</span>
+<p>Let <span class="math inline">\(E[\theta_t] = \bar{\theta_t}\)</span>, then:</p>
+<p><span class="math display">\[E[\theta_{t+1}] = (1 - \alpha) E[\theta_t] + \alpha m \implies \bar{\theta_{t+1}} = (1 - \alpha) \bar{\theta_t} + \alpha m\]</span></p>
+<p>Let <span class="math inline">\(\theta_0 = 0\)</span>, that is, <span class="math inline">\(\bar{\theta_0} = 0\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+\bar{\theta_{1}} &amp;= \alpha m\\
+\bar{\theta_{2}}&amp;= (1 - \alpha) \alpha m + \alpha m\\
+...\\
+...\\
+\bar{\theta_{t}}&amp;= \alpha \sum_{i=0}^{t-1} (1 - \alpha)^i m = \frac{\alpha m (1 - (1 - \alpha)^t)}{1 - (1 - \alpha)} = m[1 - (1 - \alpha)^t]\\
+\end{aligned}\]</span>
+<p>As <span class="math inline">\(t \rightarrow \infty\)</span>, if <span class="math inline">\(0 \geq \alpha &lt; 1\)</span></p>
+<p><span class="math display">\[lim_{t \rightarrow \infty} \bar{\theta_{t}} = lim_{t \rightarrow \infty} m[1 - (1 - \alpha)^t] = m\]</span></p>
+<p><strong>This implies <span class="math inline">\(\theta_t\)</span> converges to <span class="math inline">\(m\)</span> in expectation</strong></p>
+<h3 id="variance">Variance</h3>
+<p>Since all <span class="math inline">\(Z_i\)</span> are i.i.d:</p>
+<p><span class="math display">\[V[\theta_{t+1}] = (1 - \alpha)^2 V[\theta_t] + \alpha^2 V[Z_t] \geq \alpha^2 V[Z_t] = \alpha^2 \theta^2\]</span></p>
+<p>We can show that:</p>
+<p><span class="math display">\[lim_{t \rightarrow \infty} V[\theta_t] = \frac{\alpha \theta^2}{2 - \alpha}\]</span></p>
+<p>For a constant <span class="math inline">\(\alpha\)</span>, the variance <span class="math inline">\(\theta_t\)</span>is not going to converge to zero. This means that <span class="math inline">\(\theta_t\)</span> fluctuates around its mean.</p>
+<h3 id="sa-condition">SA Condition</h3>
+<p>In order to make <span class="math inline">\(\theta_t\)</span> converge, we need a time dependent <span class="math inline">\(\alpha_t \rightarrow 0\)</span> with some schedule:</p>
+<p><span class="math display">\[\sum_{t=0}^{\infty} \alpha_t = \infty \]</span></p>
+<p><span class="math display">\[\sum_{t=0}^{\infty} \alpha_t^2 &lt; \infty \]</span></p>
+<h2 id="epsilon---greedy-policy"><span class="math inline">\(\epsilon\)</span> - Greedy policy</h2>
+<h3 id="problem-with-greedy-policy">Problem With Greedy Policy</h3>
+<p>By selecting</p>
+<p><span class="math display">\[a \rightarrow \pi_g (x; Q) = argmax_{a \in A} Q(x, a)\]</span></p>
+<p>We would choose the optimal action at state <span class="math inline">\(x\)</span>. However, if <span class="math inline">\(Q(x, a)\)</span> is inaccurate estimate of <span class="math inline">\(Q^{\pi} (x, a)\)</span>, we may select a suboptimal action. It is also possible we get stuck in choosing this action forever, without any chance to improve its estimate.</p>
+<h3 id="solution">Solution</h3>
+<p>One solution for this problem it to force the agent regularly picks actions other than the one suggested by the greedy policy.</p>
+<p>Thus, for <span class="math inline">\(\epsilon \geq 0, x \in X\)</span>, a function <span class="math inline">\(\hat{V}\)</span>, we define <span class="math inline">\(\pi_{\epsilon}\)</span> as:</p>
+<p><span class="math display">\[
+\pi_\epsilon (\cdot | x; \hat{V})=
+\begin{cases}
+\pi_g(x; \hat{V}), \text{w. p } 1 - \epsilon \\
+Uniform(A), \text{w. p } \epsilon \\
+\end{cases}
+\]</span></p>
+<ul>
+<li>The uniform choice of action in the <span class="math inline">\(\epsilon\)</span>-greedy helps the agent <code>explore</code> all actions, even if the action is seemingly suboptimal.</li>
+<li>The greedy part of its action select mechanism <code>exploits</code> the current knowledge about the reward function, and chooses the action that has the highest estimated reward.</li>
+</ul>
+<h3 id="exploration-and-exploitation-tradeoff">Exploration and Exploitation Tradeoff</h3>
+<p>Exploiting our knowledge is a reasonable choice when our knowledge about the world is <code>accurate</code>. (ie. If we have <span class="math inline">\(Q^{*}\)</span> we should always choose the greedy action at each state to have a maximized return)</p>
+<p>However, when we have uncertainty about the world, we should not be overconfident of our knowledge and exploit it at all time. (ie. If we only have <span class="math inline">\(\hat{Q}\)</span> of <span class="math inline">\(Q^{*}\)</span>, it is possible that <span class="math inline">\(argmax_{a \in A} \hat Q (x, a) \neq argmax_{a \in A} Q^{*} (x, a)\)</span>) But, instead explore other available actions, which might happen to be better.</p>
+<p>The tradeoff between exploration and exploitation is a major topic in RL and is an area of active research.</p>
+<h3 id="off-policy-and-on-policy-sampling-scenarios">Off Policy and On Policy Sampling Scenarios</h3>
+<p>Suppose we have a rollout or trajectory following some policy <span class="math inline">\(\pi_b\)</span> (ie. an <span class="math inline">\(\epsilon\)</span>-greedy policy):</p>
+<p><span class="math display">\[X_1, A_1, R_1, X_2, ....\]</span></p>
+<p>And we have some policy <span class="math inline">\(\pi\)</span> that we want to evaluate (ie. the greedy policy):</p>
+<ul>
+<li>If <span class="math inline">\(\pi_b = \pi\)</span>, we are in the <code>on-policy</code> sampling scenario, in which the agent is evaluating the same policy that it is following.</li>
+<li>If <span class="math inline">\(\pi_b \neq \pi\)</span>, we are in the <code>off-policy</code> sampling scenario, which the agent is evaluating a policy that is different from the one it is following.</li>
+</ul>
+<h2 id="further">Further</h2>
+<p>From here, we have all we need to start learning from streams of data!</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>MC</category>
+        <category>TD</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>MC</tag>
+        <tag>Tabular Methods</tag>
+        <tag>TD</tag>
+      </tags>
   </entry>
   <entry>
     <title>Value Iteration</title>
@@ -2496,6 +2752,25 @@ E[\delta (X, R, X^{\prime}; V^{\pi}) | X=x, A=a] &amp;= E[R + \gamma V^{\pi}(X^{
         <tag>RL Basics</tag>
         <tag>Dynamic Programming</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>vfa-1</title>
+    <url>/2021/06/12/vfa-1/</url>
+    <content><![CDATA[<h1 id="value-function-approximation-introduction">Value Function Approximation (Introduction)</h1>
+<p>In real-world problem, the state space <span class="math inline">\(X\)</span> or the state-action space <span class="math inline">\(X \times A\)</span> is large that we cannot represent quantities such as the value function or policy exactly.</p>
+<ul>
+<li><span class="math inline">\(X \subseteq \mathbb{R}^d\)</span> with <span class="math inline">\(d \geq 1\)</span>. Exact representation of an arbitrary function on <span class="math inline">\(\mathbb{R}^d\)</span> on a computer is infeasible.</li>
+<li><span class="math inline">\(X\)</span> is finite, but very large (millions or billions)</li>
+</ul>
+<p>We need to approximate those functions using a representation that is feasible to manipulate on a computer. This is called <strong>function approximation</strong>.</p>
+<p>Function approximation also helps with the generalization.</p>
+<h2 id="linear-function-approximation">Linear Function Approximation</h2>
+<p>We may use a linear function approximator defined based on a set of basis functions:</p>
+<p><span class="math display">\[\hat{V} (x) = \phi (x)^T w = \sum^p_{i=1} \phi_i (x) w_i\]</span></p>
+<p>with <span class="math inline">\(w \in \mathbb{R}^p\)</span> and <span class="math inline">\(\phi: X \rightarrow \mathbb{R}^p\)</span></p>
+<p>Any <span class="math inline">\(\hat{V}\)</span> belongs to the space of functions <span class="math inline">\(\mathbf{F}\)</span>:</p>
+<p><span class="math display">\[\mathbf{F} = \{x \mapsto  \phi (x)^T w : w \in \mathbb{R}^p\}\]</span></p>
+]]></content>
   </entry>
   <entry>
     <title>Xavier Initialization</title>
@@ -2608,120 +2883,6 @@ Var[\frac{\partial Cost}{\partial w^{i}_{l, k}}] &amp;= Var[z^{i}_{l} \frac{\par
       </tags>
   </entry>
   <entry>
-    <title>Learning From Stream of Data</title>
-    <url>/2021/05/07/value-function-learning/</url>
-    <content><![CDATA[<h1 id="learning-from-stream-of-data-introduction">Learning From Stream of Data (Introduction)</h1>
-<p>In previous DP settings, we know the transition distribution <span class="math inline">\(P\)</span> and reward distribution <span class="math inline">\(R\)</span>. Everything about the environment dynamics are given. However, in RL setting, we have no access to the environment dynamics, instead, we observe data from agent interacting with its environment.</p>
-<p>A stream of data (rollout or trajectory):</p>
-<p><span class="math display">\[X_1, A_1, R_1, X_2, A_2, R_2, ...\]</span></p>
-<p>with <span class="math inline">\(A_t \sim \pi(\cdot | X_t), X_{t+1} \sim P(\cdot | A_t, X_t), X_1 \sim \rho(\cdot), R_t \sim R(\cdot | X_t, A_t)\)</span></p>
-<p>The questions are:</p>
-<ol type="1">
-<li>How can we learn a value of a policy <span class="math inline">\(\pi\)</span>?</li>
-<li>How can we find the optimal policy <span class="math inline">\(\pi^{*}\)</span>?</li>
-</ol>
-<span id="more"></span>
-<h2 id="stochastic-approximation-of-mean">Stochastic Approximation of Mean</h2>
-<p>Let <span class="math inline">\(Z_1, ..., Z_t\)</span> be i.i.d R.V drawn from distribution <span class="math inline">\(v\)</span>, how can we estimate the expectation of <span class="math inline">\(Z_i\)</span>? One way is stochastic approximation.</p>
-<p>Define:</p>
-<p><span class="math display">\[\theta_{t+1} = (1 - \alpha_t)\theta_t + \alpha_t Z_t\]</span></p>
-<p>Note that <span class="math inline">\(\theta_{t+1}\)</span> is a random variable, because <span class="math inline">\(Z_t\)</span> is a random variable.</p>
-<h3 id="expectation">Expectation</h3>
-<p>Assume <span class="math inline">\(\alpha_t = \alpha\)</span> is fixed, <span class="math inline">\(E[Z_t] = m\)</span>:</p>
-<span class="math display">\[\begin{aligned}
-E[\theta_{t+1}] &amp;= E[(1 - \alpha) \theta_t + \alpha Z_t]\\
-&amp;= (1 - \alpha) E[\theta_t] + \alpha E[Z_t]\\
-&amp;= (1 - \alpha) E[\theta_t] + \alpha m\\
-\end{aligned}\]</span>
-<p>Let <span class="math inline">\(E[\theta_t] = \bar{\theta_t}\)</span>, then:</p>
-<p><span class="math display">\[E[\theta_{t+1}] = (1 - \alpha) E[\theta_t] + \alpha m \implies \bar{\theta_{t+1}} = (1 - \alpha) \bar{\theta_t} + \alpha m\]</span></p>
-<p>Let <span class="math inline">\(\theta_0 = 0\)</span>, that is, <span class="math inline">\(\bar{\theta_0} = 0\)</span>:</p>
-<span class="math display">\[\begin{aligned}
-\bar{\theta_{1}} &amp;= \alpha m\\
-\bar{\theta_{2}}&amp;= (1 - \alpha) \alpha m + \alpha m\\
-...\\
-...\\
-\bar{\theta_{t}}&amp;= \alpha \sum_{i=0}^{t-1} (1 - \alpha)^i m = \frac{\alpha m (1 - (1 - \alpha)^t)}{1 - (1 - \alpha)} = m[1 - (1 - \alpha)^t]\\
-\end{aligned}\]</span>
-<p>As <span class="math inline">\(t \rightarrow \infty\)</span>, if <span class="math inline">\(0 \geq \alpha &lt; 1\)</span></p>
-<p><span class="math display">\[lim_{t \rightarrow \infty} \bar{\theta_{t}} = lim_{t \rightarrow \infty} m[1 - (1 - \alpha)^t] = m\]</span></p>
-<p><strong>This implies <span class="math inline">\(\theta_t\)</span> converges to <span class="math inline">\(m\)</span> in expectation</strong></p>
-<h3 id="variance">Variance</h3>
-<p>Since all <span class="math inline">\(Z_i\)</span> are i.i.d:</p>
-<p><span class="math display">\[V[\theta_{t+1}] = (1 - \alpha)^2 V[\theta_t] + \alpha^2 V[Z_t] \geq \alpha^2 V[Z_t] = \alpha^2 \theta^2\]</span></p>
-<p>We can show that:</p>
-<p><span class="math display">\[lim_{t \rightarrow \infty} V[\theta_t] = \frac{\alpha \theta^2}{2 - \alpha}\]</span></p>
-<p>For a constant <span class="math inline">\(\alpha\)</span>, the variance <span class="math inline">\(\theta_t\)</span>is not going to converge to zero. This means that <span class="math inline">\(\theta_t\)</span> fluctuates around its mean.</p>
-<h3 id="sa-condition">SA Condition</h3>
-<p>In order to make <span class="math inline">\(\theta_t\)</span> converge, we need a time dependent <span class="math inline">\(\alpha_t \rightarrow 0\)</span> with some schedule:</p>
-<p><span class="math display">\[\sum_{t=0}^{\infty} \alpha_t = \infty \]</span></p>
-<p><span class="math display">\[\sum_{t=0}^{\infty} \alpha_t^2 &lt; \infty \]</span></p>
-<h2 id="epsilon---greedy-policy"><span class="math inline">\(\epsilon\)</span> - Greedy policy</h2>
-<h3 id="problem-with-greedy-policy">Problem With Greedy Policy</h3>
-<p>By selecting</p>
-<p><span class="math display">\[a \rightarrow \pi_g (x; Q) = argmax_{a \in A} Q(x, a)\]</span></p>
-<p>We would choose the optimal action at state <span class="math inline">\(x\)</span>. However, if <span class="math inline">\(Q(x, a)\)</span> is inaccurate estimate of <span class="math inline">\(Q^{\pi} (x, a)\)</span>, we may select a suboptimal action. It is also possible we get stuck in choosing this action forever, without any chance to improve its estimate.</p>
-<h3 id="solution">Solution</h3>
-<p>One solution for this problem it to force the agent regularly picks actions other than the one suggested by the greedy policy.</p>
-<p>Thus, for <span class="math inline">\(\epsilon \geq 0, x \in X\)</span>, a function <span class="math inline">\(\hat{V}\)</span>, we define <span class="math inline">\(\pi_{\epsilon}\)</span> as:</p>
-<p><span class="math display">\[
-\pi_\epsilon (\cdot | x; \hat{V})=
-\begin{cases}
-\pi_g(x; \hat{V}), \text{w. p } 1 - \epsilon \\
-Uniform(A), \text{w. p } \epsilon \\
-\end{cases}
-\]</span></p>
-<ul>
-<li>The uniform choice of action in the <span class="math inline">\(\epsilon\)</span>-greedy helps the agent <code>explore</code> all actions, even if the action is seemingly suboptimal.</li>
-<li>The greedy part of its action select mechanism <code>exploits</code> the current knowledge about the reward function, and chooses the action that has the highest estimated reward.</li>
-</ul>
-<h3 id="exploration-and-exploitation-tradeoff">Exploration and Exploitation Tradeoff</h3>
-<p>Exploiting our knowledge is a reasonable choice when our knowledge about the world is <code>accurate</code>. (ie. If we have <span class="math inline">\(Q^{*}\)</span> we should always choose the greedy action at each state to have a maximized return)</p>
-<p>However, when we have uncertainty about the world, we should not be overconfident of our knowledge and exploit it at all time. (ie. If we only have <span class="math inline">\(\hat{Q}\)</span> of <span class="math inline">\(Q^{*}\)</span>, it is possible that <span class="math inline">\(argmax_{a \in A} \hat Q (x, a) \neq argmax_{a \in A} Q^{*} (x, a)\)</span>) But, instead explore other available actions, which might happen to be better.</p>
-<p>The tradeoff between exploration and exploitation is a major topic in RL and is an area of active research.</p>
-<h3 id="off-policy-and-on-policy-sampling-scenarios">Off Policy and On Policy Sampling Scenarios</h3>
-<p>Suppose we have a rollout or trajectory following some policy <span class="math inline">\(\pi_b\)</span> (ie. an <span class="math inline">\(\epsilon\)</span>-greedy policy):</p>
-<p><span class="math display">\[X_1, A_1, R_1, X_2, ....\]</span></p>
-<p>And we have some policy <span class="math inline">\(\pi\)</span> that we want to evaluate (ie. the greedy policy):</p>
-<ul>
-<li>If <span class="math inline">\(\pi_b = \pi\)</span>, we are in the <code>on-policy</code> sampling scenario, in which the agent is evaluating the same policy that it is following.</li>
-<li>If <span class="math inline">\(\pi_b \neq \pi\)</span>, we are in the <code>off-policy</code> sampling scenario, which the agent is evaluating a policy that is different from the one it is following.</li>
-</ul>
-<h2 id="further">Further</h2>
-<p>From here, we have all we need to start learning from streams of data!</p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>MC</category>
-        <category>TD</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>MC</tag>
-        <tag>Tabular Methods</tag>
-        <tag>TD</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>vfa-1</title>
-    <url>/2021/06/12/vfa-1/</url>
-    <content><![CDATA[<h1 id="value-function-approximation-introduction">Value Function Approximation (Introduction)</h1>
-<p>In real-world problem, the state space <span class="math inline">\(X\)</span> or the state-action space <span class="math inline">\(X \times A\)</span> is large that we cannot represent quantities such as the value function or policy exactly.</p>
-<ul>
-<li><span class="math inline">\(X \subseteq \mathbb{R}^d\)</span> with <span class="math inline">\(d \geq 1\)</span>. Exact representation of an arbitrary function on <span class="math inline">\(\mathbb{R}^d\)</span> on a computer is infeasible.</li>
-<li><span class="math inline">\(X\)</span> is finite, but very large (millions or billions)</li>
-</ul>
-<p>We need to approximate those functions using a representation that is feasible to manipulate on a computer. This is called <strong>function approximation</strong>.</p>
-<p>Function approximation also helps with the generalization.</p>
-<h2 id="linear-function-approximation">Linear Function Approximation</h2>
-<p>We may use a linear function approximator defined based on a set of basis functions:</p>
-<p><span class="math display">\[\hat{V} (x) = \phi (x)^T w = \sum^p_{i=1} \phi_i (x) w_i\]</span></p>
-<p>with <span class="math inline">\(w \in \mathbb{R}^p\)</span> and <span class="math inline">\(\phi: X \rightarrow \mathbb{R}^p\)</span></p>
-<p>Any <span class="math inline">\(\hat{V}\)</span> belongs to the space of functions <span class="math inline">\(\mathbf{F}\)</span>:</p>
-<p><span class="math display">\[\mathbf{F} = \{x \mapsto  \phi (x)^T w : w \in \mathbb{R}^p\}\]</span></p>
-]]></content>
-  </entry>
-  <entry>
     <title>Calculus (1)</title>
     <url>/2021/05/14/calculus/</url>
     <content><![CDATA[<h1 id="multivariate-calculus-1">Multivariate Calculus (1)</h1>
@@ -2731,6 +2892,13 @@ Uniform(A), \text{w. p } \epsilon \\
 <li><span class="math inline">\(\int^{b}_{a} f(x) dx = F(b) - F(a)\)</span></li>
 <li><span class="math inline">\(\frac{d}{dx}\int^{x}_{a} f(t)dt = F^{\prime}(x) - F^{\prime}(a) = F^{\prime} (x) = f(x)\)</span></li>
 </ol>
+<h2 id="definition-of-integral">Definition of Integral</h2>
+<p>If <span class="math inline">\(f(x)\)</span> is defined for <span class="math inline">\(a \leq x \leq b\)</span>, we start by dividing the interval <span class="math inline">\([a, b]\)</span> into <span class="math inline">\(n\)</span> sub-intervals <span class="math inline">\([x_{i - 1}, x_{i}]\)</span> of equal width <span class="math inline">\(\Delta x = \frac{b - a}{n}\)</span> and we choose sample points <span class="math inline">\(x^{*}_i\)</span> in these subintervals. Then we form the <code>Riemann sum</code>:</p>
+<p><span class="math display">\[\sum^{n}_{i=1} f(x^{*}_n) \Delta x\]</span></p>
+<p>Then by taking the limit <span class="math inline">\(n \rightarrow \infty\)</span>, we have the definite integral of <span class="math inline">\(f\)</span> from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span>:</p>
+<p><span class="math display">\[\int^{b}_{a} f(x) dx = \lim_{n \rightarrow \infty} \sum^{n}_{i=1} f(x^{*}_n) \Delta x\]</span></p>
+<p>In the special case where <span class="math inline">\(f(x) \leq 0\)</span>, we can interpret the <code>Riemann sum</code> as the sum of the areas of the approximating rectangles, and <span class="math inline">\(\int^{b}_{a} f(x) dx\)</span> represents the area under the curve <span class="math inline">\(y = f(x)\)</span> from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span>.</p>
+<p><img src='/images/cal/15_1_1.png' width="600"></p>
 <h2 id="vectors-and-the-geometric-of-space">Vectors and the Geometric of Space</h2>
 <h3 id="equation-of-a-sphere">Equation of a sphere</h3>
 <p>By definition, a sphere is the set of all points <span class="math inline">\(P(x, y, z)\)</span> whose distance from <span class="math inline">\(C\)</span> is <span class="math inline">\(r\)</span>, where <span class="math inline">\(C\)</span> is the center <span class="math inline">\(C(h, k, l)\)</span>. Thus, <span class="math inline">\(P\)</span> is on the sphere if and only if</p>
@@ -3458,7 +3626,7 @@ Uniform(A), \text{w. p } \epsilon \\
   <entry>
     <title>Leet Code (3)</title>
     <url>/2021/06/16/leet-code-3/</url>
-    <content><![CDATA[<p><strong>题目库: <code>[1688， 79, 78, 46, 22, 90, 47, 39, 40, 93, 53, 70, 121, 122, 118, 392, 62, 198, 5, 55, 64, 322, 63, 120, 93, 45 213, 343, 300, 279, 1143, 494]</code></strong></p>
+    <content><![CDATA[<p><strong>题目库: <code>[1688， 79, 78, 46, 22, 90, 47, 39, 40, 93, 53, 70, 121, 122, 118, 392, 62, 198, 5, 55, 64, 322, 63, 120, 93, 45 213, 343, 300, 279, 1143, 494, 152, 518, 377, 416, 309, 337, 221, 139, 119, '面试题17.16', 746, 376]</code></strong></p>
 <h1 id="backtracking">Backtracking</h1>
 <h2 id="easy">1688 Easy</h2>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">numberOfMatches</span>(<span class="params">self, n: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">find_matches</span>(<span class="params">n</span>):</span></span><br><span class="line">            <span class="keyword">if</span> n == <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> n % <span class="number">2</span> == <span class="number">0</span>:</span><br><span class="line">                    counts = find_matches(n // <span class="number">2</span>)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    counts = find_matches(n // <span class="number">2</span> + <span class="number">1</span>) </span><br><span class="line">                </span><br><span class="line">                <span class="keyword">return</span> counts + n // <span class="number">2</span></span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> find_matches(n)</span><br></pre></td></tr></table></figure>
@@ -3527,6 +3695,30 @@ Uniform(A), \text{w. p } \epsilon \\
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">longestCommonSubsequence</span>(<span class="params">self, text1: <span class="built_in">str</span>, text2: <span class="built_in">str</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        <span class="comment"># f(i, j): largest number of substring match text1[:i], text2[:j]</span></span><br><span class="line">        <span class="comment"># If text1[i] != text2[j], f(i, j) = max(f(i, j - 1), f(i - 1, j))</span></span><br><span class="line">        <span class="comment"># If text1[i] == text2[j], f(i, j) = f(i - 1, j - 1) + 1</span></span><br><span class="line">        M, N = <span class="built_in">len</span>(text1), <span class="built_in">len</span>(text2)</span><br><span class="line">        dp = [[<span class="number">0</span>] * (N + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(M + <span class="number">1</span>)]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, M + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, N + <span class="number">1</span>):</span><br><span class="line">                <span class="keyword">if</span> text1[i - <span class="number">1</span>] == text2[j - <span class="number">1</span>]:</span><br><span class="line">                    dp[i][j] = dp[i - <span class="number">1</span>][j - <span class="number">1</span>] + <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    dp[i][j] = <span class="built_in">max</span>(dp[i - <span class="number">1</span>][j], dp[i][j - <span class="number">1</span>])</span><br><span class="line">        <span class="keyword">return</span> dp[M][N]</span><br></pre></td></tr></table></figure>
 <h2 id="medium-24">494 Medium</h2>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">findTargetSumWays</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>], S: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        sumAll = <span class="built_in">sum</span>(nums)</span><br><span class="line">        <span class="keyword">if</span> S &gt; sumAll <span class="keyword">or</span> (S + sumAll) % <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        target = (S + sumAll) // <span class="number">2</span></span><br><span class="line"></span><br><span class="line">        dp = [<span class="number">0</span>] * (target + <span class="number">1</span>)</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> num <span class="keyword">in</span> nums:</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(target, num - <span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">                dp[j] = dp[j] + dp[j - num]</span><br><span class="line">        <span class="keyword">return</span> dp[-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="medium-25">152 Medium</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxProduct</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        <span class="comment"># f(i): max product at i</span></span><br><span class="line">        <span class="comment"># min_prod: current min product</span></span><br><span class="line">        <span class="comment"># max_prod: current max product</span></span><br><span class="line">        <span class="comment"># f(i): max(f(i - 1), max_prod)</span></span><br><span class="line">        </span><br><span class="line">        min_prod = nums[<span class="number">0</span>]</span><br><span class="line">        max_prod = nums[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(nums)):</span><br><span class="line">            temp = min_prod</span><br><span class="line">            min_prod = <span class="built_in">min</span>(min_prod * nums[i], nums[i], max_prod * nums[i])</span><br><span class="line">            max_prod = <span class="built_in">max</span>(temp * nums[i], nums[i], max_prod * nums[i])</span><br><span class="line">            nums[i] = <span class="built_in">max</span>(nums[i - <span class="number">1</span>], max_prod)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> nums[-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="medium-26">518 Medium</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">change</span>(<span class="params">self, amount: <span class="built_in">int</span>, coins: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        n, m = <span class="built_in">len</span>(coins), amount + <span class="number">1</span></span><br><span class="line">        dp = [<span class="number">1</span>] * m</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, m):</span><br><span class="line">            <span class="keyword">if</span> i % coins[<span class="number">0</span>] != <span class="number">0</span>:</span><br><span class="line">                dp[i] = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, m):</span><br><span class="line">                <span class="keyword">if</span> coins[i] &lt;= j:</span><br><span class="line">                    dp[j] = dp[j - coins[i]] + dp[j]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> dp[-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="medium-27">377 Medium</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">combinationSum4</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>], target: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        <span class="comment"># 定义 f[i][j]: 为组合长度为 i 凑成总和为 j 的方案数是多少</span></span><br><span class="line">        <span class="comment"># f[0][0] = 1</span></span><br><span class="line">        <span class="comment"># dp.shape = ((target + 1), (target + 1))</span></span><br><span class="line"></span><br><span class="line">        dp = [[<span class="number">0</span>] * (target + <span class="number">1</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(target + <span class="number">1</span>)]</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">        out = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, target + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, target + <span class="number">1</span>):</span><br><span class="line">                <span class="keyword">for</span> num <span class="keyword">in</span> nums:</span><br><span class="line">                    <span class="keyword">if</span> num &lt;= j:</span><br><span class="line">                        dp[i][j] += dp[i - <span class="number">1</span>][j - num]</span><br><span class="line">        </span><br><span class="line">            out += dp[i][j]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> out</span><br></pre></td></tr></table></figure>
+<h2 id="medium-28">416 Medium</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">canPartition</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">bool</span>:</span></span><br><span class="line">        <span class="comment"># f(i, j): whether we can form num ber j with nums[:i] items </span></span><br><span class="line">        <span class="comment"># 0/1 knapsack problem.</span></span><br><span class="line">        </span><br><span class="line">        num_sum = <span class="built_in">sum</span>(nums)</span><br><span class="line">        <span class="keyword">if</span> num_sum % <span class="number">2</span> != <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">        </span><br><span class="line">        target = num_sum // <span class="number">2</span></span><br><span class="line">        dp = [<span class="literal">True</span>] + [<span class="literal">False</span>] * (target)</span><br><span class="line">        <span class="keyword">if</span> nums[<span class="number">0</span>] &lt;= (target):</span><br><span class="line">            dp[nums[<span class="number">0</span>]] = <span class="literal">True</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(nums)):</span><br><span class="line">            <span class="comment"># right to left in order to avoid overrdie of dp[j - nums[i]]</span></span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(target, -<span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">                <span class="keyword">if</span> nums[i] &lt;= j:</span><br><span class="line">                    dp[j] = dp[j - nums[i]] <span class="keyword">or</span> dp[j]</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> j == target <span class="keyword">and</span> dp[j]:</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<h2 id="medium-29">309 Medium</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># // 思路：</span></span><br><span class="line"><span class="comment"># //     考虑有多少种状态，每种状态有哪些选择，或者是做了哪些选择后得到哪种状态。</span></span><br><span class="line"><span class="comment"># //     注意：到底是先选择了才有状态，还是先由状态才能选择。这里是先选择了，才有状态</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># // 状态类型有2种：天数和是否持有。</span></span><br><span class="line"><span class="comment"># //     天数：一共为1-n天</span></span><br><span class="line"><span class="comment"># //     是否持有：分为持有状态、没持有状态1、没持有状态2。</span></span><br><span class="line"><span class="comment"># //         持有状态：选择 无处理 和 买入 都有可能达到该状态</span></span><br><span class="line"><span class="comment"># //         没持有状态1：选择 无处理 后达到该状态。</span></span><br><span class="line"><span class="comment"># //         没持有状态2：选择 卖出 后达到该状态。注意，卖出后进入一天的冻结期。</span></span><br><span class="line"><span class="comment"># //     注意：这里为什么要分两种没持有状态，这是为了便于后续状态转移，如果不区分这两种状态，状态转移没法确定当天是否可以进行买入操作。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># // dp表示的含义：</span></span><br><span class="line"><span class="comment"># //     dp[i][2] : 第i天为没持有状态2时，此时的最大利润</span></span><br><span class="line"><span class="comment"># //     dp[i][1] : 第i天为没持有状态1时，此时的最大利润</span></span><br><span class="line"><span class="comment"># //     dp[i][0] ： 第i天为持有状态时，此时的最大利润</span></span><br><span class="line"><span class="comment"># // 状态转移方程：</span></span><br><span class="line"><span class="comment"># //     dp[i][0]: 第i天为持有状态时，此时的最大利润</span></span><br><span class="line"><span class="comment"># //         无处理后达到该状态： dp[i][0] = dp[i-1][0] // 第i天没有处理就持有股票，证明上一天也持有</span></span><br><span class="line"><span class="comment"># //         买入后达到该状态： dp[i][0] = dp[i-1][1]-prices[n] // 第i天能买入股票，证明上一天没持有股票，且没进行卖出操作</span></span><br><span class="line"><span class="comment"># //         所以dp[i][0] = max(dp[i-1][0], dp[i-1][1]-prices[n]); // 这里思考个问题，两种情况都能到达这个状态的话，那如何选择？为什么是取他们的max？</span></span><br><span class="line"><span class="comment"># //     dp[i][1]: 第i天为没持有状态1时，此时的最大利润</span></span><br><span class="line"><span class="comment"># //         无处理后达到该状态： dp[i][1] = max(dp[i-1][1], dp[i-1][2]) // 有两种到达该状态的情况，取最大那个</span></span><br><span class="line"><span class="comment"># //     dp[i][2]: 第i天为没持有状态2时，此时的最大利润</span></span><br><span class="line"><span class="comment"># //         卖出后达到该状态： dp[i][2] = dp[i-1][0]+prices[i]</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># // 最后max(dp[n-1][1], dp[n-1][2])就是题目所需答案。即第n-1天没持有股票时的最大收益</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># // test case: </span></span><br><span class="line"><span class="comment"># // [1,2,3,0,2]</span></span><br><span class="line"><span class="comment"># // [1,2,-2,0,33,0,2]</span></span><br><span class="line"><span class="comment"># // [1,2,3,0,2,3,9,0,2,4]</span></span><br><span class="line"><span class="comment"># // [2,1]</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maxProfit</span>(<span class="params">self, prices: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(prices) == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        n = <span class="built_in">len</span>(prices)</span><br><span class="line">        dp = [[<span class="number">0</span>] * <span class="number">3</span> <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">0</span>] = -prices[<span class="number">0</span>]</span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">1</span>] = <span class="number">0</span></span><br><span class="line">        dp[<span class="number">0</span>][<span class="number">2</span>] = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line">            dp[i][<span class="number">0</span>] = <span class="built_in">max</span>(dp[i-<span class="number">1</span>][<span class="number">0</span>], dp[i-<span class="number">1</span>][<span class="number">1</span>]-prices[i])</span><br><span class="line">            dp[i][<span class="number">1</span>] = <span class="built_in">max</span>(dp[i-<span class="number">1</span>][<span class="number">1</span>], dp[i-<span class="number">1</span>][<span class="number">2</span>])</span><br><span class="line">            dp[i][<span class="number">2</span>] = dp[i-<span class="number">1</span>][<span class="number">0</span>] + prices[i]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(dp[n-<span class="number">1</span>][<span class="number">1</span>], dp[n-<span class="number">1</span>][<span class="number">2</span>]);</span><br></pre></td></tr></table></figure>
+<h2 id="medium-30">337 Medium</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">rob</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">try_rob</span>(<span class="params">node</span>):</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node:</span><br><span class="line">                <span class="keyword">return</span> [<span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line">            </span><br><span class="line">            left_node = try_rob(node.left)</span><br><span class="line">            right_node = try_rob(node.right)</span><br><span class="line"></span><br><span class="line">            <span class="comment"># do not rob this node, we can rob root.left and root.right</span></span><br><span class="line">            val_1 = <span class="built_in">max</span>(left_node[<span class="number">0</span>], left_node[<span class="number">1</span>]) + <span class="built_in">max</span>(right_node[<span class="number">0</span>], right_node[<span class="number">1</span>])</span><br><span class="line">            <span class="comment"># rob this node, this implies that we cannot rob root.left or root.right</span></span><br><span class="line">            val_2 = left_node[<span class="number">0</span>] + right_node[<span class="number">0</span>] + node.val</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> [val_1, val_2]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(try_rob(root))</span><br></pre></td></tr></table></figure>
+<h2 id="medium-31">221 Medium</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maximalSquare</span>(<span class="params">self, matrix: <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">str</span>]]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(matrix) == <span class="number">0</span> <span class="keyword">or</span> <span class="built_in">len</span>(matrix[<span class="number">0</span>]) == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        maxSide = <span class="number">0</span></span><br><span class="line">        rows, columns = <span class="built_in">len</span>(matrix), <span class="built_in">len</span>(matrix[<span class="number">0</span>])</span><br><span class="line">        dp = [[<span class="number">0</span>] * columns <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(rows)]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(rows):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(columns):</span><br><span class="line">                <span class="keyword">if</span> matrix[i][j] == <span class="string">&#x27;1&#x27;</span>:</span><br><span class="line">                    <span class="keyword">if</span> i == <span class="number">0</span> <span class="keyword">or</span> j == <span class="number">0</span>:</span><br><span class="line">                        dp[i][j] = <span class="number">1</span></span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        dp[i][j] = <span class="built_in">min</span>(dp[i - <span class="number">1</span>][j], dp[i][j - <span class="number">1</span>], dp[i - <span class="number">1</span>][j - <span class="number">1</span>]) + <span class="number">1</span></span><br><span class="line">                    maxSide = <span class="built_in">max</span>(maxSide, dp[i][j])</span><br><span class="line">        </span><br><span class="line">        maxSquare = maxSide * maxSide</span><br><span class="line">        <span class="keyword">return</span> maxSquare</span><br></pre></td></tr></table></figure>
+<h2 id="medium-32">139 Medium</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wordBreak</span>(<span class="params">self, s: <span class="built_in">str</span>, wordDict: <span class="type">List</span>[<span class="built_in">str</span>]</span>) -&gt; <span class="built_in">bool</span>:</span></span><br><span class="line">        n = <span class="built_in">len</span>(s) + <span class="number">1</span></span><br><span class="line">        dp = [<span class="literal">False</span>] * n</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="literal">True</span> </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i, -<span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">                <span class="keyword">if</span> (s[j:i] <span class="keyword">in</span> wordDict) <span class="keyword">and</span> dp[j]:</span><br><span class="line">                    dp[i] = <span class="literal">True</span></span><br><span class="line">                    <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">return</span> dp[-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="easy-7">119 Easy</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getRow</span>(<span class="params">self, rowIndex: <span class="built_in">int</span></span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span></span><br><span class="line">        dp = [<span class="number">1</span>]</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, rowIndex + <span class="number">1</span>):</span><br><span class="line">            curr_dp = []</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(dp) - <span class="number">1</span>):</span><br><span class="line">                curr_dp.append(dp[j] + dp[j + <span class="number">1</span>])</span><br><span class="line">            dp = [<span class="number">1</span>] + curr_dp + [<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> dp</span><br></pre></td></tr></table></figure>
+<h2 id="面试题-17.16-easy">面试题 17.16 Easy</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">massage</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(nums) &lt;= <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">sum</span>(nums)</span><br><span class="line"></span><br><span class="line">        nums[<span class="number">1</span>] = <span class="built_in">max</span>(nums[<span class="number">1</span>], nums[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, <span class="built_in">len</span>(nums)):</span><br><span class="line">            nums[i] = <span class="built_in">max</span>(nums[i - <span class="number">1</span>], nums[i] + nums[i - <span class="number">2</span>])</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> nums[-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="easy-8">746 Easy</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">minCostClimbingStairs</span>(<span class="params">self, cost: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(cost) - <span class="number">3</span>, -<span class="number">1</span>, -<span class="number">1</span>):</span><br><span class="line">            cost[i] += <span class="built_in">min</span>(cost[i + <span class="number">1</span>], cost[i + <span class="number">2</span>])</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">min</span>(cost[<span class="number">0</span>], cost[<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+<h2 id="medium-33">376 Medium</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">wiggleMaxLength</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span>        </span><br><span class="line">        diff = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(nums) - <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> nums[i] - nums[i + <span class="number">1</span>] != <span class="number">0</span>:</span><br><span class="line">                diff.append(nums[i] - nums[i + <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> diff:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">            </span><br><span class="line">        dp = [<span class="number">0</span>] * <span class="built_in">len</span>(diff)</span><br><span class="line">        dp[<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(dp)):</span><br><span class="line">            cand = [<span class="number">0</span>]</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i):</span><br><span class="line">                <span class="keyword">if</span> (diff[j] &gt; <span class="number">0</span> <span class="keyword">and</span> diff[i] &lt; <span class="number">0</span>) <span class="keyword">or</span> (diff[j] &lt; <span class="number">0</span> <span class="keyword">and</span> diff[i] &gt; <span class="number">0</span>):</span><br><span class="line">                    cand.append(dp[j] + <span class="number">1</span>)</span><br><span class="line">            </span><br><span class="line">            dp[i] = <span class="built_in">max</span>(cand)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(dp) + <span class="number">1</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>Others</category>
@@ -3971,7 +4163,7 @@ P_X (\{-1, 1\}) = \underset{x \in \{-1, 1\}}{\sum} p_X (x), \quad &amp;y = 1\\
 <p>Also, for continuous random variables:</p>
 <p><span class="math display">\[P_X(a &lt; X \leq b) = P_X(a \leq X \leq b) = P_X (a \leq X &lt; b) = P_X(a &lt; X &lt; b)\]</span></p>
 <p>The pdfs satisfy two properties:</p>
-<p><span class="math display">\[f_X(x) \leq 0 \quad \quad \quad \int^{\infty}_{-\infty} f_X(t) dt = 1\]</span></p>
+<p><span class="math display">\[f_X(x) \geq 0 \quad \quad \quad \int^{\infty}_{-\infty} f_X(t) dt = 1\]</span></p>
 <p>At the same time, if a function satisfies the above two properties then it is a pdf for a continuous random variable.</p>
 <h4 id="quantiles">Quantiles</h4>
 <p><code>Quantile</code> (percentiles) are easily interpretable characteristics of a distribution.</p>

@@ -20,19 +20,30 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
 
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
-<meta name="description" content="Multivariate Calculus (2) Vector and Matrix Differentiation Numerator Layout Let: \[\mathbf{y} &#x3D; \psi(\mathbf{x})\] Where, \(\mathbf{x}, \mathbf{y}\) are column vectors with size \(n, m\) respectively">
+<meta name="description" content="Multivariate Calculus (2) Double Integrals Double Integrals over Rectangles In a similar manner as definite integral, we consider a function \(f\) of two variables defined on a closed rectangle: \[R &#x3D;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Calculus (2)">
 <meta property="og:url" content="http://example.com/2021/07/06/cal-2/index.html">
 <meta property="og:site_name" content="GoGoGogo!">
-<meta property="og:description" content="Multivariate Calculus (2) Vector and Matrix Differentiation Numerator Layout Let: \[\mathbf{y} &#x3D; \psi(\mathbf{x})\] Where, \(\mathbf{x}, \mathbf{y}\) are column vectors with size \(n, m\) respectively">
+<meta property="og:description" content="Multivariate Calculus (2) Double Integrals Double Integrals over Rectangles In a similar manner as definite integral, we consider a function \(f\) of two variables defined on a closed rectangle: \[R &#x3D;">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/cal/15_1_2.png">
+<meta property="og:image" content="http://example.com/images/cal/15_1_3.png">
+<meta property="og:image" content="http://example.com/images/cal/15_1_4.png">
+<meta property="og:image" content="http://example.com/images/cal/15_2_1.png">
+<meta property="og:image" content="http://example.com/images/cal/15_2_2.png">
+<meta property="og:image" content="http://example.com/images/cal/15_2_3.png">
+<meta property="og:image" content="http://example.com/images/cal/15_2_4.png">
+<meta property="og:image" content="http://example.com/images/cal/15_2_5.png">
+<meta property="og:image" content="http://example.com/images/cal/15_2_6.png">
+<meta property="og:image" content="http://example.com/images/cal/15_1_5.png">
+<meta property="og:image" content="http://example.com/images/cal/15_2_7.png">
 <meta property="og:image" content="http://example.com/images/cal/matrix_5_2_1.png">
 <meta property="article:published_time" content="2021-07-06T14:09:59.000Z">
-<meta property="article:modified_time" content="2021-07-06T16:54:58.997Z">
+<meta property="article:modified_time" content="2021-07-12T14:59:17.909Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/images/cal/matrix_5_2_1.png">
+<meta name="twitter:image" content="http://example.com/images/cal/15_1_2.png">
 
 
 <link rel="canonical" href="http://example.com/2021/07/06/cal-2/">
@@ -150,7 +161,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#multivariate-calculus-2"><span class="nav-number">1.</span> <span class="nav-text">Multivariate Calculus (2)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#vector-and-matrix-differentiation"><span class="nav-number">1.1.</span> <span class="nav-text">Vector and Matrix Differentiation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#numerator-layout"><span class="nav-number">1.1.1.</span> <span class="nav-text">Numerator Layout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#denominator-layout"><span class="nav-number">1.1.2.</span> <span class="nav-text">Denominator Layout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#derivative-of-function-of-the-form-mathbfy-amathbfx"><span class="nav-number">1.1.3.</span> <span class="nav-text">Derivative of Function of the Form: \(\; \mathbf{y} &#x3D; A\mathbf{x}\)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ref"><span class="nav-number">2.</span> <span class="nav-text">Ref</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#multivariate-calculus-2"><span class="nav-number">1.</span> <span class="nav-text">Multivariate Calculus (2)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#double-integrals"><span class="nav-number">1.1.</span> <span class="nav-text">Double Integrals</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#double-integrals-over-rectangles"><span class="nav-number">1.1.1.</span> <span class="nav-text">Double Integrals over Rectangles</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iterated-integral"><span class="nav-number">1.2.</span> <span class="nav-text">Iterated Integral</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#double-integrals-over-general-regions"><span class="nav-number">1.3.</span> <span class="nav-text">Double Integrals over General Regions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#properties-of-double-expectation"><span class="nav-number">1.3.1.</span> <span class="nav-text">Properties of Double Expectation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#surface-area"><span class="nav-number">1.3.2.</span> <span class="nav-text">Surface Area</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#triple-integral"><span class="nav-number">1.3.3.</span> <span class="nav-text">Triple Integral</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#change-of-variable"><span class="nav-number">1.3.4.</span> <span class="nav-text">Change of Variable</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vector-and-matrix-differentiation"><span class="nav-number">1.4.</span> <span class="nav-text">Vector and Matrix Differentiation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#numerator-layout"><span class="nav-number">1.4.1.</span> <span class="nav-text">Numerator Layout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#denominator-layout"><span class="nav-number">1.4.2.</span> <span class="nav-text">Denominator Layout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#derivative-of-function-of-the-form-mathbfy-amathbfx"><span class="nav-number">1.4.3.</span> <span class="nav-text">Derivative of Function of the Form: \(\; \mathbf{y} &#x3D; A\mathbf{x}\)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ref"><span class="nav-number">2.</span> <span class="nav-text">Ref</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -260,7 +271,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-07-07 00:54:58" itemprop="dateModified" datetime="2021-07-07T00:54:58+08:00">2021-07-07</time>
+        <time title="Modified: 2021-07-12 22:59:17" itemprop="dateModified" datetime="2021-07-12T22:59:17+08:00">2021-07-12</time>
       </span>
 
   
@@ -278,14 +289,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>4.1k</span>
+      <span>8.2k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
+      <span>7 mins.</span>
     </span>
 </div>
 
@@ -297,6 +308,82 @@
     
     <div class="post-body" itemprop="articleBody">
         <h1 id="multivariate-calculus-2">Multivariate Calculus (2)</h1>
+<h2 id="double-integrals">Double Integrals</h2>
+<h3 id="double-integrals-over-rectangles">Double Integrals over Rectangles</h3>
+<p>In a similar manner as definite integral, we consider a function <span class="math inline">\(f\)</span> of two variables defined on a closed rectangle:</p>
+<p><span class="math display">\[R = [a, b] \times [c, d] = \{(x, y, z) \in \mathbb{R}^2 | a \leq x \leq b, c \leq y \leq d\}\]</span></p>
+<p>and we first suppose that <span class="math inline">\(f(x, y) \leq 0\)</span>. The graph of <span class="math inline">\(f\)</span> is a surface with equation <span class="math inline">\(z = f(x, y)\)</span>. Let <span class="math inline">\(S\)</span> be the solid that lies above <span class="math inline">\(R\)</span> and under the graph of <span class="math inline">\(f\)</span>:</p>
+<p><span class="math display">\[S = \{(x, y, z) \in \mathbb{R}^3 | a \leq x \leq b, c \leq y \leq d, 0 \leq z \leq f(x, y)\}\]</span></p>
+<p>We first divide the <span class="math inline">\(R\)</span> into subrectangles. We accomplish this by dividing the interval <span class="math inline">\([a, b]\)</span> into <span class="math inline">\(m\)</span> subintervals <span class="math inline">\([x_{i-1}, x_{i}]\)</span> of equal width <span class="math inline">\(\Delta x = \frac{(b - a)}{m}\)</span> and dividing <span class="math inline">\([c, d]\)</span> into <span class="math inline">\(n\)</span> subintervals <span class="math inline">\([y_{j - 1}, y_j]\)</span> of equal width <span class="math inline">\(\Delta y = \frac{(d - c)}{n}\)</span>. Then the subrectangles are defined as:</p>
+<p><span class="math display">\[R_{i, j} = [x_{i - 1}, x_i] \times [y_{j - 1}, y_j] = \{(x, y) | x_{i - 1} \leq x \leq x_i, y_{j - 1} \leq y leq y_j\}\]</span></p>
+<p>Then the area of individual subrectangle is:</p>
+<p><span class="math display">\[\Delta A = \Delta x \Delta y\]</span></p>
+<p>If we choose a sample point <span class="math inline">\((x^{*}_{i, j}, y^{*}_{i, j}) \in R_{i, j}\)</span>, then we can approximate the part of <span class="math inline">\(S\)</span> that lies above each <span class="math inline">\(R_{i, j}\)</span> (The volume) by a column with height <span class="math inline">\(f(x^{*}_{i, j}, y^{*}_{i, j})\)</span> and base area <span class="math inline">\(\Delta A\)</span>. The volume of the column:</p>
+<p><span class="math display">\[f(x^{*}_{i, j}, y^{*}_{i, j})\Delta A\]</span></p>
+<p><img src='/images/cal/15_1_2.png' width="600"></p>
+<p>Then the volume (<strong>only when <span class="math inline">\(f(x, y) \leq 0 \; \forall (x, y) \in S\)</span></strong>) of <span class="math inline">\(S\)</span> can be approximated:</p>
+<p><span class="math display">\[V \approx \sum^{m}_{i=1} \sum^{n}_{j=1}f(x^{*}_{i, j}, y^{*}_{i, j})\Delta A\]</span></p>
+<p>This sum is called <code>double Riemann sum</code>.</p>
+<span id="more"></span>
+<p>Then the approximation becomes better as <span class="math inline">\(n, m \rightarrow \infty\)</span>:</p>
+<p><span class="math display">\[V = \lim_{n, m \rightarrow \infty} \sum^{m}_{i=1} \sum^{n}_{j=1}f(x^{*}_{i, j}, y^{*}_{i, j})\Delta A\]</span></p>
+<p><img src='/images/cal/15_1_3.png' width="600"></p>
+<p>A function <span class="math inline">\(f\)</span> is called <code>integrable</code> if the limit above exists, it can be showed that <strong>all continuous functions are integrable.</strong> If <span class="math inline">\(f\)</span> is bounded (<span class="math inline">\(\exists \; M, \; s.t \; |f(x, y)| \leq M, \; \forall (x, y) \in R\)</span>), then if <span class="math inline">\(f\)</span> is continuous there, except on a finite number of smooth curves, then <span class="math inline">\(f\)</span> is integrable over <span class="math inline">\(R\)</span>.</p>
+<p><img src='/images/cal/15_1_4.png' width="600"></p>
+<h2 id="iterated-integral">Iterated Integral</h2>
+<p>Suppose that <span class="math inline">\(f\)</span> is a function of two variables that is integrable on the rectangle <span class="math inline">\(R = [a, b] \times [c, d]\)</span>. Now, <span class="math inline">\(\int^{d}_{c} f(x, y) dy\)</span> is a function that depends on the value of <span class="math inline">\(x\)</span>:</p>
+<p><span class="math display">\[A(x) = \int^{d}_{c} f(x, y) dy\]</span></p>
+<p>If we now integrate the function <span class="math inline">\(A\)</span> w.r.t <span class="math inline">\(x\)</span> from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span>, we have:</p>
+<p><span class="math display">\[\int^{b}_{a} A(x) dx = \int^{b}_{a} \int^{d}_{c} f(x, y) dy dx\]</span></p>
+<p>This integral on the right side is called <code>iterated integral</code> means that we first integrate w.r.t <span class="math inline">\(y\)</span> from <span class="math inline">\(c\)</span> to <span class="math inline">\(d\)</span>, then we integral w.r.t <span class="math inline">\(x\)</span> from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span>.</p>
+<p><img src='/images/cal/15_2_1.png' width="600"></p>
+<p><br></p>
+<p>If <span class="math inline">\(f(x, y)\)</span> can be factored s.t <span class="math inline">\(f(x, y) = g(x)h(y)\)</span>, then:</p>
+<p><span class="math display">\[\int^{b}_{a} \int^{d}_{c} f(x, y) dy dx = \int^{b}_{a} g(x) dx \int^{d}_{c} h(y) dy\]</span></p>
+<p><br></p>
+<h2 id="double-integrals-over-general-regions">Double Integrals over General Regions</h2>
+<p>We want to extend the previous idea from region of rectangle (<span class="math inline">\(R = [a, b] \times [c, d]\)</span>) to a bounded region <span class="math inline">\(D\)</span> (<span class="math inline">\(D\)</span> can be enclosed in a rectangular region <span class="math inline">\(R\)</span>) of more general shape. Then we define a new function <span class="math inline">\(F\)</span> with domain <span class="math inline">\(R\)</span> by:</p>
+<p><span class="math display">\[
+F(x, y)=
+\begin{cases}
+f(x, y), &amp; (x, y) \in D\\
+0, \quad &amp; (x, y) \notin D \; \text{ but } \in R
+\end{cases}
+\]</span></p>
+<p>If <span class="math inline">\(F\)</span> is integrable over <span class="math inline">\(R\)</span>, then we define the <code>double integral of $f$ over $D$</code> by:</p>
+<p><span class="math display">\[\underset{D}{\int\int} f(x, y) dA = \underset{R}{\int\int} F(x, y) dA\]</span></p>
+<p><img src='/images/cal/15_2_2.png' width="600"></p>
+<p>This makes sense because:</p>
+<ol type="1">
+<li>The rectangle version has been previously defined.</li>
+<li><span class="math inline">\(F(x, y) = 0\)</span> when <span class="math inline">\((x, y) \notin D\)</span>, so it contributes nothing to the integral.</li>
+</ol>
+<p>Notice here that <span class="math inline">\(D\)</span> might have discontinuities at the boundary points. However, if the boundary curve of <span class="math inline">\(D\)</span> is <code>well-behaved</code> ("Any function for which the mathematical theorem I am about to quote is true, only I don't remember exactly which functions these are"), it can be shown that <span class="math inline">\(\underset{R}{\int\int} F(x, y) dA\)</span> exists and <span class="math inline">\(\underset{D}{\int\int} f(x, y) dA\)</span> exists.</p>
+<p>A plane region <span class="math inline">\(D\)</span> is said to be of <code>type I</code> if it lies between the graphs of two continuous function of <span class="math inline">\(x\)</span>:</p>
+<p><span class="math display">\[D = \{(x, y) | a \leq x \leq b, g_1(x) \leq y \leq g_2(x)\}\]</span></p>
+<p>Where <span class="math inline">\(g_1\)</span>, <span class="math inline">\(g_2\)</span> are continuous on <span class="math inline">\([a, b]\)</span>.</p>
+<p><img src='/images/cal/15_2_3.png' width="600"></p>
+<p>Then:</p>
+<p><img src='/images/cal/15_2_4.png' width="600"></p>
+<p><br></p>
+<p>A plane region <span class="math inline">\(D\)</span> is said to be of <code>type II</code> if it is defined as:</p>
+<p><span class="math display">\[D = \{(x, y) | c \leq y \leq d, h_1(y) \leq x \leq h_2(y)\}\]</span></p>
+<p>Where <span class="math inline">\(h_1, h_2\)</span> are continuous.</p>
+<p><img src='/images/cal/15_2_5.png' width="600"></p>
+<p>Then:</p>
+<p><img src='/images/cal/15_2_6.png' width="600"></p>
+<h3 id="properties-of-double-expectation">Properties of Double Expectation</h3>
+<p><img src='/images/cal/15_1_5.png' width="600"></p>
+<p>If <span class="math inline">\(D = D_1 \cup D_2\)</span> where <span class="math inline">\(D_1\)</span> and <span class="math inline">\(D_2\)</span> don't overlap except perhaps on their boundaries, then:</p>
+<p><span class="math display">\[\underset{D}{\int\int} f(x, y) dA = \underset{D_1}{\int\int} f(x, y) dA + \underset{D_2}{\int\int} f(x, y) dA\]</span></p>
+<p>This property can be used to evaluate double integrals over regions <span class="math inline">\(D\)</span> that are neither <code>type I</code> nor <code>type II</code> by converting it to regions of type I or type II.</p>
+<p><br></p>
+<p>If we integrate the constant function <span class="math inline">\(f(x, y) = 1\)</span> over a region <span class="math inline">\(D\)</span>, we end up with the area of <span class="math inline">\(D\)</span>:</p>
+<p><span class="math display">\[A(D) = \underset{D}{\int\int} 1 dA\]</span></p>
+<p><img src='/images/cal/15_2_7.png' width="600"></p>
+<h3 id="surface-area">Surface Area</h3>
+<h3 id="triple-integral">Triple Integral</h3>
+<h3 id="change-of-variable">Change of Variable</h3>
 <h2 id="vector-and-matrix-differentiation">Vector and Matrix Differentiation</h2>
 <h3 id="numerator-layout">Numerator Layout</h3>
 <p>Let:</p>
@@ -477,13 +564,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">287k</span>
+    <span title="Symbols count total">304k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">4:21</span>
+    <span title="Reading time total">4:36</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
