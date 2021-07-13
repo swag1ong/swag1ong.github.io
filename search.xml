@@ -84,6 +84,57 @@
       </tags>
   </entry>
   <entry>
+    <title>DDQN</title>
+    <url>/2021/05/07/DDQN/</url>
+    <content><![CDATA[<h1 id="deep-reinforcement-learning-with-double-q-learning"><a href="https://arxiv.org/abs/1509.06461">Deep Reinforcement Learning with Double Q-Learning</a></h1>
+<h2 id="introduction">Introduction</h2>
+<p>The authors show that the double Q-learning algorithm which was first proposed in a tabular setting, can be generalized to arbitrary function approximation, including DNN. They use this to construct a new algorithm called double DQN to solve the overestimation problem in DQN.</p>
+<h2 id="notations">Notations</h2>
+<p>Define:</p>
+<p><span class="math display">\[Q_{\pi} (s, a) = E[R_1 + \gamma R_2 + ... | S_0=s, A_0=a, \pi]\]</span></p>
+<p><span class="math display">\[Q_{*} (s, a) = max_{\pi} Q_{\pi} (s, a)\]</span></p>
+<p><span class="math display">\[\pi_{*} (s) = argmax_{a \in A} Q_{*} (s, a)\]</span></p>
+<p>The Target:</p>
+<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma max_{a} Q(S_{t+1}, a; \theta_{t})\]</span></p>
+<p>A standard Q update using stochastic gradient decent is (Semi-gradient Q):</p>
+<p><span class="math display">\[\theta_{t+1} = \theta_t + \alpha (Y_{t}^{Q} - Q(S_t, A_t; \theta_t)) \nabla_{\theta_t} Q(S_t, A_t; \theta_t)\]</span></p>
+<p>Where <span class="math inline">\(\alpha\)</span> is a scalar step size.</p>
+<span id="more"></span>
+<h2 id="background">Background</h2>
+<h3 id="double-q-learning">Double Q-learning</h3>
+<p>The max operator in standard Q-learning and DQN uses the same values both to select and to evaluate an action (ie. same Q is used to select the max action and use the value of this max action to update the Value of the state action pair). This makes it more likely to select overestimated values, resulting in overoptimistic value estimates.</p>
+<p>In Double Q-learning, two value functions are learned by assigning experiences randomly to update one of the two value functions, resulting in two sets of weights, <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\theta^{\prime}\)</span>. For each update, one set of weights is used to determine the greedy action, and the other to determine its value.</p>
+<p>Previous Q target:</p>
+<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta_{t}})\]</span></p>
+<p>The double Q-learning target:</p>
+<p><span class="math display">\[Y_t^{\text{DoubleQ}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta^{\prime}_{t}})\]</span></p>
+<h3 id="maximization-problem">Maximization Problem</h3>
+<p><img src='/images/RL/papers/DDQN_1.png'></p>
+<p>This theorem shows that even if the value estimates are on average correct, estimation errors of any source can drive the estimates up and away from the true optimal values.</p>
+<p>The lower bound in Theorem 1 decreases with the number of actions. This is an artifact of considering the lower bound, which requires very specific values to be attained. More typically, the overoptimism increases with the number of actions.</p>
+<p><img src='/images/RL/papers/DDQN_2.png'></p>
+<p><span class="math display">\[E[Q(s, a) - V_{*}(s)] = E[V_{*}(s) - V_{*}(s) + \epsilon ] = 0\]</span></p>
+<p>But, Q-learning updates have large bias due to max operation, the phenomena is severer as number of actions increases.</p>
+<p>In function approximation setting:</p>
+<p><img src='/images/RL/papers/DDQN_3.png'></p>
+<h2 id="algorithm">Algorithm</h2>
+<p>The target network in the DQN architecture provides a natural candidate for the second value function, without having to introduce additional networks. Thus, we can evaluate the greedy policy according to the online network, but using the target network to estimate its value. The resulting update:</p>
+<p><span class="math display">\[Y_t^{\text{DoubleDQN}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a} Q(S_{t+1}, a; \theta_{t}), \theta_{t}^{-})\]</span></p>
+<h2 id="implementation">Implementation</h2>
+<p>This is an implementation of DDQN in PARL. This implementation is written using PaddlePaddle.</p>
+<p>https://github.com/PaddlePaddle/PARL</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></span><br><span class="line"><span class="comment"># you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"># You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> copy</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"><span class="keyword">import</span> paddle</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DQN</span>(<span class="params">parl.Algorithm</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, model, gamma=<span class="literal">None</span>, lr=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; DQN algorithm</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            model (parl.Model): forward neural network representing the Q function.</span></span><br><span class="line"><span class="string">            gamma (float): discounted factor for `accumulative` reward computation</span></span><br><span class="line"><span class="string">            lr (float): learning rate.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.model = model</span><br><span class="line">        self.target_model = copy.deepcopy(model)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(gamma, <span class="built_in">float</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(lr, <span class="built_in">float</span>)</span><br><span class="line">        self.gamma = gamma</span><br><span class="line">        self.lr = lr</span><br><span class="line"></span><br><span class="line">        self.mse_loss = paddle.nn.MSELoss(reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line">        self.optimizer = paddle.optimizer.Adam(</span><br><span class="line">            learning_rate=lr, parameters=self.model.parameters())</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; use self.model (Q function) to predict the action values</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.model.value(obs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self, obs, action, reward, next_obs, terminal</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; update the Q function (self.model) with DQN algorithm</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># Q</span></span><br><span class="line">        pred_values = self.model.value(obs)</span><br><span class="line">        action_dim = pred_values.shape[-<span class="number">1</span>]</span><br><span class="line">        action = paddle.squeeze(action, axis=-<span class="number">1</span>)</span><br><span class="line">        action_onehot = paddle.nn.functional.one_hot(</span><br><span class="line">            action, num_classes=action_dim)</span><br><span class="line">        pred_value = paddle.multiply(pred_values, action_onehot)</span><br><span class="line">        pred_value = paddle.<span class="built_in">sum</span>(pred_value, axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># target Q</span></span><br><span class="line">        <span class="keyword">with</span> paddle.no_grad():</span><br><span class="line">            greedy_actions = self.model.value(next_obs).argmax(<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">            max_v = self.target_model.value(next_obs).gather(index=greedy_actions, axis=<span class="number">1</span>)</span><br><span class="line">            target = reward + (<span class="number">1</span> - terminal) * self.gamma * max_v</span><br><span class="line"></span><br><span class="line">        loss = self.mse_loss(pred_value, target)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># optimize</span></span><br><span class="line">        self.optimizer.clear_grad()</span><br><span class="line">        loss.backward()</span><br><span class="line">        self.optimizer.step()</span><br><span class="line">        <span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sync_target</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.model.sync_weights_to(self.target_model)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Continuous State Space</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Deterministic Policy Gradient</title>
     <url>/2021/05/06/DPG/</url>
     <content><![CDATA[<h1 id="deterministic-policy-gradient-algorithms">Deterministic Policy Gradient Algorithms</h1>
@@ -231,57 +282,6 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
         <tag>Policy Gradient</tag>
         <tag>Continuous Action Space</tag>
         <tag>Policy Search</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>DDQN</title>
-    <url>/2021/05/07/DDQN/</url>
-    <content><![CDATA[<h1 id="deep-reinforcement-learning-with-double-q-learning"><a href="https://arxiv.org/abs/1509.06461">Deep Reinforcement Learning with Double Q-Learning</a></h1>
-<h2 id="introduction">Introduction</h2>
-<p>The authors show that the double Q-learning algorithm which was first proposed in a tabular setting, can be generalized to arbitrary function approximation, including DNN. They use this to construct a new algorithm called double DQN to solve the overestimation problem in DQN.</p>
-<h2 id="notations">Notations</h2>
-<p>Define:</p>
-<p><span class="math display">\[Q_{\pi} (s, a) = E[R_1 + \gamma R_2 + ... | S_0=s, A_0=a, \pi]\]</span></p>
-<p><span class="math display">\[Q_{*} (s, a) = max_{\pi} Q_{\pi} (s, a)\]</span></p>
-<p><span class="math display">\[\pi_{*} (s) = argmax_{a \in A} Q_{*} (s, a)\]</span></p>
-<p>The Target:</p>
-<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma max_{a} Q(S_{t+1}, a; \theta_{t})\]</span></p>
-<p>A standard Q update using stochastic gradient decent is (Semi-gradient Q):</p>
-<p><span class="math display">\[\theta_{t+1} = \theta_t + \alpha (Y_{t}^{Q} - Q(S_t, A_t; \theta_t)) \nabla_{\theta_t} Q(S_t, A_t; \theta_t)\]</span></p>
-<p>Where <span class="math inline">\(\alpha\)</span> is a scalar step size.</p>
-<span id="more"></span>
-<h2 id="background">Background</h2>
-<h3 id="double-q-learning">Double Q-learning</h3>
-<p>The max operator in standard Q-learning and DQN uses the same values both to select and to evaluate an action (ie. same Q is used to select the max action and use the value of this max action to update the Value of the state action pair). This makes it more likely to select overestimated values, resulting in overoptimistic value estimates.</p>
-<p>In Double Q-learning, two value functions are learned by assigning experiences randomly to update one of the two value functions, resulting in two sets of weights, <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\theta^{\prime}\)</span>. For each update, one set of weights is used to determine the greedy action, and the other to determine its value.</p>
-<p>Previous Q target:</p>
-<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta_{t}})\]</span></p>
-<p>The double Q-learning target:</p>
-<p><span class="math display">\[Y_t^{\text{DoubleQ}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta^{\prime}_{t}})\]</span></p>
-<h3 id="maximization-problem">Maximization Problem</h3>
-<p><img src='/images/RL/papers/DDQN_1.png'></p>
-<p>This theorem shows that even if the value estimates are on average correct, estimation errors of any source can drive the estimates up and away from the true optimal values.</p>
-<p>The lower bound in Theorem 1 decreases with the number of actions. This is an artifact of considering the lower bound, which requires very specific values to be attained. More typically, the overoptimism increases with the number of actions.</p>
-<p><img src='/images/RL/papers/DDQN_2.png'></p>
-<p><span class="math display">\[E[Q(s, a) - V_{*}(s)] = E[V_{*}(s) - V_{*}(s) + \epsilon ] = 0\]</span></p>
-<p>But, Q-learning updates have large bias due to max operation, the phenomena is severer as number of actions increases.</p>
-<p>In function approximation setting:</p>
-<p><img src='/images/RL/papers/DDQN_3.png'></p>
-<h2 id="algorithm">Algorithm</h2>
-<p>The target network in the DQN architecture provides a natural candidate for the second value function, without having to introduce additional networks. Thus, we can evaluate the greedy policy according to the online network, but using the target network to estimate its value. The resulting update:</p>
-<p><span class="math display">\[Y_t^{\text{DoubleDQN}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a} Q(S_{t+1}, a; \theta_{t}), \theta_{t}^{-})\]</span></p>
-<h2 id="implementation">Implementation</h2>
-<p>This is an implementation of DDQN in PARL. This implementation is written using PaddlePaddle.</p>
-<p>https://github.com/PaddlePaddle/PARL</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></span><br><span class="line"><span class="comment"># you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"># You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> copy</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"><span class="keyword">import</span> paddle</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DQN</span>(<span class="params">parl.Algorithm</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, model, gamma=<span class="literal">None</span>, lr=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; DQN algorithm</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            model (parl.Model): forward neural network representing the Q function.</span></span><br><span class="line"><span class="string">            gamma (float): discounted factor for `accumulative` reward computation</span></span><br><span class="line"><span class="string">            lr (float): learning rate.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.model = model</span><br><span class="line">        self.target_model = copy.deepcopy(model)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(gamma, <span class="built_in">float</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(lr, <span class="built_in">float</span>)</span><br><span class="line">        self.gamma = gamma</span><br><span class="line">        self.lr = lr</span><br><span class="line"></span><br><span class="line">        self.mse_loss = paddle.nn.MSELoss(reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line">        self.optimizer = paddle.optimizer.Adam(</span><br><span class="line">            learning_rate=lr, parameters=self.model.parameters())</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; use self.model (Q function) to predict the action values</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.model.value(obs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self, obs, action, reward, next_obs, terminal</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; update the Q function (self.model) with DQN algorithm</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># Q</span></span><br><span class="line">        pred_values = self.model.value(obs)</span><br><span class="line">        action_dim = pred_values.shape[-<span class="number">1</span>]</span><br><span class="line">        action = paddle.squeeze(action, axis=-<span class="number">1</span>)</span><br><span class="line">        action_onehot = paddle.nn.functional.one_hot(</span><br><span class="line">            action, num_classes=action_dim)</span><br><span class="line">        pred_value = paddle.multiply(pred_values, action_onehot)</span><br><span class="line">        pred_value = paddle.<span class="built_in">sum</span>(pred_value, axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># target Q</span></span><br><span class="line">        <span class="keyword">with</span> paddle.no_grad():</span><br><span class="line">            greedy_actions = self.model.value(next_obs).argmax(<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">            max_v = self.target_model.value(next_obs).gather(index=greedy_actions, axis=<span class="number">1</span>)</span><br><span class="line">            target = reward + (<span class="number">1</span> - terminal) * self.gamma * max_v</span><br><span class="line"></span><br><span class="line">        loss = self.mse_loss(pred_value, target)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># optimize</span></span><br><span class="line">        self.optimizer.clear_grad()</span><br><span class="line">        loss.backward()</span><br><span class="line">        self.optimizer.step()</span><br><span class="line">        <span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sync_target</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.model.sync_weights_to(self.target_model)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>VFA</category>
-      </categories>
-      <tags>
-        <tag>Function Approximation</tag>
-        <tag>Continuous State Space</tag>
       </tags>
   </entry>
   <entry>
@@ -1676,6 +1676,27 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </tags>
   </entry>
   <entry>
+    <title>LeetCode(4)</title>
+    <url>/2021/07/13/leet-code-4/</url>
+    <content><![CDATA[<p><strong>题目库: <code>[94, 144, 145, 226]</code></strong></p>
+<h1 id="trees">Trees</h1>
+<h2 id="easy">94 Easy</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inorderTraversal</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span></span><br><span class="line">        out = []</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">inorder</span>(<span class="params">root</span>):</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">                <span class="keyword">return</span> </span><br><span class="line"></span><br><span class="line">            inorder(root.left)</span><br><span class="line">            out.append(root.val)</span><br><span class="line">            inorder(root.right)</span><br><span class="line">        </span><br><span class="line">        inorder(root)</span><br><span class="line">        <span class="keyword">return</span> out</span><br></pre></td></tr></table></figure>
+<h2 id="easy-1">144 Easy</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">preorderTraversal</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span></span><br><span class="line">        out = []</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">preorder</span>(<span class="params">node</span>):</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            </span><br><span class="line">            out.append(node.val)</span><br><span class="line">            preorder(node.left)</span><br><span class="line">            preorder(node.right)</span><br><span class="line">        </span><br><span class="line">        preorder(root)</span><br><span class="line">        <span class="keyword">return</span> out</span><br></pre></td></tr></table></figure>
+<h2 id="easy-2">145 Easy</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">postorderTraversal</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span></span><br><span class="line">        out = []</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">postorder</span>(<span class="params">node</span>):</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            </span><br><span class="line">            postorder(node.left)</span><br><span class="line">            postorder(node.right)</span><br><span class="line">            out.append(node.val)</span><br><span class="line">        </span><br><span class="line">        postorder(root)</span><br><span class="line">        <span class="keyword">return</span> out</span><br></pre></td></tr></table></figure>
+<h2 id="easy-3">226 Easy</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">invertTree</span>(<span class="params">self, root: TreeNode</span>) -&gt; TreeNode:</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">invert</span>(<span class="params">node</span>):</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            </span><br><span class="line">            node.left, node.right = node.right, node.left</span><br><span class="line">            invert(node.left)</span><br><span class="line">            invert(node.right)</span><br><span class="line">        </span><br><span class="line">        invert(root)</span><br><span class="line">        <span class="keyword">return</span> root</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Others</category>
+      </categories>
+      <tags>
+        <tag>LeetCode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Monte Carlo Estimation</title>
     <url>/2021/05/15/mc/</url>
     <content><![CDATA[<h1 id="learning-from-stream-of-data-monte-carlo-methods">Learning From Stream of Data (Monte Carlo Methods)</h1>
@@ -1730,23 +1751,75 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
 ]]></content>
   </entry>
   <entry>
-    <title>off-policy-actor-critic</title>
-    <url>/2021/06/03/off-policy-actor-critic/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
-    <title>Notations</title>
+    <title>Welcome</title>
     <url>/2030/05/30/notations/</url>
-    <content><![CDATA[<h1 id="notations">Notations</h1>
-<p>I try to make notations consistent and organized, but everything can happen (Sorry, if this did happen). At the same time, I have some very wired usages of notations (redundancy, misuse and etc). So I decide to keep things here for reference.</p>
+    <content><![CDATA[<h1 id="welcome">Welcome</h1>
+<p><strong>Welcome to my website, hope you enjoy it, most of the notes are listed below</strong>:</p>
+<p><br></p>
 <p><strong>Some backgrounds</strong>:</p>
 <ol type="1">
-<li><a href="/2021/05/11/probability/" title="probability (1)">probability (1)</a></li>
-<li><a href="/2021/05/11/probability-2/" title="probability (2)">probability (2)</a></li>
-<li><a href="/2021/05/14/calculus/" title="calculus (1)">calculus (1)</a></li>
-<li><a href="/2021/07/06/cal-2/" title="calculus (2)">calculus (2)</a></li>
+<li><a href="/2021/05/11/probability/" title="Probability (1)">Probability (1)</a></li>
+<li><a href="/2021/05/11/probability-2/" title="Probability (2)">Probability (2)</a></li>
+<li><a href="/2021/05/14/calculus/" title="Calculus (1)">Calculus (1)</a></li>
+<li><a href="/2021/07/06/cal-2/" title="Calculus (2)">Calculus (2)</a></li>
 </ol>
+<p><strong>Some RL backgrounds</strong>:</p>
+<ol type="1">
+<li><a href="/2021/05/03/MDP/" title="MDP">MDP</a></li>
+<li><a href="/2021/05/03/bellman-equations/" title="Bellman Equations">Bellman Equations</a></li>
+<li><a href="/2021/05/03/bellman-optimality-equations/" title="Bellman Optimality Equations">Bellman Optimality Equations</a></li>
+<li><a href="/2021/05/03/dp/" title="Dynamic Programming">Dynamic Programming</a></li>
+<li><a href="/2021/05/03/value-iteration/" title="Value Iteration">Value Iteration</a></li>
+<li><a href="/2021/05/03/policy-iteration/" title="Policy Iteration">Policy Iteration</a></li>
+<li><a href="/2021/05/07/value-function-learning/" title="Learning From Stream of Data">Learning From Stream of Data</a></li>
+<li><a href="/2021/05/15/mc/" title="Monte Carlo Methods">Monte Carlo Methods</a></li>
+<li><a href="/2021/05/15/td/" title="Temporal Difference Learning">Temporal Difference Learning</a></li>
+<li><a href="/2021/05/16/sarsa/" title="SARSA">SARSA</a></li>
+<li><a href="/2021/05/16/q-learning/" title="Q Learning">Q Learning</a></li>
+<li><a href="/2021/06/12/vfa-1/" title="Value Function Approximation (1) (Under Construction)">Value Function Approximation (1) (Under Construction)</a></li>
+<li><a href="/2021/07/13/vfa-2/" title="Value Function Approximation (2) (Under Construction)">Value Function Approximation (2) (Under Construction)</a></li>
+<li><a href="/2021/05/23/policy-gradient/" title="Policy Gradient (1)">Policy Gradient (1)</a></li>
+<li><a href="/2021/05/30/policy-gradient-2/" title="Policy Gradient (2)">Policy Gradient (2)</a></li>
+<li><a href="/2021/06/05/policy-gradient-3/" title="Policy Gradient (3)">Policy Gradient (3)</a></li>
+<li><a href="/2021/05/30/average-reward-setting/" title="Average Reward Setting (Under Construction)">Average Reward Setting (Under Construction)</a></li>
+<li><a href="/2021/06/28/semi-mdp/" title="Semi MDP (Under Construction)">Semi MDP (Under Construction)</a></li>
+</ol>
+<p><strong>Some interesting RL algorithms</strong>:</p>
+<ol type="1">
+<li><a href="/2021/05/06/DPG/" title="DPG">DPG</a></li>
+<li><a href="/2021/06/09/DDPG/" title="DDPG">DDPG</a></li>
+<li><a href="/2021/05/07/DDQN/" title="DDQN">DDQN</a></li>
+<li><a href="/2021/06/23/td3/" title="TD3 (Under Construction)">TD3 (Under Construction)</a></li>
+<li><a href="/2021/05/13/Dueling/" title="Dueling DQN">Dueling DQN</a></li>
+<li><a href="/2021/06/11/TRPO/" title="TRPO">TRPO</a></li>
+<li><a href="/2021/06/11/PPO/" title="PPO">PPO</a></li>
+<li><a href="/2021/05/20/prior-exp-replay/" title="Prioritized Experience Replay">Prioritized Experience Replay</a></li>
+<li><a href="/2021/06/25/instrinsic-motivation/" title="Intrinsic Motivation">Intrinsic Motivation</a></li>
+<li><a href="/2021/06/25/go-explore/" title="Go Explore">Go Explore</a></li>
+<li><a href="/2021/06/03/natural-actor-critic/" title="Natural Actor Critic (Under Construction)">Natural Actor Critic (Under Construction)</a></li>
+<li><a href="/2021/06/03/off-policy-actor-critic/" title="Off Policy Actor Critic (Under Construction)">Off Policy Actor Critic (Under Construction)</a></li>
+</ol>
+<p><strong>Some Deep Learning algorithms and models</strong>:</p>
+<ol type="1">
+<li><a href="/2021/05/25/drop-out/" title="Dropout">Dropout</a></li>
+<li><a href="/2021/05/26/batch-norm/" title="Batch Normalization">Batch Normalization</a></li>
+<li><a href="/2021/06/02/layer-norm/" title="Layer Normalization">Layer Normalization</a></li>
+<li><a href="/2021/07/05/xavier/" title="Xavier Initialization">Xavier Initialization</a></li>
+<li><a href="/2021/06/23/kaiming-init/" title="Kaiming Initialization">Kaiming Initialization</a></li>
+<li><a href="/2021/07/05/LReLU/" title="LReLU (Under Construction)">LReLU (Under Construction)</a></li>
+<li><a href="/2021/06/22/alex-net/" title="Alex Net">Alex Net</a></li>
+<li><a href="/2021/06/25/overfeat/" title="Overfeat (Under Construction)">Overfeat (Under Construction)</a></li>
+<li><a href="/2021/06/24/VGG/" title="VGG (Under Construction)">VGG (Under Construction)</a></li>
+</ol>
+<p><strong>Some other things I did</strong>:</p>
+<ol type="1">
+<li><a href="/2021/05/18/leet-code-1/" title="LeetCode (1)">LeetCode (1)</a></li>
+<li><a href="/2021/06/05/leet-code-2/" title="LeetCode (2)">LeetCode (2)</a></li>
+<li><a href="/2021/06/16/leet-code-3/" title="LeetCode (3)">LeetCode (3)</a></li>
+<li><a href="/2021/07/13/leet-code-4/" title="LeetCode (4)">LeetCode (4)</a></li>
+</ol>
+<h1 id="notations">Notations</h1>
+<p>I try to make notations consistent and organized, but everything can happen (Sorry, if this did happen). At the same time, I have some very wired usages of notations (redundancy, misuse and etc). So I decide to keep things here for reference.</p>
 <h2 id="probabilies">Probabilies</h2>
 <p>To avoid confusion (Maybe redundant, but personal preference), I would only use <span class="math inline">\(P\)</span> to represent the probability distribution of events (subsets of the sample space <span class="math inline">\(\Omega\)</span>) defined over event space <span class="math inline">\(\mathbb{B}\)</span> (i.e <span class="math inline">\(P(A), \; A \in \mathbb{B}\)</span>) but not events that are subsets of range space of random variables (i.e CDF will be represented as <span class="math inline">\(F_X (x) = P_X (X \leq x)\)</span>, the subscript <span class="math inline">\(X\)</span> is used in <span class="math inline">\(P\)</span>). However, for simplicity, I will use <span class="math inline">\(P\)</span> for all probability functions. For example, the induced probability distribution of random variable <span class="math inline">\(X\)</span>, <span class="math inline">\(P_X\)</span> can be write in short <span class="math inline">\(P(X)\)</span>, so the probability at <span class="math inline">\(x\)</span>:</p>
 <p><span class="math display">\[P_X(x) = P(X=x)\]</span></p>
@@ -1776,6 +1849,12 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       <tags>
         <tag>RL Basics</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>off-policy-actor-critic</title>
+    <url>/2021/06/03/off-policy-actor-critic/</url>
+    <content><![CDATA[
+]]></content>
   </entry>
   <entry>
     <title>overfeat</title>
@@ -2068,7 +2147,7 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
 <p>Then, by <strong>the uniqueness of cdfs</strong>, the quantity in braces must be the pdf of <span class="math inline">\(X_1\)</span>, evaluated at <span class="math inline">\(w_1\)</span>:</p>
 <p><span class="math display">\[f_{X_1} (x_1) = \int^{\infty}_{-\infty} f_{X_1, X_2} (x_1, x_2) dx_2\]</span></p>
 <p>That is, in the continuous case the <code>marginal pdf</code> of <span class="math inline">\(X_1\)</span> is found by integrating out <span class="math inline">\(x_2\)</span>. Same is for <span class="math inline">\(X_2\)</span></p>
-<h2 id="expectation">Expectation</h2>
+<h3 id="expectation">Expectation</h3>
 <p>Let <span class="math inline">\((X_1, X_2)\)</span> be continuous random vector, let <span class="math inline">\(Y = g(X_1, X_2)\)</span> where <span class="math inline">\(g: \mathbb{R}^2 \rightarrow \mathbb{R}\)</span>. Then the expectation of <span class="math inline">\(Y\)</span>, <span class="math inline">\(E[Y]\)</span> exists if:</p>
 <p><span class="math display">\[\int^{\infty}_{-\infty}\int^{\infty}_{-\infty} |g(x_1, x_2)| f_{X_1, X_2} (x_1, x_2) dx_1 dx_2 &lt; \infty\]</span></p>
 <p>Then,</p>
@@ -2089,7 +2168,7 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
 <p><br></p>
 <p><img src="/images/RL/background/prob_36.png" width="600"></p>
 <p>This is saying that, the expectation of a random vector is a vector function of expectation.</p>
-<h2 id="transformation-bivariate-random-variables">Transformation: Bivariate Random Variables</h2>
+<h3 id="transformation-bivariate-random-variables">Transformation: Bivariate Random Variables</h3>
 <p>Let <span class="math inline">\(X_1, X_2\)</span> denote random variables of the discrete type, which have the joint pmf <span class="math inline">\(p_{X_1, X_2} (x_1, x_2)\)</span> that is positive on the support set <span class="math inline">\(S\)</span>. Let <span class="math inline">\(y_1 = u_1(x_1, x_2)\)</span> and <span class="math inline">\(y_2 = u_2(x_1, x_2)\)</span> define a one-to-one transformation that maps <span class="math inline">\(S\)</span> onto <span class="math inline">\(T\)</span>. The joint pmf of the two new random variables <span class="math inline">\(Y_1 = u_1 (X_1, X_2)\)</span> and <span class="math inline">\(Y_2 = u_2(X_1, X_2)\)</span> is given by:</p>
 <p><span class="math display">\[
 p_{Y_1, Y_2}(y_1, y_2)=
@@ -2099,8 +2178,8 @@ p_{X_1, X_2} (w_1(y_1, y_2), w_2 (y_1, y_2)), \quad &amp;(y_1, y_2) \in T\\
 \end{cases}
 \]</span></p>
 <p>Where <span class="math inline">\(w_1(y_1, y_2) = x_1\)</span>, <span class="math inline">\(w_2(y_1, y_2) = x_2\)</span> is the single-valued inverse of <span class="math inline">\(y_1 = u_1(x_1, x_2)\)</span> and <span class="math inline">\(y_2 = u_2 (x_1, x_2)\)</span> (form function of <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> using <span class="math inline">\(y_1\)</span> and <span class="math inline">\(y_2\)</span>).</p>
-<h2 id="conditional-distributions-and-expectations">Conditional Distributions and Expectations</h2>
-<h3 id="discrete-conditional-pmf">Discrete Conditional PMF</h3>
+<h3 id="conditional-distributions-and-expectations">Conditional Distributions and Expectations</h3>
+<h4 id="discrete-conditional-pmf">Discrete Conditional PMF</h4>
 <p>Let <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> denote random variables of the discrete type, which have the joint pmf defined to be <span class="math inline">\(p_{X_1, X_2} (x_1, x_2)\)</span> that is positive on the support set <span class="math inline">\(S\)</span> and is zero elsewhere. Let <span class="math inline">\(p_{X_1} (x_1)\)</span> and <span class="math inline">\(p_{X_2} (x_2)\)</span> denote, respectively the marginal probability mass function of <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span>. Let <span class="math inline">\(x_1\)</span> be a point in the support of <span class="math inline">\(X_1\)</span>, then <span class="math inline">\(p_{X_1} (x_1) &gt; 0\)</span>. We have:</p>
 <p><span class="math display">\[P(X_2 = x_2 | X_1 = x_1) = \frac{P(X_1=x, X_2=x_2)}{P(X_1 = x_1)} = \frac{p_{X_1, X_2}(x_1, x_2)}{p_{X_1}(x_1)}\]</span></p>
 <p>For all <span class="math inline">\(x_2\)</span> in the support of <span class="math inline">\(S_{X_2}\)</span>. Then we define this function as:</p>
@@ -2112,7 +2191,7 @@ p_{X_1, X_2} (w_1(y_1, y_2), w_2 (y_1, y_2)), \quad &amp;(y_1, y_2) \in T\\
 </ol>
 <p>We call <span class="math inline">\(p_{X_2 | X_1} (x_2 | x_1)\)</span> the <code>conditional pmf</code> of discrete type of random variable <span class="math inline">\(X_2\)</span> given the discrete type of random variable <span class="math inline">\(X_1 = x_1\)</span>. Similar formula can be derived for conditional pmf of <span class="math inline">\(X_1\)</span> given <span class="math inline">\(X_2 = x_2\)</span>.</p>
 <p><br></p>
-<h3 id="continuous-conditional-pmf">Continuous Conditional PMF</h3>
+<h4 id="continuous-conditional-pmf">Continuous Conditional PMF</h4>
 <p>Now, let <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> be random variables of continuous type and have the joint pdf defined as <span class="math inline">\(f_{X_1, X_2} (x_1, x_2)\)</span> and the marginal pdf defined as <span class="math inline">\(f_{X_1}(x_1)\)</span> and <span class="math inline">\(f_{X_2} (x_2)\)</span>. When <span class="math inline">\(f_{X_1}(x_1) &gt; 0\)</span>, we defined the function <span class="math inline">\(f_{X_1, X_2}\)</span> as:</p>
 <p><span class="math display">\[f_{X_2 | X_1} (x_2 | x_1) = \frac{f_{X_1, X_2}(x_1, x_2)}{f_{X_1}(x_1)}\]</span></p>
 <p>Then, this function has the conditions of being a pdf of the continuous type becuase:</p>
@@ -2124,14 +2203,61 @@ p_{X_1, X_2} (w_1(y_1, y_2), w_2 (y_1, y_2)), \quad &amp;(y_1, y_2) \in T\\
 <p>Since each of the pdfs <span class="math inline">\(f_{X_2 | X_1} (x_2 | x_1), f_{X_1 | X_2} (x_1 | x_2)\)</span> is a pdf of one variable, each has all the propertiees of such a pdf. Thus we can compute probabilities and mathmetical expectations. If the random variables are of the continuous type, the probability:</p>
 <p><span class="math display">\[P(a &lt; X_2 &lt; b | X_1 = x_1) = \int^{b}_{a} f_{X_2 | X_1} (x_2 | x_1) dx_2\]</span></p>
 <p>This is called <strong>the conditional probability that <span class="math inline">\(a &lt; X_2 &lt; b\)</span>, given that <span class="math inline">\(X_1 = x_1\)</span></strong></p>
-<h3 id="conditional-expectation-and-variance">Conditional Expectation and Variance</h3>
-<p>If <span class="math inline">\(u(X_2)\)</span> is a function of <span class="math inline">\(X_2\)</span>, the <code>conditional expectation (continuous case)</code> of <span class="math inline">\(u(X_2)\)</span>, given taht <span class="math inline">\(X_1=x_1\)</span>, if it exists, is given by:</p>
+<h4 id="conditional-expectation-and-variance">Conditional Expectation and Variance</h4>
+<p>If <span class="math inline">\(u(X_2)\)</span> is a function of <span class="math inline">\(X_2\)</span>, the <code>conditional expectation (continuous case)</code> of <span class="math inline">\(u(X_2)\)</span>, given that <span class="math inline">\(X_1=x_1\)</span>, if it exists, is given by:</p>
 <p><span class="math display">\[E_{X_2 | X_1}[u(X_2) | X_1=x_1] = \int^{\infty}_{-\infty} u(x_2) f_{X_2 | X_2} (x_2 | x_1) dx_2\]</span></p>
 <p>Notice that, the conditional expectation <span class="math inline">\(E_{X_2 | X_1}[X_2 | X_1=x_1]\)</span> is function of <span class="math inline">\(x_1\)</span>. If they do exist, then <span class="math inline">\(E_{X_2 | X_1}[X_2 | X_1=x_1]\)</span> is the mean and:</p>
 <p><span class="math display">\[Var(X_2 | x_1) = E_{X_2 | X_1}[(X_2 - E_{X_2 | X_1}[X_2 | X_1=x_1])^2 | X_1 = x_1]\]</span></p>
 <p>is the <code>conditional variance</code> of the conditional distribution of <span class="math inline">\(X_2\)</span>, given <span class="math inline">\(X_1 = x_1\)</span>.</p>
 <p>The similar rule holds for conditional variance:</p>
 <p><span class="math display">\[Var(X_2 | x_1) = E_{X_2 | X_1}[X_2^2 | X_1=x_1]- (E_{X_2 | X_1}[X_2 | X_1=x_1])^2\]</span></p>
+<h4 id="double-expectation">Double Expectation</h4>
+<p><img src="/images/RL/background/mprob_2_3_1.png" width="600"></p>
+<p>Proof:</p>
+<blockquote>
+<span class="math display">\[\begin{aligned}
+E[X_2] &amp;= \int^{\infty}_{-\infty} f_{X_2} (x_2) x_2 dx_2\\
+&amp;= \int^{\infty}_{-\infty} \int^{\infty}_{-\infty}  x_2 f_{X_2, X_1} (x_2, x_1)dx_1 dx_2\\
+&amp;= \int^{\infty}_{-\infty} \int^{\infty}_{-\infty} x_2 f_{X_2, X_1} (x_2, x_1) dx_2 dx_1\\
+&amp;= \int^{\infty}_{-\infty}\int^{\infty}_{-\infty} x_2 f_{X_2 | X_1} (x_2 | x_1) f_{x_1} (x_1) dx_2 dx_1\\
+&amp;= \int^{\infty}_{-\infty} E_{X_2 | X_1}[X_2 | x_1] f_{x_1} (x_1) dx_2 dx_1\\
+&amp;= E_{X_1}[E_{X_2 | X_1}[X_2 | X_1]]
+\end{aligned}\]</span>
+</blockquote>
+<p>Intuitively, this result could have this useful interpretation. Both the random variables <span class="math inline">\(X_2\)</span> and <span class="math inline">\(E[X_2 | X_1]\)</span> have the same mean <span class="math inline">\(\mu\)</span>. If we did not know <span class="math inline">\(\mu\)</span>, we can use either of the two random variables to guess. Since however, <span class="math inline">\(Var[X_2] \geq Var[E[X_2 | X_1]]\)</span>, we would put more reliance in <span class="math inline">\(E[X_2 | X_1]\)</span> as a guess. That is, if we observe the pair <span class="math inline">\((x_1, x_2)\)</span>, we would prefer to use <span class="math inline">\(E[X_2 | x_1]\)</span> over <span class="math inline">\(x_2\)</span> to estimate <span class="math inline">\(\mu\)</span>.</p>
+<h3 id="independent-random-variables">Independent Random Variables</h3>
+<p>Let <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> denote the random variables of the continuous type that have the joint pdf <span class="math inline">\(f(x_1, x_2)\)</span> and marginal probability density functions defined as <span class="math inline">\(f_1 (x_1)\)</span> and <span class="math inline">\(f_2 (x_2)\)</span> respectively. Suppose we have an instance where <span class="math inline">\(f_{X_2 | X_1} (x_2 | x_1)\)</span> does not depend upon <span class="math inline">\(x_1\)</span>. Then the marginal pdf of <span class="math inline">\(X_2\)</span> is</p>
+<span class="math display">\[\begin{aligned}
+f_{X_2} (x_2) &amp;= \int^{\infty}_{-\infty} f_{X_2, X_1} f(x_2, x_1) dx_1 \\
+&amp;= \int^{\infty}_{-\infty} f_{X_2 | X_1} f(x_2 | x_1) f_{X_1}(x_1) dx_1 \\
+&amp;= f_{X_2 | X_1} f(x_2 | x_1) \int^{\infty}_{-\infty} f_{X_1}(x_1) dx_1 \\
+&amp;= f_{X_2 | X_1} f(x_2 | x_1)
+\end{aligned}\]</span>
+<p>Then the joint pdf is:</p>
+<p><span class="math display">\[f_{X_2, X_1} f(x_2, x_1) = f_{X_2 | X_1} f(x_2 | x_1) f_{X_1} (x_1) = f_{X_2} (x_2) f_{X_1} (x_1)\]</span></p>
+<p><img src="/images/RL/background/mprob_2_4_1.png" width="600"></p>
+<p><br></p>
+<p><code>Theorem 2.4.1</code></p>
+<blockquote>
+<p>Let random variables <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> have supports <span class="math inline">\(S_1\)</span> and <span class="math inline">\(S_2\)</span>, respectively, and have the joint pdf <span class="math inline">\(f(x_1, x_2)\)</span>. Then <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> are independent if and only if <span class="math inline">\(f(x_1, x_2)\)</span> can be written as a product of a nonnegative function of <span class="math inline">\(x_1\)</span> and a nonnegative function of <span class="math inline">\(x_2\)</span>. That is: <span class="math display">\[f(x_1, x_2) \equiv g(x_1) h(x_2)\]</span></p>
+<p>Where <span class="math inline">\(g(x_1) &gt; 0 \; \forall x_1 \in S_{1}\)</span> and <span class="math inline">\(h(x_2) &gt; 0, \; \forall x_2 \in S_{2}\)</span>, 0 elsewhere.</p>
+</blockquote>
+<p><img src="/images/RL/background/mprob_2_4_2.png" width="600"></p>
+<p><img src="/images/RL/background/mprob_2_4_3.png" width="600"></p>
+<p><img src="/images/RL/background/mprob_2_4_4.png" width="600"></p>
+<p><img src="/images/RL/background/mprob_2_4_5.png" width="600"></p>
+<h3 id="correlation-coefficient">Correlation Coefficient</h3>
+<p>Let <span class="math inline">\((X, Y)\)</span> denote a random vector. How do we know the correlation between them? There are many measures of dependence, we investigate a parameter <span class="math inline">\(\rho\)</span> of the joint distribution of <span class="math inline">\((X, Y)\)</span> which measures linearity between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>.</p>
+<p><img src="/images/RL/background/mprob_2_5_1.png" width="600"></p>
+<p>It follows by the linearity of expectation, that the covariance of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> can be expressed as:</p>
+<p><span class="math display">\[Cov(X, Y) = E[XY - \mu_2 X - \mu_1 Y + \mu_1\mu_2] = E[XY] - \mu_1\mu_2\]</span></p>
+<p><img src="/images/RL/background/mprob_2_5_2.png" width="600"></p>
+<p><img src="/images/RL/background/mprob_2_5_3.png" width="600"></p>
+<p><img src="/images/RL/background/mprob_2_5_4.png" width="600"></p>
+<p><strong>The converse is not true</strong> (i.e if <span class="math inline">\(Cov(X, Y) = 0 \implies X, Y\)</span> are independent). However, the contrapositive is true:</p>
+<blockquote>
+<p>If <span class="math inline">\(\rho \neq 0\)</span>, then <span class="math inline">\(X, Y\)</span> are dependent.</p>
+</blockquote>
 ]]></content>
       <categories>
         <category>Background</category>
@@ -2400,12 +2526,6 @@ Var[max_{a^{\prime} \in A} Q_t (X^{\prime}, a^{\prime}) | X_t=x_t, A_t=a_t] &amp
       </tags>
   </entry>
   <entry>
-    <title>td3</title>
-    <url>/2021/06/23/td3/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
     <title>Stochastic Graph</title>
     <url>/2021/05/27/stochastic-graph/</url>
     <content><![CDATA[<h1 id="gradient-estimation-using-stochastic-computation-graphs">Gradient Estimation Using Stochastic Computation Graphs</h1>
@@ -2612,13 +2732,88 @@ E[\delta (X, R, X^{\prime}; V^{\pi}) | X=x, A=a] &amp;= E[R + \gamma V^{\pi}(X^{
       </tags>
   </entry>
   <entry>
-    <title>tree</title>
+    <title>td3</title>
+    <url>/2021/06/23/td3/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
+    <title>Trees</title>
     <url>/2021/06/14/tree/</url>
     <content><![CDATA[<h1 id="trees">Trees</h1>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BinaryTreeNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, key=<span class="literal">None</span>, left=<span class="literal">None</span>, right=<span class="literal">None</span>, p=<span class="literal">None</span></span>):</span></span><br><span class="line">        self.key = key</span><br><span class="line">        self.left = left</span><br><span class="line">        self.right = right</span><br><span class="line">        self.p = p</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BinarySearchTree</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, root=<span class="literal">None</span></span>):</span></span><br><span class="line">        self.root = root</span><br></pre></td></tr></table></figure>
 <h2 id="binary-search-tree">Binary Search Tree</h2>
+<p>A binary search tree node consists of:</p>
+<ol type="1">
+<li><span class="math inline">\(key: \;\)</span> value of the node</li>
+<li><span class="math inline">\(left: \;\)</span> left children</li>
+<li><span class="math inline">\(right: \;\)</span> right children</li>
+<li><span class="math inline">\(p: \;\)</span> parent</li>
+</ol>
+<p>If a child or the parent is missing, the appropriate attribute contains the value <code>None</code>. The root node is the only node in the tree whose parent is <code>None</code>.</p>
+<p>The keys in a binary search tree are always stored in such a way as to satisfy the <code>binary search tree property</code>:</p>
+<blockquote>
+<p>For any node <span class="math inline">\(x\)</span>, the keys in the left subtree of <span class="math inline">\(x\)</span> are at most <span class="math inline">\(x.key\)</span>, and the keys in the right subtree of <span class="math inline">\(x\)</span> are at least <span class="math inline">\(x.key\)</span>.</p>
+</blockquote>
+<p>The binary search tree property allows us to print out all the keys in a binary search tree in sorted order by <code>inorder tree walk</code> (Inorder traversal). This algorithm prints the key of the root of a subtree betweeen printing the values in its left subtree and printing those in its right subtree. Similarly, a <code>preorder tree walk</code> prints the root before the values in either subtree and a <code>postorder tree walk</code> prints the root after the values in its subtrees.</p>
 <h3 id="inorder-traversal">Inorder Traversal</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inorder</span>(<span class="params">root</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    inorder(root.left)</span><br><span class="line">    <span class="built_in">print</span>(root.val)</span><br><span class="line">    inorder(root.right)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inorder_tree_walk</span>(<span class="params">tree</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inorder</span>(<span class="params">root</span>):</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        </span><br><span class="line">        inorder(root.left)</span><br><span class="line">        <span class="built_in">print</span>(root.val)</span><br><span class="line">        inorder(root.right)</span><br><span class="line">        </span><br><span class="line">    inorder(tree)</span><br></pre></td></tr></table></figure>
+<h3 id="preorder-traversal">Preorder Traversal</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">preorder_tree_walk</span>(<span class="params">tree</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">preorder</span>(<span class="params">root</span>):</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        </span><br><span class="line">        <span class="built_in">print</span>(root.val)</span><br><span class="line">        preorder(root.left)</span><br><span class="line">        preorder(root.right)</span><br><span class="line">        </span><br><span class="line">    preorder(tree)</span><br></pre></td></tr></table></figure>
+<h3 id="postorder-traversal">Postorder Traversal</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">postorder_tree_walk</span>(<span class="params">tree</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">postorder</span>(<span class="params">root</span>):</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        </span><br><span class="line">        postorder(root.left)</span><br><span class="line">        postorder(root.right)</span><br><span class="line">        <span class="built_in">print</span>(root.val)</span><br><span class="line">        </span><br><span class="line">    postorder(tree)</span><br></pre></td></tr></table></figure>
+<h3 id="search">Search</h3>
+<p>We use the following procedure to search for a node with a given key in a binary search tree. Given a pointer to the root of the tree and a key <span class="math inline">\(k\)</span>, it returns a pointer to a node with key <span class="math inline">\(k\)</span> if one exists, otherwise it returns <code>None</code>.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tree_search</span>(<span class="params">tree, k</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">search</span>(<span class="params">root, val</span>):</span></span><br><span class="line">        <span class="comment"># base case</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root <span class="keyword">or</span> root.key == val:</span><br><span class="line">            <span class="keyword">return</span> root</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> root.key &lt; val:</span><br><span class="line">            target = search(root.right, val)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            target = search(root.left, val)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> target</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> search(tree, k)</span><br></pre></td></tr></table></figure>
+<h3 id="minimum">Minimum</h3>
+<p>We can always find an element in a binary search tree whose key is a minimum by following <span class="math inline">\(left\)</span> child pointers from the root until we encounter a <code>None</code>. The following procedure returns a pointer to the minimum element in the subtree rooted at a given node <span class="math inline">\(x\)</span>:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tree_minimum</span>(<span class="params">tree</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">minimum</span>(<span class="params">root</span>):</span></span><br><span class="line">        <span class="comment"># base case</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root.left:</span><br><span class="line">            <span class="keyword">return</span> root</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> minimum(root.left)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> minimum(tree)</span><br></pre></td></tr></table></figure>
+<h3 id="maximum">Maximum</h3>
+<p>The maximum is symmetric as minimum:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tree_maximum</span>(<span class="params">tree</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maximum</span>(<span class="params">root</span>):</span></span><br><span class="line">        <span class="comment"># base case</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root.right:</span><br><span class="line">            <span class="keyword">return</span> root</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> maximum(root.right)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> maximum(tree)</span><br></pre></td></tr></table></figure>
+<h3 id="successor-and-predecessor">Successor and Predecessor</h3>
+<p>Given a node in a binary search tree, sometimes we need to find its successor in the sorted order determined by an inorder tree walk. If all keys are distinct, the successor of a node <span class="math inline">\(x\)</span> is the node with the smallest key greater than <span class="math inline">\(x.key\)</span>. The procedure breaks into several cases:</p>
+<ol type="1">
+<li>If node <span class="math inline">\(x\)</span> has right subtree, then the successor must be the smallest element in the right subtree.</li>
+<li>If node <span class="math inline">\(x\)</span> does not have right subtree and itself is a leftsubtree of its parent, then the successor must be its parent.</li>
+<li>If node <span class="math inline">\(x\)</span> does not have right subtree and itself is a rightsubtree of its parent, then the successor must be the lowest ancestor of <span class="math inline">\(x\)</span> whose left child is also an ancestor of <span class="math inline">\(x\)</span>.</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tree_successor</span>(<span class="params">node</span>):</span></span><br><span class="line">    <span class="comment"># case 1</span></span><br><span class="line">    <span class="keyword">if</span> node.right:</span><br><span class="line">        <span class="keyword">return</span> tree_minimum(node)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># case 2, 3</span></span><br><span class="line">    curr_p = node.p</span><br><span class="line">    <span class="keyword">while</span> curr_p:</span><br><span class="line">        <span class="keyword">if</span> curr_p.left == node:</span><br><span class="line">            <span class="keyword">return</span> curr_p</span><br><span class="line">        </span><br><span class="line">        node = curr_p</span><br><span class="line">        curr_p = node.p</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+<p><strong>Predecessor is symmetric</strong></p>
+<h3 id="insertion">Insertion</h3>
+<p>To insert a new node <span class="math inline">\(z\)</span> into a binary search tree <span class="math inline">\(T\)</span> we use the following procedure:</p>
+<ol type="1">
+<li>Begin at root of the tree, we maintain two pointers <span class="math inline">\(y, x\)</span> representing parent and current node respectively.</li>
+<li>Go down the tree and compare every node encounter with <span class="math inline">\(z\)</span>, if it is greater than <span class="math inline">\(z\)</span> we go to the left, if smaller we go to the right, until we reach <code>None</code>.</li>
+<li>We replace <span class="math inline">\(y.left\)</span> or <span class="math inline">\(y.right\)</span> with <span class="math inline">\(x\)</span> and fill <span class="math inline">\(z.p = y\)</span>.</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tree_insert</span>(<span class="params">T, z</span>):</span></span><br><span class="line">    <span class="comment"># initialize y, x representing parent and current node</span></span><br><span class="line">    y, x = <span class="literal">None</span>, T</span><br><span class="line">    <span class="comment"># step 2</span></span><br><span class="line">    <span class="keyword">while</span> x:</span><br><span class="line">        y = x</span><br><span class="line">        <span class="keyword">if</span> z.key &lt; x.key:</span><br><span class="line">            x = x.left</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            x = x.right</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># step 3</span></span><br><span class="line">    z.p = y</span><br><span class="line">    <span class="comment"># if tree is empty</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> y:</span><br><span class="line">        T.root = z</span><br><span class="line">    <span class="keyword">elif</span> z.key &lt; y.key:</span><br><span class="line">        y.left = z</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        y.right = z</span><br></pre></td></tr></table></figure>
+<h3 id="deletion">Deletion</h3>
+<p>The overall strategy for deleting a node <span class="math inline">\(z\)</span> from a binary search tree <span class="math inline">\(T\)</span> has three basic cases:</p>
+<ol type="1">
+<li>If <span class="math inline">\(z\)</span> has no children, then we can simply remove it by modifying its parent to replace <span class="math inline">\(z\)</span> with <code>None</code> as its child.</li>
+<li>If <span class="math inline">\(z\)</span> has just on child, then we elevate that child to take <span class="math inline">\(z\)</span>'s position in the tree by modifying <span class="math inline">\(z\)</span>'s parent to replace <span class="math inline">\(z\)</span> by <span class="math inline">\(z\)</span>'s child.</li>
+<li>If <span class="math inline">\(z\)</span> has two children, then we find <span class="math inline">\(z\)</span>'s successor <span class="math inline">\(y\)</span> which must be the minimum item in <span class="math inline">\(z\)</span>'s right subtree (with no left child). Now have two cases:
+<ol type="1">
+<li>If <span class="math inline">\(y\)</span> is <span class="math inline">\(z\)</span>'s right child: We replace <span class="math inline">\(z\)</span> by <span class="math inline">\(y\)</span> and <span class="math inline">\(z\)</span>'s left child becomes <span class="math inline">\(y\)</span>'s left child.</li>
+<li>If <span class="math inline">\(y\)</span> is not <span class="math inline">\(z\)</span>'s right child: We first replace <span class="math inline">\(y\)</span> by its right child, then we replace <span class="math inline">\(z\)</span> by <span class="math inline">\(y\)</span></li>
+</ol></li>
+</ol>
+<p><br></p>
+<p>In order to move subtrees around, we define a helper function <code>transplant</code> that replaces the subtree rooted at node <span class="math inline">\(u\)</span> with the subtree rooted at node <span class="math inline">\(v\)</span>.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">transplant</span>(<span class="params">T, u, v</span>):</span></span><br><span class="line">    <span class="comment"># if u is the root</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> u.p:</span><br><span class="line">        T.root = v</span><br><span class="line">    <span class="keyword">elif</span> u.p.left == u:</span><br><span class="line">        u.p.left = v</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        u.p.right = v</span><br><span class="line"></span><br><span class="line">    <span class="comment"># replace v with u</span></span><br><span class="line">    <span class="keyword">if</span> v:</span><br><span class="line">        v.p = u.p</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tree_delete</span>(<span class="params">T, z</span>):</span></span><br><span class="line">    <span class="comment"># case 1</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> z.left <span class="keyword">and</span> <span class="keyword">not</span> z.right:</span><br><span class="line">        transplant(T, z, <span class="literal">None</span>)</span><br><span class="line">    <span class="comment"># case 2</span></span><br><span class="line">    <span class="keyword">elif</span> <span class="keyword">not</span> z.left <span class="keyword">and</span> z.right:</span><br><span class="line">        transplant(T, z, z.right)</span><br><span class="line">    <span class="keyword">elif</span> <span class="keyword">not</span> z.right <span class="keyword">and</span> z.left:</span><br><span class="line">        transplant(T, z, z.left)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        y = tree_successor(z)</span><br><span class="line">        <span class="comment"># case 3.2</span></span><br><span class="line">        <span class="keyword">if</span> z.right != y:</span><br><span class="line">            transplant(T, y, y.right)</span><br><span class="line">            y.right = z.right</span><br><span class="line">            y.right.p = y</span><br><span class="line">            </span><br><span class="line">        transplant(T, z, y)</span><br><span class="line">        y.left = z.left</span><br><span class="line">        y.left.p = y</span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+<h3 id="complexcity">Complexcity</h3>
+<ul>
+<li>Tree walks: <span class="math inline">\(\; \Theta(n)\)</span></li>
+<li>Search, Minimum, Maximum, Successor, Predecessor, Insert, Delete: <span class="math inline">\(\; O(h)\)</span></li>
+</ul>
 ]]></content>
+      <categories>
+        <category>CS Basics</category>
+      </categories>
+      <tags>
+        <tag>Data Structure</tag>
+      </tags>
   </entry>
   <entry>
     <title>Learning From Stream of Data</title>
@@ -2770,6 +2965,12 @@ Uniform(A), \text{w. p } \epsilon \\
 <p>with <span class="math inline">\(w \in \mathbb{R}^p\)</span> and <span class="math inline">\(\phi: X \rightarrow \mathbb{R}^p\)</span></p>
 <p>Any <span class="math inline">\(\hat{V}\)</span> belongs to the space of functions <span class="math inline">\(\mathbf{F}\)</span>:</p>
 <p><span class="math display">\[\mathbf{F} = \{x \mapsto  \phi (x)^T w : w \in \mathbb{R}^p\}\]</span></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>vfa-2</title>
+    <url>/2021/07/13/vfa-2/</url>
+    <content><![CDATA[
 ]]></content>
   </entry>
   <entry>
@@ -3429,7 +3630,7 @@ Var[\frac{\partial Cost}{\partial w^{i}_{l, k}}] &amp;= Var[z^{i}_{l} \frac{\par
       </tags>
   </entry>
   <entry>
-    <title>Leet Code (1)</title>
+    <title>LeetCode (1)</title>
     <url>/2021/05/18/leet-code-1/</url>
     <content><![CDATA[<p><strong>题目库: <code>[455, 605, 122, 435, 665, 763, 452, 167, 88, 142, 633, 680, 524, 69, 34, 81, 350, 154, 53, 35, 374, 367,  744, 287, 1170, 1337, 153, 33, 154, 278]</code></strong></p>
 <h1 id="greedy">Greedy</h1>
@@ -3548,7 +3749,7 @@ Var[\frac{\partial Cost}{\partial w^{i}_{l, k}}] &amp;= Var[z^{i}_{l} \frac{\par
       </tags>
   </entry>
   <entry>
-    <title>Leet Code (2)</title>
+    <title>LeetCode (2)</title>
     <url>/2021/06/05/leet-code-2/</url>
     <content><![CDATA[<p><strong>题目库: <code>[242, 205, 215, 347, 349, 148, 1122, 973, "jz45", 147, 56, 57, 922, 104, 100, 101, 17, 102, 200, 98, 111, 112 103, 199, 994, 114]</code></strong></p>
 <h1 id="strings">Strings</h1>
@@ -3624,7 +3825,7 @@ Var[\frac{\partial Cost}{\partial w^{i}_{l, k}}] &amp;= Var[z^{i}_{l} \frac{\par
       </tags>
   </entry>
   <entry>
-    <title>Leet Code (3)</title>
+    <title>LeetCode (3)</title>
     <url>/2021/06/16/leet-code-3/</url>
     <content><![CDATA[<p><strong>题目库: <code>[1688， 79, 78, 46, 22, 90, 47, 39, 40, 93, 53, 70, 121, 122, 118, 392, 62, 198, 5, 55, 64, 322, 63, 120, 93, 45 213, 343, 300, 279, 1143, 494, 152, 518, 377, 416, 309, 337, 221, 139, 119, '面试题17.16', 746, 376]</code></strong></p>
 <h1 id="backtracking">Backtracking</h1>
