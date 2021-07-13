@@ -447,84 +447,6 @@ Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \ha
       </tags>
   </entry>
   <entry>
-    <title>PPO</title>
-    <url>/2021/06/11/PPO/</url>
-    <content><![CDATA[<h1 id="proximal-policy-optimization-algorithms">Proximal Policy Optimization Algorithms</h1>
-<h2 id="notations-and-backgrounds">Notations and Backgrounds</h2>
-<h3 id="policy-gradient-estimator">Policy gradient estimator</h3>
-<p><span class="math display">\[\hat{g} = \hat{E}_t [\nabla_{\theta} \log \pi_{\theta} (a_t | s_t) \hat{A_t}]\]</span></p>
-<p>Where, <span class="math inline">\(\pi_{\theta}\)</span> is the stochastic policy and <span class="math inline">\(\hat{A_t}\)</span> is an estimate of advantage function at timestep <span class="math inline">\(t\)</span>. The expectation here <span class="math inline">\(\hat{E}_t\)</span> indicates the empirical average over a finite batch of samples, in an algorithm that alternates between sampling and optimization.</p>
-<p><span class="math inline">\(\hat{g}\)</span> is obtained by differentiating the objective</p>
-<p><span class="math display">\[L^{PG} (\theta) = \hat{E}_t [\log \pi_{\theta} (a_t | s_t) \hat{A_t}]\]</span></p>
-<p>While it is appealing to perform multiple steps of optimization on this loss <span class="math inline">\(L^{PG} (\theta)\)</span> (reuse the same samples to update <span class="math inline">\(\theta\)</span>), using the same trajectory, doing so is not well-justi ed, and empirically it often leads to destructively large policy updates.</p>
-<h3 id="trust-region-methods">Trust Region Methods</h3>
-<p>The optimization problem is defined as:</p>
-<span class="math display">\[\begin{aligned}
-\max_{\theta} \quad &amp; \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim \pi_{\theta_{old}}(\cdot | s)} [\frac{\pi_{\theta} (a | s)}{\pi_{\theta_{old}} (a | s)} \hat{A}_{\theta_{old}} (s, a)]\\
-\textrm{s.t.} \quad &amp; \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot)}[D_{KL} (\pi_{\theta_{old}} (\cdot | s) || \pi_{\theta} (\cdot | s))] \leq \delta
-\end{aligned}\]</span>
-<p></br></p>
-<p>It is also possible to remove the hard constraint and convert the problem to an unconstrained objective:</p>
-<span class="math display">\[\begin{aligned}
-\max_{\theta} \quad &amp; \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim \pi_{\theta_{old}}(\cdot | s)} [\frac{\pi_{\theta} (a | s)}{\pi_{\theta_{old}} (a | s)} \hat{A}_{\theta_{old}} (s, a) - \beta D_{KL}[\pi_{\theta_{old}} (\cdot | s) || \pi_{\theta} (\cdot | s))]]\\
-\end{aligned}\]</span>
-<p></br></p>
-<p>The problem with this objective is that, the penalty prefers small steps, so it is very hard to choose an appropriate <span class="math inline">\(\beta\)</span> that performs well across different problems or even within a single problem where the characteristics change over the course of learning.</p>
-<span id="more"></span>
-<h2 id="clipped-surrogate-objective">Clipped Surrogate Objective</h2>
-<p>Let <span class="math inline">\(r_t (\theta)\)</span> denotes the probability ratio <span class="math inline">\(r_t (\theta) = \frac{\pi_{\theta} (a_t | s_t)}{\pi_{\theta_{old}} (a_t | s_t)}\)</span>, so <span class="math inline">\(r (\theta_{old}) = 1\)</span>. The above unconstrained TRPO objective without penalty becomes:</p>
-<p><span class="math display">\[L^{CPI} (\theta) = \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim \pi_{\theta_{old}} (\cdot | s)} [r_{t} (\theta) \hat{A}_{\theta_{old}} (s, a)]\]</span></p>
-<p>Without the penalty, the step size can be super big maximizing <span class="math inline">\(L^{CPI}\)</span>, thus, we can add penalty to the changes to the policy that move <span class="math inline">\(r_t (\theta)\)</span> away from 1 (make big updates or take big step)</p>
-<p>The main objective is then:</p>
-<p><span class="math display">\[L^{CLIP} (\theta) = \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim \pi_{\theta_{old}} (\cdot | s)} [\min (r_{t} (\theta) \hat{A}_{\theta_{old}} (s, a), \text{clip}(r_t(\theta), 1 - \epsilon, 1 + \epsilon)\hat{A}_{\theta_{old}} (s, a))]\]</span> </br></p>
-<p>Notice here, the clipped objective gives a lower bound of the unclipped objective, to see this:</p>
-<ol type="1">
-<li>If <span class="math inline">\(A_t &lt; 0\)</span>, then one way to maximize the objective is to make <span class="math inline">\(r_t\)</span> very small, then we will have a really large step size, However, with clipped objective, the largest change is clipped to <span class="math inline">\(1 - \epsilon\)</span></li>
-<li>If <span class="math inline">\(A_t &gt; 0\)</span>, then one way to maximize the objective is to make <span class="math inline">\(r_t\)</span> very large, then we will have a really large step size. However, with clipped objective, the largest change is clipped to <span class="math inline">\(1 + \epsilon\)</span></li>
-</ol>
-<p>At the same time, the minimum gives the above behavior to account for <span class="math inline">\(A_t &gt; 0, A_t &lt; 0\)</span> situation.</p>
-<p><img src="/images/RL/pg/ppo_1.png" width="600"></p>
-<p><img src="/images/RL/pg/ppo_2.png" width="600"></p>
-<h2 id="adaptive-kl-penalty-coefficient">Adaptive KL Penalty Coefficient</h2>
-<p>Another approach, which can be used as an alternative to the clipped surrogate objective, or in additional to it is to use a penalty on KL divergence <span class="math inline">\(d_{targ}\)</span> each policy update. In practice, KL performs worse than the clipped surrogate objective.</p>
-<p>In the simplest instantiation of this algorithm, the following steps are used in each policy update:</p>
-<ul>
-<li><p>Using several epochs of mini-batch SGD, optimizing the KL-penalized objective:</p>
-<p><span class="math display">\[L^{KLPEN} (\theta) = \hat{E}_t [\frac{\pi_\theta (a_t | s_t)}{\pi_{\theta_{old}} (a_t | s_t)} \hat{A}_t - \beta_t D_{KL} (\pi_{\theta_{old}} (\cdot | s) || \pi_{\theta} (\cdot | s))]\]</span></p></li>
-<li><p>Compute and update <span class="math inline">\(\theta_{t+1}\)</span>:</p>
-<p><span class="math display">\[d = \hat{E}_t [\beta_t D_{KL} (\pi_{\theta_{old}} (\cdot | s) || \pi_{\theta} (\cdot | s))]\]</span></p>
-<ul>
-<li>If <span class="math inline">\(d &lt; d_{targ} \;/\; 1.5, \quad \beta_{t + 1} \leftarrow \beta_{t} \;/\; 2\)</span></li>
-<li>If <span class="math inline">\(d &gt; d_{targ} * 1.5, \quad \beta_{t + 1} \leftarrow \beta_{t} * 2\)</span></li>
-</ul></li>
-</ul>
-<p><span class="math inline">\(\beta_{t + 1}\)</span> is used in the next policy update. The algorithm is not very sensitive to the choice of <span class="math inline">\(2\)</span> and <span class="math inline">\(1.5\)</span> above. The initial value of <span class="math inline">\(\beta\)</span> is another hyperparameter but is not important in practice.</p>
-<h2 id="algorithm">Algorithm</h2>
-<p>The advantage function can be estimated using a separate value function <span class="math inline">\(V(x)\)</span>, or a shared parameter value and policy network can be used. If the parameters are shared between policy network and value network, we need to modify the objective by adding the value loss negative value function loss <span class="math inline">\(- L^{VF} (\theta)\)</span> and maybe an entropy term to promote exploration:</p>
-<p><span class="math display">\[L^{CLIP + VF + S} (\theta) = \hat{E} [L_t^{CLIP} (\theta) - c_1 L_t^{VF} (\theta) + c_2 S[\pi_{\theta}] (s_t)]\]</span> </br></p>
-<p>Where, <span class="math inline">\(c_1, c_2\)</span> are two coefficients, <span class="math inline">\(S[\pi_{\theta}] (s_t)\)</span> is the entropy bonus on <span class="math inline">\(s_t\)</span> and <span class="math inline">\(L_t^{VF} = \|V_{\theta} - V_t^{targ}\|^2\)</span> is the square loss.</p>
-<p>One style of advantage estimate is n-step TD estimate:</p>
-<p><span class="math display">\[\hat{A}_t = r_t + \gamma r_{t+1} + .... + \gamma^{T-t+1} r_{T-1} + \gamma^{T-t} V(s_T) - V(s_t)\]</span></p>
-<p>Where <span class="math inline">\(t\)</span> specifies the time index in <span class="math inline">\([0, T]\)</span>, within a given length-<span class="math inline">\(T\)</span> trajectory segment. Using this idea, we can use a truncated version of generalized advantage estimation:</p>
-<p><span class="math display">\[\hat{A}_t = \delta_t + \gamma \lambda \delta_{t+1} + .... + \lambda \gamma^{T-t+1}\delta_{T-1}\]</span></p>
-<p><span class="math display">\[\delta_t = r_t + \gamma V(s_{t+1}) - V(s_t)\]</span> </br></p>
-<p><img src="/images/RL/pg/ppo_3.png" width="600"> </br></p>
-<p>A PPO algorithm that uses fixed-length trajectory segments is shown above. Each iteration, each <span class="math inline">\(N\)</span> parallel actors collect <span class="math inline">\(T\)</span> timesteps of data. Then we construct the surrogate loss on these <span class="math inline">\(NT\)</span> timesteps of data and optimize it with mini-batch SGD for <span class="math inline">\(K\)</span> epochs.</p>
-<h2 id="implementation">Implementation</h2>
-<p>One implementation from parl</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   Copyright (c) 2021 PaddlePaddle Authors. All Rights Reserved.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></span><br><span class="line"><span class="comment"># you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"># You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"><span class="keyword">import</span> paddle</span><br><span class="line"><span class="keyword">import</span> paddle.optimizer <span class="keyword">as</span> optim</span><br><span class="line"><span class="keyword">import</span> paddle.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">from</span> paddle.distribution <span class="keyword">import</span> Normal</span><br><span class="line"></span><br><span class="line">__all__ = [<span class="string">&#x27;PPO&#x27;</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PPO</span>(<span class="params">parl.Algorithm</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,</span></span></span><br><span class="line"><span class="function"><span class="params">                 model,</span></span></span><br><span class="line"><span class="function"><span class="params">                 clip_param,</span></span></span><br><span class="line"><span class="function"><span class="params">                 value_loss_coef,</span></span></span><br><span class="line"><span class="function"><span class="params">                 entropy_coef,</span></span></span><br><span class="line"><span class="function"><span class="params">                 initial_lr,</span></span></span><br><span class="line"><span class="function"><span class="params">                 eps=<span class="literal">None</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 max_grad_norm=<span class="literal">None</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 use_clipped_value_loss=<span class="literal">True</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; PPO algorithm</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            model (parl.Model): model that contains both value network and policy network</span></span><br><span class="line"><span class="string">            clip_param (float): the clipping strength for value loss clipping</span></span><br><span class="line"><span class="string">            value_loss_coef (float): the coefficient for value loss (c_1)</span></span><br><span class="line"><span class="string">            entropy_coef (float): the coefficient for entropy (c_2)</span></span><br><span class="line"><span class="string">            initial_lr (float): initial learning rate.</span></span><br><span class="line"><span class="string">            eps (None or float): epsilon for Adam optimizer</span></span><br><span class="line"><span class="string">            max_grad_norm (float): threshold for grad norm clipping</span></span><br><span class="line"><span class="string">            use_clipped_value_loss (bool): whether use value loss clipping</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="built_in">super</span>().__init__(model)</span><br><span class="line">        self.clip_param = clip_param</span><br><span class="line"></span><br><span class="line">        self.value_loss_coef = value_loss_coef</span><br><span class="line">        self.entropy_coef = entropy_coef</span><br><span class="line">        self.use_clipped_value_loss = use_clipped_value_loss</span><br><span class="line">        clip = nn.ClipGradByNorm(max_grad_norm)</span><br><span class="line"></span><br><span class="line">        self.optimizer = optim.Adam(parameters=model.parameters(),</span><br><span class="line">                                    learning_rate=initial_lr,</span><br><span class="line">                                    epsilon=eps,</span><br><span class="line">                                    grad_clip=clip)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self, obs_batch, actions_batch, value_preds_batch, return_batch,</span></span></span><br><span class="line"><span class="function"><span class="params">              old_action_log_probs_batch, adv_targ</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; update the value network and policy network parameters.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        values = self.model.value(obs_batch)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># log std so the std is always positive after e^&#123;log_std&#125;</span></span><br><span class="line">        mean, log_std = self.model.policy(obs_batch)</span><br><span class="line">        dist = Normal(mean, log_std.exp())</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Continuous actions are usually considered to be independent,</span></span><br><span class="line">        <span class="comment"># so we can sum components of the ``log_prob`` or the entropy.</span></span><br><span class="line">        action_log_probs = dist.log_prob(actions_batch).<span class="built_in">sum</span>(axis=-<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">        dist_entropy = dist.entropy().<span class="built_in">sum</span>(axis=-<span class="number">1</span>).mean()</span><br><span class="line"></span><br><span class="line">        ratio = paddle.exp(action_log_probs - old_action_log_probs_batch)</span><br><span class="line">        surr1 = ratio * adv_targ</span><br><span class="line">        surr2 = paddle.clip(ratio, <span class="number">1.0</span> - self.clip_param, <span class="number">1.0</span> + self.clip_param) * adv_targ</span><br><span class="line">        action_loss = -paddle.minimum(surr1, surr2).mean()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># calculate value loss using semi gradient TD</span></span><br><span class="line">        <span class="keyword">if</span> self.use_clipped_value_loss:</span><br><span class="line">            value_pred_clipped = value_preds_batch + \</span><br><span class="line">                (values - value_preds_batch).clip(-self.clip_param, self.clip_param)</span><br><span class="line">            value_losses = (values - return_batch).<span class="built_in">pow</span>(<span class="number">2</span>)</span><br><span class="line">            value_losses_clipped = (value_pred_clipped - return_batch).<span class="built_in">pow</span>(<span class="number">2</span>)</span><br><span class="line">            value_loss = <span class="number">0.5</span> * paddle.maximum(value_losses, value_losses_clipped).mean()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            value_loss = <span class="number">0.5</span> * (return_batch - values).<span class="built_in">pow</span>(<span class="number">2</span>).mean()</span><br><span class="line"></span><br><span class="line">        (value_loss * self.value_loss_coef + action_loss - dist_entropy * self.entropy_coef).backward()</span><br><span class="line">        self.optimizer.step()</span><br><span class="line">        self.optimizer.clear_grad()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> value_loss.numpy(), action_loss.numpy(), dist_entropy.numpy()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sample</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; Sample action from parameterized policy</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        value = self.model.value(obs)</span><br><span class="line">        mean, log_std = self.model.policy(obs)</span><br><span class="line">        dist = Normal(mean, log_std.exp())</span><br><span class="line">        action = dist.sample([<span class="number">1</span>])</span><br><span class="line">        action_log_probs = dist.log_prob(action).<span class="built_in">sum</span>(-<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> value, action, action_log_probs</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; Predict action from parameterized policy, action with maximum probability is selected as greedy action</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        mean, _ = self.model.policy(obs)</span><br><span class="line">        <span class="keyword">return</span> mean</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">value</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; Predict value from parameterized value function</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.model.value(obs)</span><br></pre></td></tr></table></figure>
-<h2 id="reference">Reference</h2>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>PG</category>
-      </categories>
-      <tags>
-        <tag>Policy Gradient</tag>
-        <tag>Policy Search</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>TRPO</title>
     <url>/2021/06/11/TRPO/</url>
     <content><![CDATA[<h1 id="trust-region-policy-optimization">Trust Region Policy Optimization</h1>
@@ -755,6 +677,84 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
       <tags>
         <tag>Deep Learning</tag>
         <tag>Neural Network Architectures</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PPO</title>
+    <url>/2021/06/11/PPO/</url>
+    <content><![CDATA[<h1 id="proximal-policy-optimization-algorithms">Proximal Policy Optimization Algorithms</h1>
+<h2 id="notations-and-backgrounds">Notations and Backgrounds</h2>
+<h3 id="policy-gradient-estimator">Policy gradient estimator</h3>
+<p><span class="math display">\[\hat{g} = \hat{E}_t [\nabla_{\theta} \log \pi_{\theta} (a_t | s_t) \hat{A_t}]\]</span></p>
+<p>Where, <span class="math inline">\(\pi_{\theta}\)</span> is the stochastic policy and <span class="math inline">\(\hat{A_t}\)</span> is an estimate of advantage function at timestep <span class="math inline">\(t\)</span>. The expectation here <span class="math inline">\(\hat{E}_t\)</span> indicates the empirical average over a finite batch of samples, in an algorithm that alternates between sampling and optimization.</p>
+<p><span class="math inline">\(\hat{g}\)</span> is obtained by differentiating the objective</p>
+<p><span class="math display">\[L^{PG} (\theta) = \hat{E}_t [\log \pi_{\theta} (a_t | s_t) \hat{A_t}]\]</span></p>
+<p>While it is appealing to perform multiple steps of optimization on this loss <span class="math inline">\(L^{PG} (\theta)\)</span> (reuse the same samples to update <span class="math inline">\(\theta\)</span>), using the same trajectory, doing so is not well-justi ed, and empirically it often leads to destructively large policy updates.</p>
+<h3 id="trust-region-methods">Trust Region Methods</h3>
+<p>The optimization problem is defined as:</p>
+<span class="math display">\[\begin{aligned}
+\max_{\theta} \quad &amp; \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim \pi_{\theta_{old}}(\cdot | s)} [\frac{\pi_{\theta} (a | s)}{\pi_{\theta_{old}} (a | s)} \hat{A}_{\theta_{old}} (s, a)]\\
+\textrm{s.t.} \quad &amp; \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot)}[D_{KL} (\pi_{\theta_{old}} (\cdot | s) || \pi_{\theta} (\cdot | s))] \leq \delta
+\end{aligned}\]</span>
+<p></br></p>
+<p>It is also possible to remove the hard constraint and convert the problem to an unconstrained objective:</p>
+<span class="math display">\[\begin{aligned}
+\max_{\theta} \quad &amp; \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim \pi_{\theta_{old}}(\cdot | s)} [\frac{\pi_{\theta} (a | s)}{\pi_{\theta_{old}} (a | s)} \hat{A}_{\theta_{old}} (s, a) - \beta D_{KL}[\pi_{\theta_{old}} (\cdot | s) || \pi_{\theta} (\cdot | s))]]\\
+\end{aligned}\]</span>
+<p></br></p>
+<p>The problem with this objective is that, the penalty prefers small steps, so it is very hard to choose an appropriate <span class="math inline">\(\beta\)</span> that performs well across different problems or even within a single problem where the characteristics change over the course of learning.</p>
+<span id="more"></span>
+<h2 id="clipped-surrogate-objective">Clipped Surrogate Objective</h2>
+<p>Let <span class="math inline">\(r_t (\theta)\)</span> denotes the probability ratio <span class="math inline">\(r_t (\theta) = \frac{\pi_{\theta} (a_t | s_t)}{\pi_{\theta_{old}} (a_t | s_t)}\)</span>, so <span class="math inline">\(r (\theta_{old}) = 1\)</span>. The above unconstrained TRPO objective without penalty becomes:</p>
+<p><span class="math display">\[L^{CPI} (\theta) = \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim \pi_{\theta_{old}} (\cdot | s)} [r_{t} (\theta) \hat{A}_{\theta_{old}} (s, a)]\]</span></p>
+<p>Without the penalty, the step size can be super big maximizing <span class="math inline">\(L^{CPI}\)</span>, thus, we can add penalty to the changes to the policy that move <span class="math inline">\(r_t (\theta)\)</span> away from 1 (make big updates or take big step)</p>
+<p>The main objective is then:</p>
+<p><span class="math display">\[L^{CLIP} (\theta) = \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim \pi_{\theta_{old}} (\cdot | s)} [\min (r_{t} (\theta) \hat{A}_{\theta_{old}} (s, a), \text{clip}(r_t(\theta), 1 - \epsilon, 1 + \epsilon)\hat{A}_{\theta_{old}} (s, a))]\]</span> </br></p>
+<p>Notice here, the clipped objective gives a lower bound of the unclipped objective, to see this:</p>
+<ol type="1">
+<li>If <span class="math inline">\(A_t &lt; 0\)</span>, then one way to maximize the objective is to make <span class="math inline">\(r_t\)</span> very small, then we will have a really large step size, However, with clipped objective, the largest change is clipped to <span class="math inline">\(1 - \epsilon\)</span></li>
+<li>If <span class="math inline">\(A_t &gt; 0\)</span>, then one way to maximize the objective is to make <span class="math inline">\(r_t\)</span> very large, then we will have a really large step size. However, with clipped objective, the largest change is clipped to <span class="math inline">\(1 + \epsilon\)</span></li>
+</ol>
+<p>At the same time, the minimum gives the above behavior to account for <span class="math inline">\(A_t &gt; 0, A_t &lt; 0\)</span> situation.</p>
+<p><img src="/images/RL/pg/ppo_1.png" width="600"></p>
+<p><img src="/images/RL/pg/ppo_2.png" width="600"></p>
+<h2 id="adaptive-kl-penalty-coefficient">Adaptive KL Penalty Coefficient</h2>
+<p>Another approach, which can be used as an alternative to the clipped surrogate objective, or in additional to it is to use a penalty on KL divergence <span class="math inline">\(d_{targ}\)</span> each policy update. In practice, KL performs worse than the clipped surrogate objective.</p>
+<p>In the simplest instantiation of this algorithm, the following steps are used in each policy update:</p>
+<ul>
+<li><p>Using several epochs of mini-batch SGD, optimizing the KL-penalized objective:</p>
+<p><span class="math display">\[L^{KLPEN} (\theta) = \hat{E}_t [\frac{\pi_\theta (a_t | s_t)}{\pi_{\theta_{old}} (a_t | s_t)} \hat{A}_t - \beta_t D_{KL} (\pi_{\theta_{old}} (\cdot | s) || \pi_{\theta} (\cdot | s))]\]</span></p></li>
+<li><p>Compute and update <span class="math inline">\(\theta_{t+1}\)</span>:</p>
+<p><span class="math display">\[d = \hat{E}_t [\beta_t D_{KL} (\pi_{\theta_{old}} (\cdot | s) || \pi_{\theta} (\cdot | s))]\]</span></p>
+<ul>
+<li>If <span class="math inline">\(d &lt; d_{targ} \;/\; 1.5, \quad \beta_{t + 1} \leftarrow \beta_{t} \;/\; 2\)</span></li>
+<li>If <span class="math inline">\(d &gt; d_{targ} * 1.5, \quad \beta_{t + 1} \leftarrow \beta_{t} * 2\)</span></li>
+</ul></li>
+</ul>
+<p><span class="math inline">\(\beta_{t + 1}\)</span> is used in the next policy update. The algorithm is not very sensitive to the choice of <span class="math inline">\(2\)</span> and <span class="math inline">\(1.5\)</span> above. The initial value of <span class="math inline">\(\beta\)</span> is another hyperparameter but is not important in practice.</p>
+<h2 id="algorithm">Algorithm</h2>
+<p>The advantage function can be estimated using a separate value function <span class="math inline">\(V(x)\)</span>, or a shared parameter value and policy network can be used. If the parameters are shared between policy network and value network, we need to modify the objective by adding the value loss negative value function loss <span class="math inline">\(- L^{VF} (\theta)\)</span> and maybe an entropy term to promote exploration:</p>
+<p><span class="math display">\[L^{CLIP + VF + S} (\theta) = \hat{E} [L_t^{CLIP} (\theta) - c_1 L_t^{VF} (\theta) + c_2 S[\pi_{\theta}] (s_t)]\]</span> </br></p>
+<p>Where, <span class="math inline">\(c_1, c_2\)</span> are two coefficients, <span class="math inline">\(S[\pi_{\theta}] (s_t)\)</span> is the entropy bonus on <span class="math inline">\(s_t\)</span> and <span class="math inline">\(L_t^{VF} = \|V_{\theta} - V_t^{targ}\|^2\)</span> is the square loss.</p>
+<p>One style of advantage estimate is n-step TD estimate:</p>
+<p><span class="math display">\[\hat{A}_t = r_t + \gamma r_{t+1} + .... + \gamma^{T-t+1} r_{T-1} + \gamma^{T-t} V(s_T) - V(s_t)\]</span></p>
+<p>Where <span class="math inline">\(t\)</span> specifies the time index in <span class="math inline">\([0, T]\)</span>, within a given length-<span class="math inline">\(T\)</span> trajectory segment. Using this idea, we can use a truncated version of generalized advantage estimation:</p>
+<p><span class="math display">\[\hat{A}_t = \delta_t + \gamma \lambda \delta_{t+1} + .... + \lambda \gamma^{T-t+1}\delta_{T-1}\]</span></p>
+<p><span class="math display">\[\delta_t = r_t + \gamma V(s_{t+1}) - V(s_t)\]</span> </br></p>
+<p><img src="/images/RL/pg/ppo_3.png" width="600"> </br></p>
+<p>A PPO algorithm that uses fixed-length trajectory segments is shown above. Each iteration, each <span class="math inline">\(N\)</span> parallel actors collect <span class="math inline">\(T\)</span> timesteps of data. Then we construct the surrogate loss on these <span class="math inline">\(NT\)</span> timesteps of data and optimize it with mini-batch SGD for <span class="math inline">\(K\)</span> epochs.</p>
+<h2 id="implementation">Implementation</h2>
+<p>One implementation from parl</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   Copyright (c) 2021 PaddlePaddle Authors. All Rights Reserved.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></span><br><span class="line"><span class="comment"># you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"># You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"><span class="keyword">import</span> paddle</span><br><span class="line"><span class="keyword">import</span> paddle.optimizer <span class="keyword">as</span> optim</span><br><span class="line"><span class="keyword">import</span> paddle.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">from</span> paddle.distribution <span class="keyword">import</span> Normal</span><br><span class="line"></span><br><span class="line">__all__ = [<span class="string">&#x27;PPO&#x27;</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PPO</span>(<span class="params">parl.Algorithm</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self,</span></span></span><br><span class="line"><span class="function"><span class="params">                 model,</span></span></span><br><span class="line"><span class="function"><span class="params">                 clip_param,</span></span></span><br><span class="line"><span class="function"><span class="params">                 value_loss_coef,</span></span></span><br><span class="line"><span class="function"><span class="params">                 entropy_coef,</span></span></span><br><span class="line"><span class="function"><span class="params">                 initial_lr,</span></span></span><br><span class="line"><span class="function"><span class="params">                 eps=<span class="literal">None</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 max_grad_norm=<span class="literal">None</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 use_clipped_value_loss=<span class="literal">True</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; PPO algorithm</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            model (parl.Model): model that contains both value network and policy network</span></span><br><span class="line"><span class="string">            clip_param (float): the clipping strength for value loss clipping</span></span><br><span class="line"><span class="string">            value_loss_coef (float): the coefficient for value loss (c_1)</span></span><br><span class="line"><span class="string">            entropy_coef (float): the coefficient for entropy (c_2)</span></span><br><span class="line"><span class="string">            initial_lr (float): initial learning rate.</span></span><br><span class="line"><span class="string">            eps (None or float): epsilon for Adam optimizer</span></span><br><span class="line"><span class="string">            max_grad_norm (float): threshold for grad norm clipping</span></span><br><span class="line"><span class="string">            use_clipped_value_loss (bool): whether use value loss clipping</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="built_in">super</span>().__init__(model)</span><br><span class="line">        self.clip_param = clip_param</span><br><span class="line"></span><br><span class="line">        self.value_loss_coef = value_loss_coef</span><br><span class="line">        self.entropy_coef = entropy_coef</span><br><span class="line">        self.use_clipped_value_loss = use_clipped_value_loss</span><br><span class="line">        clip = nn.ClipGradByNorm(max_grad_norm)</span><br><span class="line"></span><br><span class="line">        self.optimizer = optim.Adam(parameters=model.parameters(),</span><br><span class="line">                                    learning_rate=initial_lr,</span><br><span class="line">                                    epsilon=eps,</span><br><span class="line">                                    grad_clip=clip)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self, obs_batch, actions_batch, value_preds_batch, return_batch,</span></span></span><br><span class="line"><span class="function"><span class="params">              old_action_log_probs_batch, adv_targ</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; update the value network and policy network parameters.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        values = self.model.value(obs_batch)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># log std so the std is always positive after e^&#123;log_std&#125;</span></span><br><span class="line">        mean, log_std = self.model.policy(obs_batch)</span><br><span class="line">        dist = Normal(mean, log_std.exp())</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Continuous actions are usually considered to be independent,</span></span><br><span class="line">        <span class="comment"># so we can sum components of the ``log_prob`` or the entropy.</span></span><br><span class="line">        action_log_probs = dist.log_prob(actions_batch).<span class="built_in">sum</span>(axis=-<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">        dist_entropy = dist.entropy().<span class="built_in">sum</span>(axis=-<span class="number">1</span>).mean()</span><br><span class="line"></span><br><span class="line">        ratio = paddle.exp(action_log_probs - old_action_log_probs_batch)</span><br><span class="line">        surr1 = ratio * adv_targ</span><br><span class="line">        surr2 = paddle.clip(ratio, <span class="number">1.0</span> - self.clip_param, <span class="number">1.0</span> + self.clip_param) * adv_targ</span><br><span class="line">        action_loss = -paddle.minimum(surr1, surr2).mean()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># calculate value loss using semi gradient TD</span></span><br><span class="line">        <span class="keyword">if</span> self.use_clipped_value_loss:</span><br><span class="line">            value_pred_clipped = value_preds_batch + \</span><br><span class="line">                (values - value_preds_batch).clip(-self.clip_param, self.clip_param)</span><br><span class="line">            value_losses = (values - return_batch).<span class="built_in">pow</span>(<span class="number">2</span>)</span><br><span class="line">            value_losses_clipped = (value_pred_clipped - return_batch).<span class="built_in">pow</span>(<span class="number">2</span>)</span><br><span class="line">            value_loss = <span class="number">0.5</span> * paddle.maximum(value_losses, value_losses_clipped).mean()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            value_loss = <span class="number">0.5</span> * (return_batch - values).<span class="built_in">pow</span>(<span class="number">2</span>).mean()</span><br><span class="line"></span><br><span class="line">        (value_loss * self.value_loss_coef + action_loss - dist_entropy * self.entropy_coef).backward()</span><br><span class="line">        self.optimizer.step()</span><br><span class="line">        self.optimizer.clear_grad()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> value_loss.numpy(), action_loss.numpy(), dist_entropy.numpy()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sample</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; Sample action from parameterized policy</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        value = self.model.value(obs)</span><br><span class="line">        mean, log_std = self.model.policy(obs)</span><br><span class="line">        dist = Normal(mean, log_std.exp())</span><br><span class="line">        action = dist.sample([<span class="number">1</span>])</span><br><span class="line">        action_log_probs = dist.log_prob(action).<span class="built_in">sum</span>(-<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> value, action, action_log_probs</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; Predict action from parameterized policy, action with maximum probability is selected as greedy action</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        mean, _ = self.model.policy(obs)</span><br><span class="line">        <span class="keyword">return</span> mean</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">value</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; Predict value from parameterized value function</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.model.value(obs)</span><br></pre></td></tr></table></figure>
+<h2 id="reference">Reference</h2>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>PG</category>
+      </categories>
+      <tags>
+        <tag>Policy Gradient</tag>
+        <tag>Policy Search</tag>
       </tags>
   </entry>
   <entry>
@@ -1577,54 +1577,6 @@ Var(y_l) &amp;= n_l Var(w_l x_l) \\
 ]]></content>
   </entry>
   <entry>
-    <title>knapsack</title>
-    <url>/2021/07/08/knapsack/</url>
-    <content><![CDATA[<h1 id="knapsack-problem">knapsack Problem</h1>
-<h2 id="knapsack-problem-1">0–1 knapsack problem</h2>
-<p>Given weights and values of <span class="math inline">\(n\)</span> items, put these items in a knapsack of capacity <span class="math inline">\(W\)</span> to get the maximum total value in the knapsack.</p>
-<p><span class="math inline">\(f(i, j):\)</span> using only first <span class="math inline">\(i\)</span> items, with maximum capacity of <span class="math inline">\(j\)</span>, the maximum total value you can get.</p>
-<p>Then, we can write our base cases:</p>
-<ul>
-<li><span class="math inline">\(f(0, :) = 0\)</span></li>
-<li><span class="math inline">\(f(:, 0) = 0\)</span></li>
-</ul>
-<p>0 items have values 0 and no items can be put into knapsack with capacity of 0.</p>
-<p>At <span class="math inline">\(f(i, j)\)</span>, comparing it to <span class="math inline">\(f(i - 1, j)\)</span>, we can choose to include item <span class="math inline">\(i\)</span> or not. So, we can write out of transition function <span class="math inline">\(f(i, j)\)</span>:</p>
-<ol type="1">
-<li><p>If there is still extra capacity for item <span class="math inline">\(i\)</span> with total capacity <span class="math inline">\(j\)</span> (i.e <span class="math inline">\(sum(weights[: i + 1]) \leq j)\)</span>), then we can just simply add values of item <span class="math inline">\(i\)</span>. <span class="math display">\[f(i, j) = f(i - 1, j) + values(i)\]</span></p></li>
-<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> and the current weight <span class="math inline">\(weight[i] &gt; j\)</span>, then we only need to keep the previous maximum values because the item <span class="math inline">\(i\)</span> won't fit whatsoever: <span class="math display">\[f(i, j) = f(i - 1, j)\]</span></p></li>
-<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> but <span class="math inline">\(weight[i] \leq j\)</span>, then we can choose to include this item and discard some past items, or move on without considering this item:</p>
-<ol type="1">
-<li><p>The total values if we include this item (<span class="math inline">\(\text{current value } + \text{ The maximum value we can get after we fill the capacity j with i}\)</span> (we need to <code>exclude</code> the current item)): <span class="math display">\[\text{total}_{include} = values[i] + f(i - 1, j - weights[i])\]</span></p></li>
-<li><p>The maximum value exclude current item: <span class="math display">\[f(i - 1, j)\]</span></p></li>
-</ol>
-<p>By taking the maximum over these two, we have:</p>
-<p><span class="math display">\[f(i, j) = \max(f(i - 1, j), \; values[i] + f(i - 1, j - weights[i]))\]</span></p></li>
-</ol>
-<h2 id="unbounded-knapsack-problem">Unbounded knapsack problem</h2>
-<p>Given a knapsack weight <span class="math inline">\(W\)</span> and a set of <span class="math inline">\(n\)</span> items with certain value <span class="math inline">\(v_i\)</span> and weight <span class="math inline">\(w_i\)</span>, we need to calculate the maximum amount that could make up this quantity exactly. This is different from classical Knapsack problem, here we are allowed to use unlimited number of instances of an item.</p>
-<p><span class="math inline">\(f(i, j):\)</span> using only first <span class="math inline">\(i\)</span> items, with maximum capacity of <span class="math inline">\(j\)</span>, the maximum total value you can get.</p>
-<p>Then, we can write our base cases:</p>
-<ul>
-<li><span class="math inline">\(f(0, :) = 0\)</span></li>
-<li><span class="math inline">\(f(:, 0) = 0\)</span></li>
-</ul>
-<p>0 items have values 0 and no items can be put into knapsack with capacity of 0.</p>
-<p>At <span class="math inline">\(f(i, j)\)</span>, comparing it to <span class="math inline">\(f(i - 1, j)\)</span>, we can choose to include item <span class="math inline">\(i\)</span> or not. So, we can write out of transition function <span class="math inline">\(f(i, j)\)</span>:</p>
-<ol type="1">
-<li><p>If there is still extra capacity for item <span class="math inline">\(i\)</span> with total capacity <span class="math inline">\(j\)</span> (i.e <span class="math inline">\(sum(weights[: i + 1]) \leq j)\)</span>), then we can just simply add values of item <span class="math inline">\(i\)</span>. <span class="math display">\[f(i, j) = f(i - 1, j) + values(i)\]</span></p></li>
-<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> and the current weight <span class="math inline">\(weight[i] &gt; j\)</span>, then we only need to keep the previous maximum values because the item <span class="math inline">\(i\)</span> won't fit whatsoever: <span class="math display">\[f(i, j) = f(i - 1, j)\]</span></p></li>
-<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> but <span class="math inline">\(weight[i] \leq j\)</span>, then we can choose to include this item and discard some past items, or move on without considering this item:</p>
-<ol type="1">
-<li><p>The total values if we include this item (<span class="math inline">\(\text{current value } + \text{ The maximum value we have can get after we fill the capacity j with i}\)</span> (we need to <code>include</code> the current item)): <span class="math display">\[\text{total}_{include} = values[i] + f(i, j - weights[i])\]</span></p></li>
-<li><p>The maximum value exclude current item: <span class="math display">\[f(i - 1, j)\]</span></p></li>
-</ol>
-<p>By taking the maximum over these two, we have:</p>
-<p><span class="math display">\[f(i, j) = \max(f(i - 1, j), \; values[i] + f(i, j - weights[i]))\]</span></p></li>
-</ol>
-]]></content>
-  </entry>
-  <entry>
     <title>Layer Normalization</title>
     <url>/2021/06/02/layer-norm/</url>
     <content><![CDATA[<h1 id="layer-normalization">Layer Normalization</h1>
@@ -1674,6 +1626,54 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
         <tag>Deep Learning</tag>
         <tag>Normalization</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>knapsack</title>
+    <url>/2021/07/08/knapsack/</url>
+    <content><![CDATA[<h1 id="knapsack-problem">knapsack Problem</h1>
+<h2 id="knapsack-problem-1">0–1 knapsack problem</h2>
+<p>Given weights and values of <span class="math inline">\(n\)</span> items, put these items in a knapsack of capacity <span class="math inline">\(W\)</span> to get the maximum total value in the knapsack.</p>
+<p><span class="math inline">\(f(i, j):\)</span> using only first <span class="math inline">\(i\)</span> items, with maximum capacity of <span class="math inline">\(j\)</span>, the maximum total value you can get.</p>
+<p>Then, we can write our base cases:</p>
+<ul>
+<li><span class="math inline">\(f(0, :) = 0\)</span></li>
+<li><span class="math inline">\(f(:, 0) = 0\)</span></li>
+</ul>
+<p>0 items have values 0 and no items can be put into knapsack with capacity of 0.</p>
+<p>At <span class="math inline">\(f(i, j)\)</span>, comparing it to <span class="math inline">\(f(i - 1, j)\)</span>, we can choose to include item <span class="math inline">\(i\)</span> or not. So, we can write out of transition function <span class="math inline">\(f(i, j)\)</span>:</p>
+<ol type="1">
+<li><p>If there is still extra capacity for item <span class="math inline">\(i\)</span> with total capacity <span class="math inline">\(j\)</span> (i.e <span class="math inline">\(sum(weights[: i + 1]) \leq j)\)</span>), then we can just simply add values of item <span class="math inline">\(i\)</span>. <span class="math display">\[f(i, j) = f(i - 1, j) + values(i)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> and the current weight <span class="math inline">\(weight[i] &gt; j\)</span>, then we only need to keep the previous maximum values because the item <span class="math inline">\(i\)</span> won't fit whatsoever: <span class="math display">\[f(i, j) = f(i - 1, j)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> but <span class="math inline">\(weight[i] \leq j\)</span>, then we can choose to include this item and discard some past items, or move on without considering this item:</p>
+<ol type="1">
+<li><p>The total values if we include this item (<span class="math inline">\(\text{current value } + \text{ The maximum value we can get after we fill the capacity j with i}\)</span> (we need to <code>exclude</code> the current item)): <span class="math display">\[\text{total}_{include} = values[i] + f(i - 1, j - weights[i])\]</span></p></li>
+<li><p>The maximum value exclude current item: <span class="math display">\[f(i - 1, j)\]</span></p></li>
+</ol>
+<p>By taking the maximum over these two, we have:</p>
+<p><span class="math display">\[f(i, j) = \max(f(i - 1, j), \; values[i] + f(i - 1, j - weights[i]))\]</span></p></li>
+</ol>
+<h2 id="unbounded-knapsack-problem">Unbounded knapsack problem</h2>
+<p>Given a knapsack weight <span class="math inline">\(W\)</span> and a set of <span class="math inline">\(n\)</span> items with certain value <span class="math inline">\(v_i\)</span> and weight <span class="math inline">\(w_i\)</span>, we need to calculate the maximum amount that could make up this quantity exactly. This is different from classical Knapsack problem, here we are allowed to use unlimited number of instances of an item.</p>
+<p><span class="math inline">\(f(i, j):\)</span> using only first <span class="math inline">\(i\)</span> items, with maximum capacity of <span class="math inline">\(j\)</span>, the maximum total value you can get.</p>
+<p>Then, we can write our base cases:</p>
+<ul>
+<li><span class="math inline">\(f(0, :) = 0\)</span></li>
+<li><span class="math inline">\(f(:, 0) = 0\)</span></li>
+</ul>
+<p>0 items have values 0 and no items can be put into knapsack with capacity of 0.</p>
+<p>At <span class="math inline">\(f(i, j)\)</span>, comparing it to <span class="math inline">\(f(i - 1, j)\)</span>, we can choose to include item <span class="math inline">\(i\)</span> or not. So, we can write out of transition function <span class="math inline">\(f(i, j)\)</span>:</p>
+<ol type="1">
+<li><p>If there is still extra capacity for item <span class="math inline">\(i\)</span> with total capacity <span class="math inline">\(j\)</span> (i.e <span class="math inline">\(sum(weights[: i + 1]) \leq j)\)</span>), then we can just simply add values of item <span class="math inline">\(i\)</span>. <span class="math display">\[f(i, j) = f(i - 1, j) + values(i)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> and the current weight <span class="math inline">\(weight[i] &gt; j\)</span>, then we only need to keep the previous maximum values because the item <span class="math inline">\(i\)</span> won't fit whatsoever: <span class="math display">\[f(i, j) = f(i - 1, j)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> but <span class="math inline">\(weight[i] \leq j\)</span>, then we can choose to include this item and discard some past items, or move on without considering this item:</p>
+<ol type="1">
+<li><p>The total values if we include this item (<span class="math inline">\(\text{current value } + \text{ The maximum value we have can get after we fill the capacity j with i}\)</span> (we need to <code>include</code> the current item)): <span class="math display">\[\text{total}_{include} = values[i] + f(i, j - weights[i])\]</span></p></li>
+<li><p>The maximum value exclude current item: <span class="math display">\[f(i - 1, j)\]</span></p></li>
+</ol>
+<p>By taking the maximum over these two, we have:</p>
+<p><span class="math display">\[f(i, j) = \max(f(i - 1, j), \; values[i] + f(i, j - weights[i]))\]</span></p></li>
+</ol>
+]]></content>
   </entry>
   <entry>
     <title>LeetCode(4)</title>
@@ -1851,14 +1851,14 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
       </tags>
   </entry>
   <entry>
-    <title>off-policy-actor-critic</title>
-    <url>/2021/06/03/off-policy-actor-critic/</url>
+    <title>overfeat</title>
+    <url>/2021/06/25/overfeat/</url>
     <content><![CDATA[
 ]]></content>
   </entry>
   <entry>
-    <title>overfeat</title>
-    <url>/2021/06/25/overfeat/</url>
+    <title>off-policy-actor-critic</title>
+    <url>/2021/06/03/off-policy-actor-critic/</url>
     <content><![CDATA[
 ]]></content>
   </entry>
