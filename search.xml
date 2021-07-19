@@ -374,73 +374,6 @@ Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \ha
       </tags>
   </entry>
   <entry>
-    <title>MDP</title>
-    <url>/2021/05/03/MDP/</url>
-    <content><![CDATA[<h1 id="mdp">MDP</h1>
-<p><span style="color:red"><em>Based on Prof Amir-massoud Farahmand's Lecture on RL</em> </span></p>
-<p>Define our MDP different from Introduction to RL book:</p>
-<p><img src='/images/RL/bellman_equation/mdp.png'></p>
-<p>Where <span class="math inline">\(M(X)\)</span> is the space of all probability distributions defined over the state space X <span id="more"></span></p>
-<p>So a sample of the process can be described as a rollout or trajectory:</p>
-<p><span class="math display">\[\tau = X_1, A_1, R_1, X_2, A_2, R_2, ...\]</span></p>
-<p>A deterministic dynamical system always behave exactly the same given the same starting state and action, that is, they can be described as a transition function <span class="math inline">\(f\)</span> instead of transition distribution <span class="math inline">\(P\)</span></p>
-<p><span class="math display">\[x_{t+1} = f(x, a)\]</span></p>
-<h2 id="policy">Policy</h2>
-<p><img src='/images/RL/bellman_equation/policy_1.png'></p>
-<p><img src='/images/RL/bellman_equation/policy.png'></p>
-<h2 id="policy-induced-transition-kernels">Policy induced Transition Kernels</h2>
-<p><img src='/images/RL/bellman_equation/transition_kernel.png'></p>
-<h2 id="rewards-and-returns">Rewards and Returns</h2>
-<p>Let's define expected reward as:</p>
-<p><span class="math display">\[r(x, a) = E[R | X=x, A=a]\]</span></p>
-<p>then the expected reward following policy pi is defined as</p>
-<p><span class="math display">\[r^{\pi} (x) = E_{a \sim \pi(a | x)} [R | X=x]\]</span></p>
-<p>Define return following policy <span class="math inline">\(\pi\)</span> as discounted sum of rewards starting from <span class="math inline">\(X_1\)</span>:</p>
-<p><span class="math display">\[G^{\pi} = R_1 + \gamma R_2 + ... + \gamma^{T-1} R_{T} = \sum^{\infty}_{k=t} \gamma^{k - t}R_{t}\]</span></p>
-<p>or any starting at any step <span class="math inline">\(X_{t}\)</span>:</p>
-<p><span class="math display">\[G^{\pi}_{t} = \sum^{\infty}_{k=t} \gamma^{k - t}R_{t}\]</span></p>
-<p>Note that <span class="math inline">\(\gamma\)</span> is a part of the problem setting, it is usually not a hyperparameter. <strong>One way to think about is as a constant probability of termination of <span class="math inline">\(1 - \gamma\)</span>. Or we can set <span class="math inline">\(\gamma = 1\)</span> when we have episodic tasks.</strong>.</p>
-<h2 id="example">Example</h2>
-<p>Finite horizon example:</p>
-<ul>
-<li>Start at <span class="math inline">\(X_1 \sim \rho\)</span></li>
-<li>Select <span class="math inline">\(A_1 \sim \pi(\cdot | X_1)\)</span></li>
-<li>Get <span class="math inline">\(R_1 \sim R(\cdot | A_1, X_1)\)</span></li>
-<li>Get <span class="math inline">\(X_2 \sim P(\cdot | A_1, X_1)\)</span></li>
-<li>...</li>
-<li>...</li>
-<li>Get <span class="math inline">\(R_{T} \sim R(\cdot | X_{T}, A_{T})\)</span></li>
-<li>Get <span class="math inline">\(X_{T+1} \sim P(\cdot | X_{T}, A_{T})\)</span> (This is the terminal state, which is often dropped because it has value of 0)</li>
-</ul>
-<p>The process stops!</p>
-<h2 id="value-functions">Value functions</h2>
-<p>Next we can define value functions as:</p>
-<p>State value function (alias: Value function, V, v) starting from state x and following policy <span class="math inline">\(\pi\)</span>:</p>
-<p><span class="math display">\[V^{\pi}(x) = E[G_1^{\pi} | X_{1} = x] = E[G^{\pi}_{t} | X_{t} = x] \text{    (Markov Property)}\]</span></p>
-<p>Action value function following policy <span class="math inline">\(\pi\)</span> starting from state x and taking action a:</p>
-<p><span class="math display">\[Q^{\pi} (x, a) = E[G_1^{\pi} | X_{1} = x, A_{1} = a] = E[G^{\pi}_{t} | X_{t} = x, A_{t} = a] \text{    (Markov Property)}\]</span></p>
-<p>in the <code>terminal formulation</code>, the value function <span class="math inline">\(V_{term}^{\pi}\)</span> can be written as:</p>
-<p><span class="math display">\[V_{term}^{\pi} = E[R_{1} + R_2 + .... + R_{t + T} | X_1 = x] \;\;\;\;\;\; \forall x \in X\]</span></p>
-<p>The process terminates at time <span class="math inline">\(t + T\)</span> according to <span class="math inline">\(\gamma\)</span>. In this case the termination should be assumed to always occur in a finite number of steps (ie. if we have episodic task we can set <span class="math inline">\(\gamma = 1\)</span>).</p>
-<h2 id="another-formulation">Another formulation</h2>
-<p>We can also define the T-step rollout or trajectory distribution <span class="math inline">\(P(\tau | \pi)\)</span> following policy <span class="math inline">\(\pi\)</span>:</p>
-<p><span class="math display">\[P(\tau | \pi) = \rho(X_1)\prod_{t=1}^{T} P(X_{t+1}| X_{t}, A_{t}) \pi(A_t | X_{t}) R(R_t | X_{t}, A_{t})\]</span></p>
-<p>Then:</p>
-<p><span class="math display">\[R(\tau) = G^{\pi}_{1} = \sum^{T}_{k=1} \gamma^{k - t}R_{t}\]</span></p>
-<p><span class="math display">\[J(\pi) = E_{\tau \sim P(\tau | \pi) }[R(\tau)] = \int R(\tau) P(d\tau | \pi)\]</span></p>
-<p><span class="math display">\[V^{\pi} (x) = E_{\tau \sim P(\tau | \pi, X_1=x)}[R(\tau) | X_1 = x]\]</span></p>
-<p>And:</p>
-<p><span class="math display">\[J(\pi) = \int V^{\pi} (x) d\rho(x)\]</span></p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>Basics</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>LReLU</title>
     <url>/2021/07/05/LReLU/</url>
     <content><![CDATA[
@@ -522,6 +455,73 @@ Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \ha
       <tags>
         <tag>Policy Gradient</tag>
         <tag>Policy Search</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MDP</title>
+    <url>/2021/05/03/MDP/</url>
+    <content><![CDATA[<h1 id="mdp">MDP</h1>
+<p><span style="color:red"><em>Based on Prof Amir-massoud Farahmand's Lecture on RL</em> </span></p>
+<p>Define our MDP different from Introduction to RL book:</p>
+<p><img src='/images/RL/bellman_equation/mdp.png'></p>
+<p>Where <span class="math inline">\(M(X)\)</span> is the space of all probability distributions defined over the state space X <span id="more"></span></p>
+<p>So a sample of the process can be described as a rollout or trajectory:</p>
+<p><span class="math display">\[\tau = X_1, A_1, R_1, X_2, A_2, R_2, ...\]</span></p>
+<p>A deterministic dynamical system always behave exactly the same given the same starting state and action, that is, they can be described as a transition function <span class="math inline">\(f\)</span> instead of transition distribution <span class="math inline">\(P\)</span></p>
+<p><span class="math display">\[x_{t+1} = f(x, a)\]</span></p>
+<h2 id="policy">Policy</h2>
+<p><img src='/images/RL/bellman_equation/policy_1.png'></p>
+<p><img src='/images/RL/bellman_equation/policy.png'></p>
+<h2 id="policy-induced-transition-kernels">Policy induced Transition Kernels</h2>
+<p><img src='/images/RL/bellman_equation/transition_kernel.png'></p>
+<h2 id="rewards-and-returns">Rewards and Returns</h2>
+<p>Let's define expected reward as:</p>
+<p><span class="math display">\[r(x, a) = E[R | X=x, A=a]\]</span></p>
+<p>then the expected reward following policy pi is defined as</p>
+<p><span class="math display">\[r^{\pi} (x) = E_{a \sim \pi(a | x)} [R | X=x]\]</span></p>
+<p>Define return following policy <span class="math inline">\(\pi\)</span> as discounted sum of rewards starting from <span class="math inline">\(X_1\)</span>:</p>
+<p><span class="math display">\[G^{\pi} = R_1 + \gamma R_2 + ... + \gamma^{T-1} R_{T} = \sum^{\infty}_{k=t} \gamma^{k - t}R_{t}\]</span></p>
+<p>or any starting at any step <span class="math inline">\(X_{t}\)</span>:</p>
+<p><span class="math display">\[G^{\pi}_{t} = \sum^{\infty}_{k=t} \gamma^{k - t}R_{t}\]</span></p>
+<p>Note that <span class="math inline">\(\gamma\)</span> is a part of the problem setting, it is usually not a hyperparameter. <strong>One way to think about is as a constant probability of termination of <span class="math inline">\(1 - \gamma\)</span>. Or we can set <span class="math inline">\(\gamma = 1\)</span> when we have episodic tasks.</strong>.</p>
+<h2 id="example">Example</h2>
+<p>Finite horizon example:</p>
+<ul>
+<li>Start at <span class="math inline">\(X_1 \sim \rho\)</span></li>
+<li>Select <span class="math inline">\(A_1 \sim \pi(\cdot | X_1)\)</span></li>
+<li>Get <span class="math inline">\(R_1 \sim R(\cdot | A_1, X_1)\)</span></li>
+<li>Get <span class="math inline">\(X_2 \sim P(\cdot | A_1, X_1)\)</span></li>
+<li>...</li>
+<li>...</li>
+<li>Get <span class="math inline">\(R_{T} \sim R(\cdot | X_{T}, A_{T})\)</span></li>
+<li>Get <span class="math inline">\(X_{T+1} \sim P(\cdot | X_{T}, A_{T})\)</span> (This is the terminal state, which is often dropped because it has value of 0)</li>
+</ul>
+<p>The process stops!</p>
+<h2 id="value-functions">Value functions</h2>
+<p>Next we can define value functions as:</p>
+<p>State value function (alias: Value function, V, v) starting from state x and following policy <span class="math inline">\(\pi\)</span>:</p>
+<p><span class="math display">\[V^{\pi}(x) = E[G_1^{\pi} | X_{1} = x] = E[G^{\pi}_{t} | X_{t} = x] \text{    (Markov Property)}\]</span></p>
+<p>Action value function following policy <span class="math inline">\(\pi\)</span> starting from state x and taking action a:</p>
+<p><span class="math display">\[Q^{\pi} (x, a) = E[G_1^{\pi} | X_{1} = x, A_{1} = a] = E[G^{\pi}_{t} | X_{t} = x, A_{t} = a] \text{    (Markov Property)}\]</span></p>
+<p>in the <code>terminal formulation</code>, the value function <span class="math inline">\(V_{term}^{\pi}\)</span> can be written as:</p>
+<p><span class="math display">\[V_{term}^{\pi} = E[R_{1} + R_2 + .... + R_{t + T} | X_1 = x] \;\;\;\;\;\; \forall x \in X\]</span></p>
+<p>The process terminates at time <span class="math inline">\(t + T\)</span> according to <span class="math inline">\(\gamma\)</span>. In this case the termination should be assumed to always occur in a finite number of steps (ie. if we have episodic task we can set <span class="math inline">\(\gamma = 1\)</span>).</p>
+<h2 id="another-formulation">Another formulation</h2>
+<p>We can also define the T-step rollout or trajectory distribution <span class="math inline">\(P(\tau | \pi)\)</span> following policy <span class="math inline">\(\pi\)</span>:</p>
+<p><span class="math display">\[P(\tau | \pi) = \rho(X_1)\prod_{t=1}^{T} P(X_{t+1}| X_{t}, A_{t}) \pi(A_t | X_{t}) R(R_t | X_{t}, A_{t})\]</span></p>
+<p>Then:</p>
+<p><span class="math display">\[R(\tau) = G^{\pi}_{1} = \sum^{T}_{k=1} \gamma^{k - t}R_{t}\]</span></p>
+<p><span class="math display">\[J(\pi) = E_{\tau \sim P(\tau | \pi) }[R(\tau)] = \int R(\tau) P(d\tau | \pi)\]</span></p>
+<p><span class="math display">\[V^{\pi} (x) = E_{\tau \sim P(\tau | \pi, X_1=x)}[R(\tau) | X_1 = x]\]</span></p>
+<p>And:</p>
+<p><span class="math display">\[J(\pi) = \int V^{\pi} (x) d\rho(x)\]</span></p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>Basics</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
       </tags>
   </entry>
   <entry>
@@ -770,6 +770,7 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
 <li><a href="/2021/07/15/probability-3/" title="Probability (3)">Probability (3)</a></li>
 <li><a href="/2021/05/14/calculus/" title="Calculus (1)">Calculus (1)</a></li>
 <li><a href="/2021/07/06/cal-2/" title="Calculus (2)">Calculus (2)</a></li>
+<li><a href="/2021/07/18/cnn/" title="Backpropagation in CNN">Backpropagation in CNN</a></li>
 </ol>
 <p><strong>Some RL backgrounds</strong>:</p>
 <ol type="1">
@@ -1441,10 +1442,86 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
       </tags>
   </entry>
   <entry>
-    <title>convex_opt</title>
-    <url>/2021/06/14/convex-opt/</url>
-    <content><![CDATA[
+    <title>Backpropagation in CNN</title>
+    <url>/2021/07/18/cnn/</url>
+    <content><![CDATA[<h1 id="backpropagation-in-convolutional-neural-networks">Backpropagation In Convolutional Neural Networks</h1>
+<h2 id="cross-correlation">Cross Correlation</h2>
+<p>Given an input image <span class="math inline">\(I\)</span> and a filter <span class="math inline">\(K\)</span> of dimensions <span class="math inline">\(k_1 \times k_2\)</span>, then the cross correlation operation is defined as:</p>
+<p><span class="math display">\[(I \otimes K)_{ij} = \sum^{k_2 - 1}_{m=0}\sum^{k_1 - 1}_{n=0} I(i + m, j + n)K(m, n)\]</span></p>
+<h2 id="convolution">Convolution</h2>
+<p><span class="math display">\[(I * K)^{d}_{ij} = \sum^{k_2 - 1}_{m=0}\sum^{k_1 - 1}_{n=0} I(i - m, j - n)K(m, n)\]</span></p>
+<p>which is equivalent to <code>cross correlation</code> with flipped kernel (i.e flipped 180 degree)</p>
+<p><span class="math display">\[(I * K)_{ij} = \sum^{k_2 - 1}_{m=0}\sum^{k_1 - 1}_{n=0} I(i + m, j + n) \text{ rot}_{180}(K(m, n))\]</span></p>
+<h2 id="cnns">CNNs</h2>
+<p>a Convolution layer consists of:</p>
+<ol type="1">
+<li>An input map <span class="math inline">\(I \in \mathbb{R}^{H \times W \times C}\)</span> with height <span class="math inline">\(H\)</span>, width <span class="math inline">\(W\)</span>, channels <span class="math inline">\(H\)</span>.</li>
+<li>A bank of <span class="math inline">\(D\)</span> filters <span class="math inline">\(K \in \mathbb{R}^{k_1 \times k_2 \times D}\)</span>.</li>
+<li>Bias <span class="math inline">\(b \in \mathbb{R}^{D}\)</span> (one for each filter).</li>
+<li>An activation function <span class="math inline">\(f\)</span> apply element-wise.</li>
+</ol>
+<p>In general, the forward output of applying filter <span class="math inline">\(d\)</span> on the input map is:</p>
+<p><span class="math display">\[(I * K^d)_{ij} = \sum^{k_2 - 1}_{m=0}\sum^{k_1 - 1}_{n=0} \sum^{C}_{n=1}I(i + m, j + n, c) \cdot \text{ rot}_{180}(K^d(m, n, c)) + b\]</span></p>
+<p>However, in CNN, we do not care about the arrangement of filters (i.e whether it is flipped or not), because the weights are going to be learned regardless of the arrangement of the filters. Thus, we can safely ignore the flip and treat the convolution operation as cross correlation:</p>
+<p><span class="math display">\[(I * K^d)_{ij} = \sum^{k_2 - 1}_{m=0}\sum^{k_1 - 1}_{n=0} \sum^{C}_{n=1}I(i + m, j + n, c) \cdot K^d(m, n, c) + b\]</span></p>
+<p>For the simplicity, we focus on <span class="math inline">\(2d\)</span> case first (i.e we focus on gray scale image with <span class="math inline">\(C = 1\)</span>) and only one filter:</p>
+<p><span class="math display">\[(I * K)_{ij} = \sum^{k_2 - 1}_{m=0}\sum^{k_1 - 1}_{n=0} I(i + m, j + n)K(m, n)\]</span></p>
+<h3 id="notations">Notations</h3>
+<ol type="1">
+<li><span class="math inline">\(l\)</span> is the <span class="math inline">\(l\)</span>th layer, where <span class="math inline">\(l = 1\)</span> is the first layer, <span class="math inline">\(L\)</span> is the last layer.</li>
+<li>Input <span class="math inline">\(\mathbf{x}\)</span> has dimension <span class="math inline">\(H \times W\)</span>.</li>
+<li>The filter weight at each layer is denoted as <span class="math inline">\(w^l_{m, n}, \; 0 \leq m &lt; k^l_1, \; 0 \leq n &lt; k^l_2\)</span></li>
+<li>The convolved input at each layer is denoted as <span class="math inline">\(y^{l}_{ij}\)</span>: <span class="math display">\[y^{l}_{i, j} = \sum^{k^l_2 - 1}_{m=0}\sum^{k^l_1 - 1}_{n=0} w^{l}_{m, n} x^{l - 1}_{i+m, j+n} + b^l\]</span></li>
+<li>The output of each convolution layer after applying the activation function is denoted as: <span class="math display">\[x^{l}_{ij} = f(y^{l}_{i, j})\]</span></li>
+</ol>
+<h3 id="forward-pass">Forward Pass</h3>
+<p>The forward pass is essential characterized above:</p>
+<p><img src="/images/ML/cnn.gif" width="600"></p>
+<h3 id="backward-pass">Backward Pass</h3>
+<p>Let the mean square loss be defined as:</p>
+<p><span class="math display">\[L = \frac{1}{N} \sum^{N}_{i=1} (t_i - y^L_i)^2\]</span></p>
+<p>Where <span class="math inline">\(y^L_i\)</span> is the prediction from the final layer and <span class="math inline">\(t_i\)</span> is the target value.</p>
+<p>In backward propagation, we are seeking to compute the gradient of loss w.r.t the weights <span class="math inline">\(\frac{\partial L}{\partial w^{l}_{m, n}}\)</span> for each layer, and the gradient w.r.t the output map to each layer <span class="math inline">\(\frac{\partial L}{\partial y^l_{i, j}}\)</span>.</p>
+<h4 id="gradient-of-the-weights">Gradient of the Weights</h4>
+<p>Since, the output map <span class="math inline">\(\mathbf{y}^l\)</span> will have dimension <span class="math inline">\(H^{l} = H^{l - 1} - k^l_{1} + 1\)</span>, <span class="math inline">\(W^{l} = W^{l - 1} - k^{l}_2 + 1\)</span> (<span class="math inline">\(\mathbf{y}^{l}\)</span> is reshaped to be a <span class="math inline">\(H^{l} W^{l} \times 1\)</span> vector)</p>
+<span class="math display">\[\begin{aligned}
+\frac{\partial L}{\partial  w^{l}_{m^{\prime}, n^{\prime}}} &amp;= \frac{\partial L}{\partial \mathbf{y}^l} \frac{\partial \mathbf{y}^{l}}{\partial  w^{l}_{m^{\prime}, n^{\prime}}}\\
+&amp;= \sum^{H^{l} - 1}_{i=0} \sum^{W^{l} - 1}_{j=0}\frac{\partial L}{\partial y^l_{i, j}}\frac{\partial y_{i, j}^{l}}{\partial  w^{l}_{m^{\prime}, n^{\prime}}}\\
+\end{aligned}\]</span>
+<p>By expanding <span class="math inline">\(\frac{\partial y_{i, j}^{l}}{\partial w^{l}_{m^{\prime}, n^{\prime}}}\)</span> we have:</p>
+<span class="math display">\[\begin{aligned}
+\frac{\partial y_{i, j}^{l}}{\partial  w^{l}_{m^{\prime}, n^{\prime}}} &amp;=  \frac{\partial}{\partial  w^{l}_{m^{\prime}, n^{\prime}}}\sum^{k^l_2 - 1}_{m=0}\sum^{k^l_1 - 1}_{n=0} w^{l}_{m, n} x^{l - 1}_{i+m, j+n} + b^l\\
+&amp;= x^{l - 1}_{i + m^{\prime}, j + n^{\prime}}
+\end{aligned}\]</span>
+<p>By substituting the above result back to the previous gradient equation we have:</p>
+<p><span class="math display">\[\frac{\partial L}{\partial  w^{l}_{m^{\prime}, n^{\prime}}} = \sum^{H^{l} - 1}_{i=0} \sum^{W^{l} - 1}_{j=0}\frac{\partial L}{\partial y^l_{i, j}} x^{l - 1}_{i + m^{\prime}, j + n^{\prime}}\]</span></p>
+<p>We can see that this is the convolution (cross correlation) of gradient of activations on the input feature map:</p>
+<p><span class="math display">\[\frac{\partial L}{\partial  w^{l}_{m^{\prime}, n^{\prime}}} = (X^{l - 1} \otimes \frac{\partial L}{\partial \mathbf{y}^l})_{m^{\prime}, n^{\prime}}\]</span></p>
+<p>Where <span class="math inline">\(\frac{\partial L}{\partial \mathbf{y}^l}\)</span> is reshaped to a <span class="math inline">\(H^l \times W^l\)</span> matrix.</p>
+<h4 id="gradients-of-the-inputs">Gradients of the Inputs</h4>
+<p>Recall that, <span class="math inline">\(\mathbf{x}^l = f(\mathbf{y}^l)\)</span>, so they have same dimensions.</p>
+<span class="math display">\[\begin{aligned}
+\frac{\partial L}{\partial y^l_{i, j}} &amp;= \frac{\partial L}{\partial \mathbf{x}^l} \frac{\partial \mathbf{x}^l}{\partial y_{i, j}^l}\\
+&amp;= \sum^{H^{l} - 1}_{i=0} \sum^{W^{l} - 1}_{j=0} \frac{\partial L}{\partial x^l_{i, j}} f^{\prime} (y^l_{i, j})\\
+\\
+\frac{\partial L}{\partial x^l_{i^{\prime}, j^{\prime}}} &amp;= \frac{\partial L}{\partial \mathbf{y}^{l + 1}} \frac{\partial \mathbf{y}^{l + 1}}{\partial x^l_{i^{\prime}, j^{\prime}}}\\
+&amp;= \sum^{H^{l + 1} - 1}_{i=0} \sum^{W^{l + 1} - 1}_{j=0} \frac{\partial L}{\partial y^{l + 1}_{i^{\prime} - m, j^{\prime} - n}} w^{l + 1}_{m, n}
+\end{aligned}\]</span>
+<p>This is exactly as the full convolution (or correlation with flipped kernel, notice here, we have to flip the kernel):</p>
+<p><span class="math display">\[\frac{\partial L}{\partial x^l_{i^{\prime}, j^{\prime}}} = (W^{l + 1} * \frac{\partial L}{\partial \mathbf{y}^{l + 1}})_{i^{\prime}, j^{\prime}}\]</span></p>
+<p>Where <span class="math inline">\(W^{l + 1}\)</span> and <span class="math inline">\(\frac{\partial L}{\partial \mathbf{y}^{l + 1}}\)</span> are reshaped into matrices.</p>
+<p><img src="/images/ML/cnn_2.gif" width="600"></p>
+<h2 id="ref">Ref</h2>
+<p>https://www.jefkine.com/general/2016/09/05/backpropagation-in-convolutional-neural-networks/</p>
+<p>https://medium.com/<span class="citation" data-cites="pavisj/convolutions-and-backpropagations-46026a8f5d2c">@pavisj/convolutions-and-backpropagations-46026a8f5d2c</span></p>
 ]]></content>
+      <categories>
+        <category>DL</category>
+        <category>CNN</category>
+      </categories>
+      <tags>
+        <tag>Deep Learning</tag>
+      </tags>
   </entry>
   <entry>
     <title>Dynamic Programming</title>
@@ -1469,6 +1546,12 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
         <tag>RL Basics</tag>
         <tag>Dynamic Programming</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>convex_opt</title>
+    <url>/2021/06/14/convex-opt/</url>
+    <content><![CDATA[
+]]></content>
   </entry>
   <entry>
     <title>Dropout</title>
@@ -1520,6 +1603,14 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
         <tag>Deep Learning</tag>
         <tag>Regularization</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>importance_sampling (under construction)</title>
+    <url>/2021/05/21/importance-sampling/</url>
+    <content><![CDATA[<h1 id="importance-sampling">Importance Sampling</h1>
+<h1 id="ref">Ref</h1>
+<p>https://www.quora.com/Why-doesn-t-DQN-use-importance-sampling-Dont-we-always-use-this-method-to-correct-the-sampling-error-produced-by-the-off-policy https://danieltakeshi.github.io/2019/01/25/deep-learning-01/</p>
+]]></content>
   </entry>
   <entry>
     <title>Intrinsic Motivation</title>
@@ -1591,14 +1682,6 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
       <tags>
         <tag>IM</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>importance_sampling (under construction)</title>
-    <url>/2021/05/21/importance-sampling/</url>
-    <content><![CDATA[<h1 id="importance-sampling">Importance Sampling</h1>
-<h1 id="ref">Ref</h1>
-<p>https://www.quora.com/Why-doesn-t-DQN-use-importance-sampling-Dont-we-always-use-this-method-to-correct-the-sampling-error-produced-by-the-off-policy https://danieltakeshi.github.io/2019/01/25/deep-learning-01/</p>
-]]></content>
   </entry>
   <entry>
     <title>kaiming_init</title>
@@ -1829,7 +1912,7 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
   <entry>
     <title>LeetCode(4)</title>
     <url>/2021/07/13/leet-code-4/</url>
-    <content><![CDATA[<p><strong>题目库: <code>[94, 144, 145, 226]</code></strong></p>
+    <content><![CDATA[<p><strong>题目库: <code>[94, 144, 145, 226, 110,   105, 107, 543, 113, 116, 129, 108, 617, 404, 222]</code></strong></p>
 <h1 id="trees">Trees</h1>
 <h2 id="easy">94 Easy</h2>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inorderTraversal</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span></span><br><span class="line">        out = []</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">inorder</span>(<span class="params">root</span>):</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">                <span class="keyword">return</span> </span><br><span class="line"></span><br><span class="line">            inorder(root.left)</span><br><span class="line">            out.append(root.val)</span><br><span class="line">            inorder(root.right)</span><br><span class="line">        </span><br><span class="line">        inorder(root)</span><br><span class="line">        <span class="keyword">return</span> out</span><br></pre></td></tr></table></figure>
@@ -1839,6 +1922,28 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">postorderTraversal</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span></span><br><span class="line">        out = []</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">postorder</span>(<span class="params">node</span>):</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            </span><br><span class="line">            postorder(node.left)</span><br><span class="line">            postorder(node.right)</span><br><span class="line">            out.append(node.val)</span><br><span class="line">        </span><br><span class="line">        postorder(root)</span><br><span class="line">        <span class="keyword">return</span> out</span><br></pre></td></tr></table></figure>
 <h2 id="easy-3">226 Easy</h2>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">invertTree</span>(<span class="params">self, root: TreeNode</span>) -&gt; TreeNode:</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">invert</span>(<span class="params">node</span>):</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            </span><br><span class="line">            node.left, node.right = node.right, node.left</span><br><span class="line">            invert(node.left)</span><br><span class="line">            invert(node.right)</span><br><span class="line">        </span><br><span class="line">        invert(root)</span><br><span class="line">        <span class="keyword">return</span> root</span><br></pre></td></tr></table></figure>
+<h2 id="easy-4">110 Easy</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">isBalanced</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="built_in">bool</span>:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">height</span>(<span class="params">node</span>):</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node:</span><br><span class="line">                <span class="keyword">return</span> [<span class="number">0</span>, <span class="literal">True</span>]</span><br><span class="line">            </span><br><span class="line">            left_height = height(node.left)</span><br><span class="line">            right_height = height(node.right)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> left_height[<span class="number">1</span>] <span class="keyword">or</span> <span class="keyword">not</span> right_height[<span class="number">1</span>]:</span><br><span class="line">                <span class="keyword">return</span> [<span class="number">0</span>, <span class="literal">False</span>]</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (left_height[<span class="number">0</span>] - right_height[<span class="number">0</span>]) &gt; <span class="number">1</span> <span class="keyword">or</span> (left_height[<span class="number">0</span>] - right_height[<span class="number">0</span>]) &lt; -<span class="number">1</span>:</span><br><span class="line">                <span class="keyword">return</span> [<span class="number">0</span>, <span class="literal">False</span>]</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">return</span> [<span class="built_in">max</span>(right_height[<span class="number">0</span>], left_height[<span class="number">0</span>]) + <span class="number">1</span>, <span class="literal">True</span>]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> height(root)[-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="medium">105 Medium</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">buildTree</span>(<span class="params">self, preorder: <span class="type">List</span>[<span class="built_in">int</span>], inorder: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; TreeNode:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">myBuildTree</span>(<span class="params">preorder_left: <span class="built_in">int</span>, preorder_right: <span class="built_in">int</span>, inorder_left: <span class="built_in">int</span>, inorder_right: <span class="built_in">int</span></span>):</span></span><br><span class="line">            <span class="keyword">if</span> preorder_left &gt; preorder_right:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 前序遍历中的第一个节点就是根节点</span></span><br><span class="line">            preorder_root = preorder_left</span><br><span class="line">            <span class="comment"># 在中序遍历中定位根节点</span></span><br><span class="line">            inorder_root = index[preorder[preorder_root]]</span><br><span class="line">            </span><br><span class="line">            <span class="comment"># 先把根节点建立出来</span></span><br><span class="line">            root = TreeNode(preorder[preorder_root])</span><br><span class="line">            <span class="comment"># 得到左子树中的节点数目</span></span><br><span class="line">            size_left_subtree = inorder_root - inorder_left</span><br><span class="line">            <span class="comment"># 递归地构造左子树，并连接到根节点</span></span><br><span class="line">            <span class="comment"># 先序遍历中「从 左边界+1 开始的 size_left_subtree」个元素就对应了中序遍历中「从 左边界 开始到 根节点定位-1」的元素</span></span><br><span class="line">            root.left = myBuildTree(preorder_left + <span class="number">1</span>, preorder_left + size_left_subtree, inorder_left, inorder_root - <span class="number">1</span>)</span><br><span class="line">            <span class="comment"># 递归地构造右子树，并连接到根节点</span></span><br><span class="line">            <span class="comment"># 先序遍历中「从 左边界+1+左子树节点数目 开始到 右边界」的元素就对应了中序遍历中「从 根节点定位+1 到 右边界」的元素</span></span><br><span class="line">            root.right = myBuildTree(preorder_left + size_left_subtree + <span class="number">1</span>, preorder_right, inorder_root + <span class="number">1</span>, inorder_right)</span><br><span class="line">            <span class="keyword">return</span> root</span><br><span class="line">        </span><br><span class="line">        n = <span class="built_in">len</span>(preorder)</span><br><span class="line">        <span class="comment"># 构造哈希映射，帮助我们快速定位根节点</span></span><br><span class="line">        index = &#123;element: i <span class="keyword">for</span> i, element <span class="keyword">in</span> <span class="built_in">enumerate</span>(inorder)&#125;</span><br><span class="line">        <span class="keyword">return</span> myBuildTree(<span class="number">0</span>, n - <span class="number">1</span>, <span class="number">0</span>, n - <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="medium-1">107 Medium</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">levelOrderBottom</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line"></span><br><span class="line">        q = [root]</span><br><span class="line">        out = [[root.val]]</span><br><span class="line">        next_level = []</span><br><span class="line">        <span class="keyword">while</span> q:</span><br><span class="line">            curr_node = q.pop(<span class="number">0</span>)</span><br><span class="line">            <span class="keyword">if</span> curr_node.left:</span><br><span class="line">                next_level.append(curr_node.left)</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> curr_node.right:</span><br><span class="line">                next_level.append(curr_node.right)</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> q:</span><br><span class="line">                <span class="keyword">if</span> next_level:</span><br><span class="line">                    temp = []</span><br><span class="line">                    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(next_level)):</span><br><span class="line">                        temp.append(next_level[i].val)</span><br><span class="line">                    out.insert(<span class="number">0</span>, temp)</span><br><span class="line"></span><br><span class="line">                q = next_level</span><br><span class="line">                next_level = []</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> out</span><br></pre></td></tr></table></figure>
+<h2 id="easy-5">543 Easy</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">diameterOfBinaryTree</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">diameter</span>(<span class="params">node</span>):</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node:</span><br><span class="line">                <span class="keyword">return</span> [<span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line">            </span><br><span class="line">            left_depth = diameter(node.left)</span><br><span class="line">            right_depth = diameter(node.right)</span><br><span class="line"></span><br><span class="line">            total_diameter = left_depth[<span class="number">0</span>] + right_depth[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> [<span class="built_in">max</span>(left_depth[<span class="number">0</span>], right_depth[<span class="number">0</span>]) + <span class="number">1</span>, <span class="built_in">max</span>(left_depth[<span class="number">1</span>], right_depth[<span class="number">1</span>], total_diameter)]</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> diameter(root)[-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="medium-2">113 Medium</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pathSum</span>(<span class="params">self, root: TreeNode, targetSum: <span class="built_in">int</span></span>) -&gt; <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]:</span></span><br><span class="line">        paths = []</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">find_path</span>(<span class="params">node, path, path_sum</span>):</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node.left <span class="keyword">and</span> <span class="keyword">not</span> node.right <span class="keyword">and</span> (node.val + path_sum) == targetSum:</span><br><span class="line">                paths.append(path + [node.val])</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">            find_path(node.left, path + [node.val], path_sum + node.val)</span><br><span class="line">            find_path(node.right, path + [node.val], path_sum + node.val)</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">        find_path(root, [], <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> paths</span><br></pre></td></tr></table></figure>
+<h2 id="medium-3">116 Medium</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string"># Definition for a Node.</span></span><br><span class="line"><span class="string">class Node:</span></span><br><span class="line"><span class="string">    def __init__(self, val: int = 0, left: &#x27;Node&#x27; = None, right: &#x27;Node&#x27; = None, next: &#x27;Node&#x27; = None):</span></span><br><span class="line"><span class="string">        self.val = val</span></span><br><span class="line"><span class="string">        self.left = left</span></span><br><span class="line"><span class="string">        self.right = right</span></span><br><span class="line"><span class="string">        self.next = next</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">connect</span>(<span class="params">self, root: <span class="string">&#x27;Node&#x27;</span></span>) -&gt; &#x27;Node&#x27;:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> root</span><br><span class="line"></span><br><span class="line">        q = [root]</span><br><span class="line">        curr_level = []</span><br><span class="line">        <span class="keyword">while</span> q:     </span><br><span class="line">            curr_node = q.pop(<span class="number">0</span>)</span><br><span class="line">            <span class="keyword">if</span> curr_node.left:</span><br><span class="line">                curr_level.append(curr_node.left)</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> curr_node.right:</span><br><span class="line">                curr_level.append(curr_node.right)</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> q:</span><br><span class="line">                <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(curr_level) - <span class="number">1</span>):</span><br><span class="line">                    curr_level[i].<span class="built_in">next</span> = curr_level[i + <span class="number">1</span>]</span><br><span class="line">                </span><br><span class="line">                q = curr_level</span><br><span class="line">                curr_level = []</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">return</span> root</span><br></pre></td></tr></table></figure>
+<h2 id="medium-4">129 Medium</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sumNumbers</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        out = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">find_sums</span>(<span class="params">node, num</span>):</span></span><br><span class="line">            <span class="keyword">nonlocal</span> out</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node.left <span class="keyword">and</span> <span class="keyword">not</span> node.right:</span><br><span class="line">                out += <span class="built_in">int</span>(num + <span class="built_in">str</span>(node.val))</span><br><span class="line">            </span><br><span class="line">            find_sums(node.left, num + <span class="built_in">str</span>(node.val))</span><br><span class="line">            find_sums(node.right, num + <span class="built_in">str</span>(node.val))</span><br><span class="line">        </span><br><span class="line">        find_sums(root, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> out</span><br></pre></td></tr></table></figure>
+<h2 id="easy-6">108 Easy</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sortedArrayToBST</span>(<span class="params">self, nums: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; TreeNode:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">build_tree</span>(<span class="params">subset</span>):</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> subset:</span><br><span class="line">                <span class="keyword">return</span> </span><br><span class="line">            l, r = <span class="number">0</span>, <span class="built_in">len</span>(subset) - <span class="number">1</span></span><br><span class="line">            mid = l + (l + r) // <span class="number">2</span></span><br><span class="line">            curr_node = TreeNode(val=subset[mid], left=build_tree(subset[:mid]), right=build_tree(subset[mid+<span class="number">1</span>:]))</span><br><span class="line">            <span class="keyword">return</span> curr_node</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> build_tree(nums)</span><br></pre></td></tr></table></figure>
+<h2 id="easy-7">617 Easy</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">mergeTrees</span>(<span class="params">self, root1: TreeNode, root2: TreeNode</span>) -&gt; TreeNode:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root1 <span class="keyword">or</span> <span class="keyword">not</span> root2:</span><br><span class="line">            <span class="keyword">return</span> root1 <span class="keyword">if</span> <span class="keyword">not</span> root2 <span class="keyword">else</span> root2</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">merge</span>(<span class="params">node_1, node_2</span>):</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node_1:</span><br><span class="line">                <span class="keyword">return</span> node_2</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node_2:</span><br><span class="line">                <span class="keyword">return</span> node_1</span><br><span class="line">            </span><br><span class="line">            node_1.val = node_1.val + node_2.val</span><br><span class="line">            node_1.left = merge(node_1.left, node_2.left)</span><br><span class="line">            node_1.right = merge(node_1.right, node_2.right)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> node_1</span><br><span class="line">        </span><br><span class="line">        merge(root1, root2)</span><br><span class="line">        <span class="keyword">return</span> root1</span><br></pre></td></tr></table></figure>
+<h2 id="easy-8">404 Easy</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sumOfLeftLeaves</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        left_sum = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">find_sum</span>(<span class="params">node, left</span>):</span></span><br><span class="line">            <span class="keyword">nonlocal</span> left_sum</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> left <span class="keyword">and</span> <span class="keyword">not</span> node.left <span class="keyword">and</span> <span class="keyword">not</span> node.right:</span><br><span class="line">                left_sum += node.val</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            </span><br><span class="line">            find_sum(node.left, left=<span class="literal">True</span>)</span><br><span class="line">            find_sum(node.right, left=<span class="literal">False</span>)</span><br><span class="line">        </span><br><span class="line">        find_sum(root, <span class="literal">False</span>)</span><br><span class="line">        <span class="keyword">return</span> left_sum</span><br></pre></td></tr></table></figure>
+<h2 id="medium-5">222 Medium</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="comment"># 1.dfs</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">countNodes</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.dfs(root, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dfs</span>(<span class="params">self, root, k</span>):</span></span><br><span class="line">        <span class="keyword">if</span> root==<span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        <span class="keyword">if</span> root.left==<span class="literal">None</span> <span class="keyword">and</span> root.right==<span class="literal">None</span>:</span><br><span class="line">            <span class="keyword">return</span> k</span><br><span class="line">        </span><br><span class="line">        max1 = self.dfs(root.left, <span class="number">2</span>*k)</span><br><span class="line">        max2 = self.dfs(root.right, <span class="number">2</span>*k+<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">max</span>(max1, max2)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>Others</category>
@@ -2293,6 +2398,32 @@ Var[max_{a^{\prime} \in A} Q_t (X^{\prime}, a^{\prime}) | X_t=x_t, A_t=a_t] &amp
       </tags>
   </entry>
   <entry>
+    <title>SARSA</title>
+    <url>/2021/05/16/sarsa/</url>
+    <content><![CDATA[<h1 id="sarsa">SARSA</h1>
+<p>SARSA (State Action State Reward State Action) is an on-policy TD algorithm that follows a PI-like procedure:</p>
+<ol type="1">
+<li>Estimate <span class="math inline">\(Q^{\pi_k}\)</span> for a given policy <span class="math inline">\(\pi_k\)</span></li>
+<li>Perform policy improvement to obtain a new policy <span class="math inline">\(\pi_{k+1}\)</span></li>
+</ol>
+<p>Compare with usual Policy iteration, SARSA uses <code>Generalized policy iteration</code> to improve the policy before <span class="math inline">\(Q\)</span> converges to <span class="math inline">\(Q^{\pi_k}\)</span>.</p>
+<span id="more"></span>
+<h2 id="algorithm">Algorithm</h2>
+<p><img src="/images/RL/mc/td_6.png"></p>
+<p>Notice that, <span class="math inline">\(\pi_t\)</span> here is a <span class="math inline">\(\epsilon\)</span>-greedy policy because we want to ensure some exploration. The greedy part of the policy performs the policy improvement while the occasional random choice of actions allows the agent to have some exploration.</p>
+<h2 id="implementation">Implementation</h2>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>TD</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>Tabular Methods</tag>
+        <tag>TD</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Search</title>
     <url>/2021/06/13/search/</url>
     <content><![CDATA[<h1 id="search">Search</h1>
@@ -2324,32 +2455,6 @@ Var[max_{a^{\prime} \in A} Q_t (X^{\prime}, a^{\prime}) | X_t=x_t, A_t=a_t] &amp
       </categories>
       <tags>
         <tag>Algorithms</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SARSA</title>
-    <url>/2021/05/16/sarsa/</url>
-    <content><![CDATA[<h1 id="sarsa">SARSA</h1>
-<p>SARSA (State Action State Reward State Action) is an on-policy TD algorithm that follows a PI-like procedure:</p>
-<ol type="1">
-<li>Estimate <span class="math inline">\(Q^{\pi_k}\)</span> for a given policy <span class="math inline">\(\pi_k\)</span></li>
-<li>Perform policy improvement to obtain a new policy <span class="math inline">\(\pi_{k+1}\)</span></li>
-</ol>
-<p>Compare with usual Policy iteration, SARSA uses <code>Generalized policy iteration</code> to improve the policy before <span class="math inline">\(Q\)</span> converges to <span class="math inline">\(Q^{\pi_k}\)</span>.</p>
-<span id="more"></span>
-<h2 id="algorithm">Algorithm</h2>
-<p><img src="/images/RL/mc/td_6.png"></p>
-<p>Notice that, <span class="math inline">\(\pi_t\)</span> here is a <span class="math inline">\(\epsilon\)</span>-greedy policy because we want to ensure some exploration. The greedy part of the policy performs the policy improvement while the occasional random choice of actions allows the agent to have some exploration.</p>
-<h2 id="implementation">Implementation</h2>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>TD</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>Tabular Methods</tag>
-        <tag>TD</tag>
       </tags>
   </entry>
   <entry>
