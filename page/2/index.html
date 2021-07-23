@@ -798,7 +798,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-07-21 23:13:41" itemprop="dateModified" datetime="2021-07-21T23:13:41+08:00">2021-07-21</time>
+        <time title="Modified: 2021-07-23 22:57:56" itemprop="dateModified" datetime="2021-07-23T22:57:56+08:00">2021-07-23</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -825,14 +825,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>10k</span>
+      <span>11k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>9 mins.</span>
+      <span>10 mins.</span>
     </span>
 </div>
 
@@ -963,8 +963,20 @@ cov(\frac{\partial \log f_X(X;\boldsymbol{\theta})}{\partial \theta_j}, \frac{\p
 <h1 id="sufficiency">Sufficiency</h1>
 <h2 id="measures-of-quality-of-estimators">Measures of Quality of Estimators</h2>
 <h1 id="bayesian-statistics">Bayesian Statistics</h1>
+<h2 id="maximum-a-posterior-estimation">Maximum A Posterior Estimation</h2>
+<p>MLE is not the only way to estimate the parameters. The paradigm of MAP is that we should choose the <strong>value for our parameters that is the most likely given the data</strong>, that is:</p>
+<p><span class="math display">\[\hat{\theta} = \underset{\theta}{\arg\max}\; P(\theta| D)\]</span></p>
+<p>If we have random sample <span class="math inline">\(X_1, ...., X_n\)</span> that follows some discrete distribution <span class="math inline">\(P(X)\)</span>, then:</p>
+<span class="math display">\[\begin{aligned}
+\hat{\theta} &amp;= \underset{\theta}{\arg\max}\; p_X(\theta| X_1, ...., X_n)\\
+&amp;= \underset{\theta}{\arg\max}\; \frac{p_X(X_1, ...., X_n | \theta) P(\theta)}{p_X(X_1, ..., X_n)}\\
+&amp;= \underset{\theta}{\arg\max}\; p_X(X_1, ...., X_n | \theta) P(\theta)\\
+&amp;= \underset{\theta}{\arg\max}\; \prod^{N}_{i=1} p_X(X_i | \theta) P(\theta)
+\end{aligned}\]</span>
+<p>Which is similar to maximum likelihood but with extra prior term <span class="math inline">\(P(\theta)\)</span>. Comparing to MAP, <strong>MLE chooses the value of parameters that makes the data most likely</strong>.</p>
 <h1 id="ref">Ref</h1>
 <p>https://online.stat.psu.edu/stat415/lesson/1/1.2</p>
+<p>https://web.stanford.edu/class/archive/cs/cs109/cs109.1192/reader/11%20Parameter%20Estimation.pdf</p>
 
       
     </div>
@@ -1481,13 +1493,13 @@ cov(\frac{\partial \log f_X(X;\boldsymbol{\theta})}{\partial \theta_j}, \frac{\p
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">364k</span>
+    <span title="Symbols count total">370k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">5:31</span>
+    <span title="Reading time total">5:36</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
