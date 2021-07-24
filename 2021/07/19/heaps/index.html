@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://example.com/images/algo/heap_1.png">
 <meta property="og:image" content="http://example.com/images/algo/heap_2.png">
 <meta property="article:published_time" content="2021-07-19T05:31:28.000Z">
-<meta property="article:modified_time" content="2021-07-19T08:22:33.071Z">
+<meta property="article:modified_time" content="2021-07-24T15:09:20.434Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta property="article:tag" content="Algorithms">
 <meta name="twitter:card" content="summary">
@@ -93,8 +93,8 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
         <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">73</span></a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">13</span></a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">22</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">23</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
@@ -175,13 +175,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -254,10 +254,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-07-19 13:31:28 / Modified: 16:22:33" itemprop="dateCreated datePublished" datetime="2021-07-19T13:31:28+08:00">2021-07-19</time>
+      <time title="Created: 2021-07-19 13:31:28" itemprop="dateCreated datePublished" datetime="2021-07-19T13:31:28+08:00">2021-07-19</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-24 23:09:20" itemprop="dateModified" datetime="2021-07-24T23:09:20+08:00">2021-07-24</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -322,6 +328,7 @@
 <p><br></p>
 <p><img src="/images/algo/heap_1.png" width="600px"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Heap</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, A, heap_size</span>):</span></span><br><span class="line">        <span class="comment"># A may not be a heap, call build_min_heap or build_max_heap to convert this instance to heap</span></span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(A, <span class="built_in">list</span>)</span><br><span class="line">        self.heap_size = heap_size</span><br><span class="line">        self.length = <span class="built_in">len</span>(A)</span><br><span class="line">        self._A = A</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">left</span>(<span class="params">self, i</span>):</span></span><br><span class="line">        <span class="keyword">return</span> i &lt;&lt; <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">right</span>(<span class="params">self, i</span>):</span></span><br><span class="line">        <span class="keyword">return</span> i &lt;&lt; <span class="number">1</span> + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parent</span>(<span class="params">self, i</span>):</span></span><br><span class="line">        <span class="keyword">return</span> i &gt;&gt; <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span>(<span class="params">self, index</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._A[index]</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">append</span>(<span class="params">self, val</span>):</span></span><br><span class="line">        self._A.append(val)</span><br><span class="line">        </span><br></pre></td></tr></table></figure>
+<span id="more"></span>
 <h2 id="maintaining-the-heap-property">Maintaining the Heap Property</h2>
 <p><code>max_heapify(A, i)</code>, when it is called, <strong>this function assumes that the binary trees rooted at <span class="math inline">\(left(i)\)</span> and <span class="math inline">\(right(i)\)</span></strong> are max heaps but that <span class="math inline">\(A[i]\)</span> might be smaller than its children:</p>
 <ol type="1">
@@ -435,13 +442,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">370k</span>
+    <span title="Symbols count total">379k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">5:36</span>
+    <span title="Reading time total">5:45</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
