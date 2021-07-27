@@ -348,6 +348,31 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
       </tags>
   </entry>
   <entry>
+    <title>LReLU</title>
+    <url>/2021/07/05/LReLU/</url>
+    <content><![CDATA[<h1 id="rectifier-nonlinearities-improve-neural-network-acoustic-models">Rectifier Nonlinearities Improve Neural Network Acoustic Models</h1>
+<h2 id="background">Background</h2>
+<p>A single hidden unit's activation <span class="math inline">\(h^{i}\)</span> is given by:</p>
+<p><span class="math display">\[h^{(i)} = \sigma ({\mathbf{w}^i}^T \mathbf{x})\]</span></p>
+<p>Where <span class="math inline">\(\sigma (\cdot)\)</span> is the tanh function.</p>
+<p>Some drawbacks of tanh:</p>
+<ol type="1">
+<li>Vanishing gradient problem when lower layers of a DNN have gradients of nearly 0 because higher layer units are nearly saturated at <span class="math inline">\(-1\)</span> or <span class="math inline">\(1\)</span>.</li>
+<li>Does not produce a sparse representation in the sense of hard zero sparsity when using tanh.</li>
+</ol>
+<p>ReLU addresses the vanishing gradient problem because activate units will constantly have gradient of 1. It also provides sparse representation which is useful in classification. <strong>However, an inactivate unit may never activate because gradient-based optimization algorithm will not adjust the weights of a unit that never activates initially.</strong> Thus, we might expect the learning to be slow.</p>
+<h2 id="leaky-relu">Leaky ReLU</h2>
+<p>LReLU allows for a small, non-zero gradient when the unit is saturated and not active:</p>
+<p><span class="math display">\[
+h_i = \max({\mathbf{w}^i}^T \mathbf{x}, 0) = 
+\begin{cases}
+{\mathbf{w}^i}^T \mathbf{x}, \quad &amp; {\mathbf{w}^i}^T \mathbf{x} &gt; 0\\
+0.01{\mathbf{w}^i}^T \mathbf{x}, \quad &amp; {\mathbf{w}^i}^T \mathbf{x} \leq 0\\
+\end{cases}
+\]</span></p>
+]]></content>
+  </entry>
+  <entry>
     <title>Double Q Learning</title>
     <url>/2021/05/07/FA-issues/</url>
     <content><![CDATA[<h1 id="double-q-learning">Double Q-learning</h1>
@@ -372,31 +397,6 @@ Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \ha
         <tag>Function Approximation</tag>
         <tag>Discussions</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>LReLU</title>
-    <url>/2021/07/05/LReLU/</url>
-    <content><![CDATA[<h1 id="rectifier-nonlinearities-improve-neural-network-acoustic-models">Rectifier Nonlinearities Improve Neural Network Acoustic Models</h1>
-<h2 id="background">Background</h2>
-<p>A single hidden unit's activation <span class="math inline">\(h^{i}\)</span> is given by:</p>
-<p><span class="math display">\[h^{(i)} = \sigma ({\mathbf{w}^i}^T \mathbf{x})\]</span></p>
-<p>Where <span class="math inline">\(\sigma (\cdot)\)</span> is the tanh function.</p>
-<p>Some drawbacks of tanh:</p>
-<ol type="1">
-<li>Vanishing gradient problem when lower layers of a DNN have gradients of nearly 0 because higher layer units are nearly saturated at <span class="math inline">\(-1\)</span> or <span class="math inline">\(1\)</span>.</li>
-<li>Does not produce a sparse representation in the sense of hard zero sparsity when using tanh.</li>
-</ol>
-<p>ReLU addresses the vanishing gradient problem because activate units will constantly have gradient of 1. It also provides sparse representation which is useful in classification. <strong>However, an inactivate unit may never activate because gradient-based optimization algorithm will not adjust the weights of a unit that never activates initially.</strong> Thus, we might expect the learning to be slow.</p>
-<h2 id="leaky-relu">Leaky ReLU</h2>
-<p>LReLU allows for a small, non-zero gradient when the unit is saturated and not active:</p>
-<p><span class="math display">\[
-h_i = \max({\mathbf{w}^i}^T \mathbf{x}, 0) = 
-\begin{cases}
-{\mathbf{w}^i}^T \mathbf{x}, \quad &amp; {\mathbf{w}^i}^T \mathbf{x} &gt; 0\\
-0.01{\mathbf{w}^i}^T \mathbf{x}, \quad &amp; {\mathbf{w}^i}^T \mathbf{x} \leq 0\\
-\end{cases}
-\]</span></p>
-]]></content>
   </entry>
   <entry>
     <title>MDP</title>
@@ -777,6 +777,13 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
       </tags>
   </entry>
   <entry>
+    <title>actor_critic</title>
+    <url>/2021/06/14/actor-critic/</url>
+    <content><![CDATA[<h1 id="actor-critic-algorithms">Actor-Critic Algorithms</h1>
+<p><a href="https://papers.nips.cc/paper/1999/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf">Original Paper</a></p>
+]]></content>
+  </entry>
+  <entry>
     <title>Welcome</title>
     <url>/2030/05/30/aa_welcome/</url>
     <content><![CDATA[<h1 id="welcome">Welcome</h1>
@@ -891,17 +898,125 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
 ]]></content>
   </entry>
   <entry>
-    <title>adaboost</title>
+    <title>Adaboost</title>
     <url>/2021/07/19/adaboost/</url>
-    <content><![CDATA[
+    <content><![CDATA[<h1 id="adaboost-discrete">AdaBoost (Discrete)</h1>
+<p>Consider a two-class problem, with the output variable coded as <span class="math inline">\(Y \in \{-1, 1\}\)</span>. Given a vector of input variables <span class="math inline">\(\mathbf{X}\)</span>, a classifier <span class="math inline">\(G(\mathbf{X})\)</span> produces a prediction taking one of the two values <span class="math inline">\(\{-1, 1\}\)</span>.</p>
+<p>Suppose we have samples <span class="math inline">\(D = \{(\mathbf{x}_1, y_1), ...., (\mathbf{x}_N, y_N); \; \mathbf{x} \in \mathbb{R}^d\}\)</span>. The error rate (misclassification) on the training sample is defined as:</p>
+<p><span class="math display">\[\bar{err} = \frac{1}{N} \sum^{N}_{i=1} I[y_i \neq G(\mathbf{x}_i)]\]</span></p>
+<p>The expected error rate is defined as:</p>
+<p><span class="math display">\[E_{X, Y} [I[Y \neq G(\mathbf{X})]]\]</span></p>
+<p>A weak classifier is one whose error rate is only slightly better than random guessing. The purpose of boosting is to sequentially apply the weak classification algorithm to repeatedly modified versions of the data, thereby producing a sequence of weak classifiers <span class="math inline">\(G_{m} (\mathbf{x}), \; m = 1, ...., M\)</span></p>
+<p>The predictions from all of them are then combined through a weighted majority vote to produce the final prediction:</p>
+<p><span class="math display">\[G(x) = sign (\sum^{M}_{m=1} \alpha_m G_m (\mathbf{x}))\]</span></p>
+<p>Here, <span class="math inline">\(\alpha_1, ...., \alpha_M\)</span> are parameters that weight the contribution of each corresponding classifier <span class="math inline">\(G(\mathbf{x})\)</span> and they are learned by the algorithm. They are here to give higher influence to the more accurate classifiers in the sequence.</p>
+<p>The data modifications at each boosting step consist of applying weights <span class="math inline">\(w_1, ...., w_N\)</span> to each of the training observations <span class="math inline">\((\mathbf{x}_i, y_i), \; i=1, ....., N\)</span>:</p>
+<ol type="1">
+<li>Initially all of the weights are set to <span class="math inline">\(w_i = \frac{1}{N}\)</span>, so the first step simply trains the classifier on the data in usual manner.</li>
+<li>For each successive iteration <span class="math inline">\(m = 2, 3, .... , M\)</span>, the observation weights are individually modified:
+<ul>
+<li>Observations that were misclassified by the classifier <span class="math inline">\(G_{m-1} (\mathbf{x})\)</span> induced at the previous step have their weights increased.</li>
+<li>Observations that were classified correctly by the previous classifier have their weights decreased.</li>
+</ul></li>
+<li>Then the classification algorithm is reapplied to the weighted observations</li>
+</ol>
+<p>So misclassified samples have their weights increased so that each successive classifier is thereby forced to concentrate on those samples.</p>
+<p><img src='/images/ML/adaboost_1.png' width="600"></p>
+<p>At each iteration <span class="math inline">\(m\)</span>:</p>
+<ol type="1">
+<li>A normalized weighted error rate (high penalty for misclassifying high weight samples)<span class="math inline">\(err_m\)</span> is calculated.</li>
+<li>The error rate is transformed by <span class="math inline">\(\log (\frac{1 - error_m}{error_m})\)</span>:
+<ul>
+<li>This function goes to positive infinity as <span class="math inline">\(error_m\)</span> goes to 0</li>
+<li>This function goes to negative infinity as <span class="math inline">\(error_m\)</span> goes to 1 (<strong>we should just predict class inversely</strong>)</li>
+<li>This function is 0 when error rate is 0.5</li>
+</ul></li>
+<li>The new weight update:
+<ul>
+<li>If <strong>correctly classified</strong>, then we simply keep the original weight for the sample (It will be smaller because we are weighting it by sum of error rate in the next classifier).</li>
+<li>If <strong>incorrectly classified</strong>:
+<ul>
+<li>If error rate is small, then <span class="math inline">\(\alpha\)</span> is positively large so each misclassified sample's weight is <strong>increased</strong></li>
+<li>If error rate is high, then <span class="math inline">\(\alpha\)</span> goes to negative infinity, so each misclassified sample's weight is <strong>decreased</strong> because this sample is correctly classified inversely so we decrease its weight.</li>
+<li>If error rate is 0.5, then <span class="math inline">\(\alpha\)</span> is 0, so each misclassified sample's weight is <strong>maintained</strong></li>
+</ul></li>
+</ul></li>
+</ol>
+<p><img src='/images/ML/adaboost_3.png' width="600"></p>
+<h2 id="boosting-fits-an-additive-model">Boosting Fits an Additive Model</h2>
+<p>Boosting is a way of fitting an additive expansion in a set of elementary basis functions. Here the basis functions are the individual classifiers <span class="math inline">\(G_m(\mathbf{x}) \in \{-1, 1\}\)</span>. More generally, basis function expansions take the form:</p>
+<p><span class="math display">\[f(\mathbf{x}) = \sum^{M}_{m=1} \beta_m b(\mathbf{x}; \boldsymbol{\gamma}_m)\]</span></p>
+<p>Where <span class="math inline">\(\beta_m, \; m=1, 2, ...., M\)</span> are the expansion coefficients, and <span class="math inline">\(b(\mathbf{x}; \gamma) \in \mathbb{R}\)</span> are usually simple functions of multivariate argument <span class="math inline">\(\mathbf{x}\)</span> characterized by a set of parameters <span class="math inline">\(\{\boldsymbol{\gamma}_1, ...., \boldsymbol{\gamma}_M\}\)</span>.</p>
+<p>Typically these models are fit and the parameters are found by minimizing a loss function averaged over the training data:</p>
+<p><span class="math display">\[\min_{ \{\beta_m, \boldsymbol{\gamma}_m\}^{M}_1 }\sum^{N}_{i=1} L(y_i, \sum^{M}_{m=1} \beta_m b(\mathbf{x}_i; \boldsymbol{\gamma}_m))\]</span></p>
+<h2 id="forward-stagewise-additive-modeling">Forward Stagewise Additive Modeling</h2>
+<p>How to solve the above optimization problem? We can use forward stagewise modeling (greedy) to approximate the solution to above equation by sequentially adding new basis functions to the expansion without adjusting the parameters and coefficients of those that have already been added.</p>
+<p><img src='/images/ML/adaboost_2.png' width="600"></p>
+<p>The loss function of optimization problem at each step <span class="math inline">\(m\)</span> can be rewritten as:</p>
+<p><span class="math display">\[L(y_i, f_m(\mathbf{x}_i)) = L(y_i, f_{m-1} (\mathbf{x}_i) + \beta b(\mathbf{x}_i; \boldsymbol{\gamma}))\]</span></p>
+<p>Using the square loss, we have:</p>
+<p><span class="math display">\[L(y_i, f_m(\mathbf{x}_i)) = (y_i - f_{m-1} (\mathbf{x}_i) - \beta b(\mathbf{x}_i; \boldsymbol{\gamma}))^2\]</span></p>
+<p><span class="math display">\[\implies L(y_i, f_m(\mathbf{x}_i)) = (\epsilon_{im-1} -  \beta b(\mathbf{x}_i; \boldsymbol{\gamma}))^2\]</span></p>
+<p>This implies that we are fitting a basis function at each step to minimizing the residual from the current model <span class="math inline">\(f_{m-1} (\mathbf{x})\)</span>.</p>
+<h2 id="adaboost-as-forward-stagewise-additive-modeling">AdaBoost as Forward Stagewise Additive Modeling</h2>
+<p>Let the loss function be the exponential function:</p>
+<p><span class="math display">\[L(y_i, f(\mathbf{x}_i)) = e^{-y_i f(\mathbf{x}_i)}\]</span></p>
+<p>For adaboost, the basis functions are individual weak classifier <span class="math inline">\(G_m(x) \in \{-1, 1\}\)</span>. Using the exponential loss for additive stagewise modeling, we must minimize the objective:</p>
+<p><span class="math display">\[(\beta_m, G_m) = \underset{\beta, G}{\arg\min} \sum^{N}_{i=1} e^{-y_i(f_{m-1} (\mathbf{x}_i) + \beta G(\mathbf{x}_i))}\]</span></p>
+<p>Let <span class="math inline">\(w^{(m)}_i = e^{-y_i \mathbf{x}_i}\)</span>, then the above optimization can be expressed as:</p>
+<p><span class="math display">\[(\beta_m, G_m) = \underset{\beta, G}{\arg\min} \sum^{N}_{i=1} w^{(m)}_i e^{-y_i\beta G(\mathbf{x}_i)}\]</span></p>
+<p>Since, <span class="math inline">\(w^{(m)}_i\)</span> does not depend on <span class="math inline">\(\beta, G(\mathbf{x})\)</span>, so it is just some constant and can be regard it as weight. Since this weight depends on previous prediction and current label, it is changing at each iteration <span class="math inline">\(m\)</span>.</p>
+<h3 id="solve-for-beta">Solve for <span class="math inline">\(\beta\)</span></h3>
+<p>In order to solve for <span class="math inline">\(\beta\)</span>, we can rewrite the objective as:</p>
+<span class="math display">\[\begin{aligned}
+\sum^{N}_{i=1} w^{(m)}_i e^{-y_i\beta G(\mathbf{x}_i)} &amp;= \sum^{N}_{i=1} w^{(m)}_i e^{-\beta} I[y_i = G(\mathbf{x}_i)] + w^{(m)}_i e^{\beta} I[y_i \neq G(\mathbf{x}_i)] \\
+&amp;= \sum^{N}_{i=1} w^{(m)}_i e^{-\beta} (1 - I[y_i \neq G(\mathbf{x}_i)]) + w^{(m)}_i e^{\beta} I[y_i \neq G(\mathbf{x}_i)]\\
+&amp;= (e^{\beta} - e^{-\beta})\sum^{N}_{i=1} w^{m}_i I[y_i \neq G(\mathbf{x}_i)] + e^{-\beta} \sum^{N}_{i=1} w^{(m)}_i
+\end{aligned}\]</span>
+<p>by taking the partial derivative w.r.t <span class="math inline">\(\beta\)</span> and set it to 0:</p>
+<p><span class="math display">\[\implies(e^\beta + e^{-\beta}) \sum_{i=1}^{N} w_i^{(m)}I(y_i \neq G(\mathbf{x}_i)) - e^{-\beta} \sum_{i=1}^{N} w_i^{(m)} = 0\]</span></p>
+<p><span class="math display">\[\implies \frac{e^\beta + e^{-\beta}}{e^{-\beta}} = \frac{\sum_{i=1}^{N} w_i^{(m)}}{\sum_{i=1}^{N} w_i^{(m)}I(y_i \neq G(\mathbf{x}_i))}\]</span></p>
+<p><span class="math display">\[\implies \frac{e^\beta}{e^{-\beta}} = \frac{\sum_{i=1}^{N} w_i^{(m)}}{\sum_{i=1}^{N} w_i^{(m)}I(y_i \neq G(\mathbf{x}_i))} - 1\]</span></p>
+<p><span class="math display">\[\implies 2\beta = \log(\frac{1}{error_m} - 1)\]</span></p>
+<p><span class="math display">\[\implies \beta_m = \frac{1}{2} \log (\frac{1 - error_m}{error_m})\]</span></p>
+<p>Where <span class="math inline">\(error_m = \frac{\sum_{i=1}^{N} w_i^{(m)}I(y_i \neq G(\mathbf{x}_i))}{\sum_{i=1}^{N} w_i^{(m)}}\)</span></p>
+<p>That is, for any classifier <span class="math inline">\(G\)</span>:</p>
+<ul>
+<li><span class="math inline">\(\beta_m &gt; 0\)</span>, if <span class="math inline">\(error_m &lt; 0.5\)</span></li>
+<li><span class="math inline">\(\beta_m &lt; 0\)</span>, if <span class="math inline">\(error_m &gt; 0.5\)</span></li>
+</ul>
+<h3 id="solve-for-g">Solve for <span class="math inline">\(G\)</span></h3>
+<p>We want our basis function (weak classifier) to have better misclassification rate than random classifier, so we want <span class="math inline">\(error_m &lt; 0.5\)</span> which implies that we want <span class="math inline">\(\beta &gt; 0\)</span>. Thus, for any value <span class="math inline">\(\beta &gt; 0\)</span>, we can see that if we let <span class="math inline">\(G(\mathbf{x}_i) = y_i\)</span> for all samples, we have minimum objective. Thus, we can transform the minimization problem to minimize the error rate:</p>
+<span class="math display">\[\begin{aligned}
+G_m = \underset{G}{\arg\min} \sum^{N}_{i=1} w^{(m)}_i I[y_i \neq G(\mathbf{x}_i)]
+\end{aligned}\]</span>
+<p><br></p>
+<p>By substitute <span class="math inline">\(G_m\)</span> back to the solution of <span class="math inline">\(\beta\)</span>, we have:</p>
+<p><span class="math display">\[\beta_m = \frac{1}{2} \log (\frac{1 - error_m}{error_m})\]</span></p>
+<p>Where <span class="math inline">\(error_m = \frac{\sum_{i=1}^{N} w_i^{(m)}I(y_i \neq G_m(\mathbf{x}_i))}{\sum_{i=1}^{N} w_i^{(m)}}\)</span></p>
+<p>The approximation is then updated:</p>
+<p><span class="math display">\[f_m (\mathbf{x}_i) = f_{m-1} (\mathbf{x}_i) + \beta_m G_m (\mathbf{x}_i)\]</span></p>
+<p>Which causes the weights for the next iteration to be:</p>
+<span class="math display">\[\begin{aligned}
+w^{(m + 1)}_i &amp;= e^{-y_i f_{m} (\mathbf{x}_i)}\\
+&amp;= e^{-y_i (f_{m - 1} (\mathbf{x}_i) + \beta_m G_m (\mathbf{x}_i))}\\
+&amp;= e^{-y_i f_{m-1}(\mathbf{x}_i)} e^{-y_i \beta_m G_m (\mathbf{x}_i)}\\
+&amp;= w^{(m)}_{i} e^{-y_i \beta_m G_m (\mathbf{x}_i)}
+\end{aligned}\]</span>
+<p>Notice here, <span class="math inline">\(-y_i G_m (x_i) = 2 I[y_i \neq G_m (\mathbf{x}_i)] - 1\)</span>:</p>
+<p><span class="math display">\[\implies w^{(m + 1)}_i = w^{(m)}_{i} e^{\alpha_m I[y_i \neq G_m(\mathbf{x}_i)]} e^{-\beta_m }\]</span></p>
+<p>Where, <span class="math inline">\(\alpha_m = 2 \beta_m\)</span> is the <span class="math inline">\(\alpha_m\)</span> in Adaboost algorithm, and <span class="math inline">\(e^{-\beta_m}\)</span> has no effect on weights because it is just a constant multiplying every sample.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>Thus, we can think of Adaboost algorithm as stagewise additive modeling with basis function as a weak classifier (Minimizing the misclassification rate to have slightly better misclassification rate than random classifier) and exponential loss function.</p>
+<h1 id="ref">Ref</h1>
+<p>ESLII Chapter 10</p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>actor_critic</title>
-    <url>/2021/06/14/actor-critic/</url>
-    <content><![CDATA[<h1 id="actor-critic-algorithms">Actor-Critic Algorithms</h1>
-<p><a href="https://papers.nips.cc/paper/1999/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf">Original Paper</a></p>
-]]></content>
+      <categories>
+        <category>ML</category>
+      </categories>
+      <tags>
+        <tag>Machine Learning</tag>
+      </tags>
   </entry>
   <entry>
     <title>Alex Net</title>
@@ -1591,6 +1706,7 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
 <p>Thus, the best estimate <span class="math inline">\(\hat{c}_m\)</span> in each region is the <strong>average training responses</strong> in that region w.r.t mean square error:</p>
 <p><span class="math display">\[\hat{c}_m = \frac{1}{N_m} \sum^{N}_{i=1} y_i I[\mathbf{x}_i \in R_m]\]</span></p>
 <p>Where <span class="math inline">\(N_m = \sum^{N}_{i=1} I[\mathbf{x}_i \in R_m]\)</span>, is total training examples in region <span class="math inline">\(R_m\)</span>.</p>
+<span id="more"></span>
 <h3 id="best-splitting-point">Best Splitting Point</h3>
 <p>Now, finding the binary partition in terms of minimum sum of squares is generally computational infeasible. However, we can use a greedy algorithm that starts with all of the data, considering every splitting variable <span class="math inline">\(j\)</span> and splitting point <span class="math inline">\(s\)</span> and find the pair that minimize the particular loss:</p>
 <ul>
@@ -1634,7 +1750,7 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
 <li><p><strong>Cross-entropy</strong>: <span class="math display">\[-\sum^{K}_{k=1} \hat{p}_{mk} \log \hat{p}_{mk}\]</span></p>
 <p>Notice here, if there is only one class in the region, then the cross-entropy will be <span class="math inline">\(0\)</span> which is minimum. Thus, cross-entropy prefers purer nodes.</p></li>
 </ol>
-<p>In general, we should always use cross entropy or gini index over misclassification rate, because misclassification rate does not capture extra purity.</p>
+<p>In general, we should always use cross entropy or gini index over misclassification rate, because misclassification rate does not capture extra purity. <strong>The impurity needs to scale by the instance number in each region</strong></p>
 <h2 id="other-issues">Other Issues</h2>
 <h3 id="instability-of-trees">Instability of Trees</h3>
 <p>One major problem with trees is their high variance, often a small change in the data changes the structure of the tree. The major reason for this instability is the hierarchical nature of the process: the effect of an error in the top split is propagated down to all of the splits below it.</p>
@@ -1644,6 +1760,8 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
 <p>To solve the additive structure problem, rather than restricting splits to be of the form <span class="math inline">\(X_j \leq s\)</span>, one can allow splits along linear combinations of features:</p>
 <p><span class="math display">\[\sum_{j} a_j X_j \leq s\]</span></p>
 <p>While this can improve the predictive power of the tree, it can hurt interpretability.</p>
+<h1 id="implementation">Implementation</h1>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DecisionTreeNode</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, split_point=<span class="literal">None</span>, split_feature=<span class="literal">None</span>, gini_index=<span class="literal">None</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 num_instance=<span class="literal">None</span>, left_child=<span class="literal">None</span>, right_child=<span class="literal">None</span>, prediction=<span class="literal">None</span></span>):</span></span><br><span class="line"></span><br><span class="line">        self.split_point = split_point</span><br><span class="line">        self.split_feature = split_feature</span><br><span class="line">        self.gini_index = gini_index</span><br><span class="line">        self.num_instance = num_instance</span><br><span class="line">        self.left_child = left_child</span><br><span class="line">        self.right_child = right_child</span><br><span class="line">        self.prediction = prediction</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DecisionTreeClassifier</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, max_depth=<span class="number">10</span>, criterion=<span class="string">&#x27;gini_index&#x27;</span>, min_sample_leave=<span class="number">1</span></span>):</span></span><br><span class="line">        self.max_depth = max_depth</span><br><span class="line">        self.criterion = criterion</span><br><span class="line">        self.min_sample_splits = min_sample_leave</span><br><span class="line">        self._tree = <span class="literal">None</span></span><br><span class="line">        self._num_features = <span class="literal">None</span></span><br><span class="line">        self.feature_names = <span class="literal">None</span></span><br><span class="line">        self._num_samples = <span class="literal">None</span></span><br><span class="line">        self._classes = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span>(<span class="params">self, x_train, y_train</span>):</span></span><br><span class="line">        self._num_samples, self._num_features = x_train.shape</span><br><span class="line">        self._classes = np.unique(y_train)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(x_train, pd.DataFrame):</span><br><span class="line">            self.feature_names = x_train.columns</span><br><span class="line">            x_train = x_train.values</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.feature_names = <span class="built_in">range</span>(self._num_features)</span><br><span class="line"></span><br><span class="line">        self._tree = self._grow_tree(np.column_stack([x_train, y_train]))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_grow_tree</span>(<span class="params">self, train, curr_depth=<span class="number">0</span>, stop=<span class="literal">False</span></span>):</span></span><br><span class="line">        <span class="keyword">if</span> stop:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            impurity_dict = &#123;&#125;</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(self._num_features):</span><br><span class="line">                curr_feature_col = train[:, j]</span><br><span class="line">                <span class="keyword">for</span> s <span class="keyword">in</span> np.unique(curr_feature_col):</span><br><span class="line">                    impurity = self._cal_impurity(train, j, s)</span><br><span class="line">                    <span class="keyword">if</span> impurity <span class="keyword">in</span> impurity_dict.keys():</span><br><span class="line">                        impurity_dict[impurity].append((j, s))</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        impurity_dict[impurity] = [(j, s)]</span><br><span class="line"></span><br><span class="line">            min_impurity = <span class="built_in">min</span>(impurity_dict.keys())</span><br><span class="line">            j_hat, s_hat = impurity_dict[min_impurity][<span class="number">0</span>]</span><br><span class="line">            prediction = Counter(train[:, -<span class="number">1</span>]).most_common()[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">            R_l = train[train[:, j_hat] &lt; s_hat]</span><br><span class="line">            R_r = train[train[:, j_hat] &gt;= s_hat]</span><br><span class="line">            sample_split = [<span class="built_in">len</span>(R_l), <span class="built_in">len</span>(R_r)]</span><br><span class="line"></span><br><span class="line">            if_stop = self._check_stopping_criterion(curr_depth, sample_split)</span><br><span class="line"></span><br><span class="line">            <span class="built_in">print</span>(curr_depth, min_impurity, sample_split, (j_hat, s_hat))</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> DecisionTreeNode(split_point=s_hat,</span><br><span class="line">                                    split_feature=j_hat,</span><br><span class="line">                                    prediction=prediction,</span><br><span class="line">                                    gini_index=min_impurity,</span><br><span class="line">                                    num_instance=<span class="built_in">len</span>(train),</span><br><span class="line">                                    left_child=self._grow_tree(train=R_l,</span><br><span class="line">                                                               curr_depth=curr_depth+<span class="number">1</span>,</span><br><span class="line">                                                               stop=if_stop),</span><br><span class="line"></span><br><span class="line">                                    right_child=self._grow_tree(train=R_r,</span><br><span class="line">                                                                curr_depth=curr_depth+<span class="number">1</span>,</span><br><span class="line">                                                                stop=if_stop))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_check_stopping_criterion</span>(<span class="params">self, curr_depth, sample_split</span>):</span></span><br><span class="line">        <span class="keyword">if</span> curr_depth &gt; self.max_depth:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">any</span>([sample_split[<span class="number">0</span>] &lt; self.min_sample_splits, sample_split[<span class="number">1</span>] &lt; self.min_sample_splits]):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_cal_impurity</span>(<span class="params">self, train, j, s</span>):</span></span><br><span class="line">        R_l = train[train[:, j] &lt; s]</span><br><span class="line">        R_r = train[train[:, j] &gt;= s]</span><br><span class="line">        R_l_y = R_l[:, -<span class="number">1</span>]</span><br><span class="line">        R_r_y = R_r[:, -<span class="number">1</span>]</span><br><span class="line">        N_l = <span class="built_in">len</span>(R_l) + <span class="number">1e-10</span></span><br><span class="line">        N_r = <span class="built_in">len</span>(R_r) + <span class="number">1e-10</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> self.criterion == <span class="string">&#x27;gini_index&#x27;</span>:</span><br><span class="line">            gini_l = <span class="number">0</span></span><br><span class="line">            gini_r = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> k <span class="keyword">in</span> self._classes:</span><br><span class="line">                p_l = <span class="built_in">len</span>(R_l_y[R_l_y == k]) / N_l</span><br><span class="line">                p_r = <span class="built_in">len</span>(R_r_y[R_r_y == k]) / N_r</span><br><span class="line">                gini_l += p_l * (<span class="number">1</span> - p_l)</span><br><span class="line">                gini_r += p_r * (<span class="number">1</span> - p_r)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> gini_l * N_l + gini_r * N_r</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, x_test</span>):</span></span><br><span class="line">        output = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> x_test:</span><br><span class="line">            output.append(self._traverse_tree(i))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> output</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_traverse_tree</span>(<span class="params">self, x, tree=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> tree:</span><br><span class="line">            tree = self._tree</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> tree.left_child <span class="keyword">and</span> <span class="keyword">not</span> tree.left_child:</span><br><span class="line">            <span class="keyword">return</span> tree.prediction</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> x[tree.split_feature] &lt; tree.split_point:</span><br><span class="line">                <span class="keyword">return</span> self._traverse_tree(x, tree.left_child)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> self._traverse_tree(x, tree.right_child)</span><br></pre></td></tr></table></figure>
 <h1 id="ref">Ref</h1>
 <p>ESLII Chapter 9</p>
 ]]></content>
@@ -2223,54 +2341,6 @@ l(\boldsymbol{\theta}; \; D) &amp;= \sum^{N}_{i=1} y_i\log (p_i) + (1 - y_i) \lo
       </tags>
   </entry>
   <entry>
-    <title>Monte Carlo Estimation</title>
-    <url>/2021/05/15/mc/</url>
-    <content><![CDATA[<h1 id="learning-from-stream-of-data-monte-carlo-methods">Learning From Stream of Data (Monte Carlo Methods)</h1>
-<h2 id="mc-policy-evaluation">MC Policy Evaluation</h2>
-<p>The Goal is to learn or estimate the value function <span class="math inline">\(V^{\pi}\)</span> and <span class="math inline">\(Q^{\pi}\)</span> of a policy.</p>
-<p>Recall that:</p>
-<p><span class="math display">\[V^{\pi}(x) = E[G^{\pi}_{t} | X_t=x]\]</span></p>
-<p>This is the expected return starting from state <span class="math inline">\(x\)</span>. At the same time, obtain a sample from return <span class="math inline">\(G^{\pi}\)</span> is easy: if the agent starts at state <span class="math inline">\(x\)</span>, and follows <span class="math inline">\(\pi\)</span>, we can draw one sample of r.v <span class="math inline">\(G^{\pi}\)</span> by computing the cumulative sum of rewards collected during the episode starting from the state <span class="math inline">\(x\)</span>:</p>
-<p><span class="math display">\[\hat{G^{\pi}_{t}} = \sum^{\infty}_{k=t} \gamma^{k-t} R_{k}\]</span></p>
-<p>If we repeat this process from the same state, we get another draw of r.v <span class="math inline">\(G^{\pi}\)</span>, let us call these samples <span class="math inline">\(G^{\pi (1)} (x)\)</span>, <span class="math inline">\(G^{\pi (2)} (x)\)</span>, ...., <span class="math inline">\(G^{\pi (n)} (x)\)</span>. We can get an estimate <span class="math inline">\(\hat{V^{\pi}} (x)\)</span> of <span class="math inline">\(V^{\pi} (x)\)</span> by taking the average of the sample average:</p>
-<p><span class="math display">\[\hat{V^{\pi}} (x) = \frac{1}{n} \sum^{n}_{i=1} \hat{G}^{\pi(i)} (x)\]</span></p>
-<span id="more"></span>
-<p><img src="/images/RL/mc/mc_3.png"></p>
-<p>This follows by the <code>weak law of large number</code>, we can also estimate this expectation using Stochastic Approximation (SA) procedure to obtain an online fashion update:</p>
-<p><span class="math display">\[ \hat{V^{\pi}_{t+1}} (x) \leftarrow (1 - \alpha_t) \hat{V^{\pi}_{t}} (x) + \alpha_t G^{\pi (t)} (x)\]</span></p>
-<p><img src="/images/RL/mc/mc_2.png"></p>
-<h2 id="first-visit-and-every-visit-mc">First Visit and Every Visit MC</h2>
-<p>Above two algorithms are examples of first visit MC method. Each occurrence of state <span class="math inline">\(x\)</span> in an episode is called a visit to <span class="math inline">\(x\)</span>. Of course, <span class="math inline">\(x\)</span> may be visited multiple times in the same episode; let us call the first time it is visited in an episode the first visit to <span class="math inline">\(x\)</span>. The <code>first-visit MC method</code> estimates <span class="math inline">\(V^{\pi} (x)\)</span> as the average of the returns following first visits to <span class="math inline">\(x\)</span>, whereas the <code>every-visit MC method</code> averages the returns following all visits to <span class="math inline">\(x\)</span>.</p>
-<h1 id="mc-control">MC Control</h1>
-<h2 id="exploring-start">Exploring Start</h2>
-<p>The general idea of MC control is to use some version of Policy Iteration. If we run many rollouts from each state-action pair <span class="math inline">\((x, a)\)</span>, we can define <span class="math inline">\(\hat{Q^{\pi}_t}\)</span> that converges to <span class="math inline">\(Q^{\pi}\)</span>. If we wait for an infinite time:</p>
-<p><span class="math display">\[Q^{\pi}_{\infty} = lim_{t \rightarrow \infty} \hat{Q^{\pi}_{t}} = Q^{\pi}\]</span></p>
-<p>We can then choose:</p>
-<p><span class="math display">\[\pi^{\prime} \rightarrow \pi_g (\hat{Q^{\pi}_{\infty}})\]</span></p>
-<p>Then we repeat this process until convergence.</p>
-<p>However, we do not need to have a very accurate estimation of <span class="math inline">\(Q^{\pi_k}\)</span> before performing the policy improvement step. We can perform MC for a finite number of rollouts from each state, and then perform the improvement step. The below algorithms are MC control with Exploring Start, which assumes that for every state action pairs <span class="math inline">\((x, a)\)</span>, we have positive probability that we start at this state action pair.</p>
-<p><img src="/images/RL/mc/mc_1.png"></p>
-<p>or online version using exploring start:</p>
-<p><img src="/images/RL/mc/mc_5.png"></p>
-<p>We can see that all returns are cumulated and averaged irrespective which policy they follow, however, the algorithm can still converge to <span class="math inline">\(Q^{*}\)</span>:</p>
-<p><img src="/images/RL/mc/mc_6.png"></p>
-<h2 id="without-exploring-start">Without Exploring Start</h2>
-<p>Even though we are guaranteed to converge optimal action value function using MC with exploring start, however, this assumption of exploring start is unlike especially when state space and action space are large. To avoid this unlikely assumption, we can replace exploring start with <span class="math inline">\(\epsilon\)</span>-soft policies to ensure sufficient exploration or using off-policy algorithms.</p>
-<p><img src="/images/RL/mc/mc_7.png"></p>
-<h1 id="further">Further</h1>
-<p>In this post, we have some basic understanding of generic MC methods and basic framework of MC Policy evaluation and control. Next, we will explore some popular MC methods for solving control problems. We will see that MC methods can be generalized to both on-policy sampling scenario and off-policy sampling scenario.</p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>MC</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>MC</tag>
-        <tag>Tabular Methods</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Naive Bayes</title>
     <url>/2021/07/19/naive-bayes/</url>
     <content><![CDATA[<h1 id="naive-bayes">Naive Bayes</h1>
@@ -2367,14 +2437,62 @@ l(\boldsymbol{\theta}; \; D) &amp;= \sum^{N}_{i=1} y_i\log (p_i) + (1 - y_i) \lo
       </tags>
   </entry>
   <entry>
-    <title>natural-actor-critic</title>
-    <url>/2021/06/03/natural-actor-critic/</url>
-    <content><![CDATA[
+    <title>Monte Carlo Estimation</title>
+    <url>/2021/05/15/mc/</url>
+    <content><![CDATA[<h1 id="learning-from-stream-of-data-monte-carlo-methods">Learning From Stream of Data (Monte Carlo Methods)</h1>
+<h2 id="mc-policy-evaluation">MC Policy Evaluation</h2>
+<p>The Goal is to learn or estimate the value function <span class="math inline">\(V^{\pi}\)</span> and <span class="math inline">\(Q^{\pi}\)</span> of a policy.</p>
+<p>Recall that:</p>
+<p><span class="math display">\[V^{\pi}(x) = E[G^{\pi}_{t} | X_t=x]\]</span></p>
+<p>This is the expected return starting from state <span class="math inline">\(x\)</span>. At the same time, obtain a sample from return <span class="math inline">\(G^{\pi}\)</span> is easy: if the agent starts at state <span class="math inline">\(x\)</span>, and follows <span class="math inline">\(\pi\)</span>, we can draw one sample of r.v <span class="math inline">\(G^{\pi}\)</span> by computing the cumulative sum of rewards collected during the episode starting from the state <span class="math inline">\(x\)</span>:</p>
+<p><span class="math display">\[\hat{G^{\pi}_{t}} = \sum^{\infty}_{k=t} \gamma^{k-t} R_{k}\]</span></p>
+<p>If we repeat this process from the same state, we get another draw of r.v <span class="math inline">\(G^{\pi}\)</span>, let us call these samples <span class="math inline">\(G^{\pi (1)} (x)\)</span>, <span class="math inline">\(G^{\pi (2)} (x)\)</span>, ...., <span class="math inline">\(G^{\pi (n)} (x)\)</span>. We can get an estimate <span class="math inline">\(\hat{V^{\pi}} (x)\)</span> of <span class="math inline">\(V^{\pi} (x)\)</span> by taking the average of the sample average:</p>
+<p><span class="math display">\[\hat{V^{\pi}} (x) = \frac{1}{n} \sum^{n}_{i=1} \hat{G}^{\pi(i)} (x)\]</span></p>
+<span id="more"></span>
+<p><img src="/images/RL/mc/mc_3.png"></p>
+<p>This follows by the <code>weak law of large number</code>, we can also estimate this expectation using Stochastic Approximation (SA) procedure to obtain an online fashion update:</p>
+<p><span class="math display">\[ \hat{V^{\pi}_{t+1}} (x) \leftarrow (1 - \alpha_t) \hat{V^{\pi}_{t}} (x) + \alpha_t G^{\pi (t)} (x)\]</span></p>
+<p><img src="/images/RL/mc/mc_2.png"></p>
+<h2 id="first-visit-and-every-visit-mc">First Visit and Every Visit MC</h2>
+<p>Above two algorithms are examples of first visit MC method. Each occurrence of state <span class="math inline">\(x\)</span> in an episode is called a visit to <span class="math inline">\(x\)</span>. Of course, <span class="math inline">\(x\)</span> may be visited multiple times in the same episode; let us call the first time it is visited in an episode the first visit to <span class="math inline">\(x\)</span>. The <code>first-visit MC method</code> estimates <span class="math inline">\(V^{\pi} (x)\)</span> as the average of the returns following first visits to <span class="math inline">\(x\)</span>, whereas the <code>every-visit MC method</code> averages the returns following all visits to <span class="math inline">\(x\)</span>.</p>
+<h1 id="mc-control">MC Control</h1>
+<h2 id="exploring-start">Exploring Start</h2>
+<p>The general idea of MC control is to use some version of Policy Iteration. If we run many rollouts from each state-action pair <span class="math inline">\((x, a)\)</span>, we can define <span class="math inline">\(\hat{Q^{\pi}_t}\)</span> that converges to <span class="math inline">\(Q^{\pi}\)</span>. If we wait for an infinite time:</p>
+<p><span class="math display">\[Q^{\pi}_{\infty} = lim_{t \rightarrow \infty} \hat{Q^{\pi}_{t}} = Q^{\pi}\]</span></p>
+<p>We can then choose:</p>
+<p><span class="math display">\[\pi^{\prime} \rightarrow \pi_g (\hat{Q^{\pi}_{\infty}})\]</span></p>
+<p>Then we repeat this process until convergence.</p>
+<p>However, we do not need to have a very accurate estimation of <span class="math inline">\(Q^{\pi_k}\)</span> before performing the policy improvement step. We can perform MC for a finite number of rollouts from each state, and then perform the improvement step. The below algorithms are MC control with Exploring Start, which assumes that for every state action pairs <span class="math inline">\((x, a)\)</span>, we have positive probability that we start at this state action pair.</p>
+<p><img src="/images/RL/mc/mc_1.png"></p>
+<p>or online version using exploring start:</p>
+<p><img src="/images/RL/mc/mc_5.png"></p>
+<p>We can see that all returns are cumulated and averaged irrespective which policy they follow, however, the algorithm can still converge to <span class="math inline">\(Q^{*}\)</span>:</p>
+<p><img src="/images/RL/mc/mc_6.png"></p>
+<h2 id="without-exploring-start">Without Exploring Start</h2>
+<p>Even though we are guaranteed to converge optimal action value function using MC with exploring start, however, this assumption of exploring start is unlike especially when state space and action space are large. To avoid this unlikely assumption, we can replace exploring start with <span class="math inline">\(\epsilon\)</span>-soft policies to ensure sufficient exploration or using off-policy algorithms.</p>
+<p><img src="/images/RL/mc/mc_7.png"></p>
+<h1 id="further">Further</h1>
+<p>In this post, we have some basic understanding of generic MC methods and basic framework of MC Policy evaluation and control. Next, we will explore some popular MC methods for solving control problems. We will see that MC methods can be generalized to both on-policy sampling scenario and off-policy sampling scenario.</p>
 ]]></content>
+      <categories>
+        <category>RL</category>
+        <category>MC</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>MC</tag>
+        <tag>Tabular Methods</tag>
+      </tags>
   </entry>
   <entry>
     <title>off-policy-actor-critic</title>
     <url>/2021/06/03/off-policy-actor-critic/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
+    <title>natural-actor-critic</title>
+    <url>/2021/06/03/natural-actor-critic/</url>
     <content><![CDATA[
 ]]></content>
   </entry>
