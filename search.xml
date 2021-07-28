@@ -135,95 +135,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Dueling Network Architectures for DRL</title>
-    <url>/2021/05/13/Dueling/</url>
-    <content><![CDATA[<h1 id="dueling-network-architectures-for-deep-reinforcement-learning">Dueling Network Architectures for Deep Reinforcement Learning</h1>
-<h2 id="introduction">Introduction</h2>
-<p>The authors introduce an innovating neural network architecture that is better suited for model-free RL. This paper advances a new network but uses already published algorithms.</p>
-<p>The proposed architecture is called dueling architecture, explicitly separates the representation of state values and state-dependent action advantages. The architecture consists of two streams that represent the value and advantage functions, while sharing a common convolutional feature learning module. The two streams are combined via a special aggregating layer to produce an estimate of the state-action value function <span class="math inline">\(Q\)</span>. This dueling network should be understood as a single Q network with two streams that replaces the popular single-stream Q-network in existing algorithms such as DQN. The dueling network automatically produces separate estimates of the state value function and advantage function, without any extra supervision.</p>
-<p><img src="/images/RL/papers/dueling_1.png"></p>
-<p>Intuitively, the dueling architecture can learn which states are (or are not) valuable, without having to learn the effect of each action for each state. (by taking the gradient wrt to the input) It can more quickly identify the correct action during policy evaluation as redundant or similar actions are added to the learning problem.</p>
-<span id="more"></span>
-<h2 id="background">Background</h2>
-<p><strong>random variables have subscript <span class="math inline">\(t\)</span>, <span class="math inline">\(E[ g(x_t, a_t) | x_t=x, a_t] = f(x, a)\)</span> is shorthanded as <span class="math inline">\(f(x, a) = E[g(x, a)]\)</span></strong></p>
-<p>In Atari domain, the agent perceives a video <span class="math inline">\(s_t\)</span> consisting of M image frames <span class="math inline">\(s_t = (x_{t-M+1}, ..., x_t) \in S\)</span> at time step <span class="math inline">\(t\)</span>. Then agent chooses an action from a discrete set <span class="math inline">\(a_t \in A\)</span> and observes a reward signal <span class="math inline">\(r_t\)</span> produced by the game emulator.</p>
-<p>The agent seeks to maximize the expected discounted return where we define the discounted return as <span class="math inline">\(R_t = \sum_{\tau=t}^{\infty} \gamma^{\tau - t} r_{\tau}\)</span> with <span class="math inline">\(\gamma \in [0, 1]\)</span>.</p>
-<p>For an agent behaving to a stochastic policy <span class="math inline">\(\pi\)</span>, the values of the state-action pair <span class="math inline">\((s, a)\)</span> and the state <span class="math inline">\(s\)</span> are defined as:</p>
-<p><span class="math display">\[Q^{\pi} (s, a) = E[R_t | s_t=s, a_t=a, \pi]\]</span></p>
-<p><span class="math display">\[V^{\pi} (s) = E_{a_t \sim \pi(\cdot | s)}[R_t | s_t=s, \pi] = E_{a_t \sim \pi(\cdot | s)}[E[R_t | s_t, a_t, \pi] | s_t=s] = E_{a_t \sim \pi(\cdot | s)}[ Q^{\pi}(s, a_t)]\]</span></p>
-<p>We know that we can rewrite <span class="math inline">\(Q^{\pi}\)</span> as:</p>
-<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
-<p>We also define:</p>
-<p><span class="math display">\[Q^{*} (s, a) = max_{\pi} Q^{\pi} (s, a), \forall (s, a) \in S X A\]</span></p>
-<p>Then:</p>
-<p><span class="math display">\[V^{*} (s) = max_{a} Q^{*} (s, a)\]</span></p>
-<p>And,</p>
-<p><span class="math display">\[Q^{*}(s, a) = E_{s^{\prime}} [r + \gamma max_{a^{\prime}} Q^{*} (s^{\prime}, a^{\prime}) | s, a]\]</span></p>
-<p>The advantage function is denoted as:</p>
-<p><span class="math display">\[A^{\pi} (s, a) = Q^{\pi} (s, a) - V^{\pi} (s)\]</span></p>
-<p><span class="math display">\[E_{a}[A^{\pi} (s, a) | s] = E_{a}[Q^{\pi} (s, a) | s] - V^{\pi} (s) = 0\]</span></p>
-<p>This means that the advantage at state <span class="math inline">\(s\)</span> weighted by policy <span class="math inline">\(\pi\)</span> is 0. Intuitively, the advantage function measures the relative importance for each action.</p>
-<h2 id="dueling-network-architecture">Dueling Network Architecture</h2>
-<p>Instead of following the convolutional layers with a single sequence of fully connected layers, they instead use two sequences (streams) of fully connected layers. The streams are constructed such that they have the capability of providing separate estimates of the value and advantage functions. Finally , the two streams are combined to produce a single output <span class="math inline">\(Q\)</span> function.</p>
-<p>From the advantage expression, we know that</p>
-<p><span class="math display">\[Q^{\pi} (s, a) = V^{\pi} (s) + A^{\pi} (s, a)\]</span></p>
-<p>If the policy is the deterministic policy, <span class="math inline">\(a^{*} = argmax_{a^{\prime} \in A} Q(s, a^{\prime})\)</span>, then:</p>
-<p><span class="math display">\[E_{a^{\prime}}[Q^{\pi} (s, a)] = Q^{\pi} (s, a^{*}) = V^{\pi} (s)\]</span> and hence <span class="math inline">\(A^{\pi}(s, a^{*}) = 0\)</span>$</p>
-<p>Let <span class="math inline">\(V(s; \theta, \beta), A(s, a; \theta, \alpha), Q(s, a; \theta, \alpha, \beta)\)</span> be parametrized version of <span class="math inline">\(V, A, Q\)</span> respectively. <span class="math inline">\(\theta\)</span> are the shared parameters, <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are the stream parameters for <span class="math inline">\(V, A\)</span>. We can calculate <span class="math inline">\(Q\)</span> directly using the formula:</p>
-<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha)\]</span></p>
-<p>However, these functions are just estimates of the true values, therefore are unidentifiable in the sense that given <span class="math inline">\(Q\)</span> we can not recover <span class="math inline">\(V, A\)</span> uniquely. (ie. given <span class="math inline">\(Q(s, a)\)</span> what is <span class="math inline">\(V(s), A(s, a)\)</span>?)</p>
-<p>To solve the problem, we can force the advantage function to have zero advantage at some chosen action, in this case the greedy action:</p>
-<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha) - max_{a^{\prime}} A(s, a^{\prime}; \theta, \alpha)\]</span></p>
-<p>Thus, if <span class="math inline">\(a^{*} = argmax_{a^{\prime} \in A} Q(s, a^{\prime})\)</span>, then</p>
-<p><span class="math display">\[Q(s, a^{*}; \theta, \alpha, \beta) = V(s; \theta, \beta)\]</span></p>
-<p>We can determine the <span class="math inline">\(V\)</span> given <span class="math inline">\(Q\)</span>.</p>
-<p>Or, we can have:</p>
-<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha) - \frac{1}{|A|} \sum_{a^{\prime}} A(s, a^{\prime}; \theta, \alpha)\]</span></p>
-<p>Take the expectation or average of <span class="math inline">\(Q\)</span>:</p>
-<p><span class="math display">\[E[Q(s, a; \theta, \alpha, \beta)] = V(s; \theta, \theta)\]</span></p>
-<p>On the one hand this loses the original semantics of <span class="math inline">\(V\)</span> and <span class="math inline">\(A\)</span> because they are now off-target by a constant, but on the other hand it increases the stability of the optimization. Note that while subtracting the mean or max helps with the identifiability, it does not change the relative rank of <span class="math inline">\(A, Q\)</span>, so the greedy action.</p>
-<h2 id="discussion">Discussion</h2>
-<p>The advantage of the dueling architecture lies partly in its ability to learn the state-value function efficiently. With every update of the <span class="math inline">\(Q\)</span> values in the dueling architecture, the value stream <span class="math inline">\(V\)</span> is updated – this contrasts with the updates in a single-stream architecture where only the value of one of actions is updated, the values of other actions are untouched. The advantage of the dueling architecture over single-stream <span class="math inline">\(Q\)</span> networks grows when the number of actions is large.</p>
-<h2 id="implementation">Implementation</h2>
-<p><em>One implementation of Dueling Architecture in PARL using PaddlPaddle for Atari Games</em></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> paddle.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AtariModel</span>(<span class="params">parl.Model</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, act_dim, dueling=<span class="literal">False</span></span>):</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line">        self.conv1 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">4</span>, out_channels=<span class="number">32</span>, kernel_size=<span class="number">5</span>, stride=<span class="number">1</span>, padding=<span class="number">2</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv2 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">32</span>, out_channels=<span class="number">32</span>, kernel_size=<span class="number">5</span>, stride=<span class="number">1</span>, padding=<span class="number">2</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv3 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">32</span>, out_channels=<span class="number">64</span>, kernel_size=<span class="number">4</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv4 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">64</span>, out_channels=<span class="number">64</span>, kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.relu = nn.ReLU()</span><br><span class="line">        self.max_pool = nn.MaxPool2D(kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>)</span><br><span class="line">        self.flatten = nn.Flatten()</span><br><span class="line"></span><br><span class="line">        self.dueling = dueling</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> dueling:</span><br><span class="line">            self.linear_1_adv = nn.Linear(in_features=<span class="number">6400</span>, out_features=<span class="number">512</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">            self.linear_2_adv = nn.Linear(in_features=<span class="number">512</span>, out_features=act_dim)</span><br><span class="line">            self.linear_1_val = nn.Linear(in_features=<span class="number">6400</span>, out_features=<span class="number">512</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">            self.linear_2_val = nn.Linear(in_features=<span class="number">512</span>, out_features=<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.linear_1 = nn.Linear(in_features=<span class="number">6400</span>, out_features=act_dim)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">value</span>(<span class="params">self, obs</span>):</span></span><br><span class="line"></span><br><span class="line">        obs = obs / <span class="number">255.0</span></span><br><span class="line">        out = self.max_pool(self.relu(self.conv1(obs)))</span><br><span class="line">        out = self.max_pool(self.relu(self.conv2(out)))</span><br><span class="line">        out = self.max_pool(self.relu(self.conv3(out)))</span><br><span class="line">        out = self.relu(self.conv4(out))</span><br><span class="line">        out = self.flatten(out)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.dueling:</span><br><span class="line">            As = self.relu(self.linear_1_adv(out))</span><br><span class="line">            As = self.linear_2_adv(As)</span><br><span class="line">            V = self.relu(self.linear_1_val(out))</span><br><span class="line">            V = self.linear_2_val(V)</span><br><span class="line">            Q = As + (V - As.mean(axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            Q = self.linear_1(out)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Q</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>VFA</category>
-      </categories>
-      <tags>
-        <tag>Function Approximation</tag>
-        <tag>Continuous State Space</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Double Q Learning</title>
-    <url>/2021/05/07/FA-issues/</url>
-    <content><![CDATA[<h1 id="double-q-learning">Double Q-learning</h1>
-<h2 id="the-overestimation-phenomenon">The Overestimation Phenomenon</h2>
-<p>Assume the agent observes during learning that action <span class="math inline">\(a\)</span> and executed at state <span class="math inline">\(s\)</span> resulting in the state <span class="math inline">\(s^{\prime}\)</span> and some immediate reward <span class="math inline">\(r^{a}_{s}\)</span>. The Q-learning update can be written as:</p>
-<p><span class="math display">\[Q(s, a) \leftarrow r^{a}_{s} + \gamma \max_{\hat{a}} Q(s^{\prime}, \hat{a})\]</span></p>
-<p>It has been shown that repeated application of this update equation eventually yields <span class="math inline">\(Q\)</span>-values that give rise to a policy which maximizes the expected cumulative discounted reward. However, these results only apply when <span class="math inline">\(Q-\)</span>values are stored precisely. (e.g by a look up table)</p>
-<p>Assume, instead, let <span class="math inline">\(Q\)</span> be represented as a function approximator that induces some noise on the estimates of <span class="math inline">\(Q\)</span>. More specifically, let us assume that the current stored <span class="math inline">\(Q-\)</span>values, denoted by <span class="math inline">\(Q^{approx}\)</span>, represent some implicit target values <span class="math inline">\(Q^{target}\)</span>, corrupted by a noise term <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span>, which is due to the function approximator:</p>
-<p><span class="math display">\[Q^{approx} (s^{\prime}, \hat{a}) = Q^{target} (s^{\prime}, \hat{a}) + Y^{\hat{a}}_{s^{\prime}}\]</span></p>
-<p>Here the noise is modeled by the family of random variable <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span> with zero mean:</p>
-<span class="math display">\[\begin{aligned}
-Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) -  (r^{a}_{s} + \gamma \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a})) \\
-&amp;= \gamma (\max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) - \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a}))\\
-\end{aligned}\]</span>
-<p>Clearly, the noise causes some error on the left-hand side.</p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>VFA</category>
-      </categories>
-      <tags>
-        <tag>Function Approximation</tag>
-        <tag>Discussions</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Deterministic Policy Gradient</title>
     <url>/2021/05/06/DPG/</url>
     <content><![CDATA[<h1 id="deterministic-policy-gradient-algorithms">Deterministic Policy Gradient Algorithms</h1>
@@ -371,6 +282,95 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
         <tag>Policy Gradient</tag>
         <tag>Continuous Action Space</tag>
         <tag>Policy Search</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Dueling Network Architectures for DRL</title>
+    <url>/2021/05/13/Dueling/</url>
+    <content><![CDATA[<h1 id="dueling-network-architectures-for-deep-reinforcement-learning">Dueling Network Architectures for Deep Reinforcement Learning</h1>
+<h2 id="introduction">Introduction</h2>
+<p>The authors introduce an innovating neural network architecture that is better suited for model-free RL. This paper advances a new network but uses already published algorithms.</p>
+<p>The proposed architecture is called dueling architecture, explicitly separates the representation of state values and state-dependent action advantages. The architecture consists of two streams that represent the value and advantage functions, while sharing a common convolutional feature learning module. The two streams are combined via a special aggregating layer to produce an estimate of the state-action value function <span class="math inline">\(Q\)</span>. This dueling network should be understood as a single Q network with two streams that replaces the popular single-stream Q-network in existing algorithms such as DQN. The dueling network automatically produces separate estimates of the state value function and advantage function, without any extra supervision.</p>
+<p><img src="/images/RL/papers/dueling_1.png"></p>
+<p>Intuitively, the dueling architecture can learn which states are (or are not) valuable, without having to learn the effect of each action for each state. (by taking the gradient wrt to the input) It can more quickly identify the correct action during policy evaluation as redundant or similar actions are added to the learning problem.</p>
+<span id="more"></span>
+<h2 id="background">Background</h2>
+<p><strong>random variables have subscript <span class="math inline">\(t\)</span>, <span class="math inline">\(E[ g(x_t, a_t) | x_t=x, a_t] = f(x, a)\)</span> is shorthanded as <span class="math inline">\(f(x, a) = E[g(x, a)]\)</span></strong></p>
+<p>In Atari domain, the agent perceives a video <span class="math inline">\(s_t\)</span> consisting of M image frames <span class="math inline">\(s_t = (x_{t-M+1}, ..., x_t) \in S\)</span> at time step <span class="math inline">\(t\)</span>. Then agent chooses an action from a discrete set <span class="math inline">\(a_t \in A\)</span> and observes a reward signal <span class="math inline">\(r_t\)</span> produced by the game emulator.</p>
+<p>The agent seeks to maximize the expected discounted return where we define the discounted return as <span class="math inline">\(R_t = \sum_{\tau=t}^{\infty} \gamma^{\tau - t} r_{\tau}\)</span> with <span class="math inline">\(\gamma \in [0, 1]\)</span>.</p>
+<p>For an agent behaving to a stochastic policy <span class="math inline">\(\pi\)</span>, the values of the state-action pair <span class="math inline">\((s, a)\)</span> and the state <span class="math inline">\(s\)</span> are defined as:</p>
+<p><span class="math display">\[Q^{\pi} (s, a) = E[R_t | s_t=s, a_t=a, \pi]\]</span></p>
+<p><span class="math display">\[V^{\pi} (s) = E_{a_t \sim \pi(\cdot | s)}[R_t | s_t=s, \pi] = E_{a_t \sim \pi(\cdot | s)}[E[R_t | s_t, a_t, \pi] | s_t=s] = E_{a_t \sim \pi(\cdot | s)}[ Q^{\pi}(s, a_t)]\]</span></p>
+<p>We know that we can rewrite <span class="math inline">\(Q^{\pi}\)</span> as:</p>
+<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
+<p>We also define:</p>
+<p><span class="math display">\[Q^{*} (s, a) = max_{\pi} Q^{\pi} (s, a), \forall (s, a) \in S X A\]</span></p>
+<p>Then:</p>
+<p><span class="math display">\[V^{*} (s) = max_{a} Q^{*} (s, a)\]</span></p>
+<p>And,</p>
+<p><span class="math display">\[Q^{*}(s, a) = E_{s^{\prime}} [r + \gamma max_{a^{\prime}} Q^{*} (s^{\prime}, a^{\prime}) | s, a]\]</span></p>
+<p>The advantage function is denoted as:</p>
+<p><span class="math display">\[A^{\pi} (s, a) = Q^{\pi} (s, a) - V^{\pi} (s)\]</span></p>
+<p><span class="math display">\[E_{a}[A^{\pi} (s, a) | s] = E_{a}[Q^{\pi} (s, a) | s] - V^{\pi} (s) = 0\]</span></p>
+<p>This means that the advantage at state <span class="math inline">\(s\)</span> weighted by policy <span class="math inline">\(\pi\)</span> is 0. Intuitively, the advantage function measures the relative importance for each action.</p>
+<h2 id="dueling-network-architecture">Dueling Network Architecture</h2>
+<p>Instead of following the convolutional layers with a single sequence of fully connected layers, they instead use two sequences (streams) of fully connected layers. The streams are constructed such that they have the capability of providing separate estimates of the value and advantage functions. Finally , the two streams are combined to produce a single output <span class="math inline">\(Q\)</span> function.</p>
+<p>From the advantage expression, we know that</p>
+<p><span class="math display">\[Q^{\pi} (s, a) = V^{\pi} (s) + A^{\pi} (s, a)\]</span></p>
+<p>If the policy is the deterministic policy, <span class="math inline">\(a^{*} = argmax_{a^{\prime} \in A} Q(s, a^{\prime})\)</span>, then:</p>
+<p><span class="math display">\[E_{a^{\prime}}[Q^{\pi} (s, a)] = Q^{\pi} (s, a^{*}) = V^{\pi} (s)\]</span> and hence <span class="math inline">\(A^{\pi}(s, a^{*}) = 0\)</span>$</p>
+<p>Let <span class="math inline">\(V(s; \theta, \beta), A(s, a; \theta, \alpha), Q(s, a; \theta, \alpha, \beta)\)</span> be parametrized version of <span class="math inline">\(V, A, Q\)</span> respectively. <span class="math inline">\(\theta\)</span> are the shared parameters, <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> are the stream parameters for <span class="math inline">\(V, A\)</span>. We can calculate <span class="math inline">\(Q\)</span> directly using the formula:</p>
+<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha)\]</span></p>
+<p>However, these functions are just estimates of the true values, therefore are unidentifiable in the sense that given <span class="math inline">\(Q\)</span> we can not recover <span class="math inline">\(V, A\)</span> uniquely. (ie. given <span class="math inline">\(Q(s, a)\)</span> what is <span class="math inline">\(V(s), A(s, a)\)</span>?)</p>
+<p>To solve the problem, we can force the advantage function to have zero advantage at some chosen action, in this case the greedy action:</p>
+<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha) - max_{a^{\prime}} A(s, a^{\prime}; \theta, \alpha)\]</span></p>
+<p>Thus, if <span class="math inline">\(a^{*} = argmax_{a^{\prime} \in A} Q(s, a^{\prime})\)</span>, then</p>
+<p><span class="math display">\[Q(s, a^{*}; \theta, \alpha, \beta) = V(s; \theta, \beta)\]</span></p>
+<p>We can determine the <span class="math inline">\(V\)</span> given <span class="math inline">\(Q\)</span>.</p>
+<p>Or, we can have:</p>
+<p><span class="math display">\[Q(s, a; \theta, \alpha, \beta) = V(s; \theta, \beta) + A(s, a; \theta, \alpha) - \frac{1}{|A|} \sum_{a^{\prime}} A(s, a^{\prime}; \theta, \alpha)\]</span></p>
+<p>Take the expectation or average of <span class="math inline">\(Q\)</span>:</p>
+<p><span class="math display">\[E[Q(s, a; \theta, \alpha, \beta)] = V(s; \theta, \theta)\]</span></p>
+<p>On the one hand this loses the original semantics of <span class="math inline">\(V\)</span> and <span class="math inline">\(A\)</span> because they are now off-target by a constant, but on the other hand it increases the stability of the optimization. Note that while subtracting the mean or max helps with the identifiability, it does not change the relative rank of <span class="math inline">\(A, Q\)</span>, so the greedy action.</p>
+<h2 id="discussion">Discussion</h2>
+<p>The advantage of the dueling architecture lies partly in its ability to learn the state-value function efficiently. With every update of the <span class="math inline">\(Q\)</span> values in the dueling architecture, the value stream <span class="math inline">\(V\)</span> is updated – this contrasts with the updates in a single-stream architecture where only the value of one of actions is updated, the values of other actions are untouched. The advantage of the dueling architecture over single-stream <span class="math inline">\(Q\)</span> networks grows when the number of actions is large.</p>
+<h2 id="implementation">Implementation</h2>
+<p><em>One implementation of Dueling Architecture in PARL using PaddlPaddle for Atari Games</em></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> paddle.nn <span class="keyword">as</span> nn</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AtariModel</span>(<span class="params">parl.Model</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, act_dim, dueling=<span class="literal">False</span></span>):</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">super</span>().__init__()</span><br><span class="line"></span><br><span class="line">        self.conv1 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">4</span>, out_channels=<span class="number">32</span>, kernel_size=<span class="number">5</span>, stride=<span class="number">1</span>, padding=<span class="number">2</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv2 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">32</span>, out_channels=<span class="number">32</span>, kernel_size=<span class="number">5</span>, stride=<span class="number">1</span>, padding=<span class="number">2</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv3 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">32</span>, out_channels=<span class="number">64</span>, kernel_size=<span class="number">4</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.conv4 = nn.Conv2D(</span><br><span class="line">            in_channels=<span class="number">64</span>, out_channels=<span class="number">64</span>, kernel_size=<span class="number">3</span>, stride=<span class="number">1</span>, padding=<span class="number">1</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">        self.relu = nn.ReLU()</span><br><span class="line">        self.max_pool = nn.MaxPool2D(kernel_size=<span class="number">2</span>, stride=<span class="number">2</span>)</span><br><span class="line">        self.flatten = nn.Flatten()</span><br><span class="line"></span><br><span class="line">        self.dueling = dueling</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> dueling:</span><br><span class="line">            self.linear_1_adv = nn.Linear(in_features=<span class="number">6400</span>, out_features=<span class="number">512</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">            self.linear_2_adv = nn.Linear(in_features=<span class="number">512</span>, out_features=act_dim)</span><br><span class="line">            self.linear_1_val = nn.Linear(in_features=<span class="number">6400</span>, out_features=<span class="number">512</span>, weight_attr=nn.initializer.KaimingNormal())</span><br><span class="line">            self.linear_2_val = nn.Linear(in_features=<span class="number">512</span>, out_features=<span class="number">1</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.linear_1 = nn.Linear(in_features=<span class="number">6400</span>, out_features=act_dim)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">value</span>(<span class="params">self, obs</span>):</span></span><br><span class="line"></span><br><span class="line">        obs = obs / <span class="number">255.0</span></span><br><span class="line">        out = self.max_pool(self.relu(self.conv1(obs)))</span><br><span class="line">        out = self.max_pool(self.relu(self.conv2(out)))</span><br><span class="line">        out = self.max_pool(self.relu(self.conv3(out)))</span><br><span class="line">        out = self.relu(self.conv4(out))</span><br><span class="line">        out = self.flatten(out)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.dueling:</span><br><span class="line">            As = self.relu(self.linear_1_adv(out))</span><br><span class="line">            As = self.linear_2_adv(As)</span><br><span class="line">            V = self.relu(self.linear_1_val(out))</span><br><span class="line">            V = self.linear_2_val(V)</span><br><span class="line">            Q = As + (V - As.mean(axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            Q = self.linear_1(out)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Q</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Continuous State Space</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Double Q Learning</title>
+    <url>/2021/05/07/FA-issues/</url>
+    <content><![CDATA[<h1 id="double-q-learning">Double Q-learning</h1>
+<h2 id="the-overestimation-phenomenon">The Overestimation Phenomenon</h2>
+<p>Assume the agent observes during learning that action <span class="math inline">\(a\)</span> and executed at state <span class="math inline">\(s\)</span> resulting in the state <span class="math inline">\(s^{\prime}\)</span> and some immediate reward <span class="math inline">\(r^{a}_{s}\)</span>. The Q-learning update can be written as:</p>
+<p><span class="math display">\[Q(s, a) \leftarrow r^{a}_{s} + \gamma \max_{\hat{a}} Q(s^{\prime}, \hat{a})\]</span></p>
+<p>It has been shown that repeated application of this update equation eventually yields <span class="math inline">\(Q\)</span>-values that give rise to a policy which maximizes the expected cumulative discounted reward. However, these results only apply when <span class="math inline">\(Q-\)</span>values are stored precisely. (e.g by a look up table)</p>
+<p>Assume, instead, let <span class="math inline">\(Q\)</span> be represented as a function approximator that induces some noise on the estimates of <span class="math inline">\(Q\)</span>. More specifically, let us assume that the current stored <span class="math inline">\(Q-\)</span>values, denoted by <span class="math inline">\(Q^{approx}\)</span>, represent some implicit target values <span class="math inline">\(Q^{target}\)</span>, corrupted by a noise term <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span>, which is due to the function approximator:</p>
+<p><span class="math display">\[Q^{approx} (s^{\prime}, \hat{a}) = Q^{target} (s^{\prime}, \hat{a}) + Y^{\hat{a}}_{s^{\prime}}\]</span></p>
+<p>Here the noise is modeled by the family of random variable <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span> with zero mean:</p>
+<span class="math display">\[\begin{aligned}
+Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) -  (r^{a}_{s} + \gamma \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a})) \\
+&amp;= \gamma (\max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) - \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a}))\\
+\end{aligned}\]</span>
+<p>Clearly, the noise causes some error on the left-hand side.</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Discussions</tag>
       </tags>
   </entry>
   <entry>
@@ -544,78 +544,6 @@ h_i = \max({\mathbf{w}^i}^T \mathbf{x}, 0) =
       </tags>
   </entry>
   <entry>
-    <title>VGG (Under Construction)</title>
-    <url>/2021/06/24/VGG/</url>
-    <content><![CDATA[<h1 id="very-deep-convolutional-networks-for-large-scale-image-recognition">Very Deep Convolutional Networks For Large-Scale Image Recognition</h1>
-<h2 id="generic-architecture">Generic Architecture</h2>
-<ol type="1">
-<li>Inputs are <span class="math inline">\(224 \times 224\)</span> RGB images with zero mean for each pixel.</li>
-<li>The convolutional layers have small filter sizes (<span class="math inline">\(3 \times 3\)</span>), one architecture with <span class="math inline">\(1 \times 1\)</span> filters (Network C).</li>
-<li>Padding 1 and stride 1 to maintain the original image size.</li>
-<li>5 max pooling layers with <span class="math inline">\(2 \times 2\)</span> window and stride 2.</li>
-<li>2 fully connected layers each with 4096 units, and the final fc output layer with 1000 units.</li>
-<li>ReLU activation function.</li>
-</ol>
-<h2 id="configurations">Configurations</h2>
-<ol type="1">
-<li><p>the shallowest network has 11 weight layers (8 conv layers and 3 FC layers), the deepest network has 19 weight layers (16 conv layers and 3 FC layers)</p></li>
-<li><p>The width of conv layers are relative small, starting from 64 in the first layer and then increasing by a factor of 2 each max-pooling layer, until it reaches 512.</p></li>
-</ol>
-<p><img src="/images/ML/vgg_1.png" width="600"></p>
-<span id="more"></span>
-<h2 id="discussion">Discussion</h2>
-<p>Instead of large filter size, we use small <span class="math inline">\(3 \times 3\)</span> filters. We can see that after 2 consecutive layers, the effective receptive field is <span class="math inline">\(5 \times 5\)</span>, after three consective layers, the effective receptive field is <span class="math inline">\(7 \times 7\)</span>. Comparing to a conv layer with <span class="math inline">\(7 \times 7\)</span> filter, 3 consecutive <span class="math inline">\(3 \times 3\)</span> filter conv layers have less parameters. To see this, assume each layer has input C channel and output C channel, then total parameters:</p>
-<ol type="1">
-<li>Single conv layer with <span class="math inline">\(7 \times 7\)</span> filter: <span class="math inline">\(7 * 7 * C * C = 49 C^2\)</span></li>
-<li>Three conv layer each with <span class="math inline">\(3 \times 3\)</span> filter: <span class="math inline">\(3 (3 * 3 * C * C) = 27 C^2\)</span></li>
-</ol>
-<p>This can be seen as imposing a regularisation on the <span class="math inline">\(7 \times 7\)</span> conv filters forcing them to have a decomposition through the <span class="math inline">\(3 \times 3\)</span> filters. This structure also have more discriminative power (3 non-linear functions compare to one).</p>
-<p>The <span class="math inline">\(1 \times 1\)</span> is one way to increase the non-linearity of the decision function without affecting the receptive fields of the conv layers.</p>
-<h2 id="classification-framework">Classification Framework</h2>
-<h3 id="training">Training</h3>
-<ol type="1">
-<li>Batch size 256, momentum 0.9, weight decay 0.0005</li>
-<li>Dropout is applied to the first two fully connected layers with rate of 0.5</li>
-</ol>
-<h4 id="initialization">Initialization</h4>
-<ol type="1">
-<li>Net <span class="math inline">\(A\)</span> is first trained with random initialization</li>
-<li>When training deeper architectures, we initialize the first four conv layers and last three fully connected layers with the layer of <span class="math inline">\(A\)</span></li>
-<li>The conv layers in the middle are initialized randomly with normal(0, 0.01)</li>
-</ol>
-<p>In spite of the larger number of parameters and the greater depth of our nets compare to AlexNet, the nets required less epochs to converge due to</p>
-<ol type="1">
-<li>implicit regularization imposed by greater depth and smaller filter size</li>
-<li>pre-initialization of certain layers</li>
-</ol>
-<h4 id="training-image-size-rescale">Training Image Size Rescale</h4>
-<p>Let <span class="math inline">\(S\)</span> (training scale) be the smallest side of an isotropically-rescaled training image from which the input image is cropped (The training input is first rescaled to smallest side = <span class="math inline">\(S\)</span> before cropping). For a fixed crop size <span class="math inline">\(224 \times 224\)</span>, if <span class="math inline">\(S=224\)</span>, the cropped image will span the smallest side of the training image. If <span class="math inline">\(S &gt;&gt; 224\)</span>, the crop will correspond to a small part of the image. There are two approaches setting up <span class="math inline">\(S\)</span></p>
-<ol type="1">
-<li>Single scale training: fix <span class="math inline">\(S=256, 384\)</span></li>
-<li>Multi-scale training: Each image is individually rescaled by randomly sampling <span class="math inline">\(S\)</span> from a certain range <span class="math inline">\([S_{min}, S_{max}] = [256, 512]\)</span>.</li>
-</ol>
-<p>Then the rescaled images is:</p>
-<ol type="1">
-<li>randomly cropped from rescaled training images (one crop per image per SGD iteration)</li>
-<li>the crops underwent random horizontal filpping and random RGB colour shift</li>
-</ol>
-<h3 id="testing">Testing</h3>
-<p>During Testing given a trained Conv Net and an input image:</p>
-<ol type="1">
-<li>It is first isotropically rescaled to a predefined smallest image side <span class="math inline">\(Q\)</span> (test scale, where <span class="math inline">\(S\)</span> is the training scale). <span class="math inline">\(Q\)</span> is not necessarily equal to the training scale <span class="math inline">\(S\)</span></li>
-<li></li>
-</ol>
-]]></content>
-      <categories>
-        <category>DL</category>
-        <category>CNN</category>
-      </categories>
-      <tags>
-        <tag>Deep Learning</tag>
-        <tag>Neural Network Architectures</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>TRPO</title>
     <url>/2021/06/11/TRPO/</url>
     <content><![CDATA[<h1 id="trust-region-policy-optimization">Trust Region Policy Optimization</h1>
@@ -774,6 +702,78 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
       </categories>
       <tags>
         <tag>Policy Search</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>VGG (Under Construction)</title>
+    <url>/2021/06/24/VGG/</url>
+    <content><![CDATA[<h1 id="very-deep-convolutional-networks-for-large-scale-image-recognition">Very Deep Convolutional Networks For Large-Scale Image Recognition</h1>
+<h2 id="generic-architecture">Generic Architecture</h2>
+<ol type="1">
+<li>Inputs are <span class="math inline">\(224 \times 224\)</span> RGB images with zero mean for each pixel.</li>
+<li>The convolutional layers have small filter sizes (<span class="math inline">\(3 \times 3\)</span>), one architecture with <span class="math inline">\(1 \times 1\)</span> filters (Network C).</li>
+<li>Padding 1 and stride 1 to maintain the original image size.</li>
+<li>5 max pooling layers with <span class="math inline">\(2 \times 2\)</span> window and stride 2.</li>
+<li>2 fully connected layers each with 4096 units, and the final fc output layer with 1000 units.</li>
+<li>ReLU activation function.</li>
+</ol>
+<h2 id="configurations">Configurations</h2>
+<ol type="1">
+<li><p>the shallowest network has 11 weight layers (8 conv layers and 3 FC layers), the deepest network has 19 weight layers (16 conv layers and 3 FC layers)</p></li>
+<li><p>The width of conv layers are relative small, starting from 64 in the first layer and then increasing by a factor of 2 each max-pooling layer, until it reaches 512.</p></li>
+</ol>
+<p><img src="/images/ML/vgg_1.png" width="600"></p>
+<span id="more"></span>
+<h2 id="discussion">Discussion</h2>
+<p>Instead of large filter size, we use small <span class="math inline">\(3 \times 3\)</span> filters. We can see that after 2 consecutive layers, the effective receptive field is <span class="math inline">\(5 \times 5\)</span>, after three consective layers, the effective receptive field is <span class="math inline">\(7 \times 7\)</span>. Comparing to a conv layer with <span class="math inline">\(7 \times 7\)</span> filter, 3 consecutive <span class="math inline">\(3 \times 3\)</span> filter conv layers have less parameters. To see this, assume each layer has input C channel and output C channel, then total parameters:</p>
+<ol type="1">
+<li>Single conv layer with <span class="math inline">\(7 \times 7\)</span> filter: <span class="math inline">\(7 * 7 * C * C = 49 C^2\)</span></li>
+<li>Three conv layer each with <span class="math inline">\(3 \times 3\)</span> filter: <span class="math inline">\(3 (3 * 3 * C * C) = 27 C^2\)</span></li>
+</ol>
+<p>This can be seen as imposing a regularisation on the <span class="math inline">\(7 \times 7\)</span> conv filters forcing them to have a decomposition through the <span class="math inline">\(3 \times 3\)</span> filters. This structure also have more discriminative power (3 non-linear functions compare to one).</p>
+<p>The <span class="math inline">\(1 \times 1\)</span> is one way to increase the non-linearity of the decision function without affecting the receptive fields of the conv layers.</p>
+<h2 id="classification-framework">Classification Framework</h2>
+<h3 id="training">Training</h3>
+<ol type="1">
+<li>Batch size 256, momentum 0.9, weight decay 0.0005</li>
+<li>Dropout is applied to the first two fully connected layers with rate of 0.5</li>
+</ol>
+<h4 id="initialization">Initialization</h4>
+<ol type="1">
+<li>Net <span class="math inline">\(A\)</span> is first trained with random initialization</li>
+<li>When training deeper architectures, we initialize the first four conv layers and last three fully connected layers with the layer of <span class="math inline">\(A\)</span></li>
+<li>The conv layers in the middle are initialized randomly with normal(0, 0.01)</li>
+</ol>
+<p>In spite of the larger number of parameters and the greater depth of our nets compare to AlexNet, the nets required less epochs to converge due to</p>
+<ol type="1">
+<li>implicit regularization imposed by greater depth and smaller filter size</li>
+<li>pre-initialization of certain layers</li>
+</ol>
+<h4 id="training-image-size-rescale">Training Image Size Rescale</h4>
+<p>Let <span class="math inline">\(S\)</span> (training scale) be the smallest side of an isotropically-rescaled training image from which the input image is cropped (The training input is first rescaled to smallest side = <span class="math inline">\(S\)</span> before cropping). For a fixed crop size <span class="math inline">\(224 \times 224\)</span>, if <span class="math inline">\(S=224\)</span>, the cropped image will span the smallest side of the training image. If <span class="math inline">\(S &gt;&gt; 224\)</span>, the crop will correspond to a small part of the image. There are two approaches setting up <span class="math inline">\(S\)</span></p>
+<ol type="1">
+<li>Single scale training: fix <span class="math inline">\(S=256, 384\)</span></li>
+<li>Multi-scale training: Each image is individually rescaled by randomly sampling <span class="math inline">\(S\)</span> from a certain range <span class="math inline">\([S_{min}, S_{max}] = [256, 512]\)</span>.</li>
+</ol>
+<p>Then the rescaled images is:</p>
+<ol type="1">
+<li>randomly cropped from rescaled training images (one crop per image per SGD iteration)</li>
+<li>the crops underwent random horizontal filpping and random RGB colour shift</li>
+</ol>
+<h3 id="testing">Testing</h3>
+<p>During Testing given a trained Conv Net and an input image:</p>
+<ol type="1">
+<li>It is first isotropically rescaled to a predefined smallest image side <span class="math inline">\(Q\)</span> (test scale, where <span class="math inline">\(S\)</span> is the training scale). <span class="math inline">\(Q\)</span> is not necessarily equal to the training scale <span class="math inline">\(S\)</span></li>
+<li></li>
+</ol>
+]]></content>
+      <categories>
+        <category>DL</category>
+        <category>CNN</category>
+      </categories>
+      <tags>
+        <tag>Deep Learning</tag>
+        <tag>Neural Network Architectures</tag>
       </tags>
   </entry>
   <entry>
@@ -1211,6 +1211,165 @@ V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
       </tags>
   </entry>
   <entry>
+    <title>Bellman Equations for Optimal Value Functions</title>
+    <url>/2021/05/03/bellman-optimality-equations/</url>
+    <content><![CDATA[<p><em>Please read posts on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> and <a href="/2021/05/03/bellman-equations/" title="Bellman Equations">Bellman Equations</a> prior this post.</em></p>
+<h1 id="bellman-equations-for-optimal-value-functions">Bellman Equations for Optimal Value Functions</h1>
+<p><img src='/images/RL/bellman_equation/optimal_policy_value_func.png'></p>
+<p>So it is natural to ask, does the optimal value function of optimal policy <span class="math inline">\(V^{\pi^*}\)</span> have similar recursive structure? the answer is yes, however, we need to prove this. The proof goes with 3 claims which we will prove later: <span id="more"></span></p>
+<ol type="1">
+<li><ol type="a">
+<li><p><span class="math inline">\(\exists\)</span> a value function <span class="math inline">\(V^*\)</span> s.t <span class="math inline">\(\forall x \in X\)</span>, we have:</p>
+<p><span class="math display">\[V^{*}(x) = max_{a} \{Q^{*}(x, a)\} = max_{a} \{r(x, a) + \gamma \int P(dx^\prime | x, a) V^{*}(x^\prime)\}\]</span></p></li>
+<li><p><span class="math inline">\(\exists\)</span> a value function <span class="math inline">\(Q^*\)</span> s.t <span class="math inline">\(\forall x, a \in X, A\)</span>, we have:</p>
+<p><span class="math display">\[Q^{*}(x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) max_{a^\prime} \{Q^{*} (x^\prime, a^\prime)\}\]</span></p></li>
+</ol>
+<p>These equations are called <span style="color:red"><strong>bellman optimality equations for the value functions</strong></span></p></li>
+<li><p><span class="math inline">\(V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^*}\)</span>, the optimal value function when <span class="math inline">\(\pi\)</span> is restricted to be within the space of all stationary and non-stationary policies.</p></li>
+<li><p>For discounted continuing MDPs, we can always find a stationary policy that is optimal within the space of all stationary and non-stationary policies.</p></li>
+</ol>
+<p>In summary, we claim that:</p>
+<p><strong><span class="math inline">\(V^{*}\)</span> exists and it is unique, <span class="math inline">\(V^{*} = V^{\pi^{*}}\)</span>. Same for <span class="math inline">\(Q^{*}\)</span></strong></p>
+<h2 id="bellman-operators">Bellman Operators</h2>
+<p>In order to prove the claims, we need several concepts:</p>
+<p><img src='/images/RL/bellman_equation/bellman-operator.png'> <img src='/images/RL/bellman_equation/bell-opt-operator.png'></p>
+<p>These operators are linear and recall that:</p>
+<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (a^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
+<p>This implies <span class="math inline">\(T^{\pi} Q^{\pi} = Q^{\pi}\)</span>, same for state-value function and bellman optimality operators. Thus, we can conclude that:</p>
+<p><span class="math display">\[V^{\pi} = T^{\pi} V^{\pi}\]</span> <span class="math display">\[Q^{\pi} = T^{\pi} Q^{\pi}\]</span> <span class="math display">\[V^{*} = T^{*} V^{*}\]</span> <span class="math display">\[Q^{*} = T^{*} Q^{*}\]</span></p>
+<h3 id="properties-of-bellman-operators">Properties of Bellman Operators</h3>
+<p>Bellman operators have several important properties. The properties that matters for us the most are:</p>
+<ol type="1">
+<li>Monotonicity</li>
+<li>Contraction</li>
+</ol>
+<h4 id="monotonicity">Monotonicity</h4>
+<p><img src='/images/RL/bellman_equation/monotonicity.png'></p>
+<p>we can easily prove this (only prove <span class="math inline">\(T^{\pi}\)</span>, <span class="math inline">\(T^{*}\)</span> is the same):</p>
+<p>Assume:</p>
+<p><span class="math display">\[V_1(x^{\prime}) \geq V_2(x^{\prime}), \forall x^{\prime} \in X\]</span></p>
+<p>we get that for any <span class="math inline">\(x \in X\)</span>:</p>
+<p><span class="math display">\[T^{\pi}V_{1} (x) = r^{\pi} (x) + \gamma \int P^{\pi}(dx^{\prime} | x) V_{1} (x^\prime) \geq r^{\pi} (x) + \gamma \int P^{\pi}(dx^{\prime} | x) V_{2} (x^\prime) = T^{\pi}V_2(x)\]</span></p>
+<p>Thus:</p>
+<p><span class="math display">\[T^{\pi}V_{1} (x) \geq T^{\pi}V_{2} (x)\]</span></p>
+<h4 id="contraction">Contraction</h4>
+<p><img src='/images/RL/bellman_equation/contraction_mapping.png'></p>
+<p>we can also easily prove that <span class="math inline">\(T^{*}, T^{\pi}\)</span> are contraction mappings (only prove <span class="math inline">\(T^{\pi}\)</span>, <span class="math inline">\(T^{*}\)</span> is the same):</p>
+<p>Consider two action-value functions:</p>
+<p><span class="math display">\[Q_1, Q_2 \in B(X\times A)\]</span></p>
+<p>Consider the metric:</p>
+<p><span class="math display">\[d(Q_1, Q_2) = \| Q_1 - Q_2 \|_{\infty}\]</span></p>
+<p>We show the contraction w.r.t <span class="math inline">\(l-\infty\)</span> norm.</p>
+<p>For any <span class="math inline">\((x, a) \in X \times A\)</span>, we have:</p>
+<span class="math display">\[\begin{aligned}
+\lvert T^{\pi} Q_1 (x, a) - T^{\pi} Q_2 (x, a) \rvert &amp;= \lvert r (x, a) + \gamma \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) Q_{1} (x^\prime, a^{\prime}) - r (x, a) - \gamma \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) Q_{2} (x^\prime, a^{\prime}) \rvert\\
+&amp; = \gamma \lvert \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) [Q_{1} (x^\prime, a^{\prime}) -  Q_{2} (x^\prime, a^{\prime})] \rvert\\
+&amp; \leq \gamma \int \underbrace{P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime)}_{\text{these are probabilities which $ \geq $ 0}} \lvert [Q_{1} (x^\prime, a^{\prime}) -  Q_{2} (x^\prime, a^{\prime})] \rvert\\
+&amp; \leq \gamma \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) \sup_{x, a}\lvert [Q_{1} (x, a) -  Q_{2} (x, a)] \rvert\\
+&amp; = \gamma \sup_{x, a}\lvert Q_{1} (x, a) -  Q_{2} (x, a) \rvert \underbrace{\int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime)}_{\text{this is a probability distribution which sums to 1}}\\
+&amp; = \gamma \sup_{x, a}\lvert Q_{1} (x, a) -  Q_{2} (x, a) \rvert = \gamma \|Q_{1} -  Q_{2}\|_{\infty}
+\end{aligned}\]</span>
+<p>This inequality holds for all state action pair, thus, we have showed that bellman operators are contraction mappings.</p>
+<p><img src='/images/RL/bellman_equation/gamma_contraction.png'></p>
+<h3 id="consequences-of-monotonicity-and-contraction">Consequences of Monotonicity and Contraction</h3>
+<h4 id="uniqueness-of-fixed-points">Uniqueness of fixed points</h4>
+<p><img src='/images/RL/bellman_equation/fixed_point.png'> <img src='/images/RL/bellman_equation/bfpt.png'> <img src='/images/RL/bellman_equation/unique_fixed_points.png'></p>
+<p>Proof of the proposition is also simple (Same for <span class="math inline">\(Q^{\pi}, Q^{*}\)</span>):</p>
+<p>For any <span class="math inline">\(\pi\)</span>, <span class="math inline">\(T^{\pi}\)</span> is a <span class="math inline">\(\gamma-\)</span>contraction mapping (same for <span class="math inline">\(T^{*}\)</span>), thus, by the Banach fixed point theorem, they have unique fixed point</p>
+<p><span class="math display">\[T^{*} V^{*} = V^{*}, T^{\pi} V^{\pi} = V^{\pi}\]</span></p>
+<p>Moreover, the update rule <span class="math inline">\(V_{k+1} \leftarrow T^{\pi} V_{k}\)</span> converges, which means:</p>
+<p><span class="math display">\[lim_{k \rightarrow \infty} \| V_{k} - V^{\pi}\|_{\infty} = 0\]</span></p>
+<h4 id="value-of-the-greedy-policy-of-v-is-v">Value of the greedy policy of <span class="math inline">\(V^{*}\)</span> is <span class="math inline">\(V^{*}\)</span></h4>
+<p>We know if:</p>
+<p><span class="math display">\[T^{\pi} V^{*} = T^{*}V^{*} \implies T^{\pi} V^{*} = V^{*}\]</span></p>
+<p>This is also the fix point of <span class="math inline">\(T^{\pi}\)</span>, this implies <span class="math inline">\(V^{\pi} = V^{*}\)</span>.</p>
+<p>On the other hand, if we know <span class="math inline">\(V^\pi = V^{*}\)</span>, the by applying <span class="math inline">\(T^{\pi}\)</span> to both side we have</p>
+<p><span class="math display">\[T^{\pi} V^{\pi} = T^{\pi} V^{*} \implies T^{\pi} V^{\pi} = T^{*} V^{*} = T^{\pi} V^{*}\]</span></p>
+<p>Thus, we can conclude that:</p>
+<p><span class="math display">\[T^{\pi} V^{*} = T^{*}V^{*} \text{ iff } V^\pi = V^{*}\]</span></p>
+<p><strong>The Connection To Greedy Policy</strong></p>
+<p>Given <span class="math inline">\(V^{*}\)</span>, the greedy policy of <span class="math inline">\(V^{*}\)</span> is defined as:</p>
+<p><span class="math display">\[\pi_{g} (x; V^{*}) = argmax_{a \in A} Q^{*}(x, a) = argmax_{a \in A} r(x, a) + \gamma \int P(dx^{\prime} | x, a) V^{*}(x^{\prime})\]</span></p>
+<p>So:</p>
+<p><span class="math display">\[T^{\pi_{g} (x; V^{*})} V^{*} = r(x, \pi_{g} (x; V^{*})) + \gamma \int P(dx^{\prime} | x, \pi_{g} (x; V^{*})) V^{*}(x^{\prime}) = max_{a \in A} r(x, a) + \gamma \int P(dx^{\prime} | x, a) V^{*}(x^{\prime})\]</span></p>
+<p>Compare with <span class="math inline">\(T^{*} V^{*}\)</span>:</p>
+<p><span class="math display">\[T^{*} V^{*} =  max_{a \in A} r(x, a) + \gamma \int P(dx^{\prime} | x, a) V^{*}(x^{\prime})\]</span></p>
+<p>Thus:</p>
+<p><span class="math display">\[T^{*} V^{*} = T^{\pi_{g} (x; V^{*})} V^{*}\]</span></p>
+<p>Since:</p>
+<p><span class="math display">\[T^{\pi} V^{*} = T^{*}V^{*} \text{ iff } V^\pi = V^{*} \implies V^{*} = V^{\pi_{g} (x; V^{*})}\]</span></p>
+<p>That is, the value of following <span class="math inline">\(\pi_{g} (x; V^{*})\)</span> is the same as <span class="math inline">\(V^{*}\)</span>. This means that if we find <span class="math inline">\(V^{*}\)</span> and its greedy policy, the value of following the greedy policy is <span class="math inline">\(V^{*}\)</span>.</p>
+<p><span style="color:red"><strong>To find an optimal policy, we can find <span class="math inline">\(V^{*}\)</span> first, then find its greedy policy</strong></span></p>
+<p>following this conclusion: Although we have not yet prove that <span class="math inline">\(V^{*}\)</span> is the optimal value function (<span class="math inline">\(\pi^{*} = argmax_{\pi \in \prod} V^{\pi} (x)\)</span>, <span class="math inline">\(V^{*} = V^{\pi^{*}}\)</span> (claim 2)), this is indeed true. (prove later)</p>
+<h4 id="an-error-bound-based-on-the-bellman-error">An error bound based on the bellman error</h4>
+<p>If we find a V s.t <span class="math inline">\(V = T^{*} V\)</span>, we know that <span class="math inline">\(V = V^{*}\)</span> (same for <span class="math inline">\(T^{\pi} and Q\)</span>), what if <span class="math inline">\(V \approx T^{*} V\)</span>, what can we say about the closeness of <span class="math inline">\(V\)</span> to <span class="math inline">\(V^{*}\)</span>?</p>
+<p><img src='/images/RL/bellman_equation/br_1.png'> <img src='/images/RL/bellman_equation/br_2.png'></p>
+<p><strong>Proof:</strong></p>
+<span class="math display">\[\begin{aligned}
+V - V^{*} &amp;= V - T^{*} V + T^{*} V - V^{*}\\
+\implies \| V - V^{*} \|_{\infty} &amp;= \| V - T^{*} V + T^{*} V - V^{*} \|_{\infty}\\
+&amp;\leq   \|V - T^{*} V \|_{\infty} + \|T^{*} V - T^{*}V^{*} \|_{\infty} \\
+&amp;\leq   \|V - T^{*} V \|_{\infty} + \gamma \|V - V^{*} \|_{\infty} (i.e. \|T^{*} V - T^{*}V^{*} \|_{\infty} \leq \gamma \|V - V^{*} \|_{\infty}, \text{contraction property} )\\
+\implies \| V - V^{*} \|_{\infty} &amp;\leq \frac{\|V - T^{*} V \|_{\infty}}{(1 - \gamma)}\\
+\implies \| V - V^{*} \|_{\infty} &amp;\leq \frac{BE^{*}}{(1 - \gamma)}
+\end{aligned}\]</span>
+<h4 id="proof-of-claim-2-v-t-v-is-the-same-as-vpi">Proof of claim 2: <span class="math inline">\(V^{*} = T^{*} V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^{*}}\)</span></h4>
+<p><img src='/images/RL/bellman_equation/claim_2.png'></p>
+<p>The proof has three parts:</p>
+<ol type="1">
+<li><p>Prove that <span class="math inline">\(V^{*} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)\)</span></p></li>
+<li><p>Prove that <span class="math inline">\(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></p></li>
+<li><p>Combine 1 and 2, we show that claim 2 is true, that is, <span class="math inline">\(V^{*} = T^{*} V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^{*}}\)</span></p></li>
+</ol>
+<h5 id="proof-v-x-leq-sup_pi-in-prod-vpi-x">Proof <span class="math inline">\(V^{*} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)\)</span></h5>
+<p>From the error bound with the choice of <span class="math inline">\(V = V^{*}\)</span>, we have for any <span class="math inline">\(\pi \in \prod\)</span>,</p>
+<p><span class="math display">\[\| V^{*} - V^{\pi} \|_{\infty} \leq \frac{\| V^{*} - T^{\pi}V^{*} \|_{\infty}}{1 - \gamma}\]</span></p>
+<p>Let <span class="math inline">\(\epsilon &gt; 0\)</span>. Choose a policy <span class="math inline">\(\pi_{\epsilon}\)</span> s.t:</p>
+<p><span class="math display">\[\| V^{*} - T^{\pi_{\epsilon}} V^{*} \|_{\infty} \leq (1 - \gamma) \epsilon\]</span></p>
+<p>We know that this <span class="math inline">\(\pi_{\epsilon}\)</span> exists because we can always pick a <span class="math inline">\(\pi_{\epsilon}\)</span> s.t it is the maximizer of <span class="math inline">\(T^{*}V^{*}\)</span> (ie. pick <span class="math inline">\(\pi_{\epsilon}\)</span> to be <span class="math inline">\(\pi_{g} (x; V^{*})\)</span>, from above proof we know that <span class="math inline">\(T^{\pi_{g} (x; V^{*})} V^{*} = T^{*} V^{*}\)</span>), then:</p>
+<p><span class="math display">\[\| V^{*} - T^{\pi_{\epsilon}} V^{*} \|_{\infty} = 0 \leq (1 - \gamma) * \epsilon, \forall \epsilon &gt; 0\]</span></p>
+<p>For any policy <span class="math inline">\(\pi_{\epsilon}\)</span> that satisfies above equation:</p>
+<p><span class="math display">\[\| V^{*} - V^{\pi_{\epsilon}} \|_{\infty} \leq \epsilon\]</span></p>
+<p>This means that:</p>
+<p><span class="math display">\[sup_{x_i} \{|V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)|\} \leq \epsilon\]</span></p>
+<p><span class="math display">\[\implies |V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)| \leq sup_{x_i} \{|V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)|\} \leq \epsilon, \forall x_i \in X\]</span></p>
+<p><span class="math display">\[\implies V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i) \leq  |V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)| \leq \epsilon\]</span></p>
+<p><span class="math display">\[\implies V^{*} (x_i) \leq \epsilon + V^{\pi_{\epsilon}} (x_i)\]</span></p>
+<p>Since:</p>
+<p><span class="math display">\[V^{\pi_{\epsilon}} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)\]</span></p>
+<p>As we take <span class="math inline">\(\epsilon \rightarrow 0\)</span>, we have:</p>
+<p><span class="math display">\[V^{*} (x) \leq lim_{\epsilon \rightarrow 0} (\epsilon + V^{\pi_{\epsilon}} (x)) \leq lim_{\epsilon \rightarrow 0} (\epsilon + sup_{\pi \in \prod} V^{\pi}  (x)) = sup_{\pi \in \prod} V^{\pi} (x)\]</span></p>
+<p><strong>This shows that <span class="math inline">\(V^{*} = T^{*} V^{*}\)</span> is upper bounded by the optimal value function within the space of stationary policies</strong></p>
+<h5 id="proof-v-x-geq-sup_pi-in-prod-vpi-x">Proof <span class="math inline">\(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></h5>
+<p>Consider any <span class="math inline">\(\pi \in \prod\)</span>. By the definition of <span class="math inline">\(T^{\pi}\)</span> and <span class="math inline">\(T^{*}\)</span>, for any <span class="math inline">\(V \in B(X)\)</span>, we have that for any <span class="math inline">\(x \in X\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+T^{\pi} V &amp;= r^{\pi}(x) + \int P(dx^{\prime} | x, a) \pi(da | x) V(x^{\prime})\\
+&amp;= \int  \pi(da | x) [P(dx^{\prime} | x, a) V(x^{\prime}) + r(x, a)]\\
+&amp;\leq sup_{a \in A} \{r(x, a) + \int P(dx^{\prime} | x, a) V(x^{\prime})\} = T^{*} V
+\end{aligned}\]</span>
+<p>In particular, with the choice of <span class="math inline">\(V = V^{*}\)</span>, we have:</p>
+<span class="math display">\[\begin{aligned}
+T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
+\implies T^{\pi}T^{\pi} V^{*} &amp;\leq T^{\pi}V^{*} \leq V^{*} \text{(Monotonicity)}\\
+\implies (T^{\pi})^{k} V^{*} &amp;\leq V^{*} \text{(apply bellman operator k times)}
+\end{aligned}\]</span>
+<p>as <span class="math inline">\(k \rightarrow \infty\)</span>, by fix point theorem, we know that <span class="math inline">\((T^{\pi})^k V^{*} = V^{\pi}\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+\implies V^{\pi} &amp;= lim_{k \rightarrow \infty} (T^{\pi})^k V^{*} \leq V^{*}, \forall \pi \in \prod\\
+\implies V^{*} (x) &amp;\geq sup_{\pi \in \prod} V^{\pi} (x)
+\end{aligned}\]</span>
+<p><strong>Thus, we can conclude that <span class="math inline">\(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></strong></p>
+<p><span style="color:red"><strong>Together, we showed that <span class="math inline">\(V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^{*}}\)</span>, the solution of bellman optimality equation is the optimal value function</strong></span></p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>Basics</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Calculus (2)</title>
     <url>/2021/07/06/cal-2/</url>
     <content><![CDATA[<h1 id="multivariate-calculus-2">Multivariate Calculus (2)</h1>
@@ -1419,165 +1578,6 @@ f(x, y), &amp; (x, y) \in D\\
 ]]></content>
   </entry>
   <entry>
-    <title>Bellman Equations for Optimal Value Functions</title>
-    <url>/2021/05/03/bellman-optimality-equations/</url>
-    <content><![CDATA[<p><em>Please read posts on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> and <a href="/2021/05/03/bellman-equations/" title="Bellman Equations">Bellman Equations</a> prior this post.</em></p>
-<h1 id="bellman-equations-for-optimal-value-functions">Bellman Equations for Optimal Value Functions</h1>
-<p><img src='/images/RL/bellman_equation/optimal_policy_value_func.png'></p>
-<p>So it is natural to ask, does the optimal value function of optimal policy <span class="math inline">\(V^{\pi^*}\)</span> have similar recursive structure? the answer is yes, however, we need to prove this. The proof goes with 3 claims which we will prove later: <span id="more"></span></p>
-<ol type="1">
-<li><ol type="a">
-<li><p><span class="math inline">\(\exists\)</span> a value function <span class="math inline">\(V^*\)</span> s.t <span class="math inline">\(\forall x \in X\)</span>, we have:</p>
-<p><span class="math display">\[V^{*}(x) = max_{a} \{Q^{*}(x, a)\} = max_{a} \{r(x, a) + \gamma \int P(dx^\prime | x, a) V^{*}(x^\prime)\}\]</span></p></li>
-<li><p><span class="math inline">\(\exists\)</span> a value function <span class="math inline">\(Q^*\)</span> s.t <span class="math inline">\(\forall x, a \in X, A\)</span>, we have:</p>
-<p><span class="math display">\[Q^{*}(x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) max_{a^\prime} \{Q^{*} (x^\prime, a^\prime)\}\]</span></p></li>
-</ol>
-<p>These equations are called <span style="color:red"><strong>bellman optimality equations for the value functions</strong></span></p></li>
-<li><p><span class="math inline">\(V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^*}\)</span>, the optimal value function when <span class="math inline">\(\pi\)</span> is restricted to be within the space of all stationary and non-stationary policies.</p></li>
-<li><p>For discounted continuing MDPs, we can always find a stationary policy that is optimal within the space of all stationary and non-stationary policies.</p></li>
-</ol>
-<p>In summary, we claim that:</p>
-<p><strong><span class="math inline">\(V^{*}\)</span> exists and it is unique, <span class="math inline">\(V^{*} = V^{\pi^{*}}\)</span>. Same for <span class="math inline">\(Q^{*}\)</span></strong></p>
-<h2 id="bellman-operators">Bellman Operators</h2>
-<p>In order to prove the claims, we need several concepts:</p>
-<p><img src='/images/RL/bellman_equation/bellman-operator.png'> <img src='/images/RL/bellman_equation/bell-opt-operator.png'></p>
-<p>These operators are linear and recall that:</p>
-<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (a^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
-<p>This implies <span class="math inline">\(T^{\pi} Q^{\pi} = Q^{\pi}\)</span>, same for state-value function and bellman optimality operators. Thus, we can conclude that:</p>
-<p><span class="math display">\[V^{\pi} = T^{\pi} V^{\pi}\]</span> <span class="math display">\[Q^{\pi} = T^{\pi} Q^{\pi}\]</span> <span class="math display">\[V^{*} = T^{*} V^{*}\]</span> <span class="math display">\[Q^{*} = T^{*} Q^{*}\]</span></p>
-<h3 id="properties-of-bellman-operators">Properties of Bellman Operators</h3>
-<p>Bellman operators have several important properties. The properties that matters for us the most are:</p>
-<ol type="1">
-<li>Monotonicity</li>
-<li>Contraction</li>
-</ol>
-<h4 id="monotonicity">Monotonicity</h4>
-<p><img src='/images/RL/bellman_equation/monotonicity.png'></p>
-<p>we can easily prove this (only prove <span class="math inline">\(T^{\pi}\)</span>, <span class="math inline">\(T^{*}\)</span> is the same):</p>
-<p>Assume:</p>
-<p><span class="math display">\[V_1(x^{\prime}) \geq V_2(x^{\prime}), \forall x^{\prime} \in X\]</span></p>
-<p>we get that for any <span class="math inline">\(x \in X\)</span>:</p>
-<p><span class="math display">\[T^{\pi}V_{1} (x) = r^{\pi} (x) + \gamma \int P^{\pi}(dx^{\prime} | x) V_{1} (x^\prime) \geq r^{\pi} (x) + \gamma \int P^{\pi}(dx^{\prime} | x) V_{2} (x^\prime) = T^{\pi}V_2(x)\]</span></p>
-<p>Thus:</p>
-<p><span class="math display">\[T^{\pi}V_{1} (x) \geq T^{\pi}V_{2} (x)\]</span></p>
-<h4 id="contraction">Contraction</h4>
-<p><img src='/images/RL/bellman_equation/contraction_mapping.png'></p>
-<p>we can also easily prove that <span class="math inline">\(T^{*}, T^{\pi}\)</span> are contraction mappings (only prove <span class="math inline">\(T^{\pi}\)</span>, <span class="math inline">\(T^{*}\)</span> is the same):</p>
-<p>Consider two action-value functions:</p>
-<p><span class="math display">\[Q_1, Q_2 \in B(X\times A)\]</span></p>
-<p>Consider the metric:</p>
-<p><span class="math display">\[d(Q_1, Q_2) = \| Q_1 - Q_2 \|_{\infty}\]</span></p>
-<p>We show the contraction w.r.t <span class="math inline">\(l-\infty\)</span> norm.</p>
-<p>For any <span class="math inline">\((x, a) \in X \times A\)</span>, we have:</p>
-<span class="math display">\[\begin{aligned}
-\lvert T^{\pi} Q_1 (x, a) - T^{\pi} Q_2 (x, a) \rvert &amp;= \lvert r (x, a) + \gamma \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) Q_{1} (x^\prime, a^{\prime}) - r (x, a) - \gamma \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) Q_{2} (x^\prime, a^{\prime}) \rvert\\
-&amp; = \gamma \lvert \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) [Q_{1} (x^\prime, a^{\prime}) -  Q_{2} (x^\prime, a^{\prime})] \rvert\\
-&amp; \leq \gamma \int \underbrace{P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime)}_{\text{these are probabilities which $ \geq $ 0}} \lvert [Q_{1} (x^\prime, a^{\prime}) -  Q_{2} (x^\prime, a^{\prime})] \rvert\\
-&amp; \leq \gamma \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) \sup_{x, a}\lvert [Q_{1} (x, a) -  Q_{2} (x, a)] \rvert\\
-&amp; = \gamma \sup_{x, a}\lvert Q_{1} (x, a) -  Q_{2} (x, a) \rvert \underbrace{\int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime)}_{\text{this is a probability distribution which sums to 1}}\\
-&amp; = \gamma \sup_{x, a}\lvert Q_{1} (x, a) -  Q_{2} (x, a) \rvert = \gamma \|Q_{1} -  Q_{2}\|_{\infty}
-\end{aligned}\]</span>
-<p>This inequality holds for all state action pair, thus, we have showed that bellman operators are contraction mappings.</p>
-<p><img src='/images/RL/bellman_equation/gamma_contraction.png'></p>
-<h3 id="consequences-of-monotonicity-and-contraction">Consequences of Monotonicity and Contraction</h3>
-<h4 id="uniqueness-of-fixed-points">Uniqueness of fixed points</h4>
-<p><img src='/images/RL/bellman_equation/fixed_point.png'> <img src='/images/RL/bellman_equation/bfpt.png'> <img src='/images/RL/bellman_equation/unique_fixed_points.png'></p>
-<p>Proof of the proposition is also simple (Same for <span class="math inline">\(Q^{\pi}, Q^{*}\)</span>):</p>
-<p>For any <span class="math inline">\(\pi\)</span>, <span class="math inline">\(T^{\pi}\)</span> is a <span class="math inline">\(\gamma-\)</span>contraction mapping (same for <span class="math inline">\(T^{*}\)</span>), thus, by the Banach fixed point theorem, they have unique fixed point</p>
-<p><span class="math display">\[T^{*} V^{*} = V^{*}, T^{\pi} V^{\pi} = V^{\pi}\]</span></p>
-<p>Moreover, the update rule <span class="math inline">\(V_{k+1} \leftarrow T^{\pi} V_{k}\)</span> converges, which means:</p>
-<p><span class="math display">\[lim_{k \rightarrow \infty} \| V_{k} - V^{\pi}\|_{\infty} = 0\]</span></p>
-<h4 id="value-of-the-greedy-policy-of-v-is-v">Value of the greedy policy of <span class="math inline">\(V^{*}\)</span> is <span class="math inline">\(V^{*}\)</span></h4>
-<p>We know if:</p>
-<p><span class="math display">\[T^{\pi} V^{*} = T^{*}V^{*} \implies T^{\pi} V^{*} = V^{*}\]</span></p>
-<p>This is also the fix point of <span class="math inline">\(T^{\pi}\)</span>, this implies <span class="math inline">\(V^{\pi} = V^{*}\)</span>.</p>
-<p>On the other hand, if we know <span class="math inline">\(V^\pi = V^{*}\)</span>, the by applying <span class="math inline">\(T^{\pi}\)</span> to both side we have</p>
-<p><span class="math display">\[T^{\pi} V^{\pi} = T^{\pi} V^{*} \implies T^{\pi} V^{\pi} = T^{*} V^{*} = T^{\pi} V^{*}\]</span></p>
-<p>Thus, we can conclude that:</p>
-<p><span class="math display">\[T^{\pi} V^{*} = T^{*}V^{*} \text{ iff } V^\pi = V^{*}\]</span></p>
-<p><strong>The Connection To Greedy Policy</strong></p>
-<p>Given <span class="math inline">\(V^{*}\)</span>, the greedy policy of <span class="math inline">\(V^{*}\)</span> is defined as:</p>
-<p><span class="math display">\[\pi_{g} (x; V^{*}) = argmax_{a \in A} Q^{*}(x, a) = argmax_{a \in A} r(x, a) + \gamma \int P(dx^{\prime} | x, a) V^{*}(x^{\prime})\]</span></p>
-<p>So:</p>
-<p><span class="math display">\[T^{\pi_{g} (x; V^{*})} V^{*} = r(x, \pi_{g} (x; V^{*})) + \gamma \int P(dx^{\prime} | x, \pi_{g} (x; V^{*})) V^{*}(x^{\prime}) = max_{a \in A} r(x, a) + \gamma \int P(dx^{\prime} | x, a) V^{*}(x^{\prime})\]</span></p>
-<p>Compare with <span class="math inline">\(T^{*} V^{*}\)</span>:</p>
-<p><span class="math display">\[T^{*} V^{*} =  max_{a \in A} r(x, a) + \gamma \int P(dx^{\prime} | x, a) V^{*}(x^{\prime})\]</span></p>
-<p>Thus:</p>
-<p><span class="math display">\[T^{*} V^{*} = T^{\pi_{g} (x; V^{*})} V^{*}\]</span></p>
-<p>Since:</p>
-<p><span class="math display">\[T^{\pi} V^{*} = T^{*}V^{*} \text{ iff } V^\pi = V^{*} \implies V^{*} = V^{\pi_{g} (x; V^{*})}\]</span></p>
-<p>That is, the value of following <span class="math inline">\(\pi_{g} (x; V^{*})\)</span> is the same as <span class="math inline">\(V^{*}\)</span>. This means that if we find <span class="math inline">\(V^{*}\)</span> and its greedy policy, the value of following the greedy policy is <span class="math inline">\(V^{*}\)</span>.</p>
-<p><span style="color:red"><strong>To find an optimal policy, we can find <span class="math inline">\(V^{*}\)</span> first, then find its greedy policy</strong></span></p>
-<p>following this conclusion: Although we have not yet prove that <span class="math inline">\(V^{*}\)</span> is the optimal value function (<span class="math inline">\(\pi^{*} = argmax_{\pi \in \prod} V^{\pi} (x)\)</span>, <span class="math inline">\(V^{*} = V^{\pi^{*}}\)</span> (claim 2)), this is indeed true. (prove later)</p>
-<h4 id="an-error-bound-based-on-the-bellman-error">An error bound based on the bellman error</h4>
-<p>If we find a V s.t <span class="math inline">\(V = T^{*} V\)</span>, we know that <span class="math inline">\(V = V^{*}\)</span> (same for <span class="math inline">\(T^{\pi} and Q\)</span>), what if <span class="math inline">\(V \approx T^{*} V\)</span>, what can we say about the closeness of <span class="math inline">\(V\)</span> to <span class="math inline">\(V^{*}\)</span>?</p>
-<p><img src='/images/RL/bellman_equation/br_1.png'> <img src='/images/RL/bellman_equation/br_2.png'></p>
-<p><strong>Proof:</strong></p>
-<span class="math display">\[\begin{aligned}
-V - V^{*} &amp;= V - T^{*} V + T^{*} V - V^{*}\\
-\implies \| V - V^{*} \|_{\infty} &amp;= \| V - T^{*} V + T^{*} V - V^{*} \|_{\infty}\\
-&amp;\leq   \|V - T^{*} V \|_{\infty} + \|T^{*} V - T^{*}V^{*} \|_{\infty} \\
-&amp;\leq   \|V - T^{*} V \|_{\infty} + \gamma \|V - V^{*} \|_{\infty} (i.e. \|T^{*} V - T^{*}V^{*} \|_{\infty} \leq \gamma \|V - V^{*} \|_{\infty}, \text{contraction property} )\\
-\implies \| V - V^{*} \|_{\infty} &amp;\leq \frac{\|V - T^{*} V \|_{\infty}}{(1 - \gamma)}\\
-\implies \| V - V^{*} \|_{\infty} &amp;\leq \frac{BE^{*}}{(1 - \gamma)}
-\end{aligned}\]</span>
-<h4 id="proof-of-claim-2-v-t-v-is-the-same-as-vpi">Proof of claim 2: <span class="math inline">\(V^{*} = T^{*} V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^{*}}\)</span></h4>
-<p><img src='/images/RL/bellman_equation/claim_2.png'></p>
-<p>The proof has three parts:</p>
-<ol type="1">
-<li><p>Prove that <span class="math inline">\(V^{*} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)\)</span></p></li>
-<li><p>Prove that <span class="math inline">\(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></p></li>
-<li><p>Combine 1 and 2, we show that claim 2 is true, that is, <span class="math inline">\(V^{*} = T^{*} V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^{*}}\)</span></p></li>
-</ol>
-<h5 id="proof-v-x-leq-sup_pi-in-prod-vpi-x">Proof <span class="math inline">\(V^{*} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)\)</span></h5>
-<p>From the error bound with the choice of <span class="math inline">\(V = V^{*}\)</span>, we have for any <span class="math inline">\(\pi \in \prod\)</span>,</p>
-<p><span class="math display">\[\| V^{*} - V^{\pi} \|_{\infty} \leq \frac{\| V^{*} - T^{\pi}V^{*} \|_{\infty}}{1 - \gamma}\]</span></p>
-<p>Let <span class="math inline">\(\epsilon &gt; 0\)</span>. Choose a policy <span class="math inline">\(\pi_{\epsilon}\)</span> s.t:</p>
-<p><span class="math display">\[\| V^{*} - T^{\pi_{\epsilon}} V^{*} \|_{\infty} \leq (1 - \gamma) \epsilon\]</span></p>
-<p>We know that this <span class="math inline">\(\pi_{\epsilon}\)</span> exists because we can always pick a <span class="math inline">\(\pi_{\epsilon}\)</span> s.t it is the maximizer of <span class="math inline">\(T^{*}V^{*}\)</span> (ie. pick <span class="math inline">\(\pi_{\epsilon}\)</span> to be <span class="math inline">\(\pi_{g} (x; V^{*})\)</span>, from above proof we know that <span class="math inline">\(T^{\pi_{g} (x; V^{*})} V^{*} = T^{*} V^{*}\)</span>), then:</p>
-<p><span class="math display">\[\| V^{*} - T^{\pi_{\epsilon}} V^{*} \|_{\infty} = 0 \leq (1 - \gamma) * \epsilon, \forall \epsilon &gt; 0\]</span></p>
-<p>For any policy <span class="math inline">\(\pi_{\epsilon}\)</span> that satisfies above equation:</p>
-<p><span class="math display">\[\| V^{*} - V^{\pi_{\epsilon}} \|_{\infty} \leq \epsilon\]</span></p>
-<p>This means that:</p>
-<p><span class="math display">\[sup_{x_i} \{|V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)|\} \leq \epsilon\]</span></p>
-<p><span class="math display">\[\implies |V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)| \leq sup_{x_i} \{|V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)|\} \leq \epsilon, \forall x_i \in X\]</span></p>
-<p><span class="math display">\[\implies V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i) \leq  |V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)| \leq \epsilon\]</span></p>
-<p><span class="math display">\[\implies V^{*} (x_i) \leq \epsilon + V^{\pi_{\epsilon}} (x_i)\]</span></p>
-<p>Since:</p>
-<p><span class="math display">\[V^{\pi_{\epsilon}} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)\]</span></p>
-<p>As we take <span class="math inline">\(\epsilon \rightarrow 0\)</span>, we have:</p>
-<p><span class="math display">\[V^{*} (x) \leq lim_{\epsilon \rightarrow 0} (\epsilon + V^{\pi_{\epsilon}} (x)) \leq lim_{\epsilon \rightarrow 0} (\epsilon + sup_{\pi \in \prod} V^{\pi}  (x)) = sup_{\pi \in \prod} V^{\pi} (x)\]</span></p>
-<p><strong>This shows that <span class="math inline">\(V^{*} = T^{*} V^{*}\)</span> is upper bounded by the optimal value function within the space of stationary policies</strong></p>
-<h5 id="proof-v-x-geq-sup_pi-in-prod-vpi-x">Proof <span class="math inline">\(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></h5>
-<p>Consider any <span class="math inline">\(\pi \in \prod\)</span>. By the definition of <span class="math inline">\(T^{\pi}\)</span> and <span class="math inline">\(T^{*}\)</span>, for any <span class="math inline">\(V \in B(X)\)</span>, we have that for any <span class="math inline">\(x \in X\)</span>:</p>
-<span class="math display">\[\begin{aligned}
-T^{\pi} V &amp;= r^{\pi}(x) + \int P(dx^{\prime} | x, a) \pi(da | x) V(x^{\prime})\\
-&amp;= \int  \pi(da | x) [P(dx^{\prime} | x, a) V(x^{\prime}) + r(x, a)]\\
-&amp;\leq sup_{a \in A} \{r(x, a) + \int P(dx^{\prime} | x, a) V(x^{\prime})\} = T^{*} V
-\end{aligned}\]</span>
-<p>In particular, with the choice of <span class="math inline">\(V = V^{*}\)</span>, we have:</p>
-<span class="math display">\[\begin{aligned}
-T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
-\implies T^{\pi}T^{\pi} V^{*} &amp;\leq T^{\pi}V^{*} \leq V^{*} \text{(Monotonicity)}\\
-\implies (T^{\pi})^{k} V^{*} &amp;\leq V^{*} \text{(apply bellman operator k times)}
-\end{aligned}\]</span>
-<p>as <span class="math inline">\(k \rightarrow \infty\)</span>, by fix point theorem, we know that <span class="math inline">\((T^{\pi})^k V^{*} = V^{\pi}\)</span>:</p>
-<span class="math display">\[\begin{aligned}
-\implies V^{\pi} &amp;= lim_{k \rightarrow \infty} (T^{\pi})^k V^{*} \leq V^{*}, \forall \pi \in \prod\\
-\implies V^{*} (x) &amp;\geq sup_{\pi \in \prod} V^{\pi} (x)
-\end{aligned}\]</span>
-<p><strong>Thus, we can conclude that <span class="math inline">\(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></strong></p>
-<p><span style="color:red"><strong>Together, we showed that <span class="math inline">\(V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^{*}}\)</span>, the solution of bellman optimality equation is the optimal value function</strong></span></p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>Basics</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>RL Cheat Sheet (under construction)</title>
     <url>/2021/05/18/cheat-sheet/</url>
     <content><![CDATA[<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
@@ -1598,12 +1598,6 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
       <tags>
         <tag>RL Basics</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>convex_opt</title>
-    <url>/2021/06/14/convex-opt/</url>
-    <content><![CDATA[
-]]></content>
   </entry>
   <entry>
     <title>Backpropagation in CNN</title>
@@ -1689,28 +1683,10 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
       </tags>
   </entry>
   <entry>
-    <title>Dynamic Programming</title>
-    <url>/2021/05/03/dp/</url>
-    <content><![CDATA[<h1 id="dynamic-programming">Dynamic Programming</h1>
-<p>We have defined concepts and properties such as value functions, bellman equations, bellman operators and etc. The question is <strong>how we can find the the optimal policy?</strong> Before we start, we assume that the dynamics of the MDP is given, that is, we know our transition distribution <span class="math inline">\(P\)</span> and immediate reward distribution <span class="math inline">\(R\)</span>. The assumption of knowing the dynamics do not hold in the RL setting, but designing methods for finding the optimal policy with known model provides the foundation for developing methods for the RL setting.</p>
-<p>DP methods benefit from the structure of the MDP such as the recursive structure encoded in the Bellman equation, in order to compute the value function.</p>
-<span id="more"></span>
-<h2 id="policy-evaluation">Policy Evaluation</h2>
-<p>Policy Evaluation is the problem of computing the value function of a given policy <span class="math inline">\(\pi\)</span> (i.e. find <span class="math inline">\(V^{\pi}\)</span> or <span class="math inline">\(Q^{\pi}\)</span>). This is not the ultimate goal of an RL agent (Finding the optimal policy is the goal), but is often needed as an intermediate step in finding the optimal policy</p>
-<p>Given an MDP (<span class="math inline">\(X, A, P, R, \gamma\)</span>) and a policy <span class="math inline">\(\pi\)</span>, we would like to compute <span class="math inline">\(V^{\pi}, Q^{\pi}\)</span>:</p>
-<p><span class="math display">\[V^{\pi} (x) = E^{\pi}[\sum_{t=1}^{\infty} \gamma^{t-1} R_{t} | X_0 = x]\]</span></p>
-<p><em><img src='/images/RL/dp/tree_structure.png'></em></p>
-<h2 id="control">Control</h2>
-<p>Control is the problem of finding the optimal value function <span class="math inline">\(V^{*}, Q^{*}\)</span> or <span class="math inline">\(\pi^{*}\)</span></p>
+    <title>convex_opt</title>
+    <url>/2021/06/14/convex-opt/</url>
+    <content><![CDATA[
 ]]></content>
-      <categories>
-        <category>RL</category>
-        <category>DP</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>Dynamic Programming</tag>
-      </tags>
   </entry>
   <entry>
     <title>Decision Trees</title>
@@ -1794,6 +1770,30 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
       </categories>
       <tags>
         <tag>Machine Learning</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Dynamic Programming</title>
+    <url>/2021/05/03/dp/</url>
+    <content><![CDATA[<h1 id="dynamic-programming">Dynamic Programming</h1>
+<p>We have defined concepts and properties such as value functions, bellman equations, bellman operators and etc. The question is <strong>how we can find the the optimal policy?</strong> Before we start, we assume that the dynamics of the MDP is given, that is, we know our transition distribution <span class="math inline">\(P\)</span> and immediate reward distribution <span class="math inline">\(R\)</span>. The assumption of knowing the dynamics do not hold in the RL setting, but designing methods for finding the optimal policy with known model provides the foundation for developing methods for the RL setting.</p>
+<p>DP methods benefit from the structure of the MDP such as the recursive structure encoded in the Bellman equation, in order to compute the value function.</p>
+<span id="more"></span>
+<h2 id="policy-evaluation">Policy Evaluation</h2>
+<p>Policy Evaluation is the problem of computing the value function of a given policy <span class="math inline">\(\pi\)</span> (i.e. find <span class="math inline">\(V^{\pi}\)</span> or <span class="math inline">\(Q^{\pi}\)</span>). This is not the ultimate goal of an RL agent (Finding the optimal policy is the goal), but is often needed as an intermediate step in finding the optimal policy</p>
+<p>Given an MDP (<span class="math inline">\(X, A, P, R, \gamma\)</span>) and a policy <span class="math inline">\(\pi\)</span>, we would like to compute <span class="math inline">\(V^{\pi}, Q^{\pi}\)</span>:</p>
+<p><span class="math display">\[V^{\pi} (x) = E^{\pi}[\sum_{t=1}^{\infty} \gamma^{t-1} R_{t} | X_0 = x]\]</span></p>
+<p><em><img src='/images/RL/dp/tree_structure.png'></em></p>
+<h2 id="control">Control</h2>
+<p>Control is the problem of finding the optimal value function <span class="math inline">\(V^{*}, Q^{*}\)</span> or <span class="math inline">\(\pi^{*}\)</span></p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>DP</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>Dynamic Programming</tag>
       </tags>
   </entry>
   <entry>
@@ -2076,60 +2076,6 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
       </tags>
   </entry>
   <entry>
-    <title>knapsack</title>
-    <url>/2021/07/08/knapsack/</url>
-    <content><![CDATA[<h1 id="knapsack-problem">knapsack Problem</h1>
-<h2 id="knapsack-problem-1">0–1 knapsack problem</h2>
-<p>Given weights and values of <span class="math inline">\(n\)</span> items, put these items in a knapsack of capacity <span class="math inline">\(W\)</span> to get the maximum total value in the knapsack.</p>
-<p><span class="math inline">\(f(i, j):\)</span> using only first <span class="math inline">\(i\)</span> items, with maximum capacity of <span class="math inline">\(j\)</span>, the maximum total value you can get.</p>
-<p>Then, we can write our base cases:</p>
-<ul>
-<li><span class="math inline">\(f(0, :) = 0\)</span></li>
-<li><span class="math inline">\(f(:, 0) = 0\)</span></li>
-</ul>
-<p>0 items have values 0 and no items can be put into knapsack with capacity of 0.</p>
-<p>At <span class="math inline">\(f(i, j)\)</span>, comparing it to <span class="math inline">\(f(i - 1, j)\)</span>, we can choose to include item <span class="math inline">\(i\)</span> or not. So, we can write out of transition function <span class="math inline">\(f(i, j)\)</span>:</p>
-<ol type="1">
-<li><p>If there is still extra capacity for item <span class="math inline">\(i\)</span> with total capacity <span class="math inline">\(j\)</span> (i.e <span class="math inline">\(sum(weights[: i + 1]) \leq j)\)</span>), then we can just simply add values of item <span class="math inline">\(i\)</span>. <span class="math display">\[f(i, j) = f(i - 1, j) + values(i)\]</span></p></li>
-<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> and the current weight <span class="math inline">\(weight[i] &gt; j\)</span>, then we only need to keep the previous maximum values because the item <span class="math inline">\(i\)</span> won't fit whatsoever: <span class="math display">\[f(i, j) = f(i - 1, j)\]</span></p></li>
-<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> but <span class="math inline">\(weight[i] \leq j\)</span>, then we can choose to include this item and discard some past items, or move on without considering this item:</p>
-<ol type="1">
-<li><p>The total values if we include this item (<span class="math inline">\(\text{current value } + \text{ The maximum value we can get after we fill the capacity j with i}\)</span> (we need to <code>exclude</code> the current item)): <span class="math display">\[\text{total}_{include} = values[i] + f(i - 1, j - weights[i])\]</span></p></li>
-<li><p>The maximum value exclude current item: <span class="math display">\[f(i - 1, j)\]</span></p></li>
-</ol>
-<p>By taking the maximum over these two, we have:</p>
-<p><span class="math display">\[f(i, j) = \max(f(i - 1, j), \; values[i] + f(i - 1, j - weights[i]))\]</span></p></li>
-</ol>
-<h2 id="unbounded-knapsack-problem">Unbounded knapsack problem</h2>
-<p>Given a knapsack weight <span class="math inline">\(W\)</span> and a set of <span class="math inline">\(n\)</span> items with certain value <span class="math inline">\(v_i\)</span> and weight <span class="math inline">\(w_i\)</span>, we need to calculate the maximum amount that could make up this quantity exactly. This is different from classical Knapsack problem, here we are allowed to use unlimited number of instances of an item.</p>
-<p><span class="math inline">\(f(i, j):\)</span> using only first <span class="math inline">\(i\)</span> items, with maximum capacity of <span class="math inline">\(j\)</span>, the maximum total value you can get.</p>
-<p>Then, we can write our base cases:</p>
-<ul>
-<li><span class="math inline">\(f(0, :) = 0\)</span></li>
-<li><span class="math inline">\(f(:, 0) = 0\)</span></li>
-</ul>
-<p>0 items have values 0 and no items can be put into knapsack with capacity of 0.</p>
-<p>At <span class="math inline">\(f(i, j)\)</span>, comparing it to <span class="math inline">\(f(i - 1, j)\)</span>, we can choose to include item <span class="math inline">\(i\)</span> or not. So, we can write out of transition function <span class="math inline">\(f(i, j)\)</span>:</p>
-<ol type="1">
-<li><p>If there is still extra capacity for item <span class="math inline">\(i\)</span> with total capacity <span class="math inline">\(j\)</span> (i.e <span class="math inline">\(sum(weights[: i + 1]) \leq j)\)</span>), then we can just simply add values of item <span class="math inline">\(i\)</span>. <span class="math display">\[f(i, j) = f(i - 1, j) + values(i)\]</span></p></li>
-<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> and the current weight <span class="math inline">\(weight[i] &gt; j\)</span>, then we only need to keep the previous maximum values because the item <span class="math inline">\(i\)</span> won't fit whatsoever: <span class="math display">\[f(i, j) = f(i - 1, j)\]</span></p></li>
-<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> but <span class="math inline">\(weight[i] \leq j\)</span>, then we can choose to include this item and discard some past items, or move on without considering this item:</p>
-<ol type="1">
-<li><p>The total values if we include this item (<span class="math inline">\(\text{current value } + \text{ The maximum value we have can get after we fill the capacity j with i}\)</span> (we need to <code>include</code> the current item)): <span class="math display">\[\text{total}_{include} = values[i] + f(i, j - weights[i])\]</span></p></li>
-<li><p>The maximum value exclude current item: <span class="math display">\[f(i - 1, j)\]</span></p></li>
-</ol>
-<p>By taking the maximum over these two, we have:</p>
-<p><span class="math display">\[f(i, j) = \max(f(i - 1, j), \; values[i] + f(i, j - weights[i]))\]</span></p></li>
-</ol>
-]]></content>
-  </entry>
-  <entry>
-    <title>knn</title>
-    <url>/2021/07/19/knn/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
     <title>k-means</title>
     <url>/2021/07/19/k-means/</url>
     <content><![CDATA[
@@ -2282,6 +2228,60 @@ Var[\Delta x_l] &amp;= \hat{n}_l(Var(w_l)Var(\Delta y_l) + Var(w_l)E^2[\Delta y_
 <li><p>It is sufficient to use either forward result or backward result alone, because they only differ by a constant which is not diminishing number in common network designs. This means that if the initialization properly scales the backward signal, then this is also the case for the forward signal.</p></li>
 <li><p>If the forward/backward signal is inappropriately scaled by a factor <span class="math inline">\(\beta\)</span> in each layer, then the final propagated signal will be rescaled by a factor of <span class="math inline">\(\beta^L\)</span> after <span class="math inline">\(L\)</span> layers, where <span class="math inline">\(L\)</span> can represent some or all layers. When <span class="math inline">\(L\)</span> is large, if <span class="math inline">\(\beta &gt; 1\)</span>, this leads to extremely amplified signals. If <span class="math inline">\(\beta &lt; 1\)</span>, this leads to diminishing signal.</p></li>
 </ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>knapsack</title>
+    <url>/2021/07/08/knapsack/</url>
+    <content><![CDATA[<h1 id="knapsack-problem">knapsack Problem</h1>
+<h2 id="knapsack-problem-1">0–1 knapsack problem</h2>
+<p>Given weights and values of <span class="math inline">\(n\)</span> items, put these items in a knapsack of capacity <span class="math inline">\(W\)</span> to get the maximum total value in the knapsack.</p>
+<p><span class="math inline">\(f(i, j):\)</span> using only first <span class="math inline">\(i\)</span> items, with maximum capacity of <span class="math inline">\(j\)</span>, the maximum total value you can get.</p>
+<p>Then, we can write our base cases:</p>
+<ul>
+<li><span class="math inline">\(f(0, :) = 0\)</span></li>
+<li><span class="math inline">\(f(:, 0) = 0\)</span></li>
+</ul>
+<p>0 items have values 0 and no items can be put into knapsack with capacity of 0.</p>
+<p>At <span class="math inline">\(f(i, j)\)</span>, comparing it to <span class="math inline">\(f(i - 1, j)\)</span>, we can choose to include item <span class="math inline">\(i\)</span> or not. So, we can write out of transition function <span class="math inline">\(f(i, j)\)</span>:</p>
+<ol type="1">
+<li><p>If there is still extra capacity for item <span class="math inline">\(i\)</span> with total capacity <span class="math inline">\(j\)</span> (i.e <span class="math inline">\(sum(weights[: i + 1]) \leq j)\)</span>), then we can just simply add values of item <span class="math inline">\(i\)</span>. <span class="math display">\[f(i, j) = f(i - 1, j) + values(i)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> and the current weight <span class="math inline">\(weight[i] &gt; j\)</span>, then we only need to keep the previous maximum values because the item <span class="math inline">\(i\)</span> won't fit whatsoever: <span class="math display">\[f(i, j) = f(i - 1, j)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> but <span class="math inline">\(weight[i] \leq j\)</span>, then we can choose to include this item and discard some past items, or move on without considering this item:</p>
+<ol type="1">
+<li><p>The total values if we include this item (<span class="math inline">\(\text{current value } + \text{ The maximum value we can get after we fill the capacity j with i}\)</span> (we need to <code>exclude</code> the current item)): <span class="math display">\[\text{total}_{include} = values[i] + f(i - 1, j - weights[i])\]</span></p></li>
+<li><p>The maximum value exclude current item: <span class="math display">\[f(i - 1, j)\]</span></p></li>
+</ol>
+<p>By taking the maximum over these two, we have:</p>
+<p><span class="math display">\[f(i, j) = \max(f(i - 1, j), \; values[i] + f(i - 1, j - weights[i]))\]</span></p></li>
+</ol>
+<h2 id="unbounded-knapsack-problem">Unbounded knapsack problem</h2>
+<p>Given a knapsack weight <span class="math inline">\(W\)</span> and a set of <span class="math inline">\(n\)</span> items with certain value <span class="math inline">\(v_i\)</span> and weight <span class="math inline">\(w_i\)</span>, we need to calculate the maximum amount that could make up this quantity exactly. This is different from classical Knapsack problem, here we are allowed to use unlimited number of instances of an item.</p>
+<p><span class="math inline">\(f(i, j):\)</span> using only first <span class="math inline">\(i\)</span> items, with maximum capacity of <span class="math inline">\(j\)</span>, the maximum total value you can get.</p>
+<p>Then, we can write our base cases:</p>
+<ul>
+<li><span class="math inline">\(f(0, :) = 0\)</span></li>
+<li><span class="math inline">\(f(:, 0) = 0\)</span></li>
+</ul>
+<p>0 items have values 0 and no items can be put into knapsack with capacity of 0.</p>
+<p>At <span class="math inline">\(f(i, j)\)</span>, comparing it to <span class="math inline">\(f(i - 1, j)\)</span>, we can choose to include item <span class="math inline">\(i\)</span> or not. So, we can write out of transition function <span class="math inline">\(f(i, j)\)</span>:</p>
+<ol type="1">
+<li><p>If there is still extra capacity for item <span class="math inline">\(i\)</span> with total capacity <span class="math inline">\(j\)</span> (i.e <span class="math inline">\(sum(weights[: i + 1]) \leq j)\)</span>), then we can just simply add values of item <span class="math inline">\(i\)</span>. <span class="math display">\[f(i, j) = f(i - 1, j) + values(i)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> and the current weight <span class="math inline">\(weight[i] &gt; j\)</span>, then we only need to keep the previous maximum values because the item <span class="math inline">\(i\)</span> won't fit whatsoever: <span class="math display">\[f(i, j) = f(i - 1, j)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> but <span class="math inline">\(weight[i] \leq j\)</span>, then we can choose to include this item and discard some past items, or move on without considering this item:</p>
+<ol type="1">
+<li><p>The total values if we include this item (<span class="math inline">\(\text{current value } + \text{ The maximum value we have can get after we fill the capacity j with i}\)</span> (we need to <code>include</code> the current item)): <span class="math display">\[\text{total}_{include} = values[i] + f(i, j - weights[i])\]</span></p></li>
+<li><p>The maximum value exclude current item: <span class="math display">\[f(i - 1, j)\]</span></p></li>
+</ol>
+<p>By taking the maximum over these two, we have:</p>
+<p><span class="math display">\[f(i, j) = \max(f(i - 1, j), \; values[i] + f(i, j - weights[i]))\]</span></p></li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>knn</title>
+    <url>/2021/07/19/knn/</url>
+    <content><![CDATA[
 ]]></content>
   </entry>
   <entry>
@@ -2560,10 +2560,68 @@ l(\boldsymbol{\theta}; \; D) &amp;= \sum^{N}_{i=1} y_i\log (p_i) + (1 - y_i) \lo
 ]]></content>
   </entry>
   <entry>
-    <title>pca</title>
+    <title>PCA</title>
     <url>/2021/07/19/pca/</url>
-    <content><![CDATA[
+    <content><![CDATA[<h1 id="principal-component-analysis">Principal Component Analysis</h1>
+<p>Let <span class="math inline">\([\mathbf{X}_1 ... \mathbf{X}_N]\)</span> be a <span class="math inline">\(p \times N\)</span> matrix of random sample where <span class="math inline">\(\mathbf{X}_i \in \mathbb{R}^p\)</span>. The sample mean <span class="math inline">\(\mathbf{M}\)</span> of the random sample is defined as:</p>
+<p><span class="math display">\[\mathbf{M} = \frac{1}{N} \sum^{N}_{i=1} \mathbf{X}_{i}\]</span></p>
+<p>Let <span class="math inline">\(\hat{\mathbf{X}}_k\)</span> be the centered random vector for <span class="math inline">\(k = 1, ...., N\)</span>:</p>
+<p><span class="math display">\[\hat{\mathbf{X}}_k = \mathbf{X}_k - \mathbf{M}\]</span></p>
+<p>Then we can defined the centered random sample matrix as:</p>
+<p><span class="math display">\[B = [\hat{\mathbf{X}}_1 ... \hat{\mathbf{X}}_N]_{[p\times N]}\]</span></p>
+<p>The sample covariance matrix <span class="math inline">\(S\)</span> is then:</p>
+<p><span class="math display">\[S = [\frac{1}{N} BB^T]_{[p\times p]}\]</span></p>
+<p>We can easily show that <span class="math inline">\(S\)</span> is positive semi-definite. Assume that <span class="math inline">\(\mathbf{x} &gt; 0\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+BB^T \mathbf{x} &amp;= \lambda \mathbf{x}\\
+\implies \mathbf{x}^T BB^T \mathbf{x} &amp;= \lambda \mathbf{x}^T \mathbf{x}\\
+\implies \frac{\mathbf{x}^T BB^T \mathbf{x}}{\mathbf{x}^T \mathbf{x}} &amp;= \lambda
+\end{aligned}\]</span>
+<p>Let <span class="math inline">\(\mathbf{A} = B^T\mathbf{x}\)</span>, then:</p>
+<p><span class="math display">\[\frac{\mathbf{A}^T \mathbf{A}}{\mathbf{x}^T \mathbf{x}} = \lambda\]</span></p>
+<p>Since, <span class="math inline">\(\mathbf{A}^T \mathbf{A} \geq 0\)</span> for any vector <span class="math inline">\(A\)</span>, similar for <span class="math inline">\(\mathbf{x}^T \mathbf{x}\)</span>, then:</p>
+<p><span class="math display">\[\lambda \geq 0\]</span></p>
+<p>Since, <span class="math inline">\(S\)</span> is symmetric and <span class="math inline">\(\lambda \geq 0\)</span> for all eigenvalues of <span class="math inline">\(S\)</span>, we can conclude that <span class="math inline">\(S\)</span> is <strong>positive semi-definite</strong>.</p>
+<p>The <strong>total variance</strong> in the data is:</p>
+<p><span class="math display">\[tr(S)\]</span></p>
+<h2 id="pca">PCA</h2>
+<p><strong>The goal of PCA is to find an orthogonal <span class="math inline">\(p \times p\)</span> matrix <span class="math inline">\(P = [\mathbf{u}_1 .... \mathbf{u}_p]\)</span> that determines a change of variable, <span class="math inline">\(\mathbf{X} = P\mathbf{Y}\)</span> with the property that the features of <span class="math inline">\(\mathbf{Y}\)</span> are uncorrelated and are arranged in order of decreasing variance.</strong></p>
+<p>Assume the <span class="math inline">\(\mathbf{X}\)</span> is already being centered, that is <span class="math inline">\(B = [\mathbf{X}_1 .... \mathbf{X}_N]\)</span>, then <span class="math inline">\(\mathbf{Y}\)</span> is also centered since <span class="math inline">\(P \neq 0\)</span>:</p>
+<p><span class="math display">\[E[\mathbf{X}] = P\cdot E[\mathbf{Y}] = 0\]</span></p>
+<p>Then the sample covariance matrix of <span class="math inline">\(\mathbf{Y}\)</span> is:</p>
+<p><span class="math display">\[S_Y = \frac{1}{N-1}[P^{-1}\mathbf{X}_1 .... P^{-1}\mathbf{X}_N] [P^{-1}\mathbf{X}_1 .... P^{-1}\mathbf{X}_N]^T\]</span></p>
+<p><span class="math display">\[\implies S_{\mathbf{Y}} = \frac{1}{N-1} P^{T}BB^{T}P = P^{T} S_{\mathbf{X}} P\]</span></p>
+<p>So the desired orthogonal matrix is the one that makes <span class="math inline">\(\hat{Cov}[Y_i, Y_j] = 0, \; \forall i \neq j\)</span> (features are uncorrelated), which means that the we want the sample covariance matrix <span class="math inline">\(S_Y\)</span> to be diagonal.</p>
+<p><br></p>
+<p>Let <span class="math inline">\(D\)</span> be a diagonal matrix with eigenvalues of <span class="math inline">\(S_{\mathbf{X}}\)</span>, <span class="math inline">\(\lambda_1 ,...., \lambda_p\)</span> on the diagonal s.t <span class="math inline">\(\lambda_1 \geq \lambda_2 \geq ..... \lambda_p \geq 0\)</span>, let <span class="math inline">\(P\)</span> be an orthogonal matrix whose columns are the corresponding unit eigenvectors <span class="math inline">\(\mathbf{u}_1, ....., \mathbf{u}_p\)</span>. Then, we can use <span class="math inline">\(P\)</span> and <span class="math inline">\(\mathbf{X}\)</span> to represent <span class="math inline">\(Y\)</span>, and the sample covariance matrix is:</p>
+<p><span class="math display">\[S_{\mathbf{X}} = PDP^T \implies P^{-1} S_{\mathbf{X}} P = D\]</span></p>
+<p>Thus, <span class="math inline">\(S_{\mathbf{Y}} = D\)</span>.</p>
+<p>Then, the eigenvectors <span class="math inline">\(\mathbf{u}_1, ...., \mathbf{u}_p\)</span> are called <code>Principal Components</code> of the data. The first PC is the eigenvector corresponding to the largest eigenvalue of <span class="math inline">\(S_{\mathbf{X}}\)</span>.</p>
+<p>The result transformation is defiend as:</p>
+<p><span class="math display">\[P^{T} \mathbf{X} = \mathbf{Y}\]</span></p>
+<p><span class="math display">\[
+\mathbf{Y} = 
+\begin{bmatrix}
+\mathbf{u}_1 \mathbf{X} \\
+.\\
+.\\
+.\\
+\mathbf{u}_p \mathbf{X}\\
+\end{bmatrix}
+\]</span></p>
+<h2 id="total-variance">Total Variance</h2>
+<p>It can be shown that the PCA transformation does not change the total variance of the data, that is the total variance of the data is the sum of eigenvalues:</p>
+<p><span class="math display">\[tr(S_{\mathbf{Y}}) = tr(D)\]</span></p>
+<p>This is only true when we are dealing with sample covariance matrix,</p>
+<h1 id="ref">Ref</h1>
+<p>https://stats.stackexchange.com/questions/266864/why-is-the-sum-of-eigenvalues-of-a-pca-equal-to-the-original-variance-of-the-dat</p>
 ]]></content>
+      <categories>
+        <category>ML</category>
+      </categories>
+      <tags>
+        <tag>Machine Learning</tag>
+      </tags>
   </entry>
   <entry>
     <title>Policy Gradient (3)</title>

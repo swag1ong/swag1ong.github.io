@@ -1084,7 +1084,7 @@ w^{(m + 1)}_i &amp;= e^{-y_i f_{m} (\mathbf{x}_i)}\\
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/19/pca/" class="post-title-link" itemprop="url">pca</a>
+          <a href="/2021/07/19/pca/" class="post-title-link" itemprop="url">PCA</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1096,6 +1096,22 @@ w^{(m + 1)}_i &amp;= e^{-y_i f_{m} (\mathbf{x}_i)}\\
       <span class="post-meta-item-text">Posted on</span>
 
       <time title="Created: 2021-07-19 16:32:26" itemprop="dateCreated datePublished" datetime="2021-07-19T16:32:26+08:00">2021-07-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-28 16:42:01" itemprop="dateModified" datetime="2021-07-28T16:42:01+08:00">2021-07-28</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
     </span>
 
   
@@ -1113,14 +1129,14 @@ w^{(m + 1)}_i &amp;= e^{-y_i f_{m} (\mathbf{x}_i)}\\
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>0</span>
+      <span>3.2k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>3 mins.</span>
     </span>
 </div>
 
@@ -1131,7 +1147,59 @@ w^{(m + 1)}_i &amp;= e^{-y_i f_{m} (\mathbf{x}_i)}\\
     
     
     <div class="post-body" itemprop="articleBody">
-          
+          <h1 id="principal-component-analysis">Principal Component Analysis</h1>
+<p>Let <span class="math inline">\([\mathbf{X}_1 ... \mathbf{X}_N]\)</span> be a <span class="math inline">\(p \times N\)</span> matrix of random sample where <span class="math inline">\(\mathbf{X}_i \in \mathbb{R}^p\)</span>. The sample mean <span class="math inline">\(\mathbf{M}\)</span> of the random sample is defined as:</p>
+<p><span class="math display">\[\mathbf{M} = \frac{1}{N} \sum^{N}_{i=1} \mathbf{X}_{i}\]</span></p>
+<p>Let <span class="math inline">\(\hat{\mathbf{X}}_k\)</span> be the centered random vector for <span class="math inline">\(k = 1, ...., N\)</span>:</p>
+<p><span class="math display">\[\hat{\mathbf{X}}_k = \mathbf{X}_k - \mathbf{M}\]</span></p>
+<p>Then we can defined the centered random sample matrix as:</p>
+<p><span class="math display">\[B = [\hat{\mathbf{X}}_1 ... \hat{\mathbf{X}}_N]_{[p\times N]}\]</span></p>
+<p>The sample covariance matrix <span class="math inline">\(S\)</span> is then:</p>
+<p><span class="math display">\[S = [\frac{1}{N} BB^T]_{[p\times p]}\]</span></p>
+<p>We can easily show that <span class="math inline">\(S\)</span> is positive semi-definite. Assume that <span class="math inline">\(\mathbf{x} &gt; 0\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+BB^T \mathbf{x} &amp;= \lambda \mathbf{x}\\
+\implies \mathbf{x}^T BB^T \mathbf{x} &amp;= \lambda \mathbf{x}^T \mathbf{x}\\
+\implies \frac{\mathbf{x}^T BB^T \mathbf{x}}{\mathbf{x}^T \mathbf{x}} &amp;= \lambda
+\end{aligned}\]</span>
+<p>Let <span class="math inline">\(\mathbf{A} = B^T\mathbf{x}\)</span>, then:</p>
+<p><span class="math display">\[\frac{\mathbf{A}^T \mathbf{A}}{\mathbf{x}^T \mathbf{x}} = \lambda\]</span></p>
+<p>Since, <span class="math inline">\(\mathbf{A}^T \mathbf{A} \geq 0\)</span> for any vector <span class="math inline">\(A\)</span>, similar for <span class="math inline">\(\mathbf{x}^T \mathbf{x}\)</span>, then:</p>
+<p><span class="math display">\[\lambda \geq 0\]</span></p>
+<p>Since, <span class="math inline">\(S\)</span> is symmetric and <span class="math inline">\(\lambda \geq 0\)</span> for all eigenvalues of <span class="math inline">\(S\)</span>, we can conclude that <span class="math inline">\(S\)</span> is <strong>positive semi-definite</strong>.</p>
+<p>The <strong>total variance</strong> in the data is:</p>
+<p><span class="math display">\[tr(S)\]</span></p>
+<h2 id="pca">PCA</h2>
+<p><strong>The goal of PCA is to find an orthogonal <span class="math inline">\(p \times p\)</span> matrix <span class="math inline">\(P = [\mathbf{u}_1 .... \mathbf{u}_p]\)</span> that determines a change of variable, <span class="math inline">\(\mathbf{X} = P\mathbf{Y}\)</span> with the property that the features of <span class="math inline">\(\mathbf{Y}\)</span> are uncorrelated and are arranged in order of decreasing variance.</strong></p>
+<p>Assume the <span class="math inline">\(\mathbf{X}\)</span> is already being centered, that is <span class="math inline">\(B = [\mathbf{X}_1 .... \mathbf{X}_N]\)</span>, then <span class="math inline">\(\mathbf{Y}\)</span> is also centered since <span class="math inline">\(P \neq 0\)</span>:</p>
+<p><span class="math display">\[E[\mathbf{X}] = P\cdot E[\mathbf{Y}] = 0\]</span></p>
+<p>Then the sample covariance matrix of <span class="math inline">\(\mathbf{Y}\)</span> is:</p>
+<p><span class="math display">\[S_Y = \frac{1}{N-1}[P^{-1}\mathbf{X}_1 .... P^{-1}\mathbf{X}_N] [P^{-1}\mathbf{X}_1 .... P^{-1}\mathbf{X}_N]^T\]</span></p>
+<p><span class="math display">\[\implies S_{\mathbf{Y}} = \frac{1}{N-1} P^{T}BB^{T}P = P^{T} S_{\mathbf{X}} P\]</span></p>
+<p>So the desired orthogonal matrix is the one that makes <span class="math inline">\(\hat{Cov}[Y_i, Y_j] = 0, \; \forall i \neq j\)</span> (features are uncorrelated), which means that the we want the sample covariance matrix <span class="math inline">\(S_Y\)</span> to be diagonal.</p>
+<p><br></p>
+<p>Let <span class="math inline">\(D\)</span> be a diagonal matrix with eigenvalues of <span class="math inline">\(S_{\mathbf{X}}\)</span>, <span class="math inline">\(\lambda_1 ,...., \lambda_p\)</span> on the diagonal s.t <span class="math inline">\(\lambda_1 \geq \lambda_2 \geq ..... \lambda_p \geq 0\)</span>, let <span class="math inline">\(P\)</span> be an orthogonal matrix whose columns are the corresponding unit eigenvectors <span class="math inline">\(\mathbf{u}_1, ....., \mathbf{u}_p\)</span>. Then, we can use <span class="math inline">\(P\)</span> and <span class="math inline">\(\mathbf{X}\)</span> to represent <span class="math inline">\(Y\)</span>, and the sample covariance matrix is:</p>
+<p><span class="math display">\[S_{\mathbf{X}} = PDP^T \implies P^{-1} S_{\mathbf{X}} P = D\]</span></p>
+<p>Thus, <span class="math inline">\(S_{\mathbf{Y}} = D\)</span>.</p>
+<p>Then, the eigenvectors <span class="math inline">\(\mathbf{u}_1, ...., \mathbf{u}_p\)</span> are called <code>Principal Components</code> of the data. The first PC is the eigenvector corresponding to the largest eigenvalue of <span class="math inline">\(S_{\mathbf{X}}\)</span>.</p>
+<p>The result transformation is defiend as:</p>
+<p><span class="math display">\[P^{T} \mathbf{X} = \mathbf{Y}\]</span></p>
+<p><span class="math display">\[
+\mathbf{Y} = 
+\begin{bmatrix}
+\mathbf{u}_1 \mathbf{X} \\
+.\\
+.\\
+.\\
+\mathbf{u}_p \mathbf{X}\\
+\end{bmatrix}
+\]</span></p>
+<h2 id="total-variance">Total Variance</h2>
+<p>It can be shown that the PCA transformation does not change the total variance of the data, that is the total variance of the data is the sum of eigenvalues:</p>
+<p><span class="math display">\[tr(S_{\mathbf{Y}}) = tr(D)\]</span></p>
+<p>This is only true when we are dealing with sample covariance matrix,</p>
+<h1 id="ref">Ref</h1>
+<p>https://stats.stackexchange.com/questions/266864/why-is-the-sum-of-eigenvalues-of-a-pca-equal-to-the-original-variance-of-the-dat</p>
 
       
     </div>
@@ -1388,13 +1456,13 @@ w^{(m + 1)}_i &amp;= e^{-y_i f_{m} (\mathbf{x}_i)}\\
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">406k</span>
+    <span title="Symbols count total">409k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:09</span>
+    <span title="Reading time total">6:12</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
