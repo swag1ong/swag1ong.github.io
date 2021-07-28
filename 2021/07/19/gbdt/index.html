@@ -20,25 +20,31 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
 
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Gradient Boosting Decision Trees Boosting Trees Regression and classification trees partition the space of all joint predictor variable values into disjoint regions \(R_j, \; j&#x3D;1, 2, ...., J\) as repr">
 <meta property="og:type" content="article">
-<meta property="og:title" content="gbdt">
+<meta property="og:title" content="GBDT">
 <meta property="og:url" content="http://example.com/2021/07/19/gbdt/index.html">
 <meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Gradient Boosting Decision Trees Boosting Trees Regression and classification trees partition the space of all joint predictor variable values into disjoint regions \(R_j, \; j&#x3D;1, 2, ...., J\) as repr">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/ML/gbdt_1.png">
+<meta property="og:image" content="http://example.com/images/ML/gbdt_2.png">
 <meta property="article:published_time" content="2021-07-19T08:31:40.000Z">
-<meta property="article:modified_time" content="2021-07-19T08:31:40.115Z">
+<meta property="article:modified_time" content="2021-07-28T03:22:10.429Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="Machine Learning">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/ML/gbdt_1.png">
 
 
 <link rel="canonical" href="http://example.com/2021/07/19/gbdt/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;07&#x2F;19&#x2F;gbdt&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;07&#x2F;19&#x2F;gbdt&#x2F;&quot;,&quot;title&quot;:&quot;gbdt&quot;}</script>
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;07&#x2F;19&#x2F;gbdt&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;07&#x2F;19&#x2F;gbdt&#x2F;&quot;,&quot;title&quot;:&quot;GBDT&quot;}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
-<title>gbdt | GoGoGogo!</title><script src="/js/config.js"></script>
+<title>GBDT | GoGoGogo!</title><script src="/js/config.js"></script>
   
 
   <script src="/js/third-party/analytics/baidu-analytics.js"></script>
@@ -133,7 +139,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -146,6 +152,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#gradient-boosting-decision-trees"><span class="nav-number">1.</span> <span class="nav-text">Gradient Boosting Decision Trees</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#boosting-trees"><span class="nav-number">1.1.</span> <span class="nav-text">Boosting Trees</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gradient-boosting"><span class="nav-number">1.2.</span> <span class="nav-text">Gradient Boosting</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#algorithm"><span class="nav-number">1.2.1.</span> <span class="nav-text">Algorithm</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#discussions"><span class="nav-number">1.3.</span> <span class="nav-text">Discussions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#regularization"><span class="nav-number">1.3.1.</span> <span class="nav-text">Regularization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#shrinkage"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">Shrinkage</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#subsampling"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">Subsampling</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ref"><span class="nav-number">2.</span> <span class="nav-text">Ref</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -237,7 +244,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          gbdt
+          GBDT
         </h1>
 
         <div class="post-meta-container">
@@ -249,6 +256,22 @@
       <span class="post-meta-item-text">Posted on</span>
 
       <time title="Created: 2021-07-19 16:31:40" itemprop="dateCreated datePublished" datetime="2021-07-19T16:31:40+08:00">2021-07-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-28 11:22:10" itemprop="dateModified" datetime="2021-07-28T11:22:10+08:00">2021-07-28</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
     </span>
 
   
@@ -266,14 +289,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>0</span>
+      <span>4.7k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>4 mins.</span>
     </span>
 </div>
 
@@ -284,7 +307,58 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        
+        <h1 id="gradient-boosting-decision-trees">Gradient Boosting Decision Trees</h1>
+<h2 id="boosting-trees">Boosting Trees</h2>
+<p>Regression and classification trees partition the space of all joint predictor variable values into disjoint regions <span class="math inline">\(R_j, \; j=1, 2, ...., J\)</span> as represented by the terminal nodes of the tree. A constant <span class="math inline">\(c_j\)</span> is assigned to each such region and the prediction rule is:</p>
+<p><span class="math display">\[\mathbf{x} \in R_j \implies f(\mathbf{x}) = c_j\]</span></p>
+<p>Thus, a tree can be formally expressed as:</p>
+<p><span class="math display">\[T(\mathbf{x}; \boldsymbol{\theta}) = \sum^{J}_{j=1} c_j I[\mathbf{x} \in R_j]\]</span></p>
+<p>with parameters <span class="math inline">\(\theta = \{R_j, c_j\}^J_1\)</span>. The parameters are found by iteratively solving minimizing problem:</p>
+<ol type="1">
+<li>Given <span class="math inline">\(R_j\)</span>, we solve <span class="math inline">\(\hat{c}_j\)</span> by simply taking the average or majority class.</li>
+<li><span class="math inline">\(R_j\)</span> is found by iterating over all possible pairs of feature and splitting point.</li>
+</ol>
+<p>The boosted tree model is a sum of such trees induced in a forward stagewise manner:</p>
+<p><span class="math display">\[f_M (\mathbf{x}) = \sum^{M}_{m=1} T(\mathbf{x}; \; \boldsymbol{\theta}_m)\]</span></p>
+<p>At each step, one must solve:</p>
+<p><span class="math display">\[\hat{\boldsymbol{\theta}}_m = \underset{\boldsymbol{\theta}_m}{\arg\min} \sum^{N}_{i=1} L(y_i, f_{m-1} (\mathbf{x}_i) + T(\mathbf{x}_i; \; \boldsymbol{\theta}_m))\]</span></p>
+<h2 id="gradient-boosting">Gradient Boosting</h2>
+<p>In general, it is hard to directly take partial derivatives w.r.t the tree's parameters, thus, we take partial derivatives of tree predictions <span class="math inline">\(f(\mathbf{x}_i)\)</span>.</p>
+<p>Fast approximate algorithms for solving the above problem with any differentiable loss criterion can be derived by analogy to numerical optimization. We first start with general case. The loss in using <span class="math inline">\(\mathbf{f}\)</span> to predict <span class="math inline">\(y\)</span> on the training data is:</p>
+<p><span class="math display">\[L(\mathbf{f}) = \sum^{N}_{i=1} L(y_i, f(\mathbf{x}_i))\]</span></p>
+<p>The goal is to minimize <span class="math inline">\(L(\mathbf{x}_i)\)</span> w.r.t <span class="math inline">\(f\)</span>, where here <span class="math inline">\(f(\mathbf{x})\)</span> is constrained to be a sum of trees <span class="math inline">\(f_M (\mathbf{x})\)</span>.</p>
+<p>We first start with general case where <span class="math inline">\(f\)</span> can be any parameters or numbers. In this case, we have <span class="math inline">\(N\)</span> samples, thus, <span class="math inline">\(\mathbf{f} = \{f(\mathbf{x}_1), ...., f(\mathbf{x}_N)\} \in \mathbb{R}^N\)</span>.</p>
+<p>Then, the gradient of objective w.r.t <span class="math inline">\(\mathbf{f} = \mathbf{f}_{m-1}\)</span> which is the current model is:</p>
+<p><span class="math display">\[\mathbf{g}_m = \nabla_{\mathbf{f}} L(\mathbf{f}) = \; &lt;\frac{\partial L(\mathbf{f})}{\partial f(\mathbf{x}_1)}, ...., \frac{\partial L(\mathbf{f})}{\partial f(\mathbf{x}_N)}&gt;\]</span></p>
+<p>Then this gradient points at the direction of <strong>steepest increase</strong>, it tells us how we can change our current predictions to increase our loss. Since we want to minimize the objective, we would like to adjust our current predictions to the direction of <strong>steepest decrease</strong>:</p>
+<p><span class="math display">\[\mathbf{h}_m = - \rho_m \mathbf{g}_m\]</span></p>
+<p>Where <span class="math inline">\(\rho_m\)</span> is the step size for current model and it is minimizer of:</p>
+<p><span class="math display">\[\rho_m = \underset{\rho}{\arg\min} \; L(\mathbf{f}_{m-1} - \rho\mathbf{g}_m)\]</span></p>
+<p>The current solution is then updated as</p>
+<p><span class="math display">\[\mathbf{f}_{m} = f_{m-1} - \rho_m\mathbf{g}_m\]</span></p>
+<p><strong>If fitting the training data (minimizing the loss) is our ultimate goal</strong>, then the above update rule can solve our problem by adding the negative gradient at each iteration. However, our ultimate goal is to generalize to new data, copying and pasting training data exactly is not what we want. One possible solution is to learn the update <span class="math inline">\(- \rho_m\mathbf{g}_m\)</span> by fitting a simple decision tree:</p>
+<p><span class="math display">\[\hat{\boldsymbol{\theta}}_m = \underset{\boldsymbol{\theta}}{\arg\min} \sum^{N}_{i=1} (-g_{im} - T(x_i; \; \boldsymbol{\theta}))^2\]</span></p>
+<p>That is, we fit a regression tree <span class="math inline">\(T\)</span> to the negative gradient values.</p>
+<p><img src='/images/ML/gbdt_1.png' width="600"></p>
+<h3 id="algorithm">Algorithm</h3>
+<p><img src='/images/ML/gbdt_2.png' width="600"></p>
+<ol type="1">
+<li>We first start by a constant model (model that predict constants) which is a single terminal node tree.</li>
+<li>For all samples new targets are generated to be the negative gradient of the loss function w.r.t the current model prediction <span class="math inline">\(\mathbf{f}_{m-1}\)</span>.</li>
+<li>Fit a regression tree to minimize the MSE between new target (negative gradient) and current prediction.</li>
+</ol>
+<h2 id="discussions">Discussions</h2>
+<h3 id="regularization">Regularization</h3>
+<p>For numbers of gradient boosting rounds <span class="math inline">\(M\)</span>, the loss can be made arbitrarily small. However, fitting the data too well can lead to overfitting which degrades the risk on future predictions.</p>
+<h4 id="shrinkage">Shrinkage</h4>
+<p>Controlling the value of <span class="math inline">\(M\)</span> is not the only possible regularization strategy, we can add penalty terms to the loss function that penalize large <span class="math inline">\(M\)</span> or we can weight subsequent trees. The simplest implementation of shrinkage in the context of boosting is to scale the contribution of each tree by a factor of <span class="math inline">\(0 &lt; v &lt; 1\)</span>, when it is added to the current approximation:</p>
+<p><span class="math display">\[f_m (\mathbf{x}) = f_{m-1}(\mathbf{x}) + v \sum^{J}_{j=1} c_{jm} I[\mathbf{x} \in R_{jm}]\]</span></p>
+<p>The parameter <span class="math inline">\(v\)</span> can be regarded as controlling the <strong>learning rate</strong> of the boosting procedure. Smaller values of <span class="math inline">\(v\)</span> result in larger training error for the same number of iterations <span class="math inline">\(M\)</span> but might have better generalization. Thus, both <span class="math inline">\(v\)</span> and <span class="math inline">\(M\)</span> control prediction risk on the training data. <span class="math inline">\(v\)</span> and <span class="math inline">\(M\)</span> tradeoff each other, therefore in practice, it is best to set <span class="math inline">\(v\)</span> small and control <span class="math inline">\(M\)</span> by early stopping.</p>
+<h4 id="subsampling">Subsampling</h4>
+<p>We know that bootstrap averaging (bagging) improves the performance of a noisy classifier through averaging (reduce variance). We can exploit the same idea in gradient boosting.</p>
+<p>At each iteration, we sample a fraction <span class="math inline">\(\eta\)</span> of the training observations without replacement, and grow the next tree using that subsample. A typical value of <span class="math inline">\(\eta\)</span> is 0.5, although for large sample size <span class="math inline">\(N\)</span>, we can have smaller <span class="math inline">\(\eta\)</span>.</p>
+<h1 id="ref">Ref</h1>
+<p>https://www.ccs.neu.edu/home/vip/teach/MLcourse/4_boosting/slides/gradient_boosting.pdf</p>
 
     </div>
 
@@ -292,9 +366,27 @@
     
     
       
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/07/19/adaboost/" rel="bookmark">Adaboost</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/07/19/decision-trees/" rel="bookmark">Decision Trees</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/07/19/logistic-regression/" rel="bookmark">Logistic Regression</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/07/19/naive-bayes/" rel="bookmark">Naive Bayes</a></div>
+    </li>
+  </ul>
 
 
     <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+          </div>
 
         
 
@@ -339,13 +431,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">401k</span>
+    <span title="Symbols count total">406k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:05</span>
+    <span title="Reading time total">6:09</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
@@ -377,7 +469,7 @@
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
 <script src="/js/third-party/math/mathjax.js"></script>
 
 
