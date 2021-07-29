@@ -84,9 +84,9 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">73</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">76</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">14</span></a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">23</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">24</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
@@ -159,7 +159,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">73</span>
+          <span class="site-state-item-count">76</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -172,7 +172,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -212,6 +212,438 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/23/td3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/23/td3/" class="post-title-link" itemprop="url">td3</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-06-23 15:57:36" itemprop="dateCreated datePublished" datetime="2021-06-23T15:57:36+08:00">2021-06-23</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-17 11:34:48" itemprop="dateModified" datetime="2021-07-17T11:34:48+08:00">2021-07-17</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/PG/" itemprop="url" rel="index"><span itemprop="name">PG</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="firestore-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>10k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>9 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="addressing-function-approximation-error-in-actor-critic-methods">Addressing Function Approximation Error in Actor-Critic Methods</h1>
+<p>As in function approximation with discrete action space, overestimation property also exists in continuous control setting.</p>
+<h2 id="background">Background</h2>
+<p>The return is defined as the discounted sum of rewards:</p>
+<p><span class="math display">\[R_t = \sum^{T}_{i=t} \gamma^{i - t} r(s_i, a_i)\]</span></p>
+<p>The objective of RL is to find the optimal policy <span class="math inline">\(\pi_{\phi}\)</span> with parameters <span class="math inline">\(\phi\)</span> which is defined as:</p>
+<p><span class="math display">\[J(\phi) = E_{s_i \sim P_{\pi_\phi}, a_i \sim \pi_{\phi}} [R_0]\]</span></p>
+<p>In DPG, the policy's (actor) parameter can be updated:</p>
+<p><span class="math display">\[\nabla_{\phi} J(\phi) = E_{s_i \sim \rho_{\pi_\phi}} [\nabla_{\phi} \pi_{\phi} \nabla_{a} Q^{\pi_{\phi}} (s, a) |_{a = \pi_{\phi}(s)}]\]</span></p>
+<p>Where the critic is the action value function:</p>
+<p><span class="math display">\[Q^{\pi_{\phi}} (s, a) = E_{s_i \sim P_{\pi_{\phi}}, a_i \sim \pi_{\phi}}[R_t | s, a] = \underbrace{r}_{\text{ reward is deterministic so the expectation is itself }} + \gamma E_{s^{\prime}, a^{\prime}} [Q^{\pi} (s^{\prime}, a^{\prime}) | s, a]\]</span></p>
+<p>In large state space, the critic can be approached using FA methods for example DQN (Approximate value iteration) in an off policy fashion (replay buffer):</p>
+<p><span class="math display">\[Q_{k + 1} = {\arg\min}_{Q} \|Q - \hat{T}^{\pi_{\phi}} Q_{k}\|^2_{\rho_{\pi_{\phi}}}\]</span></p>
+<p>with <span class="math inline">\(Q_{k}\)</span> parameterized by a target network <span class="math inline">\(Q_{\theta^{\prime}}\)</span>, so the target <span class="math inline">\(\hat{T}^{\pi_{\phi}} Q_{\theta^{\prime}}\)</span> can be write as:</p>
+<p><span class="math display">\[\hat{T}^{\pi_{\phi}} Q_{\theta^{\prime}} = r + \gamma Q_{\theta^{\prime}} (s^{\prime}, a^{\prime}), \quad \quad a^{\prime} \sim \pi_{\phi} (\cdot | s^{\prime})\]</span></p>
+<p>In terms of DDPG with delayed parameters to provide stability, the delayed target <span class="math inline">\(\hat{T}^{\pi_{\phi^{\prime}}} Q_{\theta^{\prime}}\)</span> is used instead:</p>
+<p><span class="math display">\[\hat{T}^{\pi_{\phi^{\prime}}} Q_{\theta^{\prime}} = r + \gamma Q_{\theta^{\prime}} (s^{\prime}, a^{\prime}), \quad \quad a^{\prime} \sim \pi_{\phi^{\prime}} (\cdot | s^{\prime})\]</span></p>
+<p>The weights of a target network are either updated periodically to exactly match the weights of the current network or by some portion as in DDPG.</p>
+<h2 id="overestimation-bias">Overestimation Bias</h2>
+<p>In Q-learning with discrete actions, if the target is susceptible to error <span class="math inline">\(\epsilon\)</span>, then the maximum over the value alonge with its error will generally be greater than the true maximum even the error <span class="math inline">\(\epsilon\)</span> has zero mean:</p>
+<p><span class="math display">\[E_{\epsilon} [\max_{a^{\prime}} (Q(s^{\prime}, a^{\prime}) + \epsilon)] \geq \max_{a^{\prime}} Q(s^{\prime}, a^{\prime})\]</span></p>
+<p>This issue extends to actor critic setting where policy is updated via gradient descent.</p>
+<h3 id="overestimation-bias-in-actor-critic">Overestimation Bias in Actor-Critic</h3>
+<p>Assumptions:</p>
+<ol type="1">
+<li>Policy is updated using DPG.</li>
+<li><span class="math inline">\(Z_1, Z_2\)</span> are chosen to normalize the gradient (i.e <span class="math inline">\(Z^{-1} \|E[\cdot]\| = 1\)</span>, only provides direction)</li>
+</ol>
+<p><br></p>
+<p>Given current policy parameters <span class="math inline">\(\phi\)</span>, let:</p>
+<ol type="1">
+<li><p><span class="math inline">\(\phi_{approx}\)</span> be the parameters from the actor update induced by the maximization of the approximate critic <span class="math inline">\(Q_{\theta} (s, a)\)</span>. The resulting policy is <span class="math inline">\(\pi_{approx}\)</span>. <span class="math display">\[\phi_{approx} = \phi + \frac{\alpha}{Z_1} E_{s \sim \rho_{\pi_{\phi}}} [\nabla_{\phi} \pi_{\phi} \nabla_{a} Q_{\theta} (s, a) |_{a = \pi_{\phi}(s)}]\]</span></p></li>
+<li><p><span class="math inline">\(\phi_{true}\)</span> be the parameters from the hypothetical actor update with respect to the true underlying value function <span class="math inline">\(Q^{\pi_{\phi}} (s, a)\)</span> (which is unknown during training). The resulting policy is <span class="math inline">\(\pi_{true}\)</span>. <span class="math display">\[\phi_{true} = \phi + \frac{\alpha}{Z_2} E_{s \sim \rho_{\pi_{\phi}}} [\nabla_{\phi} \pi_{\phi} \nabla_{a} Q^{\pi_{\phi}} (s, a) |_{a = \pi_{\phi}(s)}]\]</span></p></li>
+</ol>
+<p>Since gradient always point at the direction of maximum increase locally, so:</p>
+<ol type="1">
+<li><p><span class="math inline">\(\exists \epsilon_1\)</span>, such that if <span class="math inline">\(\alpha \leq \epsilon_1\)</span>, then the approximate value of <span class="math inline">\(\pi_{approx}\)</span> will be bounded by the approximate value of <span class="math inline">\(\pi_{true}\)</span>: <span class="math display">\[E[Q_{\theta} (s, \pi_{approx} (s))] \geq E[Q_{\theta} (s, \pi_{true} (s))]\]</span></p></li>
+<li><p><span class="math inline">\(\exists \epsilon_2\)</span>, such that if <span class="math inline">\(\alpha \leq \epsilon_2\)</span>, then the true value of <span class="math inline">\(\pi_{approx}\)</span> will be bounded by the true value of <span class="math inline">\(\pi_{true}\)</span>: <span class="math display">\[E[Q^{\pi_{\phi}} (s, \pi_{true} (s))] \geq E[Q^{\pi_{\phi}} (s, \pi_{approx} (s))]\]</span></p></li>
+</ol>
+<p>If: <span class="math display">\[E[Q_{\theta} (s, \pi_{true} (s))] \geq E[Q^{\pi_{\phi}} (s, \pi_{true} (s))]\]</span></p>
+<p>which means in expectation the approximated value function is greater than the true value function w.r.t policy <span class="math inline">\(\pi_{true}\)</span> (e.g for some state action pair (<span class="math inline">\(s, \pi_{true} (s)\)</span>)), the approximate value is much larger than the true value). At the same time, if <span class="math inline">\(\alpha &lt; \min(\epsilon_1, \epsilon_2)\)</span>, then: <span class="math display">\[E[Q_{\theta} (s, \pi_{approx} (s))] \geq E[Q^{\pi_{\phi}} (s, \pi_{approx} (s))]\]</span></p>
+<p><strong>This implies that our policy improvement based on approximate value function would over-estimate certain actions and lead to sub-optimal policies.</strong></p>
+<p><br></p>
+<p>Consequences of overestimation:</p>
+<ol type="1">
+<li>Overestimation may develop into a more significant bias over many updates if left unchecked.</li>
+<li>Inaccurate value estimate may lead to poor policy updates.</li>
+</ol>
+<p><strong>Feedback loops of actor and critic is prone to overestimation because suboptimal actions may highly rated by suboptimal critic and reinforcing the suboptimal action in the next policy update</strong>.</p>
+<h3 id="clipped-double-q-learning-for-actor-critic-solution">Clipped Double Q-learning for Actor-Critic (Solution)</h3>
+<p>In DDQN, the target is estimated using the greedy action from current value network rather than current target network. In an actor-critic setting (DPG), the update is:</p>
+<p><span class="math display">\[y = r + Q_{\theta^{\prime}} (s^{\prime}, \pi_{\phi} (s^{\prime}))\]</span></p>
+<p>However, slow-changing policy in actor-critic, the current and target networks were too similar to make an independent estimation and offered little improvement.</p>
+<p>Instead, we can go back and use similar formulation as Double Q-learning with a pair of actors <span class="math inline">\((\pi_{\phi_1}, \pi_{\phi_2})\)</span> and critics <span class="math inline">\((Q_{\theta_1}, Q_{\theta_2})\)</span> where <span class="math inline">\(\pi_{\phi_1}\)</span> is optimized w.r.t <span class="math inline">\(Q_{\phi_1}\)</span> and <span class="math inline">\(\pi_{\phi_2}\)</span> is optimized w.r.t <span class="math inline">\(Q_{\phi_2}\)</span>:</p>
+<p><span class="math display">\[y_1 = r + \gamma Q_{\theta^{\prime}_2} (s^{\prime}, \pi_{\phi_1} (s^{\prime}))\]</span> <span class="math display">\[y_2 = r + \gamma Q_{\theta^{\prime}_1} (s^{\prime}, \pi_{\phi_2} (s^{\prime}))\]</span></p>
+<p><br></p>
+<p><img src='/images/RL/pg/td3.png' width="600"></p>
+<p>From above plot we can see that Double Q-learning AC is more effective, but it does not entirely eliminate the over-estimation. One cause can be the shared replay buffer, as a result, for some state <span class="math inline">\(s\)</span>, we would have <span class="math inline">\(Q_{\theta_2} (s, \pi_{\phi_1} (s)) &gt; Q_{\theta_1} (s, \pi_{\phi_1} (s))\)</span>. This is problematic because we know that <span class="math inline">\(Q_{\theta_1} (s, \pi_{\phi_1} (s))\)</span> will generally overestimate the true value, the overestimation is exaggerated.</p>
+<p>One solution is to simply upper-bound the less biased value estimate <span class="math inline">\(Q_{\theta_2}\)</span> by the biased estimate <span class="math inline">\(Q_{\theta_1}\)</span>:</p>
+<p><span class="math display">\[y_1 = r + \gamma \min_{i=1, 2} Q_{\theta^{\prime}_{i}} (s^{\prime}, \pi_{\phi_1} (s^{\prime}))\]</span></p>
+<p>This algorithm is called <code>Clipped Double Q-learning</code> algorithm. With Clipped Double Q-learning, exaggeration of overestimation is eliminated. However, underestimation bias could occur.</p>
+<p>In implementation, computational costs can be reduced by using a single actor optimized w.r.t <span class="math inline">\(Q_{\theta_1}\)</span>. We then use the same target <span class="math inline">\(y_2=y_1\)</span> for <span class="math inline">\(Q_{\theta_2}\)</span>. If <span class="math inline">\(Q_{\theta_2} &gt; Q_{\theta_1}\)</span> then the update is identical to the standard update and induces no additional bias. If <span class="math inline">\(Q_{\theta_2} &lt; Q_{\theta_1}\)</span>, this suggests overestimation has occurred.</p>
+<h2 id="addressing-variance">Addressing Variance</h2>
+<p>Besides impact on overestimation bias, high variance estimates provide a noisy gradient for the policy update which reduces learning speed and hurt performance in practice.</p>
+<p>Since we never really learn <span class="math inline">\(Q^{\pi}\)</span> exactly (we learn <span class="math inline">\(Q_{\theta}\)</span> instead), there will always be some TD error in each update :</p>
+<span class="math display">\[\begin{aligned}
+r + \gamma E[Q_{\theta} (s^{\prime}, a^{\prime}) | s, a] - E[\delta(s, a) | s, a] &amp;= \gamma E[Q_{\theta} (s^{\prime}, a^{\prime}) | s, a] - \gamma E[Q_{\theta} (s^{\prime}, a^{\prime}) | s, a] + Q_{\theta} (s, a)\\
+&amp;= Q_{\theta} (s, a)
+\end{aligned}\]</span>
+<p>Then:</p>
+<span class="math display">\[\begin{aligned}
+Q_{\theta} (s_t, a_t) &amp;= r_t + \gamma E[Q_{\theta} (s_{t+1}, a_{t+1}) | s_t, a_t] - E[\delta_{t} | s_t, a_t]\\
+&amp;= r_t + \gamma E[r_{t+1} + \gamma E[Q_{\theta} (s_{t+2}, a_{t+2}) | s_{t+1}, a_{t+1}] - E[\delta_{t+1} | s_{t+1}, a_{t+1}] | s_t, a_t] - E[\delta_{t} | s_t, a_t]\\
+&amp; = E_{s_i \sim P_{\pi}, a_i \sim \pi} [\sum^{T}_{i=t} \gamma^{i - t} (r_i - \delta_i)]
+\end{aligned}\]</span>
+<p>Thus, the value function we estimate <span class="math inline">\(Q_{\theta} (s_t, a_t)\)</span>, approximates the expected return minus the expected discounted sume of future TD-errors instead of the expected return <span class="math inline">\(Q^{\pi}\)</span>.</p>
+<p>If the value estimate (sample of <span class="math inline">\(Q_{\theta}\)</span>) is a function of future reward and estimation error, it follows that the variance of the estimate will be proportional to the variance of future reward and estimation error. <strong>If the variance for <span class="math inline">\(\gamma^{i} (r_i - \delta_i)\)</span> is large, then the accumulative variance will be large especially when gamma is large.</strong></p>
+<h3 id="target-networks-and-delayed-policy-updates">Target Networks and Delayed Policy Updates</h3>
+<p><img src='/images/RL/pg/td_4.png' width="600"></p>
+<p>One way to reduce the estimation error is to delay each update to the target network. Consider the graph above:</p>
+<ol type="1">
+<li>If <span class="math inline">\(\tau = 1\)</span>, we obtain batch semi-gradient TD algorithm for updating the critic, which may have high variance.</li>
+<li>If <span class="math inline">\(\tau &lt; 1\)</span>, we obtain approximate value iteration.</li>
+</ol>
+<p>If target networks can be used to reduce the error over multiple updates, and policy updates on high-error states cause divergent behavior, then the policy network should be updated at a lower frequency than the value network, to first minimize error before introducing a policy update.</p>
+<p>Thus, <code>delaying policy updates</code> can be helpful in minimizing the estimation error by updating the policy and target networks after a fixed number of updates <span class="math inline">\(d\)</span> to the critic. To ensure the TD-error remains small, target network is also slowly updated by <span class="math inline">\(\theta^{\prime} \leftarrow \tau \theta + (1 - \tau) \theta^{\prime}\)</span>.</p>
+<h3 id="target-policy-smoothing-regularization">Target Policy Smoothing Regularization</h3>
+<p>Since deterministic policies can overfit to narrow peaks in the value estimate, a regularization strategy is used for deep value learning, target policy smoothing which mimics the learning update from SARSA. The idea is that <strong>similar actions should have similar value</strong> (reduce the variance of target):</p>
+<p><span class="math display">\[y = r + E_{\epsilon} [Q_{\theta^{\prime}} (s^{\prime}, \pi_{\phi^{\prime}} (s^{\prime}) + \epsilon)]\]</span></p>
+<p>In practice, we can approximate this expectation over actions (<span class="math inline">\(\pi_{\phi^{\prime}} (s^{\prime}) + \epsilon\)</span>) by adding a small amount of random noise to the target policy and averaging over mini-batches:</p>
+<p><span class="math display">\[y = r + \gamma Q_{\theta^{\prime}} (s^{\prime}, \pi_{\phi^{\prime}} (s^{\prime}) + \epsilon)\]</span></p>
+<p><span class="math display">\[\epsilon \sim clip(N(0, \sigma), -c, c)\]</span></p>
+<p>Where noise is clipped to have it close to the original action (make sure it is a small area around original action).</p>
+<h2 id="algorithm">Algorithm</h2>
+<p><img src='/images/RL/pg/td_5.png' width="600"></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>The paper focus on resolve overestimation error in actor critic setting (DPG) and discusses that failure can occur due to the interplay between the actor and critic updates. Value estimates diverge through overestimation when the policy is poor, and the policy will become poor if the value estimate itself is inaccurate (high variance).</p>
+<p>Solutions:</p>
+<ol type="1">
+<li><p>Overestimation Error in value estimation: using clipped double Q-learning to estimate the target value <span class="math inline">\(y_1, y_2\)</span> <span class="math display">\[y_1 = r + \gamma \min_{i=1, 2} Q_{\theta^{\prime}_{i}} (s^{\prime}, \pi_{\phi^{\prime}} (s^{\prime}))\]</span> <span class="math display">\[y_2 = y_1\]</span></p></li>
+<li><p>Estimation Error (TD error) and High Variance in value estimation: By using delayed policy and value updates with target networks, we have more stable and more accurate estimate of the value function by updating the value function several times.</p></li>
+<li><p>Overfitting in Value estimation: by forcing the value estimate to be similar for similar actions, we smooth out the value estimation. <span class="math display">\[y = r + \gamma Q_{\theta^{\prime}} (s^{\prime}, \pi_{\phi^{\prime}} (s^{\prime}) + \epsilon)\]</span> <span class="math display">\[\epsilon \sim clip(N(0, \sigma), -c, c)\]</span></p></li>
+</ol>
+<p>The general structure of the algorithm follows DDPG.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/23/kaiming-init/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/23/kaiming-init/" class="post-title-link" itemprop="url">kaiming_init</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-06-23 15:36:03" itemprop="dateCreated datePublished" datetime="2021-06-23T15:36:03+08:00">2021-06-23</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-19 20:14:12" itemprop="dateModified" datetime="2021-07-19T20:14:12+08:00">2021-07-19</time>
+      </span>
+
+  
+    <span class="post-meta-item" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="firestore-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>8.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>8 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="delving-deep-into-rectifiers-surpassing-human-level-performance-on-imagenet-classification">Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification</h1>
+<h2 id="prelu">PReLU</h2>
+<h3 id="parametric-rectifiers">Parametric Rectifiers</h3>
+<p>Formally, we consider an activation function defined as: <span class="math display">\[
+f(y_i)=
+\begin{cases}
+y_i, \quad &amp; y_i &gt; 0\\
+a_i y_i, \quad &amp; y_i \leq 0\\
+\end{cases}
+\]</span></p>
+<p>Here <span class="math inline">\(y_i\)</span> is the input of the nonlinear activation <span class="math inline">\(f\)</span> on the <span class="math inline">\(i\)</span>th channel, and <span class="math inline">\(a_i\)</span> is a coefficient controlling the slop of the negative part of the function. The subscript <span class="math inline">\(i\)</span> in <span class="math inline">\(a_i\)</span> indicates that we allow the nonlinear activation to vary on different channels. When <span class="math inline">\(a_i = 0\)</span>, it becomes ReLU. When <span class="math inline">\(a_i\)</span> is small and fixed value, we have <code>LReLU</code>. When <span class="math inline">\(a_i\)</span> is a learnable parameter, we call this <code>Parametric ReLU (PReLU)</code>.</p>
+<p><img src='/images/ML/kaiming_init.png' width="600"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/23/kaiming-init/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/22/alex-net/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/22/alex-net/" class="post-title-link" itemprop="url">Alex Net</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-06-22 13:00:54 / Modified: 15:08:55" itemprop="dateCreated datePublished" datetime="2021-06-22T13:00:54+08:00">2021-06-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DL/" itemprop="url" rel="index"><span itemprop="name">DL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DL/CNN/" itemprop="url" rel="index"><span itemprop="name">CNN</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="firestore-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>6.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="imagenet-classification-with-deep-convolutional-neural-networks">ImageNet Classification with Deep Convolutional Neural Networks</h1>
+<h2 id="the-dataset-image-preprocessing">The dataset, Image preprocessing</h2>
+<p>ImageNet is a dataset of over 15 million labeled high-resolutoin images. It consists of variable-resolution images, while the network requires a constant input dimensionality. Therefore, we down-sampled the images to a fixed resolution of <span class="math inline">\(256 \times 256\)</span>. Given a rectangular image, we first rescaled the image such that the shorter side was of length 256, and then cropped out the central <span class="math inline">\(256 \times 256\)</span> patch from the resulting image. We did not pre-process the images in any other way, except for subtracting the mean activity over the training set for each pixel (normalize each input pixel). So we trained our network on the centered raw RGB values of the pixels.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/22/alex-net/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1031,411 +1463,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/11/TRPO/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/11/TRPO/" class="post-title-link" itemprop="url">TRPO</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-06-11 14:56:00" itemprop="dateCreated datePublished" datetime="2021-06-11T14:56:00+08:00">2021-06-11</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-24 16:17:07" itemprop="dateModified" datetime="2021-06-24T16:17:07+08:00">2021-06-24</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/PG/" itemprop="url" rel="index"><span itemprop="name">PG</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="firestore-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>12k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>11 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="trust-region-policy-optimization">Trust Region Policy Optimization</h1>
-<h2 id="notations">Notations</h2>
-<p><strong><span class="math inline">\(A_{\pi}, A^{\pi}\)</span></strong> are the same, just some mismatch in the notations during writing, same for <span class="math inline">\(V, Q\)</span> :&lt;</p>
-<p>Consider an infinite-horizon discounted MDP, defined by the tuple <span class="math inline">\((S, A, P, r, \rho_0, \gamma)\)</span>. <span class="math inline">\(S\)</span> is finite set of states and <span class="math inline">\(A\)</span> is finite set of actions $r: S $.</p>
-<p>The expected discounted return over initial state distribution <span class="math inline">\(\rho_0\)</span> (performance measure):</p>
-<p><span class="math display">\[\eta (\pi) = E_{s_0, a_0, ...} [\sum^{\infty}_{t=0} \gamma^t r(s_t)]\]</span></p>
-<p>Where <span class="math inline">\(s_0 \sim \rho_0, a_t \sim \pi (\cdot | s_t), s_{t+1} \sim P(\cdot | s_t, a_t)\)</span></p>
-<p>Value functions:</p>
-<p><span class="math display">\[Q_{\pi} (s_t, a_t) = E_{s_{t+1}, a_{t+1}, ..}[\sum^{\infty}_{l=0} \gamma^{l} r(s_{t+l}) | S_t=s_t, A_t=a_t]\]</span></p>
-<p><span class="math display">\[V_{\pi} (s_t) = E_{a_{t}, s_{t+1}, a_{t+1}, ..}[\sum^{\infty}_{l=0} \gamma^{l} r(s_{t+l}) | S_t=s_t]\]</span></p>
-<p>The advantage:</p>
-<p><span class="math display">\[A(s, a) = Q_{\pi} (s, a) - V_{\pi} (s)\]</span></p>
-<p>The discounted future state distribution (unormalized):</p>
-<p><span class="math display">\[\rho_{\pi} (s) = \lim_{t \rightarrow \infty} \sum_{t} \rho(s_0) \gamma^t P(s_0 \rightarrow s; t, \pi)\]</span></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/06/11/TRPO/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/09/DDPG/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/09/DDPG/" class="post-title-link" itemprop="url">Deep Deterministic Policy Gradient</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-06-09 11:13:00" itemprop="dateCreated datePublished" datetime="2021-06-09T11:13:00+08:00">2021-06-09</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-07-15 14:11:23" itemprop="dateModified" datetime="2021-07-15T14:11:23+08:00">2021-07-15</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/PG/" itemprop="url" rel="index"><span itemprop="name">PG</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="firestore-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>5.3k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>5 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="continuous-control-with-deep-reinforcement-learning">Continuous Control with Deep Reinforcement Learning</h1>
-<h2 id="notations">Notations</h2>
-<p>A trajectory is defined as <span class="math inline">\((s_1, a_1, r_1, ...)\)</span></p>
-<p>The initial state distribution: <span class="math inline">\(\rho (s_1)\)</span></p>
-<p>Transition dynamics <span class="math inline">\(p(s_{t+1} | s_t, a_t)\)</span></p>
-<p>Reward function <span class="math inline">\(r(s_t, a_t)\)</span></p>
-<p>The return from a state is defined as the sum of discounted future reward:</p>
-<p><span class="math display">\[R_t = \sum_{i=t}^{T} \gamma^{i - t} r(s_i, a_i)\]</span></p>
-<p>The discounted state distribution following <span class="math inline">\(\pi\)</span> is denoted as <span class="math inline">\(\rho^{\pi}\)</span></p>
-<p>The action-value function:</p>
-<p><span class="math display">\[Q^{\pi} (s_t, a_t) = E_{r_{i \geq t}, s_{i &gt; t} \sim P, a_{i &gt;t} \sim \pi} [R_t | s_t, a_t]\]</span></p>
-<p>And the action-value function can be expanded using bellman equation:</p>
-<p><span class="math display">\[Q^{\pi} (s_t, a_t) = E_{r_{t}, s_{t+1} \sim P} [r(s_t, a_t) + \gamma E_{a_{t+1} \sim \pi (\cdot | s_{t+1})}[Q^{\pi} (s_{t+1}, a_{t+1})] | s_t, a_t]\]</span></p>
-<p>If we have deterministic policy <span class="math inline">\(\mu: S \rightarrow A\)</span>, we can remove the integral over next actions and have:</p>
-<p><span class="math display">\[Q^{\mu} (s_t, a_t) = E_{r_{t}, s_{t+1} \sim P} [r(s_t, a_t) + \gamma Q^{\mu} (s_{t+1}, \mu(s_{t + 1})) | s_t, a_t]\]</span></p>
-<p>This implies that we can learn <span class="math inline">\(Q^{\mu}\)</span> off policy using state samples from another behavior policy <span class="math inline">\(\beta\)</span>.</p>
-<p>The off policy loss for parameterized function approximators <span class="math inline">\(\theta^Q\)</span> Bellman Residual Minimization is:</p>
-<p><span class="math display">\[L(\theta^{Q}) = E_{s_t \sim \rho^\beta. a_t \sim \beta, r_t} [(Q(s_t, a_t | \theta^{Q}) - y_t)^2]\]</span></p>
-<p>where:</p>
-<p><span class="math display">\[y_t = r(s_t, a_t) + \gamma Q(s_{t+1}, \mu(s_{t+1}) | \theta^{Q})\]</span></p>
-<p>The use of large, non-linear function approximators for learning value or action-value functions has often been avoided in the past since theoretical performance guarantees are impossible, and practically learning tends to be unstable.</p>
-<p>The off policy deterministic policy gradient:</p>
-<p><span class="math display">\[\nabla_{\theta^{\mu}} J \approx E_{s_{t} \sim \rho^{\beta}} [\nabla_{a} Q(s, a | \theta^Q) |_{s=s_t, a=\mu(s_t)}\nabla_{\theta_{\mu}} \mu(s | \theta^\mu) |_{s=s_t}]\]</span></p>
-<p>As with Q learning, introducing non-linear function approximators means that convergence is no longer guaranteed for off-policy deterministic policy gradient.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/06/09/DDPG/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/06/sort/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/06/sort/" class="post-title-link" itemprop="url">Sorts</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-06-06 10:20:21" itemprop="dateCreated datePublished" datetime="2021-06-06T10:20:21+08:00">2021-06-06</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-07-19 15:38:51" itemprop="dateModified" datetime="2021-07-19T15:38:51+08:00">2021-07-19</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/CS-Basics/" itemprop="url" rel="index"><span itemprop="name">CS Basics</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="firestore-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>6.1k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>6 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="sorts">Sorts</h1>
-<p><img src="/images/algo/complex.png" width="600px"></p>
-<h2 id="insetion-sort">Insetion Sort</h2>
-<p>The insertion sort algorithm iterates through an input array and removes one element per iteration, finds the place the element belongs in the array, and then places it there. This process grows a sorted list from left to right. The algorithm is as follows:</p>
-<p>To sort an array of size n in ascending order:</p>
-<ol type="1">
-<li><p>Iterate from arr[1] to arr[n] over the array.</p></li>
-<li><p>Compare the current element (key) to its predecessor.</p></li>
-<li><p>If the key element is smaller than its predecessor, compare it to the elements before. Move the greater elements one position up to make space for the swapped element.</p></li>
-</ol>
-<p>The key is that: arr[i - 1] is always sorted.</p>
-<p><img src="/images/algo/insertion_sort.png" width="600px"></p>
-<h3 id="implementation">Implementation</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insertion_sort</span>(<span class="params">lst</span>):</span></span><br><span class="line">    <span class="comment"># assume len(lst) &gt; 1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="built_in">len</span>(lst)):</span><br><span class="line">        <span class="comment"># swap lst[i - 1] and lst[i] if lst[i - 1] &gt; lst[i]</span></span><br><span class="line">        <span class="comment"># we stop at i &lt; 1 because we know arr[0] is the smallest</span></span><br><span class="line">        <span class="keyword">while</span> (i &gt;= <span class="number">1</span>) <span class="keyword">and</span> (lst[i] &lt; lst[i - <span class="number">1</span>]):</span><br><span class="line">            val = lst[i]</span><br><span class="line">            lst[i] = lst[i - <span class="number">1</span>]</span><br><span class="line">            lst[i - <span class="number">1</span>] = val</span><br><span class="line">            i = i - <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> lst</span><br></pre></td></tr></table></figure>
-<h2 id="merge-sort">Merge Sort</h2>
-<p>Mergesort has two steps: merging and sorting. The algorithm uses a divide-and-conquer approach to merge and sort a list.</p>
-<p>Divide and conquer is a technique used for breaking algorithms down into subproblems, solving the subproblems, and then combining the results back together to solve the original problem. It can be helpful to think of this method as divide, conquer, and combine.</p>
-<p>The mergesort algorithm focuses on how to merge together two pre-sorted arrays such that the resulting array is also sorted. Mergesort can be implemented either recursively or iteratively.</p>
-<p>Here is the recursive mergesort algorithm:</p>
-<ol type="1">
-<li>If the list has only one element, return the list and terminate. (Base case)</li>
-<li>Split the list into two halves that are as equal in length as possible. (Divide)</li>
-<li>Using recursion, sort both lists using mergesort. (Conquer)</li>
-<li><strong>Merge</strong> the two sorted lists and return the result. (Combine)</li>
-</ol>
-<p>The merge step:</p>
-<ol type="1">
-<li>Create an empty list called the result list.</li>
-<li>Do the following until one of the input lists is empty: Remove the first element of the list that has a lesser first element and append it to the result list.</li>
-<li>When one of the lists is empty, append all elements of the other list to the result.</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge_sort</span>(<span class="params">lst</span>):</span></span><br><span class="line">    <span class="comment"># base case</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(lst) == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> lst</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        sorted_lst = []</span><br><span class="line">        mid = <span class="built_in">len</span>(lst) // <span class="number">2</span></span><br><span class="line">        left_lst = merge_sort(lst[:mid])</span><br><span class="line">        right_lst = merge_sort(lst[mid:])</span><br><span class="line">        <span class="comment"># left_lst and right_lst will return two sorted lists, so we need to merge them</span></span><br><span class="line">        <span class="comment"># if left_lst[0] &gt; right_lst[0], we remove first element from right_lst and append to </span></span><br><span class="line">        <span class="comment"># the sorted_lst, if one of the lst is empty, we extend the another list to sorted_lst and exist the loop</span></span><br><span class="line">        <span class="keyword">while</span> left_lst <span class="keyword">or</span> right_lst:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> left_lst <span class="keyword">or</span> <span class="keyword">not</span> right_lst:</span><br><span class="line">                sorted_lst.extend(left_lst)</span><br><span class="line">                sorted_lst.extend(right_lst)</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">elif</span> left_lst[<span class="number">0</span>] &gt; right_lst[<span class="number">0</span>]:</span><br><span class="line">                sorted_lst.append(right_lst.pop(<span class="number">0</span>))</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                sorted_lst.append(left_lst.pop(<span class="number">0</span>))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> sorted_lst</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/06/06/sort/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1460,13 +1487,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">409k</span>
+    <span title="Symbols count total">420k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:12</span>
+    <span title="Reading time total">6:22</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

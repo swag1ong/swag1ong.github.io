@@ -374,31 +374,6 @@ Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \ha
       </tags>
   </entry>
   <entry>
-    <title>LReLU</title>
-    <url>/2021/07/05/LReLU/</url>
-    <content><![CDATA[<h1 id="rectifier-nonlinearities-improve-neural-network-acoustic-models">Rectifier Nonlinearities Improve Neural Network Acoustic Models</h1>
-<h2 id="background">Background</h2>
-<p>A single hidden unit's activation <span class="math inline">\(h^{i}\)</span> is given by:</p>
-<p><span class="math display">\[h^{(i)} = \sigma ({\mathbf{w}^i}^T \mathbf{x})\]</span></p>
-<p>Where <span class="math inline">\(\sigma (\cdot)\)</span> is the tanh function.</p>
-<p>Some drawbacks of tanh:</p>
-<ol type="1">
-<li>Vanishing gradient problem when lower layers of a DNN have gradients of nearly 0 because higher layer units are nearly saturated at <span class="math inline">\(-1\)</span> or <span class="math inline">\(1\)</span>.</li>
-<li>Does not produce a sparse representation in the sense of hard zero sparsity when using tanh.</li>
-</ol>
-<p>ReLU addresses the vanishing gradient problem because activate units will constantly have gradient of 1. It also provides sparse representation which is useful in classification. <strong>However, an inactivate unit may never activate because gradient-based optimization algorithm will not adjust the weights of a unit that never activates initially.</strong> Thus, we might expect the learning to be slow.</p>
-<h2 id="leaky-relu">Leaky ReLU</h2>
-<p>LReLU allows for a small, non-zero gradient when the unit is saturated and not active:</p>
-<p><span class="math display">\[
-h_i = \max({\mathbf{w}^i}^T \mathbf{x}, 0) = 
-\begin{cases}
-{\mathbf{w}^i}^T \mathbf{x}, \quad &amp; {\mathbf{w}^i}^T \mathbf{x} &gt; 0\\
-0.01{\mathbf{w}^i}^T \mathbf{x}, \quad &amp; {\mathbf{w}^i}^T \mathbf{x} \leq 0\\
-\end{cases}
-\]</span></p>
-]]></content>
-  </entry>
-  <entry>
     <title>MDP</title>
     <url>/2021/05/03/MDP/</url>
     <content><![CDATA[<h1 id="mdp">MDP</h1>
@@ -464,6 +439,31 @@ h_i = \max({\mathbf{w}^i}^T \mathbf{x}, 0) =
       <tags>
         <tag>RL Basics</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>LReLU</title>
+    <url>/2021/07/05/LReLU/</url>
+    <content><![CDATA[<h1 id="rectifier-nonlinearities-improve-neural-network-acoustic-models">Rectifier Nonlinearities Improve Neural Network Acoustic Models</h1>
+<h2 id="background">Background</h2>
+<p>A single hidden unit's activation <span class="math inline">\(h^{i}\)</span> is given by:</p>
+<p><span class="math display">\[h^{(i)} = \sigma ({\mathbf{w}^i}^T \mathbf{x})\]</span></p>
+<p>Where <span class="math inline">\(\sigma (\cdot)\)</span> is the tanh function.</p>
+<p>Some drawbacks of tanh:</p>
+<ol type="1">
+<li>Vanishing gradient problem when lower layers of a DNN have gradients of nearly 0 because higher layer units are nearly saturated at <span class="math inline">\(-1\)</span> or <span class="math inline">\(1\)</span>.</li>
+<li>Does not produce a sparse representation in the sense of hard zero sparsity when using tanh.</li>
+</ol>
+<p>ReLU addresses the vanishing gradient problem because activate units will constantly have gradient of 1. It also provides sparse representation which is useful in classification. <strong>However, an inactivate unit may never activate because gradient-based optimization algorithm will not adjust the weights of a unit that never activates initially.</strong> Thus, we might expect the learning to be slow.</p>
+<h2 id="leaky-relu">Leaky ReLU</h2>
+<p>LReLU allows for a small, non-zero gradient when the unit is saturated and not active:</p>
+<p><span class="math display">\[
+h_i = \max({\mathbf{w}^i}^T \mathbf{x}, 0) = 
+\begin{cases}
+{\mathbf{w}^i}^T \mathbf{x}, \quad &amp; {\mathbf{w}^i}^T \mathbf{x} &gt; 0\\
+0.01{\mathbf{w}^i}^T \mathbf{x}, \quad &amp; {\mathbf{w}^i}^T \mathbf{x} \leq 0\\
+\end{cases}
+\]</span></p>
+]]></content>
   </entry>
   <entry>
     <title>PPO</title>
@@ -825,8 +825,8 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
 <li><a href="/2021/06/25/instrinsic-motivation/" title="Intrinsic Motivation">Intrinsic Motivation</a></li>
 <li><a href="/2021/06/25/go-explore/" title="Go Explore">Go Explore</a></li>
 <li><a href="/2021/06/03/natural-actor-critic/" title="Natural Actor Critic (Under Construction)">Natural Actor Critic (Under Construction)</a></li>
-<li><a href="/2021/06/03/off-policy-actor-critic/" title="Off Policy Actor Critic (Under Construction)">Off Policy Actor Critic (Under Construction)</a>
-13 <a href="/2021/07/22/sac/" title="SAC (Under Construction)">SAC (Under Construction)</a></li>
+<li><a href="/2021/06/03/off-policy-actor-critic/" title="Off Policy Actor Critic (Under Construction)">Off Policy Actor Critic (Under Construction)</a></li>
+<li><a href="/2021/07/22/sac/" title="SAC (Under Construction)">SAC (Under Construction)</a></li>
 </ol>
 <p><strong>Some Deep Learning algorithms and models</strong>:</p>
 <ol type="1">
@@ -839,6 +839,9 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
 <li><a href="/2021/06/22/alex-net/" title="Alex Net">Alex Net</a></li>
 <li><a href="/2021/06/25/overfeat/" title="Overfeat (Under Construction)">Overfeat (Under Construction)</a></li>
 <li><a href="/2021/06/24/VGG/" title="VGG (Under Construction)">VGG (Under Construction)</a></li>
+<li><a href="/2021/07/29/momentum/" title="Momentum">Momentum</a></li>
+<li><a href="/2021/07/29/adaptive-lr/" title="Basic Adaptive LR Methods">Basic Adaptive LR Methods</a></li>
+<li><a href="/2021/07/29/adam/" title="Adam (Under Construction)">Adam (Under Construction)</a></li>
 </ol>
 <p><strong>Some old school ML algorithms</strong>:</p>
 <ol type="1">
@@ -846,13 +849,13 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
 <li><a href="/2021/07/19/logistic-regression/" title="Logistic Regression">Logistic Regression</a></li>
 <li><a href="/2021/07/19/naive-bayes/" title="Naive Bayes">Naive Bayes</a></li>
 <li><a href="/2021/07/19/decision-trees/" title="Decision Trees">Decision Trees</a></li>
-<li><a href="/2021/07/19/random-forests/" title="Random Forest">Random Forest</a></li>
+<li><a href="/2021/07/19/random-forests/" title="Random Forest (Under Construction)">Random Forest (Under Construction)</a></li>
 <li><a href="/2021/07/19/adaboost/" title="AdaBoost">AdaBoost</a></li>
 <li><a href="/2021/07/19/gbdt/" title="GBDT">GBDT</a></li>
-<li><a href="/2021/07/19/k-means/" title="K-means">K-means</a></li>
-<li><a href="/2021/07/19/knn/" title="KNN">KNN</a></li>
-<li><a href="/2021/07/19/svm/" title="SVM">SVM</a></li>
-<li><a href="/2021/07/21/em/" title="EM Algorithm">EM Algorithm</a></li>
+<li><a href="/2021/07/19/k-means/" title="K-means (Under Construction)">K-means (Under Construction)</a></li>
+<li><a href="/2021/07/19/knn/" title="KNN (Under Construction)">KNN (Under Construction)</a></li>
+<li><a href="/2021/07/19/svm/" title="SVM (Under Construction)">SVM (Under Construction)</a></li>
+<li><a href="/2021/07/21/em/" title="EM Algorithm (Under Construction)">EM Algorithm (Under Construction)</a></li>
 </ol>
 <p><strong>Some CS</strong>:</p>
 <ol type="1">
@@ -896,6 +899,105 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
     <content><![CDATA[<h1 id="actor-critic-algorithms">Actor-Critic Algorithms</h1>
 <p><a href="https://papers.nips.cc/paper/1999/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf">Original Paper</a></p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>Basic Adaptive LR Algorithms</title>
+    <url>/2021/07/29/adaptive-lr/</url>
+    <content><![CDATA[<h1 id="algorithms-with-adaptive-learning-rates">Algorithms with Adaptive Learning Rates</h1>
+<p>Learning rate is reliably one of the hyperparameters that is the most difficult to set because it has a significant impact on model performance. At each iteration, the cost is often highly sensitive to some directions in parameter space and insensitive to others. Momentum solves some of the problems in the cost of introducing another hyperparameter. Thus, it is natural to consider algorithms that have separate learning rate for each parameter and automatically adapt learning rates for each of the parameter.</p>
+<p>The <code>delta-bar-delta</code> algorithm (base on full-batch) is an early heuristic approach to adapting individual learning rates for model parameters during training, it is based on intuitive idea similar to momentum:</p>
+<blockquote>
+<p>If the partial derivative of the loss, with respect to a given model parameter, remains the same sign, then the learning rate should increase, if the partial derivative with respect to the parameter changes sign, then the learning rate should decrease.</p>
+</blockquote>
+<p>We would like to extend the idea to mini-batch scenario.</p>
+<h2 id="adagrad">AdaGrad</h2>
+<p><img src='/images/ML/adagrad_1.png' width="600"></p>
+<p>The <code>AdaGrad</code> algorithm, individually adapts the larning rates of all model parameters by scaling them inversely proportional to square root of the sum of all of their historical squared values:</p>
+<ol type="1">
+<li><p>If <span class="math inline">\(g_1\)</span> is large constantly larger than <span class="math inline">\(g_2\)</span>, then:</p>
+<p><span class="math display">\[\sqrt{r_1} &gt; \sqrt{r_2} \implies \epsilon_1 &lt; \epsilon_2\]</span></p>
+<p>This makes sense because we want to take a small step in the gradient direction when the magnitude of gradient is large, especially when we have noisy gradient. Conversely, we would like to take slightly larger step than large gradient case when we have smaller gradient.</p></li>
+<li><p>If <span class="math inline">\(r_i\)</span> is less than 1, we have increasing learning rate compare to base learning rate:</p>
+<p><span class="math display">\[r_i &lt; 1 \implies \epsilon_i &gt; \epsilon\]</span></p>
+<p>This helps us to get out of the local minimum or flat region of the surface by taking larger steps.</p></li>
+</ol>
+<p>AdaGrad is designed to converge rapidly when applied to a convex optimization problem, so when it finds a convex structure, it can converge rapidly.</p>
+<p>However, in non-convex optimization problem (training neural networks) the accumulated gradient <span class="math inline">\(\mathbf{r}\)</span> starts accumulating at the beginning, <strong>this will introduce excessive decrease in the effective learning in later training steps (at end, we will have large <span class="math inline">\(\mathbf{r}\)</span>, so the learning rates will be small to prevent effective learning in later stages or early large gradients will prevent learning in early stages)</strong>.</p>
+<h2 id="rmsprop">RMSProp</h2>
+<p>The <code>RMSProp</code> algorithm modifies AdaGrad so that it can perform better in non-convex setting by changing the gradient accumulation into an exponentially weighted moving average, so the early accumulation becomes less and less important. This structure helps in non-convex problem by discarding the history from extreme past so when we arrive at a convex bowl, we have sufficiently large learning rate to converge rapidly.</p>
+<p><img src='/images/ML/rmsprop_1.png' width="600"></p>
+<p>The algorithm introduces a new parameter <span class="math inline">\(\rho\)</span> that controls for the weight of accumulated gradient.</p>
+]]></content>
+      <categories>
+        <category>DL</category>
+        <category>Techniques</category>
+      </categories>
+      <tags>
+        <tag>Deep Learning</tag>
+        <tag>Optimization</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Adam</title>
+    <url>/2021/07/29/adam/</url>
+    <content><![CDATA[<h1 id="adam-a-method-for-stochastic-optimization">ADAM: A METHOD FOR STOCHASTIC OPTIMIZATION</h1>
+<p><img src='/images/ML/adam_1.png' width="600"></p>
+<p>Let <span class="math inline">\(F\)</span> be a noisy objective function (stochastic function) defined as <span class="math inline">\(F(\boldsymbol{\theta})\)</span> that is differentiable w.r.t <span class="math inline">\(\boldsymbol{\theta}\)</span>, we are interested in minimizing the expected value of this random function:</p>
+<p><span class="math display">\[\min_{\boldsymbol{\theta}} E_{F}[F(\boldsymbol{\theta})]\]</span></p>
+<p>Let <span class="math inline">\(F_1(\boldsymbol{\theta}), ...., F_{T} (\boldsymbol{\theta})\)</span> be a random sample of <span class="math inline">\(F(\boldsymbol{\theta})\)</span> and let <span class="math inline">\(f_1 (\boldsymbol{\theta}), ..., f_T(\boldsymbol{\theta})\)</span> be the realization of random sample. <strong>This random sample can be forms of mini-batches of data which the distribution does not depend on the parameter <span class="math inline">\(\boldsymbol{\theta}\)</span>.</strong></p>
+<p>Then:</p>
+<p><span class="math display">\[\nabla_{\boldsymbol{\theta}} E_F[F (\boldsymbol{\theta})] = E_F[\nabla_{\boldsymbol{\theta}} F (\boldsymbol{\theta})]\]</span></p>
+<p><br></p>
+<p>Given the individual sample gradient <span class="math inline">\(\nabla_{\boldsymbol{\theta}} f_1 (\boldsymbol{\theta}), ...., \nabla_{\boldsymbol{\theta}} f_T(\boldsymbol{\theta})\)</span>, one way to estimate the expectation of gradient, <span class="math inline">\(E_{F} [\nabla_{\boldsymbol{\theta}} F_t(\boldsymbol{\theta})]\)</span>, is to use stochastic approximation (similar to Momentum):</p>
+<p><span class="math display">\[m_t \leftarrow \beta_1 {m}_{t} + (1 - \beta_1) \nabla_{\boldsymbol{\theta}} f_t(\boldsymbol{\theta})\]</span></p>
+<p>Where <span class="math inline">\(m_t\)</span> is the average up to sample <span class="math inline">\(t\)</span>, and <span class="math inline">\(\beta_1 \in [0, 1)\)</span> is the decay rates.</p>
+<p>At the same time, we can use SA to estimate the second moment of the gradient which is the un-centered variance (This is similar to RMSProp):</p>
+<p><span class="math display">\[v_t \leftarrow \beta_2 {v}_{t} + (1 - \beta_2) \nabla_{\boldsymbol{\theta}} f_t(\boldsymbol{\theta})^2\]</span></p>
+<p>However, these estimates are biased toward 0 if we initialize them to be 0 especially during initial timesteps and especially when the decay rates are small (<span class="math inline">\(\beta_1, \beta_2\)</span> close to 1). Thus, we need to apply bias correction.</p>
+<h2 id="initial-bias-correction">Initial Bias Correction</h2>
+<p>Let <span class="math inline">\(\mathbf{G} = \nabla_{\boldsymbol{\theta}} F\)</span> be the gradient of the stochastic objective <span class="math inline">\(F\)</span>, we wish to estimate its second raw moment using SA of the squared gradient with decay rate <span class="math inline">\(\beta_2\)</span>. Let <span class="math inline">\(\mathbf{G}_1, ...., \mathbf{G}_T\)</span> be random sample of <span class="math inline">\(\mathbf{G}\)</span> that draws from the gradient distribution <span class="math inline">\(P(\mathbf{G})\)</span>. Suppose we initialize our SA procedure at <span class="math inline">\({v}_0 = 0\)</span>, then after <span class="math inline">\(t\)</span> steps, we have:</p>
+<p><span class="math display">\[v_1 = (1 - \beta_2) \mathbf{G}^2_1\]</span></p>
+<p><span class="math display">\[v_2 = \beta_2(1 - \beta_2) \mathbf{G}^2_1 + (1 - \beta_2) \cdot \mathbf{G}^2_2 = \beta_2 (1 - \beta_2) (\mathbf{G}^2_1 + \mathbf{G}^2_2)\]</span></p>
+<p><span class="math display">\[\implies {v}_t = (1 - \beta_2) \sum^{t}_{i=1} \beta^{t - i}_2 \mathbf{G}^2_{i}\]</span></p>
+<p>Where <span class="math inline">\(\mathbf{G}^2 = \|\mathbf{G}\|^2_2\)</span>. We want the SA estimator to be unbiased estimator of second moment of gradient but we know that there is initialization bias (discrepancy) of SA estimator, we denote this discrepancy <span class="math inline">\(\eta\)</span>. Since additive discrepancy can be keep small by assigning less weight to history, we want two sides to be equal:</p>
+<p><span class="math display">\[E_{\mathbf{G}} [\mathbf{G}^2] = E_\mathbf{G}[\mathbf{v}^2_t] + \eta = E_\mathbf{G} [(1 - \beta_2) \sum^{t}_{i=1} \beta_2^{t - i} \mathbf{G}^2_{i}] + \eta\]</span></p>
+<p>However, since <span class="math inline">\(t &lt; \infty\)</span>, we have a proportion bias:</p>
+<span class="math display">\[\begin{aligned}
+E_\mathbf{G}[\mathbf{v}^2_t] + \eta &amp;= E_{\mathbf{G}} [\mathbf{G}^2] (1 - \beta_2)  \sum^{t}_{i=1} \beta_2^{t - i} + \eta\\
+&amp;= E_{\mathbf{G}} [\mathbf{G}^2] (1 - \beta_2)  \sum^{t}_{i=1} \beta_2^{t}(\frac{1}{\beta_2})^i + \eta\\
+&amp;= E_{\mathbf{G}} [\mathbf{G}^2] (1 - \beta_2)  \frac{1}{\beta_2} \sum^{t}_{i=0}\beta_2^{t}(\frac{1}{\beta_2})^i + \eta\\
+&amp;= E_{\mathbf{G}} [\mathbf{G}^2] (1 - \beta_2)  \frac{1}{\beta_2} \beta_2^{t} \frac{\beta^t_2 - 1}{\beta^t_2} \frac{\beta_2}{\beta_2 - 1}+ \eta\\
+&amp;= E_{\mathbf{G}} [\mathbf{G}^2] \underbrace{(1 - \beta^t_2)}_{\text{This term we do not want}} + \eta 
+\end{aligned}\]</span>
+<p>Thus, we can apply a bias correction term on the estimator to correct for this proportion bias <span class="math inline">\(\frac{1}{1 - \beta^t_2}\)</span>.</p>
+<p>The same correction <span class="math inline">\(\frac{1}{1 - \beta^t_1}\)</span>is applied on first moment estimator of the gradient.</p>
+<h2 id="adamax">AdaMax</h2>
+<p>In Adam, the current average gradient estimate <span class="math inline">\(\hat{m}_t\)</span> is scaled inversely to history proportional to the scaled <span class="math inline">\(L^2\)</span> norm of their individual current and past gradients (i.e <span class="math inline">\(\frac{\alpha}{\sqrt{\hat{v}_t} + \epsilon}\)</span>). We can generalize <span class="math inline">\(L^2\)</span> norm to a <span class="math inline">\(L^\infty\)</span> norm based update rule. This leads to a surprisingly simple and stable algorithm:</p>
+<p><img src='/images/ML/adam_2.png' width="600"></p>
+<p><br></p>
+<p>In case of <span class="math inline">\(L^p\)</span> norm, <span class="math inline">\(\mathbf{v}_t\)</span> is defined to be:</p>
+<span class="math display">\[\begin{aligned}
+{v}_t &amp;\leftarrow \beta^p_2  + {v}_t (1 - \beta^p_2) \|\mathbf{G}_i\|^p_p\\
+&amp;\leftarrow (1 - \beta_2^p) \sum^{t}_{i=1} \beta^{p(t - i)}_2 \|\mathbf{G}_i\|^p_p\\
+\end{aligned}\]</span>
+<p>Note define:</p>
+<p><span class="math display">\[u_t = \lim_{p \rightarrow \infty} (v_t)^{\frac{1}{p}}\]</span></p>
+<p>Then:</p>
+<span class="math display">\[\begin{aligned}
+u_t &amp;= \lim_{p \rightarrow \infty} (v_t)^{\frac{1}{p}}\\
+&amp;= \lim_{p \rightarrow \infty} ((1 - \beta_2^p) \sum^{t}_{i=1} \beta^{p(t - i)}_2 \|\mathbf{G}_i\|^p_p)^\frac{1}{p}\\
+&amp;= \lim_{p \rightarrow \infty} (1 - \beta_2^p)^\frac{1}{p} (\sum^{t}_{i=1} \beta^{p(t - i)}_2 \|\mathbf{G}_i\|^p_p)^\frac{1}{p}\\
+&amp;= \lim_{p \rightarrow \infty} (\sum^{t}_{i=1}(\beta^{(t - i)}_2 \|\mathbf{G}_i\|_p)^p)^\frac{1}{p}\\
+&amp;= \| \beta^{(t - i)}_2 \|\mathbf{G}_i\|_{\infty}\|_{\infty}\\
+&amp;= \max(\beta^{(t - 1)}_2 \|\mathbf{G}_1\|_{\infty}, .... , \|\mathbf{G}_t\|_{\infty}) 
+\end{aligned}\]</span>
+<p>Which corresponding to:</p>
+<p><span class="math display">\[u_t \leftarrow \max(\beta_2 u_{t}, \|\mathbf{G}_t\|_{\infty})\]</span></p>
+]]></content>
+      <categories>
+        <category>DL</category>
+        <category>Techniques</category>
+      </categories>
   </entry>
   <entry>
     <title>Adaboost</title>
@@ -1019,6 +1121,82 @@ w^{(m + 1)}_i &amp;= e^{-y_i f_{m} (\mathbf{x}_i)}\\
       </tags>
   </entry>
   <entry>
+    <title>average_reward_setting</title>
+    <url>/2021/05/30/average-reward-setting/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
+    <title>Batch Normalization</title>
+    <url>/2021/05/26/batch-norm/</url>
+    <content><![CDATA[<h1 id="batch-normalization-accelerating-deep-network-training-by-reducing-internal-covariate-shift">Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift</h1>
+<p><strong>Internal covariate shift</strong> describes the phenomenon in training DNN that the distribution of each layer's inputs changes during training, as the parameters of the previous layer change. This slow down the training by requiring lower learning rates and careful parameter initialization, and makes it notoriously hard to train models with saturating non-linearities (tanh, sigmoid). This problem can be addressed by normalizing the layer inputs.</p>
+<h2 id="introduction">Introduction</h2>
+<p>To see the input distribution shift in terms of sub-network or a layer. Consider a network computing:</p>
+<p><span class="math display">\[l = F_2(F_1(\textbf{u}, \Theta_1), \Theta_2)\]</span></p>
+<p>Where <span class="math inline">\(F_1\)</span> and <span class="math inline">\(F_2\)</span> are arbitrary transformations, and the parameters <span class="math inline">\(\Theta_1, \Theta_2\)</span> are to be learned to minimize the loss <span class="math inline">\(l\)</span>. Learning <span class="math inline">\(\Theta_2\)</span> can be viewed as if inputs <span class="math inline">\(\textbf{x} = F_1(\textbf{u}, \Theta_1)\)</span> and fed into the sub-network:</p>
+<p><span class="math display">\[l = F_2(\textbf{x}, \Theta_2)\]</span></p>
+<p>Thus, a fixed input distribution (ie. the distribution of <span class="math inline">\(\textbf{x}\)</span>) would make the training more effective, because <span class="math inline">\(\Theta_2\)</span> does not need to adapt to the new distribution. At the same time, if the mapping <span class="math inline">\(F_2\)</span> is saturating non-linearity, a fixed-distribution will help to prevent the gradient of parameters from vanishing.</p>
+<span id="more"></span>
+<h2 id="towards-reducing-internal-covariate-shift">Towards Reducing Internal Covariate Shift</h2>
+<p>Consider a layer with the input <span class="math inline">\(u\)</span> that adds the learned bias <span class="math inline">\(b\)</span>, and normalizes the result by subtracting the mean of the activation computed over the training data <span class="math inline">\(\hat{x} = x - \bar{x}\)</span>, where <span class="math inline">\(\bar{x} = \frac{1}{N} \sum_{i=1}^{N} x_i\)</span>. If we <strong>ignore the dependence of <span class="math inline">\(b\)</span> in <span class="math inline">\(\bar{x}\)</span></strong> (ie. <span class="math inline">\(\hat{x} = x - \mu\)</span> we just center the input by some constant <span class="math inline">\(\mu\)</span>, does not take into account <span class="math inline">\(b\)</span>), then</p>
+<p><span class="math display">\[\frac{\partial L}{\partial b} = -\frac{\partial L}{\partial \hat{x}} \frac{\partial \hat{x}}{\partial b} = -\frac{\partial L}{\partial \hat{x}}\]</span></p>
+<p>Then, the update rule is:</p>
+<p><span class="math display">\[b \leftarrow b - \frac{1}{N}\sum_{i}\frac{\partial L}{\partial \hat{x}}\]</span></p>
+<p>Let, <span class="math inline">\(\nabla b = - \frac{1}{N}\sum_{i}\frac{\partial L}{\partial \hat{x}}\)</span> Then, new <span class="math inline">\(\hat{x}\)</span> after update <span class="math inline">\(b\)</span> is:</p>
+<p><span class="math display">\[u + (b + \nabla b) + \frac{1}{N} \sum_i [u + (b + \nabla b)] = u + b - E[u + b]\]</span></p>
+<p>Thus, the combination of the update to <span class="math inline">\(b\)</span> and subsequent change in normalization led to no change in the output of the layer nor, consequently, the loss (ie. center the input without taking account of <span class="math inline">\(b\)</span> will result useless update to <span class="math inline">\(b\)</span> that has no effect on the loss). However, as the training continues, <span class="math inline">\(b\)</span> will grow indefinitely while the loss remains the same.</p>
+<p>This is caused because the gradient descent optimization does not take into account that the normalization takes place.</p>
+<h2 id="normalization-via-mini-batch-statistics">Normalization via Mini-Batch Statistics</h2>
+<p>Normalize the layer inputs are expensive, as it requires computing the covariance matrix, the inverse square root, the expectation over all training samples, as well as the derivative of these transformations. Several simplifications are proposed to deal with these.</p>
+<ol type="1">
+<li><p>Instead normalize the features in layer inputs and outputs jointly, we will normalize each scalar feature independently by making it have the mean of zero and the variance of 1. For a layer with <span class="math inline">\(d\)</span>-dimensional input <span class="math inline">\(x = (x^{1}, ..., x^{d})\)</span>, we will normalize each individual feature:</p>
+<p><span class="math display">\[\hat{x}^{k} = \frac{x^k - E[x^k]}{\sqrt{Var[x^k]}}\]</span></p></li>
+</ol>
+<p>Where the expectation and variance are computed over the training dataset (i.e first input feature is normalized by first features of all input samples). However, this approach may decrease the expressive power of the activation function, for instance, if we scale the input of sigmoid activation to have mean 0 and variance 1, then we will be limited at the middle region of the sigmoid function (<strong>In this paper, batch norm is applied right after activation and before activation function</strong>)</p>
+<p><img src="/images/ML/batch_norm_1.png"></p>
+<p>To address this, we make sure that the transformation inserted in the network can represent the identity transformation, that is for each activation <span class="math inline">\(x^k\)</span>, a pair of parameters <span class="math inline">\(\gamma^k, \beta^k\)</span>, which scales and shift the normalized value:</p>
+<p><span class="math display">\[y^k = \gamma^k \hat{x}^k + \beta^k\]</span></p>
+<p>These parameters are learned through back propagation, and by setting <span class="math inline">\(\gamma^k = \sqrt{Var[x^k]}, \beta^k = E[x^k]\)</span>, we could recover the original activation, if that were the optimal thing to do.</p>
+<ol start="2" type="1">
+<li>Instead of using whole batch of data for estimating mean and variance which is impractical in practice. We only use mini-batches to estimate means and variance, because mini-batches produce unbiased estimates of the mean and variance. Note that the use of mini-batches is enabled by computation of <strong>per-dimension variances rather than joint covariances</strong> (we do not estimate the covariance). In joint case, regularization would be required since the mini-batch size is likely to be smaller than the number of activations, resulting in singular covariance matrices.</li>
+</ol>
+<p>Together, we can describe the batch norm transformation for each activation <span class="math inline">\(x\)</span> as:</p>
+<p><img src="/images/ML/batch_norm_2.png"></p>
+<p>Where <span class="math inline">\(\epsilon\)</span> is a constant added to the mini-batch variance for numerical stability, <span class="math inline">\(BN_{\gamma, \beta}: x_{1, ..., m} \rightarrow y_{1, ..., m}\)</span> is the batch norm transformation. Since the normalization is applied to each activation independently, <span class="math inline">\(k\)</span> which indicates the activation or dimension is dropped.</p>
+<p>The backward pass can be write as:</p>
+<p><img src="/images/ML/batch_norm_3.png"></p>
+<p>Notice that, <span class="math inline">\(\gamma, \beta\)</span> have superscript <span class="math inline">\(k\)</span>, they bind to each activation.</p>
+<h2 id="training-and-inference-with-batch-normalized-network">Training and Inference with Batch Normalized Network</h2>
+<p>To <strong>Batch-Normalize</strong> a network, any layer that previously received <span class="math inline">\(x\)</span> as input now receive <span class="math inline">\(BN(x)\)</span>.</p>
+<h3 id="training">Training</h3>
+<p>A model employing Batch Normalization can be trained using batch gradient descent, or Stochastic Gradient Descent with a mini-batch size <span class="math inline">\(m &gt; 1\)</span> or any variant such as Adam. The normalization of activations that depends on the mini-batch allows efficient training. Using moving averages instead, we can track the accuracy of a model as it trains.</p>
+<h3 id="testing">Testing</h3>
+<p>During testing, it is neither necessary nor desirable to estimate mean and variance using mini-batches, thus, once the network has been trained, we use the normalization:</p>
+<p><span class="math display">\[\hat{x} = \frac{x - E[x]}{\sqrt{Var[x] - \epsilon}}\]</span></p>
+<p><span class="math display">\[Var[x] = \frac{m}{m - 1} E_{B}[\sigma^2_{B}]\]</span></p>
+<p>where <span class="math inline">\(E[x]\)</span> is the mean for the whole dataset. The variance is a bias-corrected version of mini-batch sample variance over all training mini-batches weighted by their occurrence during training.</p>
+<p><img src="/images/ML/batch_norm_4.png"></p>
+<h2 id="batch-norm-in-cov-net">Batch Norm in Cov Net</h2>
+<p>For convolutional layers, we additionally want the normalization to obey the convolutional property ----- so that different elements of the same feature map, at different locations, are normalized in the same way (ie. features in the same feature are normalized in same way). So in the <span class="math inline">\(BN(x)\)</span>, we replace <span class="math inline">\(B\)</span>: mini-batch by <span class="math inline">\(B\)</span>: the set of all values in a feature map across both the elements of a mini-batch and spatial locations, for a mini-batch of size <span class="math inline">\(m\)</span> and feature map of size <span class="math inline">\(p * q\)</span> <span class="math inline">\(|B| = m * p * q\)</span>. We learn <span class="math inline">\(\gamma^k, \beta^k\)</span> per feature map. So in total, we have <span class="math inline">\(C\)</span> different means and variances, where <span class="math inline">\(C\)</span> is number of input channels.</p>
+<h2 id="side-effects-of-batch-norm">Side Effects of Batch Norm</h2>
+<ol type="1">
+<li><p>With Batch Norm, back-propagation through a layer is unaffected by the scale of its parameters. <span class="math display">\[ BN(\alpha W u) = BN(Wu) \]</span> <span class="math display">\[ \frac{\partial BN(\alpha Wu)}{\partial u} = \frac{\partial BN(Wu)}{\partial u}\]</span> <span class="math display">\[ \frac{\partial BN(\alpha Wu)}{\partial \alpha W} = \frac{1}{\alpha} \frac{\partial BN(Wu)}{\partial u}\]</span></p></li>
+<li><p>Larger weights leads to smaller gradients, Batch Normalization stabilize the parameter growth:</p>
+<p><span class="math display">\[\alpha = 100, \implies \frac{\partial BN(100 Wu)}{\partial 100 W} = \frac{1}{100} \frac{\partial BN(Wu)}{\partial u}\]</span></p></li>
+<li><p>Use sample statistics from mini-batches introduce random noise, which helps with the overfitting.</p></li>
+</ol>
+]]></content>
+      <categories>
+        <category>DL</category>
+        <category>Techniques</category>
+      </categories>
+      <tags>
+        <tag>Deep Learning</tag>
+        <tag>Normalization</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Alex Net</title>
     <url>/2021/06/22/alex-net/</url>
     <content><![CDATA[<h1 id="imagenet-classification-with-deep-convolutional-neural-networks">ImageNet Classification with Deep Convolutional Neural Networks</h1>
@@ -1097,82 +1275,6 @@ w^{(m + 1)}_i &amp;= e^{-y_i f_{m} (\mathbf{x}_i)}\\
       <tags>
         <tag>Deep Learning</tag>
         <tag>Neural Network Architectures</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>average_reward_setting</title>
-    <url>/2021/05/30/average-reward-setting/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
-    <title>Batch Normalization</title>
-    <url>/2021/05/26/batch-norm/</url>
-    <content><![CDATA[<h1 id="batch-normalization-accelerating-deep-network-training-by-reducing-internal-covariate-shift">Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift</h1>
-<p><strong>Internal covariate shift</strong> describes the phenomenon in training DNN that the distribution of each layer's inputs changes during training, as the parameters of the previous layer change. This slow down the training by requiring lower learning rates and careful parameter initialization, and makes it notoriously hard to train models with saturating non-linearities (tanh, sigmoid). This problem can be addressed by normalizing the layer inputs.</p>
-<h2 id="introduction">Introduction</h2>
-<p>To see the input distribution shift in terms of sub-network or a layer. Consider a network computing:</p>
-<p><span class="math display">\[l = F_2(F_1(\textbf{u}, \Theta_1), \Theta_2)\]</span></p>
-<p>Where <span class="math inline">\(F_1\)</span> and <span class="math inline">\(F_2\)</span> are arbitrary transformations, and the parameters <span class="math inline">\(\Theta_1, \Theta_2\)</span> are to be learned to minimize the loss <span class="math inline">\(l\)</span>. Learning <span class="math inline">\(\Theta_2\)</span> can be viewed as if inputs <span class="math inline">\(\textbf{x} = F_1(\textbf{u}, \Theta_1)\)</span> and fed into the sub-network:</p>
-<p><span class="math display">\[l = F_2(\textbf{x}, \Theta_2)\]</span></p>
-<p>Thus, a fixed input distribution (ie. the distribution of <span class="math inline">\(\textbf{x}\)</span>) would make the training more effective, because <span class="math inline">\(\Theta_2\)</span> does not need to adapt to the new distribution. At the same time, if the mapping <span class="math inline">\(F_2\)</span> is saturating non-linearity, a fixed-distribution will help to prevent the gradient of parameters from vanishing.</p>
-<span id="more"></span>
-<h2 id="towards-reducing-internal-covariate-shift">Towards Reducing Internal Covariate Shift</h2>
-<p>Consider a layer with the input <span class="math inline">\(u\)</span> that adds the learned bias <span class="math inline">\(b\)</span>, and normalizes the result by subtracting the mean of the activation computed over the training data <span class="math inline">\(\hat{x} = x - \bar{x}\)</span>, where <span class="math inline">\(\bar{x} = \frac{1}{N} \sum_{i=1}^{N} x_i\)</span>. If we <strong>ignore the dependence of <span class="math inline">\(b\)</span> in <span class="math inline">\(\bar{x}\)</span></strong> (ie. <span class="math inline">\(\hat{x} = x - \mu\)</span> we just center the input by some constant <span class="math inline">\(\mu\)</span>, does not take into account <span class="math inline">\(b\)</span>), then</p>
-<p><span class="math display">\[\frac{\partial L}{\partial b} = -\frac{\partial L}{\partial \hat{x}} \frac{\partial \hat{x}}{\partial b} = -\frac{\partial L}{\partial \hat{x}}\]</span></p>
-<p>Then, the update rule is:</p>
-<p><span class="math display">\[b \leftarrow b - \frac{1}{N}\sum_{i}\frac{\partial L}{\partial \hat{x}}\]</span></p>
-<p>Let, <span class="math inline">\(\nabla b = - \frac{1}{N}\sum_{i}\frac{\partial L}{\partial \hat{x}}\)</span> Then, new <span class="math inline">\(\hat{x}\)</span> after update <span class="math inline">\(b\)</span> is:</p>
-<p><span class="math display">\[u + (b + \nabla b) + \frac{1}{N} \sum_i [u + (b + \nabla b)] = u + b - E[u + b]\]</span></p>
-<p>Thus, the combination of the update to <span class="math inline">\(b\)</span> and subsequent change in normalization led to no change in the output of the layer nor, consequently, the loss (ie. center the input without taking account of <span class="math inline">\(b\)</span> will result useless update to <span class="math inline">\(b\)</span> that has no effect on the loss). However, as the training continues, <span class="math inline">\(b\)</span> will grow indefinitely while the loss remains the same.</p>
-<p>This is caused because the gradient descent optimization does not take into account that the normalization takes place.</p>
-<h2 id="normalization-via-mini-batch-statistics">Normalization via Mini-Batch Statistics</h2>
-<p>Normalize the layer inputs are expensive, as it requires computing the covariance matrix, the inverse square root, the expectation over all training samples, as well as the derivative of these transformations. Several simplifications are proposed to deal with these.</p>
-<ol type="1">
-<li><p>Instead normalize the features in layer inputs and outputs jointly, we will normalize each scalar feature independently by making it have the mean of zero and the variance of 1. For a layer with <span class="math inline">\(d\)</span>-dimensional input <span class="math inline">\(x = (x^{1}, ..., x^{d})\)</span>, we will normalize each individual feature:</p>
-<p><span class="math display">\[\hat{x}^{k} = \frac{x^k - E[x^k]}{\sqrt{Var[x^k]}}\]</span></p></li>
-</ol>
-<p>Where the expectation and variance are computed over the training dataset (i.e first input feature is normalized by first features of all input samples). However, this approach may decrease the expressive power of the activation function, for instance, if we scale the input of sigmoid activation to have mean 0 and variance 1, then we will be limited at the middle region of the sigmoid function (<strong>In this paper, batch norm is applied right after activation and before activation function</strong>)</p>
-<p><img src="/images/ML/batch_norm_1.png"></p>
-<p>To address this, we make sure that the transformation inserted in the network can represent the identity transformation, that is for each activation <span class="math inline">\(x^k\)</span>, a pair of parameters <span class="math inline">\(\gamma^k, \beta^k\)</span>, which scales and shift the normalized value:</p>
-<p><span class="math display">\[y^k = \gamma^k \hat{x}^k + \beta^k\]</span></p>
-<p>These parameters are learned through back propagation, and by setting <span class="math inline">\(\gamma^k = \sqrt{Var[x^k]}, \beta^k = E[x^k]\)</span>, we could recover the original activation, if that were the optimal thing to do.</p>
-<ol start="2" type="1">
-<li>Instead of using whole batch of data for estimating mean and variance which is impractical in practice. We only use mini-batches to estimate means and variance, because mini-batches produce unbiased estimates of the mean and variance. Note that the use of mini-batches is enabled by computation of <strong>per-dimension variances rather than joint covariances</strong> (we do not estimate the covariance). In joint case, regularization would be required since the mini-batch size is likely to be smaller than the number of activations, resulting in singular covariance matrices.</li>
-</ol>
-<p>Together, we can describe the batch norm transformation for each activation <span class="math inline">\(x\)</span> as:</p>
-<p><img src="/images/ML/batch_norm_2.png"></p>
-<p>Where <span class="math inline">\(\epsilon\)</span> is a constant added to the mini-batch variance for numerical stability, <span class="math inline">\(BN_{\gamma, \beta}: x_{1, ..., m} \rightarrow y_{1, ..., m}\)</span> is the batch norm transformation. Since the normalization is applied to each activation independently, <span class="math inline">\(k\)</span> which indicates the activation or dimension is dropped.</p>
-<p>The backward pass can be write as:</p>
-<p><img src="/images/ML/batch_norm_3.png"></p>
-<p>Notice that, <span class="math inline">\(\gamma, \beta\)</span> have superscript <span class="math inline">\(k\)</span>, they bind to each activation.</p>
-<h2 id="training-and-inference-with-batch-normalized-network">Training and Inference with Batch Normalized Network</h2>
-<p>To <strong>Batch-Normalize</strong> a network, any layer that previously received <span class="math inline">\(x\)</span> as input now receive <span class="math inline">\(BN(x)\)</span>.</p>
-<h3 id="training">Training</h3>
-<p>A model employing Batch Normalization can be trained using batch gradient descent, or Stochastic Gradient Descent with a mini-batch size <span class="math inline">\(m &gt; 1\)</span> or any variant such as Adam. The normalization of activations that depends on the mini-batch allows efficient training. Using moving averages instead, we can track the accuracy of a model as it trains.</p>
-<h3 id="testing">Testing</h3>
-<p>During testing, it is neither necessary nor desirable to estimate mean and variance using mini-batches, thus, once the network has been trained, we use the normalization:</p>
-<p><span class="math display">\[\hat{x} = \frac{x - E[x]}{\sqrt{Var[x] - \epsilon}}\]</span></p>
-<p><span class="math display">\[Var[x] = \frac{m}{m - 1} E_{B}[\sigma^2_{B}]\]</span></p>
-<p>where <span class="math inline">\(E[x]\)</span> is the mean for the whole dataset. The variance is a bias-corrected version of mini-batch sample variance over all training mini-batches weighted by their occurrence during training.</p>
-<p><img src="/images/ML/batch_norm_4.png"></p>
-<h2 id="batch-norm-in-cov-net">Batch Norm in Cov Net</h2>
-<p>For convolutional layers, we additionally want the normalization to obey the convolutional property ----- so that different elements of the same feature map, at different locations, are normalized in the same way (ie. features in the same feature are normalized in same way). So in the <span class="math inline">\(BN(x)\)</span>, we replace <span class="math inline">\(B\)</span>: mini-batch by <span class="math inline">\(B\)</span>: the set of all values in a feature map across both the elements of a mini-batch and spatial locations, for a mini-batch of size <span class="math inline">\(m\)</span> and feature map of size <span class="math inline">\(p * q\)</span> <span class="math inline">\(|B| = m * p * q\)</span>. We learn <span class="math inline">\(\gamma^k, \beta^k\)</span> per feature map. So in total, we have <span class="math inline">\(C\)</span> different means and variances, where <span class="math inline">\(C\)</span> is number of input channels.</p>
-<h2 id="side-effects-of-batch-norm">Side Effects of Batch Norm</h2>
-<ol type="1">
-<li><p>With Batch Norm, back-propagation through a layer is unaffected by the scale of its parameters. <span class="math display">\[ BN(\alpha W u) = BN(Wu) \]</span> <span class="math display">\[ \frac{\partial BN(\alpha Wu)}{\partial u} = \frac{\partial BN(Wu)}{\partial u}\]</span> <span class="math display">\[ \frac{\partial BN(\alpha Wu)}{\partial \alpha W} = \frac{1}{\alpha} \frac{\partial BN(Wu)}{\partial u}\]</span></p></li>
-<li><p>Larger weights leads to smaller gradients, Batch Normalization stabilize the parameter growth:</p>
-<p><span class="math display">\[\alpha = 100, \implies \frac{\partial BN(100 Wu)}{\partial 100 W} = \frac{1}{100} \frac{\partial BN(Wu)}{\partial u}\]</span></p></li>
-<li><p>Use sample statistics from mini-batches introduce random noise, which helps with the overfitting.</p></li>
-</ol>
-]]></content>
-      <categories>
-        <category>DL</category>
-        <category>Techniques</category>
-      </categories>
-      <tags>
-        <tag>Deep Learning</tag>
-        <tag>Normalization</tag>
       </tags>
   </entry>
   <entry>
@@ -1848,12 +1950,6 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
       </tags>
   </entry>
   <entry>
-    <title>em</title>
-    <url>/2021/07/21/em/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
     <title>GBDT</title>
     <url>/2021/07/19/gbdt/</url>
     <content><![CDATA[<h1 id="gradient-boosting-decision-trees">Gradient Boosting Decision Trees</h1>
@@ -1915,6 +2011,12 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
       <tags>
         <tag>Machine Learning</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>em</title>
+    <url>/2021/07/21/em/</url>
+    <content><![CDATA[
+]]></content>
   </entry>
   <entry>
     <title>Heaps</title>
@@ -2446,6 +2548,48 @@ l(\boldsymbol{\theta}; \; D) &amp;= \sum^{N}_{i=1} y_i\log (p_i) + (1 - y_i) \lo
       </tags>
   </entry>
   <entry>
+    <title>Momentum</title>
+    <url>/2021/07/29/momentum/</url>
+    <content><![CDATA[<h1 id="momentum">Momentum</h1>
+<p>While SGD remains a very popular optimization strategy, learning with it can be slow. The method of momentum is designed to accelerate learning, especially in the face of <strong>high curvature</strong> (large change of direction of the curve in small amount time), <strong>small but consistent gradients</strong> (flat surface) or <strong>noisy gradients</strong> (with high variance). The momentum algorithm accumulates an exponentially decaying moving average of past gradients and continues to move in their direction.</p>
+<p><br></p>
+<p>The momentum algorithm introduces several variables:</p>
+<ol type="1">
+<li>A vector <span class="math inline">\(\mathbf{v}\)</span> that plays a role of velocity (with direction and speed). The velocity is set to an exponentially decaying average of the negative gradient.</li>
+<li>A hyparameter <span class="math inline">\(\alpha \in [0, 1)\)</span> determins how quickly the contributions of previous gradients exponentially decay.</li>
+</ol>
+<p>The update rule is given by:</p>
+<p><span class="math display">\[\mathbf{v} \leftarrow \alpha \mathbf{v} - \epsilon \nabla_{\boldsymbol{\theta}} (\frac{1}{N} \sum^{N}_{i=1} L(\mathbf{f} (\mathbf{x}_i; \; \boldsymbol{\theta}), \mathbf{y}_i))\]</span></p>
+<p><span class="math display">\[\boldsymbol{\theta} \rightarrow \boldsymbol{\theta} + \mathbf{v}\]</span></p>
+<p>Previously, in SGD, the size of the step was simply the norm of the gradient multiplied by the learning rate:</p>
+<p><span class="math display">\[\epsilon \nabla_{\boldsymbol{\theta}} (\frac{1}{N} \sum^{N}_{i=1} L(\mathbf{f} (\mathbf{x}_i; \; \boldsymbol{\theta}), \mathbf{y}_i))\]</span></p>
+<p>Now the size of the step depends on <strong>how large and how aligned a sequence of gradients</strong> are. The step size is <strong>largest</strong> when many successive gradients point in exactly the same direction. If the momentum algorithm always observe gradient <span class="math inline">\(\mathbf{g}\)</span>, then it will accelerate in the direction of <span class="math inline">\(-\mathbf{g}\)</span>:</p>
+<p><span class="math display">\[\mathbf{v}_1 \leftarrow - \epsilon \mathbf{g}\]</span></p>
+<p><span class="math display">\[\mathbf{v}_2 \leftarrow -\mathbf{g} \epsilon(\alpha + 1)\]</span></p>
+<p><span class="math display">\[\mathbf{v}_N \leftarrow -\mathbf{g} \epsilon \sum^{N-1}_{i=0} \alpha^i\]</span></p>
+<p><span class="math display">\[\implies \|\mathbf{v}_{\infty}\| = \frac{\epsilon \|\mathbf{g}\|}{1 - \alpha}\]</span></p>
+<p>The terminal velocity will have speed <span class="math inline">\(\frac{\epsilon \|\mathbf{g}\|}{1 - \alpha} \gg \epsilon \|\mathbf{g}\|\)</span>. This makes sense because if we receive consistent small gradients, we would like to take larger steps because we are confident we are in the right direction. One the other hand, consistently changing direction gradients (high curvature) would cause the gradient to be small to allow convergence.</p>
+<p><img src='/images/ML/momentum_1.png' width="600"></p>
+<h2 id="nesterov-momentum">Nesterov Momentum</h2>
+<p>Nesterov Momentum is inspired by Nesterov's accelerated gradient method, the update rules in this case are given by:</p>
+<p><span class="math display">\[\mathbf{v} \leftarrow \alpha \mathbf{v} - \epsilon \nabla_{\boldsymbol{\theta}} (\frac{1}{N} \sum^{N}_{i=1} L(\mathbf{f} (\mathbf{x}_i; \; \boldsymbol{\theta} + \alpha \mathbf{v}), \mathbf{y}_i))\]</span></p>
+<p><span class="math display">\[\boldsymbol{\theta} \rightarrow \boldsymbol{\theta} + \mathbf{v}\]</span></p>
+<p>This is similar to momentum, but before taking the gradient, we first take one step forward using previous velocity, then we take the gradient there and adjust velocity accordingly. We can also think of this as attempting to add a <strong>correlation factor</strong> to the standard method of momentum.</p>
+<p><img src='/images/ML/momentum_2.png' width="600"></p>
+<h1 id="implementation">Implementation</h1>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SGD</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, lr, model_vars</span>):</span></span><br><span class="line">        self.model_vars = model_vars</span><br><span class="line">        self.lr = lr</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span>(<span class="params">self, grad</span>):</span></span><br><span class="line">        <span class="keyword">for</span> i, v <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.model_vars):</span><br><span class="line">            self.model_vars[i] = v - self.lr * grad[i]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self.model_vars</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Momentum</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, lr, model_vars, alpha=<span class="number">0.9</span></span>):</span></span><br><span class="line">        self.lr = lr</span><br><span class="line">        self.model_vars = model_vars</span><br><span class="line">        self.alpha = alpha</span><br><span class="line">        self.v = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span>(<span class="params">self, grad</span>):</span></span><br><span class="line">        <span class="keyword">for</span> i, v <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.model_vars):</span><br><span class="line">            self.v = self.v * self.alpha - self.lr * grad[i]</span><br><span class="line">            self.model_vars[i] = self.model_vars[i] + self.v</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self.model_vars</span><br></pre></td></tr></table></figure>
+<h1 id="ref">Ref</h1>
+]]></content>
+      <categories>
+        <category>DL</category>
+        <category>Techniques</category>
+      </categories>
+      <tags>
+        <tag>Deep Learning</tag>
+        <tag>Optimization</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Naive Bayes</title>
     <url>/2021/07/19/naive-bayes/</url>
     <content><![CDATA[<h1 id="naive-bayes">Naive Bayes</h1>
@@ -2613,6 +2757,8 @@ BB^T \mathbf{x} &amp;= \lambda \mathbf{x}\\
 <p>It can be shown that the PCA transformation does not change the total variance of the data, that is the total variance of the data is the sum of eigenvalues:</p>
 <p><span class="math display">\[tr(S_{\mathbf{Y}}) = tr(D)\]</span></p>
 <p>This is only true when we are dealing with sample covariance matrix,</p>
+<h1 id="implementation">Implementation</h1>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pca</span>(<span class="params">X, k=<span class="number">2</span></span>):</span></span><br><span class="line">    u, s, vt = np.linalg.svd(X, full_matrices=<span class="literal">False</span>)</span><br><span class="line">    xv = u * s</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> xv[:, :k]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">normalize</span>(<span class="params">X</span>):</span></span><br><span class="line">    n, d = X.shape</span><br><span class="line">    x_trans = X.copy()</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(d):</span><br><span class="line">        <span class="comment"># normalization</span></span><br><span class="line">        x_trans[:, j] = (X[:, j] - X[:, j].mean()) / X[:, j].std()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> x_trans</span><br></pre></td></tr></table></figure>
 <h1 id="ref">Ref</h1>
 <p>https://stats.stackexchange.com/questions/266864/why-is-the-sum-of-eigenvalues-of-a-pca-equal-to-the-original-variance-of-the-dat</p>
 ]]></content>
@@ -2621,37 +2767,6 @@ BB^T \mathbf{x} &amp;= \lambda \mathbf{x}\\
       </categories>
       <tags>
         <tag>Machine Learning</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Policy Gradient (3)</title>
-    <url>/2021/06/05/policy-gradient-3/</url>
-    <content><![CDATA[<h1 id="policy-search-methods-reinforce">Policy Search Methods (REINFORCE)</h1>
-<p>We already now that, if we have sampled from the correct distribution and have an estimate for <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>, we have an unbiased sample of the policy gradient (Discounted Setting):</p>
-<p><span class="math display">\[\gamma^{k} \nabla \log \pi_{\theta}(A | X) Q^{\pi_{\theta}} (X, A)\]</span></p>
-<p>The remaining issue is the computation of <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>. This is essentially a Policy Evaluation problem, and we may use various action-value function estimators.</p>
-<h2 id="reinforce">REINFORCE</h2>
-<p>A simple approach uses MC estimates to estimate <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>. This would lead to what is known as the REINFORCE algorithm:</p>
-<p>In the on-policy setting when agent follows <span class="math inline">\(\pi_{\theta}\)</span>:</p>
-<ul>
-<li>It generates the sequence <span class="math inline">\(X_1, A_1, R_1\)</span> with <span class="math inline">\(A_{t} \sim \pi_{\theta} (\cdot | X_t), X_t \sim \rho^{\pi_{\theta}}\)</span>.</li>
-<li>Then <span class="math inline">\(G_{t}^{\pi_{\theta}} = \sum_{k \geq t} \gamma^{k - t} R_{k}\)</span> is an unbiased estimator of <span class="math inline">\(Q^{\pi_{\theta}} (X_t, A_t)\)</span>.</li>
-<li>We replace the action-value function with the estimate.</li>
-<li>The return however has high variance even though it is unbiased.</li>
-<li>We can use a state dependent baseline function (usually the value function) to reduce the variance.</li>
-</ul>
-<p><img src='/images/RL/pg/pg_5.png' width="600"></p>
-<h2 id="implementation">Implementation</h2>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>PG</category>
-      </categories>
-      <tags>
-        <tag>Policy Gradient</tag>
-        <tag>Continuous Action Space</tag>
-        <tag>Policy Search</tag>
-        <tag>RL Basics</tag>
       </tags>
   </entry>
   <entry>
@@ -2788,6 +2903,37 @@ BB^T \mathbf{x} &amp;= \lambda \mathbf{x}\\
       <tags>
         <tag>RL Basics</tag>
         <tag>Dynamic Programming</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Policy Gradient (3)</title>
+    <url>/2021/06/05/policy-gradient-3/</url>
+    <content><![CDATA[<h1 id="policy-search-methods-reinforce">Policy Search Methods (REINFORCE)</h1>
+<p>We already now that, if we have sampled from the correct distribution and have an estimate for <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>, we have an unbiased sample of the policy gradient (Discounted Setting):</p>
+<p><span class="math display">\[\gamma^{k} \nabla \log \pi_{\theta}(A | X) Q^{\pi_{\theta}} (X, A)\]</span></p>
+<p>The remaining issue is the computation of <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>. This is essentially a Policy Evaluation problem, and we may use various action-value function estimators.</p>
+<h2 id="reinforce">REINFORCE</h2>
+<p>A simple approach uses MC estimates to estimate <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>. This would lead to what is known as the REINFORCE algorithm:</p>
+<p>In the on-policy setting when agent follows <span class="math inline">\(\pi_{\theta}\)</span>:</p>
+<ul>
+<li>It generates the sequence <span class="math inline">\(X_1, A_1, R_1\)</span> with <span class="math inline">\(A_{t} \sim \pi_{\theta} (\cdot | X_t), X_t \sim \rho^{\pi_{\theta}}\)</span>.</li>
+<li>Then <span class="math inline">\(G_{t}^{\pi_{\theta}} = \sum_{k \geq t} \gamma^{k - t} R_{k}\)</span> is an unbiased estimator of <span class="math inline">\(Q^{\pi_{\theta}} (X_t, A_t)\)</span>.</li>
+<li>We replace the action-value function with the estimate.</li>
+<li>The return however has high variance even though it is unbiased.</li>
+<li>We can use a state dependent baseline function (usually the value function) to reduce the variance.</li>
+</ul>
+<p><img src='/images/RL/pg/pg_5.png' width="600"></p>
+<h2 id="implementation">Implementation</h2>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>PG</category>
+      </categories>
+      <tags>
+        <tag>Policy Gradient</tag>
+        <tag>Continuous Action Space</tag>
+        <tag>Policy Search</tag>
+        <tag>RL Basics</tag>
       </tags>
   </entry>
   <entry>
