@@ -285,32 +285,6 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
       </tags>
   </entry>
   <entry>
-    <title>Double Q Learning</title>
-    <url>/2021/05/07/FA-issues/</url>
-    <content><![CDATA[<h1 id="double-q-learning">Double Q-learning</h1>
-<h2 id="the-overestimation-phenomenon">The Overestimation Phenomenon</h2>
-<p>Assume the agent observes during learning that action <span class="math inline">\(a\)</span> and executed at state <span class="math inline">\(s\)</span> resulting in the state <span class="math inline">\(s^{\prime}\)</span> and some immediate reward <span class="math inline">\(r^{a}_{s}\)</span>. The Q-learning update can be written as:</p>
-<p><span class="math display">\[Q(s, a) \leftarrow r^{a}_{s} + \gamma \max_{\hat{a}} Q(s^{\prime}, \hat{a})\]</span></p>
-<p>It has been shown that repeated application of this update equation eventually yields <span class="math inline">\(Q\)</span>-values that give rise to a policy which maximizes the expected cumulative discounted reward. However, these results only apply when <span class="math inline">\(Q-\)</span>values are stored precisely. (e.g by a look up table)</p>
-<p>Assume, instead, let <span class="math inline">\(Q\)</span> be represented as a function approximator that induces some noise on the estimates of <span class="math inline">\(Q\)</span>. More specifically, let us assume that the current stored <span class="math inline">\(Q-\)</span>values, denoted by <span class="math inline">\(Q^{approx}\)</span>, represent some implicit target values <span class="math inline">\(Q^{target}\)</span>, corrupted by a noise term <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span>, which is due to the function approximator:</p>
-<p><span class="math display">\[Q^{approx} (s^{\prime}, \hat{a}) = Q^{target} (s^{\prime}, \hat{a}) + Y^{\hat{a}}_{s^{\prime}}\]</span></p>
-<p>Here the noise is modeled by the family of random variable <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span> with zero mean:</p>
-<span class="math display">\[\begin{aligned}
-Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) -  (r^{a}_{s} + \gamma \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a})) \\
-&amp;= \gamma (\max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) - \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a}))\\
-\end{aligned}\]</span>
-<p>Clearly, the noise causes some error on the left-hand side.</p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>VFA</category>
-      </categories>
-      <tags>
-        <tag>Function Approximation</tag>
-        <tag>Discussions</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Dueling Network Architectures for DRL</title>
     <url>/2021/05/13/Dueling/</url>
     <content><![CDATA[<h1 id="dueling-network-architectures-for-deep-reinforcement-learning">Dueling Network Architectures for Deep Reinforcement Learning</h1>
@@ -371,6 +345,32 @@ Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \ha
       <tags>
         <tag>Function Approximation</tag>
         <tag>Continuous State Space</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Double Q Learning</title>
+    <url>/2021/05/07/FA-issues/</url>
+    <content><![CDATA[<h1 id="double-q-learning">Double Q-learning</h1>
+<h2 id="the-overestimation-phenomenon">The Overestimation Phenomenon</h2>
+<p>Assume the agent observes during learning that action <span class="math inline">\(a\)</span> and executed at state <span class="math inline">\(s\)</span> resulting in the state <span class="math inline">\(s^{\prime}\)</span> and some immediate reward <span class="math inline">\(r^{a}_{s}\)</span>. The Q-learning update can be written as:</p>
+<p><span class="math display">\[Q(s, a) \leftarrow r^{a}_{s} + \gamma \max_{\hat{a}} Q(s^{\prime}, \hat{a})\]</span></p>
+<p>It has been shown that repeated application of this update equation eventually yields <span class="math inline">\(Q\)</span>-values that give rise to a policy which maximizes the expected cumulative discounted reward. However, these results only apply when <span class="math inline">\(Q-\)</span>values are stored precisely. (e.g by a look up table)</p>
+<p>Assume, instead, let <span class="math inline">\(Q\)</span> be represented as a function approximator that induces some noise on the estimates of <span class="math inline">\(Q\)</span>. More specifically, let us assume that the current stored <span class="math inline">\(Q-\)</span>values, denoted by <span class="math inline">\(Q^{approx}\)</span>, represent some implicit target values <span class="math inline">\(Q^{target}\)</span>, corrupted by a noise term <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span>, which is due to the function approximator:</p>
+<p><span class="math display">\[Q^{approx} (s^{\prime}, \hat{a}) = Q^{target} (s^{\prime}, \hat{a}) + Y^{\hat{a}}_{s^{\prime}}\]</span></p>
+<p>Here the noise is modeled by the family of random variable <span class="math inline">\(Y^{\hat{a}}_{s^{\prime}}\)</span> with zero mean:</p>
+<span class="math display">\[\begin{aligned}
+Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) -  (r^{a}_{s} + \gamma \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a})) \\
+&amp;= \gamma (\max_{\hat{a}}Q^{approx} (s^{\prime}, \hat{a}) - \max_{\hat{a}}Q^{target} (s^{\prime}, \hat{a}))\\
+\end{aligned}\]</span>
+<p>Clearly, the noise causes some error on the left-hand side.</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Discussions</tag>
       </tags>
   </entry>
   <entry>
@@ -544,6 +544,78 @@ h_i = \max({\mathbf{w}^i}^T \mathbf{x}, 0) =
       </tags>
   </entry>
   <entry>
+    <title>VGG (Under Construction)</title>
+    <url>/2021/06/24/VGG/</url>
+    <content><![CDATA[<h1 id="very-deep-convolutional-networks-for-large-scale-image-recognition">Very Deep Convolutional Networks For Large-Scale Image Recognition</h1>
+<h2 id="generic-architecture">Generic Architecture</h2>
+<ol type="1">
+<li>Inputs are <span class="math inline">\(224 \times 224\)</span> RGB images with zero mean for each pixel.</li>
+<li>The convolutional layers have small filter sizes (<span class="math inline">\(3 \times 3\)</span>), one architecture with <span class="math inline">\(1 \times 1\)</span> filters (Network C).</li>
+<li>Padding 1 and stride 1 to maintain the original image size.</li>
+<li>5 max pooling layers with <span class="math inline">\(2 \times 2\)</span> window and stride 2.</li>
+<li>2 fully connected layers each with 4096 units, and the final fc output layer with 1000 units.</li>
+<li>ReLU activation function.</li>
+</ol>
+<h2 id="configurations">Configurations</h2>
+<ol type="1">
+<li><p>the shallowest network has 11 weight layers (8 conv layers and 3 FC layers), the deepest network has 19 weight layers (16 conv layers and 3 FC layers)</p></li>
+<li><p>The width of conv layers are relative small, starting from 64 in the first layer and then increasing by a factor of 2 each max-pooling layer, until it reaches 512.</p></li>
+</ol>
+<p><img src="/images/ML/vgg_1.png" width="600"></p>
+<span id="more"></span>
+<h2 id="discussion">Discussion</h2>
+<p>Instead of large filter size, we use small <span class="math inline">\(3 \times 3\)</span> filters. We can see that after 2 consecutive layers, the effective receptive field is <span class="math inline">\(5 \times 5\)</span>, after three consective layers, the effective receptive field is <span class="math inline">\(7 \times 7\)</span>. Comparing to a conv layer with <span class="math inline">\(7 \times 7\)</span> filter, 3 consecutive <span class="math inline">\(3 \times 3\)</span> filter conv layers have less parameters. To see this, assume each layer has input C channel and output C channel, then total parameters:</p>
+<ol type="1">
+<li>Single conv layer with <span class="math inline">\(7 \times 7\)</span> filter: <span class="math inline">\(7 * 7 * C * C = 49 C^2\)</span></li>
+<li>Three conv layer each with <span class="math inline">\(3 \times 3\)</span> filter: <span class="math inline">\(3 (3 * 3 * C * C) = 27 C^2\)</span></li>
+</ol>
+<p>This can be seen as imposing a regularisation on the <span class="math inline">\(7 \times 7\)</span> conv filters forcing them to have a decomposition through the <span class="math inline">\(3 \times 3\)</span> filters. This structure also have more discriminative power (3 non-linear functions compare to one).</p>
+<p>The <span class="math inline">\(1 \times 1\)</span> is one way to increase the non-linearity of the decision function without affecting the receptive fields of the conv layers.</p>
+<h2 id="classification-framework">Classification Framework</h2>
+<h3 id="training">Training</h3>
+<ol type="1">
+<li>Batch size 256, momentum 0.9, weight decay 0.0005</li>
+<li>Dropout is applied to the first two fully connected layers with rate of 0.5</li>
+</ol>
+<h4 id="initialization">Initialization</h4>
+<ol type="1">
+<li>Net <span class="math inline">\(A\)</span> is first trained with random initialization</li>
+<li>When training deeper architectures, we initialize the first four conv layers and last three fully connected layers with the layer of <span class="math inline">\(A\)</span></li>
+<li>The conv layers in the middle are initialized randomly with normal(0, 0.01)</li>
+</ol>
+<p>In spite of the larger number of parameters and the greater depth of our nets compare to AlexNet, the nets required less epochs to converge due to</p>
+<ol type="1">
+<li>implicit regularization imposed by greater depth and smaller filter size</li>
+<li>pre-initialization of certain layers</li>
+</ol>
+<h4 id="training-image-size-rescale">Training Image Size Rescale</h4>
+<p>Let <span class="math inline">\(S\)</span> (training scale) be the smallest side of an isotropically-rescaled training image from which the input image is cropped (The training input is first rescaled to smallest side = <span class="math inline">\(S\)</span> before cropping). For a fixed crop size <span class="math inline">\(224 \times 224\)</span>, if <span class="math inline">\(S=224\)</span>, the cropped image will span the smallest side of the training image. If <span class="math inline">\(S &gt;&gt; 224\)</span>, the crop will correspond to a small part of the image. There are two approaches setting up <span class="math inline">\(S\)</span></p>
+<ol type="1">
+<li>Single scale training: fix <span class="math inline">\(S=256, 384\)</span></li>
+<li>Multi-scale training: Each image is individually rescaled by randomly sampling <span class="math inline">\(S\)</span> from a certain range <span class="math inline">\([S_{min}, S_{max}] = [256, 512]\)</span>.</li>
+</ol>
+<p>Then the rescaled images is:</p>
+<ol type="1">
+<li>randomly cropped from rescaled training images (one crop per image per SGD iteration)</li>
+<li>the crops underwent random horizontal filpping and random RGB colour shift</li>
+</ol>
+<h3 id="testing">Testing</h3>
+<p>During Testing given a trained Conv Net and an input image:</p>
+<ol type="1">
+<li>It is first isotropically rescaled to a predefined smallest image side <span class="math inline">\(Q\)</span> (test scale, where <span class="math inline">\(S\)</span> is the training scale). <span class="math inline">\(Q\)</span> is not necessarily equal to the training scale <span class="math inline">\(S\)</span></li>
+<li></li>
+</ol>
+]]></content>
+      <categories>
+        <category>DL</category>
+        <category>CNN</category>
+      </categories>
+      <tags>
+        <tag>Deep Learning</tag>
+        <tag>Neural Network Architectures</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>TRPO</title>
     <url>/2021/06/11/TRPO/</url>
     <content><![CDATA[<h1 id="trust-region-policy-optimization">Trust Region Policy Optimization</h1>
@@ -705,78 +777,6 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
       </tags>
   </entry>
   <entry>
-    <title>VGG (Under Construction)</title>
-    <url>/2021/06/24/VGG/</url>
-    <content><![CDATA[<h1 id="very-deep-convolutional-networks-for-large-scale-image-recognition">Very Deep Convolutional Networks For Large-Scale Image Recognition</h1>
-<h2 id="generic-architecture">Generic Architecture</h2>
-<ol type="1">
-<li>Inputs are <span class="math inline">\(224 \times 224\)</span> RGB images with zero mean for each pixel.</li>
-<li>The convolutional layers have small filter sizes (<span class="math inline">\(3 \times 3\)</span>), one architecture with <span class="math inline">\(1 \times 1\)</span> filters (Network C).</li>
-<li>Padding 1 and stride 1 to maintain the original image size.</li>
-<li>5 max pooling layers with <span class="math inline">\(2 \times 2\)</span> window and stride 2.</li>
-<li>2 fully connected layers each with 4096 units, and the final fc output layer with 1000 units.</li>
-<li>ReLU activation function.</li>
-</ol>
-<h2 id="configurations">Configurations</h2>
-<ol type="1">
-<li><p>the shallowest network has 11 weight layers (8 conv layers and 3 FC layers), the deepest network has 19 weight layers (16 conv layers and 3 FC layers)</p></li>
-<li><p>The width of conv layers are relative small, starting from 64 in the first layer and then increasing by a factor of 2 each max-pooling layer, until it reaches 512.</p></li>
-</ol>
-<p><img src="/images/ML/vgg_1.png" width="600"></p>
-<span id="more"></span>
-<h2 id="discussion">Discussion</h2>
-<p>Instead of large filter size, we use small <span class="math inline">\(3 \times 3\)</span> filters. We can see that after 2 consecutive layers, the effective receptive field is <span class="math inline">\(5 \times 5\)</span>, after three consective layers, the effective receptive field is <span class="math inline">\(7 \times 7\)</span>. Comparing to a conv layer with <span class="math inline">\(7 \times 7\)</span> filter, 3 consecutive <span class="math inline">\(3 \times 3\)</span> filter conv layers have less parameters. To see this, assume each layer has input C channel and output C channel, then total parameters:</p>
-<ol type="1">
-<li>Single conv layer with <span class="math inline">\(7 \times 7\)</span> filter: <span class="math inline">\(7 * 7 * C * C = 49 C^2\)</span></li>
-<li>Three conv layer each with <span class="math inline">\(3 \times 3\)</span> filter: <span class="math inline">\(3 (3 * 3 * C * C) = 27 C^2\)</span></li>
-</ol>
-<p>This can be seen as imposing a regularisation on the <span class="math inline">\(7 \times 7\)</span> conv filters forcing them to have a decomposition through the <span class="math inline">\(3 \times 3\)</span> filters. This structure also have more discriminative power (3 non-linear functions compare to one).</p>
-<p>The <span class="math inline">\(1 \times 1\)</span> is one way to increase the non-linearity of the decision function without affecting the receptive fields of the conv layers.</p>
-<h2 id="classification-framework">Classification Framework</h2>
-<h3 id="training">Training</h3>
-<ol type="1">
-<li>Batch size 256, momentum 0.9, weight decay 0.0005</li>
-<li>Dropout is applied to the first two fully connected layers with rate of 0.5</li>
-</ol>
-<h4 id="initialization">Initialization</h4>
-<ol type="1">
-<li>Net <span class="math inline">\(A\)</span> is first trained with random initialization</li>
-<li>When training deeper architectures, we initialize the first four conv layers and last three fully connected layers with the layer of <span class="math inline">\(A\)</span></li>
-<li>The conv layers in the middle are initialized randomly with normal(0, 0.01)</li>
-</ol>
-<p>In spite of the larger number of parameters and the greater depth of our nets compare to AlexNet, the nets required less epochs to converge due to</p>
-<ol type="1">
-<li>implicit regularization imposed by greater depth and smaller filter size</li>
-<li>pre-initialization of certain layers</li>
-</ol>
-<h4 id="training-image-size-rescale">Training Image Size Rescale</h4>
-<p>Let <span class="math inline">\(S\)</span> (training scale) be the smallest side of an isotropically-rescaled training image from which the input image is cropped (The training input is first rescaled to smallest side = <span class="math inline">\(S\)</span> before cropping). For a fixed crop size <span class="math inline">\(224 \times 224\)</span>, if <span class="math inline">\(S=224\)</span>, the cropped image will span the smallest side of the training image. If <span class="math inline">\(S &gt;&gt; 224\)</span>, the crop will correspond to a small part of the image. There are two approaches setting up <span class="math inline">\(S\)</span></p>
-<ol type="1">
-<li>Single scale training: fix <span class="math inline">\(S=256, 384\)</span></li>
-<li>Multi-scale training: Each image is individually rescaled by randomly sampling <span class="math inline">\(S\)</span> from a certain range <span class="math inline">\([S_{min}, S_{max}] = [256, 512]\)</span>.</li>
-</ol>
-<p>Then the rescaled images is:</p>
-<ol type="1">
-<li>randomly cropped from rescaled training images (one crop per image per SGD iteration)</li>
-<li>the crops underwent random horizontal filpping and random RGB colour shift</li>
-</ol>
-<h3 id="testing">Testing</h3>
-<p>During Testing given a trained Conv Net and an input image:</p>
-<ol type="1">
-<li>It is first isotropically rescaled to a predefined smallest image side <span class="math inline">\(Q\)</span> (test scale, where <span class="math inline">\(S\)</span> is the training scale). <span class="math inline">\(Q\)</span> is not necessarily equal to the training scale <span class="math inline">\(S\)</span></li>
-<li></li>
-</ol>
-]]></content>
-      <categories>
-        <category>DL</category>
-        <category>CNN</category>
-      </categories>
-      <tags>
-        <tag>Deep Learning</tag>
-        <tag>Neural Network Architectures</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Welcome</title>
     <url>/2030/05/30/aa_welcome/</url>
     <content><![CDATA[<h1 id="welcome">Welcome</h1>
@@ -891,13 +891,6 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
 <p>I use capital letters <span class="math inline">\(X, Y, Z, ..\)</span> for random variables and lower case letters <span class="math inline">\(x, y, z, ...\)</span> for their realizations. I use <span class="math inline">\(R(X, Y)\)</span> to emphasize that the function <span class="math inline">\(R\)</span> is a random variable with random variable <span class="math inline">\(X, Y\)</span> as inputs.</p>
 <h2 id="integrals">Integrals</h2>
 <p><span class="math display">\[E[X] = \int_x p_X(x) x dx = \int_x x dp_X(x) = \int_x x p_X(dx)\]</span></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>actor_critic</title>
-    <url>/2021/06/14/actor-critic/</url>
-    <content><![CDATA[<h1 id="actor-critic-algorithms">Actor-Critic Algorithms</h1>
-<p><a href="https://papers.nips.cc/paper/1999/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf">Original Paper</a></p>
 ]]></content>
   </entry>
   <entry>
@@ -1020,6 +1013,13 @@ w^{(m + 1)}_i &amp;= e^{-y_i f_{m} (\mathbf{x}_i)}\\
       <tags>
         <tag>Machine Learning</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>actor_critic</title>
+    <url>/2021/06/14/actor-critic/</url>
+    <content><![CDATA[<h1 id="actor-critic-algorithms">Actor-Critic Algorithms</h1>
+<p><a href="https://papers.nips.cc/paper/1999/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf">Original Paper</a></p>
+]]></content>
   </entry>
   <entry>
     <title>Adam</title>
@@ -1278,41 +1278,6 @@ u_t &amp;= \lim_{p \rightarrow \infty} (v_t)^{\frac{1}{p}}\\
       </tags>
   </entry>
   <entry>
-    <title>Bellman Equations</title>
-    <url>/2021/05/03/bellman-equations/</url>
-    <content><![CDATA[<p><em>Please read post on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> prior this post</em></p>
-<h1 id="bellman-equations">Bellman Equations</h1>
-<p>By expanding value functions, we reveal the recursive property of return:</p>
-<p><span class="math display">\[
-\begin{aligned}
-V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
-&amp; = E[R_{t} + \gamma G^{\pi}_{t+1} | X_{t} = x]\\
-&amp; = E_{a \sim \pi(a | s)}[R_{t} | X_{t} = x] + \gamma E[G^{\pi}_{t+1} | X_{t} = x]\\
-&amp; = r^{\pi} (x) + \gamma E[V^{\pi} (X_{t+1}) | X_{t} = x]\\
-\end{aligned}
-\]</span> <span id="more"></span></p>
-<p>Where: <span class="math display">\[V^{\pi} (X_{t+1}) = E[G^{\pi}_{t+1} | X_{t+1}] \]</span></p>
-<p><span class="math display">\[\implies E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[V^{\pi} (X_{t+1}) | X_t=x_t] = E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[E[G^{\pi}_{t+1} | X_{t+1}] | X_{t}=x_t] = E[G^{\pi}_{t+1} | X_{t} = x_t]\]</span></p>
-<p>This implies that neither side is random, by expanding:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x]\]</span></p>
-<p>we get:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
-<p>Thus, the value function can be expressed as:</p>
-<p><span class="math display">\[V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
-<p>This is the <span style="color:red"><strong>bellman equation</strong> </span> for a policy <span class="math inline">\(\pi\)</span>, this can be interpreted as: The value of following a policy <span class="math inline">\(\pi\)</span> is the expected immediate reward that the <span class="math inline">\(\pi\)</span>-following agent receives at that state plus the discounted average(expected) value that the agent receives at the next-state.</p>
-<p>Same for action-value function, we have bellman equation:</p>
-<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (da^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
-<p>Compare with value function, we have expected reward base on action <span class="math inline">\(a\)</span> plus discounted average(expected) value that the agent receives at the next-state following <span class="math inline">\(\pi\)</span> (the choice of action is given at state <span class="math inline">\(s\)</span> in action value function)</p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>Basics</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Bellman Equations for Optimal Value Functions</title>
     <url>/2021/05/03/bellman-optimality-equations/</url>
     <content><![CDATA[<p><em>Please read posts on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> and <a href="/2021/05/03/bellman-equations/" title="Bellman Equations">Bellman Equations</a> prior this post.</em></p>
@@ -1462,6 +1427,41 @@ T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
 \end{aligned}\]</span>
 <p><strong>Thus, we can conclude that <span class="math inline">\(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></strong></p>
 <p><span style="color:red"><strong>Together, we showed that <span class="math inline">\(V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^{*}}\)</span>, the solution of bellman optimality equation is the optimal value function</strong></span></p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>Basics</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Bellman Equations</title>
+    <url>/2021/05/03/bellman-equations/</url>
+    <content><![CDATA[<p><em>Please read post on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> prior this post</em></p>
+<h1 id="bellman-equations">Bellman Equations</h1>
+<p>By expanding value functions, we reveal the recursive property of return:</p>
+<p><span class="math display">\[
+\begin{aligned}
+V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
+&amp; = E[R_{t} + \gamma G^{\pi}_{t+1} | X_{t} = x]\\
+&amp; = E_{a \sim \pi(a | s)}[R_{t} | X_{t} = x] + \gamma E[G^{\pi}_{t+1} | X_{t} = x]\\
+&amp; = r^{\pi} (x) + \gamma E[V^{\pi} (X_{t+1}) | X_{t} = x]\\
+\end{aligned}
+\]</span> <span id="more"></span></p>
+<p>Where: <span class="math display">\[V^{\pi} (X_{t+1}) = E[G^{\pi}_{t+1} | X_{t+1}] \]</span></p>
+<p><span class="math display">\[\implies E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[V^{\pi} (X_{t+1}) | X_t=x_t] = E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[E[G^{\pi}_{t+1} | X_{t+1}] | X_{t}=x_t] = E[G^{\pi}_{t+1} | X_{t} = x_t]\]</span></p>
+<p>This implies that neither side is random, by expanding:</p>
+<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x]\]</span></p>
+<p>we get:</p>
+<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
+<p>Thus, the value function can be expressed as:</p>
+<p><span class="math display">\[V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
+<p>This is the <span style="color:red"><strong>bellman equation</strong> </span> for a policy <span class="math inline">\(\pi\)</span>, this can be interpreted as: The value of following a policy <span class="math inline">\(\pi\)</span> is the expected immediate reward that the <span class="math inline">\(\pi\)</span>-following agent receives at that state plus the discounted average(expected) value that the agent receives at the next-state.</p>
+<p>Same for action-value function, we have bellman equation:</p>
+<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (da^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
+<p>Compare with value function, we have expected reward base on action <span class="math inline">\(a\)</span> plus discounted average(expected) value that the agent receives at the next-state following <span class="math inline">\(\pi\)</span> (the choice of action is given at state <span class="math inline">\(s\)</span> in action value function)</p>
 ]]></content>
       <categories>
         <category>RL</category>
@@ -1875,28 +1875,10 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
       </tags>
   </entry>
   <entry>
-    <title>Dynamic Programming</title>
-    <url>/2021/05/03/dp/</url>
-    <content><![CDATA[<h1 id="dynamic-programming">Dynamic Programming</h1>
-<p>We have defined concepts and properties such as value functions, bellman equations, bellman operators and etc. The question is <strong>how we can find the the optimal policy?</strong> Before we start, we assume that the dynamics of the MDP is given, that is, we know our transition distribution <span class="math inline">\(P\)</span> and immediate reward distribution <span class="math inline">\(R\)</span>. The assumption of knowing the dynamics do not hold in the RL setting, but designing methods for finding the optimal policy with known model provides the foundation for developing methods for the RL setting.</p>
-<p>DP methods benefit from the structure of the MDP such as the recursive structure encoded in the Bellman equation, in order to compute the value function.</p>
-<span id="more"></span>
-<h2 id="policy-evaluation">Policy Evaluation</h2>
-<p>Policy Evaluation is the problem of computing the value function of a given policy <span class="math inline">\(\pi\)</span> (i.e. find <span class="math inline">\(V^{\pi}\)</span> or <span class="math inline">\(Q^{\pi}\)</span>). This is not the ultimate goal of an RL agent (Finding the optimal policy is the goal), but is often needed as an intermediate step in finding the optimal policy</p>
-<p>Given an MDP (<span class="math inline">\(X, A, P, R, \gamma\)</span>) and a policy <span class="math inline">\(\pi\)</span>, we would like to compute <span class="math inline">\(V^{\pi}, Q^{\pi}\)</span>:</p>
-<p><span class="math display">\[V^{\pi} (x) = E^{\pi}[\sum_{t=1}^{\infty} \gamma^{t-1} R_{t} | X_0 = x]\]</span></p>
-<p><em><img src='/images/RL/dp/tree_structure.png'></em></p>
-<h2 id="control">Control</h2>
-<p>Control is the problem of finding the optimal value function <span class="math inline">\(V^{*}, Q^{*}\)</span> or <span class="math inline">\(\pi^{*}\)</span></p>
+    <title>em</title>
+    <url>/2021/07/21/em/</url>
+    <content><![CDATA[
 ]]></content>
-      <categories>
-        <category>RL</category>
-        <category>DP</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>Dynamic Programming</tag>
-      </tags>
   </entry>
   <entry>
     <title>Dropout</title>
@@ -1950,10 +1932,28 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
       </tags>
   </entry>
   <entry>
-    <title>em</title>
-    <url>/2021/07/21/em/</url>
-    <content><![CDATA[
+    <title>Dynamic Programming</title>
+    <url>/2021/05/03/dp/</url>
+    <content><![CDATA[<h1 id="dynamic-programming">Dynamic Programming</h1>
+<p>We have defined concepts and properties such as value functions, bellman equations, bellman operators and etc. The question is <strong>how we can find the the optimal policy?</strong> Before we start, we assume that the dynamics of the MDP is given, that is, we know our transition distribution <span class="math inline">\(P\)</span> and immediate reward distribution <span class="math inline">\(R\)</span>. The assumption of knowing the dynamics do not hold in the RL setting, but designing methods for finding the optimal policy with known model provides the foundation for developing methods for the RL setting.</p>
+<p>DP methods benefit from the structure of the MDP such as the recursive structure encoded in the Bellman equation, in order to compute the value function.</p>
+<span id="more"></span>
+<h2 id="policy-evaluation">Policy Evaluation</h2>
+<p>Policy Evaluation is the problem of computing the value function of a given policy <span class="math inline">\(\pi\)</span> (i.e. find <span class="math inline">\(V^{\pi}\)</span> or <span class="math inline">\(Q^{\pi}\)</span>). This is not the ultimate goal of an RL agent (Finding the optimal policy is the goal), but is often needed as an intermediate step in finding the optimal policy</p>
+<p>Given an MDP (<span class="math inline">\(X, A, P, R, \gamma\)</span>) and a policy <span class="math inline">\(\pi\)</span>, we would like to compute <span class="math inline">\(V^{\pi}, Q^{\pi}\)</span>:</p>
+<p><span class="math display">\[V^{\pi} (x) = E^{\pi}[\sum_{t=1}^{\infty} \gamma^{t-1} R_{t} | X_0 = x]\]</span></p>
+<p><em><img src='/images/RL/dp/tree_structure.png'></em></p>
+<h2 id="control">Control</h2>
+<p>Control is the problem of finding the optimal value function <span class="math inline">\(V^{*}, Q^{*}\)</span> or <span class="math inline">\(\pi^{*}\)</span></p>
 ]]></content>
+      <categories>
+        <category>RL</category>
+        <category>DP</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>Dynamic Programming</tag>
+      </tags>
   </entry>
   <entry>
     <title>GBDT</title>
@@ -2099,14 +2099,6 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
       </tags>
   </entry>
   <entry>
-    <title>importance_sampling (under construction)</title>
-    <url>/2021/05/21/importance-sampling/</url>
-    <content><![CDATA[<h1 id="importance-sampling">Importance Sampling</h1>
-<h1 id="ref">Ref</h1>
-<p>https://www.quora.com/Why-doesn-t-DQN-use-importance-sampling-Dont-we-always-use-this-method-to-correct-the-sampling-error-produced-by-the-off-policy https://danieltakeshi.github.io/2019/01/25/deep-learning-01/</p>
-]]></content>
-  </entry>
-  <entry>
     <title>Intrinsic Motivation</title>
     <url>/2021/06/25/instrinsic-motivation/</url>
     <content><![CDATA[<h1 id="intrinsically-motivated-reinforcement-learning">Intrinsically Motivated Reinforcement Learning</h1>
@@ -2176,6 +2168,14 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
       <tags>
         <tag>IM</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>importance_sampling (under construction)</title>
+    <url>/2021/05/21/importance-sampling/</url>
+    <content><![CDATA[<h1 id="importance-sampling">Importance Sampling</h1>
+<h1 id="ref">Ref</h1>
+<p>https://www.quora.com/Why-doesn-t-DQN-use-importance-sampling-Dont-we-always-use-this-method-to-correct-the-sampling-error-produced-by-the-off-policy https://danieltakeshi.github.io/2019/01/25/deep-learning-01/</p>
+]]></content>
   </entry>
   <entry>
     <title>k-means</title>
@@ -2500,54 +2500,6 @@ l(\boldsymbol{\theta}; \; D) &amp;= \sum^{N}_{i=1} y_i\log (p_i) + (1 - y_i) \lo
       </tags>
   </entry>
   <entry>
-    <title>Monte Carlo Estimation</title>
-    <url>/2021/05/15/mc/</url>
-    <content><![CDATA[<h1 id="learning-from-stream-of-data-monte-carlo-methods">Learning From Stream of Data (Monte Carlo Methods)</h1>
-<h2 id="mc-policy-evaluation">MC Policy Evaluation</h2>
-<p>The Goal is to learn or estimate the value function <span class="math inline">\(V^{\pi}\)</span> and <span class="math inline">\(Q^{\pi}\)</span> of a policy.</p>
-<p>Recall that:</p>
-<p><span class="math display">\[V^{\pi}(x) = E[G^{\pi}_{t} | X_t=x]\]</span></p>
-<p>This is the expected return starting from state <span class="math inline">\(x\)</span>. At the same time, obtain a sample from return <span class="math inline">\(G^{\pi}\)</span> is easy: if the agent starts at state <span class="math inline">\(x\)</span>, and follows <span class="math inline">\(\pi\)</span>, we can draw one sample of r.v <span class="math inline">\(G^{\pi}\)</span> by computing the cumulative sum of rewards collected during the episode starting from the state <span class="math inline">\(x\)</span>:</p>
-<p><span class="math display">\[\hat{G^{\pi}_{t}} = \sum^{\infty}_{k=t} \gamma^{k-t} R_{k}\]</span></p>
-<p>If we repeat this process from the same state, we get another draw of r.v <span class="math inline">\(G^{\pi}\)</span>, let us call these samples <span class="math inline">\(G^{\pi (1)} (x)\)</span>, <span class="math inline">\(G^{\pi (2)} (x)\)</span>, ...., <span class="math inline">\(G^{\pi (n)} (x)\)</span>. We can get an estimate <span class="math inline">\(\hat{V^{\pi}} (x)\)</span> of <span class="math inline">\(V^{\pi} (x)\)</span> by taking the average of the sample average:</p>
-<p><span class="math display">\[\hat{V^{\pi}} (x) = \frac{1}{n} \sum^{n}_{i=1} \hat{G}^{\pi(i)} (x)\]</span></p>
-<span id="more"></span>
-<p><img src="/images/RL/mc/mc_3.png"></p>
-<p>This follows by the <code>weak law of large number</code>, we can also estimate this expectation using Stochastic Approximation (SA) procedure to obtain an online fashion update:</p>
-<p><span class="math display">\[ \hat{V^{\pi}_{t+1}} (x) \leftarrow (1 - \alpha_t) \hat{V^{\pi}_{t}} (x) + \alpha_t G^{\pi (t)} (x)\]</span></p>
-<p><img src="/images/RL/mc/mc_2.png"></p>
-<h2 id="first-visit-and-every-visit-mc">First Visit and Every Visit MC</h2>
-<p>Above two algorithms are examples of first visit MC method. Each occurrence of state <span class="math inline">\(x\)</span> in an episode is called a visit to <span class="math inline">\(x\)</span>. Of course, <span class="math inline">\(x\)</span> may be visited multiple times in the same episode; let us call the first time it is visited in an episode the first visit to <span class="math inline">\(x\)</span>. The <code>first-visit MC method</code> estimates <span class="math inline">\(V^{\pi} (x)\)</span> as the average of the returns following first visits to <span class="math inline">\(x\)</span>, whereas the <code>every-visit MC method</code> averages the returns following all visits to <span class="math inline">\(x\)</span>.</p>
-<h1 id="mc-control">MC Control</h1>
-<h2 id="exploring-start">Exploring Start</h2>
-<p>The general idea of MC control is to use some version of Policy Iteration. If we run many rollouts from each state-action pair <span class="math inline">\((x, a)\)</span>, we can define <span class="math inline">\(\hat{Q^{\pi}_t}\)</span> that converges to <span class="math inline">\(Q^{\pi}\)</span>. If we wait for an infinite time:</p>
-<p><span class="math display">\[Q^{\pi}_{\infty} = lim_{t \rightarrow \infty} \hat{Q^{\pi}_{t}} = Q^{\pi}\]</span></p>
-<p>We can then choose:</p>
-<p><span class="math display">\[\pi^{\prime} \rightarrow \pi_g (\hat{Q^{\pi}_{\infty}})\]</span></p>
-<p>Then we repeat this process until convergence.</p>
-<p>However, we do not need to have a very accurate estimation of <span class="math inline">\(Q^{\pi_k}\)</span> before performing the policy improvement step. We can perform MC for a finite number of rollouts from each state, and then perform the improvement step. The below algorithms are MC control with Exploring Start, which assumes that for every state action pairs <span class="math inline">\((x, a)\)</span>, we have positive probability that we start at this state action pair.</p>
-<p><img src="/images/RL/mc/mc_1.png"></p>
-<p>or online version using exploring start:</p>
-<p><img src="/images/RL/mc/mc_5.png"></p>
-<p>We can see that all returns are cumulated and averaged irrespective which policy they follow, however, the algorithm can still converge to <span class="math inline">\(Q^{*}\)</span>:</p>
-<p><img src="/images/RL/mc/mc_6.png"></p>
-<h2 id="without-exploring-start">Without Exploring Start</h2>
-<p>Even though we are guaranteed to converge optimal action value function using MC with exploring start, however, this assumption of exploring start is unlike especially when state space and action space are large. To avoid this unlikely assumption, we can replace exploring start with <span class="math inline">\(\epsilon\)</span>-soft policies to ensure sufficient exploration or using off-policy algorithms.</p>
-<p><img src="/images/RL/mc/mc_7.png"></p>
-<h1 id="further">Further</h1>
-<p>In this post, we have some basic understanding of generic MC methods and basic framework of MC Policy evaluation and control. Next, we will explore some popular MC methods for solving control problems. We will see that MC methods can be generalized to both on-policy sampling scenario and off-policy sampling scenario.</p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>MC</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>MC</tag>
-        <tag>Tabular Methods</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Momentum</title>
     <url>/2021/07/29/momentum/</url>
     <content><![CDATA[<h1 id="momentum">Momentum</h1>
@@ -2588,6 +2540,12 @@ l(\boldsymbol{\theta}; \; D) &amp;= \sum^{N}_{i=1} y_i\log (p_i) + (1 - y_i) \lo
         <tag>Deep Learning</tag>
         <tag>Optimization</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>natural-actor-critic</title>
+    <url>/2021/06/03/natural-actor-critic/</url>
+    <content><![CDATA[
+]]></content>
   </entry>
   <entry>
     <title>Naive Bayes</title>
@@ -2686,16 +2644,52 @@ l(\boldsymbol{\theta}; \; D) &amp;= \sum^{N}_{i=1} y_i\log (p_i) + (1 - y_i) \lo
       </tags>
   </entry>
   <entry>
-    <title>off-policy-actor-critic</title>
-    <url>/2021/06/03/off-policy-actor-critic/</url>
-    <content><![CDATA[
+    <title>Monte Carlo Estimation</title>
+    <url>/2021/05/15/mc/</url>
+    <content><![CDATA[<h1 id="learning-from-stream-of-data-monte-carlo-methods">Learning From Stream of Data (Monte Carlo Methods)</h1>
+<h2 id="mc-policy-evaluation">MC Policy Evaluation</h2>
+<p>The Goal is to learn or estimate the value function <span class="math inline">\(V^{\pi}\)</span> and <span class="math inline">\(Q^{\pi}\)</span> of a policy.</p>
+<p>Recall that:</p>
+<p><span class="math display">\[V^{\pi}(x) = E[G^{\pi}_{t} | X_t=x]\]</span></p>
+<p>This is the expected return starting from state <span class="math inline">\(x\)</span>. At the same time, obtain a sample from return <span class="math inline">\(G^{\pi}\)</span> is easy: if the agent starts at state <span class="math inline">\(x\)</span>, and follows <span class="math inline">\(\pi\)</span>, we can draw one sample of r.v <span class="math inline">\(G^{\pi}\)</span> by computing the cumulative sum of rewards collected during the episode starting from the state <span class="math inline">\(x\)</span>:</p>
+<p><span class="math display">\[\hat{G^{\pi}_{t}} = \sum^{\infty}_{k=t} \gamma^{k-t} R_{k}\]</span></p>
+<p>If we repeat this process from the same state, we get another draw of r.v <span class="math inline">\(G^{\pi}\)</span>, let us call these samples <span class="math inline">\(G^{\pi (1)} (x)\)</span>, <span class="math inline">\(G^{\pi (2)} (x)\)</span>, ...., <span class="math inline">\(G^{\pi (n)} (x)\)</span>. We can get an estimate <span class="math inline">\(\hat{V^{\pi}} (x)\)</span> of <span class="math inline">\(V^{\pi} (x)\)</span> by taking the average of the sample average:</p>
+<p><span class="math display">\[\hat{V^{\pi}} (x) = \frac{1}{n} \sum^{n}_{i=1} \hat{G}^{\pi(i)} (x)\]</span></p>
+<span id="more"></span>
+<p><img src="/images/RL/mc/mc_3.png"></p>
+<p>This follows by the <code>weak law of large number</code>, we can also estimate this expectation using Stochastic Approximation (SA) procedure to obtain an online fashion update:</p>
+<p><span class="math display">\[ \hat{V^{\pi}_{t+1}} (x) \leftarrow (1 - \alpha_t) \hat{V^{\pi}_{t}} (x) + \alpha_t G^{\pi (t)} (x)\]</span></p>
+<p><img src="/images/RL/mc/mc_2.png"></p>
+<h2 id="first-visit-and-every-visit-mc">First Visit and Every Visit MC</h2>
+<p>Above two algorithms are examples of first visit MC method. Each occurrence of state <span class="math inline">\(x\)</span> in an episode is called a visit to <span class="math inline">\(x\)</span>. Of course, <span class="math inline">\(x\)</span> may be visited multiple times in the same episode; let us call the first time it is visited in an episode the first visit to <span class="math inline">\(x\)</span>. The <code>first-visit MC method</code> estimates <span class="math inline">\(V^{\pi} (x)\)</span> as the average of the returns following first visits to <span class="math inline">\(x\)</span>, whereas the <code>every-visit MC method</code> averages the returns following all visits to <span class="math inline">\(x\)</span>.</p>
+<h1 id="mc-control">MC Control</h1>
+<h2 id="exploring-start">Exploring Start</h2>
+<p>The general idea of MC control is to use some version of Policy Iteration. If we run many rollouts from each state-action pair <span class="math inline">\((x, a)\)</span>, we can define <span class="math inline">\(\hat{Q^{\pi}_t}\)</span> that converges to <span class="math inline">\(Q^{\pi}\)</span>. If we wait for an infinite time:</p>
+<p><span class="math display">\[Q^{\pi}_{\infty} = lim_{t \rightarrow \infty} \hat{Q^{\pi}_{t}} = Q^{\pi}\]</span></p>
+<p>We can then choose:</p>
+<p><span class="math display">\[\pi^{\prime} \rightarrow \pi_g (\hat{Q^{\pi}_{\infty}})\]</span></p>
+<p>Then we repeat this process until convergence.</p>
+<p>However, we do not need to have a very accurate estimation of <span class="math inline">\(Q^{\pi_k}\)</span> before performing the policy improvement step. We can perform MC for a finite number of rollouts from each state, and then perform the improvement step. The below algorithms are MC control with Exploring Start, which assumes that for every state action pairs <span class="math inline">\((x, a)\)</span>, we have positive probability that we start at this state action pair.</p>
+<p><img src="/images/RL/mc/mc_1.png"></p>
+<p>or online version using exploring start:</p>
+<p><img src="/images/RL/mc/mc_5.png"></p>
+<p>We can see that all returns are cumulated and averaged irrespective which policy they follow, however, the algorithm can still converge to <span class="math inline">\(Q^{*}\)</span>:</p>
+<p><img src="/images/RL/mc/mc_6.png"></p>
+<h2 id="without-exploring-start">Without Exploring Start</h2>
+<p>Even though we are guaranteed to converge optimal action value function using MC with exploring start, however, this assumption of exploring start is unlike especially when state space and action space are large. To avoid this unlikely assumption, we can replace exploring start with <span class="math inline">\(\epsilon\)</span>-soft policies to ensure sufficient exploration or using off-policy algorithms.</p>
+<p><img src="/images/RL/mc/mc_7.png"></p>
+<h1 id="further">Further</h1>
+<p>In this post, we have some basic understanding of generic MC methods and basic framework of MC Policy evaluation and control. Next, we will explore some popular MC methods for solving control problems. We will see that MC methods can be generalized to both on-policy sampling scenario and off-policy sampling scenario.</p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>natural-actor-critic</title>
-    <url>/2021/06/03/natural-actor-critic/</url>
-    <content><![CDATA[
-]]></content>
+      <categories>
+        <category>RL</category>
+        <category>MC</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>MC</tag>
+        <tag>Tabular Methods</tag>
+      </tags>
   </entry>
   <entry>
     <title>overfeat</title>
@@ -2770,92 +2764,10 @@ BB^T \mathbf{x} &amp;= \lambda \mathbf{x}\\
       </tags>
   </entry>
   <entry>
-    <title>Policy Gradient (3)</title>
-    <url>/2021/06/05/policy-gradient-3/</url>
-    <content><![CDATA[<h1 id="policy-search-methods-reinforce">Policy Search Methods (REINFORCE)</h1>
-<p>We already now that, if we have sampled from the correct distribution and have an estimate for <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>, we have an unbiased sample of the policy gradient (Discounted Setting):</p>
-<p><span class="math display">\[\gamma^{k} \nabla \log \pi_{\theta}(A | X) Q^{\pi_{\theta}} (X, A)\]</span></p>
-<p>The remaining issue is the computation of <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>. This is essentially a Policy Evaluation problem, and we may use various action-value function estimators.</p>
-<h2 id="reinforce">REINFORCE</h2>
-<p>A simple approach uses MC estimates to estimate <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>. This would lead to what is known as the REINFORCE algorithm:</p>
-<p>In the on-policy setting when agent follows <span class="math inline">\(\pi_{\theta}\)</span>:</p>
-<ul>
-<li>It generates the sequence <span class="math inline">\(X_1, A_1, R_1\)</span> with <span class="math inline">\(A_{t} \sim \pi_{\theta} (\cdot | X_t), X_t \sim \rho^{\pi_{\theta}}\)</span>.</li>
-<li>Then <span class="math inline">\(G_{t}^{\pi_{\theta}} = \sum_{k \geq t} \gamma^{k - t} R_{k}\)</span> is an unbiased estimator of <span class="math inline">\(Q^{\pi_{\theta}} (X_t, A_t)\)</span>.</li>
-<li>We replace the action-value function with the estimate.</li>
-<li>The return however has high variance even though it is unbiased.</li>
-<li>We can use a state dependent baseline function (usually the value function) to reduce the variance.</li>
-</ul>
-<p><img src='/images/RL/pg/pg_5.png' width="600"></p>
-<h2 id="implementation">Implementation</h2>
+    <title>off-policy-actor-critic</title>
+    <url>/2021/06/03/off-policy-actor-critic/</url>
+    <content><![CDATA[
 ]]></content>
-      <categories>
-        <category>RL</category>
-        <category>PG</category>
-      </categories>
-      <tags>
-        <tag>Policy Gradient</tag>
-        <tag>Continuous Action Space</tag>
-        <tag>Policy Search</tag>
-        <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Policy Gradient (1)</title>
-    <url>/2021/05/23/policy-gradient/</url>
-    <content><![CDATA[<h1 id="policy-search-methods-introduction">Policy Search Methods (Introduction)</h1>
-<p>So far, we have encountered methods for computing the optimal policy based on the computation of the value function. In this case, only value function was explicitly represented. There are also methods based on explicit representation of the policy and optimizing the performance of the agent by searching in the space of policies. These methods are called <strong>policy search methods</strong>.</p>
-<p>Consider a stochastic policy <span class="math inline">\(\pi_\theta: X \rightarrow M(A)\)</span> that maps state space to distribution defined over actions and parameterized by a <span class="math inline">\(\theta \in \Theta\)</span>. The set <span class="math inline">\(\Theta\)</span> is the parameter space. The space of all parameterized policies can be described as:</p>
-<p><span class="math display">\[\prod_\Theta = \{\pi_\theta: X \rightarrow M(A): \theta \in \Theta\}\]</span></p>
-<p>This space depends on the mapping <span class="math inline">\(\pi_\theta\)</span> and <span class="math inline">\(\Theta\)</span></p>
-<p>One example how we can parameterize policy by softmax distribution. Given a function mapping <span class="math inline">\(f_{\theta}: X \times A \rightarrow \mathbb{R}\)</span>, the probability of choosing action <span class="math inline">\(a\)</span> at state <span class="math inline">\(x\)</span> is:</p>
-<p><span class="math display">\[\pi_{\theta} (a | x) = \frac{exp(f_{\theta} (x, a))}{\sum_{a^{\prime}} exp(f_{\theta} (x, a^{\prime}))}\]</span></p>
-<p>or a normal distribution defined by <span class="math inline">\(\mu_\theta (x), \Sigma_\theta(x)\)</span>:</p>
-<p><span class="math display">\[\pi_{\theta} (\cdot | x) = N(\mu_\theta(x), \Sigma_{\theta} (x))\]</span></p>
-<span id="more"></span>
-<h2 id="why-parameterize-policy">Why Parameterize Policy?</h2>
-<p>Explicit parameterization of policy allows us to easily choose a continuous action. For example, if the policy is normal distribution defined over actions, we can just sample actions according to this distribution. For value based methods, this can be challenging:</p>
-<ul>
-<li>Even if we know <span class="math inline">\(Q^{*}\)</span>, computing the greedy policy is impossible over continuous action space.</li>
-<li>VI and PI requires repeated calculation of the greedy policy.</li>
-</ul>
-<h2 id="how-can-we-compare-policies">How Can We Compare Policies?</h2>
-<p>The performance can be measured in various ways. In VFA, we have bellman residuals, bellman errors, projected bellman errors and etc (But the ideas are all based on maximizing the expected return). In policy gradient methods, we also maximize the expected return following <span class="math inline">\(\pi_\theta\)</span>, at the same time, we incorporate the variance or some other risk measures.</p>
-<p><strong>Our goal is to find a policy that maximize this performance measure within the space of <span class="math inline">\(\prod_\Theta\)</span>.</strong></p>
-<h3 id="reasonable-choice-of-performance-measure">Reasonable Choice of Performance Measure</h3>
-<p>Assume that we only care about the performance at state <span class="math inline">\(x \in X\)</span> (We only care about one state). Then the goal of policy search:</p>
-<p><span class="math display">\[argmax_{\pi \in \prod_{\Theta}} V^{\pi} (x) = argmax_{\theta \in \Theta} V^{\pi_{\theta}} (x)\]</span></p>
-<p>In this case, we are interested only in state <span class="math inline">\(x\)</span>, its performance, measured according to its expected return, is maximized. We may want to find a policy that is only good at our starting state <span class="math inline">\(x\)</span> and ignore the performance at other states. The obtained policy is going to be initial-state-dependent. If we change <span class="math inline">\(x\)</span> to another state <span class="math inline">\(x^{\prime} \neq x\)</span>, we get a different optimal policy (according to this performance measure).</p>
-<p>Recall that, the optimal value function <span class="math inline">\(V^{*}\)</span> is optimal at every state. The optimal policy <span class="math inline">\(\pi^{*}\)</span> not only maximizes the value function at this particular state <span class="math inline">\(x\)</span>, but also at any other <span class="math inline">\(x^{\prime} \in X\)</span>. So, Instead of this extreme case of considering only the initial state <span class="math inline">\(x\)</span>, we can consider when the initial state is distributed according to some distribution <span class="math inline">\(\rho \sim M(X)\)</span> (This formulation is emphasized in the <a href="/2021/05/03/MDP/" title="MDP">MDP</a> blog, where trajectory starts by sampling from this initial distribution).</p>
-<p>The <strong>performance measure</strong> would be the average of following <span class="math inline">\(\pi_\theta\)</span> over initial state distribution <span class="math inline">\(X_1 \sim \rho\)</span>:</p>
-<p><span class="math display">\[J(\pi_\theta) = J_\rho(\pi_\theta) \triangleq \int_{x_1} V^{\pi_{\theta}} (x_1) d\rho(x_1) = E_{X_1 \sim \rho}[V^{\pi_{\theta}}(X_1)]\]</span></p>
-<p>In this case:</p>
-<ul>
-<li>The optimal policy maximizes <span class="math inline">\(J_\rho\)</span></li>
-<li><span class="math inline">\(J_\rho (\pi^*) \leq J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
-<li>If <span class="math inline">\(\pi^{*} \notin \prod_{\Theta}\)</span>, then <span class="math inline">\(J_\rho (\pi^*) &gt; J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
-</ul>
-<h2 id="goal">Goal</h2>
-<p>So, in policy search methods, we aim to find the policy that maximizes the performance measure within <span class="math inline">\(\prod_{\Theta}\)</span>:</p>
-<p><span class="math display">\[\bar{\pi} = argmax_{\pi_{\theta} \in \prod_{\Theta}} J_{\rho} (\pi_{\theta})\]</span></p>
-<ul>
-<li>The maximizer is denoted as <span class="math inline">\(\bar{\pi}\)</span> because the optimal policy <span class="math inline">\(\pi^{*}\)</span> may not lie in the space of <span class="math inline">\(\prod_{\Theta}\)</span></li>
-<li>For different <span class="math inline">\(\rho\)</span>, we may get different maximizes. However, if <span class="math inline">\(\pi^{*} \in \prod_{\Theta}\)</span>, <span class="math inline">\(\rho\)</span> does not matter.</li>
-<li>To emphasis the dependence of <span class="math inline">\(\bar{\pi}\)</span> on <span class="math inline">\(\rho\)</span>, <span class="math inline">\(\bar{\pi}_{\rho}\)</span> may be used.</li>
-<li>Sometimes, <span class="math inline">\(J(\pi(\theta))\)</span> or <span class="math inline">\(J_{\rho}(\pi_{\theta})\)</span> is denoted as <span class="math inline">\(J_{\rho} (\theta)\)</span> for simplification.</li>
-</ul>
-<h2 id="next-how-can-we-solve-for-barpi_rho">Next: How can we solve for <span class="math inline">\(\bar{\pi}_{\rho}\)</span>?</h2>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>PG</category>
-      </categories>
-      <tags>
-        <tag>Policy Gradient</tag>
-        <tag>Continuous Action Space</tag>
-        <tag>Policy Search</tag>
-        <tag>RL Basics</tag>
-      </tags>
   </entry>
   <entry>
     <title>Policy Iteration</title>
@@ -2937,6 +2849,37 @@ BB^T \mathbf{x} &amp;= \lambda \mathbf{x}\\
       </tags>
   </entry>
   <entry>
+    <title>Policy Gradient (3)</title>
+    <url>/2021/06/05/policy-gradient-3/</url>
+    <content><![CDATA[<h1 id="policy-search-methods-reinforce">Policy Search Methods (REINFORCE)</h1>
+<p>We already now that, if we have sampled from the correct distribution and have an estimate for <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>, we have an unbiased sample of the policy gradient (Discounted Setting):</p>
+<p><span class="math display">\[\gamma^{k} \nabla \log \pi_{\theta}(A | X) Q^{\pi_{\theta}} (X, A)\]</span></p>
+<p>The remaining issue is the computation of <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>. This is essentially a Policy Evaluation problem, and we may use various action-value function estimators.</p>
+<h2 id="reinforce">REINFORCE</h2>
+<p>A simple approach uses MC estimates to estimate <span class="math inline">\(Q^{\pi_{\theta}} (X, A)\)</span>. This would lead to what is known as the REINFORCE algorithm:</p>
+<p>In the on-policy setting when agent follows <span class="math inline">\(\pi_{\theta}\)</span>:</p>
+<ul>
+<li>It generates the sequence <span class="math inline">\(X_1, A_1, R_1\)</span> with <span class="math inline">\(A_{t} \sim \pi_{\theta} (\cdot | X_t), X_t \sim \rho^{\pi_{\theta}}\)</span>.</li>
+<li>Then <span class="math inline">\(G_{t}^{\pi_{\theta}} = \sum_{k \geq t} \gamma^{k - t} R_{k}\)</span> is an unbiased estimator of <span class="math inline">\(Q^{\pi_{\theta}} (X_t, A_t)\)</span>.</li>
+<li>We replace the action-value function with the estimate.</li>
+<li>The return however has high variance even though it is unbiased.</li>
+<li>We can use a state dependent baseline function (usually the value function) to reduce the variance.</li>
+</ul>
+<p><img src='/images/RL/pg/pg_5.png' width="600"></p>
+<h2 id="implementation">Implementation</h2>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>PG</category>
+      </categories>
+      <tags>
+        <tag>Policy Gradient</tag>
+        <tag>Continuous Action Space</tag>
+        <tag>Policy Search</tag>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Prioritized Experience Replay</title>
     <url>/2021/05/20/prior-exp-replay/</url>
     <content><![CDATA[<h1 id="prioritized-experience-replay">Prioritized Experience Replay</h1>
@@ -2993,6 +2936,63 @@ BB^T \mathbf{x} &amp;= \lambda \mathbf{x}\\
       </categories>
       <tags>
         <tag>Replay Memory</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Policy Gradient (1)</title>
+    <url>/2021/05/23/policy-gradient/</url>
+    <content><![CDATA[<h1 id="policy-search-methods-introduction">Policy Search Methods (Introduction)</h1>
+<p>So far, we have encountered methods for computing the optimal policy based on the computation of the value function. In this case, only value function was explicitly represented. There are also methods based on explicit representation of the policy and optimizing the performance of the agent by searching in the space of policies. These methods are called <strong>policy search methods</strong>.</p>
+<p>Consider a stochastic policy <span class="math inline">\(\pi_\theta: X \rightarrow M(A)\)</span> that maps state space to distribution defined over actions and parameterized by a <span class="math inline">\(\theta \in \Theta\)</span>. The set <span class="math inline">\(\Theta\)</span> is the parameter space. The space of all parameterized policies can be described as:</p>
+<p><span class="math display">\[\prod_\Theta = \{\pi_\theta: X \rightarrow M(A): \theta \in \Theta\}\]</span></p>
+<p>This space depends on the mapping <span class="math inline">\(\pi_\theta\)</span> and <span class="math inline">\(\Theta\)</span></p>
+<p>One example how we can parameterize policy by softmax distribution. Given a function mapping <span class="math inline">\(f_{\theta}: X \times A \rightarrow \mathbb{R}\)</span>, the probability of choosing action <span class="math inline">\(a\)</span> at state <span class="math inline">\(x\)</span> is:</p>
+<p><span class="math display">\[\pi_{\theta} (a | x) = \frac{exp(f_{\theta} (x, a))}{\sum_{a^{\prime}} exp(f_{\theta} (x, a^{\prime}))}\]</span></p>
+<p>or a normal distribution defined by <span class="math inline">\(\mu_\theta (x), \Sigma_\theta(x)\)</span>:</p>
+<p><span class="math display">\[\pi_{\theta} (\cdot | x) = N(\mu_\theta(x), \Sigma_{\theta} (x))\]</span></p>
+<span id="more"></span>
+<h2 id="why-parameterize-policy">Why Parameterize Policy?</h2>
+<p>Explicit parameterization of policy allows us to easily choose a continuous action. For example, if the policy is normal distribution defined over actions, we can just sample actions according to this distribution. For value based methods, this can be challenging:</p>
+<ul>
+<li>Even if we know <span class="math inline">\(Q^{*}\)</span>, computing the greedy policy is impossible over continuous action space.</li>
+<li>VI and PI requires repeated calculation of the greedy policy.</li>
+</ul>
+<h2 id="how-can-we-compare-policies">How Can We Compare Policies?</h2>
+<p>The performance can be measured in various ways. In VFA, we have bellman residuals, bellman errors, projected bellman errors and etc (But the ideas are all based on maximizing the expected return). In policy gradient methods, we also maximize the expected return following <span class="math inline">\(\pi_\theta\)</span>, at the same time, we incorporate the variance or some other risk measures.</p>
+<p><strong>Our goal is to find a policy that maximize this performance measure within the space of <span class="math inline">\(\prod_\Theta\)</span>.</strong></p>
+<h3 id="reasonable-choice-of-performance-measure">Reasonable Choice of Performance Measure</h3>
+<p>Assume that we only care about the performance at state <span class="math inline">\(x \in X\)</span> (We only care about one state). Then the goal of policy search:</p>
+<p><span class="math display">\[argmax_{\pi \in \prod_{\Theta}} V^{\pi} (x) = argmax_{\theta \in \Theta} V^{\pi_{\theta}} (x)\]</span></p>
+<p>In this case, we are interested only in state <span class="math inline">\(x\)</span>, its performance, measured according to its expected return, is maximized. We may want to find a policy that is only good at our starting state <span class="math inline">\(x\)</span> and ignore the performance at other states. The obtained policy is going to be initial-state-dependent. If we change <span class="math inline">\(x\)</span> to another state <span class="math inline">\(x^{\prime} \neq x\)</span>, we get a different optimal policy (according to this performance measure).</p>
+<p>Recall that, the optimal value function <span class="math inline">\(V^{*}\)</span> is optimal at every state. The optimal policy <span class="math inline">\(\pi^{*}\)</span> not only maximizes the value function at this particular state <span class="math inline">\(x\)</span>, but also at any other <span class="math inline">\(x^{\prime} \in X\)</span>. So, Instead of this extreme case of considering only the initial state <span class="math inline">\(x\)</span>, we can consider when the initial state is distributed according to some distribution <span class="math inline">\(\rho \sim M(X)\)</span> (This formulation is emphasized in the <a href="/2021/05/03/MDP/" title="MDP">MDP</a> blog, where trajectory starts by sampling from this initial distribution).</p>
+<p>The <strong>performance measure</strong> would be the average of following <span class="math inline">\(\pi_\theta\)</span> over initial state distribution <span class="math inline">\(X_1 \sim \rho\)</span>:</p>
+<p><span class="math display">\[J(\pi_\theta) = J_\rho(\pi_\theta) \triangleq \int_{x_1} V^{\pi_{\theta}} (x_1) d\rho(x_1) = E_{X_1 \sim \rho}[V^{\pi_{\theta}}(X_1)]\]</span></p>
+<p>In this case:</p>
+<ul>
+<li>The optimal policy maximizes <span class="math inline">\(J_\rho\)</span></li>
+<li><span class="math inline">\(J_\rho (\pi^*) \leq J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
+<li>If <span class="math inline">\(\pi^{*} \notin \prod_{\Theta}\)</span>, then <span class="math inline">\(J_\rho (\pi^*) &gt; J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
+</ul>
+<h2 id="goal">Goal</h2>
+<p>So, in policy search methods, we aim to find the policy that maximizes the performance measure within <span class="math inline">\(\prod_{\Theta}\)</span>:</p>
+<p><span class="math display">\[\bar{\pi} = argmax_{\pi_{\theta} \in \prod_{\Theta}} J_{\rho} (\pi_{\theta})\]</span></p>
+<ul>
+<li>The maximizer is denoted as <span class="math inline">\(\bar{\pi}\)</span> because the optimal policy <span class="math inline">\(\pi^{*}\)</span> may not lie in the space of <span class="math inline">\(\prod_{\Theta}\)</span></li>
+<li>For different <span class="math inline">\(\rho\)</span>, we may get different maximizes. However, if <span class="math inline">\(\pi^{*} \in \prod_{\Theta}\)</span>, <span class="math inline">\(\rho\)</span> does not matter.</li>
+<li>To emphasis the dependence of <span class="math inline">\(\bar{\pi}\)</span> on <span class="math inline">\(\rho\)</span>, <span class="math inline">\(\bar{\pi}_{\rho}\)</span> may be used.</li>
+<li>Sometimes, <span class="math inline">\(J(\pi(\theta))\)</span> or <span class="math inline">\(J_{\rho}(\pi_{\theta})\)</span> is denoted as <span class="math inline">\(J_{\rho} (\theta)\)</span> for simplification.</li>
+</ul>
+<h2 id="next-how-can-we-solve-for-barpi_rho">Next: How can we solve for <span class="math inline">\(\bar{\pi}_{\rho}\)</span>?</h2>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>PG</category>
+      </categories>
+      <tags>
+        <tag>Policy Gradient</tag>
+        <tag>Continuous Action Space</tag>
+        <tag>Policy Search</tag>
+        <tag>RL Basics</tag>
       </tags>
   </entry>
   <entry>
@@ -3142,6 +3142,78 @@ cov(\frac{\partial \log f_X(X;\boldsymbol{\theta})}{\partial \theta_j}, \frac{\p
       </tags>
   </entry>
   <entry>
+    <title>random_forests</title>
+    <url>/2021/07/19/random-forests/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
+    <title>SAC</title>
+    <url>/2021/07/22/sac/</url>
+    <content><![CDATA[<h1 id="soft-actor-critic-off-policy-maximum-entropy-deep-reinforcement-learning-with-a-stochastic-actor">Soft Actor-Critic: Off-Policy Maximum Entropy Deep Reinforcement Learning with a Stochastic Actor</h1>
+]]></content>
+  </entry>
+  <entry>
+    <title>SARSA</title>
+    <url>/2021/05/16/sarsa/</url>
+    <content><![CDATA[<h1 id="sarsa">SARSA</h1>
+<p>SARSA (State Action State Reward State Action) is an on-policy TD algorithm that follows a PI-like procedure:</p>
+<ol type="1">
+<li>Estimate <span class="math inline">\(Q^{\pi_k}\)</span> for a given policy <span class="math inline">\(\pi_k\)</span></li>
+<li>Perform policy improvement to obtain a new policy <span class="math inline">\(\pi_{k+1}\)</span></li>
+</ol>
+<p>Compare with usual Policy iteration, SARSA uses <code>Generalized policy iteration</code> to improve the policy before <span class="math inline">\(Q\)</span> converges to <span class="math inline">\(Q^{\pi_k}\)</span>.</p>
+<span id="more"></span>
+<h2 id="algorithm">Algorithm</h2>
+<p><img src="/images/RL/mc/td_6.png"></p>
+<p>Notice that, <span class="math inline">\(\pi_t\)</span> here is a <span class="math inline">\(\epsilon\)</span>-greedy policy because we want to ensure some exploration. The greedy part of the policy performs the policy improvement while the occasional random choice of actions allows the agent to have some exploration.</p>
+<h2 id="implementation">Implementation</h2>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>TD</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+        <tag>Tabular Methods</tag>
+        <tag>TD</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Search</title>
+    <url>/2021/06/13/search/</url>
+    <content><![CDATA[<h1 id="search">Search</h1>
+<h1 id="breath-first-search">Breath First Search</h1>
+<p>Breadth First Search (BFS) algorithm traverses a graph in a breadthward motion and uses a queue to remember to get the next vertex to start a search, when a dead end occurs in any iteration.</p>
+<p><img src="/images/algo/dfs_1.png" width="600px"></p>
+<p>As in the example given above, BFS algorithm traverses from A to B to E to F first then to C and G lastly to D. It employs the following rules:</p>
+<ul>
+<li>Visit the adjacent unvisited vertex. Mark it as visited. Display it. Insert it in a queue.</li>
+<li>If no adjacent vertex is found, remove the first vertex from the queue, and set this vertex as the head.</li>
+<li>Repeat Rule 1 and Rule 2 until the queue is empty.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BinaryTreeNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, key=<span class="literal">None</span>, parent=<span class="literal">None</span>, left_child=<span class="literal">None</span>, right_child=<span class="literal">None</span></span>):</span></span><br><span class="line">        self.key = key</span><br><span class="line">        self.parent = parent</span><br><span class="line">        self.left_child = left_child</span><br><span class="line">        self.right_child = right_child</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tree</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, tree=<span class="literal">None</span></span>):</span></span><br><span class="line">        self.root = tree</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bfs</span>(<span class="params">tree</span>):</span></span><br><span class="line">    <span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line">    q = deque()</span><br><span class="line">    q.append(tree)</span><br><span class="line">    <span class="keyword">while</span> q:</span><br><span class="line">        head = q.popleft()</span><br><span class="line">        <span class="built_in">print</span>(head.key)</span><br><span class="line">        <span class="keyword">if</span> head.left_child:</span><br><span class="line">            q.append(head.left_child)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">if</span> head.right_child:</span><br><span class="line">            q.append(head.right_child)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="depth-first-search">Depth First Search</h1>
+<p>Depth First Search (DFS) algorithm traverses a graph in a depthward motion and uses a stack to remember to get the next vertex to start a search, when a dead end occurs in any iteration.</p>
+<p><img src="/images/algo/dfs_2.png" width="600px"></p>
+<p>As in the example given above, DFS algorithm traverses from S to A to D to G to E to B first, then to F and lastly to C. It employs the following rules:</p>
+<ul>
+<li>Visit the adjacent unvisited vertex. Mark it as visited. Display it. Push it in a stack.</li>
+<li>If no adjacent vertex is found, pop up a vertex from the stack. (It will pop up all the vertices from the stack, which do not have adjacent vertices.)</li>
+<li>Repeat Rule 1 and Rule 2 until the stack is empty.</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dfs</span>(<span class="params">tree</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> tree.left_child <span class="keyword">and</span> <span class="keyword">not</span> tree.right_child:</span><br><span class="line">        <span class="built_in">print</span>(tree.key)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(tree.key)</span><br><span class="line">        <span class="keyword">if</span> tree.left_child:</span><br><span class="line">            dfs(tree.left_child)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> tree.right_child:</span><br><span class="line">            dfs(tree.right_child)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dfs_stack</span>(<span class="params">tree</span>):</span></span><br><span class="line">    stack = [tree]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        head = stack.pop()</span><br><span class="line">        <span class="built_in">print</span>(head.key)</span><br><span class="line">        <span class="keyword">if</span> head.right_child:</span><br><span class="line">            stack.append(head.right_child)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> head.left_child:</span><br><span class="line">            stack.append(head.left_child)</span><br></pre></td></tr></table></figure>
+<h1 id="reference">Reference</h1>
+<p>https://www.tutorialspoint.com/data_structures_algorithms/depth_first_traversal.htm</p>
+]]></content>
+      <categories>
+        <category>CS Basics</category>
+      </categories>
+      <tags>
+        <tag>Algorithms</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Q-Learning</title>
     <url>/2021/05/16/q-learning/</url>
     <content><![CDATA[<h1 id="temporal-difference-learning-for-control-q-learning">Temporal Difference Learning for Control: Q-Learning</h1>
@@ -3252,84 +3324,6 @@ Var[max_{a^{\prime} \in A} Q_t (X^{\prime}, a^{\prime}) | X_t=x_t, A_t=a_t] &amp
       </tags>
   </entry>
   <entry>
-    <title>random_forests</title>
-    <url>/2021/07/19/random-forests/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
-    <title>SARSA</title>
-    <url>/2021/05/16/sarsa/</url>
-    <content><![CDATA[<h1 id="sarsa">SARSA</h1>
-<p>SARSA (State Action State Reward State Action) is an on-policy TD algorithm that follows a PI-like procedure:</p>
-<ol type="1">
-<li>Estimate <span class="math inline">\(Q^{\pi_k}\)</span> for a given policy <span class="math inline">\(\pi_k\)</span></li>
-<li>Perform policy improvement to obtain a new policy <span class="math inline">\(\pi_{k+1}\)</span></li>
-</ol>
-<p>Compare with usual Policy iteration, SARSA uses <code>Generalized policy iteration</code> to improve the policy before <span class="math inline">\(Q\)</span> converges to <span class="math inline">\(Q^{\pi_k}\)</span>.</p>
-<span id="more"></span>
-<h2 id="algorithm">Algorithm</h2>
-<p><img src="/images/RL/mc/td_6.png"></p>
-<p>Notice that, <span class="math inline">\(\pi_t\)</span> here is a <span class="math inline">\(\epsilon\)</span>-greedy policy because we want to ensure some exploration. The greedy part of the policy performs the policy improvement while the occasional random choice of actions allows the agent to have some exploration.</p>
-<h2 id="implementation">Implementation</h2>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>TD</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-        <tag>Tabular Methods</tag>
-        <tag>TD</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SAC</title>
-    <url>/2021/07/22/sac/</url>
-    <content><![CDATA[<h1 id="soft-actor-critic-off-policy-maximum-entropy-deep-reinforcement-learning-with-a-stochastic-actor">Soft Actor-Critic: Off-Policy Maximum Entropy Deep Reinforcement Learning with a Stochastic Actor</h1>
-]]></content>
-  </entry>
-  <entry>
-    <title>Search</title>
-    <url>/2021/06/13/search/</url>
-    <content><![CDATA[<h1 id="search">Search</h1>
-<h1 id="breath-first-search">Breath First Search</h1>
-<p>Breadth First Search (BFS) algorithm traverses a graph in a breadthward motion and uses a queue to remember to get the next vertex to start a search, when a dead end occurs in any iteration.</p>
-<p><img src="/images/algo/dfs_1.png" width="600px"></p>
-<p>As in the example given above, BFS algorithm traverses from A to B to E to F first then to C and G lastly to D. It employs the following rules:</p>
-<ul>
-<li>Visit the adjacent unvisited vertex. Mark it as visited. Display it. Insert it in a queue.</li>
-<li>If no adjacent vertex is found, remove the first vertex from the queue, and set this vertex as the head.</li>
-<li>Repeat Rule 1 and Rule 2 until the queue is empty.</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BinaryTreeNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, key=<span class="literal">None</span>, parent=<span class="literal">None</span>, left_child=<span class="literal">None</span>, right_child=<span class="literal">None</span></span>):</span></span><br><span class="line">        self.key = key</span><br><span class="line">        self.parent = parent</span><br><span class="line">        self.left_child = left_child</span><br><span class="line">        self.right_child = right_child</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tree</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, tree=<span class="literal">None</span></span>):</span></span><br><span class="line">        self.root = tree</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bfs</span>(<span class="params">tree</span>):</span></span><br><span class="line">    <span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line">    q = deque()</span><br><span class="line">    q.append(tree)</span><br><span class="line">    <span class="keyword">while</span> q:</span><br><span class="line">        head = q.popleft()</span><br><span class="line">        <span class="built_in">print</span>(head.key)</span><br><span class="line">        <span class="keyword">if</span> head.left_child:</span><br><span class="line">            q.append(head.left_child)</span><br><span class="line">            </span><br><span class="line">        <span class="keyword">if</span> head.right_child:</span><br><span class="line">            q.append(head.right_child)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h1 id="depth-first-search">Depth First Search</h1>
-<p>Depth First Search (DFS) algorithm traverses a graph in a depthward motion and uses a stack to remember to get the next vertex to start a search, when a dead end occurs in any iteration.</p>
-<p><img src="/images/algo/dfs_2.png" width="600px"></p>
-<p>As in the example given above, DFS algorithm traverses from S to A to D to G to E to B first, then to F and lastly to C. It employs the following rules:</p>
-<ul>
-<li>Visit the adjacent unvisited vertex. Mark it as visited. Display it. Push it in a stack.</li>
-<li>If no adjacent vertex is found, pop up a vertex from the stack. (It will pop up all the vertices from the stack, which do not have adjacent vertices.)</li>
-<li>Repeat Rule 1 and Rule 2 until the stack is empty.</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dfs</span>(<span class="params">tree</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> tree.left_child <span class="keyword">and</span> <span class="keyword">not</span> tree.right_child:</span><br><span class="line">        <span class="built_in">print</span>(tree.key)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(tree.key)</span><br><span class="line">        <span class="keyword">if</span> tree.left_child:</span><br><span class="line">            dfs(tree.left_child)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> tree.right_child:</span><br><span class="line">            dfs(tree.right_child)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dfs_stack</span>(<span class="params">tree</span>):</span></span><br><span class="line">    stack = [tree]</span><br><span class="line">    <span class="keyword">while</span> stack:</span><br><span class="line">        head = stack.pop()</span><br><span class="line">        <span class="built_in">print</span>(head.key)</span><br><span class="line">        <span class="keyword">if</span> head.right_child:</span><br><span class="line">            stack.append(head.right_child)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> head.left_child:</span><br><span class="line">            stack.append(head.left_child)</span><br></pre></td></tr></table></figure>
-<h1 id="reference">Reference</h1>
-<p>https://www.tutorialspoint.com/data_structures_algorithms/depth_first_traversal.htm</p>
-]]></content>
-      <categories>
-        <category>CS Basics</category>
-      </categories>
-      <tags>
-        <tag>Algorithms</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>semi-mdp</title>
-    <url>/2021/06/28/semi-mdp/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
     <title>Sorts</title>
     <url>/2021/06/06/sort/</url>
     <content><![CDATA[<h1 id="sorts">Sorts</h1>
@@ -3414,6 +3408,12 @@ Var[max_{a^{\prime} \in A} Q_t (X^{\prime}, a^{\prime}) | X_t=x_t, A_t=a_t] &amp
       <tags>
         <tag>Algorithms</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>semi-mdp</title>
+    <url>/2021/06/28/semi-mdp/</url>
+    <content><![CDATA[
+]]></content>
   </entry>
   <entry>
     <title>Stochastic Graph</title>
@@ -3628,6 +3628,84 @@ E[\delta (X, R, X^{\prime}; V^{\pi}) | X=x, A=a] &amp;= E[R + \gamma V^{\pi}(X^{
       </tags>
   </entry>
   <entry>
+    <title>Trees</title>
+    <url>/2021/06/14/tree/</url>
+    <content><![CDATA[<h1 id="trees">Trees</h1>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BinaryTreeNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, key=<span class="literal">None</span>, left=<span class="literal">None</span>, right=<span class="literal">None</span>, p=<span class="literal">None</span></span>):</span></span><br><span class="line">        self.key = key</span><br><span class="line">        self.left = left</span><br><span class="line">        self.right = right</span><br><span class="line">        self.p = p</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BinarySearchTree</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, root=<span class="literal">None</span></span>):</span></span><br><span class="line">        self.root = root</span><br></pre></td></tr></table></figure>
+<h2 id="binary-search-tree">Binary Search Tree</h2>
+<p>A binary search tree node consists of:</p>
+<ol type="1">
+<li><span class="math inline">\(key: \;\)</span> value of the node</li>
+<li><span class="math inline">\(left: \;\)</span> left children</li>
+<li><span class="math inline">\(right: \;\)</span> right children</li>
+<li><span class="math inline">\(p: \;\)</span> parent</li>
+</ol>
+<p>If a child or the parent is missing, the appropriate attribute contains the value <code>None</code>. The root node is the only node in the tree whose parent is <code>None</code>.</p>
+<p>The keys in a binary search tree are always stored in such a way as to satisfy the <code>binary search tree property</code>:</p>
+<blockquote>
+<p>For any node <span class="math inline">\(x\)</span>, the keys in the left subtree of <span class="math inline">\(x\)</span> are at most <span class="math inline">\(x.key\)</span>, and the keys in the right subtree of <span class="math inline">\(x\)</span> are at least <span class="math inline">\(x.key\)</span>.</p>
+</blockquote>
+<p>The binary search tree property allows us to print out all the keys in a binary search tree in sorted order by <code>inorder tree walk</code> (Inorder traversal). This algorithm prints the key of the root of a subtree betweeen printing the values in its left subtree and printing those in its right subtree. Similarly, a <code>preorder tree walk</code> prints the root before the values in either subtree and a <code>postorder tree walk</code> prints the root after the values in its subtrees.</p>
+<h3 id="inorder-traversal">Inorder Traversal</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inorder_tree_walk</span>(<span class="params">tree</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inorder</span>(<span class="params">root</span>):</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        </span><br><span class="line">        inorder(root.left)</span><br><span class="line">        <span class="built_in">print</span>(root.val)</span><br><span class="line">        inorder(root.right)</span><br><span class="line">        </span><br><span class="line">    inorder(tree)</span><br></pre></td></tr></table></figure>
+<h3 id="preorder-traversal">Preorder Traversal</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">preorder_tree_walk</span>(<span class="params">tree</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">preorder</span>(<span class="params">root</span>):</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        </span><br><span class="line">        <span class="built_in">print</span>(root.val)</span><br><span class="line">        preorder(root.left)</span><br><span class="line">        preorder(root.right)</span><br><span class="line">        </span><br><span class="line">    preorder(tree)</span><br></pre></td></tr></table></figure>
+<h3 id="postorder-traversal">Postorder Traversal</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">postorder_tree_walk</span>(<span class="params">tree</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">postorder</span>(<span class="params">root</span>):</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        </span><br><span class="line">        postorder(root.left)</span><br><span class="line">        postorder(root.right)</span><br><span class="line">        <span class="built_in">print</span>(root.val)</span><br><span class="line">        </span><br><span class="line">    postorder(tree)</span><br></pre></td></tr></table></figure>
+<h3 id="search">Search</h3>
+<p>We use the following procedure to search for a node with a given key in a binary search tree. Given a pointer to the root of the tree and a key <span class="math inline">\(k\)</span>, it returns a pointer to a node with key <span class="math inline">\(k\)</span> if one exists, otherwise it returns <code>None</code>.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tree_search</span>(<span class="params">tree, k</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">search</span>(<span class="params">root, val</span>):</span></span><br><span class="line">        <span class="comment"># base case</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root <span class="keyword">or</span> root.key == val:</span><br><span class="line">            <span class="keyword">return</span> root</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> root.key &lt; val:</span><br><span class="line">            target = search(root.right, val)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            target = search(root.left, val)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> target</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> search(tree, k)</span><br></pre></td></tr></table></figure>
+<h3 id="minimum">Minimum</h3>
+<p>We can always find an element in a binary search tree whose key is a minimum by following <span class="math inline">\(left\)</span> child pointers from the root until we encounter a <code>None</code>. The following procedure returns a pointer to the minimum element in the subtree rooted at a given node <span class="math inline">\(x\)</span>:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tree_minimum</span>(<span class="params">tree</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">minimum</span>(<span class="params">root</span>):</span></span><br><span class="line">        <span class="comment"># base case</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root.left:</span><br><span class="line">            <span class="keyword">return</span> root</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> minimum(root.left)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> minimum(tree)</span><br></pre></td></tr></table></figure>
+<h3 id="maximum">Maximum</h3>
+<p>The maximum is symmetric as minimum:</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tree_maximum</span>(<span class="params">tree</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maximum</span>(<span class="params">root</span>):</span></span><br><span class="line">        <span class="comment"># base case</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root.right:</span><br><span class="line">            <span class="keyword">return</span> root</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> maximum(root.right)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> maximum(tree)</span><br></pre></td></tr></table></figure>
+<h3 id="successor-and-predecessor">Successor and Predecessor</h3>
+<p>Given a node in a binary search tree, sometimes we need to find its successor in the sorted order determined by an inorder tree walk. If all keys are distinct, the successor of a node <span class="math inline">\(x\)</span> is the node with the smallest key greater than <span class="math inline">\(x.key\)</span>. The procedure breaks into several cases:</p>
+<ol type="1">
+<li>If node <span class="math inline">\(x\)</span> has right subtree, then the successor must be the smallest element in the right subtree.</li>
+<li>If node <span class="math inline">\(x\)</span> does not have right subtree and itself is a leftsubtree of its parent, then the successor must be its parent.</li>
+<li>If node <span class="math inline">\(x\)</span> does not have right subtree and itself is a rightsubtree of its parent, then the successor must be the lowest ancestor of <span class="math inline">\(x\)</span> whose left child is also an ancestor of <span class="math inline">\(x\)</span>.</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tree_successor</span>(<span class="params">node</span>):</span></span><br><span class="line">    <span class="comment"># case 1</span></span><br><span class="line">    <span class="keyword">if</span> node.right:</span><br><span class="line">        <span class="keyword">return</span> tree_minimum(node)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># case 2, 3</span></span><br><span class="line">    curr_p = node.p</span><br><span class="line">    <span class="keyword">while</span> curr_p:</span><br><span class="line">        <span class="keyword">if</span> curr_p.left == node:</span><br><span class="line">            <span class="keyword">return</span> curr_p</span><br><span class="line">        </span><br><span class="line">        node = curr_p</span><br><span class="line">        curr_p = node.p</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+<p><strong>Predecessor is symmetric</strong></p>
+<h3 id="insertion">Insertion</h3>
+<p>To insert a new node <span class="math inline">\(z\)</span> into a binary search tree <span class="math inline">\(T\)</span> we use the following procedure:</p>
+<ol type="1">
+<li>Begin at root of the tree, we maintain two pointers <span class="math inline">\(y, x\)</span> representing parent and current node respectively.</li>
+<li>Go down the tree and compare every node encounter with <span class="math inline">\(z\)</span>, if it is greater than <span class="math inline">\(z\)</span> we go to the left, if smaller we go to the right, until we reach <code>None</code>.</li>
+<li>We replace <span class="math inline">\(y.left\)</span> or <span class="math inline">\(y.right\)</span> with <span class="math inline">\(x\)</span> and fill <span class="math inline">\(z.p = y\)</span>.</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tree_insert</span>(<span class="params">T, z</span>):</span></span><br><span class="line">    <span class="comment"># initialize y, x representing parent and current node</span></span><br><span class="line">    y, x = <span class="literal">None</span>, T</span><br><span class="line">    <span class="comment"># step 2</span></span><br><span class="line">    <span class="keyword">while</span> x:</span><br><span class="line">        y = x</span><br><span class="line">        <span class="keyword">if</span> z.key &lt; x.key:</span><br><span class="line">            x = x.left</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            x = x.right</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># step 3</span></span><br><span class="line">    z.p = y</span><br><span class="line">    <span class="comment"># if tree is empty</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> y:</span><br><span class="line">        T.root = z</span><br><span class="line">    <span class="keyword">elif</span> z.key &lt; y.key:</span><br><span class="line">        y.left = z</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        y.right = z</span><br></pre></td></tr></table></figure>
+<h3 id="deletion">Deletion</h3>
+<p>The overall strategy for deleting a node <span class="math inline">\(z\)</span> from a binary search tree <span class="math inline">\(T\)</span> has three basic cases:</p>
+<ol type="1">
+<li>If <span class="math inline">\(z\)</span> has no children, then we can simply remove it by modifying its parent to replace <span class="math inline">\(z\)</span> with <code>None</code> as its child.</li>
+<li>If <span class="math inline">\(z\)</span> has just on child, then we elevate that child to take <span class="math inline">\(z\)</span>'s position in the tree by modifying <span class="math inline">\(z\)</span>'s parent to replace <span class="math inline">\(z\)</span> by <span class="math inline">\(z\)</span>'s child.</li>
+<li>If <span class="math inline">\(z\)</span> has two children, then we find <span class="math inline">\(z\)</span>'s successor <span class="math inline">\(y\)</span> which must be the minimum item in <span class="math inline">\(z\)</span>'s right subtree (with no left child). Now have two cases:
+<ol type="1">
+<li>If <span class="math inline">\(y\)</span> is <span class="math inline">\(z\)</span>'s right child: We replace <span class="math inline">\(z\)</span> by <span class="math inline">\(y\)</span> and <span class="math inline">\(z\)</span>'s left child becomes <span class="math inline">\(y\)</span>'s left child.</li>
+<li>If <span class="math inline">\(y\)</span> is not <span class="math inline">\(z\)</span>'s right child: We first replace <span class="math inline">\(y\)</span> by its right child, then we replace <span class="math inline">\(z\)</span> by <span class="math inline">\(y\)</span></li>
+</ol></li>
+</ol>
+<p><br></p>
+<p>In order to move subtrees around, we define a helper function <code>transplant</code> that replaces the subtree rooted at node <span class="math inline">\(u\)</span> with the subtree rooted at node <span class="math inline">\(v\)</span>.</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">transplant</span>(<span class="params">T, u, v</span>):</span></span><br><span class="line">    <span class="comment"># if u is the root</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> u.p:</span><br><span class="line">        T.root = v</span><br><span class="line">    <span class="keyword">elif</span> u.p.left == u:</span><br><span class="line">        u.p.left = v</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        u.p.right = v</span><br><span class="line"></span><br><span class="line">    <span class="comment"># replace v with u</span></span><br><span class="line">    <span class="keyword">if</span> v:</span><br><span class="line">        v.p = u.p</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tree_delete</span>(<span class="params">T, z</span>):</span></span><br><span class="line">    <span class="comment"># case 1</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> z.left <span class="keyword">and</span> <span class="keyword">not</span> z.right:</span><br><span class="line">        transplant(T, z, <span class="literal">None</span>)</span><br><span class="line">    <span class="comment"># case 2</span></span><br><span class="line">    <span class="keyword">elif</span> <span class="keyword">not</span> z.left <span class="keyword">and</span> z.right:</span><br><span class="line">        transplant(T, z, z.right)</span><br><span class="line">    <span class="keyword">elif</span> <span class="keyword">not</span> z.right <span class="keyword">and</span> z.left:</span><br><span class="line">        transplant(T, z, z.left)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        y = tree_successor(z)</span><br><span class="line">        <span class="comment"># case 3.2</span></span><br><span class="line">        <span class="keyword">if</span> z.right != y:</span><br><span class="line">            transplant(T, y, y.right)</span><br><span class="line">            y.right = z.right</span><br><span class="line">            y.right.p = y</span><br><span class="line">            </span><br><span class="line">        transplant(T, z, y)</span><br><span class="line">        y.left = z.left</span><br><span class="line">        y.left.p = y</span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+<h3 id="complexcity">Complexcity</h3>
+<ul>
+<li>Tree walks: <span class="math inline">\(\; \Theta(n)\)</span></li>
+<li>Search, Minimum, Maximum, Successor, Predecessor, Insert, Delete: <span class="math inline">\(\; O(h)\)</span></li>
+</ul>
+]]></content>
+      <categories>
+        <category>CS Basics</category>
+      </categories>
+      <tags>
+        <tag>Data Structure</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>td3</title>
     <url>/2021/06/23/td3/</url>
     <content><![CDATA[<h1 id="addressing-function-approximation-error-in-actor-critic-methods">Addressing Function Approximation Error in Actor-Critic Methods</h1>
@@ -3743,84 +3821,6 @@ Q_{\theta} (s_t, a_t) &amp;= r_t + \gamma E[Q_{\theta} (s_{t+1}, a_{t+1}) | s_t,
         <tag>Policy Gradient</tag>
         <tag>Continuous Action Space</tag>
         <tag>Policy Search</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Trees</title>
-    <url>/2021/06/14/tree/</url>
-    <content><![CDATA[<h1 id="trees">Trees</h1>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BinaryTreeNode</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, key=<span class="literal">None</span>, left=<span class="literal">None</span>, right=<span class="literal">None</span>, p=<span class="literal">None</span></span>):</span></span><br><span class="line">        self.key = key</span><br><span class="line">        self.left = left</span><br><span class="line">        self.right = right</span><br><span class="line">        self.p = p</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BinarySearchTree</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, root=<span class="literal">None</span></span>):</span></span><br><span class="line">        self.root = root</span><br></pre></td></tr></table></figure>
-<h2 id="binary-search-tree">Binary Search Tree</h2>
-<p>A binary search tree node consists of:</p>
-<ol type="1">
-<li><span class="math inline">\(key: \;\)</span> value of the node</li>
-<li><span class="math inline">\(left: \;\)</span> left children</li>
-<li><span class="math inline">\(right: \;\)</span> right children</li>
-<li><span class="math inline">\(p: \;\)</span> parent</li>
-</ol>
-<p>If a child or the parent is missing, the appropriate attribute contains the value <code>None</code>. The root node is the only node in the tree whose parent is <code>None</code>.</p>
-<p>The keys in a binary search tree are always stored in such a way as to satisfy the <code>binary search tree property</code>:</p>
-<blockquote>
-<p>For any node <span class="math inline">\(x\)</span>, the keys in the left subtree of <span class="math inline">\(x\)</span> are at most <span class="math inline">\(x.key\)</span>, and the keys in the right subtree of <span class="math inline">\(x\)</span> are at least <span class="math inline">\(x.key\)</span>.</p>
-</blockquote>
-<p>The binary search tree property allows us to print out all the keys in a binary search tree in sorted order by <code>inorder tree walk</code> (Inorder traversal). This algorithm prints the key of the root of a subtree betweeen printing the values in its left subtree and printing those in its right subtree. Similarly, a <code>preorder tree walk</code> prints the root before the values in either subtree and a <code>postorder tree walk</code> prints the root after the values in its subtrees.</p>
-<h3 id="inorder-traversal">Inorder Traversal</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inorder_tree_walk</span>(<span class="params">tree</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inorder</span>(<span class="params">root</span>):</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        </span><br><span class="line">        inorder(root.left)</span><br><span class="line">        <span class="built_in">print</span>(root.val)</span><br><span class="line">        inorder(root.right)</span><br><span class="line">        </span><br><span class="line">    inorder(tree)</span><br></pre></td></tr></table></figure>
-<h3 id="preorder-traversal">Preorder Traversal</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">preorder_tree_walk</span>(<span class="params">tree</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">preorder</span>(<span class="params">root</span>):</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        </span><br><span class="line">        <span class="built_in">print</span>(root.val)</span><br><span class="line">        preorder(root.left)</span><br><span class="line">        preorder(root.right)</span><br><span class="line">        </span><br><span class="line">    preorder(tree)</span><br></pre></td></tr></table></figure>
-<h3 id="postorder-traversal">Postorder Traversal</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">postorder_tree_walk</span>(<span class="params">tree</span>):</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">postorder</span>(<span class="params">root</span>):</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        </span><br><span class="line">        postorder(root.left)</span><br><span class="line">        postorder(root.right)</span><br><span class="line">        <span class="built_in">print</span>(root.val)</span><br><span class="line">        </span><br><span class="line">    postorder(tree)</span><br></pre></td></tr></table></figure>
-<h3 id="search">Search</h3>
-<p>We use the following procedure to search for a node with a given key in a binary search tree. Given a pointer to the root of the tree and a key <span class="math inline">\(k\)</span>, it returns a pointer to a node with key <span class="math inline">\(k\)</span> if one exists, otherwise it returns <code>None</code>.</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tree_search</span>(<span class="params">tree, k</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">search</span>(<span class="params">root, val</span>):</span></span><br><span class="line">        <span class="comment"># base case</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root <span class="keyword">or</span> root.key == val:</span><br><span class="line">            <span class="keyword">return</span> root</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> root.key &lt; val:</span><br><span class="line">            target = search(root.right, val)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            target = search(root.left, val)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> target</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> search(tree, k)</span><br></pre></td></tr></table></figure>
-<h3 id="minimum">Minimum</h3>
-<p>We can always find an element in a binary search tree whose key is a minimum by following <span class="math inline">\(left\)</span> child pointers from the root until we encounter a <code>None</code>. The following procedure returns a pointer to the minimum element in the subtree rooted at a given node <span class="math inline">\(x\)</span>:</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tree_minimum</span>(<span class="params">tree</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">minimum</span>(<span class="params">root</span>):</span></span><br><span class="line">        <span class="comment"># base case</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root.left:</span><br><span class="line">            <span class="keyword">return</span> root</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> minimum(root.left)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> minimum(tree)</span><br></pre></td></tr></table></figure>
-<h3 id="maximum">Maximum</h3>
-<p>The maximum is symmetric as minimum:</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tree_maximum</span>(<span class="params">tree</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">maximum</span>(<span class="params">root</span>):</span></span><br><span class="line">        <span class="comment"># base case</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root.right:</span><br><span class="line">            <span class="keyword">return</span> root</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> maximum(root.right)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> maximum(tree)</span><br></pre></td></tr></table></figure>
-<h3 id="successor-and-predecessor">Successor and Predecessor</h3>
-<p>Given a node in a binary search tree, sometimes we need to find its successor in the sorted order determined by an inorder tree walk. If all keys are distinct, the successor of a node <span class="math inline">\(x\)</span> is the node with the smallest key greater than <span class="math inline">\(x.key\)</span>. The procedure breaks into several cases:</p>
-<ol type="1">
-<li>If node <span class="math inline">\(x\)</span> has right subtree, then the successor must be the smallest element in the right subtree.</li>
-<li>If node <span class="math inline">\(x\)</span> does not have right subtree and itself is a leftsubtree of its parent, then the successor must be its parent.</li>
-<li>If node <span class="math inline">\(x\)</span> does not have right subtree and itself is a rightsubtree of its parent, then the successor must be the lowest ancestor of <span class="math inline">\(x\)</span> whose left child is also an ancestor of <span class="math inline">\(x\)</span>.</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tree_successor</span>(<span class="params">node</span>):</span></span><br><span class="line">    <span class="comment"># case 1</span></span><br><span class="line">    <span class="keyword">if</span> node.right:</span><br><span class="line">        <span class="keyword">return</span> tree_minimum(node)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># case 2, 3</span></span><br><span class="line">    curr_p = node.p</span><br><span class="line">    <span class="keyword">while</span> curr_p:</span><br><span class="line">        <span class="keyword">if</span> curr_p.left == node:</span><br><span class="line">            <span class="keyword">return</span> curr_p</span><br><span class="line">        </span><br><span class="line">        node = curr_p</span><br><span class="line">        curr_p = node.p</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
-<p><strong>Predecessor is symmetric</strong></p>
-<h3 id="insertion">Insertion</h3>
-<p>To insert a new node <span class="math inline">\(z\)</span> into a binary search tree <span class="math inline">\(T\)</span> we use the following procedure:</p>
-<ol type="1">
-<li>Begin at root of the tree, we maintain two pointers <span class="math inline">\(y, x\)</span> representing parent and current node respectively.</li>
-<li>Go down the tree and compare every node encounter with <span class="math inline">\(z\)</span>, if it is greater than <span class="math inline">\(z\)</span> we go to the left, if smaller we go to the right, until we reach <code>None</code>.</li>
-<li>We replace <span class="math inline">\(y.left\)</span> or <span class="math inline">\(y.right\)</span> with <span class="math inline">\(x\)</span> and fill <span class="math inline">\(z.p = y\)</span>.</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tree_insert</span>(<span class="params">T, z</span>):</span></span><br><span class="line">    <span class="comment"># initialize y, x representing parent and current node</span></span><br><span class="line">    y, x = <span class="literal">None</span>, T</span><br><span class="line">    <span class="comment"># step 2</span></span><br><span class="line">    <span class="keyword">while</span> x:</span><br><span class="line">        y = x</span><br><span class="line">        <span class="keyword">if</span> z.key &lt; x.key:</span><br><span class="line">            x = x.left</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            x = x.right</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># step 3</span></span><br><span class="line">    z.p = y</span><br><span class="line">    <span class="comment"># if tree is empty</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> y:</span><br><span class="line">        T.root = z</span><br><span class="line">    <span class="keyword">elif</span> z.key &lt; y.key:</span><br><span class="line">        y.left = z</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        y.right = z</span><br></pre></td></tr></table></figure>
-<h3 id="deletion">Deletion</h3>
-<p>The overall strategy for deleting a node <span class="math inline">\(z\)</span> from a binary search tree <span class="math inline">\(T\)</span> has three basic cases:</p>
-<ol type="1">
-<li>If <span class="math inline">\(z\)</span> has no children, then we can simply remove it by modifying its parent to replace <span class="math inline">\(z\)</span> with <code>None</code> as its child.</li>
-<li>If <span class="math inline">\(z\)</span> has just on child, then we elevate that child to take <span class="math inline">\(z\)</span>'s position in the tree by modifying <span class="math inline">\(z\)</span>'s parent to replace <span class="math inline">\(z\)</span> by <span class="math inline">\(z\)</span>'s child.</li>
-<li>If <span class="math inline">\(z\)</span> has two children, then we find <span class="math inline">\(z\)</span>'s successor <span class="math inline">\(y\)</span> which must be the minimum item in <span class="math inline">\(z\)</span>'s right subtree (with no left child). Now have two cases:
-<ol type="1">
-<li>If <span class="math inline">\(y\)</span> is <span class="math inline">\(z\)</span>'s right child: We replace <span class="math inline">\(z\)</span> by <span class="math inline">\(y\)</span> and <span class="math inline">\(z\)</span>'s left child becomes <span class="math inline">\(y\)</span>'s left child.</li>
-<li>If <span class="math inline">\(y\)</span> is not <span class="math inline">\(z\)</span>'s right child: We first replace <span class="math inline">\(y\)</span> by its right child, then we replace <span class="math inline">\(z\)</span> by <span class="math inline">\(y\)</span></li>
-</ol></li>
-</ol>
-<p><br></p>
-<p>In order to move subtrees around, we define a helper function <code>transplant</code> that replaces the subtree rooted at node <span class="math inline">\(u\)</span> with the subtree rooted at node <span class="math inline">\(v\)</span>.</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">transplant</span>(<span class="params">T, u, v</span>):</span></span><br><span class="line">    <span class="comment"># if u is the root</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> u.p:</span><br><span class="line">        T.root = v</span><br><span class="line">    <span class="keyword">elif</span> u.p.left == u:</span><br><span class="line">        u.p.left = v</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        u.p.right = v</span><br><span class="line"></span><br><span class="line">    <span class="comment"># replace v with u</span></span><br><span class="line">    <span class="keyword">if</span> v:</span><br><span class="line">        v.p = u.p</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tree_delete</span>(<span class="params">T, z</span>):</span></span><br><span class="line">    <span class="comment"># case 1</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> z.left <span class="keyword">and</span> <span class="keyword">not</span> z.right:</span><br><span class="line">        transplant(T, z, <span class="literal">None</span>)</span><br><span class="line">    <span class="comment"># case 2</span></span><br><span class="line">    <span class="keyword">elif</span> <span class="keyword">not</span> z.left <span class="keyword">and</span> z.right:</span><br><span class="line">        transplant(T, z, z.right)</span><br><span class="line">    <span class="keyword">elif</span> <span class="keyword">not</span> z.right <span class="keyword">and</span> z.left:</span><br><span class="line">        transplant(T, z, z.left)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        y = tree_successor(z)</span><br><span class="line">        <span class="comment"># case 3.2</span></span><br><span class="line">        <span class="keyword">if</span> z.right != y:</span><br><span class="line">            transplant(T, y, y.right)</span><br><span class="line">            y.right = z.right</span><br><span class="line">            y.right.p = y</span><br><span class="line">            </span><br><span class="line">        transplant(T, z, y)</span><br><span class="line">        y.left = z.left</span><br><span class="line">        y.left.p = y</span><br><span class="line">    </span><br></pre></td></tr></table></figure>
-<h3 id="complexcity">Complexcity</h3>
-<ul>
-<li>Tree walks: <span class="math inline">\(\; \Theta(n)\)</span></li>
-<li>Search, Minimum, Maximum, Successor, Predecessor, Insert, Delete: <span class="math inline">\(\; O(h)\)</span></li>
-</ul>
-]]></content>
-      <categories>
-        <category>CS Basics</category>
-      </categories>
-      <tags>
-        <tag>Data Structure</tag>
       </tags>
   </entry>
   <entry>
