@@ -84,7 +84,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">76</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">77</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">14</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">24</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -159,7 +159,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-count">77</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -212,6 +212,140 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/06/11/PPO/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/11/PPO/" class="post-title-link" itemprop="url">PPO</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-06-11 14:56:13" itemprop="dateCreated datePublished" datetime="2021-06-11T14:56:13+08:00">2021-06-11</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-18 17:16:55" itemprop="dateModified" datetime="2021-06-18T17:16:55+08:00">2021-06-18</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/PG/" itemprop="url" rel="index"><span itemprop="name">PG</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="firestore-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>9.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>8 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="proximal-policy-optimization-algorithms">Proximal Policy Optimization Algorithms</h1>
+<h2 id="notations-and-backgrounds">Notations and Backgrounds</h2>
+<h3 id="policy-gradient-estimator">Policy gradient estimator</h3>
+<p><span class="math display">\[\hat{g} = \hat{E}_t [\nabla_{\theta} \log \pi_{\theta} (a_t | s_t) \hat{A_t}]\]</span></p>
+<p>Where, <span class="math inline">\(\pi_{\theta}\)</span> is the stochastic policy and <span class="math inline">\(\hat{A_t}\)</span> is an estimate of advantage function at timestep <span class="math inline">\(t\)</span>. The expectation here <span class="math inline">\(\hat{E}_t\)</span> indicates the empirical average over a finite batch of samples, in an algorithm that alternates between sampling and optimization.</p>
+<p><span class="math inline">\(\hat{g}\)</span> is obtained by differentiating the objective</p>
+<p><span class="math display">\[L^{PG} (\theta) = \hat{E}_t [\log \pi_{\theta} (a_t | s_t) \hat{A_t}]\]</span></p>
+<p>While it is appealing to perform multiple steps of optimization on this loss <span class="math inline">\(L^{PG} (\theta)\)</span> (reuse the same samples to update <span class="math inline">\(\theta\)</span>), using the same trajectory, doing so is not well-justi ed, and empirically it often leads to destructively large policy updates.</p>
+<h3 id="trust-region-methods">Trust Region Methods</h3>
+<p>The optimization problem is defined as:</p>
+<span class="math display">\[\begin{aligned}
+\max_{\theta} \quad &amp; \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim \pi_{\theta_{old}}(\cdot | s)} [\frac{\pi_{\theta} (a | s)}{\pi_{\theta_{old}} (a | s)} \hat{A}_{\theta_{old}} (s, a)]\\
+\textrm{s.t.} \quad &amp; \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot)}[D_{KL} (\pi_{\theta_{old}} (\cdot | s) || \pi_{\theta} (\cdot | s))] \leq \delta
+\end{aligned}\]</span>
+<p></br></p>
+<p>It is also possible to remove the hard constraint and convert the problem to an unconstrained objective:</p>
+<span class="math display">\[\begin{aligned}
+\max_{\theta} \quad &amp; \hat{E}_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim \pi_{\theta_{old}}(\cdot | s)} [\frac{\pi_{\theta} (a | s)}{\pi_{\theta_{old}} (a | s)} \hat{A}_{\theta_{old}} (s, a) - \beta D_{KL}[\pi_{\theta_{old}} (\cdot | s) || \pi_{\theta} (\cdot | s))]]\\
+\end{aligned}\]</span>
+<p></br></p>
+<p>The problem with this objective is that, the penalty prefers small steps, so it is very hard to choose an appropriate <span class="math inline">\(\beta\)</span> that performs well across different problems or even within a single problem where the characteristics change over the course of learning.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/11/PPO/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1235,132 +1369,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/05/30/policy-gradient-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/30/policy-gradient-2/" class="post-title-link" itemprop="url">Policy Gradient (2)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-05-30 15:03:48" itemprop="dateCreated datePublished" datetime="2021-05-30T15:03:48+08:00">2021-05-30</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-24 19:13:25" itemprop="dateModified" datetime="2021-06-24T19:13:25+08:00">2021-06-24</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/PG/" itemprop="url" rel="index"><span itemprop="name">PG</span></a>
-        </span>
-    </span>
-
-  
-    <span class="post-meta-item" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="firestore-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>20k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>18 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="policy-search-methods-policy-gradient">Policy Search Methods (Policy Gradient)</h1>
-<p><span style="color:red"><em>All <span class="math inline">\(\nabla\)</span> refer to <span class="math inline">\(\nabla_{\theta}\)</span> for simplicity.</em></span></p>
-<p>From <a href="/2021/05/23/policy-gradient/" title="introduction">introduction</a> blog, our goal:</p>
-<p><span class="math display">\[\underset{\pi_{\theta}}{\operatorname{maximize}} J_\rho(\pi_\theta) = \underset{\theta}{\operatorname{maximize}} J_\rho(\pi_\theta)\]</span></p>
-<p>By taking the gradient w.r.t <span class="math inline">\(\theta\)</span>, we have:</p>
-<span class="math display">\[\begin{aligned}
-\nabla J_\rho(\pi_\theta) &amp;= \nabla E_{X_1 \sim \rho} [V^{\pi_\theta} (X_1)]\\
-&amp;= \nabla \int_{x_1}\int_{a} [r(x_1, a) \pi_{\theta} (a | x_1) da dx_1 + \int_{x^{\prime}} P(x^{\prime} | x_1, a) \pi_{\theta}(a | x_1) V^{\pi_\theta}(x^{\prime})dx^{\prime} da dx_1]\\
-&amp;= \nabla \int_{a} \int_{x_1} \int_{x^{\prime}} \pi_{\theta}(a | x_1) [r(x_1, a) + P(x^{\prime} | x_1, a) V^{\pi_\theta}(x^{\prime})]dx^{\prime} da dx_1 \\
-&amp;= \int_{x_1} \int_{a} \int_{x^{\prime}} \nabla [\pi_{\theta}(a | x_1) (r(x_1, a) + P(x^{\prime} | x_1, a) V^{\pi_\theta}(x^{\prime}))]dx^{\prime} da dx_1 \\
-\end{aligned}\]</span>
-<p>We can swap integral and derivative as long as <span class="math inline">\(V^{\pi_{\theta}}\)</span> is a continuous function of <span class="math inline">\(\theta\)</span>, the estimator of this expectation is called <code>pathwise derivative estimator</code> or <code>stochastic backpropagation estimator</code> (more details in <a href="/2021/05/27/stochastic-graph/" title="Stochastic Graph">Stochastic Graph</a>).</p>
-<p>This <span class="math inline">\(\nabla J_\rho(\pi_\theta)\)</span> is called the <strong>Policy Gradient</strong>. In ideal case, if we know the policy gradient (i.e if we know the environment dynamics <span class="math inline">\(P, R\)</span>), we can use gradient ascent to update the parameters <span class="math inline">\(\theta\)</span>.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/05/30/policy-gradient-2/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1385,13 +1393,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">420k</span>
+    <span title="Symbols count total">429k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:22</span>
+    <span title="Reading time total">6:30</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
