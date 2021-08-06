@@ -1,57 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>DDQN</title>
-    <url>/2021/05/07/DDQN/</url>
-    <content><![CDATA[<h1 id="deep-reinforcement-learning-with-double-q-learning"><a href="https://arxiv.org/abs/1509.06461">Deep Reinforcement Learning with Double Q-Learning</a></h1>
-<h2 id="introduction">Introduction</h2>
-<p>The authors show that the double Q-learning algorithm which was first proposed in a tabular setting, can be generalized to arbitrary function approximation, including DNN. They use this to construct a new algorithm called double DQN to solve the overestimation problem in DQN.</p>
-<h2 id="notations">Notations</h2>
-<p>Define:</p>
-<p><span class="math display">\[Q_{\pi} (s, a) = E[R_1 + \gamma R_2 + ... | S_0=s, A_0=a, \pi]\]</span></p>
-<p><span class="math display">\[Q_{*} (s, a) = max_{\pi} Q_{\pi} (s, a)\]</span></p>
-<p><span class="math display">\[\pi_{*} (s) = argmax_{a \in A} Q_{*} (s, a)\]</span></p>
-<p>The Target:</p>
-<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma max_{a} Q(S_{t+1}, a; \theta_{t})\]</span></p>
-<p>A standard Q update using stochastic gradient decent is (Semi-gradient Q):</p>
-<p><span class="math display">\[\theta_{t+1} = \theta_t + \alpha (Y_{t}^{Q} - Q(S_t, A_t; \theta_t)) \nabla_{\theta_t} Q(S_t, A_t; \theta_t)\]</span></p>
-<p>Where <span class="math inline">\(\alpha\)</span> is a scalar step size.</p>
-<span id="more"></span>
-<h2 id="background">Background</h2>
-<h3 id="double-q-learning">Double Q-learning</h3>
-<p>The max operator in standard Q-learning and DQN uses the same values both to select and to evaluate an action (ie. same Q is used to select the max action and use the value of this max action to update the Value of the state action pair). This makes it more likely to select overestimated values, resulting in overoptimistic value estimates.</p>
-<p>In Double Q-learning, two value functions are learned by assigning experiences randomly to update one of the two value functions, resulting in two sets of weights, <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\theta^{\prime}\)</span>. For each update, one set of weights is used to determine the greedy action, and the other to determine its value.</p>
-<p>Previous Q target:</p>
-<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta_{t}})\]</span></p>
-<p>The double Q-learning target:</p>
-<p><span class="math display">\[Y_t^{\text{DoubleQ}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta^{\prime}_{t}})\]</span></p>
-<h3 id="maximization-problem">Maximization Problem</h3>
-<p><img src='/images/RL/papers/DDQN_1.png'></p>
-<p>This theorem shows that even if the value estimates are on average correct, estimation errors of any source can drive the estimates up and away from the true optimal values.</p>
-<p>The lower bound in Theorem 1 decreases with the number of actions. This is an artifact of considering the lower bound, which requires very specific values to be attained. More typically, the overoptimism increases with the number of actions.</p>
-<p><img src='/images/RL/papers/DDQN_2.png'></p>
-<p><span class="math display">\[E[Q(s, a) - V_{*}(s)] = E[V_{*}(s) - V_{*}(s) + \epsilon ] = 0\]</span></p>
-<p>But, Q-learning updates have large bias due to max operation, the phenomena is severer as number of actions increases.</p>
-<p>In function approximation setting:</p>
-<p><img src='/images/RL/papers/DDQN_3.png'></p>
-<h2 id="algorithm">Algorithm</h2>
-<p>The target network in the DQN architecture provides a natural candidate for the second value function, without having to introduce additional networks. Thus, we can evaluate the greedy policy according to the online network, but using the target network to estimate its value. The resulting update:</p>
-<p><span class="math display">\[Y_t^{\text{DoubleDQN}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a} Q(S_{t+1}, a; \theta_{t}), \theta_{t}^{-})\]</span></p>
-<h2 id="implementation">Implementation</h2>
-<p>This is an implementation of DDQN in PARL. This implementation is written using PaddlePaddle.</p>
-<p>https://github.com/PaddlePaddle/PARL</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></span><br><span class="line"><span class="comment"># you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"># You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> copy</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"><span class="keyword">import</span> paddle</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DQN</span>(<span class="params">parl.Algorithm</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, model, gamma=<span class="literal">None</span>, lr=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; DQN algorithm</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            model (parl.Model): forward neural network representing the Q function.</span></span><br><span class="line"><span class="string">            gamma (float): discounted factor for `accumulative` reward computation</span></span><br><span class="line"><span class="string">            lr (float): learning rate.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.model = model</span><br><span class="line">        self.target_model = copy.deepcopy(model)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(gamma, <span class="built_in">float</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(lr, <span class="built_in">float</span>)</span><br><span class="line">        self.gamma = gamma</span><br><span class="line">        self.lr = lr</span><br><span class="line"></span><br><span class="line">        self.mse_loss = paddle.nn.MSELoss(reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line">        self.optimizer = paddle.optimizer.Adam(</span><br><span class="line">            learning_rate=lr, parameters=self.model.parameters())</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; use self.model (Q function) to predict the action values</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.model.value(obs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self, obs, action, reward, next_obs, terminal</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; update the Q function (self.model) with DQN algorithm</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># Q</span></span><br><span class="line">        pred_values = self.model.value(obs)</span><br><span class="line">        action_dim = pred_values.shape[-<span class="number">1</span>]</span><br><span class="line">        action = paddle.squeeze(action, axis=-<span class="number">1</span>)</span><br><span class="line">        action_onehot = paddle.nn.functional.one_hot(</span><br><span class="line">            action, num_classes=action_dim)</span><br><span class="line">        pred_value = paddle.multiply(pred_values, action_onehot)</span><br><span class="line">        pred_value = paddle.<span class="built_in">sum</span>(pred_value, axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># target Q</span></span><br><span class="line">        <span class="keyword">with</span> paddle.no_grad():</span><br><span class="line">            greedy_actions = self.model.value(next_obs).argmax(<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">            max_v = self.target_model.value(next_obs).gather(index=greedy_actions, axis=<span class="number">1</span>)</span><br><span class="line">            target = reward + (<span class="number">1</span> - terminal) * self.gamma * max_v</span><br><span class="line"></span><br><span class="line">        loss = self.mse_loss(pred_value, target)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># optimize</span></span><br><span class="line">        self.optimizer.clear_grad()</span><br><span class="line">        loss.backward()</span><br><span class="line">        self.optimizer.step()</span><br><span class="line">        <span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sync_target</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.model.sync_weights_to(self.target_model)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>VFA</category>
-      </categories>
-      <tags>
-        <tag>Function Approximation</tag>
-        <tag>Continuous State Space</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Deep Deterministic Policy Gradient</title>
     <url>/2021/06/09/DDPG/</url>
     <content><![CDATA[<h1 id="continuous-control-with-deep-reinforcement-learning">Continuous Control with Deep Reinforcement Learning</h1>
@@ -282,6 +231,57 @@ J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
         <tag>Policy Gradient</tag>
         <tag>Continuous Action Space</tag>
         <tag>Policy Search</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DDQN</title>
+    <url>/2021/05/07/DDQN/</url>
+    <content><![CDATA[<h1 id="deep-reinforcement-learning-with-double-q-learning"><a href="https://arxiv.org/abs/1509.06461">Deep Reinforcement Learning with Double Q-Learning</a></h1>
+<h2 id="introduction">Introduction</h2>
+<p>The authors show that the double Q-learning algorithm which was first proposed in a tabular setting, can be generalized to arbitrary function approximation, including DNN. They use this to construct a new algorithm called double DQN to solve the overestimation problem in DQN.</p>
+<h2 id="notations">Notations</h2>
+<p>Define:</p>
+<p><span class="math display">\[Q_{\pi} (s, a) = E[R_1 + \gamma R_2 + ... | S_0=s, A_0=a, \pi]\]</span></p>
+<p><span class="math display">\[Q_{*} (s, a) = max_{\pi} Q_{\pi} (s, a)\]</span></p>
+<p><span class="math display">\[\pi_{*} (s) = argmax_{a \in A} Q_{*} (s, a)\]</span></p>
+<p>The Target:</p>
+<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma max_{a} Q(S_{t+1}, a; \theta_{t})\]</span></p>
+<p>A standard Q update using stochastic gradient decent is (Semi-gradient Q):</p>
+<p><span class="math display">\[\theta_{t+1} = \theta_t + \alpha (Y_{t}^{Q} - Q(S_t, A_t; \theta_t)) \nabla_{\theta_t} Q(S_t, A_t; \theta_t)\]</span></p>
+<p>Where <span class="math inline">\(\alpha\)</span> is a scalar step size.</p>
+<span id="more"></span>
+<h2 id="background">Background</h2>
+<h3 id="double-q-learning">Double Q-learning</h3>
+<p>The max operator in standard Q-learning and DQN uses the same values both to select and to evaluate an action (ie. same Q is used to select the max action and use the value of this max action to update the Value of the state action pair). This makes it more likely to select overestimated values, resulting in overoptimistic value estimates.</p>
+<p>In Double Q-learning, two value functions are learned by assigning experiences randomly to update one of the two value functions, resulting in two sets of weights, <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\theta^{\prime}\)</span>. For each update, one set of weights is used to determine the greedy action, and the other to determine its value.</p>
+<p>Previous Q target:</p>
+<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta_{t}})\]</span></p>
+<p>The double Q-learning target:</p>
+<p><span class="math display">\[Y_t^{\text{DoubleQ}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta^{\prime}_{t}})\]</span></p>
+<h3 id="maximization-problem">Maximization Problem</h3>
+<p><img src='/images/RL/papers/DDQN_1.png'></p>
+<p>This theorem shows that even if the value estimates are on average correct, estimation errors of any source can drive the estimates up and away from the true optimal values.</p>
+<p>The lower bound in Theorem 1 decreases with the number of actions. This is an artifact of considering the lower bound, which requires very specific values to be attained. More typically, the overoptimism increases with the number of actions.</p>
+<p><img src='/images/RL/papers/DDQN_2.png'></p>
+<p><span class="math display">\[E[Q(s, a) - V_{*}(s)] = E[V_{*}(s) - V_{*}(s) + \epsilon ] = 0\]</span></p>
+<p>But, Q-learning updates have large bias due to max operation, the phenomena is severer as number of actions increases.</p>
+<p>In function approximation setting:</p>
+<p><img src='/images/RL/papers/DDQN_3.png'></p>
+<h2 id="algorithm">Algorithm</h2>
+<p>The target network in the DQN architecture provides a natural candidate for the second value function, without having to introduce additional networks. Thus, we can evaluate the greedy policy according to the online network, but using the target network to estimate its value. The resulting update:</p>
+<p><span class="math display">\[Y_t^{\text{DoubleDQN}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a} Q(S_{t+1}, a; \theta_{t}), \theta_{t}^{-})\]</span></p>
+<h2 id="implementation">Implementation</h2>
+<p>This is an implementation of DDQN in PARL. This implementation is written using PaddlePaddle.</p>
+<p>https://github.com/PaddlePaddle/PARL</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#   Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></span><br><span class="line"><span class="comment"># you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"># You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> copy</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"><span class="keyword">import</span> paddle</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DQN</span>(<span class="params">parl.Algorithm</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, model, gamma=<span class="literal">None</span>, lr=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; DQN algorithm</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            model (parl.Model): forward neural network representing the Q function.</span></span><br><span class="line"><span class="string">            gamma (float): discounted factor for `accumulative` reward computation</span></span><br><span class="line"><span class="string">            lr (float): learning rate.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.model = model</span><br><span class="line">        self.target_model = copy.deepcopy(model)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(gamma, <span class="built_in">float</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(lr, <span class="built_in">float</span>)</span><br><span class="line">        self.gamma = gamma</span><br><span class="line">        self.lr = lr</span><br><span class="line"></span><br><span class="line">        self.mse_loss = paddle.nn.MSELoss(reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line">        self.optimizer = paddle.optimizer.Adam(</span><br><span class="line">            learning_rate=lr, parameters=self.model.parameters())</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; use self.model (Q function) to predict the action values</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.model.value(obs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self, obs, action, reward, next_obs, terminal</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; update the Q function (self.model) with DQN algorithm</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># Q</span></span><br><span class="line">        pred_values = self.model.value(obs)</span><br><span class="line">        action_dim = pred_values.shape[-<span class="number">1</span>]</span><br><span class="line">        action = paddle.squeeze(action, axis=-<span class="number">1</span>)</span><br><span class="line">        action_onehot = paddle.nn.functional.one_hot(</span><br><span class="line">            action, num_classes=action_dim)</span><br><span class="line">        pred_value = paddle.multiply(pred_values, action_onehot)</span><br><span class="line">        pred_value = paddle.<span class="built_in">sum</span>(pred_value, axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># target Q</span></span><br><span class="line">        <span class="keyword">with</span> paddle.no_grad():</span><br><span class="line">            greedy_actions = self.model.value(next_obs).argmax(<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">            max_v = self.target_model.value(next_obs).gather(index=greedy_actions, axis=<span class="number">1</span>)</span><br><span class="line">            target = reward + (<span class="number">1</span> - terminal) * self.gamma * max_v</span><br><span class="line"></span><br><span class="line">        loss = self.mse_loss(pred_value, target)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># optimize</span></span><br><span class="line">        self.optimizer.clear_grad()</span><br><span class="line">        loss.backward()</span><br><span class="line">        self.optimizer.step()</span><br><span class="line">        <span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sync_target</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.model.sync_weights_to(self.target_model)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>VFA</category>
+      </categories>
+      <tags>
+        <tag>Function Approximation</tag>
+        <tag>Continuous State Space</tag>
       </tags>
   </entry>
   <entry>
@@ -777,13 +777,6 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
       </tags>
   </entry>
   <entry>
-    <title>actor_critic</title>
-    <url>/2021/06/14/actor-critic/</url>
-    <content><![CDATA[<h1 id="actor-critic-algorithms">Actor-Critic Algorithms</h1>
-<p><a href="https://papers.nips.cc/paper/1999/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf">Original Paper</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title>Welcome</title>
     <url>/2030/05/30/aa_welcome/</url>
     <content><![CDATA[<h1 id="welcome">Welcome</h1>
@@ -850,6 +843,7 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
 <li><a href="/2021/07/29/momentum/" title="Momentum">Momentum</a></li>
 <li><a href="/2021/07/29/adaptive-lr/" title="Basic Adaptive LR Methods">Basic Adaptive LR Methods</a></li>
 <li><a href="/2021/07/29/adam/" title="Adam">Adam</a></li>
+<li><a href="/2021/08/06/attention/" title="Attention">Attention</a></li>
 </ol>
 <p><strong>Some old school ML algorithms</strong>:</p>
 <ol type="1">
@@ -900,6 +894,50 @@ L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t
 <h2 id="integrals">Integrals</h2>
 <p><span class="math display">\[E[X] = \int_x p_X(x) x dx = \int_x x dp_X(x) = \int_x x p_X(dx)\]</span></p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>actor_critic</title>
+    <url>/2021/06/14/actor-critic/</url>
+    <content><![CDATA[<h1 id="actor-critic-algorithms">Actor-Critic Algorithms</h1>
+<p><a href="https://papers.nips.cc/paper/1999/file/6449f44a102fde848669bdd9eb6b76fa-Paper.pdf">Original Paper</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Basic Adaptive LR Algorithms</title>
+    <url>/2021/07/29/adaptive-lr/</url>
+    <content><![CDATA[<h1 id="algorithms-with-adaptive-learning-rates">Algorithms with Adaptive Learning Rates</h1>
+<p>Learning rate is reliably one of the hyperparameters that is the most difficult to set because it has a significant impact on model performance. At each iteration, the cost is often highly sensitive to some directions in parameter space and insensitive to others. Momentum solves some of the problems in the cost of introducing another hyperparameter. Thus, it is natural to consider algorithms that have separate learning rate for each parameter and automatically adapt learning rates for each of the parameter.</p>
+<p>The <code>delta-bar-delta</code> algorithm (base on full-batch) is an early heuristic approach to adapting individual learning rates for model parameters during training, it is based on intuitive idea similar to momentum:</p>
+<blockquote>
+<p>If the partial derivative of the loss, with respect to a given model parameter, remains the same sign, then the learning rate should increase, if the partial derivative with respect to the parameter changes sign, then the learning rate should decrease.</p>
+</blockquote>
+<p>We would like to extend the idea to mini-batch scenario.</p>
+<h2 id="adagrad">AdaGrad</h2>
+<p><img src='/images/ML/adagrad_1.png' width="600"></p>
+<p>The <code>AdaGrad</code> algorithm, individually adapts the larning rates of all model parameters by scaling them inversely proportional to square root of the sum of all of their historical squared values:</p>
+<ol type="1">
+<li><p>If <span class="math inline">\(g_1\)</span> is large constantly larger than <span class="math inline">\(g_2\)</span>, then:</p>
+<p><span class="math display">\[\sqrt{r_1} &gt; \sqrt{r_2} \implies \epsilon_1 &lt; \epsilon_2\]</span></p>
+<p>This makes sense because we want to take a small step in the gradient direction when the magnitude of gradient is large, especially when we have noisy gradient. Conversely, we would like to take slightly larger step than large gradient case when we have smaller gradient.</p></li>
+<li><p>If <span class="math inline">\(r_i\)</span> is less than 1, we have increasing learning rate compare to base learning rate:</p>
+<p><span class="math display">\[r_i &lt; 1 \implies \epsilon_i &gt; \epsilon\]</span></p>
+<p>This helps us to get out of the local minimum or flat region of the surface by taking larger steps.</p></li>
+</ol>
+<p>AdaGrad is designed to converge rapidly when applied to a convex optimization problem, so when it finds a convex structure, it can converge rapidly.</p>
+<p>However, in non-convex optimization problem (training neural networks) the accumulated gradient <span class="math inline">\(\mathbf{r}\)</span> starts accumulating at the beginning, <strong>this will introduce excessive decrease in the effective learning in later training steps (at end, we will have large <span class="math inline">\(\mathbf{r}\)</span>, so the learning rates will be small to prevent effective learning in later stages or early large gradients will prevent learning in early stages)</strong>.</p>
+<h2 id="rmsprop">RMSProp</h2>
+<p>The <code>RMSProp</code> algorithm modifies AdaGrad so that it can perform better in non-convex setting by changing the gradient accumulation into an exponentially weighted moving average, so the early accumulation becomes less and less important. This structure helps in non-convex problem by discarding the history from extreme past so when we arrive at a convex bowl, we have sufficiently large learning rate to converge rapidly.</p>
+<p><img src='/images/ML/rmsprop_1.png' width="600"></p>
+<p>The algorithm introduces a new parameter <span class="math inline">\(\rho\)</span> that controls for the weight of accumulated gradient.</p>
+]]></content>
+      <categories>
+        <category>DL</category>
+        <category>Techniques</category>
+      </categories>
+      <tags>
+        <tag>Deep Learning</tag>
+        <tag>Optimization</tag>
+      </tags>
   </entry>
   <entry>
     <title>Adaboost</title>
@@ -1085,43 +1123,6 @@ u_t &amp;= \lim_{p \rightarrow \infty} (v_t)^{\frac{1}{p}}\\
       </categories>
   </entry>
   <entry>
-    <title>Basic Adaptive LR Algorithms</title>
-    <url>/2021/07/29/adaptive-lr/</url>
-    <content><![CDATA[<h1 id="algorithms-with-adaptive-learning-rates">Algorithms with Adaptive Learning Rates</h1>
-<p>Learning rate is reliably one of the hyperparameters that is the most difficult to set because it has a significant impact on model performance. At each iteration, the cost is often highly sensitive to some directions in parameter space and insensitive to others. Momentum solves some of the problems in the cost of introducing another hyperparameter. Thus, it is natural to consider algorithms that have separate learning rate for each parameter and automatically adapt learning rates for each of the parameter.</p>
-<p>The <code>delta-bar-delta</code> algorithm (base on full-batch) is an early heuristic approach to adapting individual learning rates for model parameters during training, it is based on intuitive idea similar to momentum:</p>
-<blockquote>
-<p>If the partial derivative of the loss, with respect to a given model parameter, remains the same sign, then the learning rate should increase, if the partial derivative with respect to the parameter changes sign, then the learning rate should decrease.</p>
-</blockquote>
-<p>We would like to extend the idea to mini-batch scenario.</p>
-<h2 id="adagrad">AdaGrad</h2>
-<p><img src='/images/ML/adagrad_1.png' width="600"></p>
-<p>The <code>AdaGrad</code> algorithm, individually adapts the larning rates of all model parameters by scaling them inversely proportional to square root of the sum of all of their historical squared values:</p>
-<ol type="1">
-<li><p>If <span class="math inline">\(g_1\)</span> is large constantly larger than <span class="math inline">\(g_2\)</span>, then:</p>
-<p><span class="math display">\[\sqrt{r_1} &gt; \sqrt{r_2} \implies \epsilon_1 &lt; \epsilon_2\]</span></p>
-<p>This makes sense because we want to take a small step in the gradient direction when the magnitude of gradient is large, especially when we have noisy gradient. Conversely, we would like to take slightly larger step than large gradient case when we have smaller gradient.</p></li>
-<li><p>If <span class="math inline">\(r_i\)</span> is less than 1, we have increasing learning rate compare to base learning rate:</p>
-<p><span class="math display">\[r_i &lt; 1 \implies \epsilon_i &gt; \epsilon\]</span></p>
-<p>This helps us to get out of the local minimum or flat region of the surface by taking larger steps.</p></li>
-</ol>
-<p>AdaGrad is designed to converge rapidly when applied to a convex optimization problem, so when it finds a convex structure, it can converge rapidly.</p>
-<p>However, in non-convex optimization problem (training neural networks) the accumulated gradient <span class="math inline">\(\mathbf{r}\)</span> starts accumulating at the beginning, <strong>this will introduce excessive decrease in the effective learning in later training steps (at end, we will have large <span class="math inline">\(\mathbf{r}\)</span>, so the learning rates will be small to prevent effective learning in later stages or early large gradients will prevent learning in early stages)</strong>.</p>
-<h2 id="rmsprop">RMSProp</h2>
-<p>The <code>RMSProp</code> algorithm modifies AdaGrad so that it can perform better in non-convex setting by changing the gradient accumulation into an exponentially weighted moving average, so the early accumulation becomes less and less important. This structure helps in non-convex problem by discarding the history from extreme past so when we arrive at a convex bowl, we have sufficiently large learning rate to converge rapidly.</p>
-<p><img src='/images/ML/rmsprop_1.png' width="600"></p>
-<p>The algorithm introduces a new parameter <span class="math inline">\(\rho\)</span> that controls for the weight of accumulated gradient.</p>
-]]></content>
-      <categories>
-        <category>DL</category>
-        <category>Techniques</category>
-      </categories>
-      <tags>
-        <tag>Deep Learning</tag>
-        <tag>Optimization</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Alex Net</title>
     <url>/2021/06/22/alex-net/</url>
     <content><![CDATA[<h1 id="imagenet-classification-with-deep-convolutional-neural-networks">ImageNet Classification with Deep Convolutional Neural Networks</h1>
@@ -1203,10 +1204,246 @@ u_t &amp;= \lim_{p \rightarrow \infty} (v_t)^{\frac{1}{p}}\\
       </tags>
   </entry>
   <entry>
+    <title>Attention</title>
+    <url>/2021/08/06/attention/</url>
+    <content><![CDATA[<h1 id="neural-machine-translation-by-jointly-learning-to-align-and-translate">Neural Machine Translation By Jointly Learning to Align and Translate</h1>
+<p>One problem with traditional encoder-decoder structure is that a neural network needs to be able to compress all the necessary information of a source sentence into a <strong>fixed-length</strong> vector <span class="math inline">\(\mathbf{c}\)</span>. <code>Attention</code> does not attempt to encode a whole input sentence into a single fixed-length vector. Instead, it encodes the input sentence into a sequence of vectors and chooses a subset of these vectors adaptively while decoding the translation.</p>
+<h2 id="background-rnn-encoder-decoder">Background: RNN Encoder-Decoder</h2>
+<p>In the Encoder-Decoder framework, an encoder reads the input sentence, a sequence of vectors <span class="math inline">\(\mathbf{x} = (\mathbf{x}_1, ...., \mathbf{x}_{T_x})\)</span>, into a fixed length context vector <span class="math inline">\(\mathbf{c}\)</span>:</p>
+<p><span class="math display">\[\mathbf{h}_t = f(\mathbf{x}_t, \mathbf{h}_{t-1})\]</span> <span class="math display">\[\mathbf{c} = q(\mathbf{h}_{1}, ...., \mathbf{h}_{T_x})\]</span></p>
+<p>Where <span class="math inline">\(f\)</span> and <span class="math inline">\(q\)</span> are non-linear functions. Typically, <span class="math inline">\(q\)</span> is the identity function defined as <span class="math inline">\(q(\mathbf{h}_{1}, ...., \mathbf{h}_{T_x}) = \mathbf{h}_{T_x}\)</span>.</p>
+<p>The decoder is often trained to predict the next word <span class="math inline">\(\mathbf{y}_{t^{\prime}}\)</span> given all the previous predicted words <span class="math inline">\(\{\hat{\mathbf{y}}_1, ..., \hat{\mathbf{y}}_{t^{\prime} - 1}\}\)</span>. In training step <span class="math inline">\(t\)</span>, we can use feed the true target value <span class="math inline">\(\mathbf{y}_{t-1}\)</span>. Then, in training of decoder, we are maximizing the log joint conditional probability (minimize the sum of per time step cross entropy):</p>
+<p><span class="math display">\[L = \sum^{T_y}_{t=1} L^{t}\]</span> <span class="math display">\[-L = P_{\mathbf{Y}}(\mathbf{y}) = \sum^{T_y}_{t=1} P_{\mathbf{Y_t} | \mathbf{Y_1} ,...., \mathbf{Y_{t-1}}, \mathbf{c}}(\mathbf{y}_t | \{\mathbf{y}_{1}, ...., \mathbf{y}_{t-1}, \mathbf{c}\})\]</span></p>
+<p>Where in RNN, each conditional probability distribution <span class="math inline">\(P_{\mathbf{Y_t} | \mathbf{Y_1} ,...., \mathbf{Y_{t-1}}, \mathbf{c}}\)</span> is model as <span class="math inline">\(g(\mathbf{y}_{t-1}, \mathbf{s}_t, \mathbf{c})\)</span>.</p>
+<h2 id="learning-to-align-and-translate">Learning to Align and Translate</h2>
+<p><code>Attention</code> contains bidirectional RNN as an encoder and a decoder that emulates searching through a source sentence during decoding a tranlation.</p>
+<h3 id="decoder-general-description">Decoder: General Description</h3>
+<p>In the new model, we define each conditional distribution as:</p>
+<p><span class="math display">\[\hat{P}_{\mathbf{Y_t} | \mathbf{Y_1} ,...., \mathbf{Y_{t-1}}, \mathbf{c}} \triangleq g(\mathbf{y}_{t-1}, \mathbf{s}_t, \mathbf{c}_t)\]</span></p>
+<p>Notice here, we have different <span class="math inline">\(\mathbf{c}_t\)</span> for each time step <span class="math inline">\(t\)</span>.</p>
+<p>The context vector <span class="math inline">\(\mathbf{c}_i\)</span> depends on a sequence of <code>annotations</code> <span class="math inline">\((\mathbf{h}_1, ....., \mathbf{h}_{T_x})\)</span> which contains information about the whole input sequence (similar to hidden units in encoder) with a strong focus on the parts surrounding the <span class="math inline">\(i\)</span>th word of the input sequence.</p>
+<p>The context vector <span class="math inline">\(\mathbf{c}_i\)</span> is, then computed as a weighted sum of these annotations <span class="math inline">\(\mathbf{h}_{i}\)</span>:</p>
+<p><span class="math display">\[\mathbf{c}_i = \sum^{T_x}_{j=1} \alpha_{ij} \mathbf{h}_j\]</span></p>
+<p><span class="math display">\[\alpha_{ij} = \frac{\exp^{e_{ij}}}{\sum^{T_x}_{k=1} \exp^{e_{ik}}}\]</span></p>
+<p>Where</p>
+<p><span class="math display">\[e_{ij} = a(\mathbf{s}_{i-1}, \mathbf{h}_j)\]</span></p>
+<p>is an <code>alignment model</code> which scores how well the inputs around position <span class="math inline">\(j\)</span> and the output at position <span class="math inline">\(i\)</span> match. This model <span class="math inline">\(a\)</span> is parameterized by a MLP which is jointly trained with all the other components of the proposed system. The score is based on the RNN decoder's hidden state <span class="math inline">\(\mathbf{s}_{i-1}\)</span> and the <span class="math inline">\(j\)</span>th annotation <span class="math inline">\(\mathbf{h}_j\)</span> of the input sentence. <strong>It reflects the importance of each annotation vector <span class="math inline">\(\mathbf{h}_j\)</span> with respect to the previous hidden state <span class="math inline">\(\mathbf{s}_{i-1}\)</span> in deciding the current state <span class="math inline">\(\mathbf{s}_i\)</span> and generating prediction <span class="math inline">\(\hat{\mathbf{y}}_i\)</span></strong>.</p>
+<p>We can think the approach of taking a weighted sum of all the annotations as computing an expected annotation, where the expectation is over possible alignments (<span class="math inline">\(\alpha_{ij}\)</span>). In other words, let <span class="math inline">\(\alpha_{ij}\)</span> be a probability that the target word <span class="math inline">\(\mathbf{y}_i\)</span> is aligned to, or translated from a source input word <span class="math inline">\(\mathbf{x}_{j}\)</span>. <strong>Then, the <span class="math inline">\(i\)</span>th context vector <span class="math inline">\(\mathbf{c}_i\)</span> is the expected value of annotations (input sequence) distributed according to probability distribution defined by <span class="math inline">\(\alpha_{ij}\)</span>.</strong></p>
+<p>Intuitively, this implements a mechanism of <strong>attention</strong> in the decoder. The decoder decides parts of the source sentence to pay attention to. By letting the decoder have an attention mechanism, we relieve the encoder from the burden of having to encode all information in the source sentence into a fixed length vector.</p>
+<h3 id="encoder-bidirectional-rnn-for-annotating-sequences">Encoder: Bidirectional RNN for Annotating Sequences</h3>
+<p>A bidirectional RNN consists of forward and backward RNNs. The forward RNN <span class="math inline">\(\overset{\rightarrow}{f}\)</span> reads the input sequence from the front and has <strong>forward hidden units <span class="math inline">\(\{\overset{\rightarrow}{\mathbf{h}}_1, ...., \overset{\rightarrow}{\mathbf{h}}_{T_x}\}\)</span></strong>. <span class="math inline">\(\overset{\leftarrow}{f}\)</span> reads the sequence in the reverse order (from <span class="math inline">\(\mathbf{x}_{T_x}\)</span> to <span class="math inline">\(\mathbf{x}_1\)</span>), resulting in a sequence of <strong>backward hidden units <span class="math inline">\(\{\overset{\leftarrow}{\mathbf{h}}_1, ...., \overset{\leftarrow}{\mathbf{h}}_{T_x}\}\)</span></strong>.</p>
+<p>The <strong>annotation</strong> vector <span class="math inline">\(\mathbf{h}_j\)</span> is then calculated by concatenating the forward hidden state <span class="math inline">\(\overset{\rightarrow}{\mathbf{h}}_j\)</span> and the backward hidden state <span class="math inline">\(\overset{\leftarrow}{\mathbf{h}}_j\)</span>:</p>
+<p><span class="math display">\[\mathbf{h}_j = [\overset{\rightarrow}{\mathbf{h}}_j, \overset{\leftarrow}{\mathbf{h}}_j]\]</span></p>
+<p>This sequence of annotations is used by the decoder and the alignment model later to compute the context vector <span class="math inline">\(\mathbf{c}_{i}\)</span>.</p>
+]]></content>
+      <categories>
+        <category>DL</category>
+        <category>RNN</category>
+      </categories>
+      <tags>
+        <tag>Deep Learning</tag>
+        <tag>Neural Network Architectures</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>average_reward_setting</title>
     <url>/2021/05/30/average-reward-setting/</url>
     <content><![CDATA[
 ]]></content>
+  </entry>
+  <entry>
+    <title>Bellman Equations for Optimal Value Functions</title>
+    <url>/2021/05/03/bellman-optimality-equations/</url>
+    <content><![CDATA[<p><em>Please read posts on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> and <a href="/2021/05/03/bellman-equations/" title="Bellman Equations">Bellman Equations</a> prior this post.</em></p>
+<h1 id="bellman-equations-for-optimal-value-functions">Bellman Equations for Optimal Value Functions</h1>
+<p><img src='/images/RL/bellman_equation/optimal_policy_value_func.png'></p>
+<p>So it is natural to ask, does the optimal value function of optimal policy <span class="math inline">\(V^{\pi^*}\)</span> have similar recursive structure? the answer is yes, however, we need to prove this. The proof goes with 3 claims which we will prove later: <span id="more"></span></p>
+<ol type="1">
+<li><ol type="a">
+<li><p><span class="math inline">\(\exists\)</span> a value function <span class="math inline">\(V^*\)</span> s.t <span class="math inline">\(\forall x \in X\)</span>, we have:</p>
+<p><span class="math display">\[V^{*}(x) = max_{a} \{Q^{*}(x, a)\} = max_{a} \{r(x, a) + \gamma \int P(dx^\prime | x, a) V^{*}(x^\prime)\}\]</span></p></li>
+<li><p><span class="math inline">\(\exists\)</span> a value function <span class="math inline">\(Q^*\)</span> s.t <span class="math inline">\(\forall x, a \in X, A\)</span>, we have:</p>
+<p><span class="math display">\[Q^{*}(x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) max_{a^\prime} \{Q^{*} (x^\prime, a^\prime)\}\]</span></p></li>
+</ol>
+<p>These equations are called <span style="color:red"><strong>bellman optimality equations for the value functions</strong></span></p></li>
+<li><p><span class="math inline">\(V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^*}\)</span>, the optimal value function when <span class="math inline">\(\pi\)</span> is restricted to be within the space of all stationary and non-stationary policies.</p></li>
+<li><p>For discounted continuing MDPs, we can always find a stationary policy that is optimal within the space of all stationary and non-stationary policies.</p></li>
+</ol>
+<p>In summary, we claim that:</p>
+<p><strong><span class="math inline">\(V^{*}\)</span> exists and it is unique, <span class="math inline">\(V^{*} = V^{\pi^{*}}\)</span>. Same for <span class="math inline">\(Q^{*}\)</span></strong></p>
+<h2 id="bellman-operators">Bellman Operators</h2>
+<p>In order to prove the claims, we need several concepts:</p>
+<p><img src='/images/RL/bellman_equation/bellman-operator.png'> <img src='/images/RL/bellman_equation/bell-opt-operator.png'></p>
+<p>These operators are linear and recall that:</p>
+<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (a^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
+<p>This implies <span class="math inline">\(T^{\pi} Q^{\pi} = Q^{\pi}\)</span>, same for state-value function and bellman optimality operators. Thus, we can conclude that:</p>
+<p><span class="math display">\[V^{\pi} = T^{\pi} V^{\pi}\]</span> <span class="math display">\[Q^{\pi} = T^{\pi} Q^{\pi}\]</span> <span class="math display">\[V^{*} = T^{*} V^{*}\]</span> <span class="math display">\[Q^{*} = T^{*} Q^{*}\]</span></p>
+<h3 id="properties-of-bellman-operators">Properties of Bellman Operators</h3>
+<p>Bellman operators have several important properties. The properties that matters for us the most are:</p>
+<ol type="1">
+<li>Monotonicity</li>
+<li>Contraction</li>
+</ol>
+<h4 id="monotonicity">Monotonicity</h4>
+<p><img src='/images/RL/bellman_equation/monotonicity.png'></p>
+<p>we can easily prove this (only prove <span class="math inline">\(T^{\pi}\)</span>, <span class="math inline">\(T^{*}\)</span> is the same):</p>
+<p>Assume:</p>
+<p><span class="math display">\[V_1(x^{\prime}) \geq V_2(x^{\prime}), \forall x^{\prime} \in X\]</span></p>
+<p>we get that for any <span class="math inline">\(x \in X\)</span>:</p>
+<p><span class="math display">\[T^{\pi}V_{1} (x) = r^{\pi} (x) + \gamma \int P^{\pi}(dx^{\prime} | x) V_{1} (x^\prime) \geq r^{\pi} (x) + \gamma \int P^{\pi}(dx^{\prime} | x) V_{2} (x^\prime) = T^{\pi}V_2(x)\]</span></p>
+<p>Thus:</p>
+<p><span class="math display">\[T^{\pi}V_{1} (x) \geq T^{\pi}V_{2} (x)\]</span></p>
+<h4 id="contraction">Contraction</h4>
+<p><img src='/images/RL/bellman_equation/contraction_mapping.png'></p>
+<p>we can also easily prove that <span class="math inline">\(T^{*}, T^{\pi}\)</span> are contraction mappings (only prove <span class="math inline">\(T^{\pi}\)</span>, <span class="math inline">\(T^{*}\)</span> is the same):</p>
+<p>Consider two action-value functions:</p>
+<p><span class="math display">\[Q_1, Q_2 \in B(X\times A)\]</span></p>
+<p>Consider the metric:</p>
+<p><span class="math display">\[d(Q_1, Q_2) = \| Q_1 - Q_2 \|_{\infty}\]</span></p>
+<p>We show the contraction w.r.t <span class="math inline">\(l-\infty\)</span> norm.</p>
+<p>For any <span class="math inline">\((x, a) \in X \times A\)</span>, we have:</p>
+<span class="math display">\[\begin{aligned}
+\lvert T^{\pi} Q_1 (x, a) - T^{\pi} Q_2 (x, a) \rvert &amp;= \lvert r (x, a) + \gamma \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) Q_{1} (x^\prime, a^{\prime}) - r (x, a) - \gamma \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) Q_{2} (x^\prime, a^{\prime}) \rvert\\
+&amp; = \gamma \lvert \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) [Q_{1} (x^\prime, a^{\prime}) -  Q_{2} (x^\prime, a^{\prime})] \rvert\\
+&amp; \leq \gamma \int \underbrace{P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime)}_{\text{these are probabilities which $ \geq $ 0}} \lvert [Q_{1} (x^\prime, a^{\prime}) -  Q_{2} (x^\prime, a^{\prime})] \rvert\\
+&amp; \leq \gamma \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) \sup_{x, a}\lvert [Q_{1} (x, a) -  Q_{2} (x, a)] \rvert\\
+&amp; = \gamma \sup_{x, a}\lvert Q_{1} (x, a) -  Q_{2} (x, a) \rvert \underbrace{\int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime)}_{\text{this is a probability distribution which sums to 1}}\\
+&amp; = \gamma \sup_{x, a}\lvert Q_{1} (x, a) -  Q_{2} (x, a) \rvert = \gamma \|Q_{1} -  Q_{2}\|_{\infty}
+\end{aligned}\]</span>
+<p>This inequality holds for all state action pair, thus, we have showed that bellman operators are contraction mappings.</p>
+<p><img src='/images/RL/bellman_equation/gamma_contraction.png'></p>
+<h3 id="consequences-of-monotonicity-and-contraction">Consequences of Monotonicity and Contraction</h3>
+<h4 id="uniqueness-of-fixed-points">Uniqueness of fixed points</h4>
+<p><img src='/images/RL/bellman_equation/fixed_point.png'> <img src='/images/RL/bellman_equation/bfpt.png'> <img src='/images/RL/bellman_equation/unique_fixed_points.png'></p>
+<p>Proof of the proposition is also simple (Same for <span class="math inline">\(Q^{\pi}, Q^{*}\)</span>):</p>
+<p>For any <span class="math inline">\(\pi\)</span>, <span class="math inline">\(T^{\pi}\)</span> is a <span class="math inline">\(\gamma-\)</span>contraction mapping (same for <span class="math inline">\(T^{*}\)</span>), thus, by the Banach fixed point theorem, they have unique fixed point</p>
+<p><span class="math display">\[T^{*} V^{*} = V^{*}, T^{\pi} V^{\pi} = V^{\pi}\]</span></p>
+<p>Moreover, the update rule <span class="math inline">\(V_{k+1} \leftarrow T^{\pi} V_{k}\)</span> converges, which means:</p>
+<p><span class="math display">\[lim_{k \rightarrow \infty} \| V_{k} - V^{\pi}\|_{\infty} = 0\]</span></p>
+<h4 id="value-of-the-greedy-policy-of-v-is-v">Value of the greedy policy of <span class="math inline">\(V^{*}\)</span> is <span class="math inline">\(V^{*}\)</span></h4>
+<p>We know if:</p>
+<p><span class="math display">\[T^{\pi} V^{*} = T^{*}V^{*} \implies T^{\pi} V^{*} = V^{*}\]</span></p>
+<p>This is also the fix point of <span class="math inline">\(T^{\pi}\)</span>, this implies <span class="math inline">\(V^{\pi} = V^{*}\)</span>.</p>
+<p>On the other hand, if we know <span class="math inline">\(V^\pi = V^{*}\)</span>, the by applying <span class="math inline">\(T^{\pi}\)</span> to both side we have</p>
+<p><span class="math display">\[T^{\pi} V^{\pi} = T^{\pi} V^{*} \implies T^{\pi} V^{\pi} = T^{*} V^{*} = T^{\pi} V^{*}\]</span></p>
+<p>Thus, we can conclude that:</p>
+<p><span class="math display">\[T^{\pi} V^{*} = T^{*}V^{*} \text{ iff } V^\pi = V^{*}\]</span></p>
+<p><strong>The Connection To Greedy Policy</strong></p>
+<p>Given <span class="math inline">\(V^{*}\)</span>, the greedy policy of <span class="math inline">\(V^{*}\)</span> is defined as:</p>
+<p><span class="math display">\[\pi_{g} (x; V^{*}) = argmax_{a \in A} Q^{*}(x, a) = argmax_{a \in A} r(x, a) + \gamma \int P(dx^{\prime} | x, a) V^{*}(x^{\prime})\]</span></p>
+<p>So:</p>
+<p><span class="math display">\[T^{\pi_{g} (x; V^{*})} V^{*} = r(x, \pi_{g} (x; V^{*})) + \gamma \int P(dx^{\prime} | x, \pi_{g} (x; V^{*})) V^{*}(x^{\prime}) = max_{a \in A} r(x, a) + \gamma \int P(dx^{\prime} | x, a) V^{*}(x^{\prime})\]</span></p>
+<p>Compare with <span class="math inline">\(T^{*} V^{*}\)</span>:</p>
+<p><span class="math display">\[T^{*} V^{*} =  max_{a \in A} r(x, a) + \gamma \int P(dx^{\prime} | x, a) V^{*}(x^{\prime})\]</span></p>
+<p>Thus:</p>
+<p><span class="math display">\[T^{*} V^{*} = T^{\pi_{g} (x; V^{*})} V^{*}\]</span></p>
+<p>Since:</p>
+<p><span class="math display">\[T^{\pi} V^{*} = T^{*}V^{*} \text{ iff } V^\pi = V^{*} \implies V^{*} = V^{\pi_{g} (x; V^{*})}\]</span></p>
+<p>That is, the value of following <span class="math inline">\(\pi_{g} (x; V^{*})\)</span> is the same as <span class="math inline">\(V^{*}\)</span>. This means that if we find <span class="math inline">\(V^{*}\)</span> and its greedy policy, the value of following the greedy policy is <span class="math inline">\(V^{*}\)</span>.</p>
+<p><span style="color:red"><strong>To find an optimal policy, we can find <span class="math inline">\(V^{*}\)</span> first, then find its greedy policy</strong></span></p>
+<p>following this conclusion: Although we have not yet prove that <span class="math inline">\(V^{*}\)</span> is the optimal value function (<span class="math inline">\(\pi^{*} = argmax_{\pi \in \prod} V^{\pi} (x)\)</span>, <span class="math inline">\(V^{*} = V^{\pi^{*}}\)</span> (claim 2)), this is indeed true. (prove later)</p>
+<h4 id="an-error-bound-based-on-the-bellman-error">An error bound based on the bellman error</h4>
+<p>If we find a V s.t <span class="math inline">\(V = T^{*} V\)</span>, we know that <span class="math inline">\(V = V^{*}\)</span> (same for <span class="math inline">\(T^{\pi} and Q\)</span>), what if <span class="math inline">\(V \approx T^{*} V\)</span>, what can we say about the closeness of <span class="math inline">\(V\)</span> to <span class="math inline">\(V^{*}\)</span>?</p>
+<p><img src='/images/RL/bellman_equation/br_1.png'> <img src='/images/RL/bellman_equation/br_2.png'></p>
+<p><strong>Proof:</strong></p>
+<span class="math display">\[\begin{aligned}
+V - V^{*} &amp;= V - T^{*} V + T^{*} V - V^{*}\\
+\implies \| V - V^{*} \|_{\infty} &amp;= \| V - T^{*} V + T^{*} V - V^{*} \|_{\infty}\\
+&amp;\leq   \|V - T^{*} V \|_{\infty} + \|T^{*} V - T^{*}V^{*} \|_{\infty} \\
+&amp;\leq   \|V - T^{*} V \|_{\infty} + \gamma \|V - V^{*} \|_{\infty} (i.e. \|T^{*} V - T^{*}V^{*} \|_{\infty} \leq \gamma \|V - V^{*} \|_{\infty}, \text{contraction property} )\\
+\implies \| V - V^{*} \|_{\infty} &amp;\leq \frac{\|V - T^{*} V \|_{\infty}}{(1 - \gamma)}\\
+\implies \| V - V^{*} \|_{\infty} &amp;\leq \frac{BE^{*}}{(1 - \gamma)}
+\end{aligned}\]</span>
+<h4 id="proof-of-claim-2-v-t-v-is-the-same-as-vpi">Proof of claim 2: <span class="math inline">\(V^{*} = T^{*} V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^{*}}\)</span></h4>
+<p><img src='/images/RL/bellman_equation/claim_2.png'></p>
+<p>The proof has three parts:</p>
+<ol type="1">
+<li><p>Prove that <span class="math inline">\(V^{*} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)\)</span></p></li>
+<li><p>Prove that <span class="math inline">\(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></p></li>
+<li><p>Combine 1 and 2, we show that claim 2 is true, that is, <span class="math inline">\(V^{*} = T^{*} V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^{*}}\)</span></p></li>
+</ol>
+<h5 id="proof-v-x-leq-sup_pi-in-prod-vpi-x">Proof <span class="math inline">\(V^{*} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)\)</span></h5>
+<p>From the error bound with the choice of <span class="math inline">\(V = V^{*}\)</span>, we have for any <span class="math inline">\(\pi \in \prod\)</span>,</p>
+<p><span class="math display">\[\| V^{*} - V^{\pi} \|_{\infty} \leq \frac{\| V^{*} - T^{\pi}V^{*} \|_{\infty}}{1 - \gamma}\]</span></p>
+<p>Let <span class="math inline">\(\epsilon &gt; 0\)</span>. Choose a policy <span class="math inline">\(\pi_{\epsilon}\)</span> s.t:</p>
+<p><span class="math display">\[\| V^{*} - T^{\pi_{\epsilon}} V^{*} \|_{\infty} \leq (1 - \gamma) \epsilon\]</span></p>
+<p>We know that this <span class="math inline">\(\pi_{\epsilon}\)</span> exists because we can always pick a <span class="math inline">\(\pi_{\epsilon}\)</span> s.t it is the maximizer of <span class="math inline">\(T^{*}V^{*}\)</span> (ie. pick <span class="math inline">\(\pi_{\epsilon}\)</span> to be <span class="math inline">\(\pi_{g} (x; V^{*})\)</span>, from above proof we know that <span class="math inline">\(T^{\pi_{g} (x; V^{*})} V^{*} = T^{*} V^{*}\)</span>), then:</p>
+<p><span class="math display">\[\| V^{*} - T^{\pi_{\epsilon}} V^{*} \|_{\infty} = 0 \leq (1 - \gamma) * \epsilon, \forall \epsilon &gt; 0\]</span></p>
+<p>For any policy <span class="math inline">\(\pi_{\epsilon}\)</span> that satisfies above equation:</p>
+<p><span class="math display">\[\| V^{*} - V^{\pi_{\epsilon}} \|_{\infty} \leq \epsilon\]</span></p>
+<p>This means that:</p>
+<p><span class="math display">\[sup_{x_i} \{|V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)|\} \leq \epsilon\]</span></p>
+<p><span class="math display">\[\implies |V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)| \leq sup_{x_i} \{|V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)|\} \leq \epsilon, \forall x_i \in X\]</span></p>
+<p><span class="math display">\[\implies V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i) \leq  |V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)| \leq \epsilon\]</span></p>
+<p><span class="math display">\[\implies V^{*} (x_i) \leq \epsilon + V^{\pi_{\epsilon}} (x_i)\]</span></p>
+<p>Since:</p>
+<p><span class="math display">\[V^{\pi_{\epsilon}} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)\]</span></p>
+<p>As we take <span class="math inline">\(\epsilon \rightarrow 0\)</span>, we have:</p>
+<p><span class="math display">\[V^{*} (x) \leq lim_{\epsilon \rightarrow 0} (\epsilon + V^{\pi_{\epsilon}} (x)) \leq lim_{\epsilon \rightarrow 0} (\epsilon + sup_{\pi \in \prod} V^{\pi}  (x)) = sup_{\pi \in \prod} V^{\pi} (x)\]</span></p>
+<p><strong>This shows that <span class="math inline">\(V^{*} = T^{*} V^{*}\)</span> is upper bounded by the optimal value function within the space of stationary policies</strong></p>
+<h5 id="proof-v-x-geq-sup_pi-in-prod-vpi-x">Proof <span class="math inline">\(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></h5>
+<p>Consider any <span class="math inline">\(\pi \in \prod\)</span>. By the definition of <span class="math inline">\(T^{\pi}\)</span> and <span class="math inline">\(T^{*}\)</span>, for any <span class="math inline">\(V \in B(X)\)</span>, we have that for any <span class="math inline">\(x \in X\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+T^{\pi} V &amp;= r^{\pi}(x) + \int P(dx^{\prime} | x, a) \pi(da | x) V(x^{\prime})\\
+&amp;= \int  \pi(da | x) [P(dx^{\prime} | x, a) V(x^{\prime}) + r(x, a)]\\
+&amp;\leq sup_{a \in A} \{r(x, a) + \int P(dx^{\prime} | x, a) V(x^{\prime})\} = T^{*} V
+\end{aligned}\]</span>
+<p>In particular, with the choice of <span class="math inline">\(V = V^{*}\)</span>, we have:</p>
+<span class="math display">\[\begin{aligned}
+T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
+\implies T^{\pi}T^{\pi} V^{*} &amp;\leq T^{\pi}V^{*} \leq V^{*} \text{(Monotonicity)}\\
+\implies (T^{\pi})^{k} V^{*} &amp;\leq V^{*} \text{(apply bellman operator k times)}
+\end{aligned}\]</span>
+<p>as <span class="math inline">\(k \rightarrow \infty\)</span>, by fix point theorem, we know that <span class="math inline">\((T^{\pi})^k V^{*} = V^{\pi}\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+\implies V^{\pi} &amp;= lim_{k \rightarrow \infty} (T^{\pi})^k V^{*} \leq V^{*}, \forall \pi \in \prod\\
+\implies V^{*} (x) &amp;\geq sup_{\pi \in \prod} V^{\pi} (x)
+\end{aligned}\]</span>
+<p><strong>Thus, we can conclude that <span class="math inline">\(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></strong></p>
+<p><span style="color:red"><strong>Together, we showed that <span class="math inline">\(V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^{*}}\)</span>, the solution of bellman optimality equation is the optimal value function</strong></span></p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>Basics</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Bellman Equations</title>
+    <url>/2021/05/03/bellman-equations/</url>
+    <content><![CDATA[<p><em>Please read post on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> prior this post</em></p>
+<h1 id="bellman-equations">Bellman Equations</h1>
+<p>By expanding value functions, we reveal the recursive property of return:</p>
+<p><span class="math display">\[
+\begin{aligned}
+V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
+&amp; = E[R_{t} + \gamma G^{\pi}_{t+1} | X_{t} = x]\\
+&amp; = E_{a \sim \pi(a | s)}[R_{t} | X_{t} = x] + \gamma E[G^{\pi}_{t+1} | X_{t} = x]\\
+&amp; = r^{\pi} (x) + \gamma E[V^{\pi} (X_{t+1}) | X_{t} = x]\\
+\end{aligned}
+\]</span> <span id="more"></span></p>
+<p>Where: <span class="math display">\[V^{\pi} (X_{t+1}) = E[G^{\pi}_{t+1} | X_{t+1}] \]</span></p>
+<p><span class="math display">\[\implies E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[V^{\pi} (X_{t+1}) | X_t=x_t] = E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[E[G^{\pi}_{t+1} | X_{t+1}] | X_{t}=x_t] = E[G^{\pi}_{t+1} | X_{t} = x_t]\]</span></p>
+<p>This implies that neither side is random, by expanding:</p>
+<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x]\]</span></p>
+<p>we get:</p>
+<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
+<p>Thus, the value function can be expressed as:</p>
+<p><span class="math display">\[V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
+<p>This is the <span style="color:red"><strong>bellman equation</strong> </span> for a policy <span class="math inline">\(\pi\)</span>, this can be interpreted as: The value of following a policy <span class="math inline">\(\pi\)</span> is the expected immediate reward that the <span class="math inline">\(\pi\)</span>-following agent receives at that state plus the discounted average(expected) value that the agent receives at the next-state.</p>
+<p>Same for action-value function, we have bellman equation:</p>
+<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (da^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
+<p>Compare with value function, we have expected reward base on action <span class="math inline">\(a\)</span> plus discounted average(expected) value that the agent receives at the next-state following <span class="math inline">\(\pi\)</span> (the choice of action is given at state <span class="math inline">\(s\)</span> in action value function)</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>Basics</category>
+      </categories>
+      <tags>
+        <tag>RL Basics</tag>
+      </tags>
   </entry>
   <entry>
     <title>Batch Normalization</title>
@@ -1276,41 +1513,6 @@ u_t &amp;= \lim_{p \rightarrow \infty} (v_t)^{\frac{1}{p}}\\
       <tags>
         <tag>Deep Learning</tag>
         <tag>Normalization</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Bellman Equations</title>
-    <url>/2021/05/03/bellman-equations/</url>
-    <content><![CDATA[<p><em>Please read post on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> prior this post</em></p>
-<h1 id="bellman-equations">Bellman Equations</h1>
-<p>By expanding value functions, we reveal the recursive property of return:</p>
-<p><span class="math display">\[
-\begin{aligned}
-V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
-&amp; = E[R_{t} + \gamma G^{\pi}_{t+1} | X_{t} = x]\\
-&amp; = E_{a \sim \pi(a | s)}[R_{t} | X_{t} = x] + \gamma E[G^{\pi}_{t+1} | X_{t} = x]\\
-&amp; = r^{\pi} (x) + \gamma E[V^{\pi} (X_{t+1}) | X_{t} = x]\\
-\end{aligned}
-\]</span> <span id="more"></span></p>
-<p>Where: <span class="math display">\[V^{\pi} (X_{t+1}) = E[G^{\pi}_{t+1} | X_{t+1}] \]</span></p>
-<p><span class="math display">\[\implies E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[V^{\pi} (X_{t+1}) | X_t=x_t] = E_{X_{t+1} \sim P(\cdot | x_t, A_t)}[E[G^{\pi}_{t+1} | X_{t+1}] | X_{t}=x_t] = E[G^{\pi}_{t+1} | X_{t} = x_t]\]</span></p>
-<p>This implies that neither side is random, by expanding:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x]\]</span></p>
-<p>we get:</p>
-<p><span class="math display">\[E[V^{\pi} (X_{t+1}) | X_{t} = x] = \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
-<p>Thus, the value function can be expressed as:</p>
-<p><span class="math display">\[V^{\pi} (x) = r^{\pi} (x) + \gamma \int P(dx^\prime | x, a) \pi (da | x) V^{\pi} (x^\prime)\]</span></p>
-<p>This is the <span style="color:red"><strong>bellman equation</strong> </span> for a policy <span class="math inline">\(\pi\)</span>, this can be interpreted as: The value of following a policy <span class="math inline">\(\pi\)</span> is the expected immediate reward that the <span class="math inline">\(\pi\)</span>-following agent receives at that state plus the discounted average(expected) value that the agent receives at the next-state.</p>
-<p>Same for action-value function, we have bellman equation:</p>
-<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (da^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
-<p>Compare with value function, we have expected reward base on action <span class="math inline">\(a\)</span> plus discounted average(expected) value that the agent receives at the next-state following <span class="math inline">\(\pi\)</span> (the choice of action is given at state <span class="math inline">\(s\)</span> in action value function)</p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>Basics</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
       </tags>
   </entry>
   <entry>
@@ -1522,165 +1724,6 @@ f(x, y), &amp; (x, y) \in D\\
 ]]></content>
   </entry>
   <entry>
-    <title>Bellman Equations for Optimal Value Functions</title>
-    <url>/2021/05/03/bellman-optimality-equations/</url>
-    <content><![CDATA[<p><em>Please read posts on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> and <a href="/2021/05/03/bellman-equations/" title="Bellman Equations">Bellman Equations</a> prior this post.</em></p>
-<h1 id="bellman-equations-for-optimal-value-functions">Bellman Equations for Optimal Value Functions</h1>
-<p><img src='/images/RL/bellman_equation/optimal_policy_value_func.png'></p>
-<p>So it is natural to ask, does the optimal value function of optimal policy <span class="math inline">\(V^{\pi^*}\)</span> have similar recursive structure? the answer is yes, however, we need to prove this. The proof goes with 3 claims which we will prove later: <span id="more"></span></p>
-<ol type="1">
-<li><ol type="a">
-<li><p><span class="math inline">\(\exists\)</span> a value function <span class="math inline">\(V^*\)</span> s.t <span class="math inline">\(\forall x \in X\)</span>, we have:</p>
-<p><span class="math display">\[V^{*}(x) = max_{a} \{Q^{*}(x, a)\} = max_{a} \{r(x, a) + \gamma \int P(dx^\prime | x, a) V^{*}(x^\prime)\}\]</span></p></li>
-<li><p><span class="math inline">\(\exists\)</span> a value function <span class="math inline">\(Q^*\)</span> s.t <span class="math inline">\(\forall x, a \in X, A\)</span>, we have:</p>
-<p><span class="math display">\[Q^{*}(x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) max_{a^\prime} \{Q^{*} (x^\prime, a^\prime)\}\]</span></p></li>
-</ol>
-<p>These equations are called <span style="color:red"><strong>bellman optimality equations for the value functions</strong></span></p></li>
-<li><p><span class="math inline">\(V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^*}\)</span>, the optimal value function when <span class="math inline">\(\pi\)</span> is restricted to be within the space of all stationary and non-stationary policies.</p></li>
-<li><p>For discounted continuing MDPs, we can always find a stationary policy that is optimal within the space of all stationary and non-stationary policies.</p></li>
-</ol>
-<p>In summary, we claim that:</p>
-<p><strong><span class="math inline">\(V^{*}\)</span> exists and it is unique, <span class="math inline">\(V^{*} = V^{\pi^{*}}\)</span>. Same for <span class="math inline">\(Q^{*}\)</span></strong></p>
-<h2 id="bellman-operators">Bellman Operators</h2>
-<p>In order to prove the claims, we need several concepts:</p>
-<p><img src='/images/RL/bellman_equation/bellman-operator.png'> <img src='/images/RL/bellman_equation/bell-opt-operator.png'></p>
-<p>These operators are linear and recall that:</p>
-<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (a^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
-<p>This implies <span class="math inline">\(T^{\pi} Q^{\pi} = Q^{\pi}\)</span>, same for state-value function and bellman optimality operators. Thus, we can conclude that:</p>
-<p><span class="math display">\[V^{\pi} = T^{\pi} V^{\pi}\]</span> <span class="math display">\[Q^{\pi} = T^{\pi} Q^{\pi}\]</span> <span class="math display">\[V^{*} = T^{*} V^{*}\]</span> <span class="math display">\[Q^{*} = T^{*} Q^{*}\]</span></p>
-<h3 id="properties-of-bellman-operators">Properties of Bellman Operators</h3>
-<p>Bellman operators have several important properties. The properties that matters for us the most are:</p>
-<ol type="1">
-<li>Monotonicity</li>
-<li>Contraction</li>
-</ol>
-<h4 id="monotonicity">Monotonicity</h4>
-<p><img src='/images/RL/bellman_equation/monotonicity.png'></p>
-<p>we can easily prove this (only prove <span class="math inline">\(T^{\pi}\)</span>, <span class="math inline">\(T^{*}\)</span> is the same):</p>
-<p>Assume:</p>
-<p><span class="math display">\[V_1(x^{\prime}) \geq V_2(x^{\prime}), \forall x^{\prime} \in X\]</span></p>
-<p>we get that for any <span class="math inline">\(x \in X\)</span>:</p>
-<p><span class="math display">\[T^{\pi}V_{1} (x) = r^{\pi} (x) + \gamma \int P^{\pi}(dx^{\prime} | x) V_{1} (x^\prime) \geq r^{\pi} (x) + \gamma \int P^{\pi}(dx^{\prime} | x) V_{2} (x^\prime) = T^{\pi}V_2(x)\]</span></p>
-<p>Thus:</p>
-<p><span class="math display">\[T^{\pi}V_{1} (x) \geq T^{\pi}V_{2} (x)\]</span></p>
-<h4 id="contraction">Contraction</h4>
-<p><img src='/images/RL/bellman_equation/contraction_mapping.png'></p>
-<p>we can also easily prove that <span class="math inline">\(T^{*}, T^{\pi}\)</span> are contraction mappings (only prove <span class="math inline">\(T^{\pi}\)</span>, <span class="math inline">\(T^{*}\)</span> is the same):</p>
-<p>Consider two action-value functions:</p>
-<p><span class="math display">\[Q_1, Q_2 \in B(X\times A)\]</span></p>
-<p>Consider the metric:</p>
-<p><span class="math display">\[d(Q_1, Q_2) = \| Q_1 - Q_2 \|_{\infty}\]</span></p>
-<p>We show the contraction w.r.t <span class="math inline">\(l-\infty\)</span> norm.</p>
-<p>For any <span class="math inline">\((x, a) \in X \times A\)</span>, we have:</p>
-<span class="math display">\[\begin{aligned}
-\lvert T^{\pi} Q_1 (x, a) - T^{\pi} Q_2 (x, a) \rvert &amp;= \lvert r (x, a) + \gamma \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) Q_{1} (x^\prime, a^{\prime}) - r (x, a) - \gamma \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) Q_{2} (x^\prime, a^{\prime}) \rvert\\
-&amp; = \gamma \lvert \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) [Q_{1} (x^\prime, a^{\prime}) -  Q_{2} (x^\prime, a^{\prime})] \rvert\\
-&amp; \leq \gamma \int \underbrace{P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime)}_{\text{these are probabilities which $ \geq $ 0}} \lvert [Q_{1} (x^\prime, a^{\prime}) -  Q_{2} (x^\prime, a^{\prime})] \rvert\\
-&amp; \leq \gamma \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) \sup_{x, a}\lvert [Q_{1} (x, a) -  Q_{2} (x, a)] \rvert\\
-&amp; = \gamma \sup_{x, a}\lvert Q_{1} (x, a) -  Q_{2} (x, a) \rvert \underbrace{\int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime)}_{\text{this is a probability distribution which sums to 1}}\\
-&amp; = \gamma \sup_{x, a}\lvert Q_{1} (x, a) -  Q_{2} (x, a) \rvert = \gamma \|Q_{1} -  Q_{2}\|_{\infty}
-\end{aligned}\]</span>
-<p>This inequality holds for all state action pair, thus, we have showed that bellman operators are contraction mappings.</p>
-<p><img src='/images/RL/bellman_equation/gamma_contraction.png'></p>
-<h3 id="consequences-of-monotonicity-and-contraction">Consequences of Monotonicity and Contraction</h3>
-<h4 id="uniqueness-of-fixed-points">Uniqueness of fixed points</h4>
-<p><img src='/images/RL/bellman_equation/fixed_point.png'> <img src='/images/RL/bellman_equation/bfpt.png'> <img src='/images/RL/bellman_equation/unique_fixed_points.png'></p>
-<p>Proof of the proposition is also simple (Same for <span class="math inline">\(Q^{\pi}, Q^{*}\)</span>):</p>
-<p>For any <span class="math inline">\(\pi\)</span>, <span class="math inline">\(T^{\pi}\)</span> is a <span class="math inline">\(\gamma-\)</span>contraction mapping (same for <span class="math inline">\(T^{*}\)</span>), thus, by the Banach fixed point theorem, they have unique fixed point</p>
-<p><span class="math display">\[T^{*} V^{*} = V^{*}, T^{\pi} V^{\pi} = V^{\pi}\]</span></p>
-<p>Moreover, the update rule <span class="math inline">\(V_{k+1} \leftarrow T^{\pi} V_{k}\)</span> converges, which means:</p>
-<p><span class="math display">\[lim_{k \rightarrow \infty} \| V_{k} - V^{\pi}\|_{\infty} = 0\]</span></p>
-<h4 id="value-of-the-greedy-policy-of-v-is-v">Value of the greedy policy of <span class="math inline">\(V^{*}\)</span> is <span class="math inline">\(V^{*}\)</span></h4>
-<p>We know if:</p>
-<p><span class="math display">\[T^{\pi} V^{*} = T^{*}V^{*} \implies T^{\pi} V^{*} = V^{*}\]</span></p>
-<p>This is also the fix point of <span class="math inline">\(T^{\pi}\)</span>, this implies <span class="math inline">\(V^{\pi} = V^{*}\)</span>.</p>
-<p>On the other hand, if we know <span class="math inline">\(V^\pi = V^{*}\)</span>, the by applying <span class="math inline">\(T^{\pi}\)</span> to both side we have</p>
-<p><span class="math display">\[T^{\pi} V^{\pi} = T^{\pi} V^{*} \implies T^{\pi} V^{\pi} = T^{*} V^{*} = T^{\pi} V^{*}\]</span></p>
-<p>Thus, we can conclude that:</p>
-<p><span class="math display">\[T^{\pi} V^{*} = T^{*}V^{*} \text{ iff } V^\pi = V^{*}\]</span></p>
-<p><strong>The Connection To Greedy Policy</strong></p>
-<p>Given <span class="math inline">\(V^{*}\)</span>, the greedy policy of <span class="math inline">\(V^{*}\)</span> is defined as:</p>
-<p><span class="math display">\[\pi_{g} (x; V^{*}) = argmax_{a \in A} Q^{*}(x, a) = argmax_{a \in A} r(x, a) + \gamma \int P(dx^{\prime} | x, a) V^{*}(x^{\prime})\]</span></p>
-<p>So:</p>
-<p><span class="math display">\[T^{\pi_{g} (x; V^{*})} V^{*} = r(x, \pi_{g} (x; V^{*})) + \gamma \int P(dx^{\prime} | x, \pi_{g} (x; V^{*})) V^{*}(x^{\prime}) = max_{a \in A} r(x, a) + \gamma \int P(dx^{\prime} | x, a) V^{*}(x^{\prime})\]</span></p>
-<p>Compare with <span class="math inline">\(T^{*} V^{*}\)</span>:</p>
-<p><span class="math display">\[T^{*} V^{*} =  max_{a \in A} r(x, a) + \gamma \int P(dx^{\prime} | x, a) V^{*}(x^{\prime})\]</span></p>
-<p>Thus:</p>
-<p><span class="math display">\[T^{*} V^{*} = T^{\pi_{g} (x; V^{*})} V^{*}\]</span></p>
-<p>Since:</p>
-<p><span class="math display">\[T^{\pi} V^{*} = T^{*}V^{*} \text{ iff } V^\pi = V^{*} \implies V^{*} = V^{\pi_{g} (x; V^{*})}\]</span></p>
-<p>That is, the value of following <span class="math inline">\(\pi_{g} (x; V^{*})\)</span> is the same as <span class="math inline">\(V^{*}\)</span>. This means that if we find <span class="math inline">\(V^{*}\)</span> and its greedy policy, the value of following the greedy policy is <span class="math inline">\(V^{*}\)</span>.</p>
-<p><span style="color:red"><strong>To find an optimal policy, we can find <span class="math inline">\(V^{*}\)</span> first, then find its greedy policy</strong></span></p>
-<p>following this conclusion: Although we have not yet prove that <span class="math inline">\(V^{*}\)</span> is the optimal value function (<span class="math inline">\(\pi^{*} = argmax_{\pi \in \prod} V^{\pi} (x)\)</span>, <span class="math inline">\(V^{*} = V^{\pi^{*}}\)</span> (claim 2)), this is indeed true. (prove later)</p>
-<h4 id="an-error-bound-based-on-the-bellman-error">An error bound based on the bellman error</h4>
-<p>If we find a V s.t <span class="math inline">\(V = T^{*} V\)</span>, we know that <span class="math inline">\(V = V^{*}\)</span> (same for <span class="math inline">\(T^{\pi} and Q\)</span>), what if <span class="math inline">\(V \approx T^{*} V\)</span>, what can we say about the closeness of <span class="math inline">\(V\)</span> to <span class="math inline">\(V^{*}\)</span>?</p>
-<p><img src='/images/RL/bellman_equation/br_1.png'> <img src='/images/RL/bellman_equation/br_2.png'></p>
-<p><strong>Proof:</strong></p>
-<span class="math display">\[\begin{aligned}
-V - V^{*} &amp;= V - T^{*} V + T^{*} V - V^{*}\\
-\implies \| V - V^{*} \|_{\infty} &amp;= \| V - T^{*} V + T^{*} V - V^{*} \|_{\infty}\\
-&amp;\leq   \|V - T^{*} V \|_{\infty} + \|T^{*} V - T^{*}V^{*} \|_{\infty} \\
-&amp;\leq   \|V - T^{*} V \|_{\infty} + \gamma \|V - V^{*} \|_{\infty} (i.e. \|T^{*} V - T^{*}V^{*} \|_{\infty} \leq \gamma \|V - V^{*} \|_{\infty}, \text{contraction property} )\\
-\implies \| V - V^{*} \|_{\infty} &amp;\leq \frac{\|V - T^{*} V \|_{\infty}}{(1 - \gamma)}\\
-\implies \| V - V^{*} \|_{\infty} &amp;\leq \frac{BE^{*}}{(1 - \gamma)}
-\end{aligned}\]</span>
-<h4 id="proof-of-claim-2-v-t-v-is-the-same-as-vpi">Proof of claim 2: <span class="math inline">\(V^{*} = T^{*} V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^{*}}\)</span></h4>
-<p><img src='/images/RL/bellman_equation/claim_2.png'></p>
-<p>The proof has three parts:</p>
-<ol type="1">
-<li><p>Prove that <span class="math inline">\(V^{*} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)\)</span></p></li>
-<li><p>Prove that <span class="math inline">\(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></p></li>
-<li><p>Combine 1 and 2, we show that claim 2 is true, that is, <span class="math inline">\(V^{*} = T^{*} V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^{*}}\)</span></p></li>
-</ol>
-<h5 id="proof-v-x-leq-sup_pi-in-prod-vpi-x">Proof <span class="math inline">\(V^{*} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)\)</span></h5>
-<p>From the error bound with the choice of <span class="math inline">\(V = V^{*}\)</span>, we have for any <span class="math inline">\(\pi \in \prod\)</span>,</p>
-<p><span class="math display">\[\| V^{*} - V^{\pi} \|_{\infty} \leq \frac{\| V^{*} - T^{\pi}V^{*} \|_{\infty}}{1 - \gamma}\]</span></p>
-<p>Let <span class="math inline">\(\epsilon &gt; 0\)</span>. Choose a policy <span class="math inline">\(\pi_{\epsilon}\)</span> s.t:</p>
-<p><span class="math display">\[\| V^{*} - T^{\pi_{\epsilon}} V^{*} \|_{\infty} \leq (1 - \gamma) \epsilon\]</span></p>
-<p>We know that this <span class="math inline">\(\pi_{\epsilon}\)</span> exists because we can always pick a <span class="math inline">\(\pi_{\epsilon}\)</span> s.t it is the maximizer of <span class="math inline">\(T^{*}V^{*}\)</span> (ie. pick <span class="math inline">\(\pi_{\epsilon}\)</span> to be <span class="math inline">\(\pi_{g} (x; V^{*})\)</span>, from above proof we know that <span class="math inline">\(T^{\pi_{g} (x; V^{*})} V^{*} = T^{*} V^{*}\)</span>), then:</p>
-<p><span class="math display">\[\| V^{*} - T^{\pi_{\epsilon}} V^{*} \|_{\infty} = 0 \leq (1 - \gamma) * \epsilon, \forall \epsilon &gt; 0\]</span></p>
-<p>For any policy <span class="math inline">\(\pi_{\epsilon}\)</span> that satisfies above equation:</p>
-<p><span class="math display">\[\| V^{*} - V^{\pi_{\epsilon}} \|_{\infty} \leq \epsilon\]</span></p>
-<p>This means that:</p>
-<p><span class="math display">\[sup_{x_i} \{|V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)|\} \leq \epsilon\]</span></p>
-<p><span class="math display">\[\implies |V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)| \leq sup_{x_i} \{|V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)|\} \leq \epsilon, \forall x_i \in X\]</span></p>
-<p><span class="math display">\[\implies V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i) \leq  |V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)| \leq \epsilon\]</span></p>
-<p><span class="math display">\[\implies V^{*} (x_i) \leq \epsilon + V^{\pi_{\epsilon}} (x_i)\]</span></p>
-<p>Since:</p>
-<p><span class="math display">\[V^{\pi_{\epsilon}} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)\]</span></p>
-<p>As we take <span class="math inline">\(\epsilon \rightarrow 0\)</span>, we have:</p>
-<p><span class="math display">\[V^{*} (x) \leq lim_{\epsilon \rightarrow 0} (\epsilon + V^{\pi_{\epsilon}} (x)) \leq lim_{\epsilon \rightarrow 0} (\epsilon + sup_{\pi \in \prod} V^{\pi}  (x)) = sup_{\pi \in \prod} V^{\pi} (x)\]</span></p>
-<p><strong>This shows that <span class="math inline">\(V^{*} = T^{*} V^{*}\)</span> is upper bounded by the optimal value function within the space of stationary policies</strong></p>
-<h5 id="proof-v-x-geq-sup_pi-in-prod-vpi-x">Proof <span class="math inline">\(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></h5>
-<p>Consider any <span class="math inline">\(\pi \in \prod\)</span>. By the definition of <span class="math inline">\(T^{\pi}\)</span> and <span class="math inline">\(T^{*}\)</span>, for any <span class="math inline">\(V \in B(X)\)</span>, we have that for any <span class="math inline">\(x \in X\)</span>:</p>
-<span class="math display">\[\begin{aligned}
-T^{\pi} V &amp;= r^{\pi}(x) + \int P(dx^{\prime} | x, a) \pi(da | x) V(x^{\prime})\\
-&amp;= \int  \pi(da | x) [P(dx^{\prime} | x, a) V(x^{\prime}) + r(x, a)]\\
-&amp;\leq sup_{a \in A} \{r(x, a) + \int P(dx^{\prime} | x, a) V(x^{\prime})\} = T^{*} V
-\end{aligned}\]</span>
-<p>In particular, with the choice of <span class="math inline">\(V = V^{*}\)</span>, we have:</p>
-<span class="math display">\[\begin{aligned}
-T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
-\implies T^{\pi}T^{\pi} V^{*} &amp;\leq T^{\pi}V^{*} \leq V^{*} \text{(Monotonicity)}\\
-\implies (T^{\pi})^{k} V^{*} &amp;\leq V^{*} \text{(apply bellman operator k times)}
-\end{aligned}\]</span>
-<p>as <span class="math inline">\(k \rightarrow \infty\)</span>, by fix point theorem, we know that <span class="math inline">\((T^{\pi})^k V^{*} = V^{\pi}\)</span>:</p>
-<span class="math display">\[\begin{aligned}
-\implies V^{\pi} &amp;= lim_{k \rightarrow \infty} (T^{\pi})^k V^{*} \leq V^{*}, \forall \pi \in \prod\\
-\implies V^{*} (x) &amp;\geq sup_{\pi \in \prod} V^{\pi} (x)
-\end{aligned}\]</span>
-<p><strong>Thus, we can conclude that <span class="math inline">\(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></strong></p>
-<p><span style="color:red"><strong>Together, we showed that <span class="math inline">\(V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^{*}}\)</span>, the solution of bellman optimality equation is the optimal value function</strong></span></p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>Basics</category>
-      </categories>
-      <tags>
-        <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>RL Cheat Sheet (under construction)</title>
     <url>/2021/05/18/cheat-sheet/</url>
     <content><![CDATA[<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
@@ -1786,63 +1829,6 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
       </tags>
   </entry>
   <entry>
-    <title>convex_opt</title>
-    <url>/2021/06/14/convex-opt/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
-    <title>Dropout</title>
-    <url>/2021/05/25/drop-out/</url>
-    <content><![CDATA[<h1 id="dropout-a-simple-way-to-prevent-neural-networks-from-overfitting">Dropout: A Simple Way to Prevent Neural Networks from Overfitting</h1>
-<p>The key idea of drop out is to randomly drop units along with their connections from the neural network during training to prevent overfitting. It can be interpreted as a way of regularizing a NN by adding noise to its hidden units.</p>
-<h2 id="introduction">Introduction</h2>
-<p>With unlimited computation, the best way to "regularize" a fixed-sized model is to average the predictions of all possible settings of the parameters, weighting each setting by the posterior probability given the training data (<span class="math inline">\(P(\theta | X)\)</span>). This approach is not feasible in real life especially when there is large computational cost for training neural networks and training data are limited.Dropout prevents overfitting and provides a way of approximately combining exponentially many neural network architectures effectively.</p>
-<p>Dropout temporarily removes units from the network along with all their incoming and outgoing connections. The choice of which units to drop is random.</p>
-<p><img src="/images/ML/dropout_1.png"></p>
-<p><strong>At training time</strong>, for a NN with <span class="math inline">\(n\)</span> units, Dropout can be seen as training a collection of <span class="math inline">\(2^n\)</span> (each unit can be retained or removed by dropout, so <span class="math inline">\(2^n\)</span> different combinations) thinned networks (some units are dropped by dropout) with extensive weight sharing where each thinned network gets trained very rarely.</p>
-<p><strong>At test time</strong>, it is not feasible to explicitly average the predictions form exponentially many thinned models. However, we use a single NN without dropout by scaling-down the weights of this network. If an unit is retained with probability <span class="math inline">\(p\)</span> during traning, the outgoing weights of that unit are multiplied by <span class="math inline">\(p\)</span> at the test time. This ensures that the expected output is the same as the actual output at the test time (we use expected output at test time).</p>
-<span id="more"></span>
-<h3 id="model-description">Model Description</h3>
-<p>Consider a NN with <span class="math inline">\(L\)</span> hidden layers. Let <span class="math inline">\(l \in \{1, ..., L\}\)</span> index the hidden layers of the network. Let <span class="math inline">\(\textbf{z}^{l}\)</span> denote the vector of inputs into layer <span class="math inline">\(l\)</span>, <span class="math inline">\(\textbf{y}^{l}\)</span> denote the vector of output from layer <span class="math inline">\(l\)</span> (<span class="math inline">\(\textbf{y}^{0} = \textbf{x}\)</span>). <span class="math inline">\(W^{l}\)</span> and <span class="math inline">\(\textbf{b}^l\)</span> are the weights and biases at layer <span class="math inline">\(l\)</span>. The standard forward operation can be described as:</p>
-<p><span class="math display">\[z^{l + 1}_i = \textbf{w}_{i}^{l + 1} \textbf{y}^{l} + b_i^{l + 1}\]</span></p>
-<p><span class="math display">\[y_i^{l+1} = f(z^{l + 1}_i)\]</span></p>
-<p>Where <span class="math inline">\(W^l = [\textbf{w}_1^{l}, \textbf{w}_2^{l}, ...., \textbf{w}_{|l|}^{l}]\)</span>, <span class="math inline">\(f\)</span> is any activation function.</p>
-<p>With dropout, the forward operation becomes:</p>
-<p><span class="math display">\[R_j^{l} \sim Bernoulli(p)\]</span></p>
-<p><span class="math display">\[\tilde{\textbf{y}} = \textbf{R}^{l} * \textbf{y}^{l}\]</span></p>
-<p><span class="math display">\[z^{l + 1}_i = \textbf{w}_{i}^{l + 1} \tilde{\textbf{y}}^{l} + b_i^{l + 1}\]</span></p>
-<p><span class="math display">\[y_i^{l+1} = f(z^{l + 1}_i)\]</span></p>
-<p>At the test time, the weights are scaled as <span class="math inline">\(W^{l}_{test} = p W^{l}\)</span></p>
-<h2 id="backpropagation">Backpropagation</h2>
-<p>Dropout NNs are trained using SGD in manner similar to standard NN. The only difference is that for each training case in the mini-batch, we sample a thinned network by dropping out units. Parameters that are dropped have zero gradients:</p>
-<p><span class="math display">\[\tilde{\textbf{y}} = 0\]</span></p>
-<p><span class="math display">\[\frac{\partial L}{\partial \textbf{w}_{i}^{l + 1}} = \frac{\partial L}{\partial z^{l + 1}_i} \frac{\partial z^{l + 1}_i}{\partial \textbf{w}_{i}^{l + 1}} = 0\]</span></p>
-<p>One technique the authors found useful is to impose the max norm constraint on the weights during optimization such that:</p>
-<p><span class="math display">\[\|w\|_{2} \leq c\]</span></p>
-<h2 id="effect-on-sparsity">Effect on Sparsity</h2>
-<p>The authors also found that as a side-effect of doing dropout, the activations of the hidden units become sparse, even when no sparsity inducing regularizes are present. Thus, dropout automatically leads to sparse representations.</p>
-<p><img src="/images/ML/dropout_2.png"></p>
-<h2 id="practical-guide-for-training-dropout-networks">Practical Guide for Training Dropout Networks</h2>
-<h3 id="network-size">Network Size</h3>
-<p>It is to be expected that dropping units will reduce the capacity of a NN. At each training step (single training example or a mini-batch of examples), a subset of model parameters are optimized. Therefore, if <span class="math inline">\(n\)</span>-sized layer is optimal for a standard NN on any given task, a good dropout net should have at least <span class="math inline">\(\frac{n}{p}\)</span> units. This is a useful heuristic for setting the number of hidden units for convolutional and fully connected networks.</p>
-<h3 id="learning-rate-and-momentum">Learning Rate and Momentum</h3>
-<p>Dropout introduces a significant amount of noise in the gradients compared to standard SGD. Thus, a lot of gradients tend to cancel each other. In order ot make up for this, a dropout net should typically use 10-100 times the learning-rate that was optimal for a standard NN. Another way to reduce the effect of the noise is to use a high momentum. Using high learning rate and high momentum significantly speed up learning.</p>
-<h3 id="max-norm-regularization">Max-norm Regularization</h3>
-<p>Though large momentum and learning rate speed up learning, they sometimes cause the weights to explode, so we need to apply some regularization on the parameter size.</p>
-<h3 id="dropout-rate-p">Dropout Rate <span class="math inline">\(p\)</span></h3>
-<p>This hyperparameter controls the intensity of dropout. Small value of <span class="math inline">\(p\)</span> requires big hidden unit size <span class="math inline">\(n\)</span> which will slow down the training and leads to underfitting while large <span class="math inline">\(p\)</span> may not produce enough dropout to prevent overfitting.</p>
-]]></content>
-      <categories>
-        <category>DL</category>
-        <category>Techniques</category>
-      </categories>
-      <tags>
-        <tag>Deep Learning</tag>
-        <tag>Regularization</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Decision Trees</title>
     <url>/2021/07/19/decision-trees/</url>
     <content><![CDATA[<h1 id="decision-trees-cart">Decision Trees (CART)</h1>
@@ -1925,6 +1911,12 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
       <tags>
         <tag>Machine Learning</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>convex_opt</title>
+    <url>/2021/06/14/convex-opt/</url>
+    <content><![CDATA[
+]]></content>
   </entry>
   <entry>
     <title>Dynamic Programming</title>
@@ -2020,6 +2012,65 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
       </tags>
   </entry>
   <entry>
+    <title>Dropout</title>
+    <url>/2021/05/25/drop-out/</url>
+    <content><![CDATA[<h1 id="dropout-a-simple-way-to-prevent-neural-networks-from-overfitting">Dropout: A Simple Way to Prevent Neural Networks from Overfitting</h1>
+<p>The key idea of drop out is to randomly drop units along with their connections from the neural network during training to prevent overfitting. It can be interpreted as a way of regularizing a NN by adding noise to its hidden units.</p>
+<h2 id="introduction">Introduction</h2>
+<p>With unlimited computation, the best way to "regularize" a fixed-sized model is to average the predictions of all possible settings of the parameters, weighting each setting by the posterior probability given the training data (<span class="math inline">\(P(\theta | X)\)</span>). This approach is not feasible in real life especially when there is large computational cost for training neural networks and training data are limited.Dropout prevents overfitting and provides a way of approximately combining exponentially many neural network architectures effectively.</p>
+<p>Dropout temporarily removes units from the network along with all their incoming and outgoing connections. The choice of which units to drop is random.</p>
+<p><img src="/images/ML/dropout_1.png"></p>
+<p><strong>At training time</strong>, for a NN with <span class="math inline">\(n\)</span> units, Dropout can be seen as training a collection of <span class="math inline">\(2^n\)</span> (each unit can be retained or removed by dropout, so <span class="math inline">\(2^n\)</span> different combinations) thinned networks (some units are dropped by dropout) with extensive weight sharing where each thinned network gets trained very rarely.</p>
+<p><strong>At test time</strong>, it is not feasible to explicitly average the predictions form exponentially many thinned models. However, we use a single NN without dropout by scaling-down the weights of this network. If an unit is retained with probability <span class="math inline">\(p\)</span> during traning, the outgoing weights of that unit are multiplied by <span class="math inline">\(p\)</span> at the test time. This ensures that the expected output is the same as the actual output at the test time (we use expected output at test time).</p>
+<span id="more"></span>
+<h3 id="model-description">Model Description</h3>
+<p>Consider a NN with <span class="math inline">\(L\)</span> hidden layers. Let <span class="math inline">\(l \in \{1, ..., L\}\)</span> index the hidden layers of the network. Let <span class="math inline">\(\textbf{z}^{l}\)</span> denote the vector of inputs into layer <span class="math inline">\(l\)</span>, <span class="math inline">\(\textbf{y}^{l}\)</span> denote the vector of output from layer <span class="math inline">\(l\)</span> (<span class="math inline">\(\textbf{y}^{0} = \textbf{x}\)</span>). <span class="math inline">\(W^{l}\)</span> and <span class="math inline">\(\textbf{b}^l\)</span> are the weights and biases at layer <span class="math inline">\(l\)</span>. The standard forward operation can be described as:</p>
+<p><span class="math display">\[z^{l + 1}_i = \textbf{w}_{i}^{l + 1} \textbf{y}^{l} + b_i^{l + 1}\]</span></p>
+<p><span class="math display">\[y_i^{l+1} = f(z^{l + 1}_i)\]</span></p>
+<p>Where <span class="math inline">\(W^l = [\textbf{w}_1^{l}, \textbf{w}_2^{l}, ...., \textbf{w}_{|l|}^{l}]\)</span>, <span class="math inline">\(f\)</span> is any activation function.</p>
+<p>With dropout, the forward operation becomes:</p>
+<p><span class="math display">\[R_j^{l} \sim Bernoulli(p)\]</span></p>
+<p><span class="math display">\[\tilde{\textbf{y}} = \textbf{R}^{l} * \textbf{y}^{l}\]</span></p>
+<p><span class="math display">\[z^{l + 1}_i = \textbf{w}_{i}^{l + 1} \tilde{\textbf{y}}^{l} + b_i^{l + 1}\]</span></p>
+<p><span class="math display">\[y_i^{l+1} = f(z^{l + 1}_i)\]</span></p>
+<p>At the test time, the weights are scaled as <span class="math inline">\(W^{l}_{test} = p W^{l}\)</span></p>
+<h2 id="backpropagation">Backpropagation</h2>
+<p>Dropout NNs are trained using SGD in manner similar to standard NN. The only difference is that for each training case in the mini-batch, we sample a thinned network by dropping out units. Parameters that are dropped have zero gradients:</p>
+<p><span class="math display">\[\tilde{\textbf{y}} = 0\]</span></p>
+<p><span class="math display">\[\frac{\partial L}{\partial \textbf{w}_{i}^{l + 1}} = \frac{\partial L}{\partial z^{l + 1}_i} \frac{\partial z^{l + 1}_i}{\partial \textbf{w}_{i}^{l + 1}} = 0\]</span></p>
+<p>One technique the authors found useful is to impose the max norm constraint on the weights during optimization such that:</p>
+<p><span class="math display">\[\|w\|_{2} \leq c\]</span></p>
+<h2 id="effect-on-sparsity">Effect on Sparsity</h2>
+<p>The authors also found that as a side-effect of doing dropout, the activations of the hidden units become sparse, even when no sparsity inducing regularizes are present. Thus, dropout automatically leads to sparse representations.</p>
+<p><img src="/images/ML/dropout_2.png"></p>
+<h2 id="practical-guide-for-training-dropout-networks">Practical Guide for Training Dropout Networks</h2>
+<h3 id="network-size">Network Size</h3>
+<p>It is to be expected that dropping units will reduce the capacity of a NN. At each training step (single training example or a mini-batch of examples), a subset of model parameters are optimized. Therefore, if <span class="math inline">\(n\)</span>-sized layer is optimal for a standard NN on any given task, a good dropout net should have at least <span class="math inline">\(\frac{n}{p}\)</span> units. This is a useful heuristic for setting the number of hidden units for convolutional and fully connected networks.</p>
+<h3 id="learning-rate-and-momentum">Learning Rate and Momentum</h3>
+<p>Dropout introduces a significant amount of noise in the gradients compared to standard SGD. Thus, a lot of gradients tend to cancel each other. In order ot make up for this, a dropout net should typically use 10-100 times the learning-rate that was optimal for a standard NN. Another way to reduce the effect of the noise is to use a high momentum. Using high learning rate and high momentum significantly speed up learning.</p>
+<h3 id="max-norm-regularization">Max-norm Regularization</h3>
+<p>Though large momentum and learning rate speed up learning, they sometimes cause the weights to explode, so we need to apply some regularization on the parameter size.</p>
+<h3 id="dropout-rate-p">Dropout Rate <span class="math inline">\(p\)</span></h3>
+<p>This hyperparameter controls the intensity of dropout. Small value of <span class="math inline">\(p\)</span> requires big hidden unit size <span class="math inline">\(n\)</span> which will slow down the training and leads to underfitting while large <span class="math inline">\(p\)</span> may not produce enough dropout to prevent overfitting.</p>
+]]></content>
+      <categories>
+        <category>DL</category>
+        <category>Techniques</category>
+      </categories>
+      <tags>
+        <tag>Deep Learning</tag>
+        <tag>Regularization</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>importance_sampling (under construction)</title>
+    <url>/2021/05/21/importance-sampling/</url>
+    <content><![CDATA[<h1 id="importance-sampling">Importance Sampling</h1>
+<h1 id="ref">Ref</h1>
+<p>https://www.quora.com/Why-doesn-t-DQN-use-importance-sampling-Dont-we-always-use-this-method-to-correct-the-sampling-error-produced-by-the-off-policy https://danieltakeshi.github.io/2019/01/25/deep-learning-01/</p>
+]]></content>
+  </entry>
+  <entry>
     <title>Heaps</title>
     <url>/2021/07/19/heaps/</url>
     <content><![CDATA[<h1 id="heaps">Heaps</h1>
@@ -2100,20 +2151,6 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
       </tags>
   </entry>
   <entry>
-    <title>importance_sampling (under construction)</title>
-    <url>/2021/05/21/importance-sampling/</url>
-    <content><![CDATA[<h1 id="importance-sampling">Importance Sampling</h1>
-<h1 id="ref">Ref</h1>
-<p>https://www.quora.com/Why-doesn-t-DQN-use-importance-sampling-Dont-we-always-use-this-method-to-correct-the-sampling-error-produced-by-the-off-policy https://danieltakeshi.github.io/2019/01/25/deep-learning-01/</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>k-means</title>
-    <url>/2021/07/19/k-means/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
     <title>Intrinsic Motivation</title>
     <url>/2021/06/25/instrinsic-motivation/</url>
     <content><![CDATA[<h1 id="intrinsically-motivated-reinforcement-learning">Intrinsically Motivated Reinforcement Learning</h1>
@@ -2183,6 +2220,12 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
       <tags>
         <tag>IM</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>k-means</title>
+    <url>/2021/07/19/k-means/</url>
+    <content><![CDATA[
+]]></content>
   </entry>
   <entry>
     <title>kaiming_init</title>
@@ -2334,6 +2377,54 @@ Var[\Delta x_l] &amp;= \hat{n}_l(Var(w_l)Var(\Delta y_l) + Var(w_l)E^2[\Delta y_
 ]]></content>
   </entry>
   <entry>
+    <title>knapsack</title>
+    <url>/2021/07/08/knapsack/</url>
+    <content><![CDATA[<h1 id="knapsack-problem">knapsack Problem</h1>
+<h2 id="knapsack-problem-1">0–1 knapsack problem</h2>
+<p>Given weights and values of <span class="math inline">\(n\)</span> items, put these items in a knapsack of capacity <span class="math inline">\(W\)</span> to get the maximum total value in the knapsack.</p>
+<p><span class="math inline">\(f(i, j):\)</span> using only first <span class="math inline">\(i\)</span> items, with maximum capacity of <span class="math inline">\(j\)</span>, the maximum total value you can get.</p>
+<p>Then, we can write our base cases:</p>
+<ul>
+<li><span class="math inline">\(f(0, :) = 0\)</span></li>
+<li><span class="math inline">\(f(:, 0) = 0\)</span></li>
+</ul>
+<p>0 items have values 0 and no items can be put into knapsack with capacity of 0.</p>
+<p>At <span class="math inline">\(f(i, j)\)</span>, comparing it to <span class="math inline">\(f(i - 1, j)\)</span>, we can choose to include item <span class="math inline">\(i\)</span> or not. So, we can write out of transition function <span class="math inline">\(f(i, j)\)</span>:</p>
+<ol type="1">
+<li><p>If there is still extra capacity for item <span class="math inline">\(i\)</span> with total capacity <span class="math inline">\(j\)</span> (i.e <span class="math inline">\(sum(weights[: i + 1]) \leq j)\)</span>), then we can just simply add values of item <span class="math inline">\(i\)</span>. <span class="math display">\[f(i, j) = f(i - 1, j) + values(i)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> and the current weight <span class="math inline">\(weight[i] &gt; j\)</span>, then we only need to keep the previous maximum values because the item <span class="math inline">\(i\)</span> won't fit whatsoever: <span class="math display">\[f(i, j) = f(i - 1, j)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> but <span class="math inline">\(weight[i] \leq j\)</span>, then we can choose to include this item and discard some past items, or move on without considering this item:</p>
+<ol type="1">
+<li><p>The total values if we include this item (<span class="math inline">\(\text{current value } + \text{ The maximum value we can get after we fill the capacity j with i}\)</span> (we need to <code>exclude</code> the current item)): <span class="math display">\[\text{total}_{include} = values[i] + f(i - 1, j - weights[i])\]</span></p></li>
+<li><p>The maximum value exclude current item: <span class="math display">\[f(i - 1, j)\]</span></p></li>
+</ol>
+<p>By taking the maximum over these two, we have:</p>
+<p><span class="math display">\[f(i, j) = \max(f(i - 1, j), \; values[i] + f(i - 1, j - weights[i]))\]</span></p></li>
+</ol>
+<h2 id="unbounded-knapsack-problem">Unbounded knapsack problem</h2>
+<p>Given a knapsack weight <span class="math inline">\(W\)</span> and a set of <span class="math inline">\(n\)</span> items with certain value <span class="math inline">\(v_i\)</span> and weight <span class="math inline">\(w_i\)</span>, we need to calculate the maximum amount that could make up this quantity exactly. This is different from classical Knapsack problem, here we are allowed to use unlimited number of instances of an item.</p>
+<p><span class="math inline">\(f(i, j):\)</span> using only first <span class="math inline">\(i\)</span> items, with maximum capacity of <span class="math inline">\(j\)</span>, the maximum total value you can get.</p>
+<p>Then, we can write our base cases:</p>
+<ul>
+<li><span class="math inline">\(f(0, :) = 0\)</span></li>
+<li><span class="math inline">\(f(:, 0) = 0\)</span></li>
+</ul>
+<p>0 items have values 0 and no items can be put into knapsack with capacity of 0.</p>
+<p>At <span class="math inline">\(f(i, j)\)</span>, comparing it to <span class="math inline">\(f(i - 1, j)\)</span>, we can choose to include item <span class="math inline">\(i\)</span> or not. So, we can write out of transition function <span class="math inline">\(f(i, j)\)</span>:</p>
+<ol type="1">
+<li><p>If there is still extra capacity for item <span class="math inline">\(i\)</span> with total capacity <span class="math inline">\(j\)</span> (i.e <span class="math inline">\(sum(weights[: i + 1]) \leq j)\)</span>), then we can just simply add values of item <span class="math inline">\(i\)</span>. <span class="math display">\[f(i, j) = f(i - 1, j) + values(i)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> and the current weight <span class="math inline">\(weight[i] &gt; j\)</span>, then we only need to keep the previous maximum values because the item <span class="math inline">\(i\)</span> won't fit whatsoever: <span class="math display">\[f(i, j) = f(i - 1, j)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> but <span class="math inline">\(weight[i] \leq j\)</span>, then we can choose to include this item and discard some past items, or move on without considering this item:</p>
+<ol type="1">
+<li><p>The total values if we include this item (<span class="math inline">\(\text{current value } + \text{ The maximum value we have can get after we fill the capacity j with i}\)</span> (we need to <code>include</code> the current item)): <span class="math display">\[\text{total}_{include} = values[i] + f(i, j - weights[i])\]</span></p></li>
+<li><p>The maximum value exclude current item: <span class="math display">\[f(i - 1, j)\]</span></p></li>
+</ol>
+<p>By taking the maximum over these two, we have:</p>
+<p><span class="math display">\[f(i, j) = \max(f(i - 1, j), \; values[i] + f(i, j - weights[i]))\]</span></p></li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
     <title>knn</title>
     <url>/2021/07/19/knn/</url>
     <content><![CDATA[
@@ -2389,54 +2480,6 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
         <tag>Deep Learning</tag>
         <tag>Normalization</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>knapsack</title>
-    <url>/2021/07/08/knapsack/</url>
-    <content><![CDATA[<h1 id="knapsack-problem">knapsack Problem</h1>
-<h2 id="knapsack-problem-1">0–1 knapsack problem</h2>
-<p>Given weights and values of <span class="math inline">\(n\)</span> items, put these items in a knapsack of capacity <span class="math inline">\(W\)</span> to get the maximum total value in the knapsack.</p>
-<p><span class="math inline">\(f(i, j):\)</span> using only first <span class="math inline">\(i\)</span> items, with maximum capacity of <span class="math inline">\(j\)</span>, the maximum total value you can get.</p>
-<p>Then, we can write our base cases:</p>
-<ul>
-<li><span class="math inline">\(f(0, :) = 0\)</span></li>
-<li><span class="math inline">\(f(:, 0) = 0\)</span></li>
-</ul>
-<p>0 items have values 0 and no items can be put into knapsack with capacity of 0.</p>
-<p>At <span class="math inline">\(f(i, j)\)</span>, comparing it to <span class="math inline">\(f(i - 1, j)\)</span>, we can choose to include item <span class="math inline">\(i\)</span> or not. So, we can write out of transition function <span class="math inline">\(f(i, j)\)</span>:</p>
-<ol type="1">
-<li><p>If there is still extra capacity for item <span class="math inline">\(i\)</span> with total capacity <span class="math inline">\(j\)</span> (i.e <span class="math inline">\(sum(weights[: i + 1]) \leq j)\)</span>), then we can just simply add values of item <span class="math inline">\(i\)</span>. <span class="math display">\[f(i, j) = f(i - 1, j) + values(i)\]</span></p></li>
-<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> and the current weight <span class="math inline">\(weight[i] &gt; j\)</span>, then we only need to keep the previous maximum values because the item <span class="math inline">\(i\)</span> won't fit whatsoever: <span class="math display">\[f(i, j) = f(i - 1, j)\]</span></p></li>
-<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> but <span class="math inline">\(weight[i] \leq j\)</span>, then we can choose to include this item and discard some past items, or move on without considering this item:</p>
-<ol type="1">
-<li><p>The total values if we include this item (<span class="math inline">\(\text{current value } + \text{ The maximum value we can get after we fill the capacity j with i}\)</span> (we need to <code>exclude</code> the current item)): <span class="math display">\[\text{total}_{include} = values[i] + f(i - 1, j - weights[i])\]</span></p></li>
-<li><p>The maximum value exclude current item: <span class="math display">\[f(i - 1, j)\]</span></p></li>
-</ol>
-<p>By taking the maximum over these two, we have:</p>
-<p><span class="math display">\[f(i, j) = \max(f(i - 1, j), \; values[i] + f(i - 1, j - weights[i]))\]</span></p></li>
-</ol>
-<h2 id="unbounded-knapsack-problem">Unbounded knapsack problem</h2>
-<p>Given a knapsack weight <span class="math inline">\(W\)</span> and a set of <span class="math inline">\(n\)</span> items with certain value <span class="math inline">\(v_i\)</span> and weight <span class="math inline">\(w_i\)</span>, we need to calculate the maximum amount that could make up this quantity exactly. This is different from classical Knapsack problem, here we are allowed to use unlimited number of instances of an item.</p>
-<p><span class="math inline">\(f(i, j):\)</span> using only first <span class="math inline">\(i\)</span> items, with maximum capacity of <span class="math inline">\(j\)</span>, the maximum total value you can get.</p>
-<p>Then, we can write our base cases:</p>
-<ul>
-<li><span class="math inline">\(f(0, :) = 0\)</span></li>
-<li><span class="math inline">\(f(:, 0) = 0\)</span></li>
-</ul>
-<p>0 items have values 0 and no items can be put into knapsack with capacity of 0.</p>
-<p>At <span class="math inline">\(f(i, j)\)</span>, comparing it to <span class="math inline">\(f(i - 1, j)\)</span>, we can choose to include item <span class="math inline">\(i\)</span> or not. So, we can write out of transition function <span class="math inline">\(f(i, j)\)</span>:</p>
-<ol type="1">
-<li><p>If there is still extra capacity for item <span class="math inline">\(i\)</span> with total capacity <span class="math inline">\(j\)</span> (i.e <span class="math inline">\(sum(weights[: i + 1]) \leq j)\)</span>), then we can just simply add values of item <span class="math inline">\(i\)</span>. <span class="math display">\[f(i, j) = f(i - 1, j) + values(i)\]</span></p></li>
-<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> and the current weight <span class="math inline">\(weight[i] &gt; j\)</span>, then we only need to keep the previous maximum values because the item <span class="math inline">\(i\)</span> won't fit whatsoever: <span class="math display">\[f(i, j) = f(i - 1, j)\]</span></p></li>
-<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> but <span class="math inline">\(weight[i] \leq j\)</span>, then we can choose to include this item and discard some past items, or move on without considering this item:</p>
-<ol type="1">
-<li><p>The total values if we include this item (<span class="math inline">\(\text{current value } + \text{ The maximum value we have can get after we fill the capacity j with i}\)</span> (we need to <code>include</code> the current item)): <span class="math display">\[\text{total}_{include} = values[i] + f(i, j - weights[i])\]</span></p></li>
-<li><p>The maximum value exclude current item: <span class="math display">\[f(i - 1, j)\]</span></p></li>
-</ol>
-<p>By taking the maximum over these two, we have:</p>
-<p><span class="math display">\[f(i, j) = \max(f(i - 1, j), \; values[i] + f(i, j - weights[i]))\]</span></p></li>
-</ol>
-]]></content>
   </entry>
   <entry>
     <title>Logistic Regression</title>
@@ -2687,12 +2730,6 @@ l(\boldsymbol{\theta}; \; D) &amp;= \sum^{N}_{i=1} y_i\log (p_i) + (1 - y_i) \lo
       </tags>
   </entry>
   <entry>
-    <title>off-policy-actor-critic</title>
-    <url>/2021/06/03/off-policy-actor-critic/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
     <title>natural-actor-critic</title>
     <url>/2021/06/03/natural-actor-critic/</url>
     <content><![CDATA[
@@ -2701,6 +2738,12 @@ l(\boldsymbol{\theta}; \; D) &amp;= \sum^{N}_{i=1} y_i\log (p_i) + (1 - y_i) \lo
   <entry>
     <title>overfeat</title>
     <url>/2021/06/25/overfeat/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
+    <title>off-policy-actor-critic</title>
+    <url>/2021/06/03/off-policy-actor-critic/</url>
     <content><![CDATA[
 ]]></content>
   </entry>
@@ -2789,6 +2832,63 @@ BB^T \mathbf{x} &amp;= \lambda \mathbf{x}\\
 </ul>
 <p><img src='/images/RL/pg/pg_5.png' width="600"></p>
 <h2 id="implementation">Implementation</h2>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>PG</category>
+      </categories>
+      <tags>
+        <tag>Policy Gradient</tag>
+        <tag>Continuous Action Space</tag>
+        <tag>Policy Search</tag>
+        <tag>RL Basics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Policy Gradient (1)</title>
+    <url>/2021/05/23/policy-gradient/</url>
+    <content><![CDATA[<h1 id="policy-search-methods-introduction">Policy Search Methods (Introduction)</h1>
+<p>So far, we have encountered methods for computing the optimal policy based on the computation of the value function. In this case, only value function was explicitly represented. There are also methods based on explicit representation of the policy and optimizing the performance of the agent by searching in the space of policies. These methods are called <strong>policy search methods</strong>.</p>
+<p>Consider a stochastic policy <span class="math inline">\(\pi_\theta: X \rightarrow M(A)\)</span> that maps state space to distribution defined over actions and parameterized by a <span class="math inline">\(\theta \in \Theta\)</span>. The set <span class="math inline">\(\Theta\)</span> is the parameter space. The space of all parameterized policies can be described as:</p>
+<p><span class="math display">\[\prod_\Theta = \{\pi_\theta: X \rightarrow M(A): \theta \in \Theta\}\]</span></p>
+<p>This space depends on the mapping <span class="math inline">\(\pi_\theta\)</span> and <span class="math inline">\(\Theta\)</span></p>
+<p>One example how we can parameterize policy by softmax distribution. Given a function mapping <span class="math inline">\(f_{\theta}: X \times A \rightarrow \mathbb{R}\)</span>, the probability of choosing action <span class="math inline">\(a\)</span> at state <span class="math inline">\(x\)</span> is:</p>
+<p><span class="math display">\[\pi_{\theta} (a | x) = \frac{exp(f_{\theta} (x, a))}{\sum_{a^{\prime}} exp(f_{\theta} (x, a^{\prime}))}\]</span></p>
+<p>or a normal distribution defined by <span class="math inline">\(\mu_\theta (x), \Sigma_\theta(x)\)</span>:</p>
+<p><span class="math display">\[\pi_{\theta} (\cdot | x) = N(\mu_\theta(x), \Sigma_{\theta} (x))\]</span></p>
+<span id="more"></span>
+<h2 id="why-parameterize-policy">Why Parameterize Policy?</h2>
+<p>Explicit parameterization of policy allows us to easily choose a continuous action. For example, if the policy is normal distribution defined over actions, we can just sample actions according to this distribution. For value based methods, this can be challenging:</p>
+<ul>
+<li>Even if we know <span class="math inline">\(Q^{*}\)</span>, computing the greedy policy is impossible over continuous action space.</li>
+<li>VI and PI requires repeated calculation of the greedy policy.</li>
+</ul>
+<h2 id="how-can-we-compare-policies">How Can We Compare Policies?</h2>
+<p>The performance can be measured in various ways. In VFA, we have bellman residuals, bellman errors, projected bellman errors and etc (But the ideas are all based on maximizing the expected return). In policy gradient methods, we also maximize the expected return following <span class="math inline">\(\pi_\theta\)</span>, at the same time, we incorporate the variance or some other risk measures.</p>
+<p><strong>Our goal is to find a policy that maximize this performance measure within the space of <span class="math inline">\(\prod_\Theta\)</span>.</strong></p>
+<h3 id="reasonable-choice-of-performance-measure">Reasonable Choice of Performance Measure</h3>
+<p>Assume that we only care about the performance at state <span class="math inline">\(x \in X\)</span> (We only care about one state). Then the goal of policy search:</p>
+<p><span class="math display">\[argmax_{\pi \in \prod_{\Theta}} V^{\pi} (x) = argmax_{\theta \in \Theta} V^{\pi_{\theta}} (x)\]</span></p>
+<p>In this case, we are interested only in state <span class="math inline">\(x\)</span>, its performance, measured according to its expected return, is maximized. We may want to find a policy that is only good at our starting state <span class="math inline">\(x\)</span> and ignore the performance at other states. The obtained policy is going to be initial-state-dependent. If we change <span class="math inline">\(x\)</span> to another state <span class="math inline">\(x^{\prime} \neq x\)</span>, we get a different optimal policy (according to this performance measure).</p>
+<p>Recall that, the optimal value function <span class="math inline">\(V^{*}\)</span> is optimal at every state. The optimal policy <span class="math inline">\(\pi^{*}\)</span> not only maximizes the value function at this particular state <span class="math inline">\(x\)</span>, but also at any other <span class="math inline">\(x^{\prime} \in X\)</span>. So, Instead of this extreme case of considering only the initial state <span class="math inline">\(x\)</span>, we can consider when the initial state is distributed according to some distribution <span class="math inline">\(\rho \sim M(X)\)</span> (This formulation is emphasized in the <a href="/2021/05/03/MDP/" title="MDP">MDP</a> blog, where trajectory starts by sampling from this initial distribution).</p>
+<p>The <strong>performance measure</strong> would be the average of following <span class="math inline">\(\pi_\theta\)</span> over initial state distribution <span class="math inline">\(X_1 \sim \rho\)</span>:</p>
+<p><span class="math display">\[J(\pi_\theta) = J_\rho(\pi_\theta) \triangleq \int_{x_1} V^{\pi_{\theta}} (x_1) d\rho(x_1) = E_{X_1 \sim \rho}[V^{\pi_{\theta}}(X_1)]\]</span></p>
+<p>In this case:</p>
+<ul>
+<li>The optimal policy maximizes <span class="math inline">\(J_\rho\)</span></li>
+<li><span class="math inline">\(J_\rho (\pi^*) \leq J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
+<li>If <span class="math inline">\(\pi^{*} \notin \prod_{\Theta}\)</span>, then <span class="math inline">\(J_\rho (\pi^*) &gt; J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
+</ul>
+<h2 id="goal">Goal</h2>
+<p>So, in policy search methods, we aim to find the policy that maximizes the performance measure within <span class="math inline">\(\prod_{\Theta}\)</span>:</p>
+<p><span class="math display">\[\bar{\pi} = argmax_{\pi_{\theta} \in \prod_{\Theta}} J_{\rho} (\pi_{\theta})\]</span></p>
+<ul>
+<li>The maximizer is denoted as <span class="math inline">\(\bar{\pi}\)</span> because the optimal policy <span class="math inline">\(\pi^{*}\)</span> may not lie in the space of <span class="math inline">\(\prod_{\Theta}\)</span></li>
+<li>For different <span class="math inline">\(\rho\)</span>, we may get different maximizes. However, if <span class="math inline">\(\pi^{*} \in \prod_{\Theta}\)</span>, <span class="math inline">\(\rho\)</span> does not matter.</li>
+<li>To emphasis the dependence of <span class="math inline">\(\bar{\pi}\)</span> on <span class="math inline">\(\rho\)</span>, <span class="math inline">\(\bar{\pi}_{\rho}\)</span> may be used.</li>
+<li>Sometimes, <span class="math inline">\(J(\pi(\theta))\)</span> or <span class="math inline">\(J_{\rho}(\pi_{\theta})\)</span> is denoted as <span class="math inline">\(J_{\rho} (\theta)\)</span> for simplification.</li>
+</ul>
+<h2 id="next-how-can-we-solve-for-barpi_rho">Next: How can we solve for <span class="math inline">\(\bar{\pi}_{\rho}\)</span>?</h2>
 ]]></content>
       <categories>
         <category>RL</category>
@@ -2940,63 +3040,6 @@ BB^T \mathbf{x} &amp;= \lambda \mathbf{x}\\
       </tags>
   </entry>
   <entry>
-    <title>Policy Gradient (1)</title>
-    <url>/2021/05/23/policy-gradient/</url>
-    <content><![CDATA[<h1 id="policy-search-methods-introduction">Policy Search Methods (Introduction)</h1>
-<p>So far, we have encountered methods for computing the optimal policy based on the computation of the value function. In this case, only value function was explicitly represented. There are also methods based on explicit representation of the policy and optimizing the performance of the agent by searching in the space of policies. These methods are called <strong>policy search methods</strong>.</p>
-<p>Consider a stochastic policy <span class="math inline">\(\pi_\theta: X \rightarrow M(A)\)</span> that maps state space to distribution defined over actions and parameterized by a <span class="math inline">\(\theta \in \Theta\)</span>. The set <span class="math inline">\(\Theta\)</span> is the parameter space. The space of all parameterized policies can be described as:</p>
-<p><span class="math display">\[\prod_\Theta = \{\pi_\theta: X \rightarrow M(A): \theta \in \Theta\}\]</span></p>
-<p>This space depends on the mapping <span class="math inline">\(\pi_\theta\)</span> and <span class="math inline">\(\Theta\)</span></p>
-<p>One example how we can parameterize policy by softmax distribution. Given a function mapping <span class="math inline">\(f_{\theta}: X \times A \rightarrow \mathbb{R}\)</span>, the probability of choosing action <span class="math inline">\(a\)</span> at state <span class="math inline">\(x\)</span> is:</p>
-<p><span class="math display">\[\pi_{\theta} (a | x) = \frac{exp(f_{\theta} (x, a))}{\sum_{a^{\prime}} exp(f_{\theta} (x, a^{\prime}))}\]</span></p>
-<p>or a normal distribution defined by <span class="math inline">\(\mu_\theta (x), \Sigma_\theta(x)\)</span>:</p>
-<p><span class="math display">\[\pi_{\theta} (\cdot | x) = N(\mu_\theta(x), \Sigma_{\theta} (x))\]</span></p>
-<span id="more"></span>
-<h2 id="why-parameterize-policy">Why Parameterize Policy?</h2>
-<p>Explicit parameterization of policy allows us to easily choose a continuous action. For example, if the policy is normal distribution defined over actions, we can just sample actions according to this distribution. For value based methods, this can be challenging:</p>
-<ul>
-<li>Even if we know <span class="math inline">\(Q^{*}\)</span>, computing the greedy policy is impossible over continuous action space.</li>
-<li>VI and PI requires repeated calculation of the greedy policy.</li>
-</ul>
-<h2 id="how-can-we-compare-policies">How Can We Compare Policies?</h2>
-<p>The performance can be measured in various ways. In VFA, we have bellman residuals, bellman errors, projected bellman errors and etc (But the ideas are all based on maximizing the expected return). In policy gradient methods, we also maximize the expected return following <span class="math inline">\(\pi_\theta\)</span>, at the same time, we incorporate the variance or some other risk measures.</p>
-<p><strong>Our goal is to find a policy that maximize this performance measure within the space of <span class="math inline">\(\prod_\Theta\)</span>.</strong></p>
-<h3 id="reasonable-choice-of-performance-measure">Reasonable Choice of Performance Measure</h3>
-<p>Assume that we only care about the performance at state <span class="math inline">\(x \in X\)</span> (We only care about one state). Then the goal of policy search:</p>
-<p><span class="math display">\[argmax_{\pi \in \prod_{\Theta}} V^{\pi} (x) = argmax_{\theta \in \Theta} V^{\pi_{\theta}} (x)\]</span></p>
-<p>In this case, we are interested only in state <span class="math inline">\(x\)</span>, its performance, measured according to its expected return, is maximized. We may want to find a policy that is only good at our starting state <span class="math inline">\(x\)</span> and ignore the performance at other states. The obtained policy is going to be initial-state-dependent. If we change <span class="math inline">\(x\)</span> to another state <span class="math inline">\(x^{\prime} \neq x\)</span>, we get a different optimal policy (according to this performance measure).</p>
-<p>Recall that, the optimal value function <span class="math inline">\(V^{*}\)</span> is optimal at every state. The optimal policy <span class="math inline">\(\pi^{*}\)</span> not only maximizes the value function at this particular state <span class="math inline">\(x\)</span>, but also at any other <span class="math inline">\(x^{\prime} \in X\)</span>. So, Instead of this extreme case of considering only the initial state <span class="math inline">\(x\)</span>, we can consider when the initial state is distributed according to some distribution <span class="math inline">\(\rho \sim M(X)\)</span> (This formulation is emphasized in the <a href="/2021/05/03/MDP/" title="MDP">MDP</a> blog, where trajectory starts by sampling from this initial distribution).</p>
-<p>The <strong>performance measure</strong> would be the average of following <span class="math inline">\(\pi_\theta\)</span> over initial state distribution <span class="math inline">\(X_1 \sim \rho\)</span>:</p>
-<p><span class="math display">\[J(\pi_\theta) = J_\rho(\pi_\theta) \triangleq \int_{x_1} V^{\pi_{\theta}} (x_1) d\rho(x_1) = E_{X_1 \sim \rho}[V^{\pi_{\theta}}(X_1)]\]</span></p>
-<p>In this case:</p>
-<ul>
-<li>The optimal policy maximizes <span class="math inline">\(J_\rho\)</span></li>
-<li><span class="math inline">\(J_\rho (\pi^*) \leq J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
-<li>If <span class="math inline">\(\pi^{*} \notin \prod_{\Theta}\)</span>, then <span class="math inline">\(J_\rho (\pi^*) &gt; J_\rho (\pi^\theta)\)</span> for any <span class="math inline">\(\pi_{\theta} \in \prod_{\Theta}\)</span></li>
-</ul>
-<h2 id="goal">Goal</h2>
-<p>So, in policy search methods, we aim to find the policy that maximizes the performance measure within <span class="math inline">\(\prod_{\Theta}\)</span>:</p>
-<p><span class="math display">\[\bar{\pi} = argmax_{\pi_{\theta} \in \prod_{\Theta}} J_{\rho} (\pi_{\theta})\]</span></p>
-<ul>
-<li>The maximizer is denoted as <span class="math inline">\(\bar{\pi}\)</span> because the optimal policy <span class="math inline">\(\pi^{*}\)</span> may not lie in the space of <span class="math inline">\(\prod_{\Theta}\)</span></li>
-<li>For different <span class="math inline">\(\rho\)</span>, we may get different maximizes. However, if <span class="math inline">\(\pi^{*} \in \prod_{\Theta}\)</span>, <span class="math inline">\(\rho\)</span> does not matter.</li>
-<li>To emphasis the dependence of <span class="math inline">\(\bar{\pi}\)</span> on <span class="math inline">\(\rho\)</span>, <span class="math inline">\(\bar{\pi}_{\rho}\)</span> may be used.</li>
-<li>Sometimes, <span class="math inline">\(J(\pi(\theta))\)</span> or <span class="math inline">\(J_{\rho}(\pi_{\theta})\)</span> is denoted as <span class="math inline">\(J_{\rho} (\theta)\)</span> for simplification.</li>
-</ul>
-<h2 id="next-how-can-we-solve-for-barpi_rho">Next: How can we solve for <span class="math inline">\(\bar{\pi}_{\rho}\)</span>?</h2>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>PG</category>
-      </categories>
-      <tags>
-        <tag>Policy Gradient</tag>
-        <tag>Continuous Action Space</tag>
-        <tag>Policy Search</tag>
-        <tag>RL Basics</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>probability-3</title>
     <url>/2021/07/15/probability-3/</url>
     <content><![CDATA[<h1 id="statistics-inference">Statistics Inference</h1>
@@ -3143,6 +3186,12 @@ cov(\frac{\partial \log f_X(X;\boldsymbol{\theta})}{\partial \theta_j}, \frac{\p
       </tags>
   </entry>
   <entry>
+    <title>random_forests</title>
+    <url>/2021/07/19/random-forests/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
     <title>Q-Learning</title>
     <url>/2021/05/16/q-learning/</url>
     <content><![CDATA[<h1 id="temporal-difference-learning-for-control-q-learning">Temporal Difference Learning for Control: Q-Learning</h1>
@@ -3253,18 +3302,6 @@ Var[max_{a^{\prime} \in A} Q_t (X^{\prime}, a^{\prime}) | X_t=x_t, A_t=a_t] &amp
       </tags>
   </entry>
   <entry>
-    <title>SAC</title>
-    <url>/2021/07/22/sac/</url>
-    <content><![CDATA[<h1 id="soft-actor-critic-off-policy-maximum-entropy-deep-reinforcement-learning-with-a-stochastic-actor">Soft Actor-Critic: Off-Policy Maximum Entropy Deep Reinforcement Learning with a Stochastic Actor</h1>
-]]></content>
-  </entry>
-  <entry>
-    <title>random_forests</title>
-    <url>/2021/07/19/random-forests/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
     <title>rnn</title>
     <url>/2021/08/02/rnn/</url>
     <content><![CDATA[<h1 id="recurrent-neural-network">Recurrent Neural Network</h1>
@@ -3348,11 +3385,23 @@ L(\{\mathbf{y}^{1}, ..., \mathbf{y}^{\tau}\}, \; \{\mathbf{\hat{y}}^{1}, ..., \m
 ]]></content>
       <categories>
         <category>DL</category>
-        <category>CNN</category>
+        <category>RNN</category>
       </categories>
       <tags>
         <tag>Deep Learning</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>SAC</title>
+    <url>/2021/07/22/sac/</url>
+    <content><![CDATA[<h1 id="soft-actor-critic-off-policy-maximum-entropy-deep-reinforcement-learning-with-a-stochastic-actor">Soft Actor-Critic: Off-Policy Maximum Entropy Deep Reinforcement Learning with a Stochastic Actor</h1>
+]]></content>
+  </entry>
+  <entry>
+    <title>semi-mdp</title>
+    <url>/2021/06/28/semi-mdp/</url>
+    <content><![CDATA[
+]]></content>
   </entry>
   <entry>
     <title>SARSA</title>
@@ -3501,8 +3550,8 @@ L(\{\mathbf{y}^{1}, ..., \mathbf{y}^{\tau}\}, \; \{\mathbf{\hat{y}}^{1}, ..., \m
       </tags>
   </entry>
   <entry>
-    <title>semi-mdp</title>
-    <url>/2021/06/28/semi-mdp/</url>
+    <title>svm</title>
+    <url>/2021/07/19/svm/</url>
     <content><![CDATA[
 ]]></content>
   </entry>
@@ -3628,12 +3677,6 @@ E_{v \in S, v \prec c}[c] &amp;= \int_{v} p(v_1 \; | \; \text{DEPS}_{v_1}) p(v_2
       </tags>
   </entry>
   <entry>
-    <title>svm</title>
-    <url>/2021/07/19/svm/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
     <title>Temporal Difference Learning</title>
     <url>/2021/05/15/td/</url>
     <content><![CDATA[<h1 id="learning-from-stream-of-data-temporal-difference-learning-methods">Learning From Stream of Data (Temporal Difference Learning Methods)</h1>
@@ -3716,124 +3759,6 @@ E[\delta (X, R, X^{\prime}; V^{\pi}) | X=x, A=a] &amp;= E[R + \gamma V^{\pi}(X^{
         <tag>RL Basics</tag>
         <tag>Tabular Methods</tag>
         <tag>TD</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>td3</title>
-    <url>/2021/06/23/td3/</url>
-    <content><![CDATA[<h1 id="addressing-function-approximation-error-in-actor-critic-methods">Addressing Function Approximation Error in Actor-Critic Methods</h1>
-<p>As in function approximation with discrete action space, overestimation property also exists in continuous control setting.</p>
-<h2 id="background">Background</h2>
-<p>The return is defined as the discounted sum of rewards:</p>
-<p><span class="math display">\[R_t = \sum^{T}_{i=t} \gamma^{i - t} r(s_i, a_i)\]</span></p>
-<p>The objective of RL is to find the optimal policy <span class="math inline">\(\pi_{\phi}\)</span> with parameters <span class="math inline">\(\phi\)</span> which is defined as:</p>
-<p><span class="math display">\[J(\phi) = E_{s_i \sim P_{\pi_\phi}, a_i \sim \pi_{\phi}} [R_0]\]</span></p>
-<p>In DPG, the policy's (actor) parameter can be updated:</p>
-<p><span class="math display">\[\nabla_{\phi} J(\phi) = E_{s_i \sim \rho_{\pi_\phi}} [\nabla_{\phi} \pi_{\phi} \nabla_{a} Q^{\pi_{\phi}} (s, a) |_{a = \pi_{\phi}(s)}]\]</span></p>
-<p>Where the critic is the action value function:</p>
-<p><span class="math display">\[Q^{\pi_{\phi}} (s, a) = E_{s_i \sim P_{\pi_{\phi}}, a_i \sim \pi_{\phi}}[R_t | s, a] = \underbrace{r}_{\text{ reward is deterministic so the expectation is itself }} + \gamma E_{s^{\prime}, a^{\prime}} [Q^{\pi} (s^{\prime}, a^{\prime}) | s, a]\]</span></p>
-<p>In large state space, the critic can be approached using FA methods for example DQN (Approximate value iteration) in an off policy fashion (replay buffer):</p>
-<p><span class="math display">\[Q_{k + 1} = {\arg\min}_{Q} \|Q - \hat{T}^{\pi_{\phi}} Q_{k}\|^2_{\rho_{\pi_{\phi}}}\]</span></p>
-<p>with <span class="math inline">\(Q_{k}\)</span> parameterized by a target network <span class="math inline">\(Q_{\theta^{\prime}}\)</span>, so the target <span class="math inline">\(\hat{T}^{\pi_{\phi}} Q_{\theta^{\prime}}\)</span> can be write as:</p>
-<p><span class="math display">\[\hat{T}^{\pi_{\phi}} Q_{\theta^{\prime}} = r + \gamma Q_{\theta^{\prime}} (s^{\prime}, a^{\prime}), \quad \quad a^{\prime} \sim \pi_{\phi} (\cdot | s^{\prime})\]</span></p>
-<p>In terms of DDPG with delayed parameters to provide stability, the delayed target <span class="math inline">\(\hat{T}^{\pi_{\phi^{\prime}}} Q_{\theta^{\prime}}\)</span> is used instead:</p>
-<p><span class="math display">\[\hat{T}^{\pi_{\phi^{\prime}}} Q_{\theta^{\prime}} = r + \gamma Q_{\theta^{\prime}} (s^{\prime}, a^{\prime}), \quad \quad a^{\prime} \sim \pi_{\phi^{\prime}} (\cdot | s^{\prime})\]</span></p>
-<p>The weights of a target network are either updated periodically to exactly match the weights of the current network or by some portion as in DDPG.</p>
-<h2 id="overestimation-bias">Overestimation Bias</h2>
-<p>In Q-learning with discrete actions, if the target is susceptible to error <span class="math inline">\(\epsilon\)</span>, then the maximum over the value alonge with its error will generally be greater than the true maximum even the error <span class="math inline">\(\epsilon\)</span> has zero mean:</p>
-<p><span class="math display">\[E_{\epsilon} [\max_{a^{\prime}} (Q(s^{\prime}, a^{\prime}) + \epsilon)] \geq \max_{a^{\prime}} Q(s^{\prime}, a^{\prime})\]</span></p>
-<p>This issue extends to actor critic setting where policy is updated via gradient descent.</p>
-<h3 id="overestimation-bias-in-actor-critic">Overestimation Bias in Actor-Critic</h3>
-<p>Assumptions:</p>
-<ol type="1">
-<li>Policy is updated using DPG.</li>
-<li><span class="math inline">\(Z_1, Z_2\)</span> are chosen to normalize the gradient (i.e <span class="math inline">\(Z^{-1} \|E[\cdot]\| = 1\)</span>, only provides direction)</li>
-</ol>
-<p><br></p>
-<p>Given current policy parameters <span class="math inline">\(\phi\)</span>, let:</p>
-<ol type="1">
-<li><p><span class="math inline">\(\phi_{approx}\)</span> be the parameters from the actor update induced by the maximization of the approximate critic <span class="math inline">\(Q_{\theta} (s, a)\)</span>. The resulting policy is <span class="math inline">\(\pi_{approx}\)</span>. <span class="math display">\[\phi_{approx} = \phi + \frac{\alpha}{Z_1} E_{s \sim \rho_{\pi_{\phi}}} [\nabla_{\phi} \pi_{\phi} \nabla_{a} Q_{\theta} (s, a) |_{a = \pi_{\phi}(s)}]\]</span></p></li>
-<li><p><span class="math inline">\(\phi_{true}\)</span> be the parameters from the hypothetical actor update with respect to the true underlying value function <span class="math inline">\(Q^{\pi_{\phi}} (s, a)\)</span> (which is unknown during training). The resulting policy is <span class="math inline">\(\pi_{true}\)</span>. <span class="math display">\[\phi_{true} = \phi + \frac{\alpha}{Z_2} E_{s \sim \rho_{\pi_{\phi}}} [\nabla_{\phi} \pi_{\phi} \nabla_{a} Q^{\pi_{\phi}} (s, a) |_{a = \pi_{\phi}(s)}]\]</span></p></li>
-</ol>
-<p>Since gradient always point at the direction of maximum increase locally, so:</p>
-<ol type="1">
-<li><p><span class="math inline">\(\exists \epsilon_1\)</span>, such that if <span class="math inline">\(\alpha \leq \epsilon_1\)</span>, then the approximate value of <span class="math inline">\(\pi_{approx}\)</span> will be bounded by the approximate value of <span class="math inline">\(\pi_{true}\)</span>: <span class="math display">\[E[Q_{\theta} (s, \pi_{approx} (s))] \geq E[Q_{\theta} (s, \pi_{true} (s))]\]</span></p></li>
-<li><p><span class="math inline">\(\exists \epsilon_2\)</span>, such that if <span class="math inline">\(\alpha \leq \epsilon_2\)</span>, then the true value of <span class="math inline">\(\pi_{approx}\)</span> will be bounded by the true value of <span class="math inline">\(\pi_{true}\)</span>: <span class="math display">\[E[Q^{\pi_{\phi}} (s, \pi_{true} (s))] \geq E[Q^{\pi_{\phi}} (s, \pi_{approx} (s))]\]</span></p></li>
-</ol>
-<p>If: <span class="math display">\[E[Q_{\theta} (s, \pi_{true} (s))] \geq E[Q^{\pi_{\phi}} (s, \pi_{true} (s))]\]</span></p>
-<p>which means in expectation the approximated value function is greater than the true value function w.r.t policy <span class="math inline">\(\pi_{true}\)</span> (e.g for some state action pair (<span class="math inline">\(s, \pi_{true} (s)\)</span>)), the approximate value is much larger than the true value). At the same time, if <span class="math inline">\(\alpha &lt; \min(\epsilon_1, \epsilon_2)\)</span>, then: <span class="math display">\[E[Q_{\theta} (s, \pi_{approx} (s))] \geq E[Q^{\pi_{\phi}} (s, \pi_{approx} (s))]\]</span></p>
-<p><strong>This implies that our policy improvement based on approximate value function would over-estimate certain actions and lead to sub-optimal policies.</strong></p>
-<p><br></p>
-<p>Consequences of overestimation:</p>
-<ol type="1">
-<li>Overestimation may develop into a more significant bias over many updates if left unchecked.</li>
-<li>Inaccurate value estimate may lead to poor policy updates.</li>
-</ol>
-<p><strong>Feedback loops of actor and critic is prone to overestimation because suboptimal actions may highly rated by suboptimal critic and reinforcing the suboptimal action in the next policy update</strong>.</p>
-<h3 id="clipped-double-q-learning-for-actor-critic-solution">Clipped Double Q-learning for Actor-Critic (Solution)</h3>
-<p>In DDQN, the target is estimated using the greedy action from current value network rather than current target network. In an actor-critic setting (DPG), the update is:</p>
-<p><span class="math display">\[y = r + Q_{\theta^{\prime}} (s^{\prime}, \pi_{\phi} (s^{\prime}))\]</span></p>
-<p>However, slow-changing policy in actor-critic, the current and target networks were too similar to make an independent estimation and offered little improvement.</p>
-<p>Instead, we can go back and use similar formulation as Double Q-learning with a pair of actors <span class="math inline">\((\pi_{\phi_1}, \pi_{\phi_2})\)</span> and critics <span class="math inline">\((Q_{\theta_1}, Q_{\theta_2})\)</span> where <span class="math inline">\(\pi_{\phi_1}\)</span> is optimized w.r.t <span class="math inline">\(Q_{\phi_1}\)</span> and <span class="math inline">\(\pi_{\phi_2}\)</span> is optimized w.r.t <span class="math inline">\(Q_{\phi_2}\)</span>:</p>
-<p><span class="math display">\[y_1 = r + \gamma Q_{\theta^{\prime}_2} (s^{\prime}, \pi_{\phi_1} (s^{\prime}))\]</span> <span class="math display">\[y_2 = r + \gamma Q_{\theta^{\prime}_1} (s^{\prime}, \pi_{\phi_2} (s^{\prime}))\]</span></p>
-<p><br></p>
-<p><img src='/images/RL/pg/td3.png' width="600"></p>
-<p>From above plot we can see that Double Q-learning AC is more effective, but it does not entirely eliminate the over-estimation. One cause can be the shared replay buffer, as a result, for some state <span class="math inline">\(s\)</span>, we would have <span class="math inline">\(Q_{\theta_2} (s, \pi_{\phi_1} (s)) &gt; Q_{\theta_1} (s, \pi_{\phi_1} (s))\)</span>. This is problematic because we know that <span class="math inline">\(Q_{\theta_1} (s, \pi_{\phi_1} (s))\)</span> will generally overestimate the true value, the overestimation is exaggerated.</p>
-<p>One solution is to simply upper-bound the less biased value estimate <span class="math inline">\(Q_{\theta_2}\)</span> by the biased estimate <span class="math inline">\(Q_{\theta_1}\)</span>:</p>
-<p><span class="math display">\[y_1 = r + \gamma \min_{i=1, 2} Q_{\theta^{\prime}_{i}} (s^{\prime}, \pi_{\phi_1} (s^{\prime}))\]</span></p>
-<p>This algorithm is called <code>Clipped Double Q-learning</code> algorithm. With Clipped Double Q-learning, exaggeration of overestimation is eliminated. However, underestimation bias could occur.</p>
-<p>In implementation, computational costs can be reduced by using a single actor optimized w.r.t <span class="math inline">\(Q_{\theta_1}\)</span>. We then use the same target <span class="math inline">\(y_2=y_1\)</span> for <span class="math inline">\(Q_{\theta_2}\)</span>. If <span class="math inline">\(Q_{\theta_2} &gt; Q_{\theta_1}\)</span> then the update is identical to the standard update and induces no additional bias. If <span class="math inline">\(Q_{\theta_2} &lt; Q_{\theta_1}\)</span>, this suggests overestimation has occurred.</p>
-<h2 id="addressing-variance">Addressing Variance</h2>
-<p>Besides impact on overestimation bias, high variance estimates provide a noisy gradient for the policy update which reduces learning speed and hurt performance in practice.</p>
-<p>Since we never really learn <span class="math inline">\(Q^{\pi}\)</span> exactly (we learn <span class="math inline">\(Q_{\theta}\)</span> instead), there will always be some TD error in each update :</p>
-<span class="math display">\[\begin{aligned}
-r + \gamma E[Q_{\theta} (s^{\prime}, a^{\prime}) | s, a] - E[\delta(s, a) | s, a] &amp;= \gamma E[Q_{\theta} (s^{\prime}, a^{\prime}) | s, a] - \gamma E[Q_{\theta} (s^{\prime}, a^{\prime}) | s, a] + Q_{\theta} (s, a)\\
-&amp;= Q_{\theta} (s, a)
-\end{aligned}\]</span>
-<p>Then:</p>
-<span class="math display">\[\begin{aligned}
-Q_{\theta} (s_t, a_t) &amp;= r_t + \gamma E[Q_{\theta} (s_{t+1}, a_{t+1}) | s_t, a_t] - E[\delta_{t} | s_t, a_t]\\
-&amp;= r_t + \gamma E[r_{t+1} + \gamma E[Q_{\theta} (s_{t+2}, a_{t+2}) | s_{t+1}, a_{t+1}] - E[\delta_{t+1} | s_{t+1}, a_{t+1}] | s_t, a_t] - E[\delta_{t} | s_t, a_t]\\
-&amp; = E_{s_i \sim P_{\pi}, a_i \sim \pi} [\sum^{T}_{i=t} \gamma^{i - t} (r_i - \delta_i)]
-\end{aligned}\]</span>
-<p>Thus, the value function we estimate <span class="math inline">\(Q_{\theta} (s_t, a_t)\)</span>, approximates the expected return minus the expected discounted sume of future TD-errors instead of the expected return <span class="math inline">\(Q^{\pi}\)</span>.</p>
-<p>If the value estimate (sample of <span class="math inline">\(Q_{\theta}\)</span>) is a function of future reward and estimation error, it follows that the variance of the estimate will be proportional to the variance of future reward and estimation error. <strong>If the variance for <span class="math inline">\(\gamma^{i} (r_i - \delta_i)\)</span> is large, then the accumulative variance will be large especially when gamma is large.</strong></p>
-<h3 id="target-networks-and-delayed-policy-updates">Target Networks and Delayed Policy Updates</h3>
-<p><img src='/images/RL/pg/td_4.png' width="600"></p>
-<p>One way to reduce the estimation error is to delay each update to the target network. Consider the graph above:</p>
-<ol type="1">
-<li>If <span class="math inline">\(\tau = 1\)</span>, we obtain batch semi-gradient TD algorithm for updating the critic, which may have high variance.</li>
-<li>If <span class="math inline">\(\tau &lt; 1\)</span>, we obtain approximate value iteration.</li>
-</ol>
-<p>If target networks can be used to reduce the error over multiple updates, and policy updates on high-error states cause divergent behavior, then the policy network should be updated at a lower frequency than the value network, to first minimize error before introducing a policy update.</p>
-<p>Thus, <code>delaying policy updates</code> can be helpful in minimizing the estimation error by updating the policy and target networks after a fixed number of updates <span class="math inline">\(d\)</span> to the critic. To ensure the TD-error remains small, target network is also slowly updated by <span class="math inline">\(\theta^{\prime} \leftarrow \tau \theta + (1 - \tau) \theta^{\prime}\)</span>.</p>
-<h3 id="target-policy-smoothing-regularization">Target Policy Smoothing Regularization</h3>
-<p>Since deterministic policies can overfit to narrow peaks in the value estimate, a regularization strategy is used for deep value learning, target policy smoothing which mimics the learning update from SARSA. The idea is that <strong>similar actions should have similar value</strong> (reduce the variance of target):</p>
-<p><span class="math display">\[y = r + E_{\epsilon} [Q_{\theta^{\prime}} (s^{\prime}, \pi_{\phi^{\prime}} (s^{\prime}) + \epsilon)]\]</span></p>
-<p>In practice, we can approximate this expectation over actions (<span class="math inline">\(\pi_{\phi^{\prime}} (s^{\prime}) + \epsilon\)</span>) by adding a small amount of random noise to the target policy and averaging over mini-batches:</p>
-<p><span class="math display">\[y = r + \gamma Q_{\theta^{\prime}} (s^{\prime}, \pi_{\phi^{\prime}} (s^{\prime}) + \epsilon)\]</span></p>
-<p><span class="math display">\[\epsilon \sim clip(N(0, \sigma), -c, c)\]</span></p>
-<p>Where noise is clipped to have it close to the original action (make sure it is a small area around original action).</p>
-<h2 id="algorithm">Algorithm</h2>
-<p><img src='/images/RL/pg/td_5.png' width="600"></p>
-<h2 id="conclusion">Conclusion</h2>
-<p>The paper focus on resolve overestimation error in actor critic setting (DPG) and discusses that failure can occur due to the interplay between the actor and critic updates. Value estimates diverge through overestimation when the policy is poor, and the policy will become poor if the value estimate itself is inaccurate (high variance).</p>
-<p>Solutions:</p>
-<ol type="1">
-<li><p>Overestimation Error in value estimation: using clipped double Q-learning to estimate the target value <span class="math inline">\(y_1, y_2\)</span> <span class="math display">\[y_1 = r + \gamma \min_{i=1, 2} Q_{\theta^{\prime}_{i}} (s^{\prime}, \pi_{\phi^{\prime}} (s^{\prime}))\]</span> <span class="math display">\[y_2 = y_1\]</span></p></li>
-<li><p>Estimation Error (TD error) and High Variance in value estimation: By using delayed policy and value updates with target networks, we have more stable and more accurate estimate of the value function by updating the value function several times.</p></li>
-<li><p>Overfitting in Value estimation: by forcing the value estimate to be similar for similar actions, we smooth out the value estimation. <span class="math display">\[y = r + \gamma Q_{\theta^{\prime}} (s^{\prime}, \pi_{\phi^{\prime}} (s^{\prime}) + \epsilon)\]</span> <span class="math display">\[\epsilon \sim clip(N(0, \sigma), -c, c)\]</span></p></li>
-</ol>
-<p>The general structure of the algorithm follows DDPG.</p>
-]]></content>
-      <categories>
-        <category>RL</category>
-        <category>PG</category>
-      </categories>
-      <tags>
-        <tag>Policy Gradient</tag>
-        <tag>Continuous Action Space</tag>
-        <tag>Policy Search</tag>
       </tags>
   </entry>
   <entry>
@@ -4007,6 +3932,124 @@ Uniform(A), \text{w. p } \epsilon \\
         <tag>MC</tag>
         <tag>Tabular Methods</tag>
         <tag>TD</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>td3</title>
+    <url>/2021/06/23/td3/</url>
+    <content><![CDATA[<h1 id="addressing-function-approximation-error-in-actor-critic-methods">Addressing Function Approximation Error in Actor-Critic Methods</h1>
+<p>As in function approximation with discrete action space, overestimation property also exists in continuous control setting.</p>
+<h2 id="background">Background</h2>
+<p>The return is defined as the discounted sum of rewards:</p>
+<p><span class="math display">\[R_t = \sum^{T}_{i=t} \gamma^{i - t} r(s_i, a_i)\]</span></p>
+<p>The objective of RL is to find the optimal policy <span class="math inline">\(\pi_{\phi}\)</span> with parameters <span class="math inline">\(\phi\)</span> which is defined as:</p>
+<p><span class="math display">\[J(\phi) = E_{s_i \sim P_{\pi_\phi}, a_i \sim \pi_{\phi}} [R_0]\]</span></p>
+<p>In DPG, the policy's (actor) parameter can be updated:</p>
+<p><span class="math display">\[\nabla_{\phi} J(\phi) = E_{s_i \sim \rho_{\pi_\phi}} [\nabla_{\phi} \pi_{\phi} \nabla_{a} Q^{\pi_{\phi}} (s, a) |_{a = \pi_{\phi}(s)}]\]</span></p>
+<p>Where the critic is the action value function:</p>
+<p><span class="math display">\[Q^{\pi_{\phi}} (s, a) = E_{s_i \sim P_{\pi_{\phi}}, a_i \sim \pi_{\phi}}[R_t | s, a] = \underbrace{r}_{\text{ reward is deterministic so the expectation is itself }} + \gamma E_{s^{\prime}, a^{\prime}} [Q^{\pi} (s^{\prime}, a^{\prime}) | s, a]\]</span></p>
+<p>In large state space, the critic can be approached using FA methods for example DQN (Approximate value iteration) in an off policy fashion (replay buffer):</p>
+<p><span class="math display">\[Q_{k + 1} = {\arg\min}_{Q} \|Q - \hat{T}^{\pi_{\phi}} Q_{k}\|^2_{\rho_{\pi_{\phi}}}\]</span></p>
+<p>with <span class="math inline">\(Q_{k}\)</span> parameterized by a target network <span class="math inline">\(Q_{\theta^{\prime}}\)</span>, so the target <span class="math inline">\(\hat{T}^{\pi_{\phi}} Q_{\theta^{\prime}}\)</span> can be write as:</p>
+<p><span class="math display">\[\hat{T}^{\pi_{\phi}} Q_{\theta^{\prime}} = r + \gamma Q_{\theta^{\prime}} (s^{\prime}, a^{\prime}), \quad \quad a^{\prime} \sim \pi_{\phi} (\cdot | s^{\prime})\]</span></p>
+<p>In terms of DDPG with delayed parameters to provide stability, the delayed target <span class="math inline">\(\hat{T}^{\pi_{\phi^{\prime}}} Q_{\theta^{\prime}}\)</span> is used instead:</p>
+<p><span class="math display">\[\hat{T}^{\pi_{\phi^{\prime}}} Q_{\theta^{\prime}} = r + \gamma Q_{\theta^{\prime}} (s^{\prime}, a^{\prime}), \quad \quad a^{\prime} \sim \pi_{\phi^{\prime}} (\cdot | s^{\prime})\]</span></p>
+<p>The weights of a target network are either updated periodically to exactly match the weights of the current network or by some portion as in DDPG.</p>
+<h2 id="overestimation-bias">Overestimation Bias</h2>
+<p>In Q-learning with discrete actions, if the target is susceptible to error <span class="math inline">\(\epsilon\)</span>, then the maximum over the value alonge with its error will generally be greater than the true maximum even the error <span class="math inline">\(\epsilon\)</span> has zero mean:</p>
+<p><span class="math display">\[E_{\epsilon} [\max_{a^{\prime}} (Q(s^{\prime}, a^{\prime}) + \epsilon)] \geq \max_{a^{\prime}} Q(s^{\prime}, a^{\prime})\]</span></p>
+<p>This issue extends to actor critic setting where policy is updated via gradient descent.</p>
+<h3 id="overestimation-bias-in-actor-critic">Overestimation Bias in Actor-Critic</h3>
+<p>Assumptions:</p>
+<ol type="1">
+<li>Policy is updated using DPG.</li>
+<li><span class="math inline">\(Z_1, Z_2\)</span> are chosen to normalize the gradient (i.e <span class="math inline">\(Z^{-1} \|E[\cdot]\| = 1\)</span>, only provides direction)</li>
+</ol>
+<p><br></p>
+<p>Given current policy parameters <span class="math inline">\(\phi\)</span>, let:</p>
+<ol type="1">
+<li><p><span class="math inline">\(\phi_{approx}\)</span> be the parameters from the actor update induced by the maximization of the approximate critic <span class="math inline">\(Q_{\theta} (s, a)\)</span>. The resulting policy is <span class="math inline">\(\pi_{approx}\)</span>. <span class="math display">\[\phi_{approx} = \phi + \frac{\alpha}{Z_1} E_{s \sim \rho_{\pi_{\phi}}} [\nabla_{\phi} \pi_{\phi} \nabla_{a} Q_{\theta} (s, a) |_{a = \pi_{\phi}(s)}]\]</span></p></li>
+<li><p><span class="math inline">\(\phi_{true}\)</span> be the parameters from the hypothetical actor update with respect to the true underlying value function <span class="math inline">\(Q^{\pi_{\phi}} (s, a)\)</span> (which is unknown during training). The resulting policy is <span class="math inline">\(\pi_{true}\)</span>. <span class="math display">\[\phi_{true} = \phi + \frac{\alpha}{Z_2} E_{s \sim \rho_{\pi_{\phi}}} [\nabla_{\phi} \pi_{\phi} \nabla_{a} Q^{\pi_{\phi}} (s, a) |_{a = \pi_{\phi}(s)}]\]</span></p></li>
+</ol>
+<p>Since gradient always point at the direction of maximum increase locally, so:</p>
+<ol type="1">
+<li><p><span class="math inline">\(\exists \epsilon_1\)</span>, such that if <span class="math inline">\(\alpha \leq \epsilon_1\)</span>, then the approximate value of <span class="math inline">\(\pi_{approx}\)</span> will be bounded by the approximate value of <span class="math inline">\(\pi_{true}\)</span>: <span class="math display">\[E[Q_{\theta} (s, \pi_{approx} (s))] \geq E[Q_{\theta} (s, \pi_{true} (s))]\]</span></p></li>
+<li><p><span class="math inline">\(\exists \epsilon_2\)</span>, such that if <span class="math inline">\(\alpha \leq \epsilon_2\)</span>, then the true value of <span class="math inline">\(\pi_{approx}\)</span> will be bounded by the true value of <span class="math inline">\(\pi_{true}\)</span>: <span class="math display">\[E[Q^{\pi_{\phi}} (s, \pi_{true} (s))] \geq E[Q^{\pi_{\phi}} (s, \pi_{approx} (s))]\]</span></p></li>
+</ol>
+<p>If: <span class="math display">\[E[Q_{\theta} (s, \pi_{true} (s))] \geq E[Q^{\pi_{\phi}} (s, \pi_{true} (s))]\]</span></p>
+<p>which means in expectation the approximated value function is greater than the true value function w.r.t policy <span class="math inline">\(\pi_{true}\)</span> (e.g for some state action pair (<span class="math inline">\(s, \pi_{true} (s)\)</span>)), the approximate value is much larger than the true value). At the same time, if <span class="math inline">\(\alpha &lt; \min(\epsilon_1, \epsilon_2)\)</span>, then: <span class="math display">\[E[Q_{\theta} (s, \pi_{approx} (s))] \geq E[Q^{\pi_{\phi}} (s, \pi_{approx} (s))]\]</span></p>
+<p><strong>This implies that our policy improvement based on approximate value function would over-estimate certain actions and lead to sub-optimal policies.</strong></p>
+<p><br></p>
+<p>Consequences of overestimation:</p>
+<ol type="1">
+<li>Overestimation may develop into a more significant bias over many updates if left unchecked.</li>
+<li>Inaccurate value estimate may lead to poor policy updates.</li>
+</ol>
+<p><strong>Feedback loops of actor and critic is prone to overestimation because suboptimal actions may highly rated by suboptimal critic and reinforcing the suboptimal action in the next policy update</strong>.</p>
+<h3 id="clipped-double-q-learning-for-actor-critic-solution">Clipped Double Q-learning for Actor-Critic (Solution)</h3>
+<p>In DDQN, the target is estimated using the greedy action from current value network rather than current target network. In an actor-critic setting (DPG), the update is:</p>
+<p><span class="math display">\[y = r + Q_{\theta^{\prime}} (s^{\prime}, \pi_{\phi} (s^{\prime}))\]</span></p>
+<p>However, slow-changing policy in actor-critic, the current and target networks were too similar to make an independent estimation and offered little improvement.</p>
+<p>Instead, we can go back and use similar formulation as Double Q-learning with a pair of actors <span class="math inline">\((\pi_{\phi_1}, \pi_{\phi_2})\)</span> and critics <span class="math inline">\((Q_{\theta_1}, Q_{\theta_2})\)</span> where <span class="math inline">\(\pi_{\phi_1}\)</span> is optimized w.r.t <span class="math inline">\(Q_{\phi_1}\)</span> and <span class="math inline">\(\pi_{\phi_2}\)</span> is optimized w.r.t <span class="math inline">\(Q_{\phi_2}\)</span>:</p>
+<p><span class="math display">\[y_1 = r + \gamma Q_{\theta^{\prime}_2} (s^{\prime}, \pi_{\phi_1} (s^{\prime}))\]</span> <span class="math display">\[y_2 = r + \gamma Q_{\theta^{\prime}_1} (s^{\prime}, \pi_{\phi_2} (s^{\prime}))\]</span></p>
+<p><br></p>
+<p><img src='/images/RL/pg/td3.png' width="600"></p>
+<p>From above plot we can see that Double Q-learning AC is more effective, but it does not entirely eliminate the over-estimation. One cause can be the shared replay buffer, as a result, for some state <span class="math inline">\(s\)</span>, we would have <span class="math inline">\(Q_{\theta_2} (s, \pi_{\phi_1} (s)) &gt; Q_{\theta_1} (s, \pi_{\phi_1} (s))\)</span>. This is problematic because we know that <span class="math inline">\(Q_{\theta_1} (s, \pi_{\phi_1} (s))\)</span> will generally overestimate the true value, the overestimation is exaggerated.</p>
+<p>One solution is to simply upper-bound the less biased value estimate <span class="math inline">\(Q_{\theta_2}\)</span> by the biased estimate <span class="math inline">\(Q_{\theta_1}\)</span>:</p>
+<p><span class="math display">\[y_1 = r + \gamma \min_{i=1, 2} Q_{\theta^{\prime}_{i}} (s^{\prime}, \pi_{\phi_1} (s^{\prime}))\]</span></p>
+<p>This algorithm is called <code>Clipped Double Q-learning</code> algorithm. With Clipped Double Q-learning, exaggeration of overestimation is eliminated. However, underestimation bias could occur.</p>
+<p>In implementation, computational costs can be reduced by using a single actor optimized w.r.t <span class="math inline">\(Q_{\theta_1}\)</span>. We then use the same target <span class="math inline">\(y_2=y_1\)</span> for <span class="math inline">\(Q_{\theta_2}\)</span>. If <span class="math inline">\(Q_{\theta_2} &gt; Q_{\theta_1}\)</span> then the update is identical to the standard update and induces no additional bias. If <span class="math inline">\(Q_{\theta_2} &lt; Q_{\theta_1}\)</span>, this suggests overestimation has occurred.</p>
+<h2 id="addressing-variance">Addressing Variance</h2>
+<p>Besides impact on overestimation bias, high variance estimates provide a noisy gradient for the policy update which reduces learning speed and hurt performance in practice.</p>
+<p>Since we never really learn <span class="math inline">\(Q^{\pi}\)</span> exactly (we learn <span class="math inline">\(Q_{\theta}\)</span> instead), there will always be some TD error in each update :</p>
+<span class="math display">\[\begin{aligned}
+r + \gamma E[Q_{\theta} (s^{\prime}, a^{\prime}) | s, a] - E[\delta(s, a) | s, a] &amp;= \gamma E[Q_{\theta} (s^{\prime}, a^{\prime}) | s, a] - \gamma E[Q_{\theta} (s^{\prime}, a^{\prime}) | s, a] + Q_{\theta} (s, a)\\
+&amp;= Q_{\theta} (s, a)
+\end{aligned}\]</span>
+<p>Then:</p>
+<span class="math display">\[\begin{aligned}
+Q_{\theta} (s_t, a_t) &amp;= r_t + \gamma E[Q_{\theta} (s_{t+1}, a_{t+1}) | s_t, a_t] - E[\delta_{t} | s_t, a_t]\\
+&amp;= r_t + \gamma E[r_{t+1} + \gamma E[Q_{\theta} (s_{t+2}, a_{t+2}) | s_{t+1}, a_{t+1}] - E[\delta_{t+1} | s_{t+1}, a_{t+1}] | s_t, a_t] - E[\delta_{t} | s_t, a_t]\\
+&amp; = E_{s_i \sim P_{\pi}, a_i \sim \pi} [\sum^{T}_{i=t} \gamma^{i - t} (r_i - \delta_i)]
+\end{aligned}\]</span>
+<p>Thus, the value function we estimate <span class="math inline">\(Q_{\theta} (s_t, a_t)\)</span>, approximates the expected return minus the expected discounted sume of future TD-errors instead of the expected return <span class="math inline">\(Q^{\pi}\)</span>.</p>
+<p>If the value estimate (sample of <span class="math inline">\(Q_{\theta}\)</span>) is a function of future reward and estimation error, it follows that the variance of the estimate will be proportional to the variance of future reward and estimation error. <strong>If the variance for <span class="math inline">\(\gamma^{i} (r_i - \delta_i)\)</span> is large, then the accumulative variance will be large especially when gamma is large.</strong></p>
+<h3 id="target-networks-and-delayed-policy-updates">Target Networks and Delayed Policy Updates</h3>
+<p><img src='/images/RL/pg/td_4.png' width="600"></p>
+<p>One way to reduce the estimation error is to delay each update to the target network. Consider the graph above:</p>
+<ol type="1">
+<li>If <span class="math inline">\(\tau = 1\)</span>, we obtain batch semi-gradient TD algorithm for updating the critic, which may have high variance.</li>
+<li>If <span class="math inline">\(\tau &lt; 1\)</span>, we obtain approximate value iteration.</li>
+</ol>
+<p>If target networks can be used to reduce the error over multiple updates, and policy updates on high-error states cause divergent behavior, then the policy network should be updated at a lower frequency than the value network, to first minimize error before introducing a policy update.</p>
+<p>Thus, <code>delaying policy updates</code> can be helpful in minimizing the estimation error by updating the policy and target networks after a fixed number of updates <span class="math inline">\(d\)</span> to the critic. To ensure the TD-error remains small, target network is also slowly updated by <span class="math inline">\(\theta^{\prime} \leftarrow \tau \theta + (1 - \tau) \theta^{\prime}\)</span>.</p>
+<h3 id="target-policy-smoothing-regularization">Target Policy Smoothing Regularization</h3>
+<p>Since deterministic policies can overfit to narrow peaks in the value estimate, a regularization strategy is used for deep value learning, target policy smoothing which mimics the learning update from SARSA. The idea is that <strong>similar actions should have similar value</strong> (reduce the variance of target):</p>
+<p><span class="math display">\[y = r + E_{\epsilon} [Q_{\theta^{\prime}} (s^{\prime}, \pi_{\phi^{\prime}} (s^{\prime}) + \epsilon)]\]</span></p>
+<p>In practice, we can approximate this expectation over actions (<span class="math inline">\(\pi_{\phi^{\prime}} (s^{\prime}) + \epsilon\)</span>) by adding a small amount of random noise to the target policy and averaging over mini-batches:</p>
+<p><span class="math display">\[y = r + \gamma Q_{\theta^{\prime}} (s^{\prime}, \pi_{\phi^{\prime}} (s^{\prime}) + \epsilon)\]</span></p>
+<p><span class="math display">\[\epsilon \sim clip(N(0, \sigma), -c, c)\]</span></p>
+<p>Where noise is clipped to have it close to the original action (make sure it is a small area around original action).</p>
+<h2 id="algorithm">Algorithm</h2>
+<p><img src='/images/RL/pg/td_5.png' width="600"></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>The paper focus on resolve overestimation error in actor critic setting (DPG) and discusses that failure can occur due to the interplay between the actor and critic updates. Value estimates diverge through overestimation when the policy is poor, and the policy will become poor if the value estimate itself is inaccurate (high variance).</p>
+<p>Solutions:</p>
+<ol type="1">
+<li><p>Overestimation Error in value estimation: using clipped double Q-learning to estimate the target value <span class="math inline">\(y_1, y_2\)</span> <span class="math display">\[y_1 = r + \gamma \min_{i=1, 2} Q_{\theta^{\prime}_{i}} (s^{\prime}, \pi_{\phi^{\prime}} (s^{\prime}))\]</span> <span class="math display">\[y_2 = y_1\]</span></p></li>
+<li><p>Estimation Error (TD error) and High Variance in value estimation: By using delayed policy and value updates with target networks, we have more stable and more accurate estimate of the value function by updating the value function several times.</p></li>
+<li><p>Overfitting in Value estimation: by forcing the value estimate to be similar for similar actions, we smooth out the value estimation. <span class="math display">\[y = r + \gamma Q_{\theta^{\prime}} (s^{\prime}, \pi_{\phi^{\prime}} (s^{\prime}) + \epsilon)\]</span> <span class="math display">\[\epsilon \sim clip(N(0, \sigma), -c, c)\]</span></p></li>
+</ol>
+<p>The general structure of the algorithm follows DDPG.</p>
+]]></content>
+      <categories>
+        <category>RL</category>
+        <category>PG</category>
+      </categories>
+      <tags>
+        <tag>Policy Gradient</tag>
+        <tag>Continuous Action Space</tag>
+        <tag>Policy Search</tag>
       </tags>
   </entry>
   <entry>

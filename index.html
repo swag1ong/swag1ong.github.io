@@ -84,8 +84,8 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">77</span></a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">14</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">78</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">15</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">24</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
       <li class="menu-item menu-item-search">
@@ -159,14 +159,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">77</span>
+          <span class="site-state-item-count">78</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -252,7 +252,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-08-04 17:38:09" itemprop="dateModified" datetime="2021-08-04T17:38:09+08:00">2021-08-04</time>
+        <time title="Modified: 2021-08-06 20:21:51" itemprop="dateModified" datetime="2021-08-06T20:21:51+08:00">2021-08-06</time>
       </span>
 
   
@@ -352,6 +352,7 @@
 <li><a href="/2021/07/29/momentum/" title="Momentum">Momentum</a></li>
 <li><a href="/2021/07/29/adaptive-lr/" title="Basic Adaptive LR Methods">Basic Adaptive LR Methods</a></li>
 <li><a href="/2021/07/29/adam/" title="Adam">Adam</a></li>
+<li><a href="/2021/08/06/attention/" title="Attention">Attention</a></li>
 </ol>
 <p><strong>Some old school ML algorithms</strong>:</p>
 <ol type="1">
@@ -427,6 +428,135 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/06/attention/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/08/06/attention/" class="post-title-link" itemprop="url">Attention</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-08-06 15:25:09 / Modified: 20:20:22" itemprop="dateCreated datePublished" datetime="2021-08-06T15:25:09+08:00">2021-08-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DL/" itemprop="url" rel="index"><span itemprop="name">DL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DL/RNN/" itemprop="url" rel="index"><span itemprop="name">RNN</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="firestore-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>4.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="neural-machine-translation-by-jointly-learning-to-align-and-translate">Neural Machine Translation By Jointly Learning to Align and Translate</h1>
+<p>One problem with traditional encoder-decoder structure is that a neural network needs to be able to compress all the necessary information of a source sentence into a <strong>fixed-length</strong> vector <span class="math inline">\(\mathbf{c}\)</span>. <code>Attention</code> does not attempt to encode a whole input sentence into a single fixed-length vector. Instead, it encodes the input sentence into a sequence of vectors and chooses a subset of these vectors adaptively while decoding the translation.</p>
+<h2 id="background-rnn-encoder-decoder">Background: RNN Encoder-Decoder</h2>
+<p>In the Encoder-Decoder framework, an encoder reads the input sentence, a sequence of vectors <span class="math inline">\(\mathbf{x} = (\mathbf{x}_1, ...., \mathbf{x}_{T_x})\)</span>, into a fixed length context vector <span class="math inline">\(\mathbf{c}\)</span>:</p>
+<p><span class="math display">\[\mathbf{h}_t = f(\mathbf{x}_t, \mathbf{h}_{t-1})\]</span> <span class="math display">\[\mathbf{c} = q(\mathbf{h}_{1}, ...., \mathbf{h}_{T_x})\]</span></p>
+<p>Where <span class="math inline">\(f\)</span> and <span class="math inline">\(q\)</span> are non-linear functions. Typically, <span class="math inline">\(q\)</span> is the identity function defined as <span class="math inline">\(q(\mathbf{h}_{1}, ...., \mathbf{h}_{T_x}) = \mathbf{h}_{T_x}\)</span>.</p>
+<p>The decoder is often trained to predict the next word <span class="math inline">\(\mathbf{y}_{t^{\prime}}\)</span> given all the previous predicted words <span class="math inline">\(\{\hat{\mathbf{y}}_1, ..., \hat{\mathbf{y}}_{t^{\prime} - 1}\}\)</span>. In training step <span class="math inline">\(t\)</span>, we can use feed the true target value <span class="math inline">\(\mathbf{y}_{t-1}\)</span>. Then, in training of decoder, we are maximizing the log joint conditional probability (minimize the sum of per time step cross entropy):</p>
+<p><span class="math display">\[L = \sum^{T_y}_{t=1} L^{t}\]</span> <span class="math display">\[-L = P_{\mathbf{Y}}(\mathbf{y}) = \sum^{T_y}_{t=1} P_{\mathbf{Y_t} | \mathbf{Y_1} ,...., \mathbf{Y_{t-1}}, \mathbf{c}}(\mathbf{y}_t | \{\mathbf{y}_{1}, ...., \mathbf{y}_{t-1}, \mathbf{c}\})\]</span></p>
+<p>Where in RNN, each conditional probability distribution <span class="math inline">\(P_{\mathbf{Y_t} | \mathbf{Y_1} ,...., \mathbf{Y_{t-1}}, \mathbf{c}}\)</span> is model as <span class="math inline">\(g(\mathbf{y}_{t-1}, \mathbf{s}_t, \mathbf{c})\)</span>.</p>
+<h2 id="learning-to-align-and-translate">Learning to Align and Translate</h2>
+<p><code>Attention</code> contains bidirectional RNN as an encoder and a decoder that emulates searching through a source sentence during decoding a tranlation.</p>
+<h3 id="decoder-general-description">Decoder: General Description</h3>
+<p>In the new model, we define each conditional distribution as:</p>
+<p><span class="math display">\[\hat{P}_{\mathbf{Y_t} | \mathbf{Y_1} ,...., \mathbf{Y_{t-1}}, \mathbf{c}} \triangleq g(\mathbf{y}_{t-1}, \mathbf{s}_t, \mathbf{c}_t)\]</span></p>
+<p>Notice here, we have different <span class="math inline">\(\mathbf{c}_t\)</span> for each time step <span class="math inline">\(t\)</span>.</p>
+<p>The context vector <span class="math inline">\(\mathbf{c}_i\)</span> depends on a sequence of <code>annotations</code> <span class="math inline">\((\mathbf{h}_1, ....., \mathbf{h}_{T_x})\)</span> which contains information about the whole input sequence (similar to hidden units in encoder) with a strong focus on the parts surrounding the <span class="math inline">\(i\)</span>th word of the input sequence.</p>
+<p>The context vector <span class="math inline">\(\mathbf{c}_i\)</span> is, then computed as a weighted sum of these annotations <span class="math inline">\(\mathbf{h}_{i}\)</span>:</p>
+<p><span class="math display">\[\mathbf{c}_i = \sum^{T_x}_{j=1} \alpha_{ij} \mathbf{h}_j\]</span></p>
+<p><span class="math display">\[\alpha_{ij} = \frac{\exp^{e_{ij}}}{\sum^{T_x}_{k=1} \exp^{e_{ik}}}\]</span></p>
+<p>Where</p>
+<p><span class="math display">\[e_{ij} = a(\mathbf{s}_{i-1}, \mathbf{h}_j)\]</span></p>
+<p>is an <code>alignment model</code> which scores how well the inputs around position <span class="math inline">\(j\)</span> and the output at position <span class="math inline">\(i\)</span> match. This model <span class="math inline">\(a\)</span> is parameterized by a MLP which is jointly trained with all the other components of the proposed system. The score is based on the RNN decoder's hidden state <span class="math inline">\(\mathbf{s}_{i-1}\)</span> and the <span class="math inline">\(j\)</span>th annotation <span class="math inline">\(\mathbf{h}_j\)</span> of the input sentence. <strong>It reflects the importance of each annotation vector <span class="math inline">\(\mathbf{h}_j\)</span> with respect to the previous hidden state <span class="math inline">\(\mathbf{s}_{i-1}\)</span> in deciding the current state <span class="math inline">\(\mathbf{s}_i\)</span> and generating prediction <span class="math inline">\(\hat{\mathbf{y}}_i\)</span></strong>.</p>
+<p>We can think the approach of taking a weighted sum of all the annotations as computing an expected annotation, where the expectation is over possible alignments (<span class="math inline">\(\alpha_{ij}\)</span>). In other words, let <span class="math inline">\(\alpha_{ij}\)</span> be a probability that the target word <span class="math inline">\(\mathbf{y}_i\)</span> is aligned to, or translated from a source input word <span class="math inline">\(\mathbf{x}_{j}\)</span>. <strong>Then, the <span class="math inline">\(i\)</span>th context vector <span class="math inline">\(\mathbf{c}_i\)</span> is the expected value of annotations (input sequence) distributed according to probability distribution defined by <span class="math inline">\(\alpha_{ij}\)</span>.</strong></p>
+<p>Intuitively, this implements a mechanism of <strong>attention</strong> in the decoder. The decoder decides parts of the source sentence to pay attention to. By letting the decoder have an attention mechanism, we relieve the encoder from the burden of having to encode all information in the source sentence into a fixed length vector.</p>
+<h3 id="encoder-bidirectional-rnn-for-annotating-sequences">Encoder: Bidirectional RNN for Annotating Sequences</h3>
+<p>A bidirectional RNN consists of forward and backward RNNs. The forward RNN <span class="math inline">\(\overset{\rightarrow}{f}\)</span> reads the input sequence from the front and has <strong>forward hidden units <span class="math inline">\(\{\overset{\rightarrow}{\mathbf{h}}_1, ...., \overset{\rightarrow}{\mathbf{h}}_{T_x}\}\)</span></strong>. <span class="math inline">\(\overset{\leftarrow}{f}\)</span> reads the sequence in the reverse order (from <span class="math inline">\(\mathbf{x}_{T_x}\)</span> to <span class="math inline">\(\mathbf{x}_1\)</span>), resulting in a sequence of <strong>backward hidden units <span class="math inline">\(\{\overset{\leftarrow}{\mathbf{h}}_1, ...., \overset{\leftarrow}{\mathbf{h}}_{T_x}\}\)</span></strong>.</p>
+<p>The <strong>annotation</strong> vector <span class="math inline">\(\mathbf{h}_j\)</span> is then calculated by concatenating the forward hidden state <span class="math inline">\(\overset{\rightarrow}{\mathbf{h}}_j\)</span> and the backward hidden state <span class="math inline">\(\overset{\leftarrow}{\mathbf{h}}_j\)</span>:</p>
+<p><span class="math display">\[\mathbf{h}_j = [\overset{\rightarrow}{\mathbf{h}}_j, \overset{\leftarrow}{\mathbf{h}}_j]\]</span></p>
+<p>This sequence of annotations is used by the decoder and the alignment model later to compute the context vector <span class="math inline">\(\mathbf{c}_{i}\)</span>.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/02/rnn/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -458,7 +588,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-08-04 16:41:04" itemprop="dateModified" datetime="2021-08-04T16:41:04+08:00">2021-08-04</time>
+        <time title="Modified: 2021-08-06 16:12:44" itemprop="dateModified" datetime="2021-08-06T16:12:44+08:00">2021-08-06</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -470,7 +600,7 @@
         </span>
           , 
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DL/CNN/" itemprop="url" rel="index"><span itemprop="name">CNN</span></a>
+          <a href="/categories/DL/RNN/" itemprop="url" rel="index"><span itemprop="name">RNN</span></a>
         </span>
     </span>
 
@@ -1489,93 +1619,6 @@ w^{(m + 1)}_i &amp;= e^{-y_i f_{m} (\mathbf{x}_i)}\\
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/07/19/random-forests/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/19/random-forests/" class="post-title-link" itemprop="url">random_forests</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-07-19 16:32:53" itemprop="dateCreated datePublished" datetime="2021-07-19T16:32:53+08:00">2021-07-19</time>
-    </span>
-
-  
-    <span class="post-meta-item" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="firestore-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>0</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1600,13 +1643,13 @@ w^{(m + 1)}_i &amp;= e^{-y_i f_{m} (\mathbf{x}_i)}\\
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">429k</span>
+    <span title="Symbols count total">434k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:30</span>
+    <span title="Reading time total">6:34</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
