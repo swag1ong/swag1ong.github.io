@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/ML/layer_norm_1.png">
 <meta property="article:published_time" content="2021-06-02T06:15:19.000Z">
-<meta property="article:modified_time" content="2021-06-02T09:49:07.000Z">
+<meta property="article:modified_time" content="2021-08-18T07:27:41.980Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta property="article:tag" content="Deep Learning">
 <meta property="article:tag" content="Normalization">
@@ -93,8 +93,8 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
         <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">79</span></a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">15</span></a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">24</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
@@ -175,13 +175,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -254,10 +254,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-06-02 14:15:19 / Modified: 17:49:07" itemprop="dateCreated datePublished" datetime="2021-06-02T14:15:19+08:00">2021-06-02</time>
+      <time title="Created: 2021-06-02 14:15:19" itemprop="dateCreated datePublished" datetime="2021-06-02T14:15:19+08:00">2021-06-02</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-08-18 15:27:41" itemprop="dateModified" datetime="2021-08-18T15:27:41+08:00">2021-08-18</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -315,7 +321,7 @@
 <p>Where <span class="math inline">\(\bar{a}_i^l\)</span> is the normalized summed inputs of <span class="math inline">\(i\)</span>th activation, <span class="math inline">\(g_i\)</span> is the scale parameter (<span class="math inline">\(\gamma_i\)</span> in BN paper). The expectation is over the whole training data, in reality, we use samples from this expectation (mini-batch) to estimate the variance and mean.</p>
 <p>In standard RNN, the summed inputs in the recurrent layer are computed from the current input <span class="math inline">\(\mathbf{x}^t\)</span> (one sample) and previous vector of hidden states <span class="math inline">\(\mathbf{h}^{t-1}\)</span>:</p>
 <p><span class="math display">\[\mathbf{a}^{t} = W_{hh}^T \mathbf{h}^{t-1} + W_{xh}^T\mathbf{x}^t\]</span></p>
-<p>Where $W_{hh}# is the recurrent hidden to hidden wights and <span class="math inline">\(W_{xh}\)</span> is the input to hidden weights.</p>
+<p>Where <span class="math inline">\(W_{hh}\)</span> is the recurrent hidden to hidden wights and <span class="math inline">\(W_{xh}\)</span> is the input to hidden weights.</p>
 <span id="more"></span>
 <h2 id="layer-normalization-1">Layer Normalization</h2>
 <p>The layer normalization statistics are computed over the hidden units (activations) in the same layer as follows:</p>
@@ -419,7 +425,7 @@ h_i &amp;= f(\frac{g_i}{\sigma^{\prime}} ({w_i^{\prime}}^T \mathbf{x}^{\prime} -
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">436k</span>
+    <span title="Symbols count total">437k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">

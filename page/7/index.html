@@ -85,8 +85,8 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
         <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">79</span></a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">15</span></a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">24</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
@@ -166,13 +166,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -234,7 +234,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/18/cheat-sheet/" class="post-title-link" itemprop="url">RL Cheat Sheet (under construction)</a>
+          <a href="/2021/05/18/cheat-sheet/" class="post-title-link" itemprop="url">Cheat Sheet</a>
         </h2>
 
         <div class="post-meta-container">
@@ -252,7 +252,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-07-16 15:56:47" itemprop="dateModified" datetime="2021-07-16T15:56:47+08:00">2021-07-16</time>
+        <time title="Modified: 2021-08-18 14:54:40" itemprop="dateModified" datetime="2021-08-18T14:54:40+08:00">2021-08-18</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -261,6 +261,10 @@
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
           <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
         </span>
     </span>
 
@@ -279,7 +283,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>633</span>
+      <span>913</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -297,7 +301,9 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
+          <h1 id="cheat-sheet">Cheat Sheet</h1>
+<h2 id="rl">RL</h2>
+<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
 <p><span class="math display">\[V^{*} (s) = max_{a} Q^{*} (s, a)\]</span></p>
 <p><span class="math display">\[Q^{*} (s, a) = max_{\pi} Q^{\pi} (s, a), \forall (s, a) \in S X A\]</span></p>
 <p><span class="math display">\[V^{\pi} (s) = E_{a_t \sim pi(\cdot | s)}[R_t | s_t=s, \pi] = E_{a_t \sim pi(\cdot | s)}[E[R_t | s_t, a_t, \pi] | s_t=s] = E_{a_t \sim pi(\cdot | s)}[ Q^{\pi}(s, a_t)]\]</span></p>
@@ -308,6 +314,19 @@
 Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
 &amp; = R + \gamma Q(s^{\prime}, a^{\prime})
 \end{aligned}\]</span>
+<h2 id="ml">ML</h2>
+<p>True Positive Rate (<strong>Sensitivity</strong> or <strong>Recall</strong>):</p>
+<p><span class="math display">\[\frac{TP}{TP + FN}\]</span></p>
+<p>Specificity:</p>
+<p><span class="math display">\[\frac{TN}{TN + FP}\]</span></p>
+<p>False Positive Rate (<strong>1 - specificity</strong>):</p>
+<p><span class="math display">\[\frac{FP}{TN + FP}\]</span></p>
+<p>Precision:</p>
+<p><span class="math display">\[\frac{TP}{TP + FP}\]</span></p>
+<p>Accuracy:</p>
+<p><span class="math display">\[\frac{TP + TN}{TP + TN + FP + FN}\]</span></p>
+<p>F-score:</p>
+<p><span class="math display">\[2 * \frac{Precision * Recall}{Precision + Recall}\]</span></p>
 
       
     </div>
@@ -485,7 +504,7 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-05-17 01:22:13" itemprop="dateModified" datetime="2021-05-17T01:22:13+08:00">2021-05-17</time>
+        <time title="Modified: 2021-08-18 18:26:12" itemprop="dateModified" datetime="2021-08-18T18:26:12+08:00">2021-08-18</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -535,10 +554,10 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
     
     <div class="post-body" itemprop="articleBody">
           <h1 id="temporal-difference-learning-for-control-q-learning">Temporal Difference Learning for Control: Q-Learning</h1>
-<p>We can use TD-like methods for the problem of control too. Consider any $Q. Let <span class="math inline">\(X^{\prime} \sim P(\cdot | X, A)\)</span> and <span class="math inline">\(R \sim R(\cdot | X, A)\)</span> and define:</p>
+<p>We can use TD-like methods for the problem of control too. Consider any <span class="math inline">\(Q\)</span>. Let <span class="math inline">\(X^{\prime} \sim P(\cdot | X, A)\)</span> and <span class="math inline">\(R \sim R(\cdot | X, A)\)</span> and define:</p>
 <p><span class="math display">\[Y = R + \gamma max_{a^{\prime} \in A} Q(X^{\prime}, a^{\prime})\]</span></p>
 <p>We have:</p>
-<p><span class="math display">\[E[Y | X=x, A=a] = r(x, a) + \gamma \int P(dx^{\prime} | x, a) max_{a^{\prime} \in A} Q(x^{\prime}, a^{\prime} = T^{*} Q (x, a)\]</span></p>
+<p><span class="math display">\[E[Y | X=x, A=a] = r(x, a) + \gamma \int P(dx^{\prime} | x, a) max_{a^{\prime} \in A} Q(x^{\prime}, a^{\prime}) = T^{*} Q (x, a)\]</span></p>
 <p>So, <span class="math inline">\(Y\)</span> is an unbiased estimate of <span class="math inline">\(T^{*} Q (x, a)\)</span>. Let's define the <code>empirical Bellman optimality operator</code> <span class="math inline">\(\hat{T}^{*} Q (x, a)\)</span>:</p>
 <p><span class="math display">\[T^{*} Q (x, a) = Y = R + \gamma max_{a^{\prime} \in A} Q(X^{\prime}, a^{\prime})\]</span></p>
 <p>We can write the SA update rule for estimating <span class="math inline">\(Q^{*}\)</span> as:</p>
@@ -987,7 +1006,7 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-15 12:45:53" itemprop="dateModified" datetime="2021-06-15T12:45:53+08:00">2021-06-15</time>
+        <time title="Modified: 2021-08-18 19:45:37" itemprop="dateModified" datetime="2021-08-18T19:45:37+08:00">2021-08-18</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1462,7 +1481,7 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">436k</span>
+    <span title="Symbols count total">437k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
