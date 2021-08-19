@@ -20,14 +20,17 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
 
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="K-Means Considering the problem of identifying groups, or clusters of data points in a multidimensional space. Suppose we have a dataset \(\mathbf{x}_1, ....., \mathbf{x}_N\) consisting of \(N\) obs">
 <meta property="og:type" content="article">
-<meta property="og:title" content="k-means">
+<meta property="og:title" content="K-Means">
 <meta property="og:url" content="http://example.com/2021/07/19/k-means/index.html">
 <meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="K-Means Considering the problem of identifying groups, or clusters of data points in a multidimensional space. Suppose we have a dataset \(\mathbf{x}_1, ....., \mathbf{x}_N\) consisting of \(N\) obs">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-07-19T08:32:37.000Z">
-<meta property="article:modified_time" content="2021-07-19T08:32:37.000Z">
+<meta property="article:modified_time" content="2021-08-19T07:11:17.010Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="Machine Learning">
 <meta name="twitter:card" content="summary">
 
 
@@ -35,10 +38,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;07&#x2F;19&#x2F;k-means&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;07&#x2F;19&#x2F;k-means&#x2F;&quot;,&quot;title&quot;:&quot;k-means&quot;}</script>
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;07&#x2F;19&#x2F;k-means&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;07&#x2F;19&#x2F;k-means&#x2F;&quot;,&quot;title&quot;:&quot;K-Means&quot;}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
-<title>k-means | GoGoGogo!</title><script src="/js/config.js"></script>
+<title>K-Means | GoGoGogo!</title><script src="/js/config.js"></script>
   
 
   <script src="/js/third-party/analytics/baidu-analytics.js"></script>
@@ -133,7 +136,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -146,6 +149,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#k-means"><span class="nav-number">1.</span> <span class="nav-text">K-Means</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#algorithm"><span class="nav-number">1.1.</span> <span class="nav-text">Algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#convergence"><span class="nav-number">1.2.</span> <span class="nav-text">Convergence</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#implementation"><span class="nav-number">1.3.</span> <span class="nav-text">Implementation</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -237,7 +241,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          k-means
+          K-Means
         </h1>
 
         <div class="post-meta-container">
@@ -249,6 +253,22 @@
       <span class="post-meta-item-text">Posted on</span>
 
       <time title="Created: 2021-07-19 16:32:37" itemprop="dateCreated datePublished" datetime="2021-07-19T16:32:37+08:00">2021-07-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-08-19 15:11:17" itemprop="dateModified" datetime="2021-08-19T15:11:17+08:00">2021-08-19</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
     </span>
 
   
@@ -266,14 +286,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>0</span>
+      <span>3.8k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>3 mins.</span>
     </span>
 </div>
 
@@ -284,7 +304,51 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        
+        <h1 id="k-means">K-Means</h1>
+<p>Considering the problem of identifying groups, or clusters of data points in a multidimensional space.</p>
+<p>Suppose we have a dataset <span class="math inline">\(\mathbf{x}_1, ....., \mathbf{x}_N\)</span> consisting of <span class="math inline">\(N\)</span> observations of a random <span class="math inline">\(D\)</span> dimensional euclidean variable <span class="math inline">\(\mathbf{x}\)</span>. <strong>Our goal is to partition these points in to <span class="math inline">\(K\)</span> clusters</strong>.</p>
+<p>A cluster <span class="math inline">\(k\)</span> contains:</p>
+<ol type="1">
+<li><strong>Cluster center</strong>: <span class="math inline">\(\boldsymbol{\mu}_k \in \mathbb{R}^{D}\)</span>.</li>
+<li><strong>Assignment indicator variables</strong>: <span class="math inline">\(\mathbf{r}_{n} \in \mathbb{R}^{K}, \; r_{nk} \in \{0, 1\}\)</span>, one for each data point and each dimension <span class="math inline">\(k\)</span> indicates whether the data point <span class="math inline">\(\mathbf{x}_n\)</span> belongs to cluster <span class="math inline">\(k\)</span></li>
+</ol>
+<p>So we can reformulate our goal to be: <strong>find an assignment of data points to clusters, as well as a set of cluster centers <span class="math inline">\(\{\boldsymbol{\mu}_k\}^{K}_{k=1}\)</span>, such that the sum of squares of the distances of each data point to its closest cluster center is a minimum.</strong> In equation, our objective is:</p>
+<p><span class="math display">\[J(\mathbf{x}; \; \{\boldsymbol{\mu}_{k}, \mathbf{r}_{nk}\}) = \sum^{N}_{n=1}\sum^{K}_{k=1} r_{nk} \|\mathbf{x}_n - \boldsymbol{\mu}_k\|^2_2\]</span></p>
+<p>Where the distance measure here is the L2 norm.</p>
+<p>Thus, we want to find parameters <span class="math inline">\(\{\boldsymbol{\mu}_{k}, \mathbf{r}_{nk}\}\)</span> such that the objective is minimized.</p>
+<h2 id="algorithm">Algorithm</h2>
+<ol type="1">
+<li>Initialize <span class="math inline">\(\boldsymbol{\mu}_k, \; \forall \; k=1, ...., K\)</span></li>
+<li>Given <span class="math inline">\(\{\boldsymbol{\mu}_k\}\)</span>, minimize <span class="math inline">\(J\)</span> w.r.t <span class="math inline">\(\{\mathbf{r}_{n}\}\)</span></li>
+<li>Given <span class="math inline">\(\{\mathbf{r}_{n}\}\)</span>, minimize <span class="math inline">\(J\)</span> w.r.t <span class="math inline">\(\{\boldsymbol{\mu}_k\}\)</span></li>
+<li>Repeat 2, 3 until converges</li>
+</ol>
+<p><strong>For phase 2</strong>:</p>
+<p>Given the cluster centers, it is obvious that if we assign each point to the closest cluster center, we have the minimum objective:</p>
+<p><span class="math display">\[
+r_{nk}=
+\begin{cases}
+1, \quad \text{if }\; k = \underset{k}{\arg\min} \|\mathbf{x}_n - \boldsymbol{\mu}_k\|^2_2\\
+0, \quad o.w\\
+\end{cases}
+\]</span></p>
+<p><strong>For phase 3</strong>:</p>
+<p>Given the assignments, since the objective is convex, we can take gradient and solve for the optimal <span class="math inline">\(\boldsymbol{\mu}_k\)</span>:</p>
+<p><span class="math display">\[\frac{\partial J}{\partial \boldsymbol{\mu}_k} = \sum^{N}_{n=1} -2 r_{nk} \mathbf{x}_n + 2\boldsymbol{\mu}_k \sum^{N}_{n=1} r_{nk} = 0\]</span></p>
+<p><span class="math display">\[\implies \boldsymbol{\mu}_k \sum^{N}_{n=1} r_{nk} = \sum^{N}_{n=1} r_{nk} \mathbf{x}_n\]</span></p>
+<p><span class="math display">\[\implies \boldsymbol{\mu}_k = \frac{\sum^{N}_{n=1} r_{nk} \mathbf{x}_n}{\sum^{N}_{n=1} r_{nk}}\]</span></p>
+<p><span class="math inline">\(\sum^{N}_{n=1} r_{nk} \mathbf{x}_n\)</span> is the sum of all points that belongs to cluster <span class="math inline">\(k\)</span> and <span class="math inline">\(\sum^{N}_{n=1} r_{nk}\)</span> is the count of points in cluster <span class="math inline">\(k\)</span>, so the new <span class="math inline">\(\boldsymbol{\mu}_k\)</span> is just the <strong>sample mean</strong> of the points in cluster <span class="math inline">\(k\)</span>.</p>
+<h2 id="convergence">Convergence</h2>
+<p>Since:</p>
+<ol type="1">
+<li><span class="math inline">\(\{\boldsymbol{\mu}_{k}, \mathbf{r}_{nk}\}\)</span> can only take finite values (i.e they are derived from finite subsets of data and uniquely defined for each subset).</li>
+<li>At each step, we minimize the objective (i.e we either decrease or maintain the objective).</li>
+<li>The cost function is bounded below zero.</li>
+<li>Ties are broken consistently.</li>
+</ol>
+<p>Thus, the algorithm can only take a finite number of non-decreasing steps before terminating at a local minimum.</p>
+<h2 id="implementation">Implementation</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">KMeans</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, k=<span class="number">2</span>, max_iteration=<span class="number">10</span>, init_method=<span class="string">&#x27;random&#x27;</span></span>):</span></span><br><span class="line">        self.k = k</span><br><span class="line">        self.max_iteration = max_iteration</span><br><span class="line">        self.init_method = init_method</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit_transform</span>(<span class="params">self, x: np.array</span>):</span></span><br><span class="line">        n, d = x.shape</span><br><span class="line">        curr_mu = self._init_mu(x)</span><br><span class="line">        curr_iter = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> curr_iter &lt;= self.max_iteration:</span><br><span class="line">            r_matrix = np.zeros((n, self.k))</span><br><span class="line">            <span class="comment"># step one, map each instance to cluster center muk</span></span><br><span class="line">            <span class="keyword">for</span> sample <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">                distance = []</span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(self.k):</span><br><span class="line">                    distance.append(np.linalg.norm(x[sample] - curr_mu[j]))</span><br><span class="line"></span><br><span class="line">                mu_assigned = np.argmin(distance)</span><br><span class="line">                r_matrix[sample][mu_assigned] = <span class="number">1</span></span><br><span class="line">                </span><br><span class="line">            <span class="comment"># step two calculate new mu_k</span></span><br><span class="line">            prev_mu = curr_mu.copy()</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(self.k):</span><br><span class="line">                curr_mu[j] = np.mean(x[r_matrix[:, j] == <span class="number">1</span>], axis=<span class="number">0</span>)</span><br><span class="line">                </span><br><span class="line">            <span class="comment"># check stopping criteria</span></span><br><span class="line">            <span class="keyword">if</span> np.linalg.norm(prev_mu - curr_mu) == <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">            curr_iter += <span class="number">1</span></span><br><span class="line">            </span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;finished k-means algorithm, on iteration <span class="subst">&#123;curr_iter&#125;</span>&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> r_matrix, curr_mu</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_init_mu</span>(<span class="params">self, x</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.init_method == <span class="string">&#x27;random&#x27;</span>:</span><br><span class="line">            col_max = x.<span class="built_in">max</span>(axis=<span class="number">0</span>)</span><br><span class="line">            col_min = x.<span class="built_in">min</span>(axis=<span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> (col_max - col_min) * np.random.random_sample((self.k, x.shape[<span class="number">1</span>])) + col_min</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">elif</span> self.init_method == <span class="string">&#x27;random_points&#x27;</span>:</span><br><span class="line">            random_int = np.random.randint(<span class="number">0</span>, x.shape[<span class="number">0</span>], size=self.k)</span><br><span class="line">            <span class="keyword">return</span> x[random_int]</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -292,9 +356,30 @@
     
     
       
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\19\adaboost\" rel="bookmark">Adaboost</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\19\decision-trees\" rel="bookmark">Decision Trees</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\19\gbdt\" rel="bookmark">GBDT</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\19\logistic-regression\" rel="bookmark">Logistic Regression</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\19\naive-bayes\" rel="bookmark">Naive Bayes</a></div>
+    </li>
+  </ul>
 
 
     <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+          </div>
 
         
 
@@ -339,13 +424,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">437k</span>
+    <span title="Symbols count total">440k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:37</span>
+    <span title="Reading time total">6:40</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
@@ -377,7 +462,7 @@
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
 <script src="/js/third-party/math/mathjax.js"></script>
 
 
