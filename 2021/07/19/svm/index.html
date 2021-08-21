@@ -20,25 +20,31 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
 
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Support Vector Machine Given dataset \(D &#x3D; \{(\mathbf{x}_1, y_1) ....., (\mathbf{x}_N, y_N); \; \mathbf{x} \in \mathbb{R}^m, \; y_i \in \{-1, 1\}\}\). Let \(\mathbf{w}^T \mathbf{x} + b &#x3D; 0\) be a hyp">
 <meta property="og:type" content="article">
-<meta property="og:title" content="svm">
+<meta property="og:title" content="SVM">
 <meta property="og:url" content="http://example.com/2021/07/19/svm/index.html">
 <meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Support Vector Machine Given dataset \(D &#x3D; \{(\mathbf{x}_1, y_1) ....., (\mathbf{x}_N, y_N); \; \mathbf{x} \in \mathbb{R}^m, \; y_i \in \{-1, 1\}\}\). Let \(\mathbf{w}^T \mathbf{x} + b &#x3D; 0\) be a hyp">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/ML/svm_1.png">
+<meta property="og:image" content="http://example.com/images/ML/svm_2.png">
 <meta property="article:published_time" content="2021-07-19T08:32:20.000Z">
-<meta property="article:modified_time" content="2021-07-19T08:32:20.000Z">
+<meta property="article:modified_time" content="2021-08-21T13:08:13.719Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="Machine Learning">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/ML/svm_1.png">
 
 
 <link rel="canonical" href="http://example.com/2021/07/19/svm/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;07&#x2F;19&#x2F;svm&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;07&#x2F;19&#x2F;svm&#x2F;&quot;,&quot;title&quot;:&quot;svm&quot;}</script>
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;07&#x2F;19&#x2F;svm&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;07&#x2F;19&#x2F;svm&#x2F;&quot;,&quot;title&quot;:&quot;SVM&quot;}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
-<title>svm | GoGoGogo!</title><script src="/js/config.js"></script>
+<title>SVM | GoGoGogo!</title><script src="/js/config.js"></script>
   
 
   <script src="/js/third-party/analytics/baidu-analytics.js"></script>
@@ -86,7 +92,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">79</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">80</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -133,7 +139,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -146,6 +152,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#support-vector-machine"><span class="nav-number">1.</span> <span class="nav-text">Support Vector Machine</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#distance-to-plane"><span class="nav-number">1.1.</span> <span class="nav-text">Distance to Plane</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#goal"><span class="nav-number">1.2.</span> <span class="nav-text">Goal</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ref"><span class="nav-number">2.</span> <span class="nav-text">Ref</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -161,7 +168,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">79</span>
+          <span class="site-state-item-count">80</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -237,7 +244,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          svm
+          SVM
         </h1>
 
         <div class="post-meta-container">
@@ -249,6 +256,22 @@
       <span class="post-meta-item-text">Posted on</span>
 
       <time title="Created: 2021-07-19 16:32:20" itemprop="dateCreated datePublished" datetime="2021-07-19T16:32:20+08:00">2021-07-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-08-21 21:08:13" itemprop="dateModified" datetime="2021-08-21T21:08:13+08:00">2021-08-21</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
     </span>
 
   
@@ -266,14 +289,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>0</span>
+      <span>3.6k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>3 mins.</span>
     </span>
 </div>
 
@@ -284,7 +307,58 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        
+        <h1 id="support-vector-machine">Support Vector Machine</h1>
+<p>Given dataset <span class="math inline">\(D = \{(\mathbf{x}_1, y_1) ....., (\mathbf{x}_N, y_N); \; \mathbf{x} \in \mathbb{R}^m, \; y_i \in \{-1, 1\}\}\)</span>. Let <span class="math inline">\(\mathbf{w}^T \mathbf{x} + b = 0\)</span> be a hyperplane, we classify a new point <span class="math inline">\(\mathbf{x}_i\)</span> by</p>
+<p><span class="math display">\[
+\hat{y}_i (\mathbf{x}_i) =
+\begin{cases}
+\mathbf{w}^T \mathbf{x}_i + b \geq 0, \quad \;\;\; 1\\
+\mathbf{w}^T \mathbf{x}_i + b &lt; 0, \quad -1\\
+\end{cases}
+\]</span></p>
+<p>Suppose that our data is <strong>linear separable</strong>. Then, <span class="math inline">\(\exists\)</span> at least one possible combination of parameters <span class="math inline">\(\{\mathbf{w}, b\}\)</span>, such that:</p>
+<p><span class="math display">\[\hat{\gamma}_i = y_i \hat{y}_i(\mathbf{x}_i) &gt; 0, \; \forall i=1, ...., N\]</span></p>
+<p>When <span class="math inline">\(y_i = 1\)</span>, a confident classifier would have <span class="math inline">\(\hat{y}_i(\mathbf{x}_i)\)</span> as large as possible. On the other hand, when <span class="math inline">\(y_i = -1\)</span>, the confident classifier would have <span class="math inline">\(\hat{y}_i(\mathbf{x}_i)\)</span> as negative as possible. Thus, we want <span class="math inline">\(\hat{\gamma}_i\)</span> as large as possible, this <span class="math inline">\(\hat{\gamma}_i\)</span> is called <code>functional margin</code> associated with training example for specific set of parameters <span class="math inline">\(\{\mathbf{w}, b\}\)</span>. And <code>functional margin</code> of <span class="math inline">\(\{\mathbf{w}, b\}\)</span> is defined as minimum of these functions margins:</p>
+<p><span class="math display">\[\hat{\gamma} = \min_{i=1, ..., N} \hat{\gamma}_i\]</span></p>
+<p><strong>In support vector machines the decision boundary is chosen to be the one for which the functional margin (confidence) is maximized.</strong></p>
+<h2 id="distance-to-plane">Distance to Plane</h2>
+<p>Let <span class="math inline">\(\mathbf{x}_i\)</span> be a sample that has label <span class="math inline">\(y_i = 1\)</span>, thus, it is on the positive side of the hyperplane <span class="math inline">\(\mathbf{w}^T \mathbf{x} + b = 0\)</span>. Define <span class="math inline">\(r\)</span> to be the shortest distance between point <span class="math inline">\(\mathbf{x}_i\)</span> and the hyperplane. Then <span class="math inline">\(r\)</span> is the distance between <span class="math inline">\(\mathbf{x}_i\)</span> to its projection on the hyperplane <span class="math inline">\(\mathbf{x}^{\prime}_i\)</span>.</p>
+<p><img src='/images/ML/svm_1.png' width="600"></p>
+<p>Since <span class="math inline">\(\mathbf{w}\)</span> is the normal vector that is orthogonal to the plane and <span class="math inline">\(\frac{\mathbf{w}}{\|\mathbf{w}\|_2}\)</span> is the unit vector that represents its direction. We can write the <span class="math inline">\(r\)</span> as:</p>
+<p><span class="math display">\[\mathbf{x}_i - \mathbf{x}^{\prime}_i = r \frac{\mathbf{w}}{\|\mathbf{w}\|_2}\]</span></p>
+<p><span class="math display">\[\implies r = \frac{\mathbf{x}_i - \mathbf{x}^{\prime}_i}{\frac{\mathbf{w}}{\|\mathbf{w}\|_2}}\]</span></p>
+<h2 id="goal">Goal</h2>
+<p>The concept of the margin is intuitively simple: it is the distance of the separating hyperplane to the closest examples in the dataset, assuming that our dataset is <strong>linearly separable.</strong> That is:</p>
+<span class="math display">\[\begin{aligned}
+&amp;\max \quad &amp;&amp; \hat{\gamma}\\
+&amp;\;\text{s.t} \quad &amp;&amp;y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq \hat{\gamma} \quad \quad \forall i=1, ...., N
+\end{aligned}\]</span>
+<p>This optimization problem is unbounded, because one can make the functional margin large by simply scaling the parameters by a constant <span class="math inline">\(c\)</span>, <span class="math inline">\(\{c\mathbf{w}, cb\}\)</span>:</p>
+<p><span class="math display">\[y_i (c\mathbf{w}^T \mathbf{x}_i + cb) &gt; y_i (\mathbf{w}^T \mathbf{x}_i + b) = \hat{\gamma}\]</span></p>
+<p>This has no effect on the decision plane because:</p>
+<p><span class="math display">\[\mathbf{w}^T \mathbf{x}_i + b = c\mathbf{w}^T \mathbf{x}_i + cb = 0\]</span></p>
+<p>Thus, we need to transform the optimization problem to <strong>maximize the distance between the samples and decision boundary</strong> instead of maximizing functional margin. Suppose we let all functional margins to be at least 1 (can easily achieve by multiplying parameters by a constant):</p>
+<p><span class="math display">\[y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq 1\]</span></p>
+<p><span class="math display">\[\implies \mathbf{w}^T \mathbf{x}_i + b = 1\]</span></p>
+<p><span class="math display">\[\implies \mathbf{w}^T \mathbf{x}_i + b = -1\]</span></p>
+<p>Then, for point <span class="math inline">\(\mathbf{x}_i\)</span> on <span class="math inline">\(\mathbf{w}^T \mathbf{x}_i + b = 1\)</span>, we have its distance to the decision plane:</p>
+<p><span class="math display">\[\mathbf{w}^T \mathbf{x}_i + b - r \frac{\|\mathbf{w}\|^2_2}{\|\mathbf{w}\|_2} = 0\]</span></p>
+<p><span class="math display">\[\implies r = \frac{1}{\|\mathbf{w}\|}\]</span></p>
+<p>Then, we can formulate our objective as:</p>
+<span class="math display">\[\begin{aligned}
+&amp;\max_{\mathbf{w}} \quad &amp;&amp; \frac{1}{\|\mathbf{w}\|_2}\\
+&amp;\;\text{s.t} \quad &amp;&amp;y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq 1 \quad \quad \forall i=1, ...., N
+\end{aligned}\]</span>
+<p>Which is equivalent to:</p>
+<span class="math display">\[\begin{aligned}
+&amp;\min_{\mathbf{w}} \quad &amp;&amp; \frac{1}{2}\|\mathbf{w}\|^2_2\\
+&amp;\;\text{s.t} \quad &amp;&amp;y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq 1 \quad \quad \forall i=1, ...., N
+\end{aligned}\]</span>
+<p><br></p>
+<p><img src='/images/ML/svm_2.png' width="600"></p>
+<h1 id="ref">Ref</h1>
+<p>https://www.ccs.neu.edu/home/vip/teach/MLcourse/6_SVM_kernels/lecture_notes/svm/svm.pdf</p>
+<p>http://www.cs.cmu.edu/~guestrin/Class/10701-S06/Slides/svms-s06.pdf</p>
 
     </div>
 
@@ -292,9 +366,30 @@
     
     
       
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\19\adaboost\" rel="bookmark">Adaboost</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\19\decision-trees\" rel="bookmark">Decision Trees</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\19\gbdt\" rel="bookmark">GBDT</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\19\k-means\" rel="bookmark">K-Means</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\07\19\logistic-regression\" rel="bookmark">Logistic Regression</a></div>
+    </li>
+  </ul>
 
 
     <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+          </div>
 
         
 
@@ -339,13 +434,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">440k</span>
+    <span title="Symbols count total">445k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:40</span>
+    <span title="Reading time total">6:44</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
@@ -377,7 +472,7 @@
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
 <script src="/js/third-party/math/mathjax.js"></script>
 
 
