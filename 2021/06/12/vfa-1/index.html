@@ -22,13 +22,13 @@
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
 <meta name="description" content="Value Function Approximation (Introduction) In real-world problem, the state space \(\chi\) or the state-action space \(\chi \times A\) is large that we cannot represent quantities such as the value">
 <meta property="og:type" content="article">
-<meta property="og:title" content="vfa-1">
+<meta property="og:title" content="Value Function Approximation (1)">
 <meta property="og:url" content="http://example.com/2021/06/12/vfa-1/index.html">
 <meta property="og:site_name" content="GoGoGogo!">
 <meta property="og:description" content="Value Function Approximation (Introduction) In real-world problem, the state space \(\chi\) or the state-action space \(\chi \times A\) is large that we cannot represent quantities such as the value">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-06-12T08:33:44.000Z">
-<meta property="article:modified_time" content="2021-08-20T13:49:39.945Z">
+<meta property="article:modified_time" content="2021-08-24T11:57:03.374Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta name="twitter:card" content="summary">
 
@@ -37,10 +37,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;06&#x2F;12&#x2F;vfa-1&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;06&#x2F;12&#x2F;vfa-1&#x2F;&quot;,&quot;title&quot;:&quot;vfa-1&quot;}</script>
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;06&#x2F;12&#x2F;vfa-1&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;06&#x2F;12&#x2F;vfa-1&#x2F;&quot;,&quot;title&quot;:&quot;Value Function Approximation (1)&quot;}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
-<title>vfa-1 | GoGoGogo!</title><script src="/js/config.js"></script>
+<title>Value Function Approximation (1) | GoGoGogo!</title><script src="/js/config.js"></script>
   
 
   <script src="/js/third-party/analytics/baidu-analytics.js"></script>
@@ -148,7 +148,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#value-function-approximation-introduction"><span class="nav-number">1.</span> <span class="nav-text">Value Function Approximation (Introduction)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#linear-function-approximation"><span class="nav-number">1.1.</span> <span class="nav-text">Linear Function Approximation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#l_p-v-norms-of-value-function"><span class="nav-number">1.2.</span> <span class="nav-text">\(L_p (v)\)-norms of Value Function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#population-version"><span class="nav-number">1.3.</span> <span class="nav-text">Population Version</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#value-function-approximation-introduction"><span class="nav-number">1.</span> <span class="nav-text">Value Function Approximation (Introduction)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#linear-function-approximation"><span class="nav-number">1.1.</span> <span class="nav-text">Linear Function Approximation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#l_p-v-norms-of-value-function"><span class="nav-number">1.2.</span> <span class="nav-text">\(L_p (v)\)-norms of Value Function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#goal"><span class="nav-number">1.3.</span> <span class="nav-text">Goal</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#batch-rl"><span class="nav-number">1.4.</span> <span class="nav-text">Batch RL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#empirical-risk-minimization"><span class="nav-number">1.5.</span> <span class="nav-text">Empirical Risk Minimization</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#next-avi-brm-lstd-etc.."><span class="nav-number">2.</span> <span class="nav-text">Next: AVI, BRM, LSTD etc..</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -240,7 +240,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          vfa-1
+          Value Function Approximation (1)
         </h1>
 
         <div class="post-meta-container">
@@ -258,8 +258,21 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-08-20 21:49:39" itemprop="dateModified" datetime="2021-08-20T21:49:39+08:00">2021-08-20</time>
+        <time title="Modified: 2021-08-24 19:57:03" itemprop="dateModified" datetime="2021-08-24T19:57:03+08:00">2021-08-24</time>
       </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/VFA/" itemprop="url" rel="index"><span itemprop="name">VFA</span></a>
+        </span>
+    </span>
 
   
     <span class="post-meta-item" title="Views">
@@ -276,14 +289,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>1.3k</span>
+      <span>5.2k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>5 mins.</span>
     </span>
 </div>
 
@@ -309,12 +322,67 @@
 <p>Any <span class="math inline">\(\hat{V}\)</span> belongs to the space of functions <span class="math inline">\(\mathbf{F}\)</span>:</p>
 <p><span class="math display">\[\mathbf{F} = \{x \mapsto  \phi (x)^T w : w \in \mathbb{R}^p\}\]</span></p>
 <p>The function space <span class="math inline">\(\mathbf{F}\)</span> is called the <code>linear value function space</code>, in this case it is a span of a set of features.</p>
+<span id="more"></span>
 <h2 id="l_p-v-norms-of-value-function"><span class="math inline">\(L_p (v)\)</span>-norms of Value Function</h2>
 <p>For a probability distribution <span class="math inline">\(v \in M(\chi)\)</span>, and a measurable function <span class="math inline">\(V \in \mathbf{F}\)</span>, we define the <span class="math inline">\(L_p (v)\)</span>-norm of <span class="math inline">\(V\)</span> with <span class="math inline">\(1 \leq p &lt; \infty\)</span> as:</p>
 <p><span class="math display">\[\|V\|^p_{p, v} \triangleq \int_{x \in \chi} |V(x)|^p dv(x)\]</span></p>
 <p>The <span class="math inline">\(L_{\infty} (\chi)\)</span> norm is:</p>
 <p><span class="math display">\[\|V\|_{\infty} \triangleq \sup_{x \in \chi} |V(x)|\]</span></p>
-<h2 id="population-version">Population Version</h2>
+<h2 id="goal">Goal</h2>
+<p>Suppose that we happen to know <span class="math inline">\(V^{\pi}, Q^{\pi}, Q^*, V^*\)</span> and we want to represent it with a function <span class="math inline">\(V \in \mathbf{F}\)</span>, our goal is to find:</p>
+<p><span class="math display">\[V \approx V^{\pi}\]</span></p>
+<p>To quantify <span class="math inline">\(V \approx V^{\pi}\)</span>, we have to pick a distance function <span class="math inline">\(d\)</span> between function <span class="math inline">\(V\)</span> and <span class="math inline">\(V^{\pi}\)</span>, given such a distance function, we can express our goal as:</p>
+<p><span class="math display">\[V = \underset{V \in \mathbf{F}}{\arg\min} \; d(V, V^{\pi})\]</span></p>
+<p>One common used family of distances are based on <span class="math inline">\(L_p (\mu)\)</span>-norm w.r.t a probability measure <span class="math inline">\(\mu \in M(\chi)\)</span>:</p>
+<p><span class="math display">\[V = \underset{V \in \mathbf{F}}{\arg\min} \; \|V - V^{\pi}\|^p_{p, \mu}\]</span> <span class="math display">\[Q = \underset{Q \in \mathbf{F}}{\arg\min} \; \|Q - Q^{\pi}\|^p_{p, \mu}\]</span></p>
+<p>A common choice is <span class="math inline">\(p=2\)</span> which is similar to mean squared loss function in regression.</p>
+<h2 id="batch-rl">Batch RL</h2>
+<p>In general, <span class="math inline">\(V^{\pi}, Q^{\pi}, Q^*, V^*\)</span> are unknown quantities and need to estimate them using data. We consider the <strong>batch data</strong> setting:</p>
+<ul>
+<li><p>The data is already collected and we are interested in using it to estimate quantities such as <span class="math inline">\(Q^{\pi}, Q^{*}\)</span></p></li>
+<li><p>Suppose that we have: <span class="math display">\[D_N = \{(X_i, A_i, R_i, X^{\prime}_i)\}^N_{i=1}\]</span></p>
+<p>with <span class="math inline">\((X_i, A_i) \sim \mu\)</span> and <span class="math inline">\(X^{\prime}_i \sim P(\cdot | X_i, A_i)\)</span> and <span class="math inline">\(R_i \sim R(\cdot | X_i, A_i)\)</span> (<span class="math inline">\(\mu\)</span> can be any distribution that the <span class="math inline">\(L_p (\mu)\)</span>-norm is referring to, it is often the stationary distribution following policy <span class="math inline">\(\pi\)</span>)</p></li>
+<li><p>The data could also be generated by following a behaviour policy <span class="math inline">\(\pi_b\)</span>.</p></li>
+<li><p>In the batch setting, the agent does not interact with the environment while it it computing <span class="math inline">\(Q^{\pi}, Q^{*}\)</span> which contrasted with the online method such as TD or Q-learning where the agent updates its estimate of the value function as each data point arrives.</p></li>
+</ul>
+<p><strong>Batch RL may collect a batch of data, process them, and then collect a new batch of data, possibly based on a policy resulted from the previous batch processing computation.</strong></p>
+<h2 id="empirical-risk-minimization">Empirical Risk Minimization</h2>
+<p>Suppose, we have a batch of data:</p>
+<p><span class="math display">\[D_N = \{(X_i, A_i, G^{\pi}_i (X_i, A_i))\}^{N}_{i=1}\]</span></p>
+<p>Where <span class="math inline">\(G^{\pi}_i (X_i, A_i)\)</span> is the return starting from state <span class="math inline">\(X_i\)</span> and taking action <span class="math inline">\(A_i\)</span> and following the policy <span class="math inline">\(\pi\)</span> afterwards (<span class="math inline">\((X_i, A_i) \sim \mu\)</span>). The return can be obtain using initial-state only MC by selecting <span class="math inline">\((X_i, A_i) \sim \mu\)</span> and then following <span class="math inline">\(\pi\)</span> until the end of the episode.</p>
+<p>Recall the loss function:</p>
+<p><span class="math display">\[Q = \underset{Q \in \mathbf{F}}{\arg\min} \; \|Q - Q^{\pi}\|^p_{p, \mu}\]</span></p>
+<ul>
+<li>We do not know the distribution <span class="math inline">\(\mu\)</span> and only have samples from it.</li>
+<li>We do not know <span class="math inline">\(Q^{\pi}\)</span> and only have unbiased estimate of it at a finite number of data points.</li>
+</ul>
+<p><br></p>
+<p><strong>The question is: can we replace <span class="math inline">\(Q^{\pi}\)</span> with <span class="math inline">\(G^{\pi}\)</span>?</strong></p>
+<p>For any <span class="math inline">\(Q\)</span>, we can decompose:</p>
+<span class="math display">\[\begin{aligned}
+E_{\mu, G^{\pi}}[|Q(X, A) - G^{\pi}(X, A)|^2] &amp;= E_{\mu, G^{\pi}}[|Q(X, A) - Q^{\pi} (X, A) + Q^{\pi} (X, A) - G^{\pi} (X, A)|^2]\\
+&amp;= E_{\mu, G^{\pi}}[|Q(X, A) - Q^{\pi}(X, A)|^2] + E_{\mu, G^{\pi}}[|Q^{\pi}(X, A) - G^{\pi}(X, A)|^2] + 2 E_{\mu, G^{\pi}}[(Q(X, A) - Q^{\pi} (X, A))(Q^{\pi} (X, A) - G^{\pi} (X, A))]\\
+\end{aligned}\]</span>
+<p>The first term:</p>
+<p><span class="math display">\[E_{\mu, G^{\pi}}[|Q(X, A) - Q^{\pi}(X, A)|^2] = \int_{x, a} |Q(X, A) - Q^{\pi}(X, A)|^2 d\mu(x, a) = \|Q - Q^{\pi}\|^2_{2, \mu}\]</span></p>
+<p>The second term:</p>
+<p><span class="math display">\[E_{\mu, G^{\pi}}[|Q^{\pi}(X, A) - G^{\pi}(X, A)|^2] = E_{\mu}[E_{G^{\pi}}[|Q^{\pi}(X, A) - G^{\pi}(X, A)|^2 | X, A]] = E_{\mu}[Var[G^{\pi} (X, A) | X, A]]\]</span></p>
+<p>The third term:</p>
+<span class="math display">\[\begin{aligned}
+2 E_{\mu, G^{\pi}}[(Q(X, A) - Q^{\pi} (X, A))(Q^{\pi} (X, A) - G^{\pi} (X, A))] &amp;= 2E_{\mu}[E_{G^{\pi}} [(Q(X, A) - Q^{\pi} (X, A))(Q^{\pi}(X, A) - G^{\pi} (X, A)) | X, A]]\\
+&amp;= 2E_{\mu}[(Q(X, A) - Q^{\pi} (X, A))(Q^{\pi}(X, A) - \underbrace{E[G^{\pi} (X, A)) | X, A]}_{Q^{\pi} (X, A)})]\\
+&amp;= 0
+\end{aligned}\]</span>
+<p>Thus:</p>
+<span class="math display">\[\begin{aligned}
+\underset{Q \in \mathbf{F}}{\arg\min} \; E_{\mu, G^{\pi}}[|Q(X, A) - G^{\pi}(X, A)|^2] &amp;= \underset{Q \in \mathbf{F}}{\arg\min} \; \|Q - Q^{\pi}\|^2_{2, \mu} + E_{\mu}[Var[G^{\pi} (X, A) | X, A]]\\
+&amp;= \underset{Q \in \mathbf{F}}{\arg\min} \; \|Q - Q^{\pi}\|^2_{2, \mu}
+\end{aligned}\]</span>
+<p><br></p>
+<p>We can see that, if we could find the solution to <span class="math inline">\(\underset{Q \in \mathbf{F}}{\arg\min} \; E_{\mu, G^{\pi}}[|Q - G^{\pi}|^2]\)</span>, the solution would be the same as the minimizer of our target. However, we could not compute the expectation because we do not know <span class="math inline">\(\mu\)</span> and environment <span class="math inline">\(R, P\)</span>, we only have samples from it. A common solution in ML to address this issue is to use the <code>emprical risk minimization</code>, which prescribes that we solve:</p>
+<p><span class="math display">\[\frac{1}{N} \sum^{N}_{i=1} |Q(X_i, A_i) - G^{\pi} (X_i, A_i)|^2 = \|Q - G^{\pi}\|^2_{2, D_n}\]</span></p>
+<p>This is indeed a regression problem with the squared error loss.</p>
+<h1 id="next-avi-brm-lstd-etc..">Next: AVI, BRM, LSTD etc..</h1>
 
     </div>
 
@@ -369,13 +437,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">445k</span>
+    <span title="Symbols count total">453k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:44</span>
+    <span title="Reading time total">6:51</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

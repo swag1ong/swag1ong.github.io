@@ -618,6 +618,26 @@
 
       <time title="Created: 2021-07-13 22:00:16" itemprop="dateCreated datePublished" datetime="2021-07-13T22:00:16+08:00">2021-07-13</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-08-24 19:52:07" itemprop="dateModified" datetime="2021-08-24T19:52:07+08:00">2021-08-24</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/VFA/" itemprop="url" rel="index"><span itemprop="name">VFA</span></a>
+        </span>
+    </span>
 
   
     <span class="post-meta-item" title="Views">
@@ -634,14 +654,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>0</span>
+      <span>2.5k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>2 mins.</span>
     </span>
 </div>
 
@@ -652,7 +672,50 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          
+          <h1 id="value-function-approximation-algorithms">Value Function Approximation (Algorithms)</h1>
+<h2 id="approximate-value-iteration">Approximate Value Iteration</h2>
+<h3 id="population-version">Population Version</h3>
+<p>Recall that the procedure for VI is:</p>
+<p><span class="math display">\[V_{k+1} \leftarrow T^{\pi}V_{k}\]</span> <span class="math display">\[V_{k+1} \leftarrow T^{*}V_{k}\]</span></p>
+<p>One way to develop its approximation version is to perform each step only approximately (i.e find <span class="math inline">\(V_{k+1} \in \mathbf{F}\)</span>) such that:</p>
+<p><span class="math display">\[V_{k+1} \approx TV_{k}\]</span></p>
+<p>Where <span class="math inline">\(T\)</span> can be <span class="math inline">\(T^*\)</span> or <span class="math inline">\(T^\pi\)</span>.</p>
+<p>We start from a <span class="math inline">\(V_0 \in \mathbf{F}\)</span>, and then at each iteration <span class="math inline">\(k\)</span> of AVI, we solve (i.e <span class="math inline">\(p\)</span> is often 2):</p>
+<p><span class="math display">\[V_{k+1} \leftarrow \underset{V \in \mathbf{F}}{\arg\min} \|V - TV_{k}\|^p_{p, \mu}\]</span></p>
+<p>At each iteration, <span class="math inline">\(TV_k\)</span> (our target) may not be within <span class="math inline">\(\mathbf{F}\)</span> anymore even though <span class="math inline">\(V_{k} \in \mathbf{F}\)</span>, we may have some approximation error at each iteration of AVI. The amount of error depends on how expressive <span class="math inline">\(\mathbf{F}\)</span> is and how much <span class="math inline">\(T\)</span> can push a function within <span class="math inline">\(\mathbf{F}\)</span> outside that space.</p>
+<h3 id="batch-version">Batch Version</h3>
+<p>The objective of AVI cannot be computed because:</p>
+<ul>
+<li><span class="math inline">\(\mu\)</span> is unknown</li>
+<li>Environment <span class="math inline">\(R, P\)</span> is often not available, thus <span class="math inline">\(TQ_k\)</span> cannot be computed.</li>
+</ul>
+<p>If we have samples in the form of <span class="math inline">\((X, A, R, X^{\prime})\)</span>, we can compute the unbiased sample of <span class="math inline">\(TQ_k\)</span>:</p>
+<p><span class="math display">\[\hat{T}^{\pi}Q_k = R + \gamma Q(X^{\prime}, A^{\prime})\]</span> <span class="math display">\[\hat{T}^{*} Q_k = R + \gamma \max_{a^{\prime} \in A} Q(X^{\prime}, a^{\prime}) \]</span></p>
+<p>Where <span class="math inline">\(A^{\prime} \sim \pi(\cdot | X^{\prime})\)</span></p>
+<p><br></p>
+<p><strong>The question is: can we replace <span class="math inline">\(TQ_k\)</span> with <span class="math inline">\(\hat{T}Q_k\)</span>?</strong></p>
+Given any <span class="math inline">\(Z = (X, A)\)</span>
+<span class="math display">\[\begin{aligned}
+E_{\hat{T}Q_k}[|Q(Z) - \hat{T}Q_k (Z)|^2 | Z] &amp;= E_{\hat{T}Q_k}[|Q(Z) - TQ_k (Z) + TQ_k (Z) - \hat{T}Q_k (Z)|^2 | Z]\\
+&amp;= E_{\hat{T}Q_k}[|Q(Z) - TQ_k (Z)|^2 | Z] + E_{\hat{T}Q_k}[|TQ_k (Z) - \hat{T}Q_k(Z)|^2 | Z] + 2 E_{\hat{T}Q_k}[(Q(Z) - TQ_k (Z))(TQ_k (Z) - \hat{T}Q_k (Z)) | Z]\\
+&amp;= E_{\hat{T}Q_k}[|Q(Z) - TQ_k (Z)|^2 | Z] + E_{\hat{T}Q_k}[|TQ_k (Z) - \hat{T}Q_k(Z)|^2 | Z]
+\end{aligned}\]</span>
+<p>Since <span class="math inline">\(Z \sim \mu\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+E_{\mu} [E_{\hat{T}Q_k}[|Q(Z) - TQ_k (Z)|^2 | Z] + E_{\hat{T}Q_k}[|TQ_k (Z) - \hat{T}Q_k(Z)|^2 | Z]] &amp;= E_{\mu, \hat{T}Q_k} [|Q(Z) - TQ_k (Z)|^2] + E_{\mu, \hat{T}Q_k} [|TQ_k (Z) - \hat{T}Q_k(Z)|^2]\\
+&amp;= \|Q(Z) - TQ_k (Z)\|^2_{2, \mu} + E_{\mu} [Var[\hat{T}Q_k (Z) | Z]]
+\end{aligned}\]</span>
+<p>Since the expectation of variance term does not depend on <span class="math inline">\(Q\)</span>, the solution to the surrogate objective is the same as the original objective:</p>
+<p><span class="math display">\[\underset{Q \in \mathbf{F}}{\arg\min} \; E_{\mu, \hat{T}Q_k}[|Q(Z) - \hat{T}Q_k (Z)|^2] = \underset{Q \in \mathbf{F}}{\arg\min} \; \|Q(Z) - TQ_k (Z)\|^2_{2, \mu}\]</span></p>
+<p>Similar to ERM, we do not know the environment dynamics <span class="math inline">\(R, P\)</span> and distribution <span class="math inline">\(\mu\)</span>. We can use samples and estimate the expectation:</p>
+<p><span class="math display">\[\frac{1}{N} \sum^{N}_{i=1} |Q(X_i, A_i) - \hat{T}Q_k (X_i, A_i)|^2 = \|Q - \hat{T}Q_k\|^2_{2, D_n}\]</span></p>
+<p><strong>This is the basis of DQN</strong>.</p>
+<h2 id="bellman-residual-minimization">Bellman Residual Minimization</h2>
+<h3 id="population-version-1">Population Version</h3>
+<h2 id="projected-bellman-error">Projected Bellman Error</h2>
+<h3 id="population-version-2">Population Version</h3>
+<h2 id="least-square-temporal-difference-learning">Least Square Temporal Difference Learning</h2>
+<h3 id="population-version-3">Population Version</h3>
 
       
     </div>
@@ -1387,13 +1450,13 @@ h_i = \max({\mathbf{w}^i}^T \mathbf{x}, 0) =
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">445k</span>
+    <span title="Symbols count total">453k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:44</span>
+    <span title="Reading time total">6:51</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

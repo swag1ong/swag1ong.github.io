@@ -252,7 +252,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-08-19 15:11:07" itemprop="dateModified" datetime="2021-08-19T15:11:07+08:00">2021-08-19</time>
+        <time title="Modified: 2021-08-24 19:53:34" itemprop="dateModified" datetime="2021-08-24T19:53:34+08:00">2021-08-24</time>
       </span>
 
   
@@ -314,7 +314,7 @@
 <li><a href="/2021/05/15/td/" title="Temporal Difference Learning">Temporal Difference Learning</a></li>
 <li><a href="/2021/05/16/sarsa/" title="SARSA">SARSA</a></li>
 <li><a href="/2021/05/16/q-learning/" title="Q Learning">Q Learning</a></li>
-<li><a href="/2021/06/12/vfa-1/" title="Value Function Approximation (1) (Under Construction)">Value Function Approximation (1) (Under Construction)</a></li>
+<li><a href="/2021/06/12/vfa-1/" title="Value Function Approximation (1)">Value Function Approximation (1)</a></li>
 <li><a href="/2021/07/13/vfa-2/" title="Value Function Approximation (2) (Under Construction)">Value Function Approximation (2) (Under Construction)</a></li>
 <li><a href="/2021/05/23/policy-gradient/" title="Policy Gradient (1)">Policy Gradient (1)</a></li>
 <li><a href="/2021/05/30/policy-gradient-2/" title="Policy Gradient (2)">Policy Gradient (2)</a></li>
@@ -781,7 +781,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/08/02/rnn/" class="post-title-link" itemprop="url">rnn</a>
+          <a href="/2021/08/02/rnn/" class="post-title-link" itemprop="url">RNN</a>
         </h2>
 
         <div class="post-meta-container">
@@ -799,7 +799,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-08-09 15:31:08" itemprop="dateModified" datetime="2021-08-09T15:31:08+08:00">2021-08-09</time>
+        <time title="Modified: 2021-08-24 20:00:16" itemprop="dateModified" datetime="2021-08-24T20:00:16+08:00">2021-08-24</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -871,64 +871,14 @@
 <li>The learned model <span class="math inline">\(f\)</span> is defined as transition from hidden units (input) <span class="math inline">\(h^{t - 1}\)</span> to <span class="math inline">\(h^{t}\)</span> (output) regardless the value of time <span class="math inline">\(t\)</span>. Thus, we can have one model for different lengths of sequences.</li>
 <li>The parameters <span class="math inline">\(\boldsymbol{\theta}\)</span> are shared.</li>
 </ol>
-<h2 id="forward-pass">Forward Pass</h2>
-<p><img src="/images/ML/rnn_3.png" width="600"></p>
-<p>In formulas, the forward pass for <strong>same output and input length</strong> RNN with <strong>tanh non-linearity and probability as prediction</strong> can be described as starting from <span class="math inline">\(\mathbf{h}^0\)</span>:</p>
-<p><span class="math display">\[\mathbf{a}^{t} = \mathbf{b} + W\mathbf{h}^{t-1} + U\mathbf{x}^{t}\]</span> <span class="math display">\[\mathbf{h}^t = \tanh (\mathbf{a}^t)\]</span> <span class="math display">\[\mathbf{o}^t = \mathbf{c} + V\mathbf{h}^t \]</span> <span class="math display">\[\hat{\mathbf{y}}^t = softmax(\mathbf{o}^t)\]</span></p>
-<ul>
-<li><span class="math inline">\(W\)</span> is the hidden to hidden weights that encodes information about past sequences.</li>
-<li><span class="math inline">\(V\)</span> is the hidden to output weights that is responsible for prediction using current hidden units.</li>
-<li><span class="math inline">\(U\)</span> is the input to hidden weights that is responsible for input parameterization.</li>
-<li><span class="math inline">\(\mathbf{b}\)</span> is the bias associated with <span class="math inline">\(W\)</span></li>
-<li><span class="math inline">\(\mathbf{c}\)</span> is the bias associated with <span class="math inline">\(V\)</span></li>
-</ul>
-<p>Then the multi-class cross entropy loss of the sequence of <span class="math inline">\(\{(\mathbf{x}^{1}, \mathbf{y}^{1}) ,...., (\mathbf{x}^{\tau}, \mathbf{y}^{\tau})\}\)</span> (<span class="math inline">\(\mathbf{y}\)</span> is encoded as one hot vector) is just the sum of per timestep loss:</p>
-<span class="math display">\[\begin{aligned}
-L(\{\mathbf{y}^{1}, ..., \mathbf{y}^{\tau}\}, \; \{\mathbf{\hat{y}}^{1}, ..., \mathbf{\hat{y}}^{\tau}\}) &amp;= \sum^{\tau}_{i=1} L(\mathbf{y}^i, \; \mathbf{\hat{y}}^{i})\\
-&amp;= -\sum^{\tau}_{i=1} \sum_{k} y_k \log (\hat{y}^{i}_{k})
-\end{aligned}\]</span>
-<p>Where <span class="math inline">\(\hat{y}^{i}_{k}\)</span> is the <span class="math inline">\(k\)</span>th element of <span class="math inline">\(\mathbf{\hat{y}}^{i}\)</span>. Since we are using one-hot encoding, we can also write it as:</p>
-<p><span class="math display">\[L(\{\mathbf{y}^{1}, ..., \mathbf{y}^{\tau}\}, \; \{\mathbf{\hat{y}}^{1}, ..., \mathbf{\hat{y}}^{\tau}\}) = -\sum^{\tau}_{i=1} \log (P_{\hat{Y}}(y^{i} | \{\mathbf{x}^{1}, ..., \mathbf{x}^{\tau}\}))\]</span></p>
-<p>Where <span class="math inline">\(P_{\hat{Y}}(y^{i} | \{\mathbf{x}^{1}, ..., \mathbf{x}^{\tau}\})\)</span> is the value of the target position (ie. the position of <span class="math inline">\(\mathbf{y}^{i}\)</span> with 1) in <span class="math inline">\(\mathbf{\hat{y}}\)</span>.</p>
-<h2 id="teacher-forcing-and-networks-with-output-recurrence">Teacher Forcing and Networks with Output Recurrence</h2>
-<p>RNNs are expensive to train. The runtime is <span class="math inline">\(O(\tau)\)</span> and cannot be reduced by parallelization because the forward propagation graph is inherently sequential (i.e calculation of <span class="math inline">\(\mathbf{h}^t\)</span> depends on <span class="math inline">\(\mathbf{h}^{t-1}\)</span>, the total loss is sum of per-timestep loss and per-timestep loss has to calculate in order); each time step may only be computed after the previous one. States computed in the forward pass must be stored until they are reused during the backward pass, so the memory cost is also <span class="math inline">\(O(\tau)\)</span>.</p>
-<p>To reduce computational and memory cost, one way is to remove the hidden to hidden recurrence by a target to hidden recurrence. Thus, for any loss function based on comparing the prediction at time <span class="math inline">\(t\)</span> to the training target at time <span class="math inline">\(t\)</span>, all time steps are decoupled and can be parallelized (because the loss calculation at each time step <span class="math inline">\(t\)</span> is no longer dependent on <span class="math inline">\(\mathbf{h}^{t-1}\)</span>, it only depends on <span class="math inline">\(\mathbf{y}^{t-1}\)</span>).</p>
-<p>This technique is called <code>teacher forcing</code>. Teacher forcing is a procedure that emerges from the maximum likelihood criterion, in which during training the model receives the ground truth output <span class="math inline">\(\mathbf{y}^{t-1}\)</span> as input at time <span class="math inline">\(t\)</span>. <strong>It can be applied to train models that have connections from the output at one time step to the value computed in the next time step</strong>.</p>
-<p>The disadvantage of strict teacher forcing arises if the network is going to be later used in an open-loop model, with the network outputs fed back as input. In this case, there is a gap between training and testing. One approach to collapse this gap is to mitigate the gap between the inputs seen at train time and the inputs seen at test time randomly chooses to use generated values or actual data values as input.</p>
-<p><img src="/images/ML/rnn_4.png" width="600"></p>
-<h2 id="backward-pass">Backward Pass</h2>
-<p>The backward propagation for RNN is called <code>back propagation through time</code>:</p>
-<p>Assume we have RNN structure as forward pass (<strong>gradients are reshaped to column vectors, <span class="math inline">\(\nabla_{\mathbf{v}} L = (\frac{\partial L}{\partial \mathbf{v}})^T\)</span></strong>). Then, for any time step <span class="math inline">\(t\)</span> <span class="math display">\[\frac{\partial L}{\partial L^t} = 1\]</span></p>
-<p><span class="math display">\[\frac{\partial L}{\partial L^t} \frac{\partial L^t}{\partial \mathbf{\hat{y}}^t} \frac{\partial \mathbf{\hat{y}}^t}{o^t_i} = \hat{y}^t_i - y^t_i\]</span></p>
-<p>Then the gradient for hidden units in last time step <span class="math inline">\(\tau\)</span> is:</p>
-<p><span class="math display">\[(\frac{\partial L}{\partial \mathbf{o}^t} \frac{\partial \mathbf{o}^t}{\partial \mathbf{h}^t})^T = V^T \frac{\partial L}{\partial \mathbf{o}^t}\]</span></p>
-<p>Work our way backwards for <span class="math inline">\(t = 1, ...., \tau - 1\)</span>, since <span class="math inline">\(\mathbf{h}^t\)</span> is descendants of both <span class="math inline">\(\mathbf{o}^t\)</span> and <span class="math inline">\(\mathbf{h}^{t+1}\)</span>. We have:</p>
-<p><span class="math display">\[(\frac{\partial L}{\partial \mathbf{h}^t})^T = (\frac{\partial L}{\partial \mathbf{o}^t}\frac{\partial \mathbf{o}^t}{\partial \mathbf{h}^t})^T + (\frac{\partial L}{\partial \mathbf{h}^{t+1}}\frac{\partial \mathbf{h}^{t+1}}{\partial \mathbf{h}^t})^T\]</span></p>
-<p>Since <span class="math inline">\(\frac{\partial \tanh (\mathbf{a}^{t+1})}{\partial \mathbf{a}^{t+1}}\)</span> is a diagonal matrix with <span class="math inline">\(1 - \tanh (h^{t+1}_i)^2\)</span> terms in the diagonal, we can denoted it as:</p>
-<span class="math display">\[\begin{aligned}
-\frac{\partial \tanh (\mathbf{a}^{t+1})}{\partial \mathbf{a}^{t+1}} &amp;= diag (1 - \tanh (\mathbf{h}^{t+1})^2)\\
-\end{aligned}\]</span>
-<p><span class="math display">\[\implies (\frac{\partial \mathbf{h}^{t+1}}{\partial \mathbf{h}^{t+1}})^T = W^T diag (1 - \tanh (\mathbf{h}^{t+1})^2)\]</span></p>
-<p>Then:</p>
-<p><span class="math display">\[(\frac{\partial L}{\partial \mathbf{h}^t})^T = V^T (\frac{\partial L}{\partial \mathbf{o}^t})^T + W^T diag (1 - \tanh (\mathbf{h}^{t+1})^2)(\frac{\partial L}{\partial \mathbf{h}^{t+1}})^T\]</span></p>
-<p>Recall that in RNN, all parameters are shared, so <span class="math inline">\(\frac{\partial L}{\partial W}\)</span> represents the contribution of <span class="math inline">\(W\)</span> to the value of <span class="math inline">\(L\)</span> due to all edges in the computational graph. To resolve the ambiguity, we index <span class="math inline">\(W\)</span> by time <span class="math inline">\(W^t\)</span> where <span class="math inline">\(W^t\)</span> is copy of <span class="math inline">\(W\)</span> and only used in time step <span class="math inline">\(t\)</span>. Thus, we can use <span class="math inline">\(\frac{\partial f}{\partial W^t}\)</span> to denote the contribution of the weights to the gradient at time step t:</p>
-<p><span class="math display">\[(\frac{\partial L}{\partial \mathbf{c}})^T = \sum^{\tau}_{t=1} I (\frac{\partial L}{\partial \mathbf{o}^t})^T = \sum^{\tau}_{t=1} (\frac{\partial L}{\partial \mathbf{o}^t})^T\]</span> <span class="math display">\[(\frac{\partial L}{\partial \mathbf{b}})^T = \sum^{\tau}_{t=1} diag (1 - \tanh (\mathbf{h}^{t})^2) I (\frac{\partial L}{\partial \mathbf{h}^{t}})^T = \sum^{\tau}_{t=1} diag (1 - \tanh (\mathbf{h}^{t})^2) (\frac{\partial L}{\partial \mathbf{h}^{t}})^T \]</span> <span class="math display">\[\frac{\partial L}{\partial V}= \sum^{\tau}_{t=1} (\frac{\partial L}{\partial \mathbf{o}^t})^T (\mathbf{h}^t)^T\]</span> <span class="math display">\[\frac{\partial L}{\partial W}= \sum^{\tau}_{t=1}  diag (1 - \tanh (\mathbf{h}^{t})^2) (\frac{\partial L}{\partial \mathbf{h}^{t}})^T (\mathbf{h}^{t-1})^T\]</span> <span class="math display">\[\frac{\partial L}{\partial U}= \sum^{\tau}_{t=1}  diag (1 - \tanh (\mathbf{h}^{t})^2) (\frac{\partial L}{\partial \mathbf{h}^{t}})^T (\mathbf{x}^{t})^T\]</span></p>
-<h2 id="bidirectional-rnns">Bidirectional RNNs</h2>
-<p>The RNN structures so far only captures information from the past (i.e output at time step <span class="math inline">\(t\)</span> is calculated using <span class="math inline">\((\mathbf{x}^1, \mathbf{y}^1) , ...., (\mathbf{x}^{t-1}, \mathbf{y}^{t-1}), \mathbf{x}^t\)</span>). It is sometimes useful to have another RNN that moves from the back of the sequence.</p>
-<p><img src="/images/ML/rnn_5.png" width="600"></p>
-<ul>
-<li><span class="math inline">\(\mathbf{h}^t\)</span> is the hidden units of sub-RNN that moves forward through time.</li>
-<li><span class="math inline">\(\mathbf{g}^t\)</span> is the hidden units of sub-RNN that moves backward through time.</li>
-<li><span class="math inline">\(\mathbf{o}^t\)</span> is calculated using both <span class="math inline">\(\mathbf{h}^t\)</span>, <span class="math inline">\(\mathbf{g}^t\)</span> but is more sensitive to input values around <span class="math inline">\(t\)</span> without having to specify a fixed-size window around <span class="math inline">\(t\)</span>.</li>
-</ul>
-<h2 id="encoder-decoder">Encoder-Decoder</h2>
-<p><img src="/images/ML/rnn_6.png" width="600"> <img src="/images/ML/rnn_7.png" width="600"></p>
-<p>We know that we can use RNN to encode inputs to a fixed length vector, and we know that we can map a fixed-size vector to a sequence. Previously, we have one output corresponding to one input, the input sequence and the output sequence have same length. Using <code>encoder-decoder</code> or <code>sequence to sequence</code> structure, we can train an <code>encoder</code> RNN to process the input sequence <span class="math inline">\(\mathbf{x} = (\mathbf{x}^1, ...., \mathbf{x}^{n_x})\)</span> and emits a <code>context vector</code> <span class="math inline">\(C\)</span>, then this context vector <span class="math inline">\(C\)</span> is mapped to an output sequence <span class="math inline">\(\mathbf{y} = (\mathbf{y}^1, ....., \mathbf{y}^{n_y})\)</span> which is not necessarily of the same length using a <code>decoder</code> RNN.</p>
-<p>In the sequence to sequence structure, the two RNNs are trained jointly to maximize the average of log conditional probability <span class="math inline">\(\log P_{\mathbf{Y}}(\mathbf{y}^{1} ,...., \mathbf{y}^{n_y} | \; \mathbf{x}^1 , ...., \mathbf{x}^{n_x})\)</span> or minimize the cross entropy over all sequence in the training set. The <strong>last state <span class="math inline">\(\mathbf{h}_{n_x}\)</span> of the encoder RNN</strong> is typically used as a representation <span class="math inline">\(C\)</span> of the input sequence that is provided as input to the decoder RNN.</p>
-<p>One clear limitation of this architecture is when the context <span class="math inline">\(C\)</span> output by the encoder RNN has a dimension that is too small to properly summarize a long sequence. Thus, rather than a fixed length of context vector, a variable-length sequence should be used which is the result of <code>attention</code> that learns to associate elements of the sequence <span class="math inline">\(C\)</span> to elements of the output sequence.</p>
-<h2 id="gated-rnn">Gated RNN</h2>
-<p><code>Gated RNN</code> includes <code>long short-term memory</code> and networks based on the <code>gated recurrent unit</code>. Gated RNNs are based on the idea of creating paths through time that have derivatives that neither banish nor explode. Gated RNNs did this with connection weights that may change at each time step.</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/08/02/rnn/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1563,13 +1513,13 @@ u_t &amp;= \lim_{p \rightarrow \infty} (v_t)^{\frac{1}{p}}\\
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">445k</span>
+    <span title="Symbols count total">453k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:44</span>
+    <span title="Reading time total">6:51</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

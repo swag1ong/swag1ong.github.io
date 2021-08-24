@@ -29,8 +29,9 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/ML/svm_1.png">
 <meta property="og:image" content="http://example.com/images/ML/svm_2.png">
+<meta property="og:image" content="http://example.com/images/ML/svm_3.png">
 <meta property="article:published_time" content="2021-07-19T08:32:20.000Z">
-<meta property="article:modified_time" content="2021-08-21T13:08:13.719Z">
+<meta property="article:modified_time" content="2021-08-22T08:08:46.946Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta property="article:tag" content="Machine Learning">
 <meta name="twitter:card" content="summary">
@@ -152,7 +153,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#support-vector-machine"><span class="nav-number">1.</span> <span class="nav-text">Support Vector Machine</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#distance-to-plane"><span class="nav-number">1.1.</span> <span class="nav-text">Distance to Plane</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#goal"><span class="nav-number">1.2.</span> <span class="nav-text">Goal</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ref"><span class="nav-number">2.</span> <span class="nav-text">Ref</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#support-vector-machine"><span class="nav-number">1.</span> <span class="nav-text">Support Vector Machine</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#distance-to-plane"><span class="nav-number">1.1.</span> <span class="nav-text">Distance to Plane</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#goal"><span class="nav-number">1.2.</span> <span class="nav-text">Goal</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#soft-margin-svm"><span class="nav-number">1.3.</span> <span class="nav-text">Soft Margin SVM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#slack-variables"><span class="nav-number">1.3.1.</span> <span class="nav-text">Slack Variables</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#primal-problem"><span class="nav-number">1.3.2.</span> <span class="nav-text">Primal Problem</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ref"><span class="nav-number">2.</span> <span class="nav-text">Ref</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -262,7 +263,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-08-21 21:08:13" itemprop="dateModified" datetime="2021-08-21T21:08:13+08:00">2021-08-21</time>
+        <time title="Modified: 2021-08-22 16:08:46" itemprop="dateModified" datetime="2021-08-22T16:08:46+08:00">2021-08-22</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -289,14 +290,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>3.6k</span>
+      <span>5.1k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
+      <span>5 mins.</span>
     </span>
 </div>
 
@@ -346,16 +347,33 @@
 <p><span class="math display">\[\implies r = \frac{1}{\|\mathbf{w}\|}\]</span></p>
 <p>Then, we can formulate our objective as:</p>
 <span class="math display">\[\begin{aligned}
-&amp;\max_{\mathbf{w}} \quad &amp;&amp; \frac{1}{\|\mathbf{w}\|_2}\\
+&amp;\max_{\mathbf{w}, b} \quad &amp;&amp; \frac{1}{\|\mathbf{w}\|_2}\\
 &amp;\;\text{s.t} \quad &amp;&amp;y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq 1 \quad \quad \forall i=1, ...., N
 \end{aligned}\]</span>
 <p>Which is equivalent to:</p>
 <span class="math display">\[\begin{aligned}
-&amp;\min_{\mathbf{w}} \quad &amp;&amp; \frac{1}{2}\|\mathbf{w}\|^2_2\\
+&amp;\min_{\mathbf{w}, b} \quad &amp;&amp; \frac{1}{2}\|\mathbf{w}\|^2_2\\
 &amp;\;\text{s.t} \quad &amp;&amp;y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq 1 \quad \quad \forall i=1, ...., N
 \end{aligned}\]</span>
 <p><br></p>
 <p><img src='/images/ML/svm_2.png' width="600"></p>
+<h2 id="soft-margin-svm">Soft Margin SVM</h2>
+<h3 id="slack-variables">Slack Variables</h3>
+<p>Notice, in the above formulation, we have hard constraints on the margins which do not allow misclassification of points. However, in real world, data points are rarely linear separable and there will be outliers in the dataset, we may wish to allow some examples to be on the wrong side of the hyperplane or to have margin less than 1 .</p>
+<p><img src='/images/ML/svm_3.png' width="600"></p>
+<p>To resolve this problem, we can introduce slack variables one for each data point to relax the hard constraints:</p>
+<p><span class="math display">\[y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq 1 - \xi_i\]</span> <span class="math display">\[\quad\xi_i \geq 0, \; \; \forall i=1, ...., N\]</span></p>
+<p>To encourage correct classification of the samples, we add <span class="math inline">\(\xi_i\)</span> to the objective:</p>
+<span class="math display">\[\begin{aligned}
+&amp;\min_{\mathbf{w}, b, \xi} \quad &amp;&amp; \frac{1}{2}\|\mathbf{w}\|^2_2 + C\sum^{N}_{n=1} \xi_i\\
+&amp;\;\text{s.t} \quad &amp;&amp;y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq 1 - \xi_i  \quad &amp;&amp;&amp;\forall i=1, ...., N\\
+&amp; &amp;&amp; \xi_i \geq 0, &amp;&amp;&amp;\forall i=1, ...., N
+\end{aligned}\]</span>
+<p>Thus, sample points are now permitted to have margin less than 1, and if an example <span class="math inline">\(\mathbf{x}_i\)</span> has slack variable greater than 0, we would have penalty in the objective function <span class="math inline">\(C\xi_i\)</span>. The parameter <span class="math inline">\(C\)</span> controls the relative weighting between the twin goals of making the <span class="math inline">\(\|\mathbf{w}\|\)</span> small and of ensuring that most examples have functional margin at least 1.</p>
+<p><br></p>
+<h3 id="primal-problem">Primal Problem</h3>
+<p>Using <strong>Lagrange Multiplier</strong>, we can transform the constrained problem into an unconstrained problem:</p>
+<p><span class="math display">\[\min_{\mathbf{w}, b, \xi} \frac{1}{2}\|\mathbf{w}\|^2_2 + C\sum^{N}_{n=1} \xi_i - \sum^N_{i=1} \alpha_i [y_i (\mathbf{w}^T \mathbf{x}_i + b) - 1 + \xi_i] - \sum^{N}_{i=1} \eta_i \xi_i\]</span></p>
 <h1 id="ref">Ref</h1>
 <p>https://www.ccs.neu.edu/home/vip/teach/MLcourse/6_SVM_kernels/lecture_notes/svm/svm.pdf</p>
 <p>http://www.cs.cmu.edu/~guestrin/Class/10701-S06/Slides/svms-s06.pdf</p>
@@ -434,13 +452,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">445k</span>
+    <span title="Symbols count total">453k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:44</span>
+    <span title="Reading time total">6:51</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

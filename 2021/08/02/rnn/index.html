@@ -22,7 +22,7 @@
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;example.com&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
 <meta name="description" content="Recurrent Neural Network Introduction Consider the recurrent equation: \[\mathbf{s}^{t} &#x3D; f(\mathbf{s}^{t-1}; \; \boldsymbol{\theta})\] For a finite time step \(\tau\), this equation can be unfold">
 <meta property="og:type" content="article">
-<meta property="og:title" content="rnn">
+<meta property="og:title" content="RNN">
 <meta property="og:url" content="http://example.com/2021/08/02/rnn/index.html">
 <meta property="og:site_name" content="GoGoGogo!">
 <meta property="og:description" content="Recurrent Neural Network Introduction Consider the recurrent equation: \[\mathbf{s}^{t} &#x3D; f(\mathbf{s}^{t-1}; \; \boldsymbol{\theta})\] For a finite time step \(\tau\), this equation can be unfold">
@@ -35,7 +35,7 @@
 <meta property="og:image" content="http://example.com/images/ML/rnn_6.png">
 <meta property="og:image" content="http://example.com/images/ML/rnn_7.png">
 <meta property="article:published_time" content="2021-08-02T05:09:55.000Z">
-<meta property="article:modified_time" content="2021-08-09T07:31:08.792Z">
+<meta property="article:modified_time" content="2021-08-24T12:00:16.066Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta property="article:tag" content="Deep Learning">
 <meta name="twitter:card" content="summary">
@@ -46,10 +46,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;08&#x2F;02&#x2F;rnn&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;08&#x2F;02&#x2F;rnn&#x2F;&quot;,&quot;title&quot;:&quot;rnn&quot;}</script>
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;http:&#x2F;&#x2F;example.com&#x2F;2021&#x2F;08&#x2F;02&#x2F;rnn&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;08&#x2F;02&#x2F;rnn&#x2F;&quot;,&quot;title&quot;:&quot;RNN&quot;}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
-<title>rnn | GoGoGogo!</title><script src="/js/config.js"></script>
+<title>RNN | GoGoGogo!</title><script src="/js/config.js"></script>
   
 
   <script src="/js/third-party/analytics/baidu-analytics.js"></script>
@@ -157,7 +157,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#recurrent-neural-network"><span class="nav-number">1.</span> <span class="nav-text">Recurrent Neural Network</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#introduction"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#forward-pass"><span class="nav-number">1.2.</span> <span class="nav-text">Forward Pass</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#teacher-forcing-and-networks-with-output-recurrence"><span class="nav-number">1.3.</span> <span class="nav-text">Teacher Forcing and Networks with Output Recurrence</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#backward-pass"><span class="nav-number">1.4.</span> <span class="nav-text">Backward Pass</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bidirectional-rnns"><span class="nav-number">1.5.</span> <span class="nav-text">Bidirectional RNNs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#encoder-decoder"><span class="nav-number">1.6.</span> <span class="nav-text">Encoder-Decoder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gated-rnn"><span class="nav-number">1.7.</span> <span class="nav-text">Gated RNN</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#recurrent-neural-network"><span class="nav-number">1.</span> <span class="nav-text">Recurrent Neural Network</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#introduction"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#forward-pass"><span class="nav-number">1.2.</span> <span class="nav-text">Forward Pass</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#teacher-forcing-and-networks-with-output-recurrence"><span class="nav-number">1.3.</span> <span class="nav-text">Teacher Forcing and Networks with Output Recurrence</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#backward-pass"><span class="nav-number">1.4.</span> <span class="nav-text">Backward Pass</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bidirectional-rnns"><span class="nav-number">1.5.</span> <span class="nav-text">Bidirectional RNNs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#encoder-decoder"><span class="nav-number">1.6.</span> <span class="nav-text">Encoder-Decoder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gated-rnn"><span class="nav-number">1.7.</span> <span class="nav-text">Gated RNN</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lstm"><span class="nav-number">1.7.1.</span> <span class="nav-text">LSTM</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -249,7 +249,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          rnn
+          RNN
         </h1>
 
         <div class="post-meta-container">
@@ -267,7 +267,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-08-09 15:31:08" itemprop="dateModified" datetime="2021-08-09T15:31:08+08:00">2021-08-09</time>
+        <time title="Modified: 2021-08-24 20:00:16" itemprop="dateModified" datetime="2021-08-24T20:00:16+08:00">2021-08-24</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -339,6 +339,7 @@
 <li>The learned model <span class="math inline">\(f\)</span> is defined as transition from hidden units (input) <span class="math inline">\(h^{t - 1}\)</span> to <span class="math inline">\(h^{t}\)</span> (output) regardless the value of time <span class="math inline">\(t\)</span>. Thus, we can have one model for different lengths of sequences.</li>
 <li>The parameters <span class="math inline">\(\boldsymbol{\theta}\)</span> are shared.</li>
 </ol>
+<span id="more"></span>
 <h2 id="forward-pass">Forward Pass</h2>
 <p><img src="/images/ML/rnn_3.png" width="600"></p>
 <p>In formulas, the forward pass for <strong>same output and input length</strong> RNN with <strong>tanh non-linearity and probability as prediction</strong> can be described as starting from <span class="math inline">\(\mathbf{h}^0\)</span>:</p>
@@ -396,6 +397,7 @@ L(\{\mathbf{y}^{1}, ..., \mathbf{y}^{\tau}\}, \; \{\mathbf{\hat{y}}^{1}, ..., \m
 <p>One clear limitation of this architecture is when the context <span class="math inline">\(C\)</span> output by the encoder RNN has a dimension that is too small to properly summarize a long sequence. Thus, rather than a fixed length of context vector, a variable-length sequence should be used which is the result of <code>attention</code> that learns to associate elements of the sequence <span class="math inline">\(C\)</span> to elements of the output sequence.</p>
 <h2 id="gated-rnn">Gated RNN</h2>
 <p><code>Gated RNN</code> includes <code>long short-term memory</code> and networks based on the <code>gated recurrent unit</code>. Gated RNNs are based on the idea of creating paths through time that have derivatives that neither banish nor explode. Gated RNNs did this with connection weights that may change at each time step.</p>
+<h3 id="lstm">LSTM</h3>
 
     </div>
 
@@ -471,13 +473,13 @@ L(\{\mathbf{y}^{1}, ..., \mathbf{y}^{\tau}\}, \; \{\mathbf{\hat{y}}^{1}, ..., \m
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">445k</span>
+    <span title="Symbols count total">453k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:44</span>
+    <span title="Reading time total">6:51</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
