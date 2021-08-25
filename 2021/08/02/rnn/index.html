@@ -34,8 +34,12 @@
 <meta property="og:image" content="http://example.com/images/ML/rnn_5.png">
 <meta property="og:image" content="http://example.com/images/ML/rnn_6.png">
 <meta property="og:image" content="http://example.com/images/ML/rnn_7.png">
+<meta property="og:image" content="http://example.com/images/ML/lstm_1.png">
+<meta property="og:image" content="http://example.com/images/ML/lstm_2.png">
+<meta property="og:image" content="http://example.com/images/ML/gru_1.png">
+<meta property="og:image" content="http://example.com/images/ML/gru_2.png">
 <meta property="article:published_time" content="2021-08-02T05:09:55.000Z">
-<meta property="article:modified_time" content="2021-08-24T12:00:16.066Z">
+<meta property="article:modified_time" content="2021-08-25T06:17:31.306Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta property="article:tag" content="Deep Learning">
 <meta name="twitter:card" content="summary">
@@ -157,7 +161,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#recurrent-neural-network"><span class="nav-number">1.</span> <span class="nav-text">Recurrent Neural Network</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#introduction"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#forward-pass"><span class="nav-number">1.2.</span> <span class="nav-text">Forward Pass</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#teacher-forcing-and-networks-with-output-recurrence"><span class="nav-number">1.3.</span> <span class="nav-text">Teacher Forcing and Networks with Output Recurrence</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#backward-pass"><span class="nav-number">1.4.</span> <span class="nav-text">Backward Pass</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bidirectional-rnns"><span class="nav-number">1.5.</span> <span class="nav-text">Bidirectional RNNs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#encoder-decoder"><span class="nav-number">1.6.</span> <span class="nav-text">Encoder-Decoder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gated-rnn"><span class="nav-number">1.7.</span> <span class="nav-text">Gated RNN</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lstm"><span class="nav-number">1.7.1.</span> <span class="nav-text">LSTM</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#recurrent-neural-network"><span class="nav-number">1.</span> <span class="nav-text">Recurrent Neural Network</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#introduction"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#forward-pass"><span class="nav-number">1.2.</span> <span class="nav-text">Forward Pass</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#teacher-forcing-and-networks-with-output-recurrence"><span class="nav-number">1.3.</span> <span class="nav-text">Teacher Forcing and Networks with Output Recurrence</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#backward-pass"><span class="nav-number">1.4.</span> <span class="nav-text">Backward Pass</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bidirectional-rnns"><span class="nav-number">1.5.</span> <span class="nav-text">Bidirectional RNNs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#encoder-decoder"><span class="nav-number">1.6.</span> <span class="nav-text">Encoder-Decoder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gated-rnn"><span class="nav-number">1.7.</span> <span class="nav-text">Gated RNN</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lstm"><span class="nav-number">1.7.1.</span> <span class="nav-text">LSTM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gru"><span class="nav-number">1.7.2.</span> <span class="nav-text">GRU</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ref"><span class="nav-number">2.</span> <span class="nav-text">Ref</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -267,7 +271,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-08-24 20:00:16" itemprop="dateModified" datetime="2021-08-24T20:00:16+08:00">2021-08-24</time>
+        <time title="Modified: 2021-08-25 14:17:31" itemprop="dateModified" datetime="2021-08-25T14:17:31+08:00">2021-08-25</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -298,14 +302,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>9.4k</span>
+      <span>13k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>9 mins.</span>
+      <span>11 mins.</span>
     </span>
 </div>
 
@@ -398,6 +402,47 @@ L(\{\mathbf{y}^{1}, ..., \mathbf{y}^{\tau}\}, \; \{\mathbf{\hat{y}}^{1}, ..., \m
 <h2 id="gated-rnn">Gated RNN</h2>
 <p><code>Gated RNN</code> includes <code>long short-term memory</code> and networks based on the <code>gated recurrent unit</code>. Gated RNNs are based on the idea of creating paths through time that have derivatives that neither banish nor explode. Gated RNNs did this with connection weights that may change at each time step.</p>
 <h3 id="lstm">LSTM</h3>
+<p>Instead of a unit that simply applies an element wise linearity to the affine transformation of inputs and recurrent units, LSTM recurrent networks have <strong>LSTM cells</strong> that have an internal recurrence in addition to the outer recurrence of the RNN. Each cell has more parameters and a system of gating units that controls the flow of information. The most important component is the state unit <span class="math inline">\(\mathbf{c}^{(t)}_i\)</span> that is a linear function.</p>
+<p>For each timestep <span class="math inline">\(t\)</span>:</p>
+<p><span class="math display">\[\mathbf{z} = \tanh (W * [\mathbf{x}^t, \mathbf{h}^{t-1}] + \mathbf{b})\]</span></p>
+<p><span class="math display">\[\mathbf{z}^i = \sigma(W^i * [\mathbf{x}^t, \mathbf{h}^{t-1}] + \mathbf{b}_i)\]</span></p>
+<p><span class="math display">\[\mathbf{z}^f = \sigma(W^f * [\mathbf{x}^t, \mathbf{h}^{t-1}] + \mathbf{b}_f)\]</span></p>
+<p><span class="math display">\[\mathbf{z}^o = \sigma(W^o * [\mathbf{x}^t, \mathbf{h}^{t-1}] + \mathbf{b}_o)\]</span></p>
+<p>Where <span class="math inline">\((W^i, \mathbf{b}_i), (W^f, \mathbf{b}_f), (W^o, \mathbf{b}_o)\)</span> are the parameters associated with input gate, forget gate, output gate respectively. Notice each gate is a value between <span class="math inline">\([0, 1]\)</span>. The internal states is computed as:</p>
+<p><span class="math display">\[\mathbf{c}^{t} = \mathbf{z}^f \odot \mathbf{c}^{t-1} + \mathbf{z}^i \odot \mathbf{z}\]</span></p>
+<p>We can see that if <span class="math inline">\(\mathbf{z}^f = 1\)</span> and <span class="math inline">\(\mathbf{z}^i = 1\)</span>, we transfer the current and past information directly to next layer without any transformation.</p>
+<p>Then:</p>
+<p><span class="math display">\[\mathbf{h}^t = \mathbf{z}^o \odot \tanh (\mathbf{c}^t)\]</span></p>
+<p><span class="math display">\[\mathbf{y}^t = \sigma (V\mathbf{h}^t + \mathbf{b}_y)\]</span></p>
+<p><img src="/images/ML/lstm_1.png" width="600"> <img src="/images/ML/lstm_2.png" width="600"></p>
+<p>In LSTMs, you have the state <span class="math inline">\(\mathbf{c}^t\)</span>. The derivative there is of the form:</p>
+<p><span class="math display">\[\frac{\partial \mathbf{c}^{t^{\prime}}}{\partial \mathbf{c}^{t}} = \prod^{t^{\prime} - t}_{k=1} \sigma (\mathbf{v}_{t+k})\]</span></p>
+<p>Where <span class="math inline">\(\mathbf{v}_{t+k}\)</span> is the input to the forget gate. We can see that compare with the <span class="math inline">\(\frac{\partial \mathbf{h}^{t^{\prime}}}{\partial \mathbf{h}^{t}}\)</span> in RNN, we do not have <span class="math inline">\(W^T\)</span> term. Thus, we have somewhat solved the vanishing gradient problem (at least one path the gradient is not vanishing). However, we still have vanishing gradient problem in LSTM, but not as much as RNN (no gradient of sigmoid or multiplication of <span class="math inline">\(W\)</span>).</p>
+<h3 id="gru">GRU</h3>
+<p>The main difference with the LSTM is that a single gating unit simultaneously controls the forgetting factor and the decision to update the state unit so we have less parameters.</p>
+<p>The input and output to GRU is same as RNN</p>
+<p><img src="/images/ML/gru_1.png" width="600"></p>
+<p>GRU has two gates at each timestep <span class="math inline">\(t\)</span>:</p>
+<ul>
+<li><p><strong>Reset gate</strong> <span class="math inline">\(\mathbf{r}^{t}\)</span>: <span class="math display">\[\mathbf{r}^{t} = \sigma(W^r * [\mathbf{x}^t, \mathbf{h}^{t-1}] + \mathbf{b}_r)\]</span></p></li>
+<li><p><strong>Update gate</strong> <span class="math inline">\(\mathbf{u}^t\)</span>: <span class="math display">\[\mathbf{u}^t = \sigma(W^u * [\mathbf{x}^t, \mathbf{h}^{t-1}] + \mathbf{b}_u)\]</span></p></li>
+</ul>
+<p>The hidden unit update equation is:</p>
+<p><span class="math display">\[\mathbf{h}^{t-1, \prime} = h^{t-1} \odot \mathbf{r}\]</span></p>
+<p><span class="math display">\[\mathbf{h}^{t, \prime} = \tanh(W * [\mathbf{h}^{t-1, \prime}, \mathbf{x}_t] + \mathbf{b})\]</span></p>
+<p><span class="math display">\[\mathbf{h}^{t} = \mathbf{u}^t \odot \mathbf{h}^{t-1} + (1 - \mathbf{u}^t) \odot \mathbf{h}^{t, \prime}\]</span></p>
+<p>Where <span class="math inline">\(\mathbf{h}^{t, \prime}\)</span> is the candidate at timestep <span class="math inline">\(t\)</span> that has some new information <span class="math inline">\(\mathbf{x}^t\)</span> and old information <span class="math inline">\(\mathbf{h}^{t-1, \prime}\)</span>. When <span class="math inline">\(\mathbf{u}_t = 1\)</span> we simply keep the old information and the new information <span class="math inline">\(\mathbf{x}_t\)</span> is ignored. In contrast, whenever <span class="math inline">\(Z_t\)</span> is close to 0, the candidate is used inplace.</p>
+<p>In summary:</p>
+<ul>
+<li>Reset gates help capture short-term dependencies in sequences (by integrating part of past information with new information to produce the candidate).</li>
+<li>Update gates help capture long-term dependencies in sequences.</li>
+</ul>
+<p><img src="/images/ML/gru_2.png" width="600"></p>
+<h1 id="ref">Ref</h1>
+<p>https://zhuanlan.zhihu.com/p/32085405</p>
+<p>https://zhuanlan.zhihu.com/p/32481747</p>
+<p>https://stats.stackexchange.com/questions/185639/how-does-lstm-prevent-the-vanishing-gradient-problem</p>
+<p>https://d2l.ai/chapter_recurrent-modern/gru.html</p>
 
     </div>
 
@@ -473,13 +518,13 @@ L(\{\mathbf{y}^{1}, ..., \mathbf{y}^{\tau}\}, \; \{\mathbf{\hat{y}}^{1}, ..., \m
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">453k</span>
+    <span title="Symbols count total">456k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:51</span>
+    <span title="Reading time total">6:54</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
