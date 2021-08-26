@@ -623,7 +623,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-08-24 19:52:07" itemprop="dateModified" datetime="2021-08-24T19:52:07+08:00">2021-08-24</time>
+        <time title="Modified: 2021-08-26 16:03:09" itemprop="dateModified" datetime="2021-08-26T16:03:09+08:00">2021-08-26</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -654,14 +654,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>2.5k</span>
+      <span>5.8k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
+      <span>5 mins.</span>
     </span>
 </div>
 
@@ -712,7 +712,49 @@ E_{\mu} [E_{\hat{T}Q_k}[|Q(Z) - TQ_k (Z)|^2 | Z] + E_{\hat{T}Q_k}[|TQ_k (Z) - \h
 <p><strong>This is the basis of DQN</strong>.</p>
 <h2 id="bellman-residual-minimization">Bellman Residual Minimization</h2>
 <h3 id="population-version-1">Population Version</h3>
+<p>Recall that:</p>
+<p><span class="math display">\[V = T^{\pi}V \implies V = V^{\pi}\]</span></p>
+<p>Under FA, we may not achieve this exact equality, instead:</p>
+<p><span class="math display">\[V \approx V^{\pi}\]</span></p>
+<p>Thus, we can formulate our objective:</p>
+<p><span class="math display">\[V = \underset{V \in \mathbf{F}}{\arg\min} \|V - T^{\pi}V\|^p_{p, \mu} = \|BR(V)\|^p_{p, \mu}\]</span></p>
+<p>By minimizing this objective (<span class="math inline">\(p\)</span> is usually 2), we have <code>Bellman Residual Minimization</code>.</p>
+<p>This procedure is different from AVI in that we do not mimic the iterative process of VI (which is convergent in the exact case without any FA), but instead directly go for the solution of fixed-point equation (<span class="math inline">\(V - T^{\pi}V\)</span> instead of <span class="math inline">\(V - T^{\pi}V_k\)</span>).</p>
+<p><img src='/images/RL/vfa/brm_1.png' width="600"></p>
+<p>If there exists a <span class="math inline">\(V \in \mathbf{F}\)</span> that makes <span class="math inline">\(\|V - T^{\pi}V\|^2_{2, \mu} = 0\)</span> and if we assume <span class="math inline">\(\mu(x) &gt; 0, \; \forall x \in \chi\)</span>, we can conclude that <span class="math inline">\(V(x) = V^{\pi}(x), \; \forall x \in \chi\)</span> so <span class="math inline">\(V = V^{\pi}\)</span>.</p>
+<h3 id="batch-version-1">Batch Version</h3>
+<p>Similar to AVI, we may want to replace <span class="math inline">\(TV\)</span> or <span class="math inline">\(TQ\)</span> by <span class="math inline">\(\hat{T}Q\)</span>. Thus, our empirical objective is:</p>
+<p><span class="math display">\[Q = \underset{Q \in \mathbf{F}}{\arg\min} \frac{1}{N} \sum^N_{i=1} |Q(X_i, A_i) - \hat{T}^{\pi} Q (X_i, A_i)|^2 = \|Q - \hat{T}^{\pi}Q\|^2_{2, D_n}\]</span></p>
+<p>Using <span class="math inline">\(D_n = \{(X_i, A_i, R_i, X^{\prime}_i)\}^N_{i=1}\)</span></p>
+<p>We can see that <span class="math inline">\(Q\)</span> appears in both <span class="math inline">\(\hat{T}^{\pi}Q\)</span> and <span class="math inline">\(Q\)</span>, which is different from AVI and ERM. <strong>This causes an issue: the minimizer of <span class="math inline">\(\|Q - T^{\pi}Q\|^2_{2, \mu}\)</span> and <span class="math inline">\(\|Q - \hat{T}^{\pi}Q\|^2_{2, \mu}\)</span> are not necessarily the same for stochastic dynamics.</strong></p>
+<p><br></p>
+<p>To see this, for any <span class="math inline">\(Q\)</span> and <span class="math inline">\(Z = (X, A)\)</span> we compute:</p>
+<p><span class="math display">\[E_{\hat{T}^{\pi}Q} [|Q(Z) - \hat{T}Q(Z)|^2 | Z]\]</span></p>
+<p>Then:</p>
+<span class="math display">\[\begin{aligned}
+E_{\hat{T}^{\pi}Q}[|Q(Z) - \hat{T}^{\pi}Q (Z)|^2 | Z] &amp;= E_{\hat{T}^{\pi}Q}[|Q(Z) - T^{\pi}Q (Z) + T^{\pi}Q (Z) - \hat{T}^{\pi}Q (Z)|^2 | Z]\\
+&amp;= E_{\hat{T}^{\pi}Q}[|Q(Z) - T^{\pi}Q (Z)|^2 | Z] + E_{\hat{T}^{\pi}Q}[|T^{\pi}Q (Z) - \hat{T}^{\pi}Q(Z)|^2 | Z] + 2 E_{\hat{T}^{\pi}Q}[(Q(Z) - T^{\pi}Q (Z))(T^{\pi}Q (Z) - \hat{T}^{\pi}Q (Z)) | Z]\\
+&amp;= E_{\hat{T}^{\pi}Q}[|Q(Z) - T^{\pi}Q (Z)|^2 | Z] + E_{\hat{T}^{\pi}Q}[|T^{\pi}Q (Z) - \hat{T}^{\pi}Q(Z)|^2 | Z]
+\end{aligned}\]</span>
+<p>Since <span class="math inline">\(Z \sim \mu\)</span>, the first term is:</p>
+<p><span class="math display">\[E_{\hat{T}^{\pi}Q, \mu}[|Q(Z) - T^{\pi}Q (Z)|^2] = \|Q - T^{\pi}Q\|^2_{2, \mu}\]</span></p>
+<p>The second term is:</p>
+<p><span class="math display">\[E_{\mu}[E_{\hat{T}^{\pi}Q}[|T^{\pi}Q (Z) - \hat{T}^{\pi}Q(Z)|^2 | Z]] = E_{\mu}[Var[\hat{T}^{\pi}Q(Z) | Z]]\]</span></p>
+<p>We can see that the variance term <span class="math inline">\(Var[\hat{T}^{\pi}Q(Z)\)</span> depends on <span class="math inline">\(Q\)</span>, <strong>as we minimize the objective w.r.t <span class="math inline">\(Q\)</span> in stochastic dynamical systems (for deterministic ones, it is zero)</strong>, we have $ E_{}[Var[^{}Q(Z) | Z]] $, so the minimizer of the batch version objective is not the same as population version for BRM in stochastic dynamics.</p>
 <h2 id="projected-bellman-error">Projected Bellman Error</h2>
+<p>From BRM, we know that even though <span class="math inline">\(V \in \mathbf{F}\)</span>, <span class="math inline">\(T^{\pi} V\)</span> may not be in <span class="math inline">\(\mathbf{F}\)</span>. Thus, a good approximator <span class="math inline">\(V \in \mathbf{F}\)</span> should have distance to <span class="math inline">\(T^{\pi}V\)</span> small. Thus, we want to find <span class="math inline">\(V \in \mathbf{F}\)</span> such that <span class="math inline">\(V\)</span> is the projection of <span class="math inline">\(T^{\pi}V\)</span> onto the space <span class="math inline">\(\mathbf{F}\)</span>.</p>
+<p><img src='/images/RL/vfa/pbe_1.png' width="600"></p>
+<p>We want to find a <span class="math inline">\(V \in \mathbf{F}\)</span> such that:</p>
+<p><span class="math display">\[V = \prod_{\mathbf{F}, \mu} T^{\pi}V\]</span></p>
+<p>Where <span class="math inline">\(\prod_{\mathbf{F}, \mu}\)</span> is the projection operator.</p>
+<p>TRhe projectio operator <span class="math inline">\(\prod_{\mathbf{F}, \mu}\)</span> is a linear operator that takes <span class="math inline">\(V \in B(\chi)\)</span> and maps it to closest point on <span class="math inline">\(F\)</span> measured according to its <span class="math inline">\(L_{2} (\mu)\)</span> norm:</p>
+<p><span class="math display">\[\prod_{\mathbf{F}, \mu} V \triangleq \underset{V^{\prime} \in \mathbf{F}}{\arg\min} \|V^{\prime} - V\|^2_{2, \mu}\]</span></p>
+<p>It has some properties:</p>
+<ol type="1">
+<li>The projection belongs to function space <span class="math inline">\(\mathbf{F}\)</span>: <span class="math display">\[\prod_{\mathbf{F}, \mu} V \in \mathbf{F}\]</span></li>
+<li>If <span class="math inline">\(V \in \mathbf{F}\)</span>, the projection is itself: <span class="math display">\[V \in \mathbf{F} \implies \prod_{\mathbf{F}, \mu} V = V\]</span></li>
+<li>The projection operator onto a subspace is a non-expansion: <span class="math display">\[\|\prod_{\mathbf{F}, \mu} V_1 - \prod_{\mathbf{F}, \mu} V_2\|^2_{2, \mu} \leq \|V_1 - V_2\|^2_{2, \mu}\]</span></li>
+</ol>
 <h3 id="population-version-2">Population Version</h3>
 <h2 id="least-square-temporal-difference-learning">Least Square Temporal Difference Learning</h2>
 <h3 id="population-version-3">Population Version</h3>
@@ -1450,13 +1492,13 @@ h_i = \max({\mathbf{w}^i}^T \mathbf{x}, 0) =
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">456k</span>
+    <span title="Symbols count total">459k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:54</span>
+    <span title="Reading time total">6:57</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
