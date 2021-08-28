@@ -605,7 +605,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/13/vfa-2/" class="post-title-link" itemprop="url">vfa-2</a>
+          <a href="/2021/07/13/vfa-2/" class="post-title-link" itemprop="url">Value Function Approximation (2)</a>
         </h2>
 
         <div class="post-meta-container">
@@ -623,7 +623,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-08-26 16:03:09" itemprop="dateModified" datetime="2021-08-26T16:03:09+08:00">2021-08-26</time>
+        <time title="Modified: 2021-08-28 16:56:47" itemprop="dateModified" datetime="2021-08-28T16:56:47+08:00">2021-08-28</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -654,14 +654,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>5.8k</span>
+      <span>12k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>5 mins.</span>
+      <span>11 mins.</span>
     </span>
 </div>
 
@@ -756,8 +756,83 @@ E_{\hat{T}^{\pi}Q}[|Q(Z) - \hat{T}^{\pi}Q (Z)|^2 | Z] &amp;= E_{\hat{T}^{\pi}Q}[
 <li>The projection operator onto a subspace is a non-expansion: <span class="math display">\[\|\prod_{\mathbf{F}, \mu} V_1 - \prod_{\mathbf{F}, \mu} V_2\|^2_{2, \mu} \leq \|V_1 - V_2\|^2_{2, \mu}\]</span></li>
 </ol>
 <h3 id="population-version-2">Population Version</h3>
-<h2 id="least-square-temporal-difference-learning">Least Square Temporal Difference Learning</h2>
-<h3 id="population-version-3">Population Version</h3>
+<p>We can define a loss function based on <span class="math inline">\(V = \prod_{\mathbf{F}, \mu} T^{\pi}V\)</span>:</p>
+<p><span class="math display">\[\|V - \prod_{\mathbf{F}, \mu} T^{\pi}V\|^2_{2, \mu}\]</span></p>
+<p>This is called <code>Projected Bellman Error</code> or <code>Mean Square Projected Bellman Error</code>.</p>
+<p>We find the value function by solving the following optimization problem:</p>
+<p><span class="math display">\[V = \underset{V \in \mathbf{F}}{\arg\min} \|V - \prod_{\mathbf{F}, \mu} T^{\pi}V\|^2_{2, \mu}\]</span></p>
+<p>Since <span class="math inline">\(V \in \mathbf{F}\)</span>, the projection operator is linear:</p>
+<span class="math display">\[\begin{aligned}
+V -  \prod_{\mathbf{F}, \mu} T^{\pi}V &amp;= \prod_{\mathbf{F}, \mu} V - \prod_{\mathbf{F}, \mu} T^{\pi}V\\
+&amp;= \prod_{\mathbf{F}, \mu} (V - T^{\pi}V)\\
+&amp;= - \prod_{\mathbf{F}, \mu} (T^{\pi}V - V)\\
+&amp;= - \prod_{\mathbf{F}, \mu} (BR(V))
+\end{aligned}\]</span>
+<p>So the objective can be rewritten as:</p>
+<p><span class="math display">\[V = \underset{V \in \mathbf{F}}{\arg\min}  \|\prod_{\mathbf{F}, \mu} BR(V)\|^2_{2, \mu}\]</span></p>
+<p>Which is the norm of the projection of the Bellman Residual onto <span class="math inline">\(\mathbf{F}\)</span>.</p>
+<p><br></p>
+<p>We can think of solving the projected bellman error objective as solving the <strong>two coupled optimization problems</strong>:</p>
+<ol type="1">
+<li>Find the projection point given value function <span class="math inline">\(V^{\prime}\)</span>: <span class="math display">\[V^{\prime\prime} = \underset{V^{\prime\prime} \in \mathbf{F}}{\arg\min} \|V^{\prime\prime} - T^{\pi}V^{\prime}\|^2_{2, \mu}\]</span></li>
+<li>Find the value function <span class="math inline">\(V^{\prime}\)</span> on <span class="math inline">\(\mathbf{F}\)</span> that is closest to the projection point <span class="math inline">\(V^{\prime\prime}\)</span>: <span class="math display">\[V^{\prime} = \underset{V^{\prime} \in \mathbf{F}}{\arg\min} \|V^{\prime} - V^{\prime\prime}\|^2_{2, \mu}\]</span></li>
+</ol>
+<h3 id="least-square-temporal-difference-learning-population-version">Least Square Temporal Difference Learning (Population Version)</h3>
+<p>If <span class="math inline">\(\mathbf{F}\)</span> is a linear FA with basis functions <span class="math inline">\(\phi_1, ...., \phi_p\)</span>:</p>
+<p><span class="math display">\[\mathbf{F}: \{x \rightarrow \boldsymbol{\phi}(x)^T \mathbf{w}; \; \mathbf{w} \in \mathbb{R}^p\}\]</span></p>
+<p>We can find a direct solution to the PBE objective, that is we want to find <span class="math inline">\(V \in \mathbf{F}\)</span> s.t:</p>
+<p><span class="math display">\[V = \prod_{\mathbf{F}, \mu} T^{\pi}V\]</span></p>
+<p>We assume that:</p>
+<ul>
+<li><span class="math inline">\(\chi\)</span> is finite and <span class="math inline">\(|\chi| = N\)</span>, <span class="math inline">\(N \gg p\)</span>, each <span class="math inline">\(\boldsymbol{\phi}_i = [\phi_i(x_1) .... \phi_i(x_N)]^T\)</span> is a <span class="math inline">\(N\)</span>-dimentional vector.</li>
+</ul>
+<p>Then, we define <span class="math inline">\(\Phi_{N\times p}\)</span> as the matrix of concatenating all features:</p>
+<p><span class="math display">\[\Phi = [\boldsymbol{\phi}_1 .... \boldsymbol{\phi}_p]_{N\times p}\]</span></p>
+<p>The value function <span class="math inline">\(V \in \mathbf{F}\)</span> is then:</p>
+<p><span class="math display">\[V_{N \times 1} = \Phi_{N\times p} \mathbf{w}_{p \times 1}\]</span></p>
+<p>Our <strong>goal</strong> is to find a weight vector <span class="math inline">\(\mathbf{w} \in \mathbb{R}^p\)</span> such that:</p>
+<p><span class="math display">\[V = \prod_{\mathbf{F}, \mu} T^{\pi}V \implies \Phi\mathbf{w} = \prod_{\mathbf{F}, \mu} T^{\pi}(\Phi \mathbf{w})\]</span></p>
+<p>Let <span class="math inline">\(M = \text{diag}(\mu)\)</span>, since:</p>
+<p><span class="math display">\[\|V\|^2_{2, \mu} = &lt;V, V&gt;_{\mu} = \sum_{x \in \chi} |V(x)|^2\mu(x) = V^TMV\]</span></p>
+<p><span class="math display">\[&lt;V_1, V_2&gt;_{\mu} = \sum_{x \in \chi} V_1(x)V_2(x) = V^T_1 M V_2\]</span></p>
+<p>Then, the projection operator onto the linear <span class="math inline">\(\mathbf{F}\)</span> would be:</p>
+<span class="math display">\[\begin{aligned}
+\prod_{\mathbf{F}, \mu} V &amp;= \underset{V^{\prime} \in \mathbf{F}}{\arg\min}\|V^{\prime} - V\|^2_{2, \mu}\\
+&amp;= \underset{\mathbf{w} \in \mathbb{R}^p}{\arg\min}\|\Phi\mathbf{w} - V\|^2_{2, \mu}\\
+&amp;= \underset{\mathbf{w} \in \mathbb{R}^p}{\arg\min} (\Phi\mathbf{w} - V)^T M (\Phi\mathbf{w} - V)
+\end{aligned}\]</span>
+<p>By taking the derivative and setting it to zero (assuming that <span class="math inline">\(\Phi^TM\Phi\)</span> is invertible):</p>
+<p><span class="math display">\[\frac{\partial \prod_{\mathbf{F}, \mu} V}{\partial \mathbf{w}} = \Phi^TM(\Phi\mathbf{w} - V) = 0\]</span> <span class="math display">\[\implies \mathbf{w^{*}} = (\Phi^TM\Phi)^{-1}\Phi^TMV\]</span></p>
+<p>Then the projection is:</p>
+<p><span class="math display">\[\prod_{\mathbf{F}, \mu} V = \Phi \mathbf{w} = \Phi (\Phi^TM\Phi)^{-1}\Phi^TMV\]</span></p>
+<p>Since <span class="math inline">\(T^{\pi} V = r^{\pi} (x) + \gamma \sum_{x \in \chi, a \in \mathbf{A}}P^{\pi}(x^{\prime} | x, a) \pi(a | s) V(x^{\prime})\)</span>, we can write it in vector form for all states:</p>
+<p><span class="math display">\[(T^{\pi}V)_{N\times 1} = \mathbf{r}^{\pi}_{N \times 1} + \gamma P^{\pi}_{N\times N} V_{N \times 1}\]</span> <span class="math display">\[\implies (T^{\pi}\Phi\mathbf{w})_{N\times 1} = \mathbf{r}^{\pi}_{N \times 1} + \gamma P^{\pi}_{N\times N} \Phi_{N\times p}\mathbf{w}_{p \times 1}\]</span></p>
+<p>Substitute the equation of <span class="math inline">\(T^{\pi}\Phi\mathbf{w}\)</span> into <span class="math inline">\(V\)</span> in the projection equation:</p>
+<p><span class="math display">\[\prod_{\mathbf{F}, \mu} T^{\pi}\Phi\mathbf{w} = \Phi \mathbf{w} = \Phi (\Phi^TM\Phi)^{-1}\Phi^TM(T^{\pi}\Phi\mathbf{w})\]</span> <span class="math display">\[\implies \Phi \mathbf{w} = [\Phi (\Phi^TM\Phi)^{-1}\Phi^TM][\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w}]\]</span></p>
+<p>Multiply both sides by <span class="math inline">\(\Phi^T M\)</span> and simply:</p>
+<p><span class="math display">\[\Phi^T M \Phi \mathbf{w} = [\Phi^T M\Phi (\Phi^TM\Phi)^{-1}\Phi^TM][\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w}]\]</span> <span class="math display">\[\implies \Phi^T M \Phi \mathbf{w} = \Phi^TM[\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w}]\]</span> <span class="math display">\[\implies \Phi^T M \Phi \mathbf{w} - \Phi^TM[\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w}] = 0\]</span> <span class="math display">\[\implies  \Phi^T M[\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w} - \Phi \mathbf{w}] = 0\]</span> <span class="math display">\[\implies \mathbf{w}_{TD} = [\Phi^T M (\Phi - \gamma P^{\pi}\Phi)]^{-1}\Phi^T M \mathbf{r}^{\pi}\]</span></p>
+<p>The solution <span class="math inline">\(\mathbf{w}_{TD}\)</span> is called <code>Least Square Temporal Difference Method (LSTD)</code>.</p>
+<p>Notice that the term <span class="math inline">\(\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w} - \Phi \mathbf{w} = T^{\pi} V - V = BR(V)\)</span>. Hence:</p>
+<p><span class="math display">\[\Phi^TM (BR(V)) = 0\]</span> <span class="math display">\[\implies &lt;\mathbf{\phi}_i, BR(V)&gt; = 0\]</span></p>
+<p>Thus, <strong>LSTD</strong> finds a <span class="math inline">\(\mathbf{w}\)</span> s.t the <strong>Bellman Residual is orthogonal</strong> to the basis of <span class="math inline">\(\mathbf{F}\)</span> which is exactly what we want.</p>
+<h3 id="batch-version-2">Batch Version</h3>
+<p>We have showed that the solution to <span class="math inline">\(V = \prod_{\mathbf{F}, \mu} T^{\pi}V\)</span> with linear FA <span class="math inline">\(V = \Phi\mathbf{w}\)</span> is:</p>
+<p><span class="math display">\[\mathbf{w}_{TD} = A^{-1}_{p\times p} \mathbf{b}_{p \times 1}\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(A^{-1} = \Phi^T M (\Phi - \gamma P^{\pi}\Phi)]^{-1}\)</span></li>
+<li><span class="math inline">\(\mathbf{b} = \Phi^T M \mathbf{r}^{\pi}\)</span></li>
+</ul>
+<p>Expand <span class="math inline">\(A\)</span> and <span class="math inline">\(\mathbf{b}\)</span> in terms of summations, we have:</p>
+<p><span class="math display">\[A_{ij} = \sum^{N}_{n=1} \Phi^T_{in} \mu(n) (\Phi - \gamma P^{\pi}\Phi)_{ij}\]</span> <span class="math display">\[b_i = \sum^N_{n=1} \Phi^T_{in} \mu(n) r^{\pi}_n\]</span></p>
+<p>Thus, in terms of current state <span class="math inline">\(x\)</span> and next state <span class="math inline">\(x^{\prime}\)</span>:</p>
+<p><span class="math display">\[A = \sum_{x \in \chi} \mu (x) \boldsymbol{\phi} (x) [\boldsymbol{\phi}(x) - \gamma \sum_{x^{\prime} \in \chi} P^{\pi}(x^{\prime} | x)\boldsymbol{\phi}(x^{\prime})]^T = E_{\mu}[\boldsymbol{\phi}(X) [\boldsymbol{\phi}(X) - \gamma E_{P^{\pi}}[\boldsymbol{\phi} (X^{\prime})]]^T]\]</span></p>
+<p><span class="math display">\[\mathbf{b} = \sum_{x \in \chi} \mu(x) \boldsymbol{\phi} (x) r^{\pi}(x) = E_{\mu} [\boldsymbol{\phi}(X)r^{\pi}(X)]\]</span></p>
+<p>Given data set <span class="math inline">\(D_n = \{X_i, R_i, X^{\prime}_i\}^{M}_{i=1}\)</span> with <span class="math inline">\(X_i \sim \mu\)</span>, <span class="math inline">\(X^{\prime} \sim P^{\pi}(\cdot | X_i)\)</span> and <span class="math inline">\(R_i \sim R^{\pi}(\cdot | X_i)\)</span>, we define the empirical estimator <span class="math inline">\(\hat{A}_n, \hat{ \mathbf{b}}_n\)</span> as:</p>
+<p><span class="math display">\[\hat{A}_n = \frac{1}{M} \sum^{M}_{i=1} \boldsymbol{\phi}(X_i) [\boldsymbol{\phi}(X_i) - \gamma \boldsymbol{\phi} (X^{\prime}_i)]^T\]</span> <span class="math display">\[\hat{\mathbf{b}}_n = \frac{1}{M} \sum^{M}_{i=1} \boldsymbol{\phi}(X)R_i\]</span></p>
+<p><br></p>
+<p>We can use LSTD to define an approximate policy iteration procedure to obtain a close to optimal policy (LSPI):</p>
+<p><img src='/images/RL/vfa/lstd_1.png' width="600"></p>
 
       
     </div>
@@ -1492,13 +1567,13 @@ h_i = \max({\mathbf{w}^i}^T \mathbf{x}, 0) =
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">459k</span>
+    <span title="Symbols count total">465k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">6:57</span>
+    <span title="Reading time total">7:03</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
