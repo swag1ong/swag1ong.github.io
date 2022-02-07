@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Linear Algebra (4) Inner Product Spaces If \(\lambda\) is a complex number, then we define \(\lambda \geq 0\) to be real number and nonnegative. Inner Products and Norms For \(z \in \mathbb{F}^n\), we">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linear Algebra (4)">
+<meta property="og:url" content="https://swag1ong.github.io/2022/01/25/linear-algebra-4/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Linear Algebra (4) Inner Product Spaces If \(\lambda\) is a complex number, then we define \(\lambda \geq 0\) to be real number and nonnegative. Inner Products and Norms For \(z \in \mathbb{F}^n\), we">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-01-25T12:54:30.000Z">
+<meta property="article:modified_time" content="2022-02-04T02:53:38.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="RL Basics">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2022/01/25/linear-algebra-4/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2022&#x2F;01&#x2F;25&#x2F;linear-algebra-4&#x2F;&quot;,&quot;path&quot;:&quot;2022&#x2F;01&#x2F;25&#x2F;linear-algebra-4&#x2F;&quot;,&quot;title&quot;:&quot;Linear Algebra (4)&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Linear Algebra (4) | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#linear-algebra-4"><span class="nav-number">1.</span> <span class="nav-text">Linear Algebra (4)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#inner-product-spaces"><span class="nav-number">1.1.</span> <span class="nav-text">Inner Product Spaces</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#inner-products-and-norms"><span class="nav-number">1.1.1.</span> <span class="nav-text">Inner Products and Norms</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-6.2-dot-product"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">Definition 6.2: Dot Product</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-6.3-inner-product"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">Definition 6.3: Inner Product</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-6.5-inner-product-space"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">Definition 6.5: Inner Product Space</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.7-basic-properties-of-an-inner-product"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">Theorem 6.7: Basic Properties of an Inner Product</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-6.8-norm-v"><span class="nav-number">1.1.1.5.</span> <span class="nav-text">Definition 6.8: Norm, \(\| v \|\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.10-basic-properties-of-the-norm"><span class="nav-number">1.1.1.6.</span> <span class="nav-text">Theorem 6.10: Basic Properties of the Norm</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-6.11-orthogonal"><span class="nav-number">1.1.1.7.</span> <span class="nav-text">Definition 6.11: Orthogonal</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.12-orthogonality-and-0"><span class="nav-number">1.1.1.8.</span> <span class="nav-text">Theorem 6.12: Orthogonality and \(0\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.13-pythagorean-theorem"><span class="nav-number">1.1.1.9.</span> <span class="nav-text">Theorem 6.13 Pythagorean Theorem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.14-an-orthogonal-decomposition"><span class="nav-number">1.1.1.10.</span> <span class="nav-text">Theorem 6.14: An Orthogonal Decomposition</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.15-cauchy-schwarz-inequality"><span class="nav-number">1.1.1.11.</span> <span class="nav-text">Theorem 6.15: Cauchy-Schwarz Inequality</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-6.15"><span class="nav-number">1.1.1.11.1.</span> <span class="nav-text">Proof of theorem 6.15:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.18-triangle-inequality"><span class="nav-number">1.1.1.12.</span> <span class="nav-text">Theorem 6.18: Triangle Inequality</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.22-parallelogram-equality"><span class="nav-number">1.1.1.13.</span> <span class="nav-text">Theorem 6.22 Parallelogram Equality</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-the-polarization-identities"><span class="nav-number">1.1.1.14.</span> <span class="nav-text">Theorem: The Polarization Identities</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#orthonormal-bases"><span class="nav-number">1.1.2.</span> <span class="nav-text">Orthonormal Bases</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-6.23-orthonormal"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Definition 6.23: Orthonormal</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.25-the-norm-of-an-orthonormal-linear-combination"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">Theorem 6.25: The Norm of an Orthonormal Linear Combination</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.26-an-orthonormal-list-is-linearly-independent"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">Theorem 6.26: An Orthonormal List is linearly Independent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-6.27-orthonormal-basis"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">Definition 6.27: Orthonormal Basis</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.28-an-orthonormal-list-of-the-right-length-is-an-orthonormal-basis"><span class="nav-number">1.1.2.5.</span> <span class="nav-text">Theorem 6.28: An Orthonormal List of the Right Length is an Orthonormal Basis</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.30-writing-a-vector-as-linear-combination-of-orthonormal-basis"><span class="nav-number">1.1.2.6.</span> <span class="nav-text">Theorem 6.30: Writing a Vector as Linear Combination of Orthonormal Basis</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-6.30"><span class="nav-number">1.1.2.6.1.</span> <span class="nav-text">Proof of Theorem 6.30</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.31-gram-schmidt-procedure"><span class="nav-number">1.1.2.7.</span> <span class="nav-text">Theorem 6.31: Gram-Schmidt Procedure</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.34-existence-of-orthonormal-basis"><span class="nav-number">1.1.2.8.</span> <span class="nav-text">Theorem 6.34: Existence of Orthonormal Basis</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.35-orthonormal-list-extends-to-orthonormal-basis"><span class="nav-number">1.1.2.9.</span> <span class="nav-text">Theorem 6.35: Orthonormal List Extends to Orthonormal Basis</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.37-upper-triangular-matrix-w.r.t-orthonormal-basis"><span class="nav-number">1.1.2.10.</span> <span class="nav-text">Theorem 6.37: Upper-Triangular Matrix w.r.t Orthonormal Basis</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-theorem-6.37"><span class="nav-number">1.1.2.10.1.</span> <span class="nav-text">Proof Theorem 6.37:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.38-schurs-theorem"><span class="nav-number">1.1.2.11.</span> <span class="nav-text">Theorem 6.38: Schur&#39;s Theorem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.42-riesz-representation-theorem"><span class="nav-number">1.1.2.12.</span> <span class="nav-text">Theorem 6.42: Riesz Representation Theorem</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-theorem-6.42"><span class="nav-number">1.1.2.12.1.</span> <span class="nav-text">Proof Theorem 6.42</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#orthogonal-complements-and-minimization-problems"><span class="nav-number">1.1.3.</span> <span class="nav-text">Orthogonal Complements and Minimization Problems</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-6.45-orthogonal-complement-uperp"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">Definition 6.45: Orthogonal Complement, \(U^{\perp}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.46-basic-properties-of-orthogonal-complement"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">Theorem 6.46 Basic Properties of Orthogonal Complement</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-6.46"><span class="nav-number">1.1.3.2.1.</span> <span class="nav-text">Proof of Theorem 6.46:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.47-direct-sum-of-a-subspace-and-its-orthogonal-complement"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">Theorem 6.47: Direct Sum of a Subspace and Its Orthogonal Complement</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-6.47"><span class="nav-number">1.1.3.3.1.</span> <span class="nav-text">Proof of Theorem 6.47:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.50-dimension-of-the-orthogonal-complement"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">Theorem 6.50 Dimension of the Orthogonal Complement</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.51-the-orthogonal-complement-of-the-orthogonal-complement"><span class="nav-number">1.1.3.5.</span> <span class="nav-text">Theorem 6.51: The Orthogonal Complement of the Orthogonal Complement</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-6.53-orthogonal-projection-p_u"><span class="nav-number">1.1.3.6.</span> <span class="nav-text">Definition 6.53: Orthogonal Projection, \(P_U\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.55-properties-of-the-orthogonal-projection-p_u"><span class="nav-number">1.1.3.7.</span> <span class="nav-text">Theorem 6.55: Properties of the Orthogonal Projection \(P_{U}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.56-minimizing-the-distance-to-a-subspace"><span class="nav-number">1.1.3.8.</span> <span class="nav-text">Theorem 6.56 Minimizing the Distance to a Subspace</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#operators-on-inner-product-spaces"><span class="nav-number">1.2.</span> <span class="nav-text">Operators on Inner Product Spaces</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#self-adjoint-and-normal-operators"><span class="nav-number">1.2.1.</span> <span class="nav-text">Self-Adjoint and Normal Operators</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-7.2-adjoint-t"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Definition 7.2: Adjoint, \(T^*\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.5-the-adjoint-is-a-linear-map"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Theorem 7.5: The Adjoint is a Linear Map</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.6-properties-of-the-adjoint"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">Theorem 7.6: Properties of the Adjoint</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.7-null-space-and-range-of-t"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">Theorem 7.7: Null Space and Range of \(T^*\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-7.8-conjugate-transpose"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">Definition 7.8: Conjugate Transpose</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.10-the-matrix-of-t"><span class="nav-number">1.2.1.6.</span> <span class="nav-text">Theorem 7.10: The Matrix of \(T^*\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-7.11-self-adjoint-hermitian"><span class="nav-number">1.2.1.7.</span> <span class="nav-text">Definition 7.11: Self-Adjoint (Hermitian)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.13-eigenvalues-of-self-adjoint-operators-are-real"><span class="nav-number">1.2.1.8.</span> <span class="nav-text">Theorem 7.13: Eigenvalues of Self-Adjoint Operators are Real</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.14"><span class="nav-number">1.2.1.9.</span> <span class="nav-text">Theorem 7.14:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.15-over-mathbbc-tv-v-is-real-for-all-v-only-for-self-adjoint-operators"><span class="nav-number">1.2.1.10.</span> <span class="nav-text">Theorem 7.15: Over \(\mathbb{C}\), \(&lt;T(v), v&gt;\) is real for all \(v\) only for self-adjoint operators</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.16-if-t-t-and-tv-v-0-forall-v-then-t-0"><span class="nav-number">1.2.1.11.</span> <span class="nav-text">Theorem 7.16: If \(T &#x3D; T^*\) and \(&lt;T(v), v&gt; &#x3D; 0; \forall v\), Then \(T &#x3D; 0\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-7.18-normal"><span class="nav-number">1.2.1.12.</span> <span class="nav-text">Definition 7.18: Normal</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.20-t-is-normal-iff-tv-tv-forall-v"><span class="nav-number">1.2.1.13.</span> <span class="nav-text">Theorem 7.20: \(T\) is Normal IFF \(\|T(v)\| &#x3D; \|T^*(v)\| \; \forall v\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.21-for-t-normal-t-t-have-the-same-eigenvectors"><span class="nav-number">1.2.1.14.</span> <span class="nav-text">Theorem 7.21: For \(T\) normal, \(T, T^*\) Have the Same Eigenvectors</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.22-orthogonal-eigenvectors-for-normal-operators"><span class="nav-number">1.2.1.15.</span> <span class="nav-text">Theorem 7.22: Orthogonal Eigenvectors for Normal Operators</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#the-spectral-theorem"><span class="nav-number">1.2.2.</span> <span class="nav-text">The Spectral Theorem</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.24-complex-spectral-theorem"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">Theorem 7.24: Complex Spectral Theorem</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-theorem-7.24"><span class="nav-number">1.2.2.1.1.</span> <span class="nav-text">Proof Theorem 7.24</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.26-invertible-quadratic-expressions"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">Theorem 7.26: Invertible Quadratic Expressions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.27-self-adjoint-operators-have-eigenvalues"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">Theorem 7.27: Self-Adjoint Operators Have Eigenvalues</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.28-self-adjoint-operators-and-invariant-subspaces"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">Theorem 7.28: Self-Adjoint Operators and Invariant Subspaces</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.29-real-spectral-theorem"><span class="nav-number">1.2.2.5.</span> <span class="nav-text">Theorem 7.29: Real Spectral Theorem</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#positive-operators-and-isometries"><span class="nav-number">1.2.3.</span> <span class="nav-text">Positive Operators and Isometries</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-7.31-positive-operator-positive-semi-definite"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">Definition 7.31: Positive Operator (Positive Semi-definite)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-7.33-square-root"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">Definition 7.33: Square Root</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.35-characterization-of-positive-operators"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">Theorem 7.35: Characterization of Positive Operators</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.36-every-positive-operator-has-only-one-positive-square-root"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">Theorem 7.36: Every Positive Operator Has Only One Positive Square Root</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-7.37-isometry"><span class="nav-number">1.2.3.5.</span> <span class="nav-text">Definition 7.37: Isometry</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.42-characterization-of-isometries"><span class="nav-number">1.2.3.6.</span> <span class="nav-text">Theorem 7.42: Characterization of Isometries</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.43-description-of-isometries-when-mathbbf-mathbbc"><span class="nav-number">1.2.3.7.</span> <span class="nav-text">Theorem 7.43: Description of Isometries When \(\mathbb{F} &#x3D; \mathbb{C}\)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#polar-decomposition-and-singular-value-decomposition"><span class="nav-number">1.2.4.</span> <span class="nav-text">Polar Decomposition and Singular Value Decomposition</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-7.44-sqrtt"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">Definition 7.44: \(\sqrt{T}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.45-polar-decomposition"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">Theorem 7.45: Polar Decomposition</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-7.49-singular-value-decomposition"><span class="nav-number">1.2.4.3.</span> <span class="nav-text">Definition 7.49: Singular Value Decomposition</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.51-singular-value-decomposition"><span class="nav-number">1.2.4.4.</span> <span class="nav-text">Theorem 7.51: Singular Value Decomposition</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.52-singular-values-without-taking-square-root-of-an-operator"><span class="nav-number">1.2.4.5.</span> <span class="nav-text">Theorem 7.52: Singular Values Without Taking Square Root of an Operator</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-7.52"><span class="nav-number">1.2.4.5.1.</span> <span class="nav-text">Proof of Theorem 7.52:</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2022/01/25/linear-algebra-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linear Algebra (4)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-01-25 20:54:30" itemprop="dateCreated datePublished" datetime="2022-01-25T20:54:30+08:00">2022-01-25</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2022-02-04 10:53:38" itemprop="dateModified" datetime="2022-02-04T10:53:38+08:00">2022-02-04</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2022/01/25/linear-algebra-4/" class="post-meta-item leancloud_visitors" data-flag-title="Linear Algebra (4)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>20k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>18 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="linear-algebra-4">Linear Algebra (4)</h1>
+<h2 id="inner-product-spaces">Inner Product Spaces</h2>
+<p><strong>If <span class="math inline">\(\lambda\)</span> is a complex number, then we define <span class="math inline">\(\lambda \geq 0\)</span> to be real number and nonnegative.</strong></p>
+<h3 id="inner-products-and-norms">Inner Products and Norms</h3>
+<p>For <span class="math inline">\(z \in \mathbb{F}^n\)</span>, we define the norm of <span class="math inline">\(z\)</span> w.r.t Euclidian inner product by:</p>
+<p><span class="math display">\[\|z\| = \sqrt{|z_1|^2 + ... + |z_n|^2}\]</span></p>
+<p>Where <span class="math inline">\(|z_1|^2 = z\bar{z} = a^2 + b^2\)</span></p>
+<h4 id="definition-6.2-dot-product">Definition 6.2: Dot Product</h4>
+<p>For <span class="math inline">\(x, y \in \mathbb{R}^n\)</span>, the <strong>dot product</strong> of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, denoted <span class="math inline">\(x \cdot y\)</span>, is defined by:</p>
+<p><span class="math display">\[x \cdot y = x_1y_1 + ... + x_ny_n\]</span></p>
+<p>where <span class="math inline">\(x=(x_1, ..., x_n), y=(y_1, ..., y_n)\)</span></p>
+<p>It has the following properties:</p>
+<ol type="1">
+<li><span class="math inline">\(x \cdot x \geq 0, \; \forall x \in \mathbb{R}^n\)</span></li>
+<li><span class="math inline">\(x \cdot x = 0\)</span> IFF <span class="math inline">\(x = 0\)</span></li>
+<li>For <span class="math inline">\(y \in \mathbb{R}^n\)</span> fixed, the map from <span class="math inline">\(\mathbb{R}^n \rightarrow \mathbb{R}\)</span> that sends <span class="math inline">\(x \in \mathbb{R}^n\)</span> to <span class="math inline">\(x \cdot y\)</span> is linear.</li>
+<li><span class="math inline">\(x \cdot y = y \cdot x, \; \forall x, y \in \mathbb{R}^n\)</span></li>
+</ol>
+<h4 id="definition-6.3-inner-product">Definition 6.3: Inner Product</h4>
+<p>An <strong>inner product</strong> on <span class="math inline">\(V\)</span> is a <strong>function</strong> that takes each ordered pair <span class="math inline">\((u, v)\)</span> of elements of <span class="math inline">\(V\)</span> to a number <span class="math inline">\(&lt;u, v&gt; \in \mathbb{F}\)</span> and has the following properties:</p>
+<ol type="1">
+<li><strong>Positive</strong>: <span class="math display">\[&lt;v, v&gt; \geq 0 , \; \forall v \in V\]</span></li>
+<li><strong>Definiteness</strong>: <span class="math display">\[&lt;v, v&gt; = 0 \;\; \text{ IFF } \;\; v = 0\]</span></li>
+<li><strong>Additivity in first slot</strong>: <span class="math display">\[&lt;u + v, w&gt; = &lt;u, w&gt; + &lt;v, w&gt;, \; \forall u, v, w \in V\]</span></li>
+<li><strong>Homogeneity in first slot</strong>: <span class="math display">\[&lt;\lambda u, v&gt; = \lambda &lt;u, v&gt;, \; \forall \lambda \in \mathbb{F}, u,v \in V\]</span></li>
+<li><strong>Conjugate Symmetry</strong>: <span class="math display">\[&lt;u, v&gt; = \overline{&lt;v, u&gt;}, \; \forall u, v \in V\]</span></li>
+</ol>
+<blockquote>
+<p>The <strong>Euclidean inner product on <span class="math inline">\(\mathbb{F}^n\)</span></strong> is defined by: <span class="math display">\[&lt;(w_1, ..., w_n), (z_1, ..., z_n)&gt; = w_1 \bar{z}_1 + .... + w_n \bar{z}_n\]</span></p>
+<p>If <span class="math inline">\(c_1, ..., c_n\)</span> are positive numbers, then an inner product can be defined on <span class="math inline">\(\mathbb{F}^n\)</span> by: <span class="math display">\[&lt;(w_1,  ...., w_n), (z_1, ..., z_n)&gt; = c_1w_1 \bar{z}_1 + .... + c_nw_n \bar{z}_n\]</span></p>
+<p>An inner product can be defined on the vector space of continuous real-valued functions on the interval <span class="math inline">\([-1, 1]\)</span> by: <span class="math display">\[&lt;f, g&gt; = \int^1_{-1} f(x)g(x) dx\]</span></p>
+<p>An inner product can be defined on <span class="math inline">\(P(\mathbb{R})\)</span> by: <span class="math display">\[&lt;p, q&gt; = \int^{\infty}_{0} p(x) q(x) e^{-x} dx\]</span></p>
+</blockquote>
+<h4 id="definition-6.5-inner-product-space">Definition 6.5: Inner Product Space</h4>
+<p>An <strong>inner product space</strong> is a vector space <span class="math inline">\(V\)</span> along with an inner product on <span class="math inline">\(V\)</span>.</p>
+<p><br></p>
+<p><span style="color:red"><strong>For the rest of the Inner product space chapter, <span class="math inline">\(V\)</span> denotes inner product space over <span class="math inline">\(\mathbb{F}\)</span>. If the inner product on <span class="math inline">\(V\)</span> is missing from the context, we assume it to be Euclidean inner product if the vector space is <span class="math inline">\(\mathbb{F}^n\)</span></strong></span>.</p>
+<p><br></p>
+<h4 id="theorem-6.7-basic-properties-of-an-inner-product">Theorem 6.7: Basic Properties of an Inner Product</h4>
+<ol type="1">
+<li>For each fixed <span class="math inline">\(u \in V\)</span>, the function that takes <span class="math inline">\(v\)</span> to <span class="math inline">\(&lt;v, u&gt;\)</span> is a linear map from <span class="math inline">\(V\)</span> to <span class="math inline">\(\mathbb{F}\)</span>.</li>
+<li><span class="math inline">\(&lt;0, u&gt; = 0\)</span> for every <span class="math inline">\(u \in V\)</span>.</li>
+<li><span class="math inline">\(&lt;u, 0&gt; = 0\)</span> for every <span class="math inline">\(u \in V\)</span>.</li>
+<li><span class="math inline">\(&lt;u, v + w&gt; = &lt;u, v&gt; + &lt;u, w&gt;\)</span> for all <span class="math inline">\(u, v, w \in V\)</span>.</li>
+<li><span class="math inline">\(&lt;u, \lambda v&gt; = \bar{\lambda} &lt;u, v&gt; \; \forall \lambda \in \mathbb{F}, u, v \in V\)</span>.</li>
+</ol>
+<h4 id="definition-6.8-norm-v">Definition 6.8: Norm, <span class="math inline">\(\| v \|\)</span></h4>
+<p>For <span class="math inline">\(v \in V\)</span>, the <strong>norm</strong> of <span class="math inline">\(v\)</span>, denoted <span class="math inline">\(\|v\|\)</span>, is defined by:</p>
+<p><span class="math display">\[\|v\| = \sqrt{&lt;v, v&gt;}\]</span></p>
+<h4 id="theorem-6.10-basic-properties-of-the-norm">Theorem 6.10: Basic Properties of the Norm</h4>
+<p>Suppose <span class="math inline">\(v \in V\)</span>:</p>
+<ol type="1">
+<li><span class="math inline">\(\|v\| = 0\)</span>, if and only if <span class="math inline">\(v = 0\)</span>.</li>
+<li><span class="math inline">\(\|\lambda v\| = |\lambda| \|v\|, \; \forall \lambda \in \mathbb{F}\)</span>.</li>
+</ol>
+<h4 id="definition-6.11-orthogonal">Definition 6.11: Orthogonal</h4>
+<p>Two vectors <span class="math inline">\(u, v \in V\)</span> are called <strong>orthogonal</strong> if <span class="math inline">\(&lt;u, v&gt; = 0\)</span>.</p>
+<h4 id="theorem-6.12-orthogonality-and-0">Theorem 6.12: Orthogonality and <span class="math inline">\(0\)</span></h4>
+<ol type="1">
+<li><span class="math inline">\(0\)</span> is orthogonal to every vector in <span class="math inline">\(V\)</span>.</li>
+<li>0 is the only vector in <span class="math inline">\(V\)</span> that is orthogonal to itself.</li>
+</ol>
+<h4 id="theorem-6.13-pythagorean-theorem">Theorem 6.13 Pythagorean Theorem</h4>
+<p>Suppose <span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span> are <strong>orthogonal</strong> vectors in <span class="math inline">\(V\)</span>. Then:</p>
+<p><span class="math display">\[\|u + v\|^2 = \|u\|^2 + \|v\|^2\]</span></p>
+<h4 id="theorem-6.14-an-orthogonal-decomposition">Theorem 6.14: An Orthogonal Decomposition</h4>
+<p>Suppose <span class="math inline">\(u, v \in V\)</span>, with <span class="math inline">\(v \neq 0\)</span>. Set <span class="math inline">\(c = \frac{&lt;u, v&gt;}{\|v\|^2}\)</span> and <span class="math inline">\(w = u - \frac{&lt;u, v&gt;}{\|v\|^2} v\)</span>. Then:</p>
+<p><span class="math display">\[&lt;w, v&gt; = 0\]</span></p>
+<p>and</p>
+<p><span class="math display">\[u = cv + w\]</span></p>
+<h4 id="theorem-6.15-cauchy-schwarz-inequality">Theorem 6.15: Cauchy-Schwarz Inequality</h4>
+<p>Suppose <span class="math inline">\(u, v \in V\)</span>. Then:</p>
+<p><span class="math display">\[|&lt;u, v&gt;| \leq \|u\|\|v\|\]</span></p>
+<p>This inequality is an equality if and only if one of <span class="math inline">\(u, v\)</span> is a scalar multiple of the other.</p>
+<h5 id="proof-of-theorem-6.15">Proof of theorem 6.15:</h5>
+<p>If <span class="math inline">\(v = 0\)</span>, we have <span class="math inline">\(0 = 0\)</span>, thus, we can assume <span class="math inline">\(v \neq 0\)</span>. Then, by <code>theorem 6.14</code>, we have:</p>
+<p><span class="math display">\[u = \frac{&lt;u, v&gt; v}{\|v\|^2} + w\]</span></p>
+<p>Since <span class="math inline">\(v, w\)</span> are orthogonal, by taking the norm square on both side we have:</p>
+<p><span class="math display">\[\|u\|^2 = \|\frac{&lt;u, v&gt; v}{\|v\|^2}\|^2 + \|w\|^2\]</span></p>
+<p>Since <span class="math inline">\(\frac{&lt;u, v&gt;}{\|v\|^2} \in \mathbb{F}\)</span>, we can take them out:</p>
+<p><span class="math display">\[\|u\|^2 = \frac{|&lt;u, v&gt;|^2}{\|v\|^4}\|v\|^2 + \|w\|^2 \geq \frac{|&lt;u, v&gt;|}{\|v\|^2}\]</span></p>
+<p>Multiply both sides by <span class="math inline">\(\|v\|^2\)</span>, we have:</p>
+<p><span class="math display">\[\|w\|^2\|v\|^2 \geq |&lt;u, v&gt;|\]</span></p>
+<p>Notice that, the equality only happens when <span class="math inline">\(\|w\|^2 = 0\)</span>, in other words, <span class="math inline">\(w = u - \frac{&lt;u, v&gt;}{\|v\|^2} v = 0 \implies u = \frac{&lt;u, v&gt;}{\|v\|^2} v\)</span>, thus, if <span class="math inline">\(u\)</span> is scalar multiple of <span class="math inline">\(v\)</span>.</p>
+<h4 id="theorem-6.18-triangle-inequality">Theorem 6.18: Triangle Inequality</h4>
+<p>Suppose <span class="math inline">\(u, v \in V\)</span>. Then</p>
+<p><span class="math display">\[\|u + v\| \leq \|u\| + \|v\|\]</span></p>
+<p>This inequality is an equality if and only if one of <span class="math inline">\(u, v\)</span> is a nonnegative multiple of the other.</p>
+<h4 id="theorem-6.22-parallelogram-equality">Theorem 6.22 Parallelogram Equality</h4>
+<p>Suppose <span class="math inline">\(u, v \in V\)</span>. Then:</p>
+<p><span class="math display">\[\|u + v\|^2 + \|u - v\|^2 = 2 (\|u\|^2 + \|v\|^2)\]</span></p>
+<h4 id="theorem-the-polarization-identities">Theorem: The Polarization Identities</h4>
+<p><a target="_blank" rel="noopener" href="https://unapologetic.wordpress.com/2009/04/23/the-polarization-identities/">Polarization Identities</a></p>
+<h3 id="orthonormal-bases">Orthonormal Bases</h3>
+<h4 id="definition-6.23-orthonormal">Definition 6.23: Orthonormal</h4>
+<p>A list of vectors is called <strong>orthonormal</strong> if each vector in the list has norm <span class="math inline">\(1\)</span> and is orthogonal to all the other vectors in the list. In other words, a list <span class="math inline">\(e_1, ..., e_m\)</span> of vectors in <span class="math inline">\(V\)</span> is orthonormal if</p>
+<p><span class="math display">\[
+&lt;e_j, e_j&gt; =
+\begin{cases}
+1, \quad \text{if} \;\; k = j\\
+0, \quad \text{if} \;\; k \neq j
+\end{cases}
+\]</span></p>
+<blockquote>
+<p>The standard basis in <span class="math inline">\(\mathbb{F}^n\)</span> w.r.t Euclidean inner product is an orthonormal list.</p>
+</blockquote>
+<h4 id="theorem-6.25-the-norm-of-an-orthonormal-linear-combination">Theorem 6.25: The Norm of an Orthonormal Linear Combination</h4>
+<p>If <span class="math inline">\(e_1, ..., e_m\)</span> is an orthonormal list of vectors in <span class="math inline">\(V\)</span>, then:</p>
+<p><span class="math display">\[\|a_1e_1 + ... + a_m e_m\|^2 = |a_1|^2 + ... + |a_m|^2\]</span></p>
+<p>for all <span class="math inline">\(a_1, ..., a_m \in \mathbb{F}\)</span></p>
+<h4 id="theorem-6.26-an-orthonormal-list-is-linearly-independent">Theorem 6.26: An Orthonormal List is linearly Independent</h4>
+<p>Every orthonormal list of vectors is linearly independent.</p>
+<h4 id="definition-6.27-orthonormal-basis">Definition 6.27: Orthonormal Basis</h4>
+<p>An <strong>orthonormal basis</strong> of <span class="math inline">\(V\)</span> is an orthonormal list of vectors in <span class="math inline">\(V\)</span> that is also a basis of <span class="math inline">\(V\)</span>.</p>
+<h4 id="theorem-6.28-an-orthonormal-list-of-the-right-length-is-an-orthonormal-basis">Theorem 6.28: An Orthonormal List of the Right Length is an Orthonormal Basis</h4>
+<p>Every orthonormal list of vectors in <span class="math inline">\(V\)</span> with length <span class="math inline">\(\dim V\)</span> is an orthonormal basis of <span class="math inline">\(V\)</span>.</p>
+<h4 id="theorem-6.30-writing-a-vector-as-linear-combination-of-orthonormal-basis">Theorem 6.30: Writing a Vector as Linear Combination of Orthonormal Basis</h4>
+<p>Suppose <span class="math inline">\(e_1, ..., e_n\)</span> is an orthonormal basis of <span class="math inline">\(V\)</span> and <span class="math inline">\(v \in V\)</span>. Then:</p>
+<p><span class="math display">\[v = &lt;v, e_1&gt; e_1 + ... + &lt;v, e_n&gt;e_n\]</span></p>
+<p>and</p>
+<p><span class="math display">\[\|v\|^2 = |&lt;v, e_1&gt;|^2 + ... + |&lt;v, e_n&gt;|^2\]</span></p>
+<h5 id="proof-of-theorem-6.30">Proof of Theorem 6.30</h5>
+<p>Since <span class="math inline">\(e_1, ...., e_n\)</span> is an orthonormal basis, there exists a list of scalars <span class="math inline">\(a_1, ..., a_n\)</span> s.t:</p>
+<p><span class="math display">\[v = a_1e_1 + ... + a_ne_n\]</span></p>
+<p>Take the inner product of <span class="math inline">\(e_j\)</span> on both sides, we have:</p>
+<p><span class="math display">\[&lt;v, e_j&gt; = a_j\]</span></p>
+<h4 id="theorem-6.31-gram-schmidt-procedure">Theorem 6.31: Gram-Schmidt Procedure</h4>
+<p>Suppose <span class="math inline">\(v_1, ..., v_m\)</span> is a linearly independent list of vectors in <span class="math inline">\(V\)</span>. Let <span class="math inline">\(e_1 = \frac{v_1}{\|v_1\|}\)</span>. For <span class="math inline">\(j=2, ..., m\)</span>, define <span class="math inline">\(e_j\)</span> inductively by:</p>
+<p><span class="math display">\[e_j = \frac{v_j - &lt;v_j, e_1&gt; e_1 - ... - &lt;v_j, e_{j-1}&gt;e_{j-1}}{\|v_j - &lt;v_j, e_1&gt; e_1 - ... - &lt;v_j, e_{j-1}&gt;e_{j-1}\|}\]</span></p>
+<p>Then <span class="math inline">\(e_j, ..., e_m\)</span> is an orthonormal list of vectors in <span class="math inline">\(V\)</span> s.t:</p>
+<p><span class="math display">\[span(v_1, ..., v_j) = span(e_1, ..., e_j)\]</span></p>
+<p>for <span class="math inline">\(j = 1, ..., m\)</span></p>
+<h4 id="theorem-6.34-existence-of-orthonormal-basis">Theorem 6.34: Existence of Orthonormal Basis</h4>
+<p>Every finite-dimensional inner product space has an orthonormal basis.</p>
+<h4 id="theorem-6.35-orthonormal-list-extends-to-orthonormal-basis">Theorem 6.35: Orthonormal List Extends to Orthonormal Basis</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is finite-dimensional. Then every orthonormal list of vectors in <span class="math inline">\(V\)</span> can be extended to an orthonormal basis of <span class="math inline">\(V\)</span>.</p>
+<h4 id="theorem-6.37-upper-triangular-matrix-w.r.t-orthonormal-basis">Theorem 6.37: Upper-Triangular Matrix w.r.t Orthonormal Basis</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span>. If <span class="math inline">\(T\)</span> has an upper-triangular matrix w.r.t some basis of <span class="math inline">\(V\)</span>, then <span class="math inline">\(T\)</span> has an upper-triangular matrix w.r.t some orthonormal basis of <span class="math inline">\(V\)</span>.</p>
+<h5 id="proof-theorem-6.37">Proof Theorem 6.37:</h5>
+<p>Assume <span class="math inline">\(v_1, ..., v_n\)</span> is a basis s.t <span class="math inline">\(T\)</span> has an upper triangular matrix, then by <code>theorem 5.26</code>, we have <span class="math inline">\(span(v_1, .., v_j)\)</span> is invariant under <span class="math inline">\(T\)</span> for each <span class="math inline">\(j=1\)</span>. Then by Gram-Schmidt Procedure, we can construct <span class="math inline">\(e_1, ..., e_n\)</span> from <span class="math inline">\(v_1, ..., v_n\)</span> s.t</p>
+<p><span class="math display">\[span(e_1, ..., e_j) = span(v_1, ..., v_j)\]</span></p>
+<p>Then, by <code>theorem 5.26</code>, we can conclude the <span class="math inline">\(e_1, ..., e_n\)</span> is a basis s.t <span class="math inline">\(T\)</span> has an upper triangular matrix.</p>
+<h4 id="theorem-6.38-schurs-theorem">Theorem 6.38: Schur's Theorem</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a finite-dimensional complex vector space and <span class="math inline">\(T \in L(V)\)</span>. Then <span class="math inline">\(T\)</span> has an upper-triangular matrix w.r.t some orthonormal basis of <span class="math inline">\(V\)</span>.</p>
+<h4 id="theorem-6.42-riesz-representation-theorem">Theorem 6.42: Riesz Representation Theorem</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is finite-dimensional and <span class="math inline">\(\psi\)</span> is a linear functional on <span class="math inline">\(V\)</span>. Then there is a <strong>unique</strong> vector <span class="math inline">\(u \in V\)</span> that does not depend on the choice of basis s.t</p>
+<p><span class="math display">\[\psi (v) = &lt;v, u&gt;\]</span></p>
+<p>for every <span class="math inline">\(v \in V\)</span>.</p>
+<p>In other words, any linear functional on <span class="math inline">\(V\)</span> can be written as the map that sends <span class="math inline">\(v \in V\)</span> to inner product.</p>
+<h5 id="proof-theorem-6.42">Proof Theorem 6.42</h5>
+<p>Let <span class="math inline">\(e_1, ..., e_n\)</span> be an orthonormal basis of <span class="math inline">\(V\)</span>. Then:</p>
+<span class="math display">\[\begin{aligned}
+\psi (v) &amp;= \psi (&lt;v, e_1&gt; e_1 + ... + &lt;v, e_n&gt; e_n) \\
+&amp;= &lt;v, e_1&gt; \psi(e_1) + ... + &lt;v, e_n&gt;\psi(e_n)\\
+&amp;= &lt;v, \overline{\psi(e_1)} e_1 + .... + \overline{\psi(e_n)} e_n&gt;
+\end{aligned}\]</span>
+<p>Let <span class="math inline">\(u = \overline{\psi(e_1)} e_1 + .... + \overline{\psi(e_n)} e_n\)</span>, then we have:</p>
+<p><span class="math display">\[\psi(v) = &lt;v, u&gt;\]</span></p>
+<p>We now show that <span class="math inline">\(u\)</span> is unique. Suppose <span class="math inline">\(\psi (v) = &lt;v, u_1 &gt; = &lt;v, u_2&gt;\)</span>, then:</p>
+<p><span class="math display">\[&lt;v, u_1&gt; - &lt;v, u_2&gt; = 0\]</span></p>
+<p>Thus, we have <span class="math inline">\(\forall v \in V\)</span>:</p>
+<p><span class="math display">\[&lt;v, u_1 - u_2&gt; = 0\]</span></p>
+<p>This shows that <span class="math inline">\(u_1 = u_2\)</span>.</p>
+<h3 id="orthogonal-complements-and-minimization-problems">Orthogonal Complements and Minimization Problems</h3>
+<h4 id="definition-6.45-orthogonal-complement-uperp">Definition 6.45: Orthogonal Complement, <span class="math inline">\(U^{\perp}\)</span></h4>
+<p>If <span class="math inline">\(U\)</span> is a subset of <span class="math inline">\(V\)</span>, then the <strong>orthogonal complement</strong> of <span class="math inline">\(U\)</span>, denoted <span class="math inline">\(U^{\perp}\)</span> is the set of all vectors in <span class="math inline">\(V\)</span>, that are orthogonal to every vector in <span class="math inline">\(U\)</span>:</p>
+<p><span class="math display">\[U^{\perp} = \{v \in V: &lt;v, u&gt; = 0; \forall u \in U\}\]</span></p>
+<h4 id="theorem-6.46-basic-properties-of-orthogonal-complement">Theorem 6.46 Basic Properties of Orthogonal Complement</h4>
+<ol type="1">
+<li>If <span class="math inline">\(U\)</span> is a subset of <span class="math inline">\(V\)</span>, then <span class="math inline">\(U^{\perp}\)</span> is a subspace of <span class="math inline">\(V\)</span>.</li>
+<li><span class="math inline">\(\{0\}^{\perp} = V\)</span>.</li>
+<li><span class="math inline">\(V^{\perp} = \{0\}\)</span>.</li>
+<li>If <span class="math inline">\(U\)</span> is a subset of <span class="math inline">\(V\)</span>, then <span class="math inline">\(U \cap U^{\perp} \subseteq \{0\}\)</span>. (<strong>empty set is subset of every set</strong>)</li>
+<li>If <span class="math inline">\(U\)</span> and <span class="math inline">\(W\)</span> are subsets of <span class="math inline">\(V\)</span> and <span class="math inline">\(U \subseteq W\)</span>, then <span class="math inline">\(W^{\perp} \subseteq U^{\perp}\)</span>.</li>
+</ol>
+<h5 id="proof-of-theorem-6.46">Proof of Theorem 6.46:</h5>
+<p>1 to 4 are trivial.</p>
+<ol start="5" type="1">
+<li>Suppose <span class="math inline">\(U, W\)</span> are subsets of <span class="math inline">\(V\)</span> and <span class="math inline">\(U \subseteq W\)</span>. Suppose <span class="math inline">\(v \in W^{\perp}\)</span>, then <span class="math inline">\(\forall u \in W\)</span>, we have <span class="math inline">\(&lt;u, v&gt; = 0\)</span>. Thus, we have <span class="math inline">\(\forall u \in U\)</span>, <span class="math inline">\(&lt;v, u&gt; = 0\)</span>, so <span class="math inline">\(v \in U^{\perp}, \forall v\in W^{\perp}\)</span>. Hence, <span class="math inline">\(W^{\perp} \subseteq U^{\perp}\)</span>.</li>
+</ol>
+<h4 id="theorem-6.47-direct-sum-of-a-subspace-and-its-orthogonal-complement">Theorem 6.47: Direct Sum of a Subspace and Its Orthogonal Complement</h4>
+<p>Suppose <span class="math inline">\(U\)</span> is finite-dimensional subspace of <span class="math inline">\(V\)</span>, then:</p>
+<p><span class="math display">\[V = U \oplus U^{\perp}\]</span></p>
+<h5 id="proof-of-theorem-6.47">Proof of Theorem 6.47:</h5>
+<p>We first show that:</p>
+<p><span class="math display">\[V = U + W\]</span></p>
+<p>Let <span class="math inline">\(U, W\)</span> be a subspace of <span class="math inline">\(V\)</span> and <span class="math inline">\(e_1, ..., e_m\)</span> be orthonormal basis of <span class="math inline">\(U\)</span>. Then, <span class="math inline">\(\forall v \in V\)</span> by <code>theorem 6.30</code>:</p>
+<p><span class="math display">\[v = \underbrace{(v - &lt;v, e_1&gt;e_1 + ... + &lt;v, e_m&gt;e_m)}_{w} + \underbrace{(&lt;v, e_1&gt;e_1 + ... + &lt;v, e_m&gt;e_m)}_{u}\]</span></p>
+<p>Let <span class="math inline">\(u, w\)</span> be defined as above, we clearly have <span class="math inline">\(u \in U\)</span>. Thus:</p>
+<p><span class="math display">\[&lt;w, e_j&gt; = &lt;v - &lt;v, e_1&gt;e_1 + ... + &lt;v, e_m&gt;e_m, e_j&gt; = &lt;v, e_j&gt; - &lt;v, e_j&gt; = 0\]</span></p>
+<p>So, we have <span class="math inline">\(\forall u \in U\)</span>, <span class="math inline">\(&lt;w, u&gt; = 0\)</span>, so <span class="math inline">\(w \in U^{\perp} = W\)</span>. Thus, <span class="math inline">\(\forall v \in V\)</span> we have:</p>
+<p><span class="math display">\[v = u + w\]</span></p>
+<p>and <span class="math inline">\(U, W\)</span> are subspaces of <span class="math inline">\(V\)</span>.</p>
+<p>Since <span class="math inline">\(U \cap U^{\perp} \subseteq \{0\}\)</span> and <span class="math inline">\(U\)</span> is a subspace so we have <span class="math inline">\(U \cap U^{\perp} = \{0\}\)</span>, by <code>theorem 1.45</code>, we have:</p>
+<p><span class="math display">\[V = U \oplus W = U \oplus U^{\perp}\]</span></p>
+<h4 id="theorem-6.50-dimension-of-the-orthogonal-complement">Theorem 6.50 Dimension of the Orthogonal Complement</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is finite-dimensional and <span class="math inline">\(U\)</span> is a subspace of <span class="math inline">\(V\)</span>. Then:</p>
+<p><span class="math display">\[\dim U^{\perp} = \dim V - \dim U\]</span></p>
+<h4 id="theorem-6.51-the-orthogonal-complement-of-the-orthogonal-complement">Theorem 6.51: The Orthogonal Complement of the Orthogonal Complement</h4>
+<p>Suppose <span class="math inline">\(U\)</span> is a finite-dimensional subspace of <span class="math inline">\(V\)</span>, then:</p>
+<p><span class="math display">\[U = (U^{\perp})^{\perp}\]</span></p>
+<h4 id="definition-6.53-orthogonal-projection-p_u">Definition 6.53: Orthogonal Projection, <span class="math inline">\(P_U\)</span></h4>
+<p>Suppose <span class="math inline">\(U\)</span> is a finite-dimensional subspace of <span class="math inline">\(V\)</span>. For <span class="math inline">\(v \in V\)</span>, write <span class="math inline">\(v = u + w\)</span>, where <span class="math inline">\(u \in U, w \in U^{\perp}\)</span>, the <strong>orthogonal projection</strong> of <span class="math inline">\(V\)</span> onto <span class="math inline">\(U\)</span> is the operator <span class="math inline">\(P_U \in L(V)\)</span> defined as:</p>
+<p><span class="math display">\[P_{U} (v) = u\]</span></p>
+<blockquote>
+<p>Suppose <span class="math inline">\(v \in V\)</span>. Let <span class="math inline">\(x \in V, x \neq 0\)</span> and <span class="math inline">\(U = span(x)\)</span>, then:</p>
+<p><span class="math display">\[v = (\frac{&lt;v, x&gt;}{\|x\|^2} x) + (v - \frac{&lt;v, x&gt;}{\|x\|^2} x)\]</span></p>
+<p>The first term is in <span class="math inline">\(U\)</span> and the second therm is in <span class="math inline">\(U^{\perp}\)</span>, thus</p>
+<p><span class="math display">\[P_U(v) = \frac{&lt;v, x&gt;}{\|x\|^2} x\]</span></p>
+</blockquote>
+<h4 id="theorem-6.55-properties-of-the-orthogonal-projection-p_u">Theorem 6.55: Properties of the Orthogonal Projection <span class="math inline">\(P_{U}\)</span></h4>
+<p>Suppose <span class="math inline">\(U\)</span> is a finite-dimensional subspace of <span class="math inline">\(V\)</span> and <span class="math inline">\(v \in V\)</span>. Then:</p>
+<ol type="1">
+<li><span class="math inline">\(P_U \in L(V)\)</span>.</li>
+<li><span class="math inline">\(P_U (u) = u, \; \forall u \in U\)</span>.</li>
+<li><span class="math inline">\(P_u (w) = 0, \; \forall w \in U^{\perp}\)</span>.</li>
+<li><span class="math inline">\(\text{range } P_{U} = U\)</span>.</li>
+<li><span class="math inline">\(\text{null } P_U = U^{\perp}\)</span>.</li>
+<li><span class="math inline">\(v - P_U(v) \in U^{\perp}\)</span></li>
+<li><span class="math inline">\(P^2_U = P_U\)</span>.</li>
+<li><span class="math inline">\(\|P_U (v)\| \leq \|v\|\)</span>.</li>
+<li>For every orthonormal basis <span class="math inline">\(e_1, ..., e_m\)</span> of <span class="math inline">\(U\)</span>, <span class="math display">\[P_U (v) = &lt;v, e_1&gt;e_1 + .... + &lt;v, e_m&gt;e_m\]</span></li>
+</ol>
+<h4 id="theorem-6.56-minimizing-the-distance-to-a-subspace">Theorem 6.56 Minimizing the Distance to a Subspace</h4>
+<p>Suppose <span class="math inline">\(U\)</span> is a finite-dimensional subspace of <span class="math inline">\(V\)</span>, <span class="math inline">\(v \in V\)</span> and <span class="math inline">\(u \in U\)</span>. Then:</p>
+<p><span class="math display">\[\|v - P_U (v)\| \leq \|v - u\|\]</span></p>
+<p>Furthermore, the inequality above is an equality iFF <span class="math inline">\(u = P_U(v)\)</span>.</p>
+<p><strong>Notice there, <span class="math inline">\(u\)</span> and <span class="math inline">\(P_U (v)\)</span> might be different.</strong></p>
+<h2 id="operators-on-inner-product-spaces">Operators on Inner Product Spaces</h2>
+<h3 id="self-adjoint-and-normal-operators">Self-Adjoint and Normal Operators</h3>
+<h4 id="definition-7.2-adjoint-t">Definition 7.2: Adjoint, <span class="math inline">\(T^*\)</span></h4>
+<p>Suppose <span class="math inline">\(T \in L(V, W)\)</span>. The <strong>adjoint</strong> of <span class="math inline">\(T\)</span> is the function <span class="math inline">\(T^*: W \rightarrow V\)</span> s.t:</p>
+<p><span class="math display">\[&lt;T(v), w&gt; = &lt;v, T^*(w)&gt;\]</span></p>
+<p>for every <span class="math inline">\(v \in V\)</span> and every <span class="math inline">\(w \in W\)</span>.</p>
+<p><strong>To see why this definition makes sense</strong>, let <span class="math inline">\(T: V \rightarrow \mathbb{F}\)</span> be a linear functional on <span class="math inline">\(V\)</span> defined as:</p>
+<p><span class="math display">\[T(v) = &lt;T(v), w&gt;\]</span></p>
+<p>for some <span class="math inline">\(w \in W\)</span>. By <code>theorem 6.42</code>, there exists a unique element <span class="math inline">\(v_2\)</span> in <span class="math inline">\(V\)</span> s.t for every element <span class="math inline">\(v \in V\)</span>:</p>
+<p><span class="math display">\[T(v) = &lt;T(v), w&gt; = &lt;v, v_2&gt;\]</span></p>
+<p>We call this unique vector <span class="math inline">\(T^* (w)\)</span>.</p>
+<blockquote>
+<p>Define <span class="math inline">\(T: \mathbb{R}^3 \rightarrow \mathbb{R}^2\)</span> by: <span class="math display">\[T(x_1, x_2, x_3) = (x_2 + 3x_3, 2x_1)\]</span></p>
+<p>Here <span class="math inline">\(T^*: \mathbb{R}^2 \rightarrow \mathbb{R}^3\)</span> can be found by:</p>
+<p><span class="math display">\[&lt;(x_1, x_2, x_3), T^*(y_1, y_2)&gt; = &lt;T(x_1, x_2, x_3), (y_1, y_2)&gt; = &lt;(x_1, x_2, x_3), (2y_2, y_1, 3y_1)&gt;\]</span></p>
+<p>Where <span class="math inline">\((y_1, y_2) \in \mathbb{R}^2, (x_1, x_2, x_3) \in \mathbb{R}^3\)</span>.</p>
+</blockquote>
+<h4 id="theorem-7.5-the-adjoint-is-a-linear-map">Theorem 7.5: The Adjoint is a Linear Map</h4>
+<p>If <span class="math inline">\(T \in L(V, W)\)</span>, then <span class="math inline">\(T^* \in L(W, V)\)</span>.</p>
+<h4 id="theorem-7.6-properties-of-the-adjoint">Theorem 7.6: Properties of the Adjoint</h4>
+<ol type="a">
+<li><span class="math inline">\((S + T)^* = S^* + T^*, \; \forall S, T \in L(V, W)\)</span></li>
+<li><span class="math inline">\((\lambda T)^* = \bar{\lambda} T^*, \; \forall \lambda \in \mathbb{F}, T \in L(V, W)\)</span></li>
+<li><span class="math inline">\((T^*)^* = T\)</span></li>
+<li><span class="math inline">\(I^* = I\)</span>, where <span class="math inline">\(I\)</span> is the identity operator on <span class="math inline">\(V\)</span>.</li>
+<li><span class="math inline">\((ST)^* = T^* S^*, \; \forall T \in L(V, W), S \in L(W, U)\)</span></li>
+</ol>
+<h4 id="theorem-7.7-null-space-and-range-of-t">Theorem 7.7: Null Space and Range of <span class="math inline">\(T^*\)</span></h4>
+<p>Suppose <span class="math inline">\(T \in L(V, W)\)</span>. Then:</p>
+<ol type="1">
+<li><span class="math inline">\(\text{null } T^* = (\text{range }T)^{\perp}\)</span>.</li>
+<li><span class="math inline">\(\text{range }T^* = (\text{null } T)^{\perp}\)</span>.</li>
+<li><span class="math inline">\(\text{null }T = (\text{range }T^*)^{\perp}\)</span>.</li>
+<li><span class="math inline">\(\text{range }T = (\text{null }T^*)^{\perp}\)</span>.</li>
+</ol>
+<h4 id="definition-7.8-conjugate-transpose">Definition 7.8: Conjugate Transpose</h4>
+<p>The <strong>conjugate transpose</strong> of an <span class="math inline">\(m \times n\)</span> matrix is the <span class="math inline">\(n \times m\)</span> matrix obtained by interchanging the rows and columns and then taking the complex conjugate of each entry. If <span class="math inline">\(\mathbb{F} = \mathbb{R}\)</span>, then the conjugate transpose of a matrix is the same as its <strong>transpose</strong>.</p>
+<h4 id="theorem-7.10-the-matrix-of-t">Theorem 7.10: The Matrix of <span class="math inline">\(T^*\)</span></h4>
+<p>Let <span class="math inline">\(T \in L(V, W)\)</span>. Suppose <span class="math inline">\(e_1, ..., e_n\)</span> is an <strong>orthonormal basis</strong> of <span class="math inline">\(V\)</span> and <span class="math inline">\(f_1, ..., f_m\)</span> is an orthonormal basis of <span class="math inline">\(W\)</span>. Then:</p>
+<p><span class="math display">\[M(T^*, (f_1, ..., f_m), (e_1, ..., e_n))\]</span></p>
+<p>is the conjugate transpose of:</p>
+<p><strong>Notice that, the result above only applies when we have orthonormal bases, for non-orthonormal bases, the matrix <span class="math inline">\(T^*\)</span> does not necessarily equal the conjugate transpose of the matrix of <span class="math inline">\(T\)</span>.</strong></p>
+<h4 id="definition-7.11-self-adjoint-hermitian">Definition 7.11: Self-Adjoint (Hermitian)</h4>
+<p>An operator <span class="math inline">\(T \in L(V)\)</span> is called <strong>self-adjoint</strong> if <span class="math inline">\(T = T^*\)</span>. In other words, <span class="math inline">\(T \in L(V)\)</span> is self-adjoint if and only if:</p>
+<p><span class="math display">\[&lt;T(v), w&gt; = &lt;v, T(w)&gt;\]</span></p>
+<p>for all <span class="math inline">\(v, w \in V\)</span>.</p>
+<p><strong>Adjoint on <span class="math inline">\(L(V)\)</span> plays a role similar to complex conjugation on <span class="math inline">\(\mathbb{C}\)</span> and self-adjoint operator is analogous to a real number. Sometimes, people use symmetric for the matrix of self-adjoint operator with real entries.</strong></p>
+<h4 id="theorem-7.13-eigenvalues-of-self-adjoint-operators-are-real">Theorem 7.13: Eigenvalues of Self-Adjoint Operators are Real</h4>
+<p>Every eigenvalue of a self-adjoint operator is real.</p>
+<h4 id="theorem-7.14">Theorem 7.14:</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a <strong>complex inner product space</strong> and <span class="math inline">\(T \in L(V)\)</span>. Suppose:</p>
+<p><span class="math display">\[&lt;T(v), v&gt; = 0\]</span></p>
+<p>for all <span class="math inline">\(v \in V\)</span>. Then <span class="math inline">\(T = 0\)</span>.</p>
+<p><strong>This result is not true for real value space.</strong></p>
+<h4 id="theorem-7.15-over-mathbbc-tv-v-is-real-for-all-v-only-for-self-adjoint-operators">Theorem 7.15: Over <span class="math inline">\(\mathbb{C}\)</span>, <span class="math inline">\(&lt;T(v), v&gt;\)</span> is real for all <span class="math inline">\(v\)</span> only for self-adjoint operators</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a complex inner product space and <span class="math inline">\(T \in L(V)\)</span>. Then <span class="math inline">\(T\)</span> is self-adjoint if and only if:</p>
+<p><span class="math display">\[&lt;T(v), v&gt; \in \mathbb{R}\]</span></p>
+<p>for every <span class="math inline">\(v \in V\)</span></p>
+<h4 id="theorem-7.16-if-t-t-and-tv-v-0-forall-v-then-t-0">Theorem 7.16: If <span class="math inline">\(T = T^*\)</span> and <span class="math inline">\(&lt;T(v), v&gt; = 0; \forall v\)</span>, Then <span class="math inline">\(T = 0\)</span></h4>
+<p>Suppose <span class="math inline">\(T\)</span> is self-adjoint operator on <span class="math inline">\(V\)</span> s.t:</p>
+<p><span class="math display">\[&lt;Tv, v&gt; = 0\]</span></p>
+<p>for all <span class="math inline">\(v \in V\)</span>. Then <span class="math inline">\(T = 0\)</span>.</p>
+<h4 id="definition-7.18-normal">Definition 7.18: Normal</h4>
+<p>An operator on an inner product space is called <strong>normal</strong> if it commutes with its adjoint. In other words, <span class="math inline">\(T \in L(V)\)</span> is normal if <span class="math display">\[TT^* = T^*T\]</span></p>
+<p><strong>Every self-adjoint operator is normal</strong></p>
+<h4 id="theorem-7.20-t-is-normal-iff-tv-tv-forall-v">Theorem 7.20: <span class="math inline">\(T\)</span> is Normal IFF <span class="math inline">\(\|T(v)\| = \|T^*(v)\| \; \forall v\)</span></h4>
+<p>An operator <span class="math inline">\(T \in L(V)\)</span> is normal if and only if:</p>
+<p><span class="math display">\[\|T(v)\| = \|T^*(v)\|\]</span></p>
+<p>for all <span class="math inline">\(v \in V\)</span>.</p>
+<h4 id="theorem-7.21-for-t-normal-t-t-have-the-same-eigenvectors">Theorem 7.21: For <span class="math inline">\(T\)</span> normal, <span class="math inline">\(T, T^*\)</span> Have the Same Eigenvectors</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span> is normal and <span class="math inline">\(v \in V\)</span> is an eigenvector of <span class="math inline">\(T\)</span> with eigenvalue <span class="math inline">\(\lambda\)</span>. Then <span class="math inline">\(v\)</span> is also an eigenvector of <span class="math inline">\(T^*\)</span> with eigenvalue <span class="math inline">\(\bar{\lambda}\)</span>.</p>
+<h4 id="theorem-7.22-orthogonal-eigenvectors-for-normal-operators">Theorem 7.22: Orthogonal Eigenvectors for Normal Operators</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span> is normal. Then eigenvectors of <span class="math inline">\(T\)</span> corresponding to distinct eigenvalues are orthogonal.</p>
+<h3 id="the-spectral-theorem">The Spectral Theorem</h3>
+<h4 id="theorem-7.24-complex-spectral-theorem">Theorem 7.24: Complex Spectral Theorem</h4>
+<p>Suppose <span class="math inline">\(\mathbb{F} = \mathbb{C}\)</span> and <span class="math inline">\(T \in L(V)\)</span>. Then the following are equivalent:</p>
+<ol type="1">
+<li><span class="math inline">\(T\)</span> is normal.</li>
+<li><span class="math inline">\(V\)</span> has an orthonormal basis consisting of eigenvectors of <span class="math inline">\(T\)</span>.</li>
+<li><span class="math inline">\(T\)</span> has a diagonal matrix with respect to some orthonormal basis of <span class="math inline">\(V\)</span>.</li>
+</ol>
+<h5 id="proof-theorem-7.24">Proof Theorem 7.24</h5>
+<p>Suppose 2 holds, then <span class="math inline">\(T\)</span> has a diagonal matrix, then <span class="math inline">\(T^*\)</span> has a diagonal matrix, since diagonal matrices commute, we have 1.</p>
+<p>Suppose 3 holds, similarly 1 holds.</p>
+<p>Suppose 1 holds, so <span class="math inline">\(T\)</span> is normal. by <code>theorem 6.38</code>, there is an orthonormal basis <span class="math inline">\(e_1, ..., e_n\)</span> of <span class="math inline">\(V\)</span> w.r.t which <span class="math inline">\(T\)</span> has an upper-triangular matrix. Thus, have:</p>
+<p><span class="math display">\[\|T(e_1)\|^2 = |a_{1, 1}|^2\]</span></p>
+<p><span class="math display">\[\|T^*(e_1)\|^2 = |\overline{a_{1, 1}}|^2 + .... + |\overline{a_{1, n}}|^2 = |a_{1, 1}|^2 + .... + |a_{1, n}|^2\]</span></p>
+<p>Since <span class="math inline">\(\|T^*(e_1)\|^2 = \|T(e_1)\|^2\)</span>, we have all entries equal 0 except possibly <span class="math inline">\(a_{1, 1}\)</span>. Repeat this procedure for second column, we have 3.</p>
+<h4 id="theorem-7.26-invertible-quadratic-expressions">Theorem 7.26: Invertible Quadratic Expressions</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span> is self-adjoint and <span class="math inline">\(b, c \in \mathbb{R}\)</span> are such that <span class="math inline">\(b^2 &lt; 4c\)</span>. Then:</p>
+<p><span class="math display">\[T^2 + bT + cI\]</span></p>
+<p>is invertible.</p>
+<h4 id="theorem-7.27-self-adjoint-operators-have-eigenvalues">Theorem 7.27: Self-Adjoint Operators Have Eigenvalues</h4>
+<p>Suppose <span class="math inline">\(V \neq \{0\}\)</span> and <span class="math inline">\(T \in L(V)\)</span> is a self-adjoint operator. Then <span class="math inline">\(T\)</span> has an eigenvalue.</p>
+<h4 id="theorem-7.28-self-adjoint-operators-and-invariant-subspaces">Theorem 7.28: Self-Adjoint Operators and Invariant Subspaces</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span> is self-adjoint and <span class="math inline">\(U\)</span> is a subspace of <span class="math inline">\(V\)</span> that is invariant under <span class="math inline">\(T\)</span>. Then</p>
+<ol type="1">
+<li><span class="math inline">\(U^{\perp}\)</span> is invariant under <span class="math inline">\(T\)</span>.</li>
+<li><span class="math inline">\(T|_{U} \in L(U)\)</span> is self-adjoint.</li>
+<li><span class="math inline">\(T|_{U^{\perp}} \in L(U^{\perp})\)</span> is self-adjoint.</li>
+</ol>
+<h4 id="theorem-7.29-real-spectral-theorem">Theorem 7.29: Real Spectral Theorem</h4>
+<p>Suppose <span class="math inline">\(\mathbb{F} = \mathbb{R}\)</span> and <span class="math inline">\(T \in L(V)\)</span>. Then the following are equivalent:</p>
+<ol type="1">
+<li><span class="math inline">\(T\)</span> is self-adjoint (Symmetric).</li>
+<li><span class="math inline">\(V\)</span> has an orthonormal basis consisting of eigenvectors of <span class="math inline">\(T\)</span>.</li>
+<li><span class="math inline">\(T\)</span> has a diagonal matrix w.r.t to some orthonormal basis of <span class="math inline">\(V\)</span>.</li>
+</ol>
+<h3 id="positive-operators-and-isometries">Positive Operators and Isometries</h3>
+<h4 id="definition-7.31-positive-operator-positive-semi-definite">Definition 7.31: Positive Operator (Positive Semi-definite)</h4>
+<p>An operator <span class="math inline">\(T \in L(V)\)</span> is called <strong>positive</strong> if <span class="math inline">\(T\)</span> is self-adjoint and</p>
+<p><span class="math display">\[&lt;T(v), v&gt; \geq 0\]</span></p>
+<p>for all <span class="math inline">\(v \in V\)</span>.</p>
+<p><strong>If <span class="math inline">\(V\)</span> is a complex vector space, then the requirement that <span class="math inline">\(T\)</span> is self-joint can be dropped because we require <span class="math inline">\(&lt;T(v), v&gt; \in \mathbb{R}\)</span></strong>.</p>
+<blockquote>
+<p>If U is a subspace of <span class="math inline">\(V\)</span>, then the orthogonal projection <span class="math inline">\(P_U\)</span> is a positive operator because: <span class="math display">\[&lt;P_U (v), v&gt; = &lt;u, u + w&gt; = \|u\|^2 \geq 0\]</span></p>
+<p>At the same time, <span class="math inline">\(P_U\)</span> is a self-adjoint operator because the matrix of <span class="math inline">\(P_U\)</span> is identity matrix w.r.t orthonormal basis <span class="math inline">\(e_1, ..., e_m\)</span>.</p>
+</blockquote>
+<h4 id="definition-7.33-square-root">Definition 7.33: Square Root</h4>
+<p>An operator <span class="math inline">\(R\)</span> is called a <strong>square root</strong> of an operator <span class="math inline">\(T\)</span> if <span class="math inline">\(R^2 = T\)</span>.</p>
+<blockquote>
+<p>If <span class="math inline">\(T \in L(\mathbb{F}^3)\)</span> is defined by <span class="math inline">\(T(z_1, z_2, z_3) = (z_3, 0, 0)\)</span>, then the operator <span class="math inline">\(R \in L(\mathbb{F}^3)\)</span> defined by <span class="math inline">\(R(z_1, z_2, z_3) = (z_2, z_3, 0)\)</span> is a square root of <span class="math inline">\(T\)</span>.</p>
+</blockquote>
+<h4 id="theorem-7.35-characterization-of-positive-operators">Theorem 7.35: Characterization of Positive Operators</h4>
+<p>Let <span class="math inline">\(T \in L(V)\)</span>. Then the following are equivalent:</p>
+<ol type="a">
+<li><span class="math inline">\(T\)</span> is positive.</li>
+<li><span class="math inline">\(T\)</span> is self-adjoint and all the eigenvalues of <span class="math inline">\(T\)</span> are non-negative.</li>
+<li><span class="math inline">\(T\)</span> has a positive square root.</li>
+<li><span class="math inline">\(T\)</span> has a self-adjoint square root.</li>
+<li>There exists an operator <span class="math inline">\(R \in L(V)\)</span> s.t <span class="math inline">\(T = R^*R\)</span>.</li>
+</ol>
+<h4 id="theorem-7.36-every-positive-operator-has-only-one-positive-square-root">Theorem 7.36: Every Positive Operator Has Only One Positive Square Root</h4>
+<p>Every positive operator on <span class="math inline">\(V\)</span> has a unique positive square root.</p>
+<p><strong>A positive operator can have infinitely many square roots, although only one of them can be positive.</strong></p>
+<h4 id="definition-7.37-isometry">Definition 7.37: Isometry</h4>
+<p>An operator <span class="math inline">\(S \in L(V)\)</span> is called an <strong>isometry</strong> if:</p>
+<p><span class="math display">\[\|S(v)\| = \|v\|\]</span></p>
+<p>for all <span class="math inline">\(v \in V\)</span></p>
+<p>In other words, an operator is an isometry if it preserves norms</p>
+<h4 id="theorem-7.42-characterization-of-isometries">Theorem 7.42: Characterization of Isometries</h4>
+<p>Suppose <span class="math inline">\(S \in L(V)\)</span>. Then the following are equivalent:</p>
+<ol type="a">
+<li><span class="math inline">\(S\)</span> is an isometry.</li>
+<li><span class="math inline">\(&lt;S(u), S(v)&gt; = &lt;u, v&gt;, \; \forall u, v \in V\)</span>.</li>
+<li><span class="math inline">\(S(e_1) , ...., S(e_n)\)</span> is orthonormal for every orthonormal list of vectors <span class="math inline">\(e_1, ..., e_n \in V\)</span>.</li>
+<li>There exists an orthonormal basis <span class="math inline">\(e_1, ..., e_n\)</span> of <span class="math inline">\(V\)</span> s.t <span class="math inline">\(S(e_1), ..., S(e_n)\)</span> is orthonormal.</li>
+<li><span class="math inline">\(S^*S = I\)</span></li>
+<li><span class="math inline">\(SS^* = I\)</span></li>
+<li><span class="math inline">\(S^*\)</span> is an isometry.</li>
+<li><span class="math inline">\(S\)</span> is invertible and <span class="math inline">\(S^{-1} = S^*\)</span>.</li>
+<li><span class="math inline">\(S\)</span> is normal.</li>
+</ol>
+<h4 id="theorem-7.43-description-of-isometries-when-mathbbf-mathbbc">Theorem 7.43: Description of Isometries When <span class="math inline">\(\mathbb{F} = \mathbb{C}\)</span></h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a complex inner product space and <span class="math inline">\(S \in L(V)\)</span>. Then the following are equivalent:</p>
+<ol type="a">
+<li><span class="math inline">\(S\)</span> is an isometry.</li>
+<li>There is an orthonormal basis of <span class="math inline">\(V\)</span> consisting of eigenvectors of <span class="math inline">\(S\)</span> whose corresponding eigenvalues all have absolute value <span class="math inline">\(1\)</span>.</li>
+</ol>
+<h3 id="polar-decomposition-and-singular-value-decomposition">Polar Decomposition and Singular Value Decomposition</h3>
+<h4 id="definition-7.44-sqrtt">Definition 7.44: <span class="math inline">\(\sqrt{T}\)</span></h4>
+<p>If <span class="math inline">\(T\)</span> is a positive operator, then <span class="math inline">\(\sqrt{T}\)</span> denotes the unique positive square root of <span class="math inline">\(T\)</span>.</p>
+<h4 id="theorem-7.45-polar-decomposition">Theorem 7.45: Polar Decomposition</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span>. Then there exists an isometry <span class="math inline">\(S \in L(V)\)</span> s.t:</p>
+<p><span class="math display">\[T = S\sqrt{T^*T}\]</span></p>
+<h4 id="definition-7.49-singular-value-decomposition">Definition 7.49: Singular Value Decomposition</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span>. The <strong>singular values</strong> of <span class="math inline">\(T\)</span> are the eigenvalues of <span class="math inline">\(\sqrt{T^* T}\)</span>, with each eigenvalue <span class="math inline">\(\lambda\)</span> repeated <span class="math inline">\(\dim E(\lambda, \sqrt{T^*T})\)</span> times.</p>
+<p><strong>The singular values of <span class="math inline">\(T\)</span> are all non-negative, because they are the eigenvalues of the positive operator <span class="math inline">\(\sqrt{T^*T}\)</span></strong></p>
+<blockquote>
+<p>Define <span class="math inline">\(T \in L(\mathbb{F}^4)\)</span>: <span class="math display">\[T(z_1, z_2, z_3, z_4) = (0, 3z_1, 2z_2, -3z_4)\]</span></p>
+<p>a bit calculation, we have:</p>
+<p><span class="math display">\[T^* (x_1, x_2, x_3, x_4) = (3x_2, 2x_3, 0, -3x_4)\]</span></p>
+<p>Thus:</p>
+<p><span class="math display">\[T^*T(z_1, z_2, z_3, z_4) = (9z_1, 4z_2, 0, 9z_4)\]</span></p>
+<p>Then:</p>
+<p><span class="math display">\[\sqrt{T^* T} (z_1, z_2, z_3, z_4) = (3z_1, 2z_2, 0, 3z_4)\]</span></p>
+<p>The eigenvalues are <span class="math inline">\(3, 2, 0\)</span> and: <span class="math display">\[\dim E(3, \sqrt{T^*T}) = 2, \dim E(2, \sqrt{T^*T}) = 1, \dim E(0, \sqrt{T^*T}) = 1\]</span></p>
+<p>Hence, the singular values of <span class="math inline">\(T\)</span> are <span class="math inline">\(3, 3, 2, 0\)</span></p>
+</blockquote>
+<h4 id="theorem-7.51-singular-value-decomposition">Theorem 7.51: Singular Value Decomposition</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span> has singular values <span class="math inline">\(s_1, ..., s_n\)</span>. Then there exist orthonormal bases <span class="math inline">\(e_1, ..., e_n\)</span> and <span class="math inline">\(f_1, ..., f_n\)</span> of <span class="math inline">\(V\)</span> s.t:</p>
+<p><span class="math display">\[T(v) = s_1 &lt;v, e_1&gt;f_1 + .... + s_n&lt;v, e_n&gt;f_n\]</span></p>
+<p>for every <span class="math inline">\(v \in V\)</span>.</p>
+<h4 id="theorem-7.52-singular-values-without-taking-square-root-of-an-operator">Theorem 7.52: Singular Values Without Taking Square Root of an Operator</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span>. Then the singular values of <span class="math inline">\(T\)</span> are the non-negative square roots of the eigenvalues of <span class="math inline">\(T^*T\)</span>, with each eigenvalue <span class="math inline">\(\lambda\)</span> repeated <span class="math inline">\(\dim E(\lambda, T^*T) times\)</span>.</p>
+<h5 id="proof-of-theorem-7.52">Proof of Theorem 7.52:</h5>
+<p>Let <span class="math inline">\(e_1, ..., e_n\)</span> be orthonormal basis of <span class="math inline">\(V\)</span> s.t:</p>
+<p><span class="math display">\[\sqrt{T^*T} (e_j) = s_j e_j\]</span></p>
+<p>Then:</p>
+<p><span class="math display">\[\sqrt{T^*T}\sqrt{T^*T} (e_j) = \sqrt{T^*T}(s_j e_j) = s^2_j e_j = T^*T(e_j)\]</span></p>
+<p>Thus, <span class="math inline">\(s^2_j = \lambda_j\)</span> which is the eigenvalue of <span class="math inline">\(T^*T(e_j)\)</span>.</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/MDP/" rel="bookmark">MDP</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-equations/" rel="bookmark">Bellman Equations</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-optimality-equations/" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/14/calculus/" rel="bookmark">Calculus (1)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/dp/" rel="bookmark">Dynamic Programming</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RL-Basics/" rel="tag"># RL Basics</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/01/19/linear-algebra-3/" rel="prev" title="Linear Algebra (3)">
+                  <i class="fa fa-chevron-left"></i> Linear Algebra (3)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/02/04/linear-algebra-5/" rel="next" title="linear-algebra-5">
+                  linear-algebra-5 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="MDP Based on Prof Amir-massoud Farahmand&#39;s Lecture on RL  Define our MDP different from Introduction to RL book:  Where \(M(X)\) is the space of all probability distributions defined over the state sp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MDP">
+<meta property="og:url" content="https://swag1ong.github.io/2021/05/03/MDP/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="MDP Based on Prof Amir-massoud Farahmand&#39;s Lecture on RL  Define our MDP different from Introduction to RL book:  Where \(M(X)\) is the space of all probability distributions defined over the state sp">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/bellman_equation/mdp.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/bellman_equation/policy_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/bellman_equation/policy.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/bellman_equation/transition_kernel.png">
+<meta property="article:published_time" content="2021-05-02T17:44:05.000Z">
+<meta property="article:modified_time" content="2021-06-14T16:29:36.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="RL Basics">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swag1ong.github.io/images/RL/bellman_equation/mdp.png">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/05/03/MDP/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;05&#x2F;03&#x2F;MDP&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;05&#x2F;03&#x2F;MDP&#x2F;&quot;,&quot;title&quot;:&quot;MDP&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>MDP | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#mdp"><span class="nav-number">1.</span> <span class="nav-text">MDP</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#policy"><span class="nav-number">1.1.</span> <span class="nav-text">Policy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#policy-induced-transition-kernels"><span class="nav-number">1.2.</span> <span class="nav-text">Policy induced Transition Kernels</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rewards-and-returns"><span class="nav-number">1.3.</span> <span class="nav-text">Rewards and Returns</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#example"><span class="nav-number">1.4.</span> <span class="nav-text">Example</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#value-functions"><span class="nav-number">1.5.</span> <span class="nav-text">Value functions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#another-formulation"><span class="nav-number">1.6.</span> <span class="nav-text">Another formulation</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/05/03/MDP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MDP
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-05-03 01:44:05" itemprop="dateCreated datePublished" datetime="2021-05-03T01:44:05+08:00">2021-05-03</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-15 00:29:36" itemprop="dateModified" datetime="2021-06-15T00:29:36+08:00">2021-06-15</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/Basics/" itemprop="url" rel="index"><span itemprop="name">Basics</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/05/03/MDP/" class="post-meta-item leancloud_visitors" data-flag-title="MDP" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>2.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="mdp">MDP</h1>
+<p><span style="color:red"><em>Based on Prof Amir-massoud Farahmand's Lecture on RL</em> </span></p>
+<p>Define our MDP different from Introduction to RL book:</p>
+<p><img src='/images/RL/bellman_equation/mdp.png'></p>
+<p>Where <span class="math inline">\(M(X)\)</span> is the space of all probability distributions defined over the state space X <span id="more"></span></p>
+<p>So a sample of the process can be described as a rollout or trajectory:</p>
+<p><span class="math display">\[\tau = X_1, A_1, R_1, X_2, A_2, R_2, ...\]</span></p>
+<p>A deterministic dynamical system always behave exactly the same given the same starting state and action, that is, they can be described as a transition function <span class="math inline">\(f\)</span> instead of transition distribution <span class="math inline">\(P\)</span></p>
+<p><span class="math display">\[x_{t+1} = f(x, a)\]</span></p>
+<h2 id="policy">Policy</h2>
+<p><img src='/images/RL/bellman_equation/policy_1.png'></p>
+<p><img src='/images/RL/bellman_equation/policy.png'></p>
+<h2 id="policy-induced-transition-kernels">Policy induced Transition Kernels</h2>
+<p><img src='/images/RL/bellman_equation/transition_kernel.png'></p>
+<h2 id="rewards-and-returns">Rewards and Returns</h2>
+<p>Let's define expected reward as:</p>
+<p><span class="math display">\[r(x, a) = E[R | X=x, A=a]\]</span></p>
+<p>then the expected reward following policy pi is defined as</p>
+<p><span class="math display">\[r^{\pi} (x) = E_{a \sim \pi(a | x)} [R | X=x]\]</span></p>
+<p>Define return following policy <span class="math inline">\(\pi\)</span> as discounted sum of rewards starting from <span class="math inline">\(X_1\)</span>:</p>
+<p><span class="math display">\[G^{\pi} = R_1 + \gamma R_2 + ... + \gamma^{T-1} R_{T} = \sum^{\infty}_{k=t} \gamma^{k - t}R_{t}\]</span></p>
+<p>or any starting at any step <span class="math inline">\(X_{t}\)</span>:</p>
+<p><span class="math display">\[G^{\pi}_{t} = \sum^{\infty}_{k=t} \gamma^{k - t}R_{t}\]</span></p>
+<p>Note that <span class="math inline">\(\gamma\)</span> is a part of the problem setting, it is usually not a hyperparameter. <strong>One way to think about is as a constant probability of termination of <span class="math inline">\(1 - \gamma\)</span>. Or we can set <span class="math inline">\(\gamma = 1\)</span> when we have episodic tasks.</strong>.</p>
+<h2 id="example">Example</h2>
+<p>Finite horizon example:</p>
+<ul>
+<li>Start at <span class="math inline">\(X_1 \sim \rho\)</span></li>
+<li>Select <span class="math inline">\(A_1 \sim \pi(\cdot | X_1)\)</span></li>
+<li>Get <span class="math inline">\(R_1 \sim R(\cdot | A_1, X_1)\)</span></li>
+<li>Get <span class="math inline">\(X_2 \sim P(\cdot | A_1, X_1)\)</span></li>
+<li>...</li>
+<li>...</li>
+<li>Get <span class="math inline">\(R_{T} \sim R(\cdot | X_{T}, A_{T})\)</span></li>
+<li>Get <span class="math inline">\(X_{T+1} \sim P(\cdot | X_{T}, A_{T})\)</span> (This is the terminal state, which is often dropped because it has value of 0)</li>
+</ul>
+<p>The process stops!</p>
+<h2 id="value-functions">Value functions</h2>
+<p>Next we can define value functions as:</p>
+<p>State value function (alias: Value function, V, v) starting from state x and following policy <span class="math inline">\(\pi\)</span>:</p>
+<p><span class="math display">\[V^{\pi}(x) = E[G_1^{\pi} | X_{1} = x] = E[G^{\pi}_{t} | X_{t} = x] \text{    (Markov Property)}\]</span></p>
+<p>Action value function following policy <span class="math inline">\(\pi\)</span> starting from state x and taking action a:</p>
+<p><span class="math display">\[Q^{\pi} (x, a) = E[G_1^{\pi} | X_{1} = x, A_{1} = a] = E[G^{\pi}_{t} | X_{t} = x, A_{t} = a] \text{    (Markov Property)}\]</span></p>
+<p>in the <code>terminal formulation</code>, the value function <span class="math inline">\(V_{term}^{\pi}\)</span> can be written as:</p>
+<p><span class="math display">\[V_{term}^{\pi} = E[R_{1} + R_2 + .... + R_{t + T} | X_1 = x] \;\;\;\;\;\; \forall x \in X\]</span></p>
+<p>The process terminates at time <span class="math inline">\(t + T\)</span> according to <span class="math inline">\(\gamma\)</span>. In this case the termination should be assumed to always occur in a finite number of steps (ie. if we have episodic task we can set <span class="math inline">\(\gamma = 1\)</span>).</p>
+<h2 id="another-formulation">Another formulation</h2>
+<p>We can also define the T-step rollout or trajectory distribution <span class="math inline">\(P(\tau | \pi)\)</span> following policy <span class="math inline">\(\pi\)</span>:</p>
+<p><span class="math display">\[P(\tau | \pi) = \rho(X_1)\prod_{t=1}^{T} P(X_{t+1}| X_{t}, A_{t}) \pi(A_t | X_{t}) R(R_t | X_{t}, A_{t})\]</span></p>
+<p>Then:</p>
+<p><span class="math display">\[R(\tau) = G^{\pi}_{1} = \sum^{T}_{k=1} \gamma^{k - t}R_{t}\]</span></p>
+<p><span class="math display">\[J(\pi) = E_{\tau \sim P(\tau | \pi) }[R(\tau)] = \int R(\tau) P(d\tau | \pi)\]</span></p>
+<p><span class="math display">\[V^{\pi} (x) = E_{\tau \sim P(\tau | \pi, X_1=x)}[R(\tau) | X_1 = x]\]</span></p>
+<p>And:</p>
+<p><span class="math display">\[J(\pi) = \int V^{\pi} (x) d\rho(x)\]</span></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-equations/" rel="bookmark">Bellman Equations</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-optimality-equations/" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/14/calculus/" rel="bookmark">Calculus (1)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/dp/" rel="bookmark">Dynamic Programming</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/18/cheat-sheet/" rel="bookmark">Cheat Sheet</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RL-Basics/" rel="tag"># RL Basics</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/03/bellman-equations/" rel="next" title="Bellman Equations">
+                  Bellman Equations <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

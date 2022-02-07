@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Linear Algebra (3) Polynomials Complex Conjugate and Absolute Value Definition 4.2: \(Re(z)\), \(Im(z)\) Suppose \(z &#x3D; a + b_i\), where \(a\) and \(b\) are real numbers.  The real part of \(z\), denot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linear Algebra (3)">
+<meta property="og:url" content="https://swag1ong.github.io/2022/01/19/linear-algebra-3/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Linear Algebra (3) Polynomials Complex Conjugate and Absolute Value Definition 4.2: \(Re(z)\), \(Im(z)\) Suppose \(z &#x3D; a + b_i\), where \(a\) and \(b\) are real numbers.  The real part of \(z\), denot">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-01-19T14:25:07.000Z">
+<meta property="article:modified_time" content="2022-01-25T12:53:51.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="RL Basics">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2022/01/19/linear-algebra-3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2022&#x2F;01&#x2F;19&#x2F;linear-algebra-3&#x2F;&quot;,&quot;path&quot;:&quot;2022&#x2F;01&#x2F;19&#x2F;linear-algebra-3&#x2F;&quot;,&quot;title&quot;:&quot;Linear Algebra (3)&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Linear Algebra (3) | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#linear-algebra-3"><span class="nav-number">1.</span> <span class="nav-text">Linear Algebra (3)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#polynomials"><span class="nav-number">1.1.</span> <span class="nav-text">Polynomials</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#complex-conjugate-and-absolute-value"><span class="nav-number">1.1.1.</span> <span class="nav-text">Complex Conjugate and Absolute Value</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-4.2-rez-imz"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">Definition 4.2: \(Re(z)\), \(Im(z)\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-4.3-complex-conjugate-barz-absolute-value-z."><span class="nav-number">1.1.1.2.</span> <span class="nav-text">Definition 4.3: Complex Conjugate, \(\bar{z}\), absolute value, |z|.</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-4.5-properties-of-complex-numbers"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">Theorem 4.5: Properties of Complex Numbers</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#uniqueness-of-coefficients-for-polynomials"><span class="nav-number">1.1.2.</span> <span class="nav-text">Uniqueness of Coefficients for Polynomials</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-4.7-if-a-polynomial-is-the-zero-function-then-all-coefficients-are-0"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Theorem 4.7: If a Polynomial is the Zero Function, Then All Coefficients are \(0\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-4.8-division-algorithm-for-polynomials"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">Theorem 4.8: Division Algorithm for Polynomials</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-4.9-zero-of-a-polynomial"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">Definition 4.9: Zero of a Polynomial</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-4.10-factor"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">Definition 4.10: Factor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-4.11-each-zero-of-a-polynomial-corresponds-to-a-degree-1-factor"><span class="nav-number">1.1.2.5.</span> <span class="nav-text">Theorem 4.11: Each Zero of a Polynomial Corresponds to a Degree-1 Factor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-4.12-a-polynomial-has-at-most-as-many-zeros-as-its-degree"><span class="nav-number">1.1.2.6.</span> <span class="nav-text">Theorem 4.12: A Polynomial has at most as many Zeros as Its Degree</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-4.13-fundamental-theorem-of-algebra"><span class="nav-number">1.1.2.7.</span> <span class="nav-text">Theorem 4.13: Fundamental Theorem of Algebra</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-4.14-factorization-of-a-polynomial-over-mathbbc"><span class="nav-number">1.1.2.8.</span> <span class="nav-text">Theorem 4.14: Factorization of a Polynomial over \(\mathbb{C}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-4.15-polynomials-with-real-coefficients-have-zeros-in-pairs"><span class="nav-number">1.1.2.9.</span> <span class="nav-text">Theorem 4.15: Polynomials with Real Coefficients Have Zeros in Pairs</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-4.15"><span class="nav-number">1.1.2.9.1.</span> <span class="nav-text">Proof of Theorem 4.15</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-4.16-factorization-of-a-quadratic-polynomial"><span class="nav-number">1.1.2.10.</span> <span class="nav-text">Theorem 4.16: Factorization of a Quadratic Polynomial</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-4.17-factorization-of-a-polynomial-over-mathbbr"><span class="nav-number">1.1.2.11.</span> <span class="nav-text">Theorem 4.17: Factorization of a Polynomial over \(\mathbb{R}\)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#eigenvalues-eigenvectors-and-invariant-subspaces"><span class="nav-number">1.2.</span> <span class="nav-text">Eigenvalues, Eigenvectors, and Invariant Subspaces</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#invariant-subspaces"><span class="nav-number">1.2.1.</span> <span class="nav-text">Invariant Subspaces</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-5.2-invariant-subspace"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Definition 5.2: Invariant Subspace</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eigenvalues-and-eigenvectors"><span class="nav-number">1.2.2.</span> <span class="nav-text">EigenValues and Eigenvectors</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-5.5-eigenvalue"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">Definition 5.5: Eigenvalue</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.6-equivalent-conditions-to-be-an-eigenvalue"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">Theorem 5.6 Equivalent Conditions to be an Eigenvalue</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-5.7-eigenvector"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">Definition 5.7: Eigenvector</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.10-linearly-independent-eigenvectors"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">Theorem 5.10: Linearly Independent Eigenvectors</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.13-number-of-eigenvalues"><span class="nav-number">1.2.2.5.</span> <span class="nav-text">Theorem 5.13: Number of Eigenvalues</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-5.14-t_u-and-t-u"><span class="nav-number">1.2.2.6.</span> <span class="nav-text">Definition 5.14: \(T|_U\) and \(T &#x2F; U\)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eigenvectors-and-upper-triangular-matrices"><span class="nav-number">1.2.3.</span> <span class="nav-text">Eigenvectors and Upper-Triangular Matrices</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-5.16-tm"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">Definition 5.16 \(T^m\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-5.17-pt"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">Definition 5.17: \(p(T)\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-5.19-product-of-polynomials"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">Definition 5.19: Product of Polynomials</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.20-multiplicative-properties-of-polynomials"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">Theorem 5.20: Multiplicative Properties of Polynomials</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.21-operators-on-complex-vector-spaces-have-an-eigenvalue"><span class="nav-number">1.2.3.5.</span> <span class="nav-text">Theorem 5.21: Operators on Complex Vector Spaces Have an Eigenvalue</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-5.22-matrix-of-an-operator-mt"><span class="nav-number">1.2.3.6.</span> <span class="nav-text">Definition 5.22 Matrix of an Operator, \(M(T)\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-5.24-diagonal-of-a-matrix"><span class="nav-number">1.2.3.7.</span> <span class="nav-text">Definition 5.24: Diagonal of a Matrix</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-5.25-upper-triangular-matrix"><span class="nav-number">1.2.3.8.</span> <span class="nav-text">Definition 5.25 Upper-Triangular Matrix</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.26-conditions-for-upper-triangular-matrix"><span class="nav-number">1.2.3.9.</span> <span class="nav-text">Theorem 5.26: Conditions for Upper-Triangular Matrix</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-5.26"><span class="nav-number">1.2.3.9.1.</span> <span class="nav-text">Proof of Theorem 5.26:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.27-over-mathbbc-every-operator-has-an-upper-triangular-matrix"><span class="nav-number">1.2.3.10.</span> <span class="nav-text">Theorem 5.27: Over \(\mathbb{C}\), Every Operator has an Upper-Triangular Matrix</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.30-determination-of-invertibility-from-upper-triangular-matrix"><span class="nav-number">1.2.3.11.</span> <span class="nav-text">Theorem 5.30: Determination of Invertibility from Upper-Triangular Matrix</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.32-determination-of-eigenvalues-from-upper-triangular-matrix"><span class="nav-number">1.2.3.12.</span> <span class="nav-text">Theorem 5.32: Determination of Eigenvalues from Upper-Triangular Matrix</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-5.32"><span class="nav-number">1.2.3.12.1.</span> <span class="nav-text">Proof of Theorem 5.32:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eigenspaces-and-diagonal-matrices"><span class="nav-number">1.2.4.</span> <span class="nav-text">Eigenspaces and Diagonal Matrices</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-5.34-diagonal-matrix"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">Definition 5.34: Diagonal Matrix</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-5.36-eigenspace-elambda-t"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">Definition 5.36: Eigenspace, \(E(\lambda, T)\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.38-sum-of-eigenspaces-is-a-direct-sum"><span class="nav-number">1.2.4.3.</span> <span class="nav-text">Theorem 5.38: Sum of Eigenspaces is a Direct Sum</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-5.39-diagonalizable"><span class="nav-number">1.2.4.4.</span> <span class="nav-text">Definition 5.39: Diagonalizable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.41-conditions-equivalent-to-diagonalizability"><span class="nav-number">1.2.4.5.</span> <span class="nav-text">Theorem 5.41: Conditions Equivalent to Diagonalizability</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-5.41"><span class="nav-number">1.2.4.5.1.</span> <span class="nav-text">Proof of Theorem 5.41</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.44-enough-eigenvalues-implies-diagonalizability"><span class="nav-number">1.2.4.6.</span> <span class="nav-text">Theorem 5.44: Enough Eigenvalues Implies Diagonalizability</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2022/01/19/linear-algebra-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linear Algebra (3)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-01-19 22:25:07" itemprop="dateCreated datePublished" datetime="2022-01-19T22:25:07+08:00">2022-01-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2022-01-25 20:53:51" itemprop="dateModified" datetime="2022-01-25T20:53:51+08:00">2022-01-25</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2022/01/19/linear-algebra-3/" class="post-meta-item leancloud_visitors" data-flag-title="Linear Algebra (3)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>15k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>14 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="linear-algebra-3">Linear Algebra (3)</h1>
+<h2 id="polynomials">Polynomials</h2>
+<h3 id="complex-conjugate-and-absolute-value">Complex Conjugate and Absolute Value</h3>
+<h4 id="definition-4.2-rez-imz">Definition 4.2: <span class="math inline">\(Re(z)\)</span>, <span class="math inline">\(Im(z)\)</span></h4>
+<p>Suppose <span class="math inline">\(z = a + b_i\)</span>, where <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are real numbers.</p>
+<ul>
+<li>The <strong>real part</strong> of <span class="math inline">\(z\)</span>, denoted <span class="math inline">\(Re(z)\)</span>, is defined by <span class="math inline">\(Re(z) = a\)</span>.</li>
+<li>The <strong>imaginary part</strong> of <span class="math inline">\(z\)</span>, denoted <span class="math inline">\(Im(z)\)</span>, is defined by <span class="math inline">\(Im(z) = b\)</span>.</li>
+</ul>
+<p>Thus for every complex number <span class="math inline">\(z\)</span>, we have:</p>
+<p><span class="math display">\[z = Re(z) + Im(z) i\]</span></p>
+<h4 id="definition-4.3-complex-conjugate-barz-absolute-value-z.">Definition 4.3: Complex Conjugate, <span class="math inline">\(\bar{z}\)</span>, absolute value, |z|.</h4>
+<p>Suppose <span class="math inline">\(z \in \mathbb{C}\)</span>:</p>
+<ul>
+<li>The <strong>complex conjugate</strong> of <span class="math inline">\(z \in \mathbb{C}\)</span>, denoted <span class="math inline">\(\bar{z}\)</span>, is defined by: <span class="math display">\[\bar{z} = Re(z) - Im(z)i\]</span></li>
+<li>The <strong>absolute value</strong> of a complex number <span class="math inline">\(z\)</span>, denoted <span class="math inline">\(|z|\)</span>, is defined by: <span class="math display">\[|z| = \sqrt{(Re (z))^2 + (Im (z))^2}\]</span></li>
+</ul>
+<h4 id="theorem-4.5-properties-of-complex-numbers">Theorem 4.5: Properties of Complex Numbers</h4>
+<p>Suppose <span class="math inline">\(w, z \in \mathbb{C}\)</span>. Then:</p>
+<ul>
+<li><strong>Sum of <span class="math inline">\(z\)</span> and <span class="math inline">\(\bar{z}\)</span></strong>: <span class="math display">\[z + \bar{z} = 2 Re(z)\]</span></li>
+<li><strong>Difference of <span class="math inline">\(z\)</span> and <span class="math inline">\(\bar{z}\)</span></strong>: <span class="math display">\[z - \bar{z} = 2(Im (z)) i\]</span></li>
+<li><strong>Product of <span class="math inline">\(z\)</span> and <span class="math inline">\(\bar{z}\)</span></strong>: <span class="math display">\[z \bar{z} = |z|^2\]</span></li>
+<li><strong>Additive and Multiplicative of Complex Conjugate</strong>: <span class="math display">\[\overline{w + z} = \bar{w} + \bar{z}, \quad \overline{wz} = \bar{w}\bar{z}\]</span></li>
+<li><strong>Conjugate of Conjugate</strong>: <span class="math display">\[\bar{\bar{z}} = z\]</span></li>
+<li><strong>Real and Imaginary Parts are Bounded by <span class="math inline">\(|z|\)</span></strong>: <span class="math display">\[|Re (z)| \leq |z|, \quad |Im(z)| \leq |z|\]</span></li>
+<li><strong>Absolute Value of the Complex Conjugate</strong>: <span class="math display">\[|\bar{z}| = |z|\]</span></li>
+<li><strong>Multiplicative of Absolute Value</strong> <span class="math display">\[|wz| = |w||z|\]</span></li>
+<li><strong>Triangle Inequality</strong>: <span class="math display">\[|w + z| \leq |w| + |z|\]</span></li>
+</ul>
+<h3 id="uniqueness-of-coefficients-for-polynomials">Uniqueness of Coefficients for Polynomials</h3>
+<p>A function <span class="math inline">\(p: \mathbb{F} \rightarrow \mathbb{F}\)</span> is called a polynomial with coefficients in <span class="math inline">\(\mathbb{F}\)</span> if there exists <span class="math inline">\(a_0 , ..., a_m \in \mathbb{F}\)</span> s.t:</p>
+<p><span class="math display">\[p(z) = a_0 + a_1z + .... + a_mz^m\]</span></p>
+<p>for all <span class="math inline">\(z \in \mathbb{F}\)</span></p>
+<h4 id="theorem-4.7-if-a-polynomial-is-the-zero-function-then-all-coefficients-are-0">Theorem 4.7: If a Polynomial is the Zero Function, Then All Coefficients are <span class="math inline">\(0\)</span></h4>
+<p>Suppose <span class="math inline">\(a_0, ..., a_m \in \mathbb{F}\)</span>. If</p>
+<p><span class="math display">\[a_0 + a_1 z + ... + a_m z^m = 0\]</span></p>
+<p>for every <span class="math inline">\(z \in \mathbb{F}\)</span>, then <span class="math inline">\(a_0 = ... = a_m = 0\)</span></p>
+<p><strong>This results show that the coefficients of a polynomial are uniquely determined</strong>.</p>
+<p>Recall that if a polynomial <span class="math inline">\(p\)</span> with <span class="math inline">\(a_m \neq 0\)</span>, then we say that <span class="math inline">\(p\)</span> has degree <span class="math inline">\(m\)</span>, and we write <span class="math inline">\(\deg p = m\)</span>. The degree of <span class="math inline">\(0\)</span> polynomial is defined to be <span class="math inline">\(-\infty\)</span>.</p>
+<h4 id="theorem-4.8-division-algorithm-for-polynomials">Theorem 4.8: Division Algorithm for Polynomials</h4>
+<p>Suppose that <span class="math inline">\(p, s \in P(\mathbb{F})\)</span>, with <span class="math inline">\(s \neq 0\)</span>. Then there exist unique polynomials, <span class="math inline">\(q, r \in P(\mathbb{F})\)</span> s.t:</p>
+<p><span class="math display">\[p = sq + r\]</span></p>
+<p>and <span class="math inline">\(\text{deg } r &lt; \text{deg } s\)</span></p>
+<h4 id="definition-4.9-zero-of-a-polynomial">Definition 4.9: Zero of a Polynomial</h4>
+<p>A number <span class="math inline">\(\lambda \in \mathbb{F}\)</span> is called a <strong>zero or root</strong> of a polynomial <span class="math inline">\(p \in P(\mathbb{F})\)</span> if:</p>
+<p><span class="math display">\[p(\lambda) = 0\]</span></p>
+<h4 id="definition-4.10-factor">Definition 4.10: Factor</h4>
+<p>A polynomial <span class="math inline">\(s \in P(\mathbb{F})\)</span> is called a <strong>factor</strong> of <span class="math inline">\(p \in P(\mathbb{F})\)</span> if there exists a polynoimal <span class="math inline">\(q \in P(\mathbb{F})\)</span> s.t <span class="math inline">\(p = sq\)</span>.</p>
+<h4 id="theorem-4.11-each-zero-of-a-polynomial-corresponds-to-a-degree-1-factor">Theorem 4.11: Each Zero of a Polynomial Corresponds to a Degree-1 Factor</h4>
+<p>Suppose <span class="math inline">\(p \in P(\mathbb{F})\)</span> and <span class="math inline">\(\lambda \in \mathbb{F}\)</span>. Then <span class="math inline">\(p(\lambda) = 0\)</span> if and only if there is a polynomial <span class="math inline">\(q \in P(\mathbb{F})\)</span> s.t:</p>
+<p><span class="math display">\[p(z) = (z - \lambda) q(z)\]</span></p>
+<p>for every <span class="math inline">\(z \in \mathbb{F}\)</span></p>
+<h4 id="theorem-4.12-a-polynomial-has-at-most-as-many-zeros-as-its-degree">Theorem 4.12: A Polynomial has at most as many Zeros as Its Degree</h4>
+<p>Suppose <span class="math inline">\(p \in P(\mathbb{F})\)</span> is a polynomial with degree <span class="math inline">\(m \geq 0\)</span>. Then <span class="math inline">\(p\)</span> has at most <span class="math inline">\(m\)</span> distinct zeros in <span class="math inline">\(\mathbb{F}\)</span>.</p>
+<h4 id="theorem-4.13-fundamental-theorem-of-algebra">Theorem 4.13: Fundamental Theorem of Algebra</h4>
+<p>Every nonconstant polynomial with complex coefficients has a zero.</p>
+<h4 id="theorem-4.14-factorization-of-a-polynomial-over-mathbbc">Theorem 4.14: Factorization of a Polynomial over <span class="math inline">\(\mathbb{C}\)</span></h4>
+<p>If <span class="math inline">\(p \in P(\mathbb{C})\)</span> is a nonconstant polynomial, then <span class="math inline">\(p\)</span> has a unique factorization except for the order of the factors of the form:</p>
+<p><span class="math display">\[p(z) = c(z - \lambda_1) ... (z - \lambda_m)\]</span></p>
+<p>where <span class="math inline">\(c, \lambda_1, ..., \lambda_m \in \mathbb{C}\)</span>, <span class="math inline">\(\lambda_1, ..., \lambda_m\)</span> are the zeros of <span class="math inline">\(p\)</span>.</p>
+<p><strong>The failure of the fundamental theorem of algebra for <span class="math inline">\(\mathbb{R}\)</span> accounts for the differences between operators on real and complex vector spaces.</strong></p>
+<h4 id="theorem-4.15-polynomials-with-real-coefficients-have-zeros-in-pairs">Theorem 4.15: Polynomials with Real Coefficients Have Zeros in Pairs</h4>
+<p>Suppose <span class="math inline">\(p \in P(\mathbb{C})\)</span> is a polynomial with real coefficients. If <span class="math inline">\(\lambda \in \mathbb{C}\)</span> is a zero of <span class="math inline">\(p\)</span>, then so is <span class="math inline">\(\bar{\lambda}\)</span>.</p>
+<h5 id="proof-of-theorem-4.15">Proof of Theorem 4.15</h5>
+<p>Let:</p>
+<p><span class="math display">\[p(z) = a_0 + a_1z + .... + a_m z^m\]</span></p>
+<p>If <span class="math inline">\(\lambda\)</span> is a root of <span class="math inline">\(p\)</span>, we have:</p>
+<p><span class="math display">\[p(\lambda) = a_0 + a_1 \lambda_m + .... + a_m \lambda^m = 0\]</span></p>
+<p>By taking the conjugate:</p>
+<p><span class="math display">\[\overline{a_0 + a_1 \lambda_m + .... + a_m \lambda^m} = a_0 + a_1 \bar{\lambda} + ... + a_m \bar{\lambda}^m = 0\]</span></p>
+<h4 id="theorem-4.16-factorization-of-a-quadratic-polynomial">Theorem 4.16: Factorization of a Quadratic Polynomial</h4>
+<p>Suppose <span class="math inline">\(b, c \in \mathbb{R}\)</span>. Then there is a polynomial factorization of the form:</p>
+<p><span class="math display">\[x^2 + bx + c = (x  - \lambda_1) (x - \lambda_2)\]</span></p>
+<p>with <span class="math inline">\(\lambda_1, \lambda_2 \in \mathbb{R}\)</span> if and only if <span class="math inline">\(b^2 \geq 4c\)</span></p>
+<h4 id="theorem-4.17-factorization-of-a-polynomial-over-mathbbr">Theorem 4.17: Factorization of a Polynomial over <span class="math inline">\(\mathbb{R}\)</span></h4>
+<p>Suppose <span class="math inline">\(p \in P(\mathbb{R})\)</span> is a nonconstant polynomial. Then <span class="math inline">\(p\)</span> has a unique factorization of the form:</p>
+<p><span class="math display">\[p(x) = c(x - \lambda_1) ... (x - \lambda_m) (x^2 + b_1 x + c_1 ) ... (x^2 + b_M x + c_M)\]</span></p>
+<p>where <span class="math inline">\(c, \lambda_1, ..., \lambda_m, b_1, ..., b_M, c_1, ..., c_M \in \mathbb{R}\)</span>, with <span class="math inline">\(b_j^2 &lt; 4c_j\)</span> for each <span class="math inline">\(j\)</span>.</p>
+<p><br></p>
+<h2 id="eigenvalues-eigenvectors-and-invariant-subspaces">Eigenvalues, Eigenvectors, and Invariant Subspaces</h2>
+<h3 id="invariant-subspaces">Invariant Subspaces</h3>
+<p>Let <span class="math inline">\(T \in L(V)\)</span>, <span class="math inline">\(U \subseteq V\)</span> be a proper subspace, then <span class="math inline">\(T|_U\)</span> denotes the domain of <span class="math inline">\(T\)</span> restrict to the set <span class="math inline">\(U\)</span>.</p>
+<h4 id="definition-5.2-invariant-subspace">Definition 5.2: Invariant Subspace</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span> is an operator on <span class="math inline">\(V\)</span>. A subspace <span class="math inline">\(U\)</span> of <span class="math inline">\(V\)</span> is called <strong>invariant</strong> under <span class="math inline">\(T\)</span> if <span class="math inline">\(u \in U \implies T(u) \in U\)</span>.</p>
+<p>In other words, <span class="math inline">\(U\)</span> is invariant under <span class="math inline">\(T\)</span> if <span class="math inline">\(T|_U\)</span> is an operator on <span class="math inline">\(U\)</span>.</p>
+<blockquote>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span>, then the following subspaces are invariant under <span class="math inline">\(T\)</span>:</p>
+<p><span class="math inline">\(\{0\}\)</span></p>
+<p><span class="math inline">\(V\)</span></p>
+<p><span class="math inline">\(\text{null } T\)</span></p>
+<p><span class="math inline">\(\text{range } T\)</span></p>
+</blockquote>
+<h3 id="eigenvalues-and-eigenvectors">EigenValues and Eigenvectors</h3>
+<p>Take any <span class="math inline">\(v \in V\)</span> with <span class="math inline">\(v \neq 0\)</span> and let <span class="math inline">\(U\)</span> equal the set of all scalar multiples of <span class="math inline">\(v\)</span>:</p>
+<p><span class="math display">\[U = \{\lambda v : \lambda \in \mathbb{F}\} = span (v)\]</span></p>
+<p>Then <span class="math inline">\(U\)</span> is a 1-dimensional subspace of <span class="math inline">\(V\)</span>. If <span class="math inline">\(T\)</span> is a linear operator s.t <span class="math inline">\(T(v) \in U\)</span>, then:</p>
+<p><span class="math display">\[T(v) = \lambda v\]</span></p>
+<p>For some <span class="math inline">\(\lambda \in \mathbb{F}\)</span>. Conversely, if <span class="math inline">\(T(v) = \lambda v\)</span> for some <span class="math inline">\(\lambda \in \mathbb{F}\)</span>, then <span class="math inline">\(U = span(v)\)</span> is a 1-dimensional invariant subspace of <span class="math inline">\(V\)</span> under <span class="math inline">\(T\)</span>.</p>
+<h4 id="definition-5.5-eigenvalue">Definition 5.5: Eigenvalue</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span>. A number <span class="math inline">\(\lambda \in \mathbb{F}\)</span> is called an <strong>eigenvalue</strong> of <span class="math inline">\(T\)</span> if there exists <span class="math inline">\(v \in V\)</span> s.t <span class="math inline">\(v \neq 0\)</span> and <span class="math inline">\(T(v) = \lambda v\)</span>.</p>
+<p>In other words, <span class="math inline">\(T\)</span> has a 1-dimensional subspace IFF <span class="math inline">\(T\)</span> has an eigenvalue.</p>
+<h4 id="theorem-5.6-equivalent-conditions-to-be-an-eigenvalue">Theorem 5.6 Equivalent Conditions to be an Eigenvalue</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is finite-dimensional, <span class="math inline">\(T \in L(V)\)</span>, and <span class="math inline">\(\lambda \in \mathbb{F}\)</span>. Then the following are equivalent:</p>
+<ol type="1">
+<li><span class="math inline">\(\lambda\)</span> is an eigenvalue of <span class="math inline">\(T\)</span>.</li>
+<li><span class="math inline">\(T - \lambda I\)</span> is not injective.</li>
+<li><span class="math inline">\(T - \lambda I\)</span> is not surjective.</li>
+<li><span class="math inline">\(T - \lambda I\)</span> is not invertible.</li>
+</ol>
+<p>where <span class="math inline">\(I \in L(V)\)</span> is the identity operator defined by <span class="math inline">\(I(v) = v, \; \forall v \in V\)</span>.</p>
+<h4 id="definition-5.7-eigenvector">Definition 5.7: Eigenvector</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span> and <span class="math inline">\(\lambda \in \mathbb{F}\)</span> is an eigenvalue of <span class="math inline">\(T\)</span>. A vector <span class="math inline">\(v \in V\)</span> is called an <strong>eigenvector</strong> of <span class="math inline">\(T\)</span> corresponding to <span class="math inline">\(\lambda\)</span> if <span class="math inline">\(v \neq 0\)</span> and <span class="math inline">\(T(v) = \lambda v\)</span>.</p>
+<p>In other words, a vector <span class="math inline">\(v \in V\)</span> is an eigenvector of <span class="math inline">\(T\)</span> corresponding to <span class="math inline">\(\lambda\)</span> IFF <span class="math inline">\(v \in \text{null } (T - \lambda I)\)</span></p>
+<h4 id="theorem-5.10-linearly-independent-eigenvectors">Theorem 5.10: Linearly Independent Eigenvectors</h4>
+<p>Let <span class="math inline">\(T \in L(V)\)</span>. Suppose <span class="math inline">\(\lambda_1, ..., \lambda_m\)</span> are distinct eigenvalues of <span class="math inline">\(T\)</span> and <span class="math inline">\(v_1, ..., v_m\)</span> are corresponding eigenvectors. Then <span class="math inline">\(v_1, ..., v_m\)</span> is linearly independent.</p>
+<h4 id="theorem-5.13-number-of-eigenvalues">Theorem 5.13: Number of Eigenvalues</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is finite-dimensional. Then each operator on <span class="math inline">\(V\)</span> has at most <span class="math inline">\(\dim V\)</span> distinct eigenvalues.</p>
+<h4 id="definition-5.14-t_u-and-t-u">Definition 5.14: <span class="math inline">\(T|_U\)</span> and <span class="math inline">\(T / U\)</span></h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span> and <span class="math inline">\(U\)</span> is a subspace of <span class="math inline">\(V\)</span> invariant under <span class="math inline">\(T\)</span>.</p>
+<ul>
+<li><p>The <strong>restriction operator</strong> <span class="math inline">\(T|_U \in L(U)\)</span> is defined by: <span class="math display">\[T|_U (u) = T(u)\]</span></p>
+<p>for <span class="math inline">\(u \in U\)</span>.</p></li>
+<li><p>The <strong>quotient operator</strong> <span class="math inline">\(T / U \in L(V / U)\)</span> is defined by: <span class="math display">\[(T / U) (v + U) = T(v) + U\]</span></p>
+<p>for <span class="math inline">\(v \in V\)</span></p></li>
+</ul>
+<h3 id="eigenvectors-and-upper-triangular-matrices">Eigenvectors and Upper-Triangular Matrices</h3>
+<p><strong>The main reason that a richer theory exists for operators (which map a vector space into itself) than for more general linear maps is that operators can be raised to powers.</strong></p>
+<h4 id="definition-5.16-tm">Definition 5.16 <span class="math inline">\(T^m\)</span></h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span> and <span class="math inline">\(m\)</span> is a positive integer.</p>
+<ul>
+<li><p><span class="math inline">\(T^m\)</span> is defined by: <span class="math display">\[T^m = T \underbrace{...}_{m \text{ times}} T\]</span></p></li>
+<li><p><span class="math inline">\(T^0\)</span> is defined to be the identity operator <span class="math inline">\(I\)</span> on <span class="math inline">\(V\)</span>.</p></li>
+<li><p>If <span class="math inline">\(T\)</span> is invertible with inverse <span class="math inline">\(T^{-1}\)</span>, then <span class="math inline">\(T^{-m}\)</span> is defined by: <span class="math display">\[T^{-m} = (T^{-1})^m\]</span></p></li>
+<li><p><span class="math inline">\(T^m T^n = T^{m + n}\)</span>, <span class="math inline">\((T^{m})^n = T^{mn}\)</span></p></li>
+</ul>
+<h4 id="definition-5.17-pt">Definition 5.17: <span class="math inline">\(p(T)\)</span></h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span> and <span class="math inline">\(p \in P(\mathbb{F})\)</span> is a polynomial given by:</p>
+<p><span class="math display">\[p(z) = a_0 + a_1 z + a_2 z^2 + ... + a_m z^m\]</span></p>
+<p>for <span class="math inline">\(z \in \mathbb{F}\)</span>. Then, <span class="math inline">\(p(T)\)</span> is the operator defined by:</p>
+<p><span class="math display">\[p(T) = a_1 I + a_1 T + .... + a_m T^m\]</span></p>
+<blockquote>
+<p>Suppose <span class="math inline">\(D \in L(P(\mathbb{R}))\)</span> is the differentiation operator defined by <span class="math inline">\(D(q) = q^{\prime}\)</span> and <span class="math inline">\(p(x) = 16 - 3 x + 5x^3\)</span>. Then:</p>
+<p><span class="math display">\[p(D) = 16I - 3 D + 5D^3\]</span></p>
+<p>and</p>
+<p><span class="math display">\[(p(D))(q) = 16 I - 3 q^{\prime} + 5 q^{\prime \prime \prime}\]</span></p>
+</blockquote>
+<p><strong>If we fix an operator <span class="math inline">\(T \in L(V)\)</span>, then the function <span class="math inline">\(M: P(\mathbb{F}) \rightarrow L(V)\)</span> defined by <span class="math inline">\(M(p) = p(T)\)</span> is linear.</strong></p>
+<h4 id="definition-5.19-product-of-polynomials">Definition 5.19: Product of Polynomials</h4>
+<p>If <span class="math inline">\(p, q \in P(\mathbb{F})\)</span>, then <span class="math inline">\(pq \in P(\mathbb{F})\)</span> is the polynomial defined by:</p>
+<p><span class="math display">\[(pq)(z) = p(z) q(z)\]</span></p>
+<p>for <span class="math inline">\(z \in \mathbb{F}\)</span></p>
+<h4 id="theorem-5.20-multiplicative-properties-of-polynomials">Theorem 5.20: Multiplicative Properties of Polynomials</h4>
+<p>Suppose <span class="math inline">\(p, q \in P(\mathbb{F})\)</span> and <span class="math inline">\(T \in L(V)\)</span>, then:</p>
+<ol type="1">
+<li><span class="math inline">\((pq)(T) = p(T) q(T)\)</span></li>
+<li><span class="math inline">\(p(T)q(T) = q(T)p(T)\)</span></li>
+</ol>
+<p><strong>When expanding a product of polynomials using the distributive property, it does not matter whether the symbol is <span class="math inline">\(z\)</span> or <span class="math inline">\(T\)</span></strong></p>
+<h4 id="theorem-5.21-operators-on-complex-vector-spaces-have-an-eigenvalue">Theorem 5.21: Operators on Complex Vector Spaces Have an Eigenvalue</h4>
+<p>Every operator on a finite-dimensional, nonzero, complex vector space has an eigenvalue.</p>
+<h4 id="definition-5.22-matrix-of-an-operator-mt">Definition 5.22 Matrix of an Operator, <span class="math inline">\(M(T)\)</span></h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span> and <span class="math inline">\(v_1, ..., v_n\)</span> is a basis of <span class="math inline">\(V\)</span>. The <strong>matrix of <span class="math inline">\(T\)</span></strong> w.r.t this basis is the <span class="math inline">\(n \times n\)</span> matrix:</p>
+<p><span class="math display">\[
+M(T) = 
+\begin{bmatrix}
+A_{1, 1} &amp; ... &amp; A_{1, n}\\
+. &amp; ... &amp; .\\
+. &amp; ... &amp; .\\
+. &amp; ... &amp; .\\
+A_{n, 1} &amp; ... &amp; A_{n, n}
+\end{bmatrix}
+\]</span></p>
+<p>whose entries <span class="math inline">\(A_{j, k}\)</span> are defined by:</p>
+<p><span class="math display">\[T(v_k) = A_{1, k} v_1 + .... + A_{n, k} v_n\]</span></p>
+<p>The <span class="math inline">\(k\)</span>th column of the matrix is formed from the coefficients used to write <span class="math inline">\(T(v_k)\)</span> as a linear combination of <span class="math inline">\(v_1, ..., v_n\)</span>. If the basis is not clear from the context, then the notation <span class="math inline">\(M(T, (v_1, ..., v_n))\)</span> is used or standard bases are assumed.</p>
+<blockquote>
+<p>Define <span class="math inline">\(T \in L(\mathbb{R}^3)\)</span> by <span class="math inline">\(T(x, y, z) = (2x + y, 5y + 3x, 8z)\)</span>, then <span class="math display">\[
+M(T) = 
+\begin{bmatrix}
+2 &amp; 1 &amp; 0\\
+0 &amp; 5 &amp; 3\\
+0 &amp; 0 &amp; 8\\
+\end{bmatrix}
+\]</span></p>
+</blockquote>
+<h4 id="definition-5.24-diagonal-of-a-matrix">Definition 5.24: Diagonal of a Matrix</h4>
+<p>THe <strong>diagonal</strong> of a square matrix consists of the entries along the line from the upper left corner to the bottom right corner.</p>
+<h4 id="definition-5.25-upper-triangular-matrix">Definition 5.25 Upper-Triangular Matrix</h4>
+<p>A matrix is called <strong>upper triangular</strong> if all the entries below the diagonal equal <span class="math inline">\(0\)</span>.</p>
+<h4 id="theorem-5.26-conditions-for-upper-triangular-matrix">Theorem 5.26: Conditions for Upper-Triangular Matrix</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span> and <span class="math inline">\(v_1, ..., v_n\)</span> is a basis of <span class="math inline">\(V\)</span>. Then the following are equivalent:</p>
+<ol type="1">
+<li>The matrix of <span class="math inline">\(T\)</span> w.r.t <span class="math inline">\(v_1, ..., v_n\)</span> is upper triangular.</li>
+<li><span class="math inline">\(T(v_j) \in span(v_1, ..., v_j)\)</span> for each <span class="math inline">\(j = 1, ...., n\)</span>.</li>
+<li><span class="math inline">\(span(v_1, ..., v_j)\)</span> is invariant under <span class="math inline">\(T\)</span> for each <span class="math inline">\(j = 1 , ..., n\)</span>.</li>
+</ol>
+<h5 id="proof-of-theorem-5.26">Proof of Theorem 5.26:</h5>
+<p><span class="math inline">\(1 \Longleftrightarrow 2, 3 \rightarrow 2\)</span> is trivial, so we only need to prove <span class="math inline">\(2 \rightarrow 3\)</span>.</p>
+<p>Suppose <span class="math inline">\(2\)</span> holds and fix <span class="math inline">\(j \in \{1, ..., n\}\)</span> then we have:</p>
+<p><span class="math display">\[T(v_1) = span(v_1) \subseteq span(v_1, ..., v_j)\]</span> <span class="math display">\[T(v_2) = span(v_1, v_2) \subseteq span(v_1, ..., v_j)\]</span> <span class="math display">\[.\]</span> <span class="math display">\[.\]</span> <span class="math display">\[.\]</span> <span class="math display">\[T(v_j) = span(v_1, ..., v_j)\]</span></p>
+<p>Let <span class="math inline">\(v \in span(v_1, ..., v_j)\)</span>, then <span class="math inline">\(v = a_1v_1 + ... + a_j v_j\)</span>:</p>
+<p><span class="math display">\[T(v) = a_1 T(v_1) + ... + a_j T(v_j) \in span(v_1, ..., v_j)\]</span></p>
+<p>Thus, we can conclude that <span class="math inline">\(span (v_1, ..., v_j)\)</span> is invariant under <span class="math inline">\(T\)</span>.</p>
+<h4 id="theorem-5.27-over-mathbbc-every-operator-has-an-upper-triangular-matrix">Theorem 5.27: Over <span class="math inline">\(\mathbb{C}\)</span>, Every Operator has an Upper-Triangular Matrix</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a finite-dimensional complex vector space and <span class="math inline">\(T \in L(V)\)</span>. Then <span class="math inline">\(T\)</span> has an upper-triangular matrix w.r.t some basis of <span class="math inline">\(V\)</span>.</p>
+<p><strong>This result does not hold for real number space, because we are not guaranteed to have an eigenvalue for every operator in the real number vector space.</strong></p>
+<h4 id="theorem-5.30-determination-of-invertibility-from-upper-triangular-matrix">Theorem 5.30: Determination of Invertibility from Upper-Triangular Matrix</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span> has an upper-triangular matrix w.r.t some basis of <span class="math inline">\(V\)</span>. Then <span class="math inline">\(T\)</span> is invertible if and only if all the entries on the diagonal of that upper-triangular matrix are nonzero.</p>
+<h4 id="theorem-5.32-determination-of-eigenvalues-from-upper-triangular-matrix">Theorem 5.32: Determination of Eigenvalues from Upper-Triangular Matrix</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span> has an upper-triangular matrix w.r.t some basis of <span class="math inline">\(V\)</span>. Then the eigenvalues of <span class="math inline">\(T\)</span> are precisely the entries on the diagonal of that upper-triangular matrix.</p>
+<h5 id="proof-of-theorem-5.32">Proof of Theorem 5.32:</h5>
+<p>Suppose <span class="math inline">\(v_1, ..., v_n\)</span> is a basis of <span class="math inline">\(V\)</span> w.r.t which <span class="math inline">\(T\)</span> has an upper-triangular matrix:</p>
+<p><span class="math display">\[
+M(T) = 
+\begin{bmatrix}
+\lambda_1 &amp; ... &amp; *\\
+. &amp; \lambda_2 &amp; .\\
+. &amp; ... &amp; .\\
+\end{bmatrix}
+\]</span></p>
+<p>Let <span class="math inline">\(\lambda \in \mathbb{F}\)</span>, then:</p>
+<p><span class="math display">\[
+M(T - \lambda I) = M(T) - \lambda M(I) = 
+\begin{bmatrix}
+\lambda_1 - \lambda &amp; ... &amp; *\\
+. &amp; \lambda_2 - \lambda &amp; .\\
+. &amp; ... &amp; .\\
+\end{bmatrix}
+\]</span></p>
+<p><span class="math inline">\(\lambda\)</span> is an eigenvalue of <span class="math inline">\(T\)</span> IFF <span class="math inline">\(T - \lambda I\)</span> is not invertible, which means that by <code>theorem 5.30</code>, at least one of the diagonal entries of <span class="math inline">\(M(T - \lambda I)\)</span> has to be zero. So the eigenvalue is one of the diagonal entries.</p>
+<h3 id="eigenspaces-and-diagonal-matrices">Eigenspaces and Diagonal Matrices</h3>
+<h4 id="definition-5.34-diagonal-matrix">Definition 5.34: Diagonal Matrix</h4>
+<p>A <strong>diagonal matrix</strong> is a square matrix that is <span class="math inline">\(0\)</span> everywhere except possibly along the diagonal.</p>
+<p>If an operator has a diagonal matrix with respect to some basis, then the entries along the diagonal are precisely the eigenvalues of the operator.</p>
+<h4 id="definition-5.36-eigenspace-elambda-t">Definition 5.36: Eigenspace, <span class="math inline">\(E(\lambda, T)\)</span></h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span> and <span class="math inline">\(\lambda \in \mathbb{F}\)</span>. The <strong>eigenspace</strong> of <span class="math inline">\(T\)</span> corresponding to <span class="math inline">\(\lambda\)</span>, denoted <span class="math inline">\(E(\lambda, T)\)</span>, is defined by:</p>
+<p><span class="math display">\[E(\lambda, T) = \text{null}(T - \lambda I)\]</span></p>
+<p>In other words, <span class="math inline">\(E(\lambda, T)\)</span> is the set of span of all eigenvectors of <span class="math inline">\(T\)</span> corresponding to <span class="math inline">\(\lambda\)</span>, along with the <span class="math inline">\(0\)</span> vector and <span class="math inline">\(\lambda\)</span> is an eigenvalue of <span class="math inline">\(T\)</span> IFF <span class="math inline">\(E(\lambda, T) \neq \{0\}\)</span>.</p>
+<h4 id="theorem-5.38-sum-of-eigenspaces-is-a-direct-sum">Theorem 5.38: Sum of Eigenspaces is a Direct Sum</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is finite-dimensional and <span class="math inline">\(T \in L(V)\)</span>. Suppose also that <span class="math inline">\(\lambda_1, ..., \lambda_m\)</span> are distinct eigenvalues of <span class="math inline">\(T\)</span>. Then:</p>
+<p><span class="math display">\[E(\lambda_1, T) + ... + E(\lambda_m, T)\]</span></p>
+<p>is a direct sum. Furthermore,</p>
+<p><span class="math display">\[\dim E(\lambda_1, T) + ... + \dim E(\lambda_m, T) \leq \dim V\]</span></p>
+<h4 id="definition-5.39-diagonalizable">Definition 5.39: Diagonalizable</h4>
+<p>An operator <span class="math inline">\(T \in L(V)\)</span> is called diagonalizable if the operator has a diagonal matrix with respect ot some basis of <span class="math inline">\(V\)</span>.</p>
+<blockquote>
+<p>Define <span class="math inline">\(T \in L(\mathbb{R}^2)\)</span> by: <span class="math display">\[T(x, y) = (41x + 7y, -20x + 74y)\]</span></p>
+<p><span class="math inline">\(T\)</span> is diagonalizable w.r.t the basis <span class="math inline">\((1, 4), (7, 5)\)</span></p>
+</blockquote>
+<h4 id="theorem-5.41-conditions-equivalent-to-diagonalizability">Theorem 5.41: Conditions Equivalent to Diagonalizability</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is finite-dimensional and <span class="math inline">\(T \in L(V)\)</span>. Let <span class="math inline">\(\lambda_1, ..., \lambda_m\)</span> denote the distinct eigenvalues of <span class="math inline">\(T\)</span>. Then the following are equivalent:</p>
+<ol type="1">
+<li><span class="math inline">\(T\)</span> is diagonalizable.</li>
+<li><span class="math inline">\(V\)</span> has a basis consisting of eigenvectors of <span class="math inline">\(T\)</span>.</li>
+<li>There exists <span class="math inline">\(1\)</span>-dimensional subspaces <span class="math inline">\(U_1, ..., U_n\)</span> of <span class="math inline">\(V\)</span>, each invariant under <span class="math inline">\(T\)</span>, such that: <span class="math display">\[V = U_1 \oplus .... \oplus U_n\]</span></li>
+<li><span class="math inline">\(V = E(\lambda_1, T) \oplus ... \oplus E(\lambda_m, T)\)</span></li>
+<li><span class="math inline">\(\dim V = \dim E(\lambda_1, T) + ... + \dim E(\lambda_m, T)\)</span></li>
+</ol>
+<h5 id="proof-of-theorem-5.41">Proof of Theorem 5.41</h5>
+<p><span class="math inline">\(1 \Longleftrightarrow 2\)</span> is trivial. Let <span class="math inline">\(v_1, .., v_n\)</span> be a basis s.t <span class="math inline">\(T\)</span> is diagonalizable, then we have <span class="math inline">\(T(v_j) = \lambda_j v_j\)</span>, so <span class="math inline">\(\{v_j\}\)</span> are eigenvectors of <span class="math inline">\(T\)</span> and basis of <span class="math inline">\(V\)</span>.</p>
+<p>Suppose <span class="math inline">\(2\)</span> holds, then <span class="math inline">\(v_1, ..., v_n\)</span> is an eigenvector basis of <span class="math inline">\(V\)</span>. Let <span class="math inline">\(U_1 = span(v_1), ...., U_n = span(v_n)\)</span>, since <span class="math inline">\(v_1, ..., v_n\)</span> are eigenvectors of <span class="math inline">\(T\)</span>, then <span class="math inline">\(U_1, ..., U_n\)</span> are <span class="math inline">\(1\)</span>-dimensional invariant subspaces. Since <span class="math inline">\(v_1, ..., v_n\)</span> is a basis of <span class="math inline">\(V\)</span>, we have each vector <span class="math inline">\(v \in V\)</span> can be uniquely write as linear combination of <span class="math inline">\(u_j \in U_j\)</span>:</p>
+<p><span class="math display">\[v = a_1v_1 + ... + a_n v_n = u_1 + ... + u_n\]</span></p>
+<p>Thus, we have <span class="math inline">\(V = U_1 \oplus ... \oplus U_n\)</span>, <span class="math inline">\(2 \rightarrow 3\)</span>.</p>
+<p>Suppose <span class="math inline">\(3\)</span> holds, then <span class="math inline">\(U_1 = span(v_1), ..., U_n = span(v_n)\)</span>, where <span class="math inline">\(u_1, ..., u_n\)</span> are eigenvector of <span class="math inline">\(T\)</span>, since <span class="math inline">\(V = U_1 \oplus ... \oplus U_n\)</span>, we have:</p>
+<p><span class="math display">\[v = u_1 + ... + u_n = a_1 v_1 + ... + a_n v_n, \; \forall v \in V\]</span></p>
+<p>Thus, we have <span class="math inline">\(v_1, ..., v_n\)</span> being eigenvector basis of <span class="math inline">\(V\)</span>, which implies <span class="math inline">\(2\)</span>.</p>
+<p>Suppose <span class="math inline">\(2\)</span> holds, we have a basis consisting of eigenvectors of <span class="math inline">\(T\)</span>. Hence, every vector of <span class="math inline">\(V\)</span> can be written as:</p>
+<p><span class="math display">\[v = a_1 v_1 + ... + a_n v_n = u_1 + ... + u_n\]</span></p>
+<p>Where <span class="math inline">\(u_i \in \text{null} (T - \lambda_j I), \; i \in \{1, ..., n\}, j \in \{1, ..., m\}\)</span>. Thus, we have:</p>
+<p><span class="math display">\[V = E(\lambda_1, T) + ... + E(\lambda_m, T)\]</span></p>
+<p>By <code>theorem 5.38</code>, we have:</p>
+<p><span class="math display">\[V = E(\lambda_1, T) \oplus ... \oplus E(\lambda_m, T)\]</span></p>
+<p>Thus, <span class="math inline">\(2 \rightarrow 4\)</span>.</p>
+<p>By <code>theorem 5.38</code>, we can easily see that <span class="math inline">\(4 \rightarrow 5\)</span></p>
+<p>Finally, suppose <span class="math inline">\(5\)</span> holds, we have:</p>
+<p><span class="math display">\[\dim V = \dim E(\lambda_1, T) + ... +  \dim E(\lambda_m, T)\]</span></p>
+<p>Choose a basis of each <span class="math inline">\(E(\lambda_j, T)\)</span> and put all these bases together to form a list <span class="math inline">\((v_1, ..., v_n)\)</span> of eigenvectors of <span class="math inline">\(T\)</span>, where <span class="math inline">\(n = \dim V\)</span>. To show that they are linearly independent, suppose that:</p>
+<p><span class="math display">\[a_1 v_1 + ... a_n v_n = 0\]</span></p>
+<p>For each <span class="math inline">\(j = 1, ..., m\)</span>, let <span class="math inline">\(u_j\)</span> denote the sum of all the terms <span class="math inline">\(a_kv_k\)</span> s.t <span class="math inline">\(v_k \in E(\lambda_j, T)\)</span>. Thus, each <span class="math inline">\(u_j\)</span> is in <span class="math inline">\(E(\lambda_j, T)\)</span>, and:</p>
+<p><span class="math display">\[u_1 + ... + u_m = 0\]</span></p>
+<p>Since eigenvectors corresponding to different eigenvalues are independent and <span class="math inline">\(u_i\)</span> is sum of basis in <span class="math inline">\(E(\lambda_j, T)\)</span>, we have <span class="math inline">\(u_1, ..., u_m\)</span> independent and all <span class="math inline">\(a_k = 0\)</span>. Thus, <span class="math inline">\(5 \rightarrow 2\)</span>.</p>
+<h4 id="theorem-5.44-enough-eigenvalues-implies-diagonalizability">Theorem 5.44: Enough Eigenvalues Implies Diagonalizability</h4>
+<p>If <span class="math inline">\(T \in L(V)\)</span> has <span class="math inline">\(\dim V\)</span> distinct eigenvalues, then <span class="math inline">\(T\)</span> is diagonalizable.</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/MDP/" rel="bookmark">MDP</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-equations/" rel="bookmark">Bellman Equations</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-optimality-equations/" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/14/calculus/" rel="bookmark">Calculus (1)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/dp/" rel="bookmark">Dynamic Programming</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RL-Basics/" rel="tag"># RL Basics</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/01/09/linear-algebra-2/" rel="prev" title="Linear Algebra (2)">
+                  <i class="fa fa-chevron-left"></i> Linear Algebra (2)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/01/25/linear-algebra-4/" rel="next" title="Linear Algebra (4)">
+                  Linear Algebra (4) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Deterministic Policy Gradient Algorithms Introduction In traditional policy gradient algorithms, policy is parametrized by a probability distribution \(\pi_{\theta} (a | s) &#x3D; P[a | s; \theta]\) that s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Deterministic Policy Gradient">
+<meta property="og:url" content="https://swag1ong.github.io/2021/05/06/DPG/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Deterministic Policy Gradient Algorithms Introduction In traditional policy gradient algorithms, policy is parametrized by a probability distribution \(\pi_{\theta} (a | s) &#x3D; P[a | s; \theta]\) that s">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/pg/dpg_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/pg/dpg_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/pg/dpg_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/pg/dpg_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/pg/dpg_5.png">
+<meta property="article:published_time" content="2021-05-06T02:20:16.000Z">
+<meta property="article:modified_time" content="2021-06-16T11:55:13.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="Policy Gradient">
+<meta property="article:tag" content="Continuous Action Space">
+<meta property="article:tag" content="Policy Search">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swag1ong.github.io/images/RL/pg/dpg_1.png">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/05/06/DPG/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;05&#x2F;06&#x2F;DPG&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;05&#x2F;06&#x2F;DPG&#x2F;&quot;,&quot;title&quot;:&quot;Deterministic Policy Gradient&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Deterministic Policy Gradient | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#deterministic-policy-gradient-algorithms"><span class="nav-number">1.</span> <span class="nav-text">Deterministic Policy Gradient Algorithms</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#introduction"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#notations"><span class="nav-number">1.2.</span> <span class="nav-text">Notations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#off-policy-actor-critic"><span class="nav-number">1.3.</span> <span class="nav-text">Off-Policy Actor-Critic</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gradients-of-deterministic-policies"><span class="nav-number">1.4.</span> <span class="nav-text">Gradients of Deterministic Policies</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#deterministic-policy-gradient-theorem"><span class="nav-number">1.4.1.</span> <span class="nav-text">Deterministic Policy Gradient Theorem</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#proof"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">Proof</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#theorem-2"><span class="nav-number">1.4.2.</span> <span class="nav-text">Theorem 2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#off-policy-deterministic-actor-critic"><span class="nav-number">1.5.</span> <span class="nav-text">Off Policy Deterministic Actor-Critic</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#compatible-function-approximation"><span class="nav-number">1.5.1.</span> <span class="nav-text">Compatible Function Approximation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#compatible-function-approximator-in-stochastic-case"><span class="nav-number">1.5.1.1.</span> <span class="nav-text">Compatible Function Approximator in Stochastic Case</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#proof-1"><span class="nav-number">1.5.1.2.</span> <span class="nav-text">Proof</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#compatible-function-approximator-in-deterministic-case"><span class="nav-number">1.5.1.3.</span> <span class="nav-text">Compatible Function Approximator in Deterministic Case</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#proof-2"><span class="nav-number">1.5.1.4.</span> <span class="nav-text">Proof</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#compatible-off-policy-deterministic-actor-critic-algorithm-copdac"><span class="nav-number">1.6.</span> <span class="nav-text">Compatible Off-Policy Deterministic Actor-Critic Algorithm (COPDAC)</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/05/06/DPG/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Deterministic Policy Gradient
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-05-06 10:20:16" itemprop="dateCreated datePublished" datetime="2021-05-06T10:20:16+08:00">2021-05-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-16 19:55:13" itemprop="dateModified" datetime="2021-06-16T19:55:13+08:00">2021-06-16</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/PG/" itemprop="url" rel="index"><span itemprop="name">PG</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/05/06/DPG/" class="post-meta-item leancloud_visitors" data-flag-title="Deterministic Policy Gradient" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>10k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>10 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="deterministic-policy-gradient-algorithms">Deterministic Policy Gradient Algorithms</h1>
+<h2 id="introduction">Introduction</h2>
+<p>In traditional policy gradient algorithms, policy is parametrized by a probability distribution <span class="math inline">\(\pi_{\theta} (a | s) = P[a | s; \theta]\)</span> that stochastically selects action <span class="math inline">\(a\)</span> in state <span class="math inline">\(s\)</span> according to parameter vector <span class="math inline">\(\theta\)</span>. In this paper, the authors consider deterministic policies <span class="math inline">\(a = \mu_{\theta} (s)\)</span>.</p>
+<p>From a practical viewpoint, there is a crucial difference between the stochastic and deterministic policy gradients. In the stochastic case, the policy gradient integrates over both state and action spaces, whereas in the deterministic case it only integrates over the state space:</p>
+<p><span class="math display">\[E_{X\sim \rho^{\pi_\theta}A \sim \pi_{\theta}} [\nabla log \pi(A | X) Q^{\pi_{\theta}} (X, A)]\]</span></p>
+<p>Thus, <strong>computing deterministic policies may require less samples</strong>.</p>
+<p>An off-policy learning scheme is introduced here to ensure adequate exploration (i.e The basic idea is to choose actions according to a stochastic behaviour policy).</p>
+<span id="more"></span>
+<h2 id="notations">Notations</h2>
+<p><strong>Notations are simplified so that the random variables in the conditional density are dropped, and <span class="math inline">\(\pi_{\theta} = \pi\)</span>, the subscripts are dropped for simplicity</strong></p>
+<p>Initial state distribution <span class="math inline">\(p_1(s_1)\)</span>, stationary transition dynamics distribution <span class="math inline">\(p(s_{t+1} | s_{t}, a_{t})\)</span>, deterministic reward function <span class="math inline">\(r(x, a)\)</span>. Stochastic policy is represented as <span class="math inline">\(\pi_{\theta} (a_t | s_t)\)</span>. A trajectory of the process is represented as <span class="math inline">\(h_{1:T} = s_1, a_1, r_1, ...., s_T, a_T\)</span>.</p>
+<p>The return is the total discounted reward</p>
+<p><span class="math display">\[r_t^{\gamma} = \sum^{\infty}_{k = t} \gamma^{k-t} r(s_k, a_k)\]</span></p>
+<p>Value functions:</p>
+<p><span class="math display">\[V^{\pi} (s) = E[r_1^{\gamma} | S_1=s; \pi]\]</span></p>
+<p><span class="math display">\[Q^{\pi} (s, a) = E[r_1^{\gamma} | S_1=s, A_1=a; \pi]\]</span></p>
+<p>The objective is to find a policy <span class="math inline">\(\pi\)</span> that maximize <span class="math inline">\(J(\pi)\)</span></p>
+<p><span class="math display">\[J(\pi) = E_{s_1 \sim p_1}[r_1^{\gamma} | \pi]\]</span></p>
+<p>Define t step transition probability following <span class="math inline">\(\pi\)</span> starting from <span class="math inline">\(s\)</span> as <span class="math inline">\(p^{\pi}(s \rightarrow s^{\prime}; t)\)</span></p>
+<p>The un-normalized discounted future state distribution:</p>
+<p><span class="math display">\[\rho^{\pi} (s^{\prime}) \triangleq \int_s \sum^{\infty}_{t=1} \gamma^{t-1} p(s) p^{\pi}(s \rightarrow s^{\prime}; t) ds\]</span></p>
+<p>The performance objective as expectation:</p>
+<p><span class="math display">\[J(\pi) = E_{s \sim \rho^{\pi} (\cdot), a \sim \pi(\cdot | s)} [r(s, a)]\]</span></p>
+<p>Where this expectation is over the un-normalized discounted future state distribution. By replacing discounted future state distribution with stationary state distribution, we have average reward performance measure.</p>
+<p>The policy gradient can be written as:</p>
+<span class="math display">\[\begin{aligned}
+\nabla_{\theta} J(\pi_\theta) &amp;= \int_S \rho^{\pi} (s) \int_A \nabla_{\theta} \pi_\theta (a | s) Q^{\pi} (s, a) da ds\\
+&amp;= E_{s\sim \rho^{\pi} (\cdot), a \sim \pi_{\theta}}[\nabla_{\theta} \log \pi_\theta (a | s) Q^{\pi} (s, a)]
+\end{aligned}\]</span>
+<h2 id="off-policy-actor-critic">Off-Policy Actor-Critic</h2>
+<p>It is often useful to estimate the policy gradient off-policy from trajectories sampled from a distinct behaviour policy <span class="math inline">\(\beta(a | s) \neq \pi_{\theta} (a | s)\)</span>. In an off-policy setting, the performance objective is typically modified to be the value function of the target policy averaged over the state distribution of the behaviour policy as initial state.</p>
+<span class="math display">\[\begin{aligned}
+J_{\beta} (\pi_{\theta}) &amp;= \int_s \rho^{\beta} (s) V^{\pi} (s) ds\\
+&amp;= \int_s \int_a \rho^{\beta} (s) \pi_{\theta} (a | s) Q^{\pi}(s, a) dads\\
+\end{aligned}\]</span>
+<p>Differentiating the performacne objective and applying an approximation gives the off-policy policy gradient:</p>
+<span class="math display">\[\begin{aligned}
+\nabla_{\theta} J_{\beta} (\pi_{\theta}) &amp;\approx \int_s \int_a \rho^{\beta} (s) \nabla_{\theta} \pi_{\theta} (a | s) Q^{\pi}(s, a) dads\\
+&amp;= E_{s \sim \rho^\beta, a \sim \beta_{\theta}}[\frac{\pi_{\theta} (a | s)}{\beta (a | s)} \nabla_{\theta} \log \pi_{\theta} (a | s) Q^{\pi} (s, a)]\\
+\end{aligned}\]</span>
+<h2 id="gradients-of-deterministic-policies">Gradients of Deterministic Policies</h2>
+<h3 id="deterministic-policy-gradient-theorem">Deterministic Policy Gradient Theorem</h3>
+<p>Let:</p>
+<p><span class="math display">\[J(\mu_{\theta}) = E_{s \sim \rho^{\mu_{\theta}} (\cdot)} [r(s, \mu_{\theta}(s))]\]</span></p>
+<p>Note here that <span class="math inline">\(\mu_{\theta}\)</span> is the deterministic policy. It is deterministic function of state, and it outputs action (does not represent a probability distribution anymore)</p>
+<p><img src="/images/RL/pg/dpg_1.png" width="600"></p>
+<h4 id="proof">Proof</h4>
+<span class="math display">\[\begin{aligned}
+\nabla_{\theta} V^{\mu_{\theta}} (s) &amp;= \nabla_{\theta} Q^{\mu_{\theta}} (s, \mu_{\theta} (s))\\
+&amp;= \nabla_{\theta} (r(s, \mu_{\theta} (s)) + \int_{s^{\prime}} p(s^{\prime} | s, \mu_{\theta} (s)) V^{\mu_{\theta}} (s^{\prime}) ds^{\prime})\\
+&amp;= \nabla_{\theta} \mu_{\theta} (s) \nabla_{a} r(s, a) + \int_{s^{\prime}} \nabla_{\theta}  \mu_{\theta} (s) \nabla_{a} p(s^{\prime} | s, a) V^{\mu_{\theta}} (s^{\prime}) ds^{\prime} + \int_{s^{\prime}} p(s^{\prime} | s, \mu_{\theta} (s)) \nabla_{\theta}  V^{\mu_{\theta}} (s^{\prime}) ds^{\prime}\\
+&amp;= \nabla_{\theta} \mu_{\theta} (s) \nabla_{a} (r(s, a) + \int_{s^{\prime}} p(s^{\prime} | s, a) V^{\mu_{\theta}} (s^{\prime})ds^{\prime}) + \int_{s^{\prime}} p(s^{\prime} | s, \mu_{\theta} (s)) \nabla_{\theta}  V^{\mu_{\theta}} (s^{\prime}) ds^{\prime} \\
+&amp;= \nabla_{\theta} \mu_{\theta} (s) \nabla_{a} Q^{\mu_{\theta}} (s, a) + \int_{s^{\prime}} p(s^{\prime} | s, \mu_{\theta} (s)) \nabla_{\theta}  V^{\mu_{\theta}} (s^{\prime}) ds^{\prime}
+\end{aligned}\]</span>
+<p><br/></p>
+<p>Just like Stochastic Policy Gradient Theorem proof, if we keep expanding <span class="math inline">\(V^{\mu_{\theta}}\)</span>, we will end up with:</p>
+<p><span class="math display">\[\nabla_{\theta} V^{\mu_{\theta}} (s) = \int_{s^{\prime}} \sum^{\infty}_{t=0} \gamma^{t} p^{\mu_{\theta}}(s \rightarrow s^{\prime}; t) \nabla_{\theta} \mu_{\theta} (s^{\prime}) \nabla_{a} Q^{\mu_{\theta}} (s^{\prime}, a) ds^{\prime}\]</span> <br/></p>
+<p>Then our objective can be written as:</p>
+<span class="math display">\[\begin{aligned}
+\nabla_{\theta} J(\mu_{\theta}) &amp;= \int_{s_1} p_1(s_1) \nabla_{\theta} V^{\mu_{\theta}} (s_1) ds_1\\
+&amp;= \int_{s_1} p_1(s_1) \int_{s^{\prime}} \sum^{\infty}_{t=0} \gamma^{t} p^{\mu_{\theta}}(s_1 \rightarrow s^{\prime}; t) \nabla_{\theta} \mu_{\theta} (s^{\prime}) \nabla_{a} Q^{\mu_{\theta}} (s^{\prime}, a) ds^{\prime} ds_1\\
+&amp;= \int_{s^{\prime}} \rho^{\mu_{\theta}} (s^{\prime}) \nabla_{\theta} \mu_{\theta} (s^{\prime}) \nabla_{a} Q^{\mu_{\theta}} (s^{\prime}, a) ds^{\prime}\\
+&amp;= E_{s \sim \rho^{\mu_{\theta}} (\cdot)} [\nabla_{\theta} \mu_{\theta} (s) \nabla_{a} Q^{\mu_{\theta}} (s, a) |_{a = \mu_\theta(s)}]
+\end{aligned}\]</span>
+<p><br/></p>
+<h3 id="theorem-2">Theorem 2</h3>
+<p><img src="/images/RL/pg/dpg_2.png" width="600"></p>
+<p>This theorem shows that the familiar machinery of policy gradient. All PG methods are applicable to deterministic policy gradient.</p>
+<h2 id="off-policy-deterministic-actor-critic">Off Policy Deterministic Actor-Critic</h2>
+<p>The performance objective is:</p>
+<p><span class="math display">\[J_{\beta}(\mu_{\theta}) = E_{s \sim \rho^{\beta} (\cdot)} [r(s, \mu_{\theta}(s))]\]</span></p>
+<p>The gradient:</p>
+<span class="math display">\[\begin{aligned}
+\nabla_{\theta} J_{\beta} (\pi_{\theta}) &amp;\approx \int_s \rho^{\beta} (s) \nabla_{\theta} \mu_{\theta} (s) \nabla_{a} Q^{\mu_{\theta}} (s, a) |_{a = \mu_\theta(s)} ds\\
+&amp;= E_{s \sim \rho^\beta}[\nabla_{\theta} \mu_{\theta} (s) \nabla_{a} Q^{\mu_{\theta}} (s, a) |_{a = \mu_\theta(s)} ]\\
+\end{aligned}\]</span>
+<p>This equation gives the off-policy deterministic policy gradient. We now develop an actor-critic algorithm that updates the policy in the direction of the off-policy deterministic policy gradient. We can see that the integral over <span class="math inline">\(a\)</span> is removed because we are using the deterministic policy, that is, we can avoid importance sampling in the critic.</p>
+<p>We substitute a differentiable action-value function <span class="math inline">\(Q^{w} (s, a)\)</span> in place of the true action-value function <span class="math inline">\(Q^{\mu} (s, a)\)</span>. A critic estimates the action-value function <span class="math inline">\(Q^{w} (s, a) \approx Q^{\mu} (s, a)\)</span>. In the below off-policy deterministic actor critic algorithm, the critic estimates the action-value function using the samples from <span class="math inline">\(\rho^\beta\)</span></p>
+<p><img src="/images/RL/pg/dpg_3.png" width="600"></p>
+<h3 id="compatible-function-approximation">Compatible Function Approximation</h3>
+<h4 id="compatible-function-approximator-in-stochastic-case">Compatible Function Approximator in Stochastic Case</h4>
+<p>In general, substituting an approximate <span class="math inline">\(Q^{w} (s, a)\)</span> will not necessarily follow the true gradient. Similar to the stochastic ase, only compatible function approximators are guaranteed to be unbiased. Recall that a function approximator <span class="math inline">\(f_w\)</span> is <strong>compatiable</strong> if:</p>
+<ol type="1">
+<li><span class="math inline">\(f_w\)</span> is found by minimizing the square loss <span class="math inline">\(E_{s \sim \rho^{\pi_{\theta}}, a \sim \pi_{\theta}} [(Q^{\pi} (s, a) - f_{w} (s, a))^2]\)</span></li>
+<li><span class="math inline">\(\nabla_{w} f_w (s, a) = \nabla_{\theta} \pi_{\theta}(s, a) \frac{1}{\pi(s, a)}\)</span>, this is satisfied only when <span class="math inline">\(f_w (s, a) = \nabla_{\theta} \log \pi_{\theta}(s, a) w^T\)</span></li>
+</ol>
+<p><br/></p>
+<p>These conditions imply:</p>
+<p><span class="math display">\[\nabla_{\theta} J(\pi_\theta) = E_{s\sim \rho^{\pi} (\cdot), a \sim \pi_{\theta}}[\nabla_{\theta} \log \pi_\theta (a | s) f_w(s, a)]\]</span></p>
+<h4 id="proof-1">Proof</h4>
+<p>Notice that, at the fixed point, we will have:</p>
+<p><span class="math display">\[Q^{\pi} (s, a) - f_w (s, a) = 0\]</span></p>
+<p>and the gradient of the loss:</p>
+<p><span class="math display">\[\nabla_{w} E_{s \sim \rho^{\pi_{\theta}}, a \sim \pi_{\theta}} [(Q^{\pi} (s, a) - f_{w} (s, a))^2] = E_{s \sim \rho^{\pi_{\theta}}, a \sim \pi_{\theta}} [(Q^{\pi} (s, a) - f_{w} (s, a)) \nabla_{w} f_{w} (s, a)] = 0\]</span></p>
+<p>By substitute condition 2 into the above equation, we have:</p>
+<p><span class="math display">\[E_{s \sim \rho^{\pi_{\theta}}, a \sim \pi_{\theta}} [(Q^{\pi} (s, a) - f_{w} (s, a)) \nabla_{\theta} \log \pi_{\theta}(s, a)] = 0\]</span></p>
+<p>Since the gradient of loss is 0, we can subtract it from the policy gradient:</p>
+<span class="math display">\[\begin{aligned}
+\nabla_{\theta} J(\pi_\theta) &amp;= E_{s \sim \rho^{\pi_{\theta}}, a \sim \pi_{\theta}} [\nabla_{\theta} \log \pi_\theta (a | s) Q^{\pi} (s, a)] - E_{s \sim \rho^{\pi_{\theta}}, a \sim \pi_{\theta}} [(Q^{\pi} (s, a) - f_{w} (s, a)) \nabla_{\theta} \log \pi_{\theta}(s, a)]\\
+&amp;= E_{s\sim \rho^{\pi} (\cdot), a \sim \pi_{\theta}}[\nabla_{\theta} \log \pi_\theta (a | s) f_w(s, a)]
+\end{aligned}\]</span>
+<p><br/></p>
+<h4 id="compatible-function-approximator-in-deterministic-case">Compatible Function Approximator in Deterministic Case</h4>
+<p>Similar in above stochastic case, we want to find a class of compatible function approximators <span class="math inline">\(Q^{w} (s, a)\)</span> such that the gradient is preserved. In order words:</p>
+<p><span class="math display">\[\nabla_a Q^{w} (s, a) = \nabla_a Q^{\mu_{\theta}} (s, a)\]</span></p>
+<p>So that we could replace <span class="math inline">\(\nabla_a Q^{\mu_{\theta}} (s, a)\)</span> with <span class="math inline">\(\nabla_a Q^{w} (s, a)\)</span> and still have the true gradient preserved.</p>
+<p><img src="/images/RL/pg/dpg_4.png" width="600"></p>
+<p><strong>This theorem applies to both on-policy and off-policy cases</strong></p>
+<h4 id="proof-2">Proof</h4>
+<p>The proof basically follows the stochastic case:</p>
+<p><img src="/images/RL/pg/dpg_5.png" width="600"></p>
+<p>So for any deterministic policy <span class="math inline">\(\mu_\theta (s)\)</span>, there always exists a compatible function approximator of the form:</p>
+<p><span class="math display">\[f_{w} (s, a) = \phi(s, a)^T \nabla_{\theta} \mu_{\theta} (s)^Tw + V^{v} (s)\]</span></p>
+<p>Where <span class="math inline">\(V^{v} (s)\)</span> can be any baseline function that is independent of the action <span class="math inline">\(a\)</span> and <span class="math inline">\(\nabla_{a} \phi(s, a)^T = 1\)</span>. This function satisfies condition 1. However, in order to satisfy condition 2, we need to find the parameters <span class="math inline">\(w\)</span> that minimize the mse between th gradient of <span class="math inline">\(Q^w\)</span> and the true gradient. Since, acquiring unbiased samples of the true gradient is difficult, in practice, we learn <span class="math inline">\(w\)</span> using a standard policy evaluation method that does not exactly satisfy condition 2 (ie. using SARSA, Q-learning through semi-gradient TD).</p>
+<p>We denote the reasonable solution to the policy evaluation problem by <span class="math inline">\(Q^{w} (s, a) \approx Q^{\mu} (s, a)\)</span> and will therefore approximately satisfy</p>
+<p><span class="math display">\[\nabla_a Q^{w} (s, a) \approx \nabla_a Q^{\mu_{\theta}} (s, a)\]</span></p>
+<h2 id="compatible-off-policy-deterministic-actor-critic-algorithm-copdac">Compatible Off-Policy Deterministic Actor-Critic Algorithm (COPDAC)</h2>
+<p>The Compatible off-policy deterministic actor-critic algorithm consists of two compoenents:</p>
+<ol type="1">
+<li><p>The critic is a linear function approximator that estimates the action-value from features:</p>
+<p><span class="math display">\[a \nabla_{\theta}\mu_{\theta} (s)^Tw + V^{v} (s)\]</span></p>
+<p>This can be learnt off-policy using samples of a behaviour policy <span class="math inline">\(\beta(a | s)\)</span>, for example using Q-learning or gradient Q-learning. <span class="math inline">\(V^{v} (s)\)</span> is parametrized linearly as <span class="math inline">\({\phi(s)}^T v\)</span>.</p></li>
+<li><p>The actor then updates its parameters in the direction of the critic's action-value gradient.</p></li>
+</ol>
+<p><br/></p>
+<p>The following COPDAC-Q algorithm uses a simple Q-learning critic:</p>
+<ol type="1">
+<li><p>Calculate the TD error for semi gradient TD update</p>
+<p><span class="math display">\[\delta_t = r_t + \gamma Q^{w} (s_{t+1}, \mu_{\theta}(s_{t+1})) - Q^{w} (s_t, a_t)\]</span></p></li>
+<li><p>Update <span class="math inline">\(V^{v} (s)\)</span></p>
+<p><span class="math display">\[v_{t + 1} = v_t + \alpha_v \delta_t \phi(s_t)\]</span></p></li>
+<li><p>Update <span class="math inline">\(Q^{w} (s, a)\)</span></p>
+<p><span class="math display">\[w_{t + 1} = w_t + \alpha_w \delta_t a_t^T \nabla_{\theta}\mu_{\theta} (s_t)\]</span></p></li>
+<li><p>Update the actor <span class="math inline">\(\mu_{\theta} (s)\)</span>:</p>
+<p><span class="math display">\[\theta_{t + 1} = \theta_{t} + \alpha_{\theta}  \nabla_{\theta}\mu_{\theta} (s_t) (\nabla_{\theta}\mu_{\theta}^T (s_t) w_t)\]</span></p></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/06/09/DDPG/" rel="bookmark">Deep Deterministic Policy Gradient</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/30/policy-gradient-2/" rel="bookmark">Policy Gradient (2)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/06/05/policy-gradient-3/" rel="bookmark">Policy Gradient (3)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/23/policy-gradient/" rel="bookmark">Policy Gradient (1)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/06/23/td3/" rel="bookmark">td3</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Policy-Gradient/" rel="tag"># Policy Gradient</a>
+              <a href="/tags/Continuous-Action-Space/" rel="tag"># Continuous Action Space</a>
+              <a href="/tags/Policy-Search/" rel="tag"># Policy Search</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/03/policy-iteration/" rel="prev" title="Policy Iteration">
+                  <i class="fa fa-chevron-left"></i> Policy Iteration
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/07/DDQN/" rel="next" title="DDQN">
+                  DDQN <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

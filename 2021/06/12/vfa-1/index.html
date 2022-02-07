@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Value Function Approximation (Introduction) In real-world problem, the state space \(\chi\) or the state-action space \(\chi \times A\) is large that we cannot represent quantities such as the value f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Value Function Approximation (1)">
+<meta property="og:url" content="https://swag1ong.github.io/2021/06/12/vfa-1/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Value Function Approximation (Introduction) In real-world problem, the state space \(\chi\) or the state-action space \(\chi \times A\) is large that we cannot represent quantities such as the value f">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-06-12T08:33:44.000Z">
+<meta property="article:modified_time" content="2021-08-24T11:57:03.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/06/12/vfa-1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;06&#x2F;12&#x2F;vfa-1&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;06&#x2F;12&#x2F;vfa-1&#x2F;&quot;,&quot;title&quot;:&quot;Value Function Approximation (1)&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Value Function Approximation (1) | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#value-function-approximation-introduction"><span class="nav-number">1.</span> <span class="nav-text">Value Function Approximation (Introduction)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#linear-function-approximation"><span class="nav-number">1.1.</span> <span class="nav-text">Linear Function Approximation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#l_p-v-norms-of-value-function"><span class="nav-number">1.2.</span> <span class="nav-text">\(L_p (v)\)-norms of Value Function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#goal"><span class="nav-number">1.3.</span> <span class="nav-text">Goal</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#batch-rl"><span class="nav-number">1.4.</span> <span class="nav-text">Batch RL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#empirical-risk-minimization"><span class="nav-number">1.5.</span> <span class="nav-text">Empirical Risk Minimization</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#next-avi-brm-lstd-etc.."><span class="nav-number">2.</span> <span class="nav-text">Next: AVI, BRM, LSTD etc..</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/06/12/vfa-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Value Function Approximation (1)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-06-12 16:33:44" itemprop="dateCreated datePublished" datetime="2021-06-12T16:33:44+08:00">2021-06-12</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-08-24 19:57:03" itemprop="dateModified" datetime="2021-08-24T19:57:03+08:00">2021-08-24</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/VFA/" itemprop="url" rel="index"><span itemprop="name">VFA</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/06/12/vfa-1/" class="post-meta-item leancloud_visitors" data-flag-title="Value Function Approximation (1)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>5.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="value-function-approximation-introduction">Value Function Approximation (Introduction)</h1>
+<p>In real-world problem, the state space <span class="math inline">\(\chi\)</span> or the state-action space <span class="math inline">\(\chi \times A\)</span> is large that we cannot represent quantities such as the value function or policy exactly.</p>
+<ul>
+<li><span class="math inline">\(\chi \subseteq \mathbb{R}^d\)</span> with <span class="math inline">\(d \geq 1\)</span>. Exact representation of an arbitrary function on <span class="math inline">\(\mathbb{R}^d\)</span> on a computer is infeasible.</li>
+<li><span class="math inline">\(\chi\)</span> is finite, but very large (millions or billions)</li>
+</ul>
+<p>We need to approximate those functions using a representation that is feasible to manipulate on a computer. This is called <strong>function approximation</strong>.</p>
+<p>Function approximation also helps with the generalization.</p>
+<h2 id="linear-function-approximation">Linear Function Approximation</h2>
+<p>We may use a linear function approximator defined based on a set of basis functions:</p>
+<p><span class="math display">\[\hat{V} (x) = \phi (x)^T w = \sum^p_{i=1} \phi_i (x) w_i\]</span></p>
+<p>with <span class="math inline">\(w \in \mathbb{R}^p\)</span> and <span class="math inline">\(\phi: \chi \rightarrow \mathbb{R}^p\)</span></p>
+<p>Any <span class="math inline">\(\hat{V}\)</span> belongs to the space of functions <span class="math inline">\(\mathbf{F}\)</span>:</p>
+<p><span class="math display">\[\mathbf{F} = \{x \mapsto  \phi (x)^T w : w \in \mathbb{R}^p\}\]</span></p>
+<p>The function space <span class="math inline">\(\mathbf{F}\)</span> is called the <code>linear value function space</code>, in this case it is a span of a set of features.</p>
+<span id="more"></span>
+<h2 id="l_p-v-norms-of-value-function"><span class="math inline">\(L_p (v)\)</span>-norms of Value Function</h2>
+<p>For a probability distribution <span class="math inline">\(v \in M(\chi)\)</span>, and a measurable function <span class="math inline">\(V \in \mathbf{F}\)</span>, we define the <span class="math inline">\(L_p (v)\)</span>-norm of <span class="math inline">\(V\)</span> with <span class="math inline">\(1 \leq p &lt; \infty\)</span> as:</p>
+<p><span class="math display">\[\|V\|^p_{p, v} \triangleq \int_{x \in \chi} |V(x)|^p dv(x)\]</span></p>
+<p>The <span class="math inline">\(L_{\infty} (\chi)\)</span> norm is:</p>
+<p><span class="math display">\[\|V\|_{\infty} \triangleq \sup_{x \in \chi} |V(x)|\]</span></p>
+<h2 id="goal">Goal</h2>
+<p>Suppose that we happen to know <span class="math inline">\(V^{\pi}, Q^{\pi}, Q^*, V^*\)</span> and we want to represent it with a function <span class="math inline">\(V \in \mathbf{F}\)</span>, our goal is to find:</p>
+<p><span class="math display">\[V \approx V^{\pi}\]</span></p>
+<p>To quantify <span class="math inline">\(V \approx V^{\pi}\)</span>, we have to pick a distance function <span class="math inline">\(d\)</span> between function <span class="math inline">\(V\)</span> and <span class="math inline">\(V^{\pi}\)</span>, given such a distance function, we can express our goal as:</p>
+<p><span class="math display">\[V = \underset{V \in \mathbf{F}}{\arg\min} \; d(V, V^{\pi})\]</span></p>
+<p>One common used family of distances are based on <span class="math inline">\(L_p (\mu)\)</span>-norm w.r.t a probability measure <span class="math inline">\(\mu \in M(\chi)\)</span>:</p>
+<p><span class="math display">\[V = \underset{V \in \mathbf{F}}{\arg\min} \; \|V - V^{\pi}\|^p_{p, \mu}\]</span> <span class="math display">\[Q = \underset{Q \in \mathbf{F}}{\arg\min} \; \|Q - Q^{\pi}\|^p_{p, \mu}\]</span></p>
+<p>A common choice is <span class="math inline">\(p=2\)</span> which is similar to mean squared loss function in regression.</p>
+<h2 id="batch-rl">Batch RL</h2>
+<p>In general, <span class="math inline">\(V^{\pi}, Q^{\pi}, Q^*, V^*\)</span> are unknown quantities and need to estimate them using data. We consider the <strong>batch data</strong> setting:</p>
+<ul>
+<li><p>The data is already collected and we are interested in using it to estimate quantities such as <span class="math inline">\(Q^{\pi}, Q^{*}\)</span></p></li>
+<li><p>Suppose that we have: <span class="math display">\[D_N = \{(X_i, A_i, R_i, X^{\prime}_i)\}^N_{i=1}\]</span></p>
+<p>with <span class="math inline">\((X_i, A_i) \sim \mu\)</span> and <span class="math inline">\(X^{\prime}_i \sim P(\cdot | X_i, A_i)\)</span> and <span class="math inline">\(R_i \sim R(\cdot | X_i, A_i)\)</span> (<span class="math inline">\(\mu\)</span> can be any distribution that the <span class="math inline">\(L_p (\mu)\)</span>-norm is referring to, it is often the stationary distribution following policy <span class="math inline">\(\pi\)</span>)</p></li>
+<li><p>The data could also be generated by following a behaviour policy <span class="math inline">\(\pi_b\)</span>.</p></li>
+<li><p>In the batch setting, the agent does not interact with the environment while it it computing <span class="math inline">\(Q^{\pi}, Q^{*}\)</span> which contrasted with the online method such as TD or Q-learning where the agent updates its estimate of the value function as each data point arrives.</p></li>
+</ul>
+<p><strong>Batch RL may collect a batch of data, process them, and then collect a new batch of data, possibly based on a policy resulted from the previous batch processing computation.</strong></p>
+<h2 id="empirical-risk-minimization">Empirical Risk Minimization</h2>
+<p>Suppose, we have a batch of data:</p>
+<p><span class="math display">\[D_N = \{(X_i, A_i, G^{\pi}_i (X_i, A_i))\}^{N}_{i=1}\]</span></p>
+<p>Where <span class="math inline">\(G^{\pi}_i (X_i, A_i)\)</span> is the return starting from state <span class="math inline">\(X_i\)</span> and taking action <span class="math inline">\(A_i\)</span> and following the policy <span class="math inline">\(\pi\)</span> afterwards (<span class="math inline">\((X_i, A_i) \sim \mu\)</span>). The return can be obtain using initial-state only MC by selecting <span class="math inline">\((X_i, A_i) \sim \mu\)</span> and then following <span class="math inline">\(\pi\)</span> until the end of the episode.</p>
+<p>Recall the loss function:</p>
+<p><span class="math display">\[Q = \underset{Q \in \mathbf{F}}{\arg\min} \; \|Q - Q^{\pi}\|^p_{p, \mu}\]</span></p>
+<ul>
+<li>We do not know the distribution <span class="math inline">\(\mu\)</span> and only have samples from it.</li>
+<li>We do not know <span class="math inline">\(Q^{\pi}\)</span> and only have unbiased estimate of it at a finite number of data points.</li>
+</ul>
+<p><br></p>
+<p><strong>The question is: can we replace <span class="math inline">\(Q^{\pi}\)</span> with <span class="math inline">\(G^{\pi}\)</span>?</strong></p>
+<p>For any <span class="math inline">\(Q\)</span>, we can decompose:</p>
+<span class="math display">\[\begin{aligned}
+E_{\mu, G^{\pi}}[|Q(X, A) - G^{\pi}(X, A)|^2] &amp;= E_{\mu, G^{\pi}}[|Q(X, A) - Q^{\pi} (X, A) + Q^{\pi} (X, A) - G^{\pi} (X, A)|^2]\\
+&amp;= E_{\mu, G^{\pi}}[|Q(X, A) - Q^{\pi}(X, A)|^2] + E_{\mu, G^{\pi}}[|Q^{\pi}(X, A) - G^{\pi}(X, A)|^2] + 2 E_{\mu, G^{\pi}}[(Q(X, A) - Q^{\pi} (X, A))(Q^{\pi} (X, A) - G^{\pi} (X, A))]\\
+\end{aligned}\]</span>
+<p>The first term:</p>
+<p><span class="math display">\[E_{\mu, G^{\pi}}[|Q(X, A) - Q^{\pi}(X, A)|^2] = \int_{x, a} |Q(X, A) - Q^{\pi}(X, A)|^2 d\mu(x, a) = \|Q - Q^{\pi}\|^2_{2, \mu}\]</span></p>
+<p>The second term:</p>
+<p><span class="math display">\[E_{\mu, G^{\pi}}[|Q^{\pi}(X, A) - G^{\pi}(X, A)|^2] = E_{\mu}[E_{G^{\pi}}[|Q^{\pi}(X, A) - G^{\pi}(X, A)|^2 | X, A]] = E_{\mu}[Var[G^{\pi} (X, A) | X, A]]\]</span></p>
+<p>The third term:</p>
+<span class="math display">\[\begin{aligned}
+2 E_{\mu, G^{\pi}}[(Q(X, A) - Q^{\pi} (X, A))(Q^{\pi} (X, A) - G^{\pi} (X, A))] &amp;= 2E_{\mu}[E_{G^{\pi}} [(Q(X, A) - Q^{\pi} (X, A))(Q^{\pi}(X, A) - G^{\pi} (X, A)) | X, A]]\\
+&amp;= 2E_{\mu}[(Q(X, A) - Q^{\pi} (X, A))(Q^{\pi}(X, A) - \underbrace{E[G^{\pi} (X, A)) | X, A]}_{Q^{\pi} (X, A)})]\\
+&amp;= 0
+\end{aligned}\]</span>
+<p>Thus:</p>
+<span class="math display">\[\begin{aligned}
+\underset{Q \in \mathbf{F}}{\arg\min} \; E_{\mu, G^{\pi}}[|Q(X, A) - G^{\pi}(X, A)|^2] &amp;= \underset{Q \in \mathbf{F}}{\arg\min} \; \|Q - Q^{\pi}\|^2_{2, \mu} + E_{\mu}[Var[G^{\pi} (X, A) | X, A]]\\
+&amp;= \underset{Q \in \mathbf{F}}{\arg\min} \; \|Q - Q^{\pi}\|^2_{2, \mu}
+\end{aligned}\]</span>
+<p><br></p>
+<p>We can see that, if we could find the solution to <span class="math inline">\(\underset{Q \in \mathbf{F}}{\arg\min} \; E_{\mu, G^{\pi}}[|Q - G^{\pi}|^2]\)</span>, the solution would be the same as the minimizer of our target. However, we could not compute the expectation because we do not know <span class="math inline">\(\mu\)</span> and environment <span class="math inline">\(R, P\)</span>, we only have samples from it. A common solution in ML to address this issue is to use the <code>emprical risk minimization</code>, which prescribes that we solve:</p>
+<p><span class="math display">\[\frac{1}{N} \sum^{N}_{i=1} |Q(X_i, A_i) - G^{\pi} (X_i, A_i)|^2 = \|Q - G^{\pi}\|^2_{2, D_n}\]</span></p>
+<p>This is indeed a regression problem with the squared error loss.</p>
+<h1 id="next-avi-brm-lstd-etc..">Next: AVI, BRM, LSTD etc..</h1>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/06/11/PPO/" rel="prev" title="PPO">
+                  <i class="fa fa-chevron-left"></i> PPO
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/06/13/search/" rel="next" title="Search">
+                  Search <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

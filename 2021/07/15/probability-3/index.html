@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Statistics Inference Sampling and Statistics In a typical statistical problem, we have \(p_X(x), f_X(x)\) unknown. Our ignorance about the \(p_X(x), f_X(x)\) can roughly be classified in one of two wa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="probability-3">
+<meta property="og:url" content="https://swag1ong.github.io/2021/07/15/probability-3/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Statistics Inference Sampling and Statistics In a typical statistical problem, we have \(p_X(x), f_X(x)\) unknown. Our ignorance about the \(p_X(x), f_X(x)\) can roughly be classified in one of two wa">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_4_1_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_4_1_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_4_1_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_5_1_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_5_1_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_5_1_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_5_1_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_5_1_5.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_5_1_6.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_5_1_7.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_5_2_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_5_2_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_5_2_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_5_2_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_5_2_5.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_5_2_6.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_5_2_7.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_6_1_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_6_1_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_6_1_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_6_1_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_6_1_5.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_6_1_6.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_6_4_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_6_4_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_6_4_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_6_4_4.png">
+<meta property="article:published_time" content="2021-07-15T15:54:46.000Z">
+<meta property="article:modified_time" content="2021-07-24T15:09:41.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="RL Basics">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swag1ong.github.io/images/RL/background/mprob_4_1_2.png">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/07/15/probability-3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;07&#x2F;15&#x2F;probability-3&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;07&#x2F;15&#x2F;probability-3&#x2F;&quot;,&quot;title&quot;:&quot;probability-3&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>probability-3 | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#statistics-inference"><span class="nav-number">1.</span> <span class="nav-text">Statistics Inference</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#sampling-and-statistics"><span class="nav-number">1.1.</span> <span class="nav-text">Sampling and Statistics</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#point-estimators"><span class="nav-number">1.1.1.</span> <span class="nav-text">Point Estimators</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#the-method-of-monte-carlo"><span class="nav-number">1.2.</span> <span class="nav-text">The Method of Monte Carlo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bootstrap-procedures"><span class="nav-number">1.3.</span> <span class="nav-text">Bootstrap Procedures</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#consistency-and-limiting-distributions"><span class="nav-number">2.</span> <span class="nav-text">Consistency and Limiting Distributions</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#convergence-in-probability"><span class="nav-number">2.1.</span> <span class="nav-text">Convergence in Probability</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#weak-law-of-large-numbers"><span class="nav-number">2.1.1.</span> <span class="nav-text">Weak Law of Large Numbers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#consistency"><span class="nav-number">2.1.2.</span> <span class="nav-text">Consistency</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#convergence-in-distribution"><span class="nav-number">2.2.</span> <span class="nav-text">Convergence in Distribution</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bounded-in-probability"><span class="nav-number">2.2.1.</span> <span class="nav-text">Bounded in Probability</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#central-limit-theorem"><span class="nav-number">2.3.</span> <span class="nav-text">Central Limit Theorem</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#maximum-likelihood-methods"><span class="nav-number">3.</span> <span class="nav-text">Maximum Likelihood Methods</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#maximum-likelihood-estimation-single-parameter"><span class="nav-number">3.1.</span> <span class="nav-text">Maximum Likelihood Estimation (Single Parameter)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#maximum-likelihood-estimation-multiple-parameters"><span class="nav-number">3.2.</span> <span class="nav-text">Maximum Likelihood Estimation (Multiple Parameters)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fisher-information"><span class="nav-number">3.2.1.</span> <span class="nav-text">Fisher Information</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sufficiency"><span class="nav-number">4.</span> <span class="nav-text">Sufficiency</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#measures-of-quality-of-estimators"><span class="nav-number">4.1.</span> <span class="nav-text">Measures of Quality of Estimators</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#bayesian-statistics"><span class="nav-number">5.</span> <span class="nav-text">Bayesian Statistics</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#maximum-a-posterior-estimation"><span class="nav-number">5.1.</span> <span class="nav-text">Maximum A Posterior Estimation</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ref"><span class="nav-number">6.</span> <span class="nav-text">Ref</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/15/probability-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          probability-3
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-15 23:54:46" itemprop="dateCreated datePublished" datetime="2021-07-15T23:54:46+08:00">2021-07-15</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-24 23:09:41" itemprop="dateModified" datetime="2021-07-24T23:09:41+08:00">2021-07-24</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/07/15/probability-3/" class="post-meta-item leancloud_visitors" data-flag-title="probability-3" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>11k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>10 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="statistics-inference">Statistics Inference</h1>
+<h2 id="sampling-and-statistics">Sampling and Statistics</h2>
+<p>In a typical statistical problem, we have <span class="math inline">\(p_X(x), f_X(x)\)</span> unknown. Our ignorance about the <span class="math inline">\(p_X(x), f_X(x)\)</span> can roughly be classified in one of two ways:</p>
+<ol type="1">
+<li><span class="math inline">\(f(x)\)</span> or <span class="math inline">\(p_X(x)\)</span> is completely unknown.</li>
+<li>The form of <span class="math inline">\(f_X(x)\)</span> or <span class="math inline">\(p_X(x)\)</span> is known down to an unknown <code>parameter</code> vector <span class="math inline">\(\mathbf{\theta}\)</span>.</li>
+</ol>
+<p>We will focus on the second case. We often denote this problem by saying that the random variable <span class="math inline">\(X\)</span> has density or mass function of the form <span class="math inline">\(f_{X}(x; \theta)\)</span> or <span class="math inline">\(p_X(x;\theta)\)</span>, where <span class="math inline">\(\theta \in \Omega\)</span> for a special parameter space <span class="math inline">\(\Omega\)</span>. Since <span class="math inline">\(\theta\)</span> is unknown, we want to estimate it.</p>
+<p>In the process, our information about case 1 or 2 comes from a sample on <span class="math inline">\(X\)</span>. The sample observations have the same distribution as <span class="math inline">\(X\)</span>, and we denote them as <span class="math inline">\(X_1, ...., X_n\)</span> where <span class="math inline">\(n\)</span> is the <code>sample size</code>. When the sample is actually drawn, we use lower case letters to represent the <code>realization</code> <span class="math inline">\(x_1, ..., x_n\)</span> of random samples.</p>
+<p><img src="/images/RL/background/mprob_4_1_2.png" width="600"> <img src="/images/RL/background/mprob_4_1_1.png" width="600"></p>
+<p>Once the sample is drawn, then <span class="math inline">\(t\)</span> is called the realization of <span class="math inline">\(T\)</span>, where <span class="math inline">\(t = T(x_1, ...., x_n)\)</span>.</p>
+<span id="more"></span>
+<h3 id="point-estimators">Point Estimators</h3>
+<p>Continue from above formulation, the problem of case 2 can be phrased as:</p>
+<blockquote>
+<p>Let <span class="math inline">\(X_1, ...., X_n\)</span> be a random sample on a random variable <span class="math inline">\(X\)</span> with a density or mass function of the form <span class="math inline">\(f_X(x; \theta)\)</span> or <span class="math inline">\(p_X (x; \theta)\)</span>. In this situation, an <code>point estimator</code> of <span class="math inline">\(\theta\)</span> is a <code>statistic</code> <span class="math inline">\(T\)</span>. While we call <span class="math inline">\(T\)</span> an estimator of <span class="math inline">\(\theta\)</span>, we call <span class="math inline">\(t\)</span> an <code>estimate</code> of <span class="math inline">\(\theta\)</span>.</p>
+</blockquote>
+<p><img src="/images/RL/background/mprob_4_1_3.png" width="600"></p>
+<p>In our problem, the information in the sample and the parameter <span class="math inline">\(\theta\)</span> are involved in the joint distribution of the random sample (i.e <span class="math inline">\(\prod^{n}_{i=1} f(x_1 ; \theta)\)</span>). We want to view this as a function of <span class="math inline">\(\theta\)</span>:</p>
+<p><span class="math display">\[L(\theta) = L(\theta; x_1, ....., x_n) = \prod^{n}_{i=1} f_X(x_i; \theta)\]</span></p>
+<p>This is called the <code>likelihood function</code> of the random sample. As an estimate of <span class="math inline">\(\theta\)</span>, an often-used estimate is the value of <span class="math inline">\(\theta\)</span> that provides a maximum of <span class="math inline">\(L(\theta)\)</span>. If it is unique, this is called the <code>Maximum likelihood estimator</code> and we denote it as <span class="math inline">\(\hat{\theta}\)</span>:</p>
+<p><span class="math display">\[\hat{\theta} = \arg\max_{\theta} L(\theta; \mathbf{X})\]</span></p>
+<p>If <span class="math inline">\(\theta\)</span> is a vector of parameters, this results in a system of equations to be solved simultaneously called <code>estimating equations</code>.</p>
+<h2 id="the-method-of-monte-carlo">The Method of Monte Carlo</h2>
+<h2 id="bootstrap-procedures">Bootstrap Procedures</h2>
+<h1 id="consistency-and-limiting-distributions">Consistency and Limiting Distributions</h1>
+<h2 id="convergence-in-probability">Convergence in Probability</h2>
+<p>We formalize a way of saying that a sequence of random variables <span class="math inline">\(\{X_n\}\)</span> is getting "close" to another random variable <span class="math inline">\(X\)</span> as <span class="math inline">\(n \rightarrow \infty\)</span> by:</p>
+<p><img src="/images/RL/background/mprob_5_1_1.png" width="600"></p>
+<p>In statistics, <span class="math inline">\(X\)</span> is often a constant (i.e <span class="math inline">\(X\)</span> is a degenerate random variable with all its mass at some constant <span class="math inline">\(a\)</span>). In this case, we write <span class="math inline">\(X_n \overset{P}{\rightarrow} a\)</span>.</p>
+<h3 id="weak-law-of-large-numbers">Weak Law of Large Numbers</h3>
+<p><img src="/images/RL/background/mprob_5_1_2.png" width="600"></p>
+<p>This theorem says that all the mass of the distribution of <span class="math inline">\(\bar{X}_n\)</span> is converging to a constant <span class="math inline">\(\mu\)</span>, as <span class="math inline">\(n \rightarrow \infty\)</span>.</p>
+<p><img src="/images/RL/background/mprob_5_1_3.png" width="600"> <img src="/images/RL/background/mprob_5_1_4.png" width="600"> <img src="/images/RL/background/mprob_5_1_5.png" width="600"> <img src="/images/RL/background/mprob_5_1_6.png" width="600"></p>
+<h3 id="consistency">Consistency</h3>
+<p><img src="/images/RL/background/mprob_5_1_7.png" width="600"></p>
+<p>If <span class="math inline">\(X_1, ..., X_n\)</span> is a random sample from a distribution with finite mean <span class="math inline">\(\mu\)</span> and variance <span class="math inline">\(\sigma^2\)</span>, then by the <code>weak law of large numbers</code>, the sample mean <span class="math inline">\(\bar{X}_n\)</span> is a <code>consistent</code> estimator of <span class="math inline">\(\mu\)</span>.</p>
+<h2 id="convergence-in-distribution">Convergence in Distribution</h2>
+<p><img src="/images/RL/background/mprob_5_2_1.png" width="600"></p>
+<p>Often, we say that the distribution of <span class="math inline">\(X\)</span> is the <code>asymptotic distribution</code> or <code>limiting distribution</code> of sequence <span class="math inline">\(\{X_n\}\)</span>. In general, we can represent <span class="math inline">\(X\)</span> by the distribution it follows, for example:</p>
+<p><span class="math display">\[X_n \overset{D}{\rightarrow} N(0, 1)\]</span></p>
+<p>The thing on the right hand side is not a random variable, but a distribution, this is just a convention saying the same thing. In addition, we may say that <span class="math inline">\(X_n\)</span> has a <strong>limiting</strong> standard normal distribution to mean the same thing (i.e <span class="math inline">\(X_n \overset{D}{\rightarrow} N(0, 1)\)</span>).</p>
+<p>Convergence in probability is a way of saying that a sequence of random variables <span class="math inline">\(X_n\)</span> is getting close to another random variable <span class="math inline">\(X\)</span>. <strong>On the other hand, convergence in distribution only concerned with the cdfs <span class="math inline">\(F_{X_n}\)</span> and <span class="math inline">\(F_X\)</span> (In general, we cannot determine the limiting distribution by considering pmfs or pdfs).</strong></p>
+<p>Example:</p>
+<blockquote>
+<p>Let <span class="math inline">\(X\)</span> be a continuous random variable with a pdf <span class="math inline">\(f_X (x)\)</span> that is symmetric about 0 (i.e <span class="math inline">\(f_X(-x) = f_X(x)\)</span>). Then it is easy to show that the density of the random variable <span class="math inline">\(-X\)</span> and <span class="math inline">\(X\)</span> have the same distributions (i.e <span class="math inline">\(F_{-X}(x) = F_X(x)\)</span>). Define the sequence of random variables <span class="math inline">\(X_n\)</span> as: <span class="math display">\[
+X_n =
+\begin{cases}
+X, \quad &amp; \text{if $n$ is odd}\\
+-X, \quad &amp; \text{if $n$ is even}\\
+\end{cases}
+\]</span> Clearly, <span class="math inline">\(F_{X_n} (x) = F_{X} (x)\)</span> so <span class="math inline">\(X_n \overset{D}{\rightarrow} X\)</span>, but <span class="math inline">\(X_n\)</span> does not converge in probability to <span class="math inline">\(X\)</span>.</p>
+</blockquote>
+<p><img src="/images/RL/background/mprob_5_2_2.png" width="600"> <img src="/images/RL/background/mprob_5_2_3.png" width="600"> <img src="/images/RL/background/mprob_5_2_4.png" width="600"> <img src="/images/RL/background/mprob_5_2_5.png" width="600"></p>
+<h3 id="bounded-in-probability">Bounded in Probability</h3>
+<p><img src="/images/RL/background/mprob_5_2_6.png" width="600"> <img src="/images/RL/background/mprob_5_2_7.png" width="600"></p>
+<h2 id="central-limit-theorem">Central Limit Theorem</h2>
+<h1 id="maximum-likelihood-methods">Maximum Likelihood Methods</h1>
+<h2 id="maximum-likelihood-estimation-single-parameter">Maximum Likelihood Estimation (Single Parameter)</h2>
+<p>Suppose we have a random sample <span class="math inline">\(X_1, ...., X_n\)</span> on <span class="math inline">\(X\)</span> with common pdf <span class="math inline">\(f(x;\theta)\)</span>. Assume that <span class="math inline">\(\theta\)</span> is a scalar and unknown. The <code>likelihood function</code> is given by:</p>
+<p><span class="math display">\[L(\theta; \mathbf{x}) = \prod^{n}_{i=1} f(x_i;\theta)\]</span></p>
+<p>The <code>log likelihood function</code>:</p>
+<p><span class="math display">\[l(\theta; \mathbf{x}) = \sum^{n}_{i=1} \log f(x_i;\theta)\]</span></p>
+<p>Then the point estimator (before the observation of <span class="math inline">\(\mathbf{x}\)</span>) of <span class="math inline">\(\theta\)</span> is <span class="math inline">\(\hat{\theta} = \arg\max_{\theta} L(\theta; \mathbf{X})\)</span>. We call <span class="math inline">\(\hat{\theta}\)</span> the <strong>ML estimator</strong> of <span class="math inline">\(\theta\)</span>. If we have the observation <span class="math inline">\(\mathbf{x}\)</span>, we call <span class="math inline">\(\hat{\theta} (\mathbf{x})\)</span> the <strong>ML estimate</strong>.</p>
+<p><img src="/images/RL/background/mprob_6_1_2.png" width="600"></p>
+<p>Assumption 1 assumes that the parameter identifies the pdf. The second assumption implies that the support of <span class="math inline">\(X_i\)</span> does not depend on <span class="math inline">\(\theta\)</span>.</p>
+<p><img src="/images/RL/background/mprob_6_1_1.png" width="600"></p>
+<p>The theorem shows that the maximum of <span class="math inline">\(L(\theta; \mathbf{X})\)</span> asymptotically separates the true model at <span class="math inline">\(\theta_0\)</span> from models at <span class="math inline">\(\theta \neq \theta_0\)</span>.</p>
+<p><strong>Proof</strong>:</p>
+<blockquote>
+<p>Assume <span class="math inline">\(\theta_0\)</span> is the true parameter value. Then the inequality we want to show <span class="math inline">\(L(\theta_0; \mathbf{X}) &gt; L(\theta; \mathbf{X})\)</span> can be written as:</p>
+<p><span class="math display">\[\frac{1}{n}\sum^{n}_{i=1} \log[f_X(X_i; \theta_0)] &gt; \frac{1}{n}\sum^{n}_{i=1} \log[f_X(X_i; \theta)] \implies \frac{1}{n}\sum^{n}_{i=1} \log[\frac{f_X(X_i; \theta)}{f_X(X_i; \theta_0)}] &gt; 0\]</span></p>
+<p>By the Weak law of large numbers, we have: <span class="math display">\[\frac{1}{n}\sum^{n}_{i=1} -\log[\frac{f_X(X_i; \theta)}{f_X(X_i; \theta_0)}] \; \overset{p}{\rightarrow} \; E_{P_X(\cdot | \theta_0)} [ -\log[\frac{f_X(X_i; \theta)}{f_X(X_i; \theta_0)}]]\]</span></p>
+<p>Since the <span class="math inline">\(-\log\)</span> function is convex, we can apply <code>jensen's inequality</code> <span class="math display">\[\frac{1}{n}\sum^{n}_{i=1} -\log[\frac{f_X(X_i; \theta)}{f_X(X_i; \theta_0)}] \; \overset{p}{\rightarrow} \; E_{P_X(\cdot | \theta_0)} [ -\log[\frac{f_X(X_i; \theta)}{f_X(X_i; \theta_0)}]] \geq -\log (E_{P_X(\cdot | \theta_0)} [\frac{f_X(X_i; \theta)}{f_X(X_i; \theta_0)}])\]</span></p>
+<p>But, the expectation is 1:</p>
+<p><span class="math display">\[\int_{x} \frac{f_X(x_i; \theta)}{f_X(x_i; \theta_0)} {f_X(x_i; \theta_0)} dx = 1\]</span></p>
+<p>So, we have: <span class="math display">\[\frac{1}{n}\sum^{n}_{i=1} -\log[\frac{f_X(X_i; \theta)}{f_X(X_i; \theta_0)}] \geq 0\]</span></p>
+<p>Then: <span class="math display">\[\frac{1}{n}\sum^{n}_{i=1} \log[f_X(X_i; \theta_0)] &gt; \frac{1}{n}\sum^{n}_{i=1} \log[f_X(X_i; \theta)] \implies L(\theta_0; \mathbf{X}) &gt; L(\theta; \mathbf{X})\]</span></p>
+<p>As <span class="math inline">\(n \rightarrow \infty\)</span> the above inequality holds.</p>
+</blockquote>
+<p>That is, asymptotically the likelihood function is maximized at the value <span class="math inline">\(\theta_0\)</span>. So in considering estimates of <span class="math inline">\(\theta_0\)</span>, it is natural to consider the value of <span class="math inline">\(\theta\)</span> that maximizes the likelihood.</p>
+<p><img src="/images/RL/background/mprob_6_1_3.png" width="600"></p>
+<p><img src="/images/RL/background/mprob_6_1_4.png" width="600"> <img src="/images/RL/background/mprob_6_1_5.png" width="600"> <img src="/images/RL/background/mprob_6_1_6.png" width="600"></p>
+<h2 id="maximum-likelihood-estimation-multiple-parameters">Maximum Likelihood Estimation (Multiple Parameters)</h2>
+<p>Let <span class="math inline">\(X_1, ...., X_n\)</span> be i.i.d with common pdf <span class="math inline">\(f(x; \boldsymbol{\theta})\)</span>, where <span class="math inline">\(\boldsymbol{\theta} \in \Omega \subset \mathbb{R}^p\)</span>. The <code>likelihood function</code> is given by:</p>
+<p><span class="math display">\[L(\boldsymbol{\theta}; \mathbf{x}) = \prod^{n}_{i=1} f_{X}(x_i; \boldsymbol{\theta})\]</span></p>
+<p><span class="math display">\[l(\boldsymbol{\theta}) = \log L(\boldsymbol{\theta}; \mathbf{x}) = \sum^{n}_{i=1} \log f_{X}(x_i; \boldsymbol{\theta})\]</span></p>
+<p><img src="/images/RL/background/mprob_6_4_1.png" width="600"></p>
+<p>Notice that, the proof for scalar case also follows in vector case. Therefore, with probability going to 1, <span class="math inline">\(L(\boldsymbol{\theta}; \mathbf{x})\)</span> is maximized at the true value of <span class="math inline">\(\boldsymbol{\theta}\)</span>. Hence, as an estimate of <span class="math inline">\(\boldsymbol{\theta}\)</span>, we consider the gradient of <span class="math inline">\(L(\boldsymbol{\theta}; \mathbf{x})\)</span> w.r.t <span class="math inline">\(\boldsymbol{\theta}\)</span>:</p>
+<p><span class="math display">\[\nabla_{\boldsymbol{\theta}} l(\boldsymbol{\theta}) = \mathbf{0}\]</span></p>
+<p>If the maximizer <span class="math inline">\(\hat{\boldsymbol{\theta}} = \hat{\boldsymbol{\theta}} (\mathbf{X})\)</span> exists, it is called the <code>maximum likelihood estimator</code>.</p>
+<h3 id="fisher-information">Fisher Information</h3>
+<p>The Fisher information in the scalar case is the variance of the random variable (the mean is 0):</p>
+<p><span class="math display">\[E[(\frac{\partial \log f(X;\theta)}{\partial \theta})^2]\]</span></p>
+<p>It measures the amount of information the random variable <span class="math inline">\(X\)</span> carries about an unknown parameter <span class="math inline">\(\theta\)</span>.</p>
+<p>In multivariate case, the variance becomes variance covariance matrix of <span class="math inline">\(\nabla_{\boldsymbol{\theta}} \log f_X(X;\boldsymbol{\theta})\)</span>:</p>
+<p><span class="math display">\[I(\boldsymbol{\theta})_{j, k} = cov(\frac{\partial \log f_X(X;\boldsymbol{\theta})}{\partial \theta_j}, \frac{\partial \log f_X(X;\boldsymbol{\theta})}{\partial \theta_k})\]</span></p>
+<p>By assumption, we can swap integral and derivative, thus we have:</p>
+<span class="math display">\[\begin{aligned}
+0 &amp;= \int_{x} \frac{\partial f(x; \boldsymbol{\theta})}{\partial \theta_j} dx \\
+&amp;= \int_{x} \frac{\partial \log f(x; \boldsymbol{\theta})}{\partial \theta_j} f(x; \boldsymbol{\theta})dx\\
+&amp;= E[\frac{\partial \log f(X; \boldsymbol{\theta})}{\partial \theta_j}]
+\end{aligned}\]</span>
+<p>If we take the partial derivative w.r.t <span class="math inline">\(\theta_k\)</span>, after multiplication rule, we have:</p>
+<p><span class="math display">\[0 = \int_{x} \frac{\partial^2 \log f(x; \boldsymbol{\theta})}{\partial \theta_j\theta_k} \log f(x; \boldsymbol{\theta})dx + \int_x \frac{\partial \log f(x; \boldsymbol{\theta})}{\partial \theta_j}\frac{\partial \log f(x; \boldsymbol{\theta})}{\partial \theta_k} \log f(x; \boldsymbol{\theta})dx\]</span> <span class="math display">\[\implies -E[\frac{\partial^2 \log f(X; \boldsymbol{\theta})}{\partial \theta_j\theta_k}] = E[\frac{\partial \log f(X; \boldsymbol{\theta})}{\partial \theta_j}\frac{\partial \log f(X; \boldsymbol{\theta})}{\partial \theta_k}]\]</span></p>
+<p>Thus, the fisher information matrix can be written as:</p>
+<span class="math display">\[\begin{aligned}
+cov(\frac{\partial \log f_X(X;\boldsymbol{\theta})}{\partial \theta_j}, \frac{\partial \log f_X(X;\boldsymbol{\theta})}{\partial \theta_k}) &amp;= E[\frac{\partial \log f_X(X;\boldsymbol{\theta})}{\partial \theta_j}\frac{\partial \log f_X(X;\boldsymbol{\theta})}{\partial \theta_k}] - E[\frac{\partial \log f(x; \boldsymbol{\theta})}{\partial \theta_j}]E[\frac{\partial \log f(x; \boldsymbol{\theta})}{\partial \theta_k}]\\
+&amp;= E[\frac{\partial \log f_X(X;\boldsymbol{\theta})}{\partial \theta_j}\frac{\partial \log f_X(X;\boldsymbol{\theta})}{\partial \theta_k}]\\
+\implies I(\boldsymbol{\theta})_{j, k} &amp;= E[\frac{\partial \log f_X(X;\boldsymbol{\theta})}{\partial \theta_j}\frac{\partial \log f_X(X;\boldsymbol{\theta})}{\partial \theta_k}]\\
+&amp;= -E[\frac{\partial^2 \log f(X; \boldsymbol{\theta})}{\partial \theta_j\theta_k}]
+\end{aligned}\]</span>
+<p>By replacing <span class="math inline">\(f_X(X; \boldsymbol{\theta})\)</span> by the likelihood function <span class="math inline">\(L(\boldsymbol{\theta}; \mathbf{X})\)</span>, we have:</p>
+<p><span class="math display">\[Cov(\sum^{n}_{i=1}\nabla_{\boldsymbol{\theta}} f_X(X; \boldsymbol{\theta})) = nI(\boldsymbol{\theta})\]</span></p>
+<p>If <span class="math inline">\(Y_j = u_j (\mathbf{X})\)</span> is an unbiased estimator of <span class="math inline">\(\theta_j\)</span>, then ti can be shown that:</p>
+<p><span class="math display">\[Var(Y_j) \leq \frac{1}{n} [I^{-1}(\boldsymbol{\theta})_{jj}]\]</span></p>
+<p>Then the estimator <span class="math inline">\(Y_j\)</span> is called <code>efficient</code>.</p>
+<p><img src="/images/RL/background/mprob_6_4_2.png" width="600"> <img src="/images/RL/background/mprob_6_4_3.png" width="600"> <img src="/images/RL/background/mprob_6_4_4.png" width="600"></p>
+<h1 id="sufficiency">Sufficiency</h1>
+<h2 id="measures-of-quality-of-estimators">Measures of Quality of Estimators</h2>
+<h1 id="bayesian-statistics">Bayesian Statistics</h1>
+<h2 id="maximum-a-posterior-estimation">Maximum A Posterior Estimation</h2>
+<p>MLE is not the only way to estimate the parameters. The paradigm of MAP is that we should choose the <strong>value for our parameters that is the most likely given the data</strong>, that is:</p>
+<p><span class="math display">\[\hat{\theta} = \underset{\theta}{\arg\max}\; P(\theta| D)\]</span></p>
+<p>If we have random sample <span class="math inline">\(X_1, ...., X_n\)</span> that follows some discrete distribution <span class="math inline">\(P(X)\)</span>, then:</p>
+<span class="math display">\[\begin{aligned}
+\hat{\theta} &amp;= \underset{\theta}{\arg\max}\; p_X(\theta| X_1, ...., X_n)\\
+&amp;= \underset{\theta}{\arg\max}\; \frac{p_X(X_1, ...., X_n | \theta) P(\theta)}{p_X(X_1, ..., X_n)}\\
+&amp;= \underset{\theta}{\arg\max}\; p_X(X_1, ...., X_n | \theta) P(\theta)\\
+&amp;= \underset{\theta}{\arg\max}\; \prod^{N}_{i=1} p_X(X_i | \theta) P(\theta)
+\end{aligned}\]</span>
+<p>Which is similar to maximum likelihood but with extra prior term <span class="math inline">\(P(\theta)\)</span>. Comparing to MAP, <strong>MLE chooses the value of parameters that makes the data most likely</strong>.</p>
+<h1 id="ref">Ref</h1>
+<p>https://online.stat.psu.edu/stat415/lesson/1/1.2</p>
+<p>https://web.stanford.edu/class/archive/cs/cs109/cs109.1192/reader/11%20Parameter%20Estimation.pdf</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/MDP/" rel="bookmark">MDP</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-equations/" rel="bookmark">Bellman Equations</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-optimality-equations/" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/14/calculus/" rel="bookmark">Calculus (1)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/dp/" rel="bookmark">Dynamic Programming</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RL-Basics/" rel="tag"># RL Basics</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/13/vfa-2/" rel="prev" title="Value Function Approximation (2)">
+                  <i class="fa fa-chevron-left"></i> Value Function Approximation (2)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/07/18/cnn/" rel="next" title="Backpropagation in CNN">
+                  Backpropagation in CNN <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

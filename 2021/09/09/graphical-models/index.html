@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Graphical Models We can represent complicated probabilistic models using diagrammatic representations of probability distributions called probabilistic graphical models. These offer several useful pro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Graphical Models">
+<meta property="og:url" content="https://swag1ong.github.io/2021/09/09/graphical-models/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Graphical Models We can represent complicated probabilistic models using diagrammatic representations of probability distributions called probabilistic graphical models. These offer several useful pro">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/gm_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/gm_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/gm_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/gm_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/gm_5.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/gm_6.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/gm_7.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/gm_8.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/gm_9.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/gm_10.png">
+<meta property="article:published_time" content="2021-09-09T05:17:03.000Z">
+<meta property="article:modified_time" content="2021-09-13T05:56:59.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="Machine Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swag1ong.github.io/images/ML/gm_1.png">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/09/09/graphical-models/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;09&#x2F;09&#x2F;graphical-models&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;09&#x2F;09&#x2F;graphical-models&#x2F;&quot;,&quot;title&quot;:&quot;Graphical Models&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Graphical Models | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#graphical-models"><span class="nav-number">1.</span> <span class="nav-text">Graphical Models</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bayesian-networks"><span class="nav-number">1.1.</span> <span class="nav-text">Bayesian Networks</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#example-generative-models"><span class="nav-number">1.1.1.</span> <span class="nav-text">Example: Generative Models</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#conditional-independence"><span class="nav-number">1.2.</span> <span class="nav-text">Conditional Independence</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#three-example-graphs"><span class="nav-number">1.2.1.</span> <span class="nav-text">Three example graphs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#d-separation"><span class="nav-number">1.2.2.</span> <span class="nav-text">D-separation</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#markov-random-fields"><span class="nav-number">1.3.</span> <span class="nav-text">Markov Random Fields</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#conditional-independence-properties"><span class="nav-number">1.3.1.</span> <span class="nav-text">Conditional Independence Properties</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#factorization-properties"><span class="nav-number">1.3.2.</span> <span class="nav-text">Factorization Properties</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ref"><span class="nav-number">2.</span> <span class="nav-text">Ref</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/09/09/graphical-models/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Graphical Models
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-09-09 13:17:03" itemprop="dateCreated datePublished" datetime="2021-09-09T13:17:03+08:00">2021-09-09</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-09-13 13:56:59" itemprop="dateModified" datetime="2021-09-13T13:56:59+08:00">2021-09-13</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/09/09/graphical-models/" class="post-meta-item leancloud_visitors" data-flag-title="Graphical Models" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>12k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>11 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="graphical-models">Graphical Models</h1>
+<p>We can represent complicated probabilistic models using diagrammatic representations of probability distributions called <code>probabilistic graphical models</code>. These offer several useful properties:</p>
+<ol type="1">
+<li>They provide a simple way to visualize the structure of a probabilistic model and can be used to design and motivate new models.</li>
+<li>Insights into the properties of the model, including conditional independence properties can be obtained by inspection of the graph.</li>
+<li>Complex computations, required to perform inference and learning in sophisticated models, can be expressed in terms of graphical manipulations, in which underlying mathematical expressions are carried along implicitly.</li>
+</ol>
+<p><br></p>
+<p>A probabilistic graphical model consists of:</p>
+<ol type="1">
+<li><strong>Nodes</strong>: each random variable (or group of random variables) is represented as a node in the graph</li>
+<li><strong>Edges (links)</strong>: links express probabilistic relationship between these random variables.
+<ul>
+<li><strong>Directed graphical models</strong>: in which the edges of the graphs have a particular directionality indicated by arrows (Bayesian networks). Directed graphs are useful for expressing causal relationships between random variables.</li>
+<li><strong>Undirected graphical models</strong>: in which the edges of the graph do not carry arrows and have no directional significance (Markov random fields). Undirected graphs are better suited to expressing soft constraints between random variables.</li>
+</ul></li>
+</ol>
+<p>The graph then captures the way in which the joint distribution over all of the random variables can be decomposed into a product of factors each depending only on a subset of the variables.</p>
+<h2 id="bayesian-networks">Bayesian Networks</h2>
+<p>Consider first an arbitrary joint distribution defined by <span class="math inline">\(P(\mathbf{Z})\)</span> over random vector <span class="math inline">\(\mathbf{Z} = &lt;A, B, C&gt;\)</span>, by product rule, we have:</p>
+<p><span class="math display">\[P(\mathbf{Z}) = P(C| A, B) P(A, B) = P(C | A, B) P(B | A) P(A)\]</span></p>
+<p>We now represent the right-hand side in terms of a simgple graphical model as follows:</p>
+<ol type="1">
+<li>First, we introduce a node for each of the random variables <span class="math inline">\(A, B, C\)</span> and associate each node with the corresponding conditional distribution on the right-hand side.</li>
+<li>Then, for each conditional distribution we add directed links to the graph from the nodes to the variables on which the distribution is conditioned.</li>
+</ol>
+<p><img src='/images/ML/gm_1.png' width="600"></p>
+<p>If there is a link going from a node <span class="math inline">\(A\)</span> to a node <span class="math inline">\(B\)</span>, then we say that node <span class="math inline">\(A\)</span> is parent of node <span class="math inline">\(B\)</span> and <span class="math inline">\(B\)</span> is the child of node <span class="math inline">\(A\)</span> (change ordering of the decomposition will change the graph).</p>
+<p>We can extend the idea to joint distribution of <span class="math inline">\(K\)</span> random variables given by <span class="math inline">\(P(X_1, ...., X_K)\)</span>. By repeated application of the product rule of the probability, this joint distribution can be written as a product of conditional distributions:</p>
+<p><span class="math display">\[P(X_1, ...., X_K) = P(X_K | X_{K-1}, ..., X_{1}) ... P(X_2 | X_1) P(X_1)\]</span></p>
+<p>We can generate a graph similar to three-variable case, each node having incoming links from all lower numbered nodes. We say this graph is <code>fully connected</code> because there is a link between every pair of nodes. However, it is the <strong>absence</strong> (not fully connected) of links in the graph that conveys interesting information about the properties of the class of distributions that the graph represents.</p>
+<p><img src='/images/ML/gm_2.png' width="600"></p>
+<p><br></p>
+<p>We can now state in general terms the relationship between a given directed graph and the corresponding distribution over the variables. Thus, for a graph with K nodes <span class="math inline">\(\mathbf{X} = &lt;X_1, ...., X_K&gt;\)</span>, the joint distribution is given by:</p>
+<p><span class="math display">\[P(\mathbf{X}) = \prod^K_{k=1} P(X_k | \text{Parent}(X_k))\]</span></p>
+<p>Where <span class="math inline">\(\text{Parent}(X_k)\)</span> denotes the set of parents of <span class="math inline">\(X_k\)</span>.</p>
+<p>Notice that, the directed graphs that we are considering are subject to an important restriction namely that there must be <strong>no</strong> directed cycles, that is, we are working with <code>directed acyclic graphs</code> or DAGs.</p>
+<h3 id="example-generative-models">Example: Generative Models</h3>
+<p>There are many situations in which we wish to draw samples from a given probability distribution. One technique which is particularly relevant to graphical models is called <code>ancestral sampling</code>.</p>
+<p>Consider a joint distribution <span class="math inline">\(P(\mathbf{X}), \mathbf{X} = &lt;X_1, ...., X_K&gt;\)</span> that factorizes into a DAG. We shall suppose that the variables have been ordered from <span class="math inline">\(X_1\)</span> to <span class="math inline">\(X_K\)</span>, in other words each node has a higher index than any of its parents. Our goal is to draw samples <span class="math inline">\(\hat{X}_1, ..., \hat{X}_K\)</span> from the joint distribution.</p>
+<p>To do this, we start from <span class="math inline">\(X_1\)</span>, and draw sample <span class="math inline">\(\hat{X}_1\)</span> from the distribution <span class="math inline">\(P(X_1)\)</span>. We then work through each of the nodes in order, so that for node <span class="math inline">\(n\)</span> we draw a sample from the conditional distribution <span class="math inline">\(P(X_n | \text{Parent}(X_n))\)</span>, in which the parent variables have been set to their sampled values.</p>
+<p>To obtain a sample from some marginal distribution corresponding to a subset of the random variables, we simply take the sampled values for the required nodes and discard the rest. For example, to draw a sample from the distribution <span class="math inline">\(P(X_2, X_4)\)</span>, we simply sample from the full joint distribution and then retain the values <span class="math inline">\(\hat{X}_2, \hat{X}_4\)</span> and discard the remaining values.</p>
+<p>For practical applications of probabilistic models, it will typically be the higher-numbered variables corresponding to terminal nodes of the graph that represent the observations, with lower-numbered nodes corresponding to latent variables. The primary role of the latent variables is to allow a complicated distribution over the observed variables to tbe represented in terms of a model constructed from simpler conditional distributions.</p>
+<blockquote>
+<blockquote>
+<p>Consider an object recognition task in which each observed data point corresponds to an image of on of the objects (vector of pixels). In this case, we can have latent variables be position and orientation of the object. Given a particular observed image, our goal is to find the posterior distribution over objects in which we integrate over all possible positions and orientations. <img src='/images/ML/gm_3.png' width="600"> Given object, position, orientation, we can sample from the conditional distribution of image and generate pixels.</p>
+</blockquote>
+</blockquote>
+<p>The graphical model captures causal process by which the observed data was generated. For this reason, such models are often called <code>generative models</code>.</p>
+<h2 id="conditional-independence">Conditional Independence</h2>
+<p>An important concept for probability distributions over multiple variables is that of <strong>conditional independence</strong>. Consider three random variables <span class="math inline">\(A, B, C\)</span> and suppose that the conditional distribution of <span class="math inline">\(A\)</span>, given <span class="math inline">\(B, C\)</span> is such that it does not depend on the value of <span class="math inline">\(B\)</span>, so that:</p>
+<p><span class="math display">\[P(A | B, C) = P(A | C)\]</span></p>
+<p>Then:</p>
+<p><span class="math display">\[P(A, B | C) = P(A | B, C) P(B | C) = P(A | C) P (B | C)\]</span></p>
+<p>Thus, we can see that <span class="math inline">\(A, B\)</span> are statistically independent given <span class="math inline">\(C, \; \forall C\)</span>. Note that this definition of conditional independence will require the above equation holds for all values fo <span class="math inline">\(C\)</span> and not just for some values. The shorthand notation for conditional independence is:</p>
+<p><span class="math display">\[A \perp \!\!\! \perp B \;|\; C\]</span></p>
+<p>An important and elegant feature of graphical models is that conditional independence properties of the joint distribution can be read directly from the graph without having to perform any analytical manipulations. The general framework for achieving this is called <code>d-seperation</code> (d stands for directed).</p>
+<h3 id="three-example-graphs">Three example graphs</h3>
+<p>We start by illustrating the key concepts of d-separation by three motivating examples.</p>
+<ol type="1">
+<li><blockquote>
+<p><span class="math inline">\(P(A, B, C) = P(A | C) P(B | C) P(C)\)</span> <img src='/images/ML/gm_4.png' width="600"> <span class="math inline">\(A, B\)</span> are generally <strong>not</strong> statistically independent. However, we can easily see that <span class="math inline">\(A, B\)</span> are conditionally independent given <span class="math inline">\(C\)</span>: <span class="math display">\[P(A, B | C) = \frac{P(A, B, C)}{P(C)} = P(A | C) P (B | C)\]</span> <img src='/images/ML/gm_5.png' width="600"></p>
+</blockquote></li>
+</ol>
+<p>We can provide a simple graphical interpretation of this result by considering the path from node <span class="math inline">\(A\)</span> to node <span class="math inline">\(B\)</span> via <span class="math inline">\(C\)</span>. The node <span class="math inline">\(C\)</span> is said to be <strong>tail-to-tail</strong> with respect to this path because the node is connected to the tails of the two arrows. However, when we condition on node <span class="math inline">\(C\)</span> (observed <span class="math inline">\(C\)</span>), the conditional node blocks the path from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span> so causes then to become conditionally independent.</p>
+<ol start="2" type="1">
+<li><blockquote>
+<p><span class="math inline">\(P(A, B, C) = P(B | C) P(C | A) P (A)\)</span> <img src='/images/ML/gm_6.png' width="600"> <span class="math inline">\(A, B\)</span> are generally <strong>not</strong> statistically independent. However, we can easily see that <span class="math inline">\(A, B\)</span> are conditionally independent given <span class="math inline">\(C\)</span> by: <span class="math display">\[P(A, B | C) = \frac{P(A, B, C)}{P(C)} = P(A | C) P (B | C)\]</span></p>
+</blockquote></li>
+</ol>
+<p>We can provide a simple graphical interpretation of this result by considering the path from node <span class="math inline">\(A\)</span> to node <span class="math inline">\(B\)</span> via <span class="math inline">\(C\)</span>. The node <span class="math inline">\(C\)</span> is said to be <strong>head-to-tail</strong> with respect to this path because the node is connected to the head and tail of the two arrows. However, when we condition on node <span class="math inline">\(C\)</span> (observed <span class="math inline">\(C\)</span>), the conditional node blocks the path from <span class="math inline">\(A\)</span> to <span class="math inline">\(B\)</span> so causes then to become conditionally independent.</p>
+<ol start="3" type="1">
+<li><blockquote>
+<p><span class="math inline">\(P(A, B, C) = P(A)P(B)P(C | A, B)\)</span> <img src='/images/ML/gm_7.png' width="600"> We can easily see that <span class="math inline">\(A, B\)</span> are <strong>not</strong> conditionally independent. However, we can see that <span class="math inline">\(A, B\)</span> are statistically independent: <span class="math inline">\(P(A, B) = \sum_{C} P(A)P(B)P(C | A, B) = P(A)P(B)\)</span></p>
+</blockquote></li>
+</ol>
+<p>Thus, our third example has the opposite behaviour from the first two. The node <span class="math inline">\(C\)</span> is said to be <strong>head-to-head</strong> with respect to this path because the node is connected to the heads of the two arrows. When the node <span class="math inline">\(C\)</span> is not given (unobserved), it blocks the path so <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> is independent, however, when the node <span class="math inline">\(C\)</span> is given, <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> becomes dependent.</p>
+<p>There is one more relationship associate with third example. First we say that node <span class="math inline">\(Y\)</span> is a <strong>descendant</strong> of node <span class="math inline">\(X\)</span> if there is a path from <span class="math inline">\(X\)</span> to <span class="math inline">\(Y\)</span> in which each step of the path follows the directions of the arrows. Then it can be shown that a <strong>head to head</strong> path will become unblocked if either the node or any of its descendants is observed.</p>
+<h3 id="d-separation">D-separation</h3>
+<p>Consider a general directed graph in which <span class="math inline">\(A, B, C\)</span> are arbitrary sets of nodes. We wish to ascertain whether a particular conditional independence statement <span class="math inline">\(A \perp \!\!\! \perp B \;|\; C\)</span> is implied by a given directed acyclic graph. To do so, we consider all possible paths from any node in <span class="math inline">\(A\)</span> to any node in <span class="math inline">\(B\)</span>. Any such path is said to be <strong>blocked</strong> if it includes a node such that either:</p>
+<ol type="1">
+<li>The arrows on the path meet either head-to-tail or tail-to-tail at the node, and the node is in the set <span class="math inline">\(C\)</span>.</li>
+<li>The arrows meet head-to-head at the node, and neither the node, nor any of its descendants, is in the set <span class="math inline">\(C\)</span>.</li>
+</ol>
+<p>If <strong>all</strong> paths are blocked, then <span class="math inline">\(A\)</span> is said to be <code>d-separated</code> from <span class="math inline">\(B\)</span> by <span class="math inline">\(C\)</span>, and the joint distribution over all of the variables in the graph will satisfy <span class="math inline">\(A \perp \!\!\! \perp B \;|\; C\)</span>.</p>
+<blockquote>
+<p>Consider the problem of finding the posterior distribution for the mean of an univariate Gaussian distribution. This can be represented by the directed graph in which the joint distribution is defined by a prior <span class="math inline">\(P(\mu)\)</span> and <span class="math inline">\(P(\mathbf{X} | \mu)\)</span> to form the posterior distribution: <span class="math display">\[P(\mu | \mathbf{X}) = P(\mu) P(\mathbf{X} | \mu) \]</span> <img src='/images/ML/gm_8.png' width="600"> In practice, we observe <span class="math inline">\(D = \{X_1, ...., X_N\}\)</span> with conditional distribution <span class="math inline">\(P(X_1 | \mu) , ...., P(X_N | \mu)\)</span> respectively, and our goal is to infer <span class="math inline">\(\mu\)</span>. Using d-separation, we note that there is a unique path from any <span class="math inline">\(X_i\)</span> to any other <span class="math inline">\(X_{j\neq i}\)</span> and that this path is tail-to-tail with respect to the observed node <span class="math inline">\(\mu\)</span>. Every such path is blocked and so the observations <span class="math inline">\(D=\{X_1, ..., X_N\}\)</span> are independent given <span class="math inline">\(\mu\)</span>: <span class="math display">\[P(\mathbf{X} | \mu) = \prod^N_{i=1} P(X_i | \mu)\]</span> However, if we do not conditional on <span class="math inline">\(\mu\)</span>, the data samples are not independent: <span class="math display">\[P(\mathbf{X}) = \int_{\mu} P(\mathbf{X} | \mu) P(\mu) \neq \prod^N_{i=1} P(X_i)\]</span></p>
+</blockquote>
+<h2 id="markov-random-fields">Markov Random Fields</h2>
+<p>Directed Graphical models specify a factorization of the joint distribution over a set of variables into a product of local conditional distributions. They also defined a set of conditional independence properties that must be satisfied by any distribution that factorizes according to the graph. A <code>Markove random field</code> has:</p>
+<ol type="1">
+<li>A set of nodes each of which corresponds to a random variable or group of random variables</li>
+<li>A set of links each of which connects a pair of nodes. The links are <strong>undirected</strong> that is they do not carry arrows.</li>
+</ol>
+<h3 id="conditional-independence-properties">Conditional Independence Properties</h3>
+<p>Testing for conditional independence in undirected graph is simpler than in directed graph. Let <span class="math inline">\(A, B, C\)</span> be three sets of nodes and we consider the conditional independence property <span class="math inline">\(A \perp \!\!\! \perp B \;|\; C\)</span>. To test whether this property is satisfied by a probability distribution defined by the graph:</p>
+<ul>
+<li>Consider all possible paths that connect nodes in set <span class="math inline">\(A\)</span> to nodes in set <span class="math inline">\(B\)</span>. If all such paths pass through one or more nodes in set <span class="math inline">\(C\)</span>, then <strong>all</strong> such paths are <strong>blocked</strong> and so the conditional independence properties holds. If there is <strong>at least one</strong> such path that is not blocked, then there will exist at least some distributions corresponding to the graph that do not satisfy this conditional independence relation.</li>
+</ul>
+<p><img src='/images/ML/gm_9.png' width="600"></p>
+<h3 id="factorization-properties">Factorization Properties</h3>
+<p>We now express the joint distribution <span class="math inline">\(P(\mathbf{X})\)</span> as a product of functions defined over set of random variables that are local to the graph.</p>
+<p>If we consider two nodes <span class="math inline">\(X_i\)</span> and <span class="math inline">\(X_j\)</span> that are not connected by a link, then these variables must be conditionally independent given all other nodes in the graph, because there is no direct path between the two nodes and all other paths are blocked:</p>
+<p><span class="math display">\[P(X_i, X_j | \mathbf{X}_{k\notin \{i, j\}}) = P(X_i | \mathbf{X}_{k\notin \{i, j\}}) P(X_j | \mathbf{X}_{k\notin \{i, j\}})\]</span></p>
+<p><br></p>
+<p>A <code>clique</code> is a subset of nodes in a graph such that there exists a link between all pairs of nodes in the subset. In other words, the nodes in the set are fully connected. Furthermore, a <code>maximal clique</code> is a clique such that it is not possible to include any other nodes from the graph in the set without it ceasing to be a clique.</p>
+<p><img src='/images/ML/gm_10.png' width="600"></p>
+<p><br></p>
+<p>We can therefore define the factors in the decomposition of the joint distribution to be functions of the variables in the cliques. In fact, we can consider functions of the maximal cliques, without loss of generality because other cliques must be subsets of maximal cliques.</p>
+<p>Let <span class="math inline">\(C\)</span> be a clique and the set of random variables in that clique by <span class="math inline">\(\mathbf{X}_C\)</span>. Then the joint distribution is written as a product of <code>potential functions</code> <span class="math inline">\(\psi_C(\mathbf{x}_C) \geq 0\)</span> over the maximal cliques of the graph:</p>
+<p><span class="math display">\[P(\mathbf{X}) = \frac{1}{Z} \prod_{C} \psi_{C} (\mathbf{X}_C)\]</span></p>
+<p>Here the quantity <span class="math inline">\(Z\)</span> is called <code>partition function</code> which is used for normalization to ensure the result is a proper joint distribution:</p>
+<p><span class="math display">\[Z = \sum_{X} \prod_{C} \psi_{C} (\mathbf{X}_C)\]</span></p>
+<p>In directed graph, we have the links to be conditional distribution, in undirected graph, we do not restrict the choice of potential functions.</p>
+<h1 id="ref">Ref</h1>
+<p>PRML chapter 8</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/07/19/adaboost/" rel="bookmark">Adaboost</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/07/21/em/" rel="bookmark">EM</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/07/19/decision-trees/" rel="bookmark">Decision Trees</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/07/19/gbdt/" rel="bookmark">GBDT</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/09/16/hmm/" rel="bookmark">Sequential Data</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/06/lgb/" rel="prev" title="LGBM">
+                  <i class="fa fa-chevron-left"></i> LGBM
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/09/16/approximate-infer/" rel="next" title="approximate_infer">
+                  approximate_infer <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

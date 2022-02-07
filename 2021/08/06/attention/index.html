@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Neural Machine Translation By Jointly Learning to Align and Translate One problem with traditional encoder-decoder structure is that a neural network needs to be able to compress all the necessary inf">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Attention">
+<meta property="og:url" content="https://swag1ong.github.io/2021/08/06/attention/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Neural Machine Translation By Jointly Learning to Align and Translate One problem with traditional encoder-decoder structure is that a neural network needs to be able to compress all the necessary inf">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-08-06T07:25:09.000Z">
+<meta property="article:modified_time" content="2021-10-08T04:49:35.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="Deep Learning">
+<meta property="article:tag" content="Neural Network Architectures">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/08/06/attention/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;08&#x2F;06&#x2F;attention&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;08&#x2F;06&#x2F;attention&#x2F;&quot;,&quot;title&quot;:&quot;Attention&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Attention | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#neural-machine-translation-by-jointly-learning-to-align-and-translate"><span class="nav-number">1.</span> <span class="nav-text">Neural Machine Translation By Jointly Learning to Align and Translate</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#background-rnn-encoder-decoder"><span class="nav-number">1.1.</span> <span class="nav-text">Background: RNN Encoder-Decoder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#learning-to-align-and-translate"><span class="nav-number">1.2.</span> <span class="nav-text">Learning to Align and Translate</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#decoder-general-description"><span class="nav-number">1.2.1.</span> <span class="nav-text">Decoder: General Description</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#encoder-bidirectional-rnn-for-annotating-sequences"><span class="nav-number">1.2.2.</span> <span class="nav-text">Encoder: Bidirectional RNN for Annotating Sequences</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#effective-approaches-to-attention-based-neural-machine-translation"><span class="nav-number">2.</span> <span class="nav-text">Effective Approaches to Attention-based Neural Machine Translation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#long-short-term-memory-networks-for-machine-reading"><span class="nav-number">3.</span> <span class="nav-text">Long Short-Term Memory-Networks for Machine Reading</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ref"><span class="nav-number">4.</span> <span class="nav-text">Ref</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/08/06/attention/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Attention
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-08-06 15:25:09" itemprop="dateCreated datePublished" datetime="2021-08-06T15:25:09+08:00">2021-08-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-10-08 12:49:35" itemprop="dateModified" datetime="2021-10-08T12:49:35+08:00">2021-10-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DL/" itemprop="url" rel="index"><span itemprop="name">DL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DL/RNN/" itemprop="url" rel="index"><span itemprop="name">RNN</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/08/06/attention/" class="post-meta-item leancloud_visitors" data-flag-title="Attention" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>4.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="neural-machine-translation-by-jointly-learning-to-align-and-translate">Neural Machine Translation By Jointly Learning to Align and Translate</h1>
+<p>One problem with traditional encoder-decoder structure is that a neural network needs to be able to compress all the necessary information of a source sentence into a <strong>fixed-length</strong> vector <span class="math inline">\(\mathbf{c}\)</span>. <code>Attention</code> does not attempt to encode a whole input sentence into a single fixed-length vector. Instead, it encodes the input sentence into a sequence of vectors and chooses a subset of these vectors adaptively while decoding the translation.</p>
+<h2 id="background-rnn-encoder-decoder">Background: RNN Encoder-Decoder</h2>
+<p>In the Encoder-Decoder framework, an encoder reads the input sentence, a sequence of vectors <span class="math inline">\(\mathbf{x} = (\mathbf{x}_1, ...., \mathbf{x}_{T_x})\)</span>, into a fixed length context vector <span class="math inline">\(\mathbf{c}\)</span>:</p>
+<p><span class="math display">\[\mathbf{h}_t = f(\mathbf{x}_t, \mathbf{h}_{t-1})\]</span> <span class="math display">\[\mathbf{c} = q(\mathbf{h}_{1}, ...., \mathbf{h}_{T_x})\]</span></p>
+<p>Where <span class="math inline">\(f\)</span> and <span class="math inline">\(q\)</span> are non-linear functions. Typically, <span class="math inline">\(q\)</span> is the identity function defined as <span class="math inline">\(q(\mathbf{h}_{1}, ...., \mathbf{h}_{T_x}) = \mathbf{h}_{T_x}\)</span>.</p>
+<p>The decoder is often trained to predict the next word <span class="math inline">\(\mathbf{y}_{t^{\prime}}\)</span> given all the previous predicted words <span class="math inline">\(\{\hat{\mathbf{y}}_1, ..., \hat{\mathbf{y}}_{t^{\prime} - 1}\}\)</span>. In training step <span class="math inline">\(t\)</span>, we can use feed the true target value <span class="math inline">\(\mathbf{y}_{t-1}\)</span>. Then, in training of decoder, we are maximizing the log joint conditional probability (minimize the sum of per time step cross entropy):</p>
+<p><span class="math display">\[L = \sum^{T_y}_{t=1} L^{t}\]</span> <span class="math display">\[-L = P_{\mathbf{Y}}(\mathbf{y}) = \sum^{T_y}_{t=1} P_{\mathbf{Y_t} | \mathbf{Y_1} ,...., \mathbf{Y_{t-1}}, \mathbf{c}}(\mathbf{y}_t | \{\mathbf{y}_{1}, ...., \mathbf{y}_{t-1}, \mathbf{c}\})\]</span></p>
+<p>Where in RNN, each conditional probability distribution <span class="math inline">\(P_{\mathbf{Y_t} | \mathbf{Y_1} ,...., \mathbf{Y_{t-1}}, \mathbf{c}}\)</span> is model as <span class="math inline">\(g(\mathbf{y}_{t-1}, \mathbf{s}_t, \mathbf{c})\)</span>.</p>
+<h2 id="learning-to-align-and-translate">Learning to Align and Translate</h2>
+<p><code>Attention</code> contains bidirectional RNN as an encoder and a decoder that emulates searching through a source sentence during decoding a tranlation.</p>
+<h3 id="decoder-general-description">Decoder: General Description</h3>
+<p>In the new model, we define each conditional distribution as:</p>
+<p><span class="math display">\[\hat{P}_{\mathbf{Y_t} | \mathbf{Y_1} ,...., \mathbf{Y_{t-1}}, \mathbf{c}} \triangleq g(\mathbf{y}_{t-1}, \mathbf{s}_t, \mathbf{c}_t)\]</span></p>
+<p>Notice here, we have different <span class="math inline">\(\mathbf{c}_t\)</span> for each time step <span class="math inline">\(t\)</span>.</p>
+<p>The context vector <span class="math inline">\(\mathbf{c}_i\)</span> depends on a sequence of <code>annotations</code> <span class="math inline">\((\mathbf{h}_1, ....., \mathbf{h}_{T_x})\)</span> which contains information about the whole input sequence (similar to hidden units in encoder) with a strong focus on the parts surrounding the <span class="math inline">\(i\)</span>th word of the input sequence.</p>
+<p>The context vector <span class="math inline">\(\mathbf{c}_i\)</span> is, then computed as a weighted sum of these annotations <span class="math inline">\(\mathbf{h}_{i}\)</span>:</p>
+<p><span class="math display">\[\mathbf{c}_i = \sum^{T_x}_{j=1} \alpha_{ij} \mathbf{h}_j\]</span></p>
+<p><span class="math display">\[\alpha_{ij} = \frac{\exp^{e_{ij}}}{\sum^{T_x}_{k=1} \exp^{e_{ik}}}\]</span></p>
+<p>Where</p>
+<p><span class="math display">\[e_{ij} = a(\mathbf{s}_{i-1}, \mathbf{h}_j)\]</span></p>
+<p>is an <code>alignment model</code> which scores how well the inputs around position <span class="math inline">\(j\)</span> and the output at position <span class="math inline">\(i\)</span> match. This model <span class="math inline">\(a\)</span> is parameterized by a MLP which is jointly trained with all the other components of the proposed system. The score is based on the RNN decoder's hidden state <span class="math inline">\(\mathbf{s}_{i-1}\)</span> and the <span class="math inline">\(j\)</span>th annotation <span class="math inline">\(\mathbf{h}_j\)</span> of the input sentence. <strong>It reflects the importance of each annotation vector <span class="math inline">\(\mathbf{h}_j\)</span> with respect to the previous hidden state <span class="math inline">\(\mathbf{s}_{i-1}\)</span> in deciding the current state <span class="math inline">\(\mathbf{s}_i\)</span> and generating prediction <span class="math inline">\(\hat{\mathbf{y}}_i\)</span></strong>.</p>
+<p>We can think the approach of taking a weighted sum of all the annotations as computing an expected annotation, where the expectation is over possible alignments (<span class="math inline">\(\alpha_{ij}\)</span>). In other words, let <span class="math inline">\(\alpha_{ij}\)</span> be a probability that the target word <span class="math inline">\(\mathbf{y}_i\)</span> is aligned to, or translated from a source input word <span class="math inline">\(\mathbf{x}_{j}\)</span>. <strong>Then, the <span class="math inline">\(i\)</span>th context vector <span class="math inline">\(\mathbf{c}_i\)</span> is the expected value of annotations (input sequence) distributed according to probability distribution defined by <span class="math inline">\(\alpha_{ij}\)</span>.</strong></p>
+<p>Intuitively, this implements a mechanism of <strong>attention</strong> in the decoder. The decoder decides parts of the source sentence to pay attention to. By letting the decoder have an attention mechanism, we relieve the encoder from the burden of having to encode all information in the source sentence into a fixed length vector.</p>
+<h3 id="encoder-bidirectional-rnn-for-annotating-sequences">Encoder: Bidirectional RNN for Annotating Sequences</h3>
+<p>A bidirectional RNN consists of forward and backward RNNs. The forward RNN <span class="math inline">\(\overset{\rightarrow}{f}\)</span> reads the input sequence from the front and has <strong>forward hidden units <span class="math inline">\(\{\overset{\rightarrow}{\mathbf{h}}_1, ...., \overset{\rightarrow}{\mathbf{h}}_{T_x}\}\)</span></strong>. <span class="math inline">\(\overset{\leftarrow}{f}\)</span> reads the sequence in the reverse order (from <span class="math inline">\(\mathbf{x}_{T_x}\)</span> to <span class="math inline">\(\mathbf{x}_1\)</span>), resulting in a sequence of <strong>backward hidden units <span class="math inline">\(\{\overset{\leftarrow}{\mathbf{h}}_1, ...., \overset{\leftarrow}{\mathbf{h}}_{T_x}\}\)</span></strong>.</p>
+<p>The <strong>annotation</strong> vector <span class="math inline">\(\mathbf{h}_j\)</span> is then calculated by concatenating the forward hidden state <span class="math inline">\(\overset{\rightarrow}{\mathbf{h}}_j\)</span> and the backward hidden state <span class="math inline">\(\overset{\leftarrow}{\mathbf{h}}_j\)</span>:</p>
+<p><span class="math display">\[\mathbf{h}_j = [\overset{\rightarrow}{\mathbf{h}}_j, \overset{\leftarrow}{\mathbf{h}}_j]\]</span></p>
+<p>This sequence of annotations is used by the decoder and the alignment model later to compute the context vector <span class="math inline">\(\mathbf{c}_{i}\)</span>.</p>
+<h1 id="effective-approaches-to-attention-based-neural-machine-translation">Effective Approaches to Attention-based Neural Machine Translation</h1>
+<h1 id="long-short-term-memory-networks-for-machine-reading">Long Short-Term Memory-Networks for Machine Reading</h1>
+<h1 id="ref">Ref</h1>
+<p>https://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html#self-attention</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/06/24/VGG/" rel="bookmark">VGG (Under Construction)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/06/22/alex-net/" rel="bookmark">Alex Net</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/12/25/tcn/" rel="bookmark">TCN</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/12/25/transformer/" rel="bookmark">Transformer</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/07/29/adaptive-lr/" rel="bookmark">Basic Adaptive LR Algorithms</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Deep-Learning/" rel="tag"># Deep Learning</a>
+              <a href="/tags/Neural-Network-Architectures/" rel="tag"># Neural Network Architectures</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/08/02/rnn/" rel="prev" title="RNN">
+                  <i class="fa fa-chevron-left"></i> RNN
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/08/09/roc/" rel="next" title="ROC">
+                  ROC <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

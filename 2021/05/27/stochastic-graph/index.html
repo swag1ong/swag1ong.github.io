@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Gradient Estimation Using Stochastic Computation Graphs The backpropagation algorithm is only sufficient when the loss function is a deterministic, differentiable function of the parameter vector. The">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Stochastic Graph">
+<meta property="og:url" content="https://swag1ong.github.io/2021/05/27/stochastic-graph/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Gradient Estimation Using Stochastic Computation Graphs The backpropagation algorithm is only sufficient when the loss function is a deterministic, differentiable function of the parameter vector. The">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/scg_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/scg_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/scg_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/scg_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/scg_6.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/scg_5.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/scg_7.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/scg_8.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/scg_9.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/scg_10.png">
+<meta property="article:published_time" content="2021-05-27T09:38:11.000Z">
+<meta property="article:modified_time" content="2021-06-01T09:43:17.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="Policy Gradient">
+<meta property="article:tag" content="Deep Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swag1ong.github.io/images/ML/scg_1.png">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/05/27/stochastic-graph/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;05&#x2F;27&#x2F;stochastic-graph&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;05&#x2F;27&#x2F;stochastic-graph&#x2F;&quot;,&quot;title&quot;:&quot;Stochastic Graph&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Stochastic Graph | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#gradient-estimation-using-stochastic-computation-graphs"><span class="nav-number">1.</span> <span class="nav-text">Gradient Estimation Using Stochastic Computation Graphs</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#preliminaries"><span class="nav-number">1.1.</span> <span class="nav-text">Preliminaries</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#gradient-estimators-for-a-single-random-variable"><span class="nav-number">1.1.1.</span> <span class="nav-text">Gradient Estimators for a Single Random Variable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#stochastic-computation-graphs"><span class="nav-number">1.1.2.</span> <span class="nav-text">Stochastic Computation Graphs</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#main-results"><span class="nav-number">1.2.</span> <span class="nav-text">Main Results</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#gradient-estimation"><span class="nav-number">1.2.1.</span> <span class="nav-text">Gradient Estimation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#notations"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Notations</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-1"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Theorem 1</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof"><span class="nav-number">1.2.1.2.1.</span> <span class="nav-text">Proof</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#surrogate-loss-functions"><span class="nav-number">1.2.2.</span> <span class="nav-text">Surrogate Loss Functions</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#algorithm"><span class="nav-number">1.3.</span> <span class="nav-text">Algorithm</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/05/27/stochastic-graph/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Stochastic Graph
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-05-27 17:38:11" itemprop="dateCreated datePublished" datetime="2021-05-27T17:38:11+08:00">2021-05-27</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-01 17:43:17" itemprop="dateModified" datetime="2021-06-01T17:43:17+08:00">2021-06-01</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DL/" itemprop="url" rel="index"><span itemprop="name">DL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DL/Techniques/" itemprop="url" rel="index"><span itemprop="name">Techniques</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/05/27/stochastic-graph/" class="post-meta-item leancloud_visitors" data-flag-title="Stochastic Graph" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>8 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="gradient-estimation-using-stochastic-computation-graphs">Gradient Estimation Using Stochastic Computation Graphs</h1>
+<p>The backpropagation algorithm is only sufficient when the loss function is a deterministic, differentiable function of the parameter vector. The main practical result of this article is that to compute the gradient estimator, one just needs to make a simple modification to the backpropagation algorithm, where extra gradient signals are introduced at the stochastic nodes.</p>
+<h2 id="preliminaries">Preliminaries</h2>
+<h3 id="gradient-estimators-for-a-single-random-variable">Gradient Estimators for a Single Random Variable</h3>
+<p>Suppose <span class="math inline">\(X\)</span> is a random variable, <span class="math inline">\(f\)</span> is a function, we are interested in computing</p>
+<p><span class="math display">\[\frac{\partial}{\partial \theta} E_{X}[f(X)]\]</span></p>
+<p>There are few different ways that the process for generating <span class="math inline">\(X\)</span> could be parameterized in terms of <span class="math inline">\(\theta\)</span>, which lead to different gradient estimators.</p>
+<ul>
+<li><p>We might be given a parameterized probability distribution <span class="math inline">\(X \sim p(\cdot ; \theta)\)</span>. In this case, we can use <strong>score function</strong> or <strong>REINFORCE</strong> or <strong>likelihood ratio estimator</strong> estimator:</p>
+<p><span class="math display">\[\frac{\partial}{\partial \theta} E_{X \sim p(\cdot ; \theta)}[f(X)] = \int_x \frac{\frac{\partial}{\partial\theta} p(x; \theta)}{p(x; \theta)} p(x; \theta) f(x)dx = E_{X \sim p(\cdot ; \theta)}[f(X) \frac{\partial}{\partial\theta} log p(X; \theta)]\]</span></p>
+<p>This equation is valid if <span class="math inline">\(p(x; \theta)\)</span> is a continuous function of <span class="math inline">\(\theta\)</span>; however it does not need to be a continuous function of <span class="math inline">\(x\)</span></p></li>
+<li><p><span class="math inline">\(X\)</span> may be a deterministic, continuous function of <span class="math inline">\(\theta\)</span> and another random variable <span class="math inline">\(Z\)</span>, we can write as <span class="math inline">\(X(\theta, Z)\)</span>. Then we can use the <strong>pathwise derivative</strong> or <strong>stochastic backpropagation</strong> estimator:</p>
+<p><span class="math display">\[E_{Z}[f(X(\theta, Z))] = E_{Z}[\frac{\partial}{\partial \theta} f(X(\theta, Z))]\]</span></p>
+<p>We can swap the derivative and expectation iff <span class="math inline">\(f(X(\theta, Z))\)</span> is a continuous function of <span class="math inline">\(\theta\)</span> for all values of <span class="math inline">\(Z\)</span>. However, it is also sufficient that this function is almost-everywhere differentiable.</p></li>
+<li><p>Finally, <span class="math inline">\(\theta\)</span> may be appeared both in the probability distribution and inside the expectation:</p>
+<p><span class="math display">\[E_{Z \sim p(\cdot; \theta)}[f(X(\theta, Z))] = \int_z \frac{\partial}{\partial \theta} f(X(\theta, z)) p(z; \theta) dz = E_{Z \sim p(\cdot; \theta)}[\frac{\partial}{\partial \theta} f(X(\theta, Z)) + (\frac{\partial}{\partial \theta} log p(Z; \theta))f(X(\theta, Z))]\]</span></p></li>
+</ul>
+<span id="more"></span>
+<h3 id="stochastic-computation-graphs">Stochastic Computation Graphs</h3>
+<p><img src="/images/ML/scg_1.png" width="600"></p>
+<p><img src="/images/ML/scg_2.png" width="600"></p>
+<p>Where square denotes deterministic node, circle denotes stochastic node.</p>
+<p><img src="/images/ML/scg_3.png" width="600"></p>
+<p><strong>For simplification, <span class="math inline">\(E_Y [\cdot]\)</span> denotes that <span class="math inline">\(Y\)</span> are sampled from its distribution specified. P used for distribution, p for density function</strong></p>
+<ol type="1">
+<li><p><span class="math inline">\(x(\theta), Y \sim P_Y(\cdot | x(\theta)), E_{Y \sim P_Y(\cdot | x(\theta))}[f(Y)]\)</span> (<strong>the distribution depends on function of <span class="math inline">\(\theta\)</span></strong>)</p>
+<p><span class="math display">\[\frac{\partial }{\partial \theta} E_{Y \sim P_Y(\cdot | x(\theta))}[f(Y)] = \int_y p(y | x(\theta)) \frac{\partial log p(y | x(\theta))}{\partial \theta}\frac{\partial x(\theta)}{\partial \theta} dy = E_Y[\frac{\partial log p(Y | x(\theta))}{\partial \theta}\frac{\partial x(\theta)}{\partial \theta}]\]</span><br/></p></li>
+<li><p><span class="math inline">\(X \sim P_X(\cdot | \theta), Y(X), f(Y(X))\)</span> (<strong>the distribution depends on <span class="math inline">\(\theta\)</span></strong>)</p>
+<p><span class="math display">\[\frac{\partial }{\partial \theta} E_X[f(Y(X))] = \int_x p(x | \theta) \frac{\partial }{\partial \theta} log p(x | \theta) f(Y(x)) dx = E_X [log p(X | \theta) f(Y(X))]\]</span><br/></p></li>
+<li><p><span class="math inline">\(X \sim P_X(\cdot | \theta), Y \sim P_Y(\cdot | X), f(Y)\)</span> (<strong>the distribution depends on <span class="math inline">\(\theta\)</span></strong>)</p>
+<p><span class="math display">\[\frac{\partial }{\partial \theta} E_{X, Y}[f(Y)] = \int_y \int_x p(x | \theta) p(y | x) f(y)\frac{\partial }{\partial \theta} log p(x | \theta) dx dy = E_{X, Y} [log p(X | \theta) f(Y)]\]</span><br/></p></li>
+<li><p><span class="math inline">\(X \sim P_X(\cdot | \theta), y(\theta), f(X, y(\theta))\)</span> (<strong>the distribution depends on <span class="math inline">\(\theta\)</span> and the function <span class="math inline">\(f\)</span> depends on <span class="math inline">\(\theta\)</span></strong>)</p>
+<p><span class="math display">\[\frac{\partial }{\partial \theta} E_{X}[f(X, y(\theta))] = \int_x p(x | \theta) \frac{\partial }{\partial \theta} log p(x | \theta) f(x, y(\theta)) + p(x | \theta) \frac{\partial f(x, y(\theta))}{\partial y(\theta)} \frac{\partial y(\theta)}{\partial \theta} dx = E_X [\frac{\partial }{\partial \theta} log p(X | \theta) f(X, y(\theta)) + \frac{\partial f(X, y(\theta))}{\partial y(\theta)} \frac{\partial y(\theta)}{\partial \theta}]\]</span><br/></p></li>
+<li><p><span class="math inline">\(X_1 \sim P_{X_1}(\cdot | \theta, x_0), X_2 \sim P_{X_2}(\cdot | \theta, X_1), f_1 (X_1), f_2 (X_2)\)</span> (<strong>Notice that <span class="math inline">\(X_2\)</span> has no effect on the distribution of <span class="math inline">\(X_1\)</span>, this resembles a parameterized Markov reward process, and it illustrates that we’ll obtain score function terms of the form grad log-probability times future costs.</strong>)</p>
+<span class="math display">\[\begin{aligned}
+ \frac{\partial }{\partial \theta} E_{X_1, X_2}[f_1(X_1), f_2(X_2)] &amp;= \frac{\partial }{\partial \theta} (E_{X_1} [f_1(X_1)] +  E_{X_1, X_2} [f_2(X_2)]) \\
+ &amp;= \int_{x_1} p(x_1 | \theta) \frac{\partial }{\partial \theta} log p(x_1 | \theta) f_1 (x_1) dx_1  + \int_{x_1} \int_{x_2} p(x_2 | \theta)p(x_1 | \theta)  \frac{\partial }{\partial \theta} log p(x_2 | \theta) f_2 (x_2) + p(x_2 | \theta)p(x_1 | \theta) \frac{\partial }{\partial \theta} log p(x_1 | \theta) f_2 (x_2)dx_2 dx_1 \\
+ &amp;= E_{X_1, X_2}[\frac{\partial }{\partial \theta} log p(X_1 | \theta) (f(X_1) + f(X_2)) + \frac{\partial }{\partial \theta} log p(X_2 | \theta) f(X_2)]
+ \end{aligned}\]</span></li>
+</ol>
+<h2 id="main-results">Main Results</h2>
+<h3 id="gradient-estimation">Gradient Estimation</h3>
+<h4 id="notations">Notations</h4>
+<p><img src="/images/ML/scg_4.png" width="600"></p>
+<ul>
+<li><p>The set of cost nodes <span class="math inline">\(C\)</span> are <code>scalar-valued</code> and <code>deterministic</code> (There is no loss of generality in assuming that the costs are deterministic, if a cost is stochastic, we can simply append a deterministic node that applies hte identity function to it).</p></li>
+<li><p>The relation <span class="math inline">\(v \prec w\)</span> means that <span class="math inline">\(\exists\)</span> a sequence of nodes <span class="math inline">\(a_1, ...., a_K\)</span> with <span class="math inline">\(K \leq 0\)</span> such that <span class="math inline">\((v, a_1), ...., (a_K, w)\)</span> are edges in the graph (Basicly, there exists a <code>path</code> from <span class="math inline">\(v\)</span> to <span class="math inline">\(w\)</span>)</p></li>
+<li><p>The relation <span class="math inline">\(v \prec^D w\)</span> means that all sequence of nodes <span class="math inline">\(a_1, ...., a_K\)</span> are deterministic (Also, <strong>if (<span class="math inline">\(v\)</span>, <span class="math inline">\(w\)</span>) is an edge in the graph, then <span class="math inline">\(v \prec^D w\)</span></strong>)</p></li>
+<li><p><span class="math inline">\(\hat{Q_v} \triangleq \sum_{ c \succ v, c \in C} \hat{c}\)</span>, this is the sum of costs influenced by node <span class="math inline">\(v\)</span>.</p></li>
+<li><p>All <code>hats</code> are denoted as sample realizations of random variables and are regarded as <code>constant</code>.</p></li>
+<li><p><span class="math inline">\(\text{DEPS}_{v} \triangleq \{ w \in \Theta \bigcup S \; | \; w \prec^D v \}\)</span>:</p>
+<ul>
+<li>If <span class="math inline">\(v \in S\)</span>, then we can write <span class="math inline">\(p(v \; | \; \text{DEPS}_{v})\)</span></li>
+<li>If <span class="math inline">\(v \in D\)</span>, then we can write <span class="math inline">\(v\)</span> as function of <span class="math inline">\(\text{DEPS}_{v}\)</span>: <span class="math inline">\(v(\text{DEPS}_{v})\)</span></li>
+</ul></li>
+</ul>
+<p><img src="/images/ML/scg_6.png" width="600"></p>
+<p>In this case,</p>
+<ul>
+<li>If <span class="math inline">\(v\)</span> is deterministic, then it is a function that depends on <span class="math inline">\(v(a_1, a_2(a_3), a_4)\)</span> but not <span class="math inline">\(a_5\)</span>.</li>
+<li>If <span class="math inline">\(v\)</span> is stochastic, then it's probability distribution depends on <span class="math inline">\(P( \cdot |a_1, a_2(a_3), a_4)\)</span> but not <span class="math inline">\(a_5\)</span></li>
+</ul>
+<p>Assume that:</p>
+<p><img src="/images/ML/scg_5.png" width="600"></p>
+<h4 id="theorem-1">Theorem 1</h4>
+<p><img src="/images/ML/scg_7.png" width="600"></p>
+<h5 id="proof">Proof</h5>
+<p><strong>Consider only <span class="math inline">\(v \in S\)</span></strong>, <span class="math inline">\(E_{v \in S, v \prec c}[c]\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+E_{v \in S, v \prec c}[c] &amp;= \int_{v} p(v_1 \; | \; \text{DEPS}_{v_1}) p(v_2 \; | \; \text{DEPS}_{v_2}) ... p(v_k \; | \; \text{DEPS}_{v_k})c(\text{DEPS}_{c})dv\\
+&amp;= \int_{v} c(\text{DEPS}_{c}) \prod_{v} p(v \; | \; \text{DEPS}_{v})dv
+\end{aligned}\]</span>
+<p><br/></p>
+<p>Here, <span class="math inline">\(c\)</span> is deterministic node, by definition it is a function of its dependencies. <span class="math inline">\(v = \{v_1, ..., v_k\}\)</span> is a set of stochastic nodes, so all of them have probability density or mass functions that depends on their dependencies.</p>
+<p>Then the derivative <span class="math inline">\(\frac{\partial}{\partial \theta}E_{v \in S, v \prec c}[c]\)</span> w.r.t <span class="math inline">\(\theta\)</span> is:</p>
+<span class="math display">\[\begin{aligned}
+\frac{\partial}{\partial \theta} E_{v \in S, v \prec c}[c] &amp;= \frac{\partial}{\partial \theta} \int_{v} c(\text{DEPS}_{c}) \prod_{v} p(v \; | \; \text{DEPS}_{v})dv\\
+&amp;=  \int_{v} \frac{\partial c(\text{DEPS}_{c})}{\partial \theta} \prod_{v} p(v \; | \; \text{DEPS}_{v})dv +  \int_{v} c(\text{DEPS}_{c}) \frac{\partial \prod_{v} p(v \; | \; \text{DEPS}_{v})}{\partial \theta}dv\\
+&amp;=  \int_{v} \frac{\partial c(\text{DEPS}_{c})}{\partial \theta} \prod_{v} p(v \; | \; \text{DEPS}_{v})dv +  \int_{v} c(\text{DEPS}_{c})  \prod_{v} p(v \; | \; \text{DEPS}_{v}) \sum_{w \in S, w \prec c} \frac{\frac{\partial}{\partial \theta} p(w \; | \; \text{DEPS}_{w})}{p(w \; | \; \text{DEPS}_{w})}dv\\
+&amp;=  \int_{v} \frac{\partial c(\text{DEPS}_{c})}{\partial \theta} \prod_{v} p(v \; | \; \text{DEPS}_{v})dv +  \int_{v} c(\text{DEPS}_{c})  \prod_{v} p(v \; | \; \text{DEPS}_{v}) \sum_{w \in S, w \prec c} \frac{\partial}{\partial \theta} \log (p(w \; | \; \text{DEPS}_{w}))dv\\
+&amp;=  E_{v \in S, v \prec c} [\frac{\partial c(\text{DEPS}_{c})}{\partial \theta} + \hat{c} \sum_{w \in S, w \prec c} \frac{\partial}{\partial \theta} \log (p(w \; | \; \text{DEPS}_{w}))] \\
+\end{aligned}\]</span>
+<p><br/></p>
+<p>Recall that if <span class="math inline">\(\theta \prec^D w\)</span> then <span class="math inline">\(\theta \in \text{DEPS}_{w}\)</span>. Notice here, terms in the sum <span class="math inline">\(\sum_{w \in S, w \prec c} \frac{\partial}{\partial \theta} \log (p(w \; | \; \text{DEPS}_{w}))\)</span> that do not depend on <span class="math inline">\(\theta\)</span> will have 0 gradients, thus, we can rewrite:</p>
+<p><span class="math display">\[\sum_{w \in S, w \prec c} \frac{\partial}{\partial \theta} \log (p(w \; | \; \text{DEPS}_{w})) = \sum_{w \in S, w \prec c, \theta \prec^D w} \frac{\partial}{\partial \theta} \log (p(w \; | \; \text{DEPS}_{w}))\]</span><br/></p>
+<p>At the same time, we can substitute <span class="math inline">\(\hat{c}\)</span> for <span class="math inline">\(c\)</span>, which does not affect the expectation.</p>
+<p><strong>More generally</strong>, we can have <span class="math inline">\(v\)</span> being either stochastic or deterministic:</p>
+<p><span class="math display">\[v \prec c\]</span></p>
+<p>Then,</p>
+<span class="math display">\[\begin{aligned}
+\frac{\partial}{\partial \theta}E_{v \prec C}[\sum_{c \in c} c] &amp;= \frac{\partial}{\partial \theta} \sum_{c \in C} E_{v \prec c}[c]\\
+&amp;= \sum_{c \in C} E_{v \prec c} [\frac{\partial c(\text{DEPS}_{c})}{\partial \theta} + \hat{c}\sum_{w \prec c, \theta \prec^D w} \frac{\partial}{\partial \theta} \log (p(w \; | \; \text{DEPS}_{w}))]\\
+&amp;= E_{v \in S, v \prec c} [ \sum_{c \in C} \frac{\partial c(\text{DEPS}_{c})}{\partial \theta} + \sum_{c \in C}\hat{c} \sum_{w \prec c, \theta \prec^D w} (\frac{\partial}{\partial \theta} \log (p(w \; | \; \text{DEPS}_{w})))]\\
+&amp;= E_{v \in S, v \prec c} [ \sum_{c \in C} \frac{\partial c(\text{DEPS}_{c})}{\partial \theta} + \sum_{w \prec S, \theta \prec^D w} (\frac{\partial}{\partial \theta} \log (p(w \; | \; \text{DEPS}_{w}))) \hat{Q}_{w}]\\
+\end{aligned}\]</span>
+<p><br/></p>
+<p>The estimated expressions above have two terms:</p>
+<ul>
+<li>The first term is due to the influence of <span class="math inline">\(\theta\)</span> on the probability distributions.</li>
+<li>The second term is due to the influence of <span class="math inline">\(\theta\)</span> on the cost variables through a chain of differentiable functions.</li>
+</ul>
+<h3 id="surrogate-loss-functions">Surrogate Loss Functions</h3>
+<p>The next corollary lets us write down a <code>surrogate</code> objective <span class="math inline">\(L\)</span>, which is a function of the inputs that we can differentiate to obtain an unbiased gradient estimator.</p>
+<p><img src="/images/ML/scg_8.png" width="600"></p>
+<p>We now convert a stochastic computation graph to a deterministic computation graph, and we can apply automatic differentiation.</p>
+<p><img src="/images/ML/scg_9.png" width="600"></p>
+<h2 id="algorithm">Algorithm</h2>
+<p><img src="/images/ML/scg_10.png" width="600"></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/06/09/DDPG/" rel="bookmark">Deep Deterministic Policy Gradient</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/06/DPG/" rel="bookmark">Deterministic Policy Gradient</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/06/11/PPO/" rel="bookmark">PPO</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/06/25/go-explore/" rel="bookmark">Go Explore</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/30/policy-gradient-2/" rel="bookmark">Policy Gradient (2)</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Policy-Gradient/" rel="tag"># Policy Gradient</a>
+              <a href="/tags/Deep-Learning/" rel="tag"># Deep Learning</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/26/batch-norm/" rel="prev" title="Batch Normalization">
+                  <i class="fa fa-chevron-left"></i> Batch Normalization
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/30/policy-gradient-2/" rel="next" title="Policy Gradient (2)">
+                  Policy Gradient (2) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

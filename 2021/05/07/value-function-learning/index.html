@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Learning From Stream of Data (Introduction) In previous DP settings, we know the transition distribution \(P\) and reward distribution \(R\). Everything about the environment dynamics are given. Howev">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Learning From Stream of Data">
+<meta property="og:url" content="https://swag1ong.github.io/2021/05/07/value-function-learning/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Learning From Stream of Data (Introduction) In previous DP settings, we know the transition distribution \(P\) and reward distribution \(R\). Everything about the environment dynamics are given. Howev">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-05-07T10:50:25.000Z">
+<meta property="article:modified_time" content="2021-05-16T09:11:41.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="RL Basics">
+<meta property="article:tag" content="MC">
+<meta property="article:tag" content="Tabular Methods">
+<meta property="article:tag" content="TD">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/05/07/value-function-learning/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;05&#x2F;07&#x2F;value-function-learning&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;05&#x2F;07&#x2F;value-function-learning&#x2F;&quot;,&quot;title&quot;:&quot;Learning From Stream of Data&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Learning From Stream of Data | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#learning-from-stream-of-data-introduction"><span class="nav-number">1.</span> <span class="nav-text">Learning From Stream of Data (Introduction)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#stochastic-approximation-of-mean"><span class="nav-number">1.1.</span> <span class="nav-text">Stochastic Approximation of Mean</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#expectation"><span class="nav-number">1.1.1.</span> <span class="nav-text">Expectation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#variance"><span class="nav-number">1.1.2.</span> <span class="nav-text">Variance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sa-condition"><span class="nav-number">1.1.3.</span> <span class="nav-text">SA Condition</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#epsilon---greedy-policy"><span class="nav-number">1.2.</span> <span class="nav-text">\(\epsilon\) - Greedy policy</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#problem-with-greedy-policy"><span class="nav-number">1.2.1.</span> <span class="nav-text">Problem With Greedy Policy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#solution"><span class="nav-number">1.2.2.</span> <span class="nav-text">Solution</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exploration-and-exploitation-tradeoff"><span class="nav-number">1.2.3.</span> <span class="nav-text">Exploration and Exploitation Tradeoff</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#off-policy-and-on-policy-sampling-scenarios"><span class="nav-number">1.2.4.</span> <span class="nav-text">Off Policy and On Policy Sampling Scenarios</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#further"><span class="nav-number">1.3.</span> <span class="nav-text">Further</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/05/07/value-function-learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Learning From Stream of Data
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-05-07 18:50:25" itemprop="dateCreated datePublished" datetime="2021-05-07T18:50:25+08:00">2021-05-07</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-05-16 17:11:41" itemprop="dateModified" datetime="2021-05-16T17:11:41+08:00">2021-05-16</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/MC/" itemprop="url" rel="index"><span itemprop="name">MC</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/TD/" itemprop="url" rel="index"><span itemprop="name">TD</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/05/07/value-function-learning/" class="post-meta-item leancloud_visitors" data-flag-title="Learning From Stream of Data" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>4.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="learning-from-stream-of-data-introduction">Learning From Stream of Data (Introduction)</h1>
+<p>In previous DP settings, we know the transition distribution <span class="math inline">\(P\)</span> and reward distribution <span class="math inline">\(R\)</span>. Everything about the environment dynamics are given. However, in RL setting, we have no access to the environment dynamics, instead, we observe data from agent interacting with its environment.</p>
+<p>A stream of data (rollout or trajectory):</p>
+<p><span class="math display">\[X_1, A_1, R_1, X_2, A_2, R_2, ...\]</span></p>
+<p>with <span class="math inline">\(A_t \sim \pi(\cdot | X_t), X_{t+1} \sim P(\cdot | A_t, X_t), X_1 \sim \rho(\cdot), R_t \sim R(\cdot | X_t, A_t)\)</span></p>
+<p>The questions are:</p>
+<ol type="1">
+<li>How can we learn a value of a policy <span class="math inline">\(\pi\)</span>?</li>
+<li>How can we find the optimal policy <span class="math inline">\(\pi^{*}\)</span>?</li>
+</ol>
+<span id="more"></span>
+<h2 id="stochastic-approximation-of-mean">Stochastic Approximation of Mean</h2>
+<p>Let <span class="math inline">\(Z_1, ..., Z_t\)</span> be i.i.d R.V drawn from distribution <span class="math inline">\(v\)</span>, how can we estimate the expectation of <span class="math inline">\(Z_i\)</span>? One way is stochastic approximation.</p>
+<p>Define:</p>
+<p><span class="math display">\[\theta_{t+1} = (1 - \alpha_t)\theta_t + \alpha_t Z_t\]</span></p>
+<p>Note that <span class="math inline">\(\theta_{t+1}\)</span> is a random variable, because <span class="math inline">\(Z_t\)</span> is a random variable.</p>
+<h3 id="expectation">Expectation</h3>
+<p>Assume <span class="math inline">\(\alpha_t = \alpha\)</span> is fixed, <span class="math inline">\(E[Z_t] = m\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+E[\theta_{t+1}] &amp;= E[(1 - \alpha) \theta_t + \alpha Z_t]\\
+&amp;= (1 - \alpha) E[\theta_t] + \alpha E[Z_t]\\
+&amp;= (1 - \alpha) E[\theta_t] + \alpha m\\
+\end{aligned}\]</span>
+<p>Let <span class="math inline">\(E[\theta_t] = \bar{\theta_t}\)</span>, then:</p>
+<p><span class="math display">\[E[\theta_{t+1}] = (1 - \alpha) E[\theta_t] + \alpha m \implies \bar{\theta_{t+1}} = (1 - \alpha) \bar{\theta_t} + \alpha m\]</span></p>
+<p>Let <span class="math inline">\(\theta_0 = 0\)</span>, that is, <span class="math inline">\(\bar{\theta_0} = 0\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+\bar{\theta_{1}} &amp;= \alpha m\\
+\bar{\theta_{2}}&amp;= (1 - \alpha) \alpha m + \alpha m\\
+...\\
+...\\
+\bar{\theta_{t}}&amp;= \alpha \sum_{i=0}^{t-1} (1 - \alpha)^i m = \frac{\alpha m (1 - (1 - \alpha)^t)}{1 - (1 - \alpha)} = m[1 - (1 - \alpha)^t]\\
+\end{aligned}\]</span>
+<p>As <span class="math inline">\(t \rightarrow \infty\)</span>, if <span class="math inline">\(0 \geq \alpha &lt; 1\)</span></p>
+<p><span class="math display">\[lim_{t \rightarrow \infty} \bar{\theta_{t}} = lim_{t \rightarrow \infty} m[1 - (1 - \alpha)^t] = m\]</span></p>
+<p><strong>This implies <span class="math inline">\(\theta_t\)</span> converges to <span class="math inline">\(m\)</span> in expectation</strong></p>
+<h3 id="variance">Variance</h3>
+<p>Since all <span class="math inline">\(Z_i\)</span> are i.i.d:</p>
+<p><span class="math display">\[V[\theta_{t+1}] = (1 - \alpha)^2 V[\theta_t] + \alpha^2 V[Z_t] \geq \alpha^2 V[Z_t] = \alpha^2 \theta^2\]</span></p>
+<p>We can show that:</p>
+<p><span class="math display">\[lim_{t \rightarrow \infty} V[\theta_t] = \frac{\alpha \theta^2}{2 - \alpha}\]</span></p>
+<p>For a constant <span class="math inline">\(\alpha\)</span>, the variance <span class="math inline">\(\theta_t\)</span>is not going to converge to zero. This means that <span class="math inline">\(\theta_t\)</span> fluctuates around its mean.</p>
+<h3 id="sa-condition">SA Condition</h3>
+<p>In order to make <span class="math inline">\(\theta_t\)</span> converge, we need a time dependent <span class="math inline">\(\alpha_t \rightarrow 0\)</span> with some schedule:</p>
+<p><span class="math display">\[\sum_{t=0}^{\infty} \alpha_t = \infty \]</span></p>
+<p><span class="math display">\[\sum_{t=0}^{\infty} \alpha_t^2 &lt; \infty \]</span></p>
+<h2 id="epsilon---greedy-policy"><span class="math inline">\(\epsilon\)</span> - Greedy policy</h2>
+<h3 id="problem-with-greedy-policy">Problem With Greedy Policy</h3>
+<p>By selecting</p>
+<p><span class="math display">\[a \rightarrow \pi_g (x; Q) = argmax_{a \in A} Q(x, a)\]</span></p>
+<p>We would choose the optimal action at state <span class="math inline">\(x\)</span>. However, if <span class="math inline">\(Q(x, a)\)</span> is inaccurate estimate of <span class="math inline">\(Q^{\pi} (x, a)\)</span>, we may select a suboptimal action. It is also possible we get stuck in choosing this action forever, without any chance to improve its estimate.</p>
+<h3 id="solution">Solution</h3>
+<p>One solution for this problem it to force the agent regularly picks actions other than the one suggested by the greedy policy.</p>
+<p>Thus, for <span class="math inline">\(\epsilon \geq 0, x \in X\)</span>, a function <span class="math inline">\(\hat{V}\)</span>, we define <span class="math inline">\(\pi_{\epsilon}\)</span> as:</p>
+<p><span class="math display">\[
+\pi_\epsilon (\cdot | x; \hat{V})=
+\begin{cases}
+\pi_g(x; \hat{V}), \text{w. p } 1 - \epsilon \\
+Uniform(A), \text{w. p } \epsilon \\
+\end{cases}
+\]</span></p>
+<ul>
+<li>The uniform choice of action in the <span class="math inline">\(\epsilon\)</span>-greedy helps the agent <code>explore</code> all actions, even if the action is seemingly suboptimal.</li>
+<li>The greedy part of its action select mechanism <code>exploits</code> the current knowledge about the reward function, and chooses the action that has the highest estimated reward.</li>
+</ul>
+<h3 id="exploration-and-exploitation-tradeoff">Exploration and Exploitation Tradeoff</h3>
+<p>Exploiting our knowledge is a reasonable choice when our knowledge about the world is <code>accurate</code>. (ie. If we have <span class="math inline">\(Q^{*}\)</span> we should always choose the greedy action at each state to have a maximized return)</p>
+<p>However, when we have uncertainty about the world, we should not be overconfident of our knowledge and exploit it at all time. (ie. If we only have <span class="math inline">\(\hat{Q}\)</span> of <span class="math inline">\(Q^{*}\)</span>, it is possible that <span class="math inline">\(argmax_{a \in A} \hat Q (x, a) \neq argmax_{a \in A} Q^{*} (x, a)\)</span>) But, instead explore other available actions, which might happen to be better.</p>
+<p>The tradeoff between exploration and exploitation is a major topic in RL and is an area of active research.</p>
+<h3 id="off-policy-and-on-policy-sampling-scenarios">Off Policy and On Policy Sampling Scenarios</h3>
+<p>Suppose we have a rollout or trajectory following some policy <span class="math inline">\(\pi_b\)</span> (ie. an <span class="math inline">\(\epsilon\)</span>-greedy policy):</p>
+<p><span class="math display">\[X_1, A_1, R_1, X_2, ....\]</span></p>
+<p>And we have some policy <span class="math inline">\(\pi\)</span> that we want to evaluate (ie. the greedy policy):</p>
+<ul>
+<li>If <span class="math inline">\(\pi_b = \pi\)</span>, we are in the <code>on-policy</code> sampling scenario, in which the agent is evaluating the same policy that it is following.</li>
+<li>If <span class="math inline">\(\pi_b \neq \pi\)</span>, we are in the <code>off-policy</code> sampling scenario, which the agent is evaluating a policy that is different from the one it is following.</li>
+</ul>
+<h2 id="further">Further</h2>
+<p>From here, we have all we need to start learning from streams of data!</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/15/mc/" rel="bookmark">Monte Carlo Estimation</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/16/q-learning/" rel="bookmark">Q-Learning</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/16/sarsa/" rel="bookmark">SARSA</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/15/td/" rel="bookmark">Temporal Difference Learning</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/MDP/" rel="bookmark">MDP</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RL-Basics/" rel="tag"># RL Basics</a>
+              <a href="/tags/MC/" rel="tag"># MC</a>
+              <a href="/tags/Tabular-Methods/" rel="tag"># Tabular Methods</a>
+              <a href="/tags/TD/" rel="tag"># TD</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/07/FA-issues/" rel="prev" title="Double Q Learning">
+                  <i class="fa fa-chevron-left"></i> Double Q Learning
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/11/probability/" rel="next" title="Probability (1)">
+                  Probability (1) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

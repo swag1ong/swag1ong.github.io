@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Addressing Function Approximation Error in Actor-Critic Methods As in function approximation with discrete action space, overestimation property also exists in continuous control setting. Background T">
+<meta property="og:type" content="article">
+<meta property="og:title" content="td3">
+<meta property="og:url" content="https://swag1ong.github.io/2021/06/23/td3/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Addressing Function Approximation Error in Actor-Critic Methods As in function approximation with discrete action space, overestimation property also exists in continuous control setting. Background T">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/pg/td3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/pg/td_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/pg/td_5.png">
+<meta property="article:published_time" content="2021-06-23T07:57:36.000Z">
+<meta property="article:modified_time" content="2021-07-17T03:34:48.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="Policy Gradient">
+<meta property="article:tag" content="Continuous Action Space">
+<meta property="article:tag" content="Policy Search">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swag1ong.github.io/images/RL/pg/td3.png">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/06/23/td3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;06&#x2F;23&#x2F;td3&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;06&#x2F;23&#x2F;td3&#x2F;&quot;,&quot;title&quot;:&quot;td3&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>td3 | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#addressing-function-approximation-error-in-actor-critic-methods"><span class="nav-number">1.</span> <span class="nav-text">Addressing Function Approximation Error in Actor-Critic Methods</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#background"><span class="nav-number">1.1.</span> <span class="nav-text">Background</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#overestimation-bias"><span class="nav-number">1.2.</span> <span class="nav-text">Overestimation Bias</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#overestimation-bias-in-actor-critic"><span class="nav-number">1.2.1.</span> <span class="nav-text">Overestimation Bias in Actor-Critic</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#clipped-double-q-learning-for-actor-critic-solution"><span class="nav-number">1.2.2.</span> <span class="nav-text">Clipped Double Q-learning for Actor-Critic (Solution)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#addressing-variance"><span class="nav-number">1.3.</span> <span class="nav-text">Addressing Variance</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#target-networks-and-delayed-policy-updates"><span class="nav-number">1.3.1.</span> <span class="nav-text">Target Networks and Delayed Policy Updates</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#target-policy-smoothing-regularization"><span class="nav-number">1.3.2.</span> <span class="nav-text">Target Policy Smoothing Regularization</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#algorithm"><span class="nav-number">1.4.</span> <span class="nav-text">Algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#conclusion"><span class="nav-number">1.5.</span> <span class="nav-text">Conclusion</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/06/23/td3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          td3
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-06-23 15:57:36" itemprop="dateCreated datePublished" datetime="2021-06-23T15:57:36+08:00">2021-06-23</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-17 11:34:48" itemprop="dateModified" datetime="2021-07-17T11:34:48+08:00">2021-07-17</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/PG/" itemprop="url" rel="index"><span itemprop="name">PG</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/06/23/td3/" class="post-meta-item leancloud_visitors" data-flag-title="td3" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>10k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>9 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="addressing-function-approximation-error-in-actor-critic-methods">Addressing Function Approximation Error in Actor-Critic Methods</h1>
+<p>As in function approximation with discrete action space, overestimation property also exists in continuous control setting.</p>
+<h2 id="background">Background</h2>
+<p>The return is defined as the discounted sum of rewards:</p>
+<p><span class="math display">\[R_t = \sum^{T}_{i=t} \gamma^{i - t} r(s_i, a_i)\]</span></p>
+<p>The objective of RL is to find the optimal policy <span class="math inline">\(\pi_{\phi}\)</span> with parameters <span class="math inline">\(\phi\)</span> which is defined as:</p>
+<p><span class="math display">\[J(\phi) = E_{s_i \sim P_{\pi_\phi}, a_i \sim \pi_{\phi}} [R_0]\]</span></p>
+<p>In DPG, the policy's (actor) parameter can be updated:</p>
+<p><span class="math display">\[\nabla_{\phi} J(\phi) = E_{s_i \sim \rho_{\pi_\phi}} [\nabla_{\phi} \pi_{\phi} \nabla_{a} Q^{\pi_{\phi}} (s, a) |_{a = \pi_{\phi}(s)}]\]</span></p>
+<p>Where the critic is the action value function:</p>
+<p><span class="math display">\[Q^{\pi_{\phi}} (s, a) = E_{s_i \sim P_{\pi_{\phi}}, a_i \sim \pi_{\phi}}[R_t | s, a] = \underbrace{r}_{\text{ reward is deterministic so the expectation is itself }} + \gamma E_{s^{\prime}, a^{\prime}} [Q^{\pi} (s^{\prime}, a^{\prime}) | s, a]\]</span></p>
+<p>In large state space, the critic can be approached using FA methods for example DQN (Approximate value iteration) in an off policy fashion (replay buffer):</p>
+<p><span class="math display">\[Q_{k + 1} = {\arg\min}_{Q} \|Q - \hat{T}^{\pi_{\phi}} Q_{k}\|^2_{\rho_{\pi_{\phi}}}\]</span></p>
+<p>with <span class="math inline">\(Q_{k}\)</span> parameterized by a target network <span class="math inline">\(Q_{\theta^{\prime}}\)</span>, so the target <span class="math inline">\(\hat{T}^{\pi_{\phi}} Q_{\theta^{\prime}}\)</span> can be write as:</p>
+<p><span class="math display">\[\hat{T}^{\pi_{\phi}} Q_{\theta^{\prime}} = r + \gamma Q_{\theta^{\prime}} (s^{\prime}, a^{\prime}), \quad \quad a^{\prime} \sim \pi_{\phi} (\cdot | s^{\prime})\]</span></p>
+<p>In terms of DDPG with delayed parameters to provide stability, the delayed target <span class="math inline">\(\hat{T}^{\pi_{\phi^{\prime}}} Q_{\theta^{\prime}}\)</span> is used instead:</p>
+<p><span class="math display">\[\hat{T}^{\pi_{\phi^{\prime}}} Q_{\theta^{\prime}} = r + \gamma Q_{\theta^{\prime}} (s^{\prime}, a^{\prime}), \quad \quad a^{\prime} \sim \pi_{\phi^{\prime}} (\cdot | s^{\prime})\]</span></p>
+<p>The weights of a target network are either updated periodically to exactly match the weights of the current network or by some portion as in DDPG.</p>
+<h2 id="overestimation-bias">Overestimation Bias</h2>
+<p>In Q-learning with discrete actions, if the target is susceptible to error <span class="math inline">\(\epsilon\)</span>, then the maximum over the value alonge with its error will generally be greater than the true maximum even the error <span class="math inline">\(\epsilon\)</span> has zero mean:</p>
+<p><span class="math display">\[E_{\epsilon} [\max_{a^{\prime}} (Q(s^{\prime}, a^{\prime}) + \epsilon)] \geq \max_{a^{\prime}} Q(s^{\prime}, a^{\prime})\]</span></p>
+<p>This issue extends to actor critic setting where policy is updated via gradient descent.</p>
+<h3 id="overestimation-bias-in-actor-critic">Overestimation Bias in Actor-Critic</h3>
+<p>Assumptions:</p>
+<ol type="1">
+<li>Policy is updated using DPG.</li>
+<li><span class="math inline">\(Z_1, Z_2\)</span> are chosen to normalize the gradient (i.e <span class="math inline">\(Z^{-1} \|E[\cdot]\| = 1\)</span>, only provides direction)</li>
+</ol>
+<p><br></p>
+<p>Given current policy parameters <span class="math inline">\(\phi\)</span>, let:</p>
+<ol type="1">
+<li><p><span class="math inline">\(\phi_{approx}\)</span> be the parameters from the actor update induced by the maximization of the approximate critic <span class="math inline">\(Q_{\theta} (s, a)\)</span>. The resulting policy is <span class="math inline">\(\pi_{approx}\)</span>. <span class="math display">\[\phi_{approx} = \phi + \frac{\alpha}{Z_1} E_{s \sim \rho_{\pi_{\phi}}} [\nabla_{\phi} \pi_{\phi} \nabla_{a} Q_{\theta} (s, a) |_{a = \pi_{\phi}(s)}]\]</span></p></li>
+<li><p><span class="math inline">\(\phi_{true}\)</span> be the parameters from the hypothetical actor update with respect to the true underlying value function <span class="math inline">\(Q^{\pi_{\phi}} (s, a)\)</span> (which is unknown during training). The resulting policy is <span class="math inline">\(\pi_{true}\)</span>. <span class="math display">\[\phi_{true} = \phi + \frac{\alpha}{Z_2} E_{s \sim \rho_{\pi_{\phi}}} [\nabla_{\phi} \pi_{\phi} \nabla_{a} Q^{\pi_{\phi}} (s, a) |_{a = \pi_{\phi}(s)}]\]</span></p></li>
+</ol>
+<p>Since gradient always point at the direction of maximum increase locally, so:</p>
+<ol type="1">
+<li><p><span class="math inline">\(\exists \epsilon_1\)</span>, such that if <span class="math inline">\(\alpha \leq \epsilon_1\)</span>, then the approximate value of <span class="math inline">\(\pi_{approx}\)</span> will be bounded by the approximate value of <span class="math inline">\(\pi_{true}\)</span>: <span class="math display">\[E[Q_{\theta} (s, \pi_{approx} (s))] \geq E[Q_{\theta} (s, \pi_{true} (s))]\]</span></p></li>
+<li><p><span class="math inline">\(\exists \epsilon_2\)</span>, such that if <span class="math inline">\(\alpha \leq \epsilon_2\)</span>, then the true value of <span class="math inline">\(\pi_{approx}\)</span> will be bounded by the true value of <span class="math inline">\(\pi_{true}\)</span>: <span class="math display">\[E[Q^{\pi_{\phi}} (s, \pi_{true} (s))] \geq E[Q^{\pi_{\phi}} (s, \pi_{approx} (s))]\]</span></p></li>
+</ol>
+<p>If: <span class="math display">\[E[Q_{\theta} (s, \pi_{true} (s))] \geq E[Q^{\pi_{\phi}} (s, \pi_{true} (s))]\]</span></p>
+<p>which means in expectation the approximated value function is greater than the true value function w.r.t policy <span class="math inline">\(\pi_{true}\)</span> (e.g for some state action pair (<span class="math inline">\(s, \pi_{true} (s)\)</span>)), the approximate value is much larger than the true value). At the same time, if <span class="math inline">\(\alpha &lt; \min(\epsilon_1, \epsilon_2)\)</span>, then: <span class="math display">\[E[Q_{\theta} (s, \pi_{approx} (s))] \geq E[Q^{\pi_{\phi}} (s, \pi_{approx} (s))]\]</span></p>
+<p><strong>This implies that our policy improvement based on approximate value function would over-estimate certain actions and lead to sub-optimal policies.</strong></p>
+<p><br></p>
+<p>Consequences of overestimation:</p>
+<ol type="1">
+<li>Overestimation may develop into a more significant bias over many updates if left unchecked.</li>
+<li>Inaccurate value estimate may lead to poor policy updates.</li>
+</ol>
+<p><strong>Feedback loops of actor and critic is prone to overestimation because suboptimal actions may highly rated by suboptimal critic and reinforcing the suboptimal action in the next policy update</strong>.</p>
+<h3 id="clipped-double-q-learning-for-actor-critic-solution">Clipped Double Q-learning for Actor-Critic (Solution)</h3>
+<p>In DDQN, the target is estimated using the greedy action from current value network rather than current target network. In an actor-critic setting (DPG), the update is:</p>
+<p><span class="math display">\[y = r + Q_{\theta^{\prime}} (s^{\prime}, \pi_{\phi} (s^{\prime}))\]</span></p>
+<p>However, slow-changing policy in actor-critic, the current and target networks were too similar to make an independent estimation and offered little improvement.</p>
+<p>Instead, we can go back and use similar formulation as Double Q-learning with a pair of actors <span class="math inline">\((\pi_{\phi_1}, \pi_{\phi_2})\)</span> and critics <span class="math inline">\((Q_{\theta_1}, Q_{\theta_2})\)</span> where <span class="math inline">\(\pi_{\phi_1}\)</span> is optimized w.r.t <span class="math inline">\(Q_{\phi_1}\)</span> and <span class="math inline">\(\pi_{\phi_2}\)</span> is optimized w.r.t <span class="math inline">\(Q_{\phi_2}\)</span>:</p>
+<p><span class="math display">\[y_1 = r + \gamma Q_{\theta^{\prime}_2} (s^{\prime}, \pi_{\phi_1} (s^{\prime}))\]</span> <span class="math display">\[y_2 = r + \gamma Q_{\theta^{\prime}_1} (s^{\prime}, \pi_{\phi_2} (s^{\prime}))\]</span></p>
+<p><br></p>
+<p><img src='/images/RL/pg/td3.png' width="600"></p>
+<p>From above plot we can see that Double Q-learning AC is more effective, but it does not entirely eliminate the over-estimation. One cause can be the shared replay buffer, as a result, for some state <span class="math inline">\(s\)</span>, we would have <span class="math inline">\(Q_{\theta_2} (s, \pi_{\phi_1} (s)) &gt; Q_{\theta_1} (s, \pi_{\phi_1} (s))\)</span>. This is problematic because we know that <span class="math inline">\(Q_{\theta_1} (s, \pi_{\phi_1} (s))\)</span> will generally overestimate the true value, the overestimation is exaggerated.</p>
+<p>One solution is to simply upper-bound the less biased value estimate <span class="math inline">\(Q_{\theta_2}\)</span> by the biased estimate <span class="math inline">\(Q_{\theta_1}\)</span>:</p>
+<p><span class="math display">\[y_1 = r + \gamma \min_{i=1, 2} Q_{\theta^{\prime}_{i}} (s^{\prime}, \pi_{\phi_1} (s^{\prime}))\]</span></p>
+<p>This algorithm is called <code>Clipped Double Q-learning</code> algorithm. With Clipped Double Q-learning, exaggeration of overestimation is eliminated. However, underestimation bias could occur.</p>
+<p>In implementation, computational costs can be reduced by using a single actor optimized w.r.t <span class="math inline">\(Q_{\theta_1}\)</span>. We then use the same target <span class="math inline">\(y_2=y_1\)</span> for <span class="math inline">\(Q_{\theta_2}\)</span>. If <span class="math inline">\(Q_{\theta_2} &gt; Q_{\theta_1}\)</span> then the update is identical to the standard update and induces no additional bias. If <span class="math inline">\(Q_{\theta_2} &lt; Q_{\theta_1}\)</span>, this suggests overestimation has occurred.</p>
+<h2 id="addressing-variance">Addressing Variance</h2>
+<p>Besides impact on overestimation bias, high variance estimates provide a noisy gradient for the policy update which reduces learning speed and hurt performance in practice.</p>
+<p>Since we never really learn <span class="math inline">\(Q^{\pi}\)</span> exactly (we learn <span class="math inline">\(Q_{\theta}\)</span> instead), there will always be some TD error in each update :</p>
+<span class="math display">\[\begin{aligned}
+r + \gamma E[Q_{\theta} (s^{\prime}, a^{\prime}) | s, a] - E[\delta(s, a) | s, a] &amp;= \gamma E[Q_{\theta} (s^{\prime}, a^{\prime}) | s, a] - \gamma E[Q_{\theta} (s^{\prime}, a^{\prime}) | s, a] + Q_{\theta} (s, a)\\
+&amp;= Q_{\theta} (s, a)
+\end{aligned}\]</span>
+<p>Then:</p>
+<span class="math display">\[\begin{aligned}
+Q_{\theta} (s_t, a_t) &amp;= r_t + \gamma E[Q_{\theta} (s_{t+1}, a_{t+1}) | s_t, a_t] - E[\delta_{t} | s_t, a_t]\\
+&amp;= r_t + \gamma E[r_{t+1} + \gamma E[Q_{\theta} (s_{t+2}, a_{t+2}) | s_{t+1}, a_{t+1}] - E[\delta_{t+1} | s_{t+1}, a_{t+1}] | s_t, a_t] - E[\delta_{t} | s_t, a_t]\\
+&amp; = E_{s_i \sim P_{\pi}, a_i \sim \pi} [\sum^{T}_{i=t} \gamma^{i - t} (r_i - \delta_i)]
+\end{aligned}\]</span>
+<p>Thus, the value function we estimate <span class="math inline">\(Q_{\theta} (s_t, a_t)\)</span>, approximates the expected return minus the expected discounted sume of future TD-errors instead of the expected return <span class="math inline">\(Q^{\pi}\)</span>.</p>
+<p>If the value estimate (sample of <span class="math inline">\(Q_{\theta}\)</span>) is a function of future reward and estimation error, it follows that the variance of the estimate will be proportional to the variance of future reward and estimation error. <strong>If the variance for <span class="math inline">\(\gamma^{i} (r_i - \delta_i)\)</span> is large, then the accumulative variance will be large especially when gamma is large.</strong></p>
+<h3 id="target-networks-and-delayed-policy-updates">Target Networks and Delayed Policy Updates</h3>
+<p><img src='/images/RL/pg/td_4.png' width="600"></p>
+<p>One way to reduce the estimation error is to delay each update to the target network. Consider the graph above:</p>
+<ol type="1">
+<li>If <span class="math inline">\(\tau = 1\)</span>, we obtain batch semi-gradient TD algorithm for updating the critic, which may have high variance.</li>
+<li>If <span class="math inline">\(\tau &lt; 1\)</span>, we obtain approximate value iteration.</li>
+</ol>
+<p>If target networks can be used to reduce the error over multiple updates, and policy updates on high-error states cause divergent behavior, then the policy network should be updated at a lower frequency than the value network, to first minimize error before introducing a policy update.</p>
+<p>Thus, <code>delaying policy updates</code> can be helpful in minimizing the estimation error by updating the policy and target networks after a fixed number of updates <span class="math inline">\(d\)</span> to the critic. To ensure the TD-error remains small, target network is also slowly updated by <span class="math inline">\(\theta^{\prime} \leftarrow \tau \theta + (1 - \tau) \theta^{\prime}\)</span>.</p>
+<h3 id="target-policy-smoothing-regularization">Target Policy Smoothing Regularization</h3>
+<p>Since deterministic policies can overfit to narrow peaks in the value estimate, a regularization strategy is used for deep value learning, target policy smoothing which mimics the learning update from SARSA. The idea is that <strong>similar actions should have similar value</strong> (reduce the variance of target):</p>
+<p><span class="math display">\[y = r + E_{\epsilon} [Q_{\theta^{\prime}} (s^{\prime}, \pi_{\phi^{\prime}} (s^{\prime}) + \epsilon)]\]</span></p>
+<p>In practice, we can approximate this expectation over actions (<span class="math inline">\(\pi_{\phi^{\prime}} (s^{\prime}) + \epsilon\)</span>) by adding a small amount of random noise to the target policy and averaging over mini-batches:</p>
+<p><span class="math display">\[y = r + \gamma Q_{\theta^{\prime}} (s^{\prime}, \pi_{\phi^{\prime}} (s^{\prime}) + \epsilon)\]</span></p>
+<p><span class="math display">\[\epsilon \sim clip(N(0, \sigma), -c, c)\]</span></p>
+<p>Where noise is clipped to have it close to the original action (make sure it is a small area around original action).</p>
+<h2 id="algorithm">Algorithm</h2>
+<p><img src='/images/RL/pg/td_5.png' width="600"></p>
+<h2 id="conclusion">Conclusion</h2>
+<p>The paper focus on resolve overestimation error in actor critic setting (DPG) and discusses that failure can occur due to the interplay between the actor and critic updates. Value estimates diverge through overestimation when the policy is poor, and the policy will become poor if the value estimate itself is inaccurate (high variance).</p>
+<p>Solutions:</p>
+<ol type="1">
+<li><p>Overestimation Error in value estimation: using clipped double Q-learning to estimate the target value <span class="math inline">\(y_1, y_2\)</span> <span class="math display">\[y_1 = r + \gamma \min_{i=1, 2} Q_{\theta^{\prime}_{i}} (s^{\prime}, \pi_{\phi^{\prime}} (s^{\prime}))\]</span> <span class="math display">\[y_2 = y_1\]</span></p></li>
+<li><p>Estimation Error (TD error) and High Variance in value estimation: By using delayed policy and value updates with target networks, we have more stable and more accurate estimate of the value function by updating the value function several times.</p></li>
+<li><p>Overfitting in Value estimation: by forcing the value estimate to be similar for similar actions, we smooth out the value estimation. <span class="math display">\[y = r + \gamma Q_{\theta^{\prime}} (s^{\prime}, \pi_{\phi^{\prime}} (s^{\prime}) + \epsilon)\]</span> <span class="math display">\[\epsilon \sim clip(N(0, \sigma), -c, c)\]</span></p></li>
+</ol>
+<p>The general structure of the algorithm follows DDPG.</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/06/09/DDPG/" rel="bookmark">Deep Deterministic Policy Gradient</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/06/DPG/" rel="bookmark">Deterministic Policy Gradient</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/30/policy-gradient-2/" rel="bookmark">Policy Gradient (2)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/06/05/policy-gradient-3/" rel="bookmark">Policy Gradient (3)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/23/policy-gradient/" rel="bookmark">Policy Gradient (1)</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Policy-Gradient/" rel="tag"># Policy Gradient</a>
+              <a href="/tags/Continuous-Action-Space/" rel="tag"># Continuous Action Space</a>
+              <a href="/tags/Policy-Search/" rel="tag"># Policy Search</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/06/23/kaiming-init/" rel="prev" title="Kaiming Initialization">
+                  <i class="fa fa-chevron-left"></i> Kaiming Initialization
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/06/24/VGG/" rel="next" title="VGG (Under Construction)">
+                  VGG (Under Construction) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

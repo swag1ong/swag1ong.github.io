@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Learning From Stream of Data (Temporal Difference Learning Methods) We can see that from MC algorithm, in order to update \(\hat{Q^{\pi}}_{k+1} (x, a)\), we need to calculate the entire \(\hat{G^{\pi}">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Temporal Difference Learning">
+<meta property="og:url" content="https://swag1ong.github.io/2021/05/15/td/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Learning From Stream of Data (Temporal Difference Learning Methods) We can see that from MC algorithm, in order to update \(\hat{Q^{\pi}}_{k+1} (x, a)\), we need to calculate the entire \(\hat{G^{\pi}">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/mc/td_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/mc/td_2.png">
+<meta property="article:published_time" content="2021-05-15T09:30:15.000Z">
+<meta property="article:modified_time" content="2021-06-15T05:41:14.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="RL Basics">
+<meta property="article:tag" content="Tabular Methods">
+<meta property="article:tag" content="TD">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swag1ong.github.io/images/RL/mc/td_1.png">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/05/15/td/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;05&#x2F;15&#x2F;td&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;05&#x2F;15&#x2F;td&#x2F;&quot;,&quot;title&quot;:&quot;Temporal Difference Learning&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Temporal Difference Learning | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#learning-from-stream-of-data-temporal-difference-learning-methods"><span class="nav-number">1.</span> <span class="nav-text">Learning From Stream of Data (Temporal Difference Learning Methods)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#td-for-policy-evaluation"><span class="nav-number">1.1.</span> <span class="nav-text">TD for Policy Evaluation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#empirical-bellman-operator"><span class="nav-number">1.1.1.</span> <span class="nav-text">Empirical Bellman Operator</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#generic-td-algorithms"><span class="nav-number">1.2.</span> <span class="nav-text">Generic TD algorithms</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#td-error"><span class="nav-number">1.2.1.</span> <span class="nav-text">TD Error</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#td-erorr-and-bellman-residual"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">TD Erorr and Bellman Residual</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#td-erorr-and-advantage"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">TD Erorr and Advantage</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#td-learning-for-action-value-function"><span class="nav-number">1.2.2.</span> <span class="nav-text">TD Learning for Action-Value Function</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#further"><span class="nav-number">2.</span> <span class="nav-text">Further</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/05/15/td/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Temporal Difference Learning
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-05-15 17:30:15" itemprop="dateCreated datePublished" datetime="2021-05-15T17:30:15+08:00">2021-05-15</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-15 13:41:14" itemprop="dateModified" datetime="2021-06-15T13:41:14+08:00">2021-06-15</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/TD/" itemprop="url" rel="index"><span itemprop="name">TD</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/05/15/td/" class="post-meta-item leancloud_visitors" data-flag-title="Temporal Difference Learning" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>5.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="learning-from-stream-of-data-temporal-difference-learning-methods">Learning From Stream of Data (Temporal Difference Learning Methods)</h1>
+<p>We can see that from MC algorithm, in order to update <span class="math inline">\(\hat{Q^{\pi}}_{k+1} (x, a)\)</span>, we need to calculate the entire <span class="math inline">\(\hat{G^{\pi}_{k}}\)</span> which involves sum over product of rewards. If each episode is long or even continuous, the calculation of <span class="math inline">\(\hat{G^{\pi}_{k}}\)</span> will be hard or impossible. In general, MC is agnostic to the MDP structure, if the problem is an MDP, it does not benefit from the recursive property of the value functions.</p>
+<p>TD methods benefit from the structure of the MDP even if we do not know the environment dynamics <span class="math inline">\(P\)</span> and <span class="math inline">\(R\)</span>.</p>
+<h2 id="td-for-policy-evaluation">TD for Policy Evaluation</h2>
+<p>We first focus on VI for PE: at each state <span class="math inline">\(x\)</span>, the procedure is:</p>
+<p><span class="math display">\[V_{k+1} (x) = T^{\pi} V_{k} (x) = r^{\pi} (x) + \gamma \int P(dx^{\prime} | x, a) \pi(da | x) V_{k} (x^{\prime})\]</span></p>
+<p>If we do not know <span class="math inline">\(r^{\pi}, P\)</span>, we cannot compute this. Suppose that we have n samples starting from state <span class="math inline">\(x\)</span>, <span class="math inline">\(A_i \sim \pi(\cdot | x), X^{\prime}_i \sim P(\cdot | x, A_i), R_i \sim R(\cdot | x, A_i)\)</span>, using these samples and <span class="math inline">\(V_{k}\)</span>, we compute:</p>
+<p><span class="math display">\[Y_i = R_i + \gamma V_{k} (X_i^{\prime})\]</span></p>
+<p>Now, notice that:</p>
+<p><span class="math display">\[E[R_i | X=x] = r^{\pi} (x)\]</span></p>
+<p>and</p>
+<p><span class="math display">\[E[V_{k} (X^{\prime}_i) | X=x] = \int P(dx^{\prime} | x, a) \pi(da | x)V_{k} (x^{\prime})\]</span></p>
+<p>so the r.v $Y_i (x) $ (emphasis starting from state <span class="math inline">\(x\)</span> )satisfies:</p>
+<p><span class="math display">\[E[Y_i | X=x] = E[R_i + \gamma V_{k} (X_i^{\prime}) | X=x] = E[R_i | X=x] + \gamma E[V_{k} (X_i^{\prime}) | X=x] = T^{\pi} V_{k} (x)\]</span></p>
+<p>This implies that <span class="math inline">\(Y_i\)</span> is an unbiased estimator of <span class="math inline">\(T^{\pi} V_{k}\)</span> evaluated at <span class="math inline">\(x\)</span>. Thus, we can use a sample mean of <span class="math inline">\(Y_i\)</span> starting from <span class="math inline">\(x\)</span> to estimate <span class="math inline">\(T^{\pi} V_k (x)\)</span>, or we can use SA procedure.</p>
+<p><span class="math display">\[T^{\pi}V^{t+1}_{k} (x) \leftarrow  (1 - \alpha_t) T^{\pi}V^{t}_{k} (x) + \alpha Y_i\]</span></p>
+<span id="more"></span>
+<h3 id="empirical-bellman-operator">Empirical Bellman Operator</h3>
+<p>This <span class="math inline">\(Y_i\)</span> is called <code>empirical Bellman operator</code> (this (x) notation emphasises that we are starting from x):</p>
+<p><span class="math display">\[\hat{T}^{\pi} V_{k} (x) = Y_i (x) = R(x) + \gamma V_{k} (X^{\prime} (x))\]</span></p>
+<p>This operator is an unbiased estimate of <span class="math inline">\(T^{\pi} V_{k} (x)\)</span>:</p>
+<p><span class="math display">\[E[\hat{T}^{\pi} V_k (X) | X=x] = T^{\pi} V_{k} (x)\]</span></p>
+<p>The empirical version of the VI for Policy evaluation with some noise:</p>
+<p><span class="math display">\[V_{k+1} (x) \leftarrow \hat{T}^{\pi} V_k (x) = \underbrace{T^{\pi} V_{k} (x)}_{\text{deterministic part}} + \underbrace{(\hat{T}^{\pi} V_k (x) - T^{\pi} V_{k} (x))}_{\text{the stochastic part, the noise}}\]</span></p>
+<p>On average, this noise is 0.</p>
+<h2 id="generic-td-algorithms">Generic TD algorithms</h2>
+<p>A synchronous version of generic TD algorithm updates all states at the same time:</p>
+<p><img src="/images/RL/mc/td_1.png"></p>
+<p>However, we do not need to update all states at the same time, an asynchronous version of generic TD algorithm:</p>
+<p><img src="/images/RL/mc/td_2.png"></p>
+<p>From the above generic algorithms, we can see that the update following policy <span class="math inline">\(\pi\)</span> in general is :</p>
+<span class="math display">\[\begin{aligned}
+V_{t+1} (x) &amp;\leftarrow (1 - \alpha_t) V_t (x) + \alpha_t (\hat{T}^{\pi} V_t (x)) \\
+&amp;\leftarrow (1 - \alpha_t) V_t (x) + \alpha_t (R(x) + \gamma V_t (X^{\prime} (x)))\\
+&amp;\leftarrow V_t (x) + \alpha_t (x) [R_t (x) + \gamma V_t(X^{\prime} (x)) - V_t (x)]
+\end{aligned}\]</span>
+<p>The update rule could be written in perhaps a simpler but less precise, form of:</p>
+<p><span class="math display">\[V(X_t) \leftarrow V(X_t) + \alpha_t (X_t) [R_t + \gamma V(X_{t+1}) - V(X_t)]\]</span></p>
+<p>We can see that, at each time step, instead update <span class="math inline">\(V_{k+1} (x)\)</span> with <span class="math inline">\(T^{\pi} V_{k}\)</span>, we update it with the <code>empirical bellman operator</code> <span class="math inline">\(\hat{T}^{\pi} V_k\)</span> which is an unbiased estimate. The SA procedure seems a little strange because we are estimating the mean of a sequence of <span class="math inline">\(\hat{T}^{\pi} V_1, \hat{T}^{\pi} V_2, ...\)</span>, <strong>we will prove later that this update rule actually converge to <span class="math inline">\(V^{\pi}\)</span></strong>.</p>
+<h3 id="td-error">TD Error</h3>
+<h4 id="td-erorr-and-bellman-residual">TD Erorr and Bellman Residual</h4>
+<p>Moreover, the term:</p>
+<p><span class="math display">\[\delta_t = R_t + \gamma V(X_{t+1}) - V(X_t)\]</span></p>
+<p>is called <code>TD error</code>. It is a noisy measure of how close we are to <span class="math inline">\(V^{\pi}\)</span>. To see this more clearly, let us define the dependence on the <code>TD error</code> on its components more explicitly. Given transitions <span class="math inline">\((X, X^{\prime}, R)\)</span> and value function <span class="math inline">\(V\)</span>, policy <span class="math inline">\(\pi\)</span>, we define:</p>
+<p><span class="math display">\[\delta (R, X^{\prime}, X; V, \pi) = R + \gamma V(X^{\prime}) - V(X)\]</span></p>
+<p>We have:</p>
+<p><span class="math display">\[E[\delta (X, R, X^{\prime}; V, \pi) | X=x] = T^{\pi} V (x) - V(x) = BR(V) (x)\]</span></p>
+<p>So in expectation, the TD error is equal to the Bellman residual of <span class="math inline">\(V\)</span>, evaluated at state <span class="math inline">\(x\)</span>. If BR = 0, we reach the fix point, so the algorithm reach the fix point.</p>
+<h4 id="td-erorr-and-advantage">TD Erorr and Advantage</h4>
+<p>The advantage function is defined as:</p>
+<p><span class="math display">\[A^{\pi}(x, a) = Q^{\pi} (x, a) - V^{\pi} (x)\]</span></p>
+<p>In expectation:</p>
+<span class="math display">\[\begin{aligned}
+E[\delta (X, R, X^{\prime}; V^{\pi}) | X=x, A=a] &amp;= E[R + \gamma V^{\pi}(X^{\prime}) - V^{\pi}(X) | X=x, A=a]\\
+&amp;= r(x, a) + \gamma \int_{x^{\prime}, a^{\prime}} P(x^{\prime} | x, a) \pi(a^{\prime} | x^{\prime})Q^{\pi} (x^{\prime}, a^{\prime}) - V^{\pi}(x)\\
+&amp;= Q^{\pi} (x, a) - V^{\pi} (x)
+\end{aligned}\]</span>
+<p>Thus, the <strong>true</strong> TD error is an unbiased estimator of the advantage function.</p>
+<h3 id="td-learning-for-action-value-function">TD Learning for Action-Value Function</h3>
+<p>We can use a similar procedure to estimate the action-value function which is often used in TD and MC.</p>
+<p>To evaluate <span class="math inline">\(\pi\)</span>, we need to have an estimate of <span class="math inline">\(T^{\pi} Q (x, a) \forall (x, a) \in X \times A\)</span>.</p>
+<p>Suppose that <span class="math inline">\((X_t, A_t) \sim \mu\)</span> (where <span class="math inline">\(\mu\)</span> is some stationary distribution or initial distribution) and <span class="math inline">\(X^{\prime}_t \sim P(\cdot | X_t, A_t)\)</span> and <span class="math inline">\(R_t \sim R(\cdot | X_t, A_t), A^{\prime} \sim \pi(\cdot | X^{\prime})\)</span></p>
+<p>The update rule would be:</p>
+<p><span class="math display">\[Q_{t+1} (X_t, A_t) \leftarrow Q_t(X_t, A_t) + \alpha_t (X_t, A_t) [R_t + \gamma Q_t (X^{\prime}_t, A^{\prime}) - Q_t(X_t, A_t)]\]</span></p>
+<p>and</p>
+<p><span class="math display">\[Q_{t+1} (x, a) \leftarrow Q_t (x, a)\]</span></p>
+<p>for all other <span class="math inline">\((x, a) \neq (X_t, A_t)\)</span></p>
+<p>It is easy to see that following the same procedure for <span class="math inline">\(\hat{T}^{\pi} V\)</span>:</p>
+<p><span class="math display">\[E[\hat{T}^{\pi} Q (X_t, A_t) | X_t=x, A_t=a] = T^{\pi} Q (x, a)\]</span></p>
+<h1 id="further">Further</h1>
+<p>In this post, we have some basic understanding of generic TD methods and basic framework of TD Policy evaluation. Next, we will explore some popular TD methods for solving control problems. We will see that TD learning methods can be generalized to both on-policy sampling scenario (ie. SARSA) and off-policy sampling scenario (ie. Q-learning). At the same time, we will prove the update rule for each algorithm.</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/16/q-learning/" rel="bookmark">Q-Learning</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/16/sarsa/" rel="bookmark">SARSA</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/07/value-function-learning/" rel="bookmark">Learning From Stream of Data</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/15/mc/" rel="bookmark">Monte Carlo Estimation</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/MDP/" rel="bookmark">MDP</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RL-Basics/" rel="tag"># RL Basics</a>
+              <a href="/tags/Tabular-Methods/" rel="tag"># Tabular Methods</a>
+              <a href="/tags/TD/" rel="tag"># TD</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/15/mc/" rel="prev" title="Monte Carlo Estimation">
+                  <i class="fa fa-chevron-left"></i> Monte Carlo Estimation
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/16/q-learning/" rel="next" title="Q-Learning">
+                  Q-Learning <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Linear Algebra (1) All the notes precisely follows Linear Algebra Done Right by Sheldon Axler Vector Spaces Complex Numbers Definition 1.1: Complex Numbers  A Complex Number is an order pair \((a, b)\">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linear-algebra">
+<meta property="og:url" content="https://swag1ong.github.io/2022/01/06/linear-algebra/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Linear Algebra (1) All the notes precisely follows Linear Algebra Done Right by Sheldon Axler Vector Spaces Complex Numbers Definition 1.1: Complex Numbers  A Complex Number is an order pair \((a, b)\">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-01-06T00:29:19.000Z">
+<meta property="article:modified_time" content="2022-02-04T06:03:43.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="RL Basics">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2022/01/06/linear-algebra/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2022&#x2F;01&#x2F;06&#x2F;linear-algebra&#x2F;&quot;,&quot;path&quot;:&quot;2022&#x2F;01&#x2F;06&#x2F;linear-algebra&#x2F;&quot;,&quot;title&quot;:&quot;linear-algebra&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>linear-algebra | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#linear-algebra-1"><span class="nav-number">1.</span> <span class="nav-text">Linear Algebra (1)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#vector-spaces"><span class="nav-number">1.1.</span> <span class="nav-text">Vector Spaces</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#complex-numbers"><span class="nav-number">1.1.1.</span> <span class="nav-text">Complex Numbers</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.1-complex-numbers"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">Definition 1.1: Complex Numbers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.2-conjugate"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">Definition 1.2: Conjugate</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-1.3a"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">Theorem 1.3A</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-1.3b-schwarz-inequality"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">Theorem 1.3B: Schwarz Inequality</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#property-1.4-properties-of-complex-arithmetic"><span class="nav-number">1.1.1.5.</span> <span class="nav-text">Property 1.4: Properties of Complex Arithmetic</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.5--alpha-subtraction-frac1alpha-division"><span class="nav-number">1.1.1.6.</span> <span class="nav-text">Definition 1.5: \(-\alpha\), Subtraction, \(\frac{1}{\alpha}\), Division</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.7-mathbbf"><span class="nav-number">1.1.1.7.</span> <span class="nav-text">Definition 1.7: \(\mathbb{F}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.8-list-length"><span class="nav-number">1.1.1.8.</span> <span class="nav-text">Definition 1.8: List, Length</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.10-mathbbfn"><span class="nav-number">1.1.1.9.</span> <span class="nav-text">Definition 1.10: \(\mathbb{F}^n\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.12-addition-in-mathbbfn"><span class="nav-number">1.1.1.10.</span> <span class="nav-text">Definition 1.12: Addition in \(\mathbb{F}^n\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.13-commutativity-of-addition-in-mathbbfn"><span class="nav-number">1.1.1.11.</span> <span class="nav-text">Definition 1.13: Commutativity of Addition in \(\mathbb{F}^n\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.14-0"><span class="nav-number">1.1.1.12.</span> <span class="nav-text">Definition 1.14: 0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.16-additive-inverse-in-mathbbfn"><span class="nav-number">1.1.1.13.</span> <span class="nav-text">Definition 1.16: Additive Inverse in \(\mathbb{F}^n\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.17-scalar-multiplication-in-mathbbfn"><span class="nav-number">1.1.1.14.</span> <span class="nav-text">Definition 1.17: Scalar Multiplication in \(\mathbb{F}^n\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#field"><span class="nav-number">1.1.1.15.</span> <span class="nav-text">Field</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#definition-of-vector-space"><span class="nav-number">1.1.2.</span> <span class="nav-text">Definition of Vector Space</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.18-addition-scalar-multiplication"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Definition 1.18: Addition, Scalar Multiplication</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.19-vector-space"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">Definition 1.19: Vector Space</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.20-vector-point"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">Definition 1.20: Vector, Point</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.21-real-vector-space-complex-vector-space"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">Definition 1.21: Real Vector Space, Complex Vector Space</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.23-mathbbfs"><span class="nav-number">1.1.2.5.</span> <span class="nav-text">Definition 1.23 \(\mathbb{F}^S\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#property-1.25-unique-additive-identity"><span class="nav-number">1.1.2.6.</span> <span class="nav-text">Property 1.25: Unique Additive Identity</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#property-1.26-unique-additive-inverse"><span class="nav-number">1.1.2.7.</span> <span class="nav-text">Property 1.26: Unique Additive Inverse</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.27--v-w---v"><span class="nav-number">1.1.2.8.</span> <span class="nav-text">Definition 1.27: \(-v, w - v\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#property-1.29-the-scalar-0-times-a-vector"><span class="nav-number">1.1.2.9.</span> <span class="nav-text">Property 1.29: The scalar 0 times a vector</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#property-1.29-a-scalar-times-a-vector-0"><span class="nav-number">1.1.2.10.</span> <span class="nav-text">Property 1.29: A scalar times a vector 0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#property-1.31-the-number--1-times-a-vector"><span class="nav-number">1.1.2.11.</span> <span class="nav-text">Property 1.31: The number \(-1\) times a vector</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#subspaces"><span class="nav-number">1.1.3.</span> <span class="nav-text">Subspaces</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.32-subspace-linear-subspace"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">Definition 1.32: Subspace (Linear Subspace)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.34-conditions-for-a-subspace"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">Definition 1.34 Conditions for a Subspace</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.36-sum-of-subsets"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">Definition 1.36: Sum of Subsets</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.39-sum-of-subspaces-is-the-smallest-containing-subspace"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">Definition 1.39: Sum of Subspaces is the Smallest Containing Subspace</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.40-direct-sum"><span class="nav-number">1.1.3.5.</span> <span class="nav-text">Definition 1.40: Direct Sum</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.44-condition-for-a-direct-sum"><span class="nav-number">1.1.3.6.</span> <span class="nav-text">Definition 1.44 Condition for a Direct Sum</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.45-direct-sum-of-two-subspaces"><span class="nav-number">1.1.3.7.</span> <span class="nav-text">Definition 1.45 Direct Sum of Two Subspaces</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2022/01/06/linear-algebra/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          linear-algebra
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-01-06 08:29:19" itemprop="dateCreated datePublished" datetime="2022-01-06T08:29:19+08:00">2022-01-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2022-02-04 14:03:43" itemprop="dateModified" datetime="2022-02-04T14:03:43+08:00">2022-02-04</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2022/01/06/linear-algebra/" class="post-meta-item leancloud_visitors" data-flag-title="linear-algebra" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>9.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>9 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="linear-algebra-1">Linear Algebra (1)</h1>
+<p>All the notes precisely follows <strong>Linear Algebra Done Right by Sheldon Axler</strong></p>
+<h2 id="vector-spaces">Vector Spaces</h2>
+<h3 id="complex-numbers">Complex Numbers</h3>
+<h4 id="definition-1.1-complex-numbers">Definition 1.1: Complex Numbers</h4>
+<ol type="1">
+<li>A <strong>Complex Number</strong> is an order pair <span class="math inline">\((a, b)\)</span>, where <span class="math inline">\(a, b \in \mathbb{R}\)</span>.</li>
+<li><strong>Addition and multiplication</strong> is defined as: <span class="math display">\[x + y = (a + b) + (c + d) = (a + c, b + d)\]</span> <span class="math display">\[xy = (a + b) (c + d) = (ac - bd, ad + bc)\]</span></li>
+<li><span class="math inline">\(i = (0, 1)\)</span> and <span class="math inline">\(i^2 = (0, 1) (0, 1) = -1\)</span></li>
+<li>Every complex number can be written as <span class="math display">\[x = (a, b) = (a, 0) + (0, b) = (a, 0) + (b, 0)(0, 1) = a + bi\]</span></li>
+<li>The set of all complex numbers is denoted by <span class="math inline">\(\mathbb{C}\)</span>: <span class="math display">\[\mathbb{C} = \{a + bi: a, b \in \mathbb{R}\}\]</span></li>
+<li><strong>Addition and multiplication</strong> on <span class="math inline">\(\mathbb{C}\)</span> are defined by <span class="math display">\[(a + bi) + (c + di) = (a + c) + (b + d)i\]</span> <span class="math display">\[(a + bi) (c + di) = (ac - bd) + (ad + bc)i\]</span></li>
+</ol>
+<p><span class="math inline">\(a, c, b, d \in \mathbb{R}\)</span></p>
+<p>If <span class="math inline">\(a \in \mathbb{R}\)</span>, we identify <span class="math inline">\(a + 0i\)</span> with the real number <span class="math inline">\(a\)</span>. Thus we can think of <span class="math inline">\(\mathbb{R}\)</span> as a subset of <span class="math inline">\(\mathbb{C}\)</span>.</p>
+<h4 id="definition-1.2-conjugate">Definition 1.2: Conjugate</h4>
+<p>If <span class="math inline">\(a, b\)</span> are real and <span class="math inline">\(z = a + bi\)</span>, then the complex number <span class="math inline">\(\bar{z} = a - bi\)</span> is called the <strong>conjugate</strong> of <span class="math inline">\(z\)</span>. The numbers <span class="math inline">\(a, b\)</span> are the real part and the imaginary part of <span class="math inline">\(z\)</span> respectively:</p>
+<p><span class="math display">\[a = Re(z), \quad \quad b = Im(z)\]</span></p>
+<h4 id="theorem-1.3a">Theorem 1.3A</h4>
+<p>If <span class="math inline">\(z\)</span> and <span class="math inline">\(w\)</span> are complex, then</p>
+<ol type="1">
+<li><span class="math inline">\(\overline{z + w} = \bar{z} + \bar{w}\)</span></li>
+<li><span class="math inline">\(\overline{zw} = \bar{z}\bar{w}\)</span></li>
+<li><span class="math inline">\(z + \bar{z} = 2Re(z),\quad z - \bar{z} = 2i Im(z)\)</span></li>
+<li>If <span class="math inline">\(z = a + bi\)</span>, <span class="math inline">\(z \bar{z} = a^2 + b^2\)</span> is real and positive.</li>
+<li><span class="math inline">\(|z| = \sqrt{z\bar{z}} = \sqrt{a^2 + b^2}\)</span> is unique.</li>
+<li><span class="math inline">\(|zw| = |z||w|\)</span></li>
+</ol>
+<h4 id="theorem-1.3b-schwarz-inequality">Theorem 1.3B: Schwarz Inequality</h4>
+<p>If <span class="math inline">\(a_1, ..., a_n\)</span> and <span class="math inline">\(b_1, ..., b_n\)</span> are complex numbers, then:</p>
+<p><span class="math display">\[|\sum^n_{j=1} a_j \bar{b_j}|^2 \leq \sum^n_{j=1} |a_j|^2 \sum^{n}_{j=1} |b_j|^2\]</span></p>
+<h4 id="property-1.4-properties-of-complex-arithmetic">Property 1.4: Properties of Complex Arithmetic</h4>
+<ol type="1">
+<li><p>Commutativity:</p>
+<p><span class="math display">\[\alpha + \beta = \beta + \alpha, \;\; \alpha \beta = \beta \alpha, \quad \alpha, \beta \in \mathbb{C}\]</span></p></li>
+<li><p>Associativity:</p>
+<p><span class="math display">\[(\alpha + \beta) + \lambda = \alpha + (\beta + \lambda), \;\; (\alpha\beta)\lambda = \alpha (\beta\lambda), \quad \alpha, \beta, \lambda \in \mathbb{C}\]</span></p></li>
+<li><p>Identities:</p>
+<p><span class="math display">\[\lambda + 0 = \lambda, \;\; \lambda 1 = \lambda, \quad \forall \lambda \in \mathbb{C}\]</span></p></li>
+<li><p>Additive Inverse:</p>
+<p>For all <span class="math inline">\(\alpha \in \mathbb{C}\)</span>, there exists a unique <span class="math inline">\(\beta \in \mathbb{C}\)</span> such that <span class="math inline">\(\alpha + \beta = 0\)</span>.</p></li>
+<li><p>Multiplicative Inverse:</p>
+<p>For all <span class="math inline">\(\alpha \in \mathbb{C}, \alpha \neq 0\)</span>, there exists a unique <span class="math inline">\(\beta \in \mathbb{C}\)</span> such that <span class="math inline">\(\alpha\beta = 1\)</span>.</p></li>
+<li><p>Distributive Property:</p>
+<p><span class="math display">\[\lambda (\alpha + \beta) = \lambda \alpha + \lambda \beta, \quad \forall \lambda, \alpha, \beta \in \mathbb{C}\]</span></p></li>
+</ol>
+<h4 id="definition-1.5--alpha-subtraction-frac1alpha-division">Definition 1.5: <span class="math inline">\(-\alpha\)</span>, Subtraction, <span class="math inline">\(\frac{1}{\alpha}\)</span>, Division</h4>
+<p>Let <span class="math inline">\(\alpha, \beta \in \mathbb{C}\)</span>:</p>
+<ol type="1">
+<li>Let <span class="math inline">\(-\alpha\)</span> denote the additive inverse of <span class="math inline">\(\alpha\)</span>. Thus, <span class="math inline">\(-\alpha\)</span> is the unique complex number s.t: <span class="math display">\[\alpha + (- \alpha) = 0\]</span></li>
+<li><strong>Subtraction</strong> on <span class="math inline">\(\mathbb{C}\)</span> is defined by: <span class="math display">\[\beta - \alpha = \beta + (-\alpha)\]</span></li>
+<li>For <span class="math inline">\(\alpha \neq 0\)</span>, let <span class="math inline">\(\frac{1}{\alpha}\)</span> denote the multiplicative inverse of <span class="math inline">\(\alpha\)</span>. Thus <span class="math inline">\(\frac{1}{\alpha}\)</span> is the unique complex number s.t: <span class="math display">\[\alpha (\frac{1}{\alpha}) = 1\]</span></li>
+<li><strong>Division</strong> on <span class="math inline">\(\mathbb{C}\)</span> is defined by: <span class="math display">\[\frac{\beta}{\alpha} = \beta\frac{1}{\alpha}\]</span></li>
+</ol>
+<h4 id="definition-1.7-mathbbf">Definition 1.7: <span class="math inline">\(\mathbb{F}\)</span></h4>
+<p><span class="math inline">\(\mathbb{F}\)</span> stands for either <span class="math inline">\(\mathbb{R}, \mathbb{C}\)</span>. Elements of <span class="math inline">\(\mathbb{F}\)</span> are called <strong>scalars</strong> which is a fancy word for number.</p>
+<h4 id="definition-1.8-list-length">Definition 1.8: List, Length</h4>
+<p>Suppose <span class="math inline">\(n\)</span> is a nonnegative integer. A <strong>list</strong> of <strong>length</strong> <span class="math inline">\(n\)</span> (<span class="math inline">\(n-tuple\)</span>) is an ordered collection of <span class="math inline">\(n\)</span> elements (can be numbers, other lists or more abstract entities) separated by commas and surrounded by parentheses. A list of length <span class="math inline">\(n\)</span> looks like:</p>
+<p><span class="math display">\[(x_1, ..., x_n)\]</span></p>
+<p>Two lists are <strong>equal</strong>, if and only if they have the same length and the same elements in the same order.</p>
+<p>Each list has a finite length that is a nonnegative integer. Thus an object with <strong>infinite length is not a list</strong>.</p>
+<p>A list of length 0 is denoted as <span class="math inline">\(()\)</span>.</p>
+<h4 id="definition-1.10-mathbbfn">Definition 1.10: <span class="math inline">\(\mathbb{F}^n\)</span></h4>
+<p><span class="math inline">\(\mathbb{F}^n\)</span> is the set of all lists of length <span class="math inline">\(n\)</span> of elements of <span class="math inline">\(\mathbb{F}\)</span>:</p>
+<p><span class="math display">\[\mathbb{F}^{n} = \{(x_1, ..., x_n): x_j \in \mathbb{F}, \; \forall j=1, ..., n\}\]</span></p>
+<p>For <span class="math inline">\((x_1, ..., x_n) \in \mathbb{F}^n\)</span> and <span class="math inline">\(j \in \{1, ..., n\}\)</span>, we say that <span class="math inline">\(x_j\)</span> is the <span class="math inline">\(j\)</span>th <strong>coordinate</strong> of <span class="math inline">\((x_1, ..., x_n)\)</span>.</p>
+<h4 id="definition-1.12-addition-in-mathbbfn">Definition 1.12: Addition in <span class="math inline">\(\mathbb{F}^n\)</span></h4>
+<p><strong>Addition</strong> in <span class="math inline">\(\mathbb{F}^n\)</span> is defined by adding corresponding coordinates:</p>
+<p><span class="math display">\[(x_1, ...., x_n) + (y_1, ...., y_n) = (x_1 + y_1, ...., x_n + y_n)\]</span></p>
+<h4 id="definition-1.13-commutativity-of-addition-in-mathbbfn">Definition 1.13: Commutativity of Addition in <span class="math inline">\(\mathbb{F}^n\)</span></h4>
+<p>If <span class="math inline">\(x, y \in \mathbb{F}^n\)</span>, then <span class="math inline">\(x + y = y + x\)</span></p>
+<p><strong>If a single letter is used to denote an element of <span class="math inline">\(\mathbb{F}^n\)</span>, then the same letter with appropriate subscripts is often used when coordinates must be displayed.</strong></p>
+<h4 id="definition-1.14-0">Definition 1.14: 0</h4>
+<p>Let <span class="math inline">\(0\)</span> denote the list of length <span class="math inline">\(n\)</span> whose coordinates are all 0:</p>
+<p><span class="math display">\[0 = (0, ..., 0)\]</span></p>
+<h4 id="definition-1.16-additive-inverse-in-mathbbfn">Definition 1.16: Additive Inverse in <span class="math inline">\(\mathbb{F}^n\)</span></h4>
+<p>For <span class="math inline">\(x \in \mathbb{F}^n\)</span>, the <strong>additive inverse</strong> of <span class="math inline">\(x\)</span>, denoted <span class="math inline">\(-x\)</span>, is the vector <span class="math inline">\(-x \in \mathbb{F}^n\)</span> such that</p>
+<p><span class="math display">\[x + (-x) = 0\]</span></p>
+<p>In order words, if <span class="math inline">\(x = (x_1, ...., x_n)\)</span>, then <span class="math inline">\(-x = (-x_1, ..., -x_n)\)</span></p>
+<h4 id="definition-1.17-scalar-multiplication-in-mathbbfn">Definition 1.17: Scalar Multiplication in <span class="math inline">\(\mathbb{F}^n\)</span></h4>
+<p>The <strong>product</strong> of a number <span class="math inline">\(\lambda\)</span> and a vector in <span class="math inline">\(\mathbb{F}^n\)</span> is computed by multiplying each coordinate of the vector by <span class="math inline">\(\lambda\)</span>:</p>
+<p><span class="math display">\[\lambda (x_1, ..., x_n) = (\lambda x_1, ...., \lambda x_n)\]</span></p>
+<p>here <span class="math inline">\(\lambda \in \mathbb{F}, \;\ (x_1, ..., x_n) \in \mathbb{F}^n\)</span></p>
+<h4 id="field">Field</h4>
+<p>A <strong>field</strong> is a set containing at least two distinct elements called <span class="math inline">\(0, 1\)</span>, along with operations of addition and multiplication satisfying all the properties in <strong>Definition 1.3</strong>. Thus, <span class="math inline">\(\mathbb{R}, \mathbb{C}\)</span> are fields.</p>
+<h3 id="definition-of-vector-space">Definition of Vector Space</h3>
+<h4 id="definition-1.18-addition-scalar-multiplication">Definition 1.18: Addition, Scalar Multiplication</h4>
+<ol type="1">
+<li>An <strong>addition</strong> on a set <span class="math inline">\(V\)</span> is a function that assigns an element <span class="math inline">\(u + v \in V\)</span> to each pair of elements <span class="math inline">\(u, v \in V\)</span>.</li>
+<li>A <strong>scalar multiplication</strong> on a set <span class="math inline">\(V\)</span> is a function that assigns an element <span class="math inline">\(\lambda v \in V\)</span> to each <span class="math inline">\(\lambda \in \mathbb{F}\)</span> and each <span class="math inline">\(v \in V\)</span>.</li>
+</ol>
+<h4 id="definition-1.19-vector-space">Definition 1.19: Vector Space</h4>
+<p>A <strong>vector space</strong> is a set <span class="math inline">\(V\)</span> along with an addition on <span class="math inline">\(V\)</span> and a scalar multiplication on <span class="math inline">\(V\)</span> such that the following properties hold:</p>
+<ol type="1">
+<li><p><strong>Commutativity</strong>: <span class="math display">\[u + v = v + u, \; \forall u, v \in V\]</span></p></li>
+<li><p><strong>Associativity</strong>: <span class="math display">\[(u + v) + w = u + (v + w) \text{ and } (ab) v = a(bv), \;  \forall u, v, w \in V, \; \forall a, b \in \mathbb{F}\]</span></p></li>
+<li><p><strong>Additive Identity</strong>:</p>
+<p>There exists an element <span class="math inline">\(0 \in V\)</span> such that <span class="math inline">\(v + 0 = v, \; \forall v \in V\)</span></p></li>
+<li><p><strong>Additive Inverse</strong>: <span class="math display">\[\forall v \in V, \exists \; w \in V \; s.t \; v + w = 0\]</span></p></li>
+<li><p><strong>Multiplicative Identity</strong>: <span class="math display">\[1v = v, \; \forall v \in V\]</span></p></li>
+<li><p><strong>Distributive Properties</strong>: <span class="math display">\[a(u + v) = au + av \text{ and } (a + b)v = av + bv, \; \forall a, b \in \mathbb{F}, \; \forall u, v \in \mathbb{F}\]</span></p></li>
+</ol>
+<h4 id="definition-1.20-vector-point">Definition 1.20: Vector, Point</h4>
+<p>Elements of a vector space are called <strong>vectors</strong> or <strong>points</strong>.</p>
+<p>Since the scalar multiplication in a vector space depends on <span class="math inline">\(\mathbb{F}\)</span>, thus we need to be precise. We say that <span class="math inline">\(V\)</span> is a vector space over <span class="math inline">\(\mathbb{F}\)</span> (i.e <span class="math inline">\(\mathbb{R}^n\)</span> is a vector space over <span class="math inline">\(\mathbb{R}\)</span>).</p>
+<h4 id="definition-1.21-real-vector-space-complex-vector-space">Definition 1.21: Real Vector Space, Complex Vector Space</h4>
+<ol type="1">
+<li>A vector space over <span class="math inline">\(\mathbb{R}\)</span> is called a <strong>real vector space</strong>.</li>
+<li>A vector space over <span class="math inline">\(\mathbb{C}\)</span> is called a <strong>complex vector space</strong>.</li>
+</ol>
+<h4 id="definition-1.23-mathbbfs">Definition 1.23 <span class="math inline">\(\mathbb{F}^S\)</span></h4>
+<ol type="1">
+<li>If <span class="math inline">\(S\)</span> is a set, then <span class="math inline">\(\mathbb{F}^S\)</span> denotes the set of functions from <span class="math inline">\(S\)</span> to <span class="math inline">\(\mathbb{F}\)</span>.</li>
+<li>For <span class="math inline">\(f, g \in \mathbb{F}^S\)</span>, the <strong>sum</strong> <span class="math inline">\(f + g \in \mathbb{F}^S\)</span> is the function defined by: <span class="math display">\[(f + g) (x) = f(x) + g(x), \; \forall x \in S\]</span></li>
+<li>For <span class="math inline">\(\lambda \in \mathbb{F}\)</span> and <span class="math inline">\(f \in \mathbb{F}^S\)</span>, the <strong>product</strong> <span class="math inline">\(\lambda f \in \mathbb{F}^S\)</span> is the function defined by: <span class="math display">\[(\lambda f)(x) = \lambda f(x), \; \forall x \in S\]</span></li>
+</ol>
+<p>We can think of <span class="math inline">\(\mathbb{F}^n\)</span> as special case of <span class="math inline">\(\mathbb{F}^S\)</span>, because it can be represented as <span class="math inline">\(\mathbb{F}^{\{1, ...., n\}}\)</span> which is the set of functions:</p>
+<p><span class="math display">\[\{f: \{1, ..., n\} \rightarrow \mathbb{F}\}\]</span></p>
+<p>and <span class="math inline">\(f(i)\)</span> is the <span class="math inline">\(i\)</span>th element of the list (i.e <span class="math inline">\((f(1) ,...., f(n)) \in \mathbb{F}^n\)</span>). Since the sequence of numbers in <span class="math inline">\(\mathbb{F}\)</span> is a function that maps from natural number to <span class="math inline">\(\mathbb{F}\)</span>.</p>
+<h4 id="property-1.25-unique-additive-identity">Property 1.25: Unique Additive Identity</h4>
+<p>A vector space has a unique additive identity.</p>
+<h4 id="property-1.26-unique-additive-inverse">Property 1.26: Unique Additive Inverse</h4>
+<p>Every element in a vector space has a unique additive inverse.</p>
+<h4 id="definition-1.27--v-w---v">Definition 1.27: <span class="math inline">\(-v, w - v\)</span></h4>
+<p>Let <span class="math inline">\(v, w \in V\)</span>, where <span class="math inline">\(V\)</span> is a vector space. Then</p>
+<ol type="1">
+<li><span class="math inline">\(-v\)</span> denotes the additive inverse of <span class="math inline">\(v\)</span>.</li>
+<li><span class="math inline">\(w - v\)</span> is defined to be <span class="math inline">\(w + (-v)\)</span>.</li>
+</ol>
+<h4 id="property-1.29-the-scalar-0-times-a-vector">Property 1.29: The <strong>scalar</strong> 0 times a vector</h4>
+<p><span class="math inline">\(0v = 0, \forall v \in V\)</span>, where <span class="math inline">\(V\)</span> is a vector space over <span class="math inline">\(\mathbb{F}\)</span>.</p>
+<h4 id="property-1.29-a-scalar-times-a-vector-0">Property 1.29: A scalar times a <strong>vector</strong> 0</h4>
+<p><span class="math inline">\(a0 = 0, \forall a \in \mathbb{F}\)</span>.</p>
+<h4 id="property-1.31-the-number--1-times-a-vector">Property 1.31: The number <span class="math inline">\(-1\)</span> times a vector</h4>
+<p><span class="math inline">\((-1)v = -v, \forall v \in V\)</span>, where <span class="math inline">\(V\)</span> is a vector space over <span class="math inline">\(\mathbb{F}\)</span></p>
+<h3 id="subspaces">Subspaces</h3>
+<h4 id="definition-1.32-subspace-linear-subspace">Definition 1.32: Subspace (Linear Subspace)</h4>
+<p>A subset <span class="math inline">\(U\)</span> of <span class="math inline">\(V\)</span> is called a <strong>subspace</strong> of <span class="math inline">\(V\)</span> if <span class="math inline">\(U\)</span> is also a vector space (using the same addition adn scalar multiplication as on <span class="math inline">\(V\)</span>).</p>
+<h4 id="definition-1.34-conditions-for-a-subspace">Definition 1.34 Conditions for a Subspace</h4>
+<p>A subset <span class="math inline">\(U\)</span> of <span class="math inline">\(V\)</span> is a subspace of <span class="math inline">\(V\)</span> if and only if <span class="math inline">\(U\)</span> satisfies the following three conditions:</p>
+<ol type="1">
+<li>Additive Identity: <span class="math display">\[0 \in U\]</span></li>
+<li>Closed under Addition: <span class="math display">\[u, w \in U \implies u + w \in U\]</span></li>
+<li>closed under scalar multiplication: <span class="math display">\[a \in \mathbb{F}, u \in U \implies au \in U\]</span></li>
+</ol>
+<h4 id="definition-1.36-sum-of-subsets">Definition 1.36: Sum of Subsets</h4>
+<p>Suppose <span class="math inline">\(U_1, ...., U_m\)</span> are subsets of <span class="math inline">\(V\)</span>. The <strong>sum</strong> of <span class="math inline">\(U_1, ..., U_m\)</span>, denoted <span class="math inline">\(U_1 + ... + U_m\)</span>, is the set of all possible sums of elements of <span class="math inline">\(U_1 ,...., U_m\)</span>:</p>
+<p><span class="math display">\[U_1 + .... + U_m = \{u_1 + ... u_m: u_1 \in U_1, ..., u_m \in U_m\}\]</span></p>
+<p><strong>The union of subspaces is rarely a subspace which is why we usually work with sums rather than unions.</strong></p>
+<h4 id="definition-1.39-sum-of-subspaces-is-the-smallest-containing-subspace">Definition 1.39: Sum of Subspaces is the Smallest Containing Subspace</h4>
+<p>Suppose <span class="math inline">\(U_1, ..., U_m\)</span> are subspaces of <span class="math inline">\(V\)</span>. Then <span class="math inline">\(U_1 + .... + U_m\)</span> is the smallest subspace of <span class="math inline">\(V\)</span> containing <span class="math inline">\(U_1, ...., U_m\)</span>.</p>
+<h4 id="definition-1.40-direct-sum">Definition 1.40: Direct Sum</h4>
+<p>Suppose <span class="math inline">\(U_1, ..., U_m\)</span> are subspaces of <span class="math inline">\(V\)</span>:</p>
+<ol type="1">
+<li>The sum <span class="math inline">\(U_1 + ... + U_m\)</span> is called a <strong>direct sum</strong> if each element of the resulting set <span class="math inline">\(U_1 + ... + U_m\)</span> can be written in only one way as a sum <span class="math inline">\(u_1 + ... + u_m\)</span>, where each <span class="math inline">\(u_j\)</span> is in <span class="math inline">\(U_j\)</span>.</li>
+<li>If <span class="math inline">\(U_1 + .... + U_m\)</span> is a direct sum, then <span class="math inline">\(U_1 \oplus ... \oplus U_m\)</span> denotes <span class="math inline">\(U_1 + ... + U_m\)</span>, with the <span class="math inline">\(\oplus\)</span> indicating the direct sum.</li>
+</ol>
+<blockquote>
+<p><span class="math display">\[U_1 = \{(x, y, 0) \in \mathbb{F}^3: x, y \in \mathbb{F}\}\]</span> <span class="math display">\[U_2 = \{(0, 0, z) \in \mathbb{F}^3: x, y \in \mathbb{F}\}\]</span> <span class="math display">\[U_3 = \{(0, y, y) \in \mathbb{F}^3: x, y \in \mathbb{F}\}\]</span></p>
+<p>Then, <span class="math inline">\(U_1 + U_2 + U_3 = \mathbb{F}^3\)</span> is not a direct sum because the element <span class="math inline">\((0, 0, 0) \in \mathbb{F}^3\)</span>, can be written in two different ways using the sum:</p>
+<p><span class="math display">\[(0, 1, 0) + (0, 0, 1) + (0, -1, -1) = (0, 0, 0)\]</span> <span class="math display">\[(0, 0, 0) + (0, 0, 0) + (0, 0, 0) = (0, 0, 0)\]</span></p>
+</blockquote>
+<h4 id="definition-1.44-condition-for-a-direct-sum">Definition 1.44 Condition for a Direct Sum</h4>
+<p>Suppose <span class="math inline">\(U_1, ...., U_m\)</span> are subspaces of <span class="math inline">\(V\)</span>. Then <span class="math inline">\(U_1 + ... + U_m\)</span> is a direct sum if and only if the only way to write <span class="math inline">\(0\)</span> as a sum <span class="math inline">\(u_1 + ... + u_m\)</span>, where each <span class="math inline">\(u_j\)</span> is in <span class="math inline">\(U_j\)</span>, is by taking each <span class="math inline">\(u_j\)</span> equal to <span class="math inline">\(0\)</span>.</p>
+<h4 id="definition-1.45-direct-sum-of-two-subspaces">Definition 1.45 Direct Sum of Two Subspaces</h4>
+<p>Suppose <span class="math inline">\(U, W\)</span> are subspaces of <span class="math inline">\(V\)</span>. Then <span class="math inline">\(U + W\)</span> is a direct sum if and only if <span class="math inline">\(U \cap W = \{0\}\)</span>. <strong>The result only limit to two subspaces.</strong></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/MDP/" rel="bookmark">MDP</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-equations/" rel="bookmark">Bellman Equations</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-optimality-equations/" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/14/calculus/" rel="bookmark">Calculus (1)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/dp/" rel="bookmark">Dynamic Programming</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RL-Basics/" rel="tag"># RL Basics</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/01/01/real-analysis-3/" rel="prev" title="Real Analysis (3)">
+                  <i class="fa fa-chevron-left"></i> Real Analysis (3)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/01/06/real-analysis-4/" rel="next" title="real-analysis-4">
+                  real-analysis-4 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Linear Algebra (5) Operators on Complex Vector Spaces Null Spaces of Powers of an Operator Theorem 8.2: Sequence of Increasing Null Spaces Suppose \(T \in L(V)\). Then \[\{0\} &#x3D; \text{null }T^0 \subse">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linear-algebra-5">
+<meta property="og:url" content="https://swag1ong.github.io/2022/02/04/linear-algebra-5/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Linear Algebra (5) Operators on Complex Vector Spaces Null Spaces of Powers of an Operator Theorem 8.2: Sequence of Increasing Null Spaces Suppose \(T \in L(V)\). Then \[\{0\} &#x3D; \text{null }T^0 \subse">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-04T02:53:18.000Z">
+<meta property="article:modified_time" content="2022-02-07T15:24:50.206Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="RL Basics">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2022/02/04/linear-algebra-5/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2022&#x2F;02&#x2F;04&#x2F;linear-algebra-5&#x2F;&quot;,&quot;path&quot;:&quot;2022&#x2F;02&#x2F;04&#x2F;linear-algebra-5&#x2F;&quot;,&quot;title&quot;:&quot;linear-algebra-5&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>linear-algebra-5 | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#linear-algebra-5"><span class="nav-number">1.</span> <span class="nav-text">Linear Algebra (5)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#operators-on-complex-vector-spaces"><span class="nav-number">1.1.</span> <span class="nav-text">Operators on Complex Vector Spaces</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#null-spaces-of-powers-of-an-operator"><span class="nav-number">1.1.1.</span> <span class="nav-text">Null Spaces of Powers of an Operator</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.2-sequence-of-increasing-null-spaces"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">Theorem 8.2: Sequence of Increasing Null Spaces</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-8.2"><span class="nav-number">1.1.1.1.1.</span> <span class="nav-text">Proof of Theorem 8.2:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.3-equality-in-the-sequence-of-null-spaces"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">Theorem 8.3: Equality in the Sequence of Null Spaces</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-8.3"><span class="nav-number">1.1.1.2.1.</span> <span class="nav-text">Proof of Theorem 8.3:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.4-null-spaces-stop-growing"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">Theorem 8.4: Null Spaces Stop Growing</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.5-v-is-the-direct-sum-of-textnull-tdim-v-and-textrange-tdim-v"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">Theorem 8.5: \(V\) is the Direct Sum of \(\text{null } T^{\dim V}\) and \(\text{range } T^{\dim V}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#proof-of-theorem-8.5"><span class="nav-number">1.1.1.5.</span> <span class="nav-text">Proof of Theorem 8.5:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-8.9-generalized-eigenvector"><span class="nav-number">1.1.1.6.</span> <span class="nav-text">Definition 8.9: Generalized Eigenvector</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-8.10-generalized-eigenspace-glambda-t"><span class="nav-number">1.1.1.7.</span> <span class="nav-text">Definition 8.10: Generalized Eigenspace, \(G(\lambda, T)\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.11-description-of-generalized-eigenspaces"><span class="nav-number">1.1.1.8.</span> <span class="nav-text">Theorem 8.11: Description of Generalized Eigenspaces</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-8.11"><span class="nav-number">1.1.1.8.1.</span> <span class="nav-text">Proof of Theorem 8.11:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.13-linearly-independent-generalized-eigenvectors"><span class="nav-number">1.1.1.9.</span> <span class="nav-text">Theorem 8.13: Linearly Independent Generalized Eigenvectors</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-8.16-nilpotent"><span class="nav-number">1.1.1.10.</span> <span class="nav-text">Definition 8.16: Nilpotent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.18-nilpotent-operator-raised-to-dimension-of-domain-is-0"><span class="nav-number">1.1.1.11.</span> <span class="nav-text">Theorem 8.18: Nilpotent Operator Raised to Dimension of Domain is \(0\)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-8.18"><span class="nav-number">1.1.1.11.1.</span> <span class="nav-text">Proof of Theorem 8.18</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.19-matrix-of-a-nilpotent-operator"><span class="nav-number">1.1.1.12.</span> <span class="nav-text">Theorem 8.19: Matrix of a Nilpotent Operator</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#decomposition-of-an-operator"><span class="nav-number">1.1.2.</span> <span class="nav-text">Decomposition of an Operator</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.20-the-null-space-and-range-of-pt-are-invariant-under-t"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Theorem 8.20: The Null Space and Range of \(p(T)\) are Invariant Under \(T\)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-8.21"><span class="nav-number">1.1.2.1.1.</span> <span class="nav-text">Proof of Theorem 8.21:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.21-description-of-operators-on-complex-vector-space"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">Theorem 8.21: Description of Operators on Complex Vector Space</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.23-a-basis-of-generalized-eigenvectors"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">Theorem 8.23: A Basis of Generalized Eigenvectors</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-8.24-multiplicity"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">Definition 8.24: Multiplicity</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.26-sum-of-the-multiplicities-equals-dim-v"><span class="nav-number">1.1.2.5.</span> <span class="nav-text">Theorem 8.26: Sum of the Multiplicities Equals \(\dim V\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-8.27-block-diagonal-matrix"><span class="nav-number">1.1.2.6.</span> <span class="nav-text">Definition 8.27: Block Diagonal Matrix</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.29-block-diagonal-matrix-with-upper-triangular-blocks"><span class="nav-number">1.1.2.7.</span> <span class="nav-text">Theorem 8.29: Block Diagonal Matrix with Upper-Triangular Blocks</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.31-identity-plus-nilpotent-has-a-square-root"><span class="nav-number">1.1.2.8.</span> <span class="nav-text">Theorem 8.31: Identity Plus Nilpotent Has a Square Root</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.33-over-mathbbc-invertible-operators-have-square-roots"><span class="nav-number">1.1.2.9.</span> <span class="nav-text">Theorem 8.33: Over \(\mathbb{C}\), Invertible Operators Have Square Roots</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#characteristic-and-minimal-polynomials"><span class="nav-number">1.1.3.</span> <span class="nav-text">Characteristic and Minimal Polynomials</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-8.34-characteristic-polynomial-complex-vector-space"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">Definition 8.34: Characteristic Polynomial (Complex Vector Space)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.36-degree-and-zeros-of-characteristic-polynomial"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">Theorem 8.36: Degree and Zeros of Characteristic Polynomial</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.37-cayley-hamilton-theorem-this-also-works-for-real-vector-space-see-theorem-9.24"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">Theorem 8.37: Cayley-Hamilton Theorem (This also works for real vector space, see theorem 9.24)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-8.37"><span class="nav-number">1.1.3.3.1.</span> <span class="nav-text">Proof of Theorem 8.37:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-8.38-monic-polynomial"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">Definition 8.38: Monic Polynomial</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.40-minimal-polynomial"><span class="nav-number">1.1.3.5.</span> <span class="nav-text">Theorem 8.40: Minimal Polynomial</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-8.43-minimal-polynomial"><span class="nav-number">1.1.3.6.</span> <span class="nav-text">Definition 8.43: Minimal Polynomial</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.46-qt-0-implies-q-is-a-multiple-of-the-minimal-polynomial"><span class="nav-number">1.1.3.7.</span> <span class="nav-text">Theorem 8.46: \(q(T) &#x3D; 0 \implies q\) is a Multiple of the Minimal Polynomial</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.48-characteristic-polynomial-is-a-multiple-of-minimal-polynomial-complex-vector-space"><span class="nav-number">1.1.3.8.</span> <span class="nav-text">Theorem 8.48: Characteristic Polynomial is a Multiple of Minimal Polynomial (Complex Vector Space)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.49-eigenvalues-are-the-zeros-of-the-minimal-polynomial"><span class="nav-number">1.1.3.9.</span> <span class="nav-text">Theorem 8.49: Eigenvalues are the Zeros of the Minimal Polynomial</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#jordan-form"><span class="nav-number">1.1.4.</span> <span class="nav-text">Jordan Form</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.55-basis-corresponding-to-a-nilpotent-operator"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">Theorem 8.55: Basis Corresponding to a Nilpotent Operator</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-8.59-jordan-basis"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">Definition 8.59: Jordan Basis</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.60-jordan-form"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">Theorem 8.60: Jordan Form</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#operators-on-real-vector-spaces"><span class="nav-number">1.2.</span> <span class="nav-text">Operators on Real Vector Spaces</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#complexification"><span class="nav-number">1.2.1.</span> <span class="nav-text">Complexification</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-9.2-complexification-of-v-v_c"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Definition 9.2: Complexification of \(V, V_C\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-9.3-v_c-is-a-complex-vector-space"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Theorem 9.3: \(V_C\) is a complex vector space</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-9.4-basis-of-v-is-a-basis-of-v_c"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">Theorem 9.4: Basis of \(V\) is a basis of \(V_C\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-9.5-complexification-of-t-t_c"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">Definition 9.5: Complexification of \(T, T_C\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-9.7-matrix-of-t_c-equals-matrix-of-t"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">Theorem 9.7: Matrix of \(T_C\) equals Matrix of \(T\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-9.8-every-operator-has-an-invariant-subspace-of-dimension-1-or-2"><span class="nav-number">1.2.1.6.</span> <span class="nav-text">Theorem 9.8: Every Operator Has an Invariant Subspace of Dimension 1 or 2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-9.10-minimal-polynomial-of-t_c-equals-minimal-polynomial-of-t"><span class="nav-number">1.2.1.7.</span> <span class="nav-text">Theorem 9.10: Minimal Polynomial of \(T_C\) Equals Minimal Polynomial of \(T\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-9.11-real-eigenvalues-of-t_c"><span class="nav-number">1.2.1.8.</span> <span class="nav-text">Theorem 9.11: Real Eigenvalues of \(T_C\)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-9.11"><span class="nav-number">1.2.1.8.1.</span> <span class="nav-text">Proof of Theorem 9.11:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-9.12-t_c---lambda-i-t_c---barlambda-i"><span class="nav-number">1.2.1.9.</span> <span class="nav-text">Theorem 9.12 \(T_C - \lambda I, T_C - \bar{\lambda} I\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-9.16-non-real-eigenvalues-of-t_c-come-in-pairs"><span class="nav-number">1.2.1.10.</span> <span class="nav-text">Theorem 9.16: Non-real Eigenvalues of \(T_C\) Come in Pairs</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-9.17-multiplicity-of-lambda-equals-multiplicity-of-barlambda"><span class="nav-number">1.2.1.11.</span> <span class="nav-text">Theorem 9.17: Multiplicity of \(\lambda\) Equals Multiplicity of \(\bar{\lambda}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-9.19-operator-on-odd-dimensional-vector-space-has-eigenvalue"><span class="nav-number">1.2.1.12.</span> <span class="nav-text">Theorem 9.19: Operator on Odd-dimensional Vector Space Has Eigenvalue</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-9.19"><span class="nav-number">1.2.1.12.1.</span> <span class="nav-text">Proof of Theorem 9.19:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-9.20-characteristic-polynomial-of-t_c"><span class="nav-number">1.2.1.13.</span> <span class="nav-text">Theorem 9.20 Characteristic Polynomial of \(T_C\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-9.21-characteristic-polynomial"><span class="nav-number">1.2.1.14.</span> <span class="nav-text">Definition 9.21: Characteristic Polynomial</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-9.23-degree-and-zeros-of-characteristic-polynomials"><span class="nav-number">1.2.1.15.</span> <span class="nav-text">Theorem 9.23: Degree and Zeros of Characteristic Polynomials</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-9.24-cayley-hamilton-theorem"><span class="nav-number">1.2.1.16.</span> <span class="nav-text">Theorem 9.24: Cayley-Hamilton Theorem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-9.26-characteristic-polynomial-is-a-multiple-of-minimal-polynomial"><span class="nav-number">1.2.1.17.</span> <span class="nav-text">Theorem 9.26: Characteristic Polynomial is a Multiple of Minimal Polynomial</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2022/02/04/linear-algebra-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          linear-algebra-5
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-02-04 10:53:18" itemprop="dateCreated datePublished" datetime="2022-02-04T10:53:18+08:00">2022-02-04</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2022-02-07 23:24:50" itemprop="dateModified" datetime="2022-02-07T23:24:50+08:00">2022-02-07</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2022/02/04/linear-algebra-5/" class="post-meta-item leancloud_visitors" data-flag-title="linear-algebra-5" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>15k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>14 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="linear-algebra-5">Linear Algebra (5)</h1>
+<h2 id="operators-on-complex-vector-spaces">Operators on Complex Vector Spaces</h2>
+<h3 id="null-spaces-of-powers-of-an-operator">Null Spaces of Powers of an Operator</h3>
+<h4 id="theorem-8.2-sequence-of-increasing-null-spaces">Theorem 8.2: Sequence of Increasing Null Spaces</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span>. Then</p>
+<p><span class="math display">\[\{0\} = \text{null }T^0 \subseteq \text{null }T^1 \subseteq ... \subseteq \text{null }T^k \subseteq .... \]</span></p>
+<p>where <span class="math inline">\(T^0 = I\)</span> is the identity mapping in <span class="math inline">\(V\)</span>.</p>
+<h5 id="proof-of-theorem-8.2">Proof of Theorem 8.2:</h5>
+<p>Suppose <span class="math inline">\(k\)</span> is non-negative integer and <span class="math inline">\(v \in \text{null }T^k\)</span>, then <span class="math inline">\(T^k(v) = 0 \implies T^{k+1}(v) = TT^k(v) = T(0) = 0\)</span>, thus, <span class="math inline">\(\forall v \in \text{null }T^k\)</span>, <span class="math inline">\(v \in \text{null }T^{k+1}\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-8.3-equality-in-the-sequence-of-null-spaces">Theorem 8.3: Equality in the Sequence of Null Spaces</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span>. Suppose <span class="math inline">\(m\)</span> is a non-negative integer such that <span class="math inline">\(\text{null }T^m = \text{null }T^{m+1}\)</span>. Then:</p>
+<p><span class="math display">\[\text{null } T^m = \text{null }T^{m+1} = \text{null }T^{m+2} = ...\]</span></p>
+<h5 id="proof-of-theorem-8.3">Proof of Theorem 8.3:</h5>
+<p>Let <span class="math inline">\(k\)</span> be a positive integer, we want to prove:</p>
+<p><span class="math display">\[\text{null } T^{m+k} = \text{null } T^{m+k+1}\]</span></p>
+<p>Since we know by <code>theorem 8.2</code>, <span class="math inline">\(\text{null } T^{m+k} \subseteq \text{null } T^{m+k+1}\)</span>, we only need to prove:</p>
+<p><span class="math display">\[\text{null } T^{m+k+1} \subseteq \text{null } T^{m+k}\]</span></p>
+<p>Let <span class="math inline">\(v \in \text{null } T^{m+k+1}\)</span>, then:</p>
+<p><span class="math display">\[T^{m + 1}(T^k (v)) = T^{m+k+1} (v) = 0\]</span></p>
+<p>Thus, <span class="math inline">\(T^k(v) \in \text{null } T^{m+1}\)</span>, since <span class="math inline">\(\text{null } T^m = \text{null } T^{m+1}\)</span> by assumption, we have:</p>
+<p><span class="math display">\[T^k(v) \in \text{null } T^m \implies T^m (T^k(v)) = T^{m+k} (v) = 0\]</span></p>
+<p>Thus, <span class="math inline">\(\forall v \in \text{null } T^{m+k+1}\)</span>, we have <span class="math inline">\(v \in \text{null } T^{m+k}\)</span>.</p>
+<h4 id="theorem-8.4-null-spaces-stop-growing">Theorem 8.4: Null Spaces Stop Growing</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span>. Let <span class="math inline">\(n = \dim V\)</span>. Then:</p>
+<p><span class="math display">\[\text{null } T^n = \text{null } T^{n+1} = ....\]</span></p>
+<p><br></p>
+<h4 id="theorem-8.5-v-is-the-direct-sum-of-textnull-tdim-v-and-textrange-tdim-v">Theorem 8.5: <span class="math inline">\(V\)</span> is the Direct Sum of <span class="math inline">\(\text{null } T^{\dim V}\)</span> and <span class="math inline">\(\text{range } T^{\dim V}\)</span></h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span>. Let <span class="math inline">\(n = \dim V\)</span>. Then:</p>
+<p><span class="math display">\[V = \text{null } T^n \oplus \text{range } T^n\]</span></p>
+<p><strong>In general, <span class="math inline">\(V \neq \text{null } T \oplus \text{range }T\)</span></strong>.</p>
+<h4 id="proof-of-theorem-8.5">Proof of Theorem 8.5:</h4>
+<p>We first show that:</p>
+<p><span class="math display">\[(\text{null } T^n) \cap (\text{range }T^n) = \{0\}\]</span></p>
+<p>Where <span class="math inline">\(n = \dim V\)</span>. Let <span class="math inline">\(v \in (\text{null } T^n) \cap (\text{range }T^n)\)</span>, then <span class="math inline">\(T^n(v) = 0\)</span> and <span class="math inline">\(\exists u \in V, T^n(u) = v\)</span>. Then we have:</p>
+<p><span class="math display">\[T^n(T^n (u)) = T^n (v) = 0 \implies T^{2n} (u) = 0\]</span></p>
+<p>By <code>theorem 8.4</code>, we have <span class="math inline">\(\text{null } T^{2n} = \text{null }T^n\)</span>, thus:</p>
+<p><span class="math display">\[T^{n} (u) = v = 0\]</span></p>
+<p>Thus, <span class="math inline">\(v = 0\)</span>.</p>
+<p>Then by <code>theorem 1.45</code>, we have <span class="math inline">\((\text{null } T^n) \oplus (\text{range }T^n)\)</span>, then by <code>theorem 3.22</code>, we have:</p>
+<p><span class="math display">\[\dim V = \dim\text{null } T^n + \dim\text{range }T^n = \dim \{(\text{null } T^n) \oplus (\text{range }T^n)\}\]</span></p>
+<p><br></p>
+<h4 id="definition-8.9-generalized-eigenvector">Definition 8.9: Generalized Eigenvector</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span> and <span class="math inline">\(\lambda\)</span> is an eigenvalue of <span class="math inline">\(T\)</span>. A vector <span class="math inline">\(v \in V\)</span> is called a <strong>generalized eigenvector</strong> of <span class="math inline">\(T\)</span> corresponding to <span class="math inline">\(\lambda\)</span> if <span class="math inline">\(v \neq 0\)</span> and:</p>
+<p><span class="math display">\[(T - \lambda I)^j (v) = 0\]</span></p>
+<p>for some positive integer <span class="math inline">\(j\)</span>.</p>
+<p><strong>Although <span class="math inline">\(j\)</span> is allowed to be an arbitrary integer in the equation, every generalized eigenvector satisfies this equation with <span class="math inline">\(j = \dim V\)</span>.</strong></p>
+<p><br></p>
+<h4 id="definition-8.10-generalized-eigenspace-glambda-t">Definition 8.10: Generalized Eigenspace, <span class="math inline">\(G(\lambda, T)\)</span></h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span> and <span class="math inline">\(\lambda \in \mathbb{F}\)</span>. The <strong>generalized eigenspace</strong> of <span class="math inline">\(T\)</span> corresponding to <span class="math inline">\(\lambda\)</span>, denoted <span class="math inline">\(G(\lambda, T)\)</span>, is defined to be the set of all generalized eigenvectors of <span class="math inline">\(T\)</span> corresponding to <span class="math inline">\(\lambda\)</span> along with the <span class="math inline">\(0\)</span> vector.</p>
+<p>If <span class="math inline">\(T \in L(V)\)</span> and <span class="math inline">\(\lambda \in \mathbb{F}\)</span>, then:</p>
+<p><span class="math display">\[E(\lambda, T) \subseteq G(\lambda, T)\]</span></p>
+<p><strong>Generalized eigenspace is a subspace of <span class="math inline">\(V\)</span> because null space is subspace of <span class="math inline">\(V\)</span>.</strong></p>
+<p><br></p>
+<h4 id="theorem-8.11-description-of-generalized-eigenspaces">Theorem 8.11: Description of Generalized Eigenspaces</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span> and <span class="math inline">\(\lambda \in \mathbb{F}\)</span>. Then:</p>
+<p><span class="math display">\[G(\lambda, T) = \text{null }(T - \lambda I)^{\dim V}\]</span></p>
+<h5 id="proof-of-theorem-8.11">Proof of Theorem 8.11:</h5>
+<p>Suppose <span class="math inline">\(v \in \text{null }(T - \lambda I)^{\dim V}\)</span>, then <span class="math inline">\(v \in G(\lambda, T)\)</span> by <code>definition 8.10</code>.</p>
+<p>Suppose <span class="math inline">\(v \in G(\lambda, T)\)</span>, then there exists an integer <span class="math inline">\(j\)</span> s.t <span class="math inline">\((T - \lambda I)^j (v) = 0\)</span>. If we let <span class="math inline">\(j = \dim V\)</span>, then by <code>theorem 8.2, 8.4</code>, we have:</p>
+<p><span class="math display">\[v \in \text{null } (T - \lambda I)^{i}, \forall i \in \mathbb{Z}\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[v \in G(\lambda, T)\]</span></p>
+<p><br></p>
+<h4 id="theorem-8.13-linearly-independent-generalized-eigenvectors">Theorem 8.13: Linearly Independent Generalized Eigenvectors</h4>
+<p>Let <span class="math inline">\(T \in L(V)\)</span>. Suppose <span class="math inline">\(\lambda_1, ..., \lambda_m\)</span> are distinct eigenvalues of <span class="math inline">\(T\)</span> and <span class="math inline">\(v_1, ..., v_m\)</span> are corresponding generalized eigenvectors. Then <span class="math inline">\(v_1, ..., v_m\)</span> is linearly independent.</p>
+<p><br></p>
+<h4 id="definition-8.16-nilpotent">Definition 8.16: Nilpotent</h4>
+<p>An operator is called <strong>nilpotent</strong> if some power of it equals <span class="math inline">\(0\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-8.18-nilpotent-operator-raised-to-dimension-of-domain-is-0">Theorem 8.18: Nilpotent Operator Raised to Dimension of Domain is <span class="math inline">\(0\)</span></h4>
+<p>Suppose <span class="math inline">\(N \in L(V)\)</span> is nilpotent. Then <span class="math inline">\(N^{\dim V} = 0\)</span>.</p>
+<h5 id="proof-of-theorem-8.18">Proof of Theorem 8.18</h5>
+<p>Since <span class="math inline">\(N\)</span> is nilpotent, we have <span class="math inline">\(G(0, N) = V\)</span>, since for some integer <span class="math inline">\(j\)</span>, we have <span class="math inline">\(N^j = 0 \implies N^j(v) = 0, \; \forall v \in V\)</span>. Thus, by <code>theorem 8.11</code>, we have:</p>
+<p><span class="math display">\[\text{null }(N)^{\dim V} = V\]</span></p>
+<p>Thus, <span class="math inline">\(N^{\dim V} = 0\)</span>.</p>
+<h4 id="theorem-8.19-matrix-of-a-nilpotent-operator">Theorem 8.19: Matrix of a Nilpotent Operator</h4>
+<p>Suppose <span class="math inline">\(N\)</span> is a nilpotent operator on <span class="math inline">\(V\)</span>. Then there is a basis of <span class="math inline">\(V\)</span> w.r.t which the matrix of <span class="math inline">\(N\)</span> has the form:</p>
+<p><span class="math display">\[
+A = 
+\begin{bmatrix}
+0 &amp; ... &amp; *\\
+. &amp; ... &amp; .\\
+0 &amp; ... &amp; 0\\
+\end{bmatrix}
+\]</span></p>
+<p>here all entries on and below the diagonal are <span class="math inline">\(0\)</span>.</p>
+<p><br></p>
+<h3 id="decomposition-of-an-operator">Decomposition of an Operator</h3>
+<h4 id="theorem-8.20-the-null-space-and-range-of-pt-are-invariant-under-t">Theorem 8.20: The Null Space and Range of <span class="math inline">\(p(T)\)</span> are Invariant Under <span class="math inline">\(T\)</span></h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span> and <span class="math inline">\(p \in P(\mathbb{F})\)</span>. Then <span class="math inline">\(\text{null } p(T)\)</span> and <span class="math inline">\(\text{range } p(T)\)</span> are invariant under <span class="math inline">\(T\)</span>.</p>
+<h5 id="proof-of-theorem-8.21">Proof of Theorem 8.21:</h5>
+<ol type="1">
+<li><p><span class="math inline">\(\text{null } p(T)\)</span> is invariant under <span class="math inline">\(T\)</span>:</p>
+<p>Suppose <span class="math inline">\(v \in \text{null } p(T)\)</span>, we want to show that <span class="math inline">\(p(T)(T(v)) = 0\)</span>. Thus, <span class="math inline">\(p(T) (v) = 0 \implies T(p(T)(v)) = T(0) = 0 = p(T) (T(v)) = 0\)</span></p></li>
+<li><p><span class="math inline">\(\text{range } p(T)\)</span> is invariant under <span class="math inline">\(T\)</span>:</p>
+<p>Suppose <span class="math inline">\(v \in \text{range } p(T)\)</span>, we want to show that <span class="math inline">\(T(v) = p(T)(u)\)</span> for some <span class="math inline">\(u \in V\)</span>. Let <span class="math inline">\(v = p(T)(u)\)</span>, then <span class="math inline">\(T(v) = T(p(T)(u)) = p(T)(T(u))\)</span>, let <span class="math inline">\(u = T(u)\)</span>, we have the desired result.</p></li>
+</ol>
+<p><br></p>
+<h4 id="theorem-8.21-description-of-operators-on-complex-vector-space">Theorem 8.21: Description of Operators on Complex Vector Space</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a complex vector space and <span class="math inline">\(T \in L(V)\)</span>. Let <span class="math inline">\(\lambda_1, ..., \lambda_m\)</span> be the distinct eigenvalues of <span class="math inline">\(T\)</span>. Then:</p>
+<ol type="a">
+<li><span class="math inline">\(V = G(\lambda_1, T) \oplus ... \oplus G(\lambda_m, T)\)</span>.</li>
+<li>Each <span class="math inline">\(G(\lambda_j, T)\)</span> is invariant under <span class="math inline">\(T\)</span>.</li>
+<li>Each <span class="math inline">\((T - \lambda_j I )|_{G(\lambda_j, T)}\)</span> is nilpotent.</li>
+</ol>
+<p><br></p>
+<h4 id="theorem-8.23-a-basis-of-generalized-eigenvectors">Theorem 8.23: A Basis of Generalized Eigenvectors</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a complex vector space and <span class="math inline">\(T \in L(V)\)</span>. Then there is a basis of <span class="math inline">\(V\)</span> consisting of generalized eigenvectors of <span class="math inline">\(T\)</span>.</p>
+<p><br></p>
+<h4 id="definition-8.24-multiplicity">Definition 8.24: Multiplicity</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span>. The <strong>multiplicity</strong> of an eigenvalue <span class="math inline">\(\lambda\)</span> of <span class="math inline">\(T\)</span> is defined to be the dimension of the corresponding generalized eigenspace <span class="math inline">\(G(\lambda, T)\)</span>.</p>
+<p>In other words, the multiplicity of an eigenvalue <span class="math inline">\(\lambda\)</span> of <span class="math inline">\(T\)</span> equals <span class="math inline">\(\dim \text{null }(T - \lambda I)^{\dim V}\)</span>.</p>
+<p>The <strong>algebraic multiplicity of <span class="math inline">\(\lambda\)</span></strong> is defined above.</p>
+<p>The <strong>geometric multiplicity of <span class="math inline">\(\lambda\)</span></strong> is defined to be the dimension of corresponding eigenspace:</p>
+<p><span class="math display">\[\dim E(\lambda, T)\]</span></p>
+<p><br></p>
+<h4 id="theorem-8.26-sum-of-the-multiplicities-equals-dim-v">Theorem 8.26: Sum of the Multiplicities Equals <span class="math inline">\(\dim V\)</span></h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a complex vector space and <span class="math inline">\(T \in L(V)\)</span>. Then the sum of the multiplicities of all eigenvalues of <span class="math inline">\(T\)</span> equals <span class="math inline">\(\dim V\)</span>.</p>
+<p><br></p>
+<h4 id="definition-8.27-block-diagonal-matrix">Definition 8.27: Block Diagonal Matrix</h4>
+<p>A <strong>block diagonal matrix</strong> is a square matrix of the form:</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+A_1 &amp; ... &amp; 0\\
+. &amp; ... &amp; .\\
+0 &amp; ... &amp; A_m\\
+\end{bmatrix}
+\]</span></p>
+<p>Where <span class="math inline">\(A_1, ..., A_m\)</span> are square matrices lying along the diagonal and all the other entries of the matrix equal 0. If <span class="math inline">\(A_1, ..., A_m\)</span> are <span class="math inline">\(1 \times 1\)</span> matrix, we have diagonal matrix.</p>
+<p><br></p>
+<h4 id="theorem-8.29-block-diagonal-matrix-with-upper-triangular-blocks">Theorem 8.29: Block Diagonal Matrix with Upper-Triangular Blocks</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a complex vector space and <span class="math inline">\(T \in L(V)\)</span>. Let <span class="math inline">\(\lambda_1, ..., \lambda_m\)</span> be the distinct eigenvalues of <span class="math inline">\(T\)</span>, with multiplicities <span class="math inline">\(d_1, ..., d_m\)</span>. Then there is a basis of <span class="math inline">\(V\)</span> w.r.t which <span class="math inline">\(T\)</span> has a <strong>block diagonal matrix</strong> of the form:</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+A_1 &amp; ... &amp; 0\\
+. &amp; ... &amp; .\\
+0 &amp; ... &amp; A_m\\
+\end{bmatrix}
+\]</span></p>
+<p>Where each <span class="math inline">\(A_j\)</span> is a <span class="math inline">\(d_j \times d_j\)</span> upper-triangular matrix of the form:</p>
+<p><span class="math display">\[
+A_i = 
+\begin{bmatrix}
+\lambda_j &amp; ... &amp; *\\
+. &amp; ... &amp; .\\
+0 &amp; ... &amp; \lambda_j\\
+\end{bmatrix}
+\]</span></p>
+<p><br></p>
+<h4 id="theorem-8.31-identity-plus-nilpotent-has-a-square-root">Theorem 8.31: Identity Plus Nilpotent Has a Square Root</h4>
+<p>Suppose <span class="math inline">\(N \in L(V)\)</span> is nilpotent. Then <span class="math inline">\(I + N\)</span> has a square root.</p>
+<p><br></p>
+<h4 id="theorem-8.33-over-mathbbc-invertible-operators-have-square-roots">Theorem 8.33: Over <span class="math inline">\(\mathbb{C}\)</span>, Invertible Operators Have Square Roots</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a complex vector space and <span class="math inline">\(T \in L(V)\)</span> is invertible. Then <span class="math inline">\(T\)</span> has a square root.</p>
+<p><br></p>
+<h3 id="characteristic-and-minimal-polynomials">Characteristic and Minimal Polynomials</h3>
+<h4 id="definition-8.34-characteristic-polynomial-complex-vector-space">Definition 8.34: Characteristic Polynomial (<strong>Complex Vector Space</strong>)</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a complex vector space, and <span class="math inline">\(T \in L(V)\)</span>. Let <span class="math inline">\(\lambda_1, ..., \lambda_m\)</span> denote the distinct eigenvalues of <span class="math inline">\(T\)</span>, with multiplicities <span class="math inline">\(d_1, ..., d_m\)</span>. The polynomial <span class="math inline">\(q\)</span> defined as:</p>
+<p><span class="math display">\[q(z) = (z - \lambda_1)^{d_1} ... (z - \lambda_m)^{d_m}\]</span></p>
+<p>is called the <strong>characteristic polynomial</strong> of <span class="math inline">\(T\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-8.36-degree-and-zeros-of-characteristic-polynomial">Theorem 8.36: Degree and Zeros of Characteristic Polynomial</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a complex vector space and <span class="math inline">\(T \in L(V)\)</span>. Then:</p>
+<ol type="a">
+<li>The characteristic polynomial of <span class="math inline">\(T\)</span> has degree <span class="math inline">\(\dim V\)</span>.</li>
+<li>The zeros of the characteristic polynomial of <span class="math inline">\(T\)</span> are the eigenvalues of <span class="math inline">\(T\)</span>.</li>
+</ol>
+<p><br></p>
+<h4 id="theorem-8.37-cayley-hamilton-theorem-this-also-works-for-real-vector-space-see-theorem-9.24">Theorem 8.37: Cayley-Hamilton Theorem (<strong>This also works for real vector space</strong>, see <code>theorem 9.24</code>)</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a complex vector space and <span class="math inline">\(T \in L(V)\)</span>. Let <span class="math inline">\(q\)</span> denotes the characteristic polynomial of <span class="math inline">\(T\)</span>. Then <span class="math inline">\(q(T) = 0\)</span>.</p>
+<h5 id="proof-of-theorem-8.37">Proof of Theorem 8.37:</h5>
+<p>Let <span class="math inline">\(\lambda_1, ..., \lambda_m\)</span> be eigenvalues of <span class="math inline">\(T\)</span> and <span class="math inline">\(d_1, ..., d_m\)</span> be dimensions of the corresponding generalized eigenspace <span class="math inline">\(G(\lambda_1, T), ... ,G(\lambda_m, T)\)</span>. Then by <code>theorem 8.18</code>, we have:</p>
+<p><span class="math display">\[(T - \lambda_j I)^{d_j}|_{G(\lambda_j, T)} = 0\]</span></p>
+<p>Since <span class="math inline">\(V\)</span> is direct sum of the generalized eigenspaces, we can write every <span class="math inline">\(v \in V\)</span> as <span class="math inline">\(v = g_1, ...., g_m, \; g_1 \in G(\lambda_1, T), g_m \in G(\lambda_m, T)\)</span> and:</p>
+<p><span class="math display">\[q(T) (v) = q(T) (g_1) + .... + q(T)(g_m)\]</span></p>
+<p>Thus, to show that <span class="math inline">\(q(T) = 0\)</span>, we only need to show that</p>
+<p><span class="math display">\[q(T)|_{G(\lambda_j, T)} = 0, \; \forall j=1, ..., m\]</span></p>
+<p>We have:</p>
+<p><span class="math display">\[q(T) = (T - \lambda_1 I)^{d_1} .... (T - \lambda_m I)^{d_m}\]</span></p>
+<p>For every <span class="math inline">\(g_1 \in G(\lambda_1, T)\)</span>, we can write (by <code>theorem 5.20</code>):</p>
+<p><span class="math display">\[q(T) (g_1) = (T - \lambda_m I)^{d_m} .... ((T - \lambda_1 I)^{d_1} (g_1)) = 0\]</span></p>
+<p><br></p>
+<h4 id="definition-8.38-monic-polynomial">Definition 8.38: Monic Polynomial</h4>
+<p>A <strong>monic polynomial</strong> is a polynomial whose <strong>highest-degree coefficient</strong> equals <span class="math inline">\(1\)</span>.</p>
+<blockquote>
+<p><span class="math inline">\(z\)</span></p>
+<p><span class="math inline">\(2 + 6z^2 + z^7\)</span></p>
+</blockquote>
+<p><br></p>
+<h4 id="theorem-8.40-minimal-polynomial">Theorem 8.40: Minimal Polynomial</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span>. Then there is a unique monic polynomial <span class="math inline">\(p\)</span> of the smallest degree such that <span class="math inline">\(p(T) = 0\)</span>.</p>
+<p><br></p>
+<h4 id="definition-8.43-minimal-polynomial">Definition 8.43: Minimal Polynomial</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span>. Then the <strong>minimal polynomial</strong> of <span class="math inline">\(T\)</span> is the unique monic polynomial <span class="math inline">\(p\)</span> of the smallest degree such that <span class="math inline">\(p(T) = 0\)</span></p>
+<p>From <code>theorem 8.37, 8.36</code>, we know that if <span class="math inline">\(V\)</span> is a complex vector space, then <span class="math inline">\(p\)</span> has degree at most <span class="math inline">\(\dim V\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-8.46-qt-0-implies-q-is-a-multiple-of-the-minimal-polynomial">Theorem 8.46: <span class="math inline">\(q(T) = 0 \implies q\)</span> is a Multiple of the Minimal Polynomial</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span> and <span class="math inline">\(q \in P(\mathbb{F})\)</span>. Then <span class="math inline">\(q(T) = 0\)</span> IFF <span class="math inline">\(q\)</span> is a polynomial multiple of the minimal polynomial of <span class="math inline">\(T\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-8.48-characteristic-polynomial-is-a-multiple-of-minimal-polynomial-complex-vector-space">Theorem 8.48: Characteristic Polynomial is a Multiple of Minimal Polynomial (<strong>Complex Vector Space</strong>)</h4>
+<p>Suppose <span class="math inline">\(\mathbb{F} = \mathbb{C}\)</span> and <span class="math inline">\(T \in L(V)\)</span>. Then the characteristic polynomial of <span class="math inline">\(T\)</span> is a polynomial multiple of the minimal polynomial of <span class="math inline">\(T\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-8.49-eigenvalues-are-the-zeros-of-the-minimal-polynomial">Theorem 8.49: Eigenvalues are the Zeros of the Minimal Polynomial</h4>
+<p>Let <span class="math inline">\(T \in L(V)\)</span>. Then the zeros of the minimal polynomial of <span class="math inline">\(T\)</span> are precisely the eigenvalues of <span class="math inline">\(T\)</span>.</p>
+<p><br></p>
+<h3 id="jordan-form">Jordan Form</h3>
+<h4 id="theorem-8.55-basis-corresponding-to-a-nilpotent-operator">Theorem 8.55: Basis Corresponding to a Nilpotent Operator</h4>
+<p>Suppose <span class="math inline">\(N \in L(V)\)</span> is nilpotent. Then there exist vectors <span class="math inline">\(v_1, ..., v_n \in V\)</span> and non-negative integer <span class="math inline">\(m_1, ..., m_n\)</span> s.t:</p>
+<ol type="a">
+<li><span class="math inline">\(N^{m_1}(v_1), ...., N(v_1), v_1, ..., N^{m_n}(v_n), ..., N(v_n)\)</span> is a basis of <span class="math inline">\(V\)</span>.</li>
+<li><span class="math inline">\(N^{m_1 + 1} (v_1) = ... = N^{m_n + 1}(v_n) = 0\)</span></li>
+</ol>
+<p><br></p>
+<h4 id="definition-8.59-jordan-basis">Definition 8.59: Jordan Basis</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span>. A basis of <span class="math inline">\(V\)</span> is called <strong>jordan basis</strong> for <span class="math inline">\(T\)</span> if with respect to this basis <span class="math inline">\(T\)</span> has a block diagonal matrix"</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+A_1 &amp; ... &amp; 0\\
+. &amp; ... &amp; .\\
+0 &amp; ... &amp; A_m\\
+\end{bmatrix}
+\]</span></p>
+<p>where each <span class="math inline">\(A_j\)</span> is an upper-triangular matrix of the form:</p>
+<p><span class="math display">\[
+A_j = 
+\begin{bmatrix}
+\lambda_j &amp; 1 &amp;  &amp; 0\\
+ &amp;  &amp; 1 &amp; \\
+ &amp;  &amp;  &amp; 1\\
+0 &amp;  &amp;  &amp; \lambda_j\\
+\end{bmatrix}
+\]</span></p>
+<h4 id="theorem-8.60-jordan-form">Theorem 8.60: Jordan Form</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a complex vector space. If <span class="math inline">\(T \in L(V)\)</span>, then there is a basis of <span class="math inline">\(V\)</span> that is a jordan basis for <span class="math inline">\(T\)</span>.</p>
+<p><br></p>
+<h2 id="operators-on-real-vector-spaces">Operators on Real Vector Spaces</h2>
+<h3 id="complexification">Complexification</h3>
+<h4 id="definition-9.2-complexification-of-v-v_c">Definition 9.2: Complexification of <span class="math inline">\(V, V_C\)</span></h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a real vector space.</p>
+<ul>
+<li>The <strong>complexification</strong> of <span class="math inline">\(V\)</span>, denoted <span class="math inline">\(V_C\)</span>, equals <span class="math inline">\(V \times V\)</span>. An element of <span class="math inline">\(V_C\)</span> is an ordered pair <span class="math inline">\(u, v\)</span> where <span class="math inline">\(u, v \in V\)</span>, but we will write this as <span class="math inline">\(u + iv\)</span>.</li>
+<li>Addition on <span class="math inline">\(V_C\)</span> is defined by: <span class="math display">\[(u_1 + iv_1) + (u_2 + iv_2) = (u_1 + u_2) + i(v_1 + v_2)\]</span> for <span class="math inline">\(u_1, v_1, u_2, v_2 \in V\)</span></li>
+<li>Complex scalar multiplication on <span class="math inline">\(V_C\)</span> is defined by: <span class="math display">\[(a + bi)(u + iv) = (au - bv) + i(av + bu)\]</span></li>
+</ul>
+<p>We can think of <span class="math inline">\(V\)</span> as a subset of <span class="math inline">\(V_C\)</span> by identifying <span class="math inline">\(u \in V\)</span> with <span class="math inline">\(u + i0\)</span></p>
+<p><br></p>
+<h4 id="theorem-9.3-v_c-is-a-complex-vector-space">Theorem 9.3: <span class="math inline">\(V_C\)</span> is a complex vector space</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a real vector space. Then with the definition of addition and scalar multiplication above, <span class="math inline">\(V_C\)</span> is a complex vector space.</p>
+<p><br></p>
+<h4 id="theorem-9.4-basis-of-v-is-a-basis-of-v_c">Theorem 9.4: Basis of <span class="math inline">\(V\)</span> is a basis of <span class="math inline">\(V_C\)</span></h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a real vector space.</p>
+<ol type="1">
+<li>If <span class="math inline">\(v_1, ..., v_n\)</span> is a basis of <span class="math inline">\(V\)</span>, then <span class="math inline">\(v_1, ..., v_n\)</span> is a basis of <span class="math inline">\(V_C\)</span>.</li>
+<li>The dimension of <span class="math inline">\(V_C\)</span> equals the dimension of <span class="math inline">\(V\)</span> (<span class="math inline">\(\dim(V \times V) = \dim V + \dim V\)</span> over same <span class="math inline">\(\mathbb{F}\)</span>, in this case, we extend from <span class="math inline">\(\mathbb{F} = \mathbb{R}\)</span> to <span class="math inline">\(\mathbb{F} = \mathbb{C}\)</span>).</li>
+</ol>
+<p><br></p>
+<h4 id="definition-9.5-complexification-of-t-t_c">Definition 9.5: Complexification of <span class="math inline">\(T, T_C\)</span></h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a real vector space and <span class="math inline">\(T \in L(V)\)</span>. The <strong>complexification</strong> of <span class="math inline">\(T\)</span>, denoted <span class="math inline">\(T_C\)</span>, is the operator <span class="math inline">\(T_C \in L(V_C)\)</span> defined by:</p>
+<p><span class="math display">\[T_C(u + iv) = T(u) + iT(v)\]</span></p>
+<p>for <span class="math inline">\(u, v \in V\)</span></p>
+<blockquote>
+<p>Suppose <span class="math inline">\(A\)</span> is a <span class="math inline">\(n \times n\)</span> matrix of real numbers. Define <span class="math inline">\(T \in L(\mathbb{R}^n)\)</span> by <span class="math inline">\(T(x) = Ax\)</span> where the element in <span class="math inline">\(\mathbb{R}^n\)</span> are though of as <span class="math inline">\(n \times 1\)</span> column vectors. Then, we have <span class="math inline">\(T_C(z) = Az\)</span>, where <span class="math inline">\(z \in \mathbb{C}^n\)</span>. <strong>Thus, we can think of <span class="math inline">\(T_C\)</span> as matrix multiplication by the same <span class="math inline">\(A\)</span> of <span class="math inline">\(T\)</span> on <span class="math inline">\(\mathbb{R}^n\)</span> that acts on larger domain <span class="math inline">\(\mathbb{C}^n\)</span>.</strong></p>
+</blockquote>
+<p><br></p>
+<h4 id="theorem-9.7-matrix-of-t_c-equals-matrix-of-t">Theorem 9.7: Matrix of <span class="math inline">\(T_C\)</span> equals Matrix of <span class="math inline">\(T\)</span></h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a real vector space with basis <span class="math inline">\(v_1, .., v_n\)</span> and <span class="math inline">\(T \in L(V)\)</span>. Then <span class="math inline">\(M(T) = M(T_C)\)</span>, where both matrices are w.r.t the basis <span class="math inline">\(v_1, ..., v_n\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-9.8-every-operator-has-an-invariant-subspace-of-dimension-1-or-2">Theorem 9.8: Every Operator Has an Invariant Subspace of Dimension 1 or 2</h4>
+<p>Every operator on a nonzero finite-dimensional vector space has an invariant subspace of dimension 1 or 2.</p>
+<p><br></p>
+<h4 id="theorem-9.10-minimal-polynomial-of-t_c-equals-minimal-polynomial-of-t">Theorem 9.10: Minimal Polynomial of <span class="math inline">\(T_C\)</span> Equals Minimal Polynomial of <span class="math inline">\(T\)</span></h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a real vector space and <span class="math inline">\(T \in L(V)\)</span>. Then the minimal polynomial of <span class="math inline">\(T_C\)</span> equals the minimal polynomial of <span class="math inline">\(T\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-9.11-real-eigenvalues-of-t_c">Theorem 9.11: Real Eigenvalues of <span class="math inline">\(T_C\)</span></h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a real vector space, <span class="math inline">\(T \in L(V)\)</span>, and <span class="math inline">\(\lambda \in \mathbb{R}\)</span>. Then <span class="math inline">\(\lambda\)</span> is an eigenvalue of <span class="math inline">\(T_C\)</span> if and only if <span class="math inline">\(\lambda\)</span> is an eigenvalue of <span class="math inline">\(T\)</span>.</p>
+<h5 id="proof-of-theorem-9.11">Proof of Theorem 9.11:</h5>
+<p>The real eigenvalues of <span class="math inline">\(T\)</span> are the real zeros of the minimal polynomial of <span class="math inline">\(T\)</span>. The real eigenvalues of <span class="math inline">\(T_C\)</span> are the real zeros of minimal polynomial of <span class="math inline">\(T_C\)</span>. Since their polynomials are the same, we can conclude that the real eigenvalues of <span class="math inline">\(T, T_C\)</span> are the same.</p>
+<p><br></p>
+<h4 id="theorem-9.12-t_c---lambda-i-t_c---barlambda-i">Theorem 9.12 <span class="math inline">\(T_C - \lambda I, T_C - \bar{\lambda} I\)</span></h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a real vector space, <span class="math inline">\(T \in L(V)\)</span>, <span class="math inline">\(\lambda \in \mathbb{C}\)</span>, <span class="math inline">\(j\)</span> is a non-negative integer, and <span class="math inline">\(u, v \in V\)</span>. Then:</p>
+<p><span class="math display">\[(T_C - \lambda I)^j (u + iv) = 0 \quad \text{ IFF } \quad (T_C - \bar{\lambda} I)^j (u - iv) = 0\]</span></p>
+<p><br></p>
+<h4 id="theorem-9.16-non-real-eigenvalues-of-t_c-come-in-pairs">Theorem 9.16: Non-real Eigenvalues of <span class="math inline">\(T_C\)</span> Come in Pairs</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a real vector space, <span class="math inline">\(T \in L(V)\)</span>, and <span class="math inline">\(\lamdba \in \mathbb{C}\)</span>. Then <span class="math inline">\(\lambda\)</span> is an eigenvalue of <span class="math inline">\(T_C\)</span> IFF <span class="math inline">\(\bar{\lambda}\)</span> is an eigenvalue of <span class="math inline">\(T_C\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-9.17-multiplicity-of-lambda-equals-multiplicity-of-barlambda">Theorem 9.17: Multiplicity of <span class="math inline">\(\lambda\)</span> Equals Multiplicity of <span class="math inline">\(\bar{\lambda}\)</span></h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a real vector space, <span class="math inline">\(T \in L(V)\)</span>, <span class="math inline">\(\lambda \in \mathbb{C}\)</span> is an eigenvalue of <span class="math inline">\(T_C\)</span>. Then the multiplicity of <span class="math inline">\(\lambda\)</span> as an eigenvalue of <span class="math inline">\(T_C\)</span> equals the multiplicity of <span class="math inline">\(\bar{\lambda}\)</span> as an eigenvalue of <span class="math inline">\(T_C\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-9.19-operator-on-odd-dimensional-vector-space-has-eigenvalue">Theorem 9.19: Operator on Odd-dimensional Vector Space Has Eigenvalue</h4>
+<p>Every operator on an odd-dimensional real vector space has an eigenvalue.</p>
+<h5 id="proof-of-theorem-9.19">Proof of Theorem 9.19:</h5>
+<p>Since all complex eigenvalues of <span class="math inline">\(T_C\)</span> comes in conjugate pairs and the dimensions of generalized eigenspaces add up to the dimension of <span class="math inline">\(V_C\)</span>, we have that at least 1 real eigenvalue exists.</p>
+<p><br></p>
+<h4 id="theorem-9.20-characteristic-polynomial-of-t_c">Theorem 9.20 Characteristic Polynomial of <span class="math inline">\(T_C\)</span></h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a real vector space and <span class="math inline">\(T \in L(V)\)</span>. Then the coefficients of the characteristic polynomial of <span class="math inline">\(T_C\)</span> are all real.</p>
+<p><br></p>
+<h4 id="definition-9.21-characteristic-polynomial">Definition 9.21: Characteristic Polynomial</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a real vector space and <span class="math inline">\(T \in L(V)\)</span>. Then the <strong>characteristic polynomial</strong> of <span class="math inline">\(T\)</span> is defined to be the characteristic polynomial of <span class="math inline">\(T_C\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-9.23-degree-and-zeros-of-characteristic-polynomials">Theorem 9.23: Degree and Zeros of Characteristic Polynomials</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a real vector space and <span class="math inline">\(T \in L(V)\)</span>. Then:</p>
+<ol type="1">
+<li>The coefficients of the characteristic polynomial of <span class="math inline">\(T\)</span> are all real.</li>
+<li>The characteristic polynomial of <span class="math inline">\(T\)</span> has degree <span class="math inline">\(\dim V\)</span>.</li>
+<li>The eigenvalues of <span class="math inline">\(T\)</span> are precisely the real zeros of the characteristic polynomial of <span class="math inline">\(T\)</span>.</li>
+</ol>
+<p><br></p>
+<h4 id="theorem-9.24-cayley-hamilton-theorem">Theorem 9.24: Cayley-Hamilton Theorem</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span>. Let <span class="math inline">\(q\)</span> denotes the characteristic polynomial of <span class="math inline">\(T\)</span>, then <span class="math inline">\(q(T) = 0\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-9.26-characteristic-polynomial-is-a-multiple-of-minimal-polynomial">Theorem 9.26: Characteristic Polynomial is a Multiple of Minimal Polynomial</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span>. Then:</p>
+<ol type="1">
+<li>The degree of minimal polynomial of <span class="math inline">\(T\)</span> is at most <span class="math inline">\(\dim V\)</span>.</li>
+<li>The characteristic polynomial of <span class="math inline">\(T\)</span> is a polynomial multiple of the minimal polynomial of <span class="math inline">\(T\)</span>.</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/MDP/" rel="bookmark">MDP</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-equations/" rel="bookmark">Bellman Equations</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-optimality-equations/" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/14/calculus/" rel="bookmark">Calculus (1)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/dp/" rel="bookmark">Dynamic Programming</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RL-Basics/" rel="tag"># RL Basics</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/01/25/linear-algebra-4/" rel="prev" title="Linear Algebra (4)">
+                  <i class="fa fa-chevron-left"></i> Linear Algebra (4)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2030/05/30/aa_welcome/" rel="next" title="Welcome">
+                  Welcome <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

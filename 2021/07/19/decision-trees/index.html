@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Decision Trees (CART) Tree based methods partition the feature space into a set of rectangles, and then fit a simple model (i.e constant) in each one. We focus on CART in this post. Suppose we have da">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Decision Trees">
+<meta property="og:url" content="https://swag1ong.github.io/2021/07/19/decision-trees/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Decision Trees (CART) Tree based methods partition the feature space into a set of rectangles, and then fit a simple model (i.e constant) in each one. We focus on CART in this post. Suppose we have da">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-07-19T08:31:33.000Z">
+<meta property="article:modified_time" content="2021-07-26T08:19:50.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="Machine Learning">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/07/19/decision-trees/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;07&#x2F;19&#x2F;decision-trees&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;07&#x2F;19&#x2F;decision-trees&#x2F;&quot;,&quot;title&quot;:&quot;Decision Trees&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Decision Trees | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#decision-trees-cart"><span class="nav-number">1.</span> <span class="nav-text">Decision Trees (CART)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#regression-trees"><span class="nav-number">1.1.</span> <span class="nav-text">Regression Trees</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#best-splitting-point"><span class="nav-number">1.1.1.</span> <span class="nav-text">Best Splitting Point</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cost-complexity-pruning"><span class="nav-number">1.1.2.</span> <span class="nav-text">Cost Complexity Pruning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hyperparameters"><span class="nav-number">1.1.3.</span> <span class="nav-text">Hyperparameters:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#classification-trees"><span class="nav-number">1.2.</span> <span class="nav-text">Classification Trees</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#impurity-measure"><span class="nav-number">1.2.1.</span> <span class="nav-text">Impurity Measure</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#other-issues"><span class="nav-number">1.3.</span> <span class="nav-text">Other Issues</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#instability-of-trees"><span class="nav-number">1.3.1.</span> <span class="nav-text">Instability of Trees</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#difficulty-in-capturing-additive-structure"><span class="nav-number">1.3.2.</span> <span class="nav-text">Difficulty in Capturing Additive Structure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#linear-combination-splits"><span class="nav-number">1.3.3.</span> <span class="nav-text">Linear Combination Splits</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#implementation"><span class="nav-number">2.</span> <span class="nav-text">Implementation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ref"><span class="nav-number">3.</span> <span class="nav-text">Ref</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/19/decision-trees/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Decision Trees
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-19 16:31:33" itemprop="dateCreated datePublished" datetime="2021-07-19T16:31:33+08:00">2021-07-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-26 16:19:50" itemprop="dateModified" datetime="2021-07-26T16:19:50+08:00">2021-07-26</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/07/19/decision-trees/" class="post-meta-item leancloud_visitors" data-flag-title="Decision Trees" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>9.3k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>8 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="decision-trees-cart">Decision Trees (CART)</h1>
+<p>Tree based methods partition the feature space into a set of rectangles, and then fit a simple model (i.e constant) in each one. We focus on CART in this post.</p>
+<p>Suppose we have dataset <span class="math inline">\(D = \{(\mathbf{x}_1, y_1) , ...., (\mathbf{x}_N, y_N) ;\; \mathbf{x}_i \in \mathbb{R}^d\}\)</span>. The algorithm needs to automatically decide on the <strong>splitting variables</strong> and <strong>splitting points</strong> and also what shape the tree should have.</p>
+<h2 id="regression-trees">Regression Trees</h2>
+<p>In this scenario, our response variable <span class="math inline">\(Y\)</span> is continuous. Suppose first that we have a partition into <span class="math inline">\(M\)</span> regions <span class="math inline">\(R_1, ...., R_M\)</span> and we define the <strong>model prediction</strong> as:</p>
+<p><span class="math display">\[\hat{y} = \sum^{M}_{m=1} c_m I[\mathbf{x}_i \in R_m]\]</span></p>
+<p>By minimizing the mean square loss <span class="math inline">\(\frac{1}{2} \frac{1}{N} \sum^{N}_{i=1} (y_i - \hat{y}_i)^2\)</span>, we have:</p>
+<span class="math display">\[\begin{aligned}
+\frac{\partial L}{\partial c_m} &amp;= \frac{1}{N}\sum^{N}_{i=1} (y_i -  \sum^{M}_{m=1} c_m I[\mathbf{x}_i \in R_m]) I[\mathbf{x}_i \in R_m]\\
+&amp;= \frac{1}{N_m}\sum^{N}_{i=1} (y_i I[\mathbf{x}_i \in R_m]) - c_m\\
+\implies \hat{c}_m &amp;= \frac{1}{N_m}\sum^{N}_{i=1} (y_i I[\mathbf{x}_i \in R_m])
+\end{aligned}\]</span>
+<p>Thus, the best estimate <span class="math inline">\(\hat{c}_m\)</span> in each region is the <strong>average training responses</strong> in that region w.r.t mean square error:</p>
+<p><span class="math display">\[\hat{c}_m = \frac{1}{N_m} \sum^{N}_{i=1} y_i I[\mathbf{x}_i \in R_m]\]</span></p>
+<p>Where <span class="math inline">\(N_m = \sum^{N}_{i=1} I[\mathbf{x}_i \in R_m]\)</span>, is total training examples in region <span class="math inline">\(R_m\)</span>.</p>
+<span id="more"></span>
+<h3 id="best-splitting-point">Best Splitting Point</h3>
+<p>Now, finding the binary partition in terms of minimum sum of squares is generally computational infeasible. However, we can use a greedy algorithm that starts with all of the data, considering every splitting variable <span class="math inline">\(j\)</span> and splitting point <span class="math inline">\(s\)</span> and find the pair that minimize the particular loss:</p>
+<ul>
+<li><p>Every pair of splitting point <span class="math inline">\(j\)</span> and split point <span class="math inline">\(s\)</span> define the pair of half-planes:</p>
+<ul>
+<li><span class="math inline">\(R_1(j, s) = \{\mathbf{x} | x_j \leq s\}\)</span> (all samples that have <span class="math inline">\(j\)</span>th feature less than or equal to <span class="math inline">\(s\)</span>)</li>
+<li><span class="math inline">\(R_2(j, s) = \{\mathbf{x} | x_j &gt; s\}\)</span> (all samples that have <span class="math inline">\(j\)</span>th feature greater than <span class="math inline">\(s\)</span>)</li>
+</ul></li>
+<li><p>For each half-plane, we find the best estimate that will minimize the mean square loss in that region: <span class="math display">\[\hat{c}_1 = \underset{c_1}{\arg\min} \frac{1}{N_{1}}\sum_{x_i \in R_1 (j, s)} (y_i - c_1)^2\]</span> <span class="math display">\[\hat{c}_2 = \underset{c_2}{\arg\min} \frac{1}{N_{2}}\sum_{x_i \in R_2 (j, s)} (y_i - c_2)^2\]</span></p>
+<p>From previous results, we know that the minimizers are the average training responses in these regions, that is:</p>
+<p><span class="math display">\[\hat{c}_1 = \frac{1}{N_1} \sum_{x_i \in R_1 (j, s)} y_i I[\mathbf{x}_i \in R_1] \quad \quad \hat{c}_2 = \frac{1}{N_2} \sum_{x_2 \in R_2 (j, s)} y_i I[\mathbf{x}_i \in R_2]\]</span></p></li>
+<li><p>For any choice of <span class="math inline">\((j, s)\)</span>, we seek to minimize the overall objective:</p>
+<p><span class="math display">\[\min_{j, s} [\frac{1}{N_{1}}\sum_{x_i \in R_1 (j, s)} (y_i - \hat{c}_1)^2 + \frac{1}{N_{2}}\sum_{x_i \in R_2 (j, s)} (y_i - \hat{c}_2)^2]\]</span></p></li>
+<li><p>This optimization problem can be solved by scanning through all positive pair of <span class="math inline">\((j, s)\)</span> very quickly. Having found the best split, we partition the data into two regions and repeat this finding procedure until stopping signal received.</p></li>
+</ul>
+<p><br></p>
+<h3 id="cost-complexity-pruning">Cost Complexity Pruning</h3>
+<p>How large should the tree grow? Clearly, a large tree will overfit the training set while a small tree might not capture the important structure. <strong>Tree size</strong> is a tuning parameter governing the model's complexity, and the optimal tree size should be adaptively chosen from the data.</p>
+<p>The preferred strategy is to grow a large tree <span class="math inline">\(T_0\)</span>, stopping the splitting process only until some stopping signals, then pruned the large tree using <code>cost-complexity pruning</code>.</p>
+<p>We define a subtree <span class="math inline">\(T \in T_0\)</span> to be any tree that can be obtained by pruning <span class="math inline">\(T_0\)</span>, that is, collapsing any number of its internal (non-leave) nodes (set the nodes as leaves). The idea is to find, for each <span class="math inline">\(\alpha\)</span> the subtree <span class="math inline">\(T_\alpha \subset T_0\)</span> to minimize the objective:</p>
+<p><span class="math display">\[C_{\alpha} (T) = \sum^{|T|}_{m=1} \sum_{x_i \in R_m} (y_i - \hat{c}_m)^2 + \alpha |T|\]</span></p>
+<p>Where <span class="math inline">\(|T|\)</span> represents current number of leaves, <span class="math inline">\(\alpha |T|\)</span> is the penalty term that trades off tree size and goodness of fit.</p>
+<h3 id="hyperparameters">Hyperparameters:</h3>
+<ol type="1">
+<li><strong>Tree size</strong>: <span class="math inline">\(\;\)</span> Governing the tree's complexity.</li>
+<li><strong>Minimum decease in loss from split</strong>: <span class="math inline">\(\;\)</span>Split tree nodes only if the decrease in sum of squares due to the split exceeds some threshold. However, this approach is short-sighted because a seemingly worthless split might lead to a very good split below it.</li>
+<li><strong>Minimum or maximum leave size</strong>: <span class="math inline">\(\;\)</span> Minimum or maximum number of leaves.</li>
+<li><strong><span class="math inline">\(\alpha\)</span></strong>: Controls for penalty in cost-complexity pruning.</li>
+</ol>
+<h2 id="classification-trees">Classification Trees</h2>
+<p>If <span class="math inline">\(Y\)</span> is a classification outcome taking values <span class="math inline">\(1, 2, 3, ...., K\)</span>, the only change needed in the tree algorithm pertain to the criteria for splitting nodes and pruning the tree. For regression, we used MSE as the splitting criteria and we use average response <span class="math inline">\(\hat{c}\)</span> at each leave as our prediction. In classification case, for each region <span class="math inline">\(m\)</span>, we use proportion to make predictions:</p>
+<p><span class="math display">\[\hat{p}_{mk} = \frac{1}{N_m} \sum_{x_1 \in R_m} I[y_i = k]\]</span></p>
+<p><span class="math display">\[\hat{y}_m = \underset{k}{\arg\max} \; \hat{p}_{mk} \]</span></p>
+<p>Thus, <strong>the prediction at each region is the majority class in that region</strong>.</p>
+<h3 id="impurity-measure">Impurity Measure</h3>
+<p>In classification case, we call the splitting criteria <code>impurity measure</code>. We have several choices for the impurity measure:</p>
+<ol type="1">
+<li><p><strong>Misclassification Error</strong>: <span class="math display">\[\frac{1}{N_m} \sum_{i \in R_m} I[y_i \neq \hat{y}_m] = 1 - \hat{p}_{m \hat{y}_m}\]</span></p></li>
+<li><p><strong>Gini Index</strong>: <span class="math display">\[\sum_{k \neq k^{\prime}} \hat{p}_{mk} \hat{p}_{mk^{\prime}} = \sum^{K}_{k=1} \hat{p}_{mk} (1 - \hat{p}_{mk})\]</span></p>
+<p>Notice here, if there is only one class in the region, then the gini index will be <span class="math inline">\(0\)</span>. That is, gini index prefers purer nodes.</p></li>
+<li><p><strong>Cross-entropy</strong>: <span class="math display">\[-\sum^{K}_{k=1} \hat{p}_{mk} \log \hat{p}_{mk}\]</span></p>
+<p>Notice here, if there is only one class in the region, then the cross-entropy will be <span class="math inline">\(0\)</span> which is minimum. Thus, cross-entropy prefers purer nodes.</p></li>
+</ol>
+<p>In general, we should always use cross entropy or gini index over misclassification rate, because misclassification rate does not capture extra purity. <strong>The impurity needs to scale by the instance number in each region</strong></p>
+<h2 id="other-issues">Other Issues</h2>
+<h3 id="instability-of-trees">Instability of Trees</h3>
+<p>One major problem with trees is their high variance, often a small change in the data changes the structure of the tree. The major reason for this instability is the hierarchical nature of the process: the effect of an error in the top split is propagated down to all of the splits below it.</p>
+<h3 id="difficulty-in-capturing-additive-structure">Difficulty in Capturing Additive Structure</h3>
+<p>Another problem with trees is their difficulty in modeling additive structure. For regression <span class="math inline">\(Y = c_1 I[X_1 &lt; t_1] + c_2 I[X_2 &lt; t_2] + \epsilon\)</span>, a tree has to split based on <span class="math inline">\((X_1, t_1)\)</span>, then split on <span class="math inline">\((X_2, t_2)\)</span>. This might happen with sufficient data, but the model is given no special encouragement to find such structure.</p>
+<h3 id="linear-combination-splits">Linear Combination Splits</h3>
+<p>To solve the additive structure problem, rather than restricting splits to be of the form <span class="math inline">\(X_j \leq s\)</span>, one can allow splits along linear combinations of features:</p>
+<p><span class="math display">\[\sum_{j} a_j X_j \leq s\]</span></p>
+<p>While this can improve the predictive power of the tree, it can hurt interpretability.</p>
+<h1 id="implementation">Implementation</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DecisionTreeNode</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, split_point=<span class="literal">None</span>, split_feature=<span class="literal">None</span>, gini_index=<span class="literal">None</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">                 num_instance=<span class="literal">None</span>, left_child=<span class="literal">None</span>, right_child=<span class="literal">None</span>, prediction=<span class="literal">None</span></span>):</span></span><br><span class="line"></span><br><span class="line">        self.split_point = split_point</span><br><span class="line">        self.split_feature = split_feature</span><br><span class="line">        self.gini_index = gini_index</span><br><span class="line">        self.num_instance = num_instance</span><br><span class="line">        self.left_child = left_child</span><br><span class="line">        self.right_child = right_child</span><br><span class="line">        self.prediction = prediction</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DecisionTreeClassifier</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, max_depth=<span class="number">10</span>, criterion=<span class="string">&#x27;gini_index&#x27;</span>, min_sample_leave=<span class="number">1</span></span>):</span></span><br><span class="line">        self.max_depth = max_depth</span><br><span class="line">        self.criterion = criterion</span><br><span class="line">        self.min_sample_splits = min_sample_leave</span><br><span class="line">        self._tree = <span class="literal">None</span></span><br><span class="line">        self._num_features = <span class="literal">None</span></span><br><span class="line">        self.feature_names = <span class="literal">None</span></span><br><span class="line">        self._num_samples = <span class="literal">None</span></span><br><span class="line">        self._classes = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span>(<span class="params">self, x_train, y_train</span>):</span></span><br><span class="line">        self._num_samples, self._num_features = x_train.shape</span><br><span class="line">        self._classes = np.unique(y_train)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(x_train, pd.DataFrame):</span><br><span class="line">            self.feature_names = x_train.columns</span><br><span class="line">            x_train = x_train.values</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.feature_names = <span class="built_in">range</span>(self._num_features)</span><br><span class="line"></span><br><span class="line">        self._tree = self._grow_tree(np.column_stack([x_train, y_train]))</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_grow_tree</span>(<span class="params">self, train, curr_depth=<span class="number">0</span>, stop=<span class="literal">False</span></span>):</span></span><br><span class="line">        <span class="keyword">if</span> stop:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            impurity_dict = &#123;&#125;</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(self._num_features):</span><br><span class="line">                curr_feature_col = train[:, j]</span><br><span class="line">                <span class="keyword">for</span> s <span class="keyword">in</span> np.unique(curr_feature_col):</span><br><span class="line">                    impurity = self._cal_impurity(train, j, s)</span><br><span class="line">                    <span class="keyword">if</span> impurity <span class="keyword">in</span> impurity_dict.keys():</span><br><span class="line">                        impurity_dict[impurity].append((j, s))</span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        impurity_dict[impurity] = [(j, s)]</span><br><span class="line"></span><br><span class="line">            min_impurity = <span class="built_in">min</span>(impurity_dict.keys())</span><br><span class="line">            j_hat, s_hat = impurity_dict[min_impurity][<span class="number">0</span>]</span><br><span class="line">            prediction = Counter(train[:, -<span class="number">1</span>]).most_common()[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">            R_l = train[train[:, j_hat] &lt; s_hat]</span><br><span class="line">            R_r = train[train[:, j_hat] &gt;= s_hat]</span><br><span class="line">            sample_split = [<span class="built_in">len</span>(R_l), <span class="built_in">len</span>(R_r)]</span><br><span class="line"></span><br><span class="line">            if_stop = self._check_stopping_criterion(curr_depth, sample_split)</span><br><span class="line"></span><br><span class="line">            <span class="built_in">print</span>(curr_depth, min_impurity, sample_split, (j_hat, s_hat))</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> DecisionTreeNode(split_point=s_hat,</span><br><span class="line">                                    split_feature=j_hat,</span><br><span class="line">                                    prediction=prediction,</span><br><span class="line">                                    gini_index=min_impurity,</span><br><span class="line">                                    num_instance=<span class="built_in">len</span>(train),</span><br><span class="line">                                    left_child=self._grow_tree(train=R_l,</span><br><span class="line">                                                               curr_depth=curr_depth+<span class="number">1</span>,</span><br><span class="line">                                                               stop=if_stop),</span><br><span class="line"></span><br><span class="line">                                    right_child=self._grow_tree(train=R_r,</span><br><span class="line">                                                                curr_depth=curr_depth+<span class="number">1</span>,</span><br><span class="line">                                                                stop=if_stop))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_check_stopping_criterion</span>(<span class="params">self, curr_depth, sample_split</span>):</span></span><br><span class="line">        <span class="keyword">if</span> curr_depth &gt; self.max_depth:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">any</span>([sample_split[<span class="number">0</span>] &lt; self.min_sample_splits, sample_split[<span class="number">1</span>] &lt; self.min_sample_splits]):</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_cal_impurity</span>(<span class="params">self, train, j, s</span>):</span></span><br><span class="line">        R_l = train[train[:, j] &lt; s]</span><br><span class="line">        R_r = train[train[:, j] &gt;= s]</span><br><span class="line">        R_l_y = R_l[:, -<span class="number">1</span>]</span><br><span class="line">        R_r_y = R_r[:, -<span class="number">1</span>]</span><br><span class="line">        N_l = <span class="built_in">len</span>(R_l) + <span class="number">1e-10</span></span><br><span class="line">        N_r = <span class="built_in">len</span>(R_r) + <span class="number">1e-10</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> self.criterion == <span class="string">&#x27;gini_index&#x27;</span>:</span><br><span class="line">            gini_l = <span class="number">0</span></span><br><span class="line">            gini_r = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> k <span class="keyword">in</span> self._classes:</span><br><span class="line">                p_l = <span class="built_in">len</span>(R_l_y[R_l_y == k]) / N_l</span><br><span class="line">                p_r = <span class="built_in">len</span>(R_r_y[R_r_y == k]) / N_r</span><br><span class="line">                gini_l += p_l * (<span class="number">1</span> - p_l)</span><br><span class="line">                gini_r += p_r * (<span class="number">1</span> - p_r)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> gini_l * N_l + gini_r * N_r</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, x_test</span>):</span></span><br><span class="line">        output = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> x_test:</span><br><span class="line">            output.append(self._traverse_tree(i))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> output</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_traverse_tree</span>(<span class="params">self, x, tree=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> tree:</span><br><span class="line">            tree = self._tree</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> tree.left_child <span class="keyword">and</span> <span class="keyword">not</span> tree.left_child:</span><br><span class="line">            <span class="keyword">return</span> tree.prediction</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> x[tree.split_feature] &lt; tree.split_point:</span><br><span class="line">                <span class="keyword">return</span> self._traverse_tree(x, tree.left_child)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">return</span> self._traverse_tree(x, tree.right_child)</span><br></pre></td></tr></table></figure>
+<h1 id="ref">Ref</h1>
+<p>ESLII Chapter 9</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/07/19/adaboost/" rel="bookmark">Adaboost</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/07/21/em/" rel="bookmark">EM</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/07/19/gbdt/" rel="bookmark">GBDT</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/09/09/graphical-models/" rel="bookmark">Graphical Models</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/09/16/hmm/" rel="bookmark">Sequential Data</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/19/heaps/" rel="prev" title="Heaps">
+                  <i class="fa fa-chevron-left"></i> Heaps
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/07/19/gbdt/" rel="next" title="GBDT">
+                  GBDT <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

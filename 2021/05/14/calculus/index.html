@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Multivariate Calculus (1) Fundamental Theorem of Calculus If \(f\) is continuous and \(F\) is indefinite integral of \(f\) (i.e \(F^{\prime} &#x3D; f\) or \(\int f(x) dx &#x3D; F(x) + c\), without bounds) on cl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Calculus (1)">
+<meta property="og:url" content="https://swag1ong.github.io/2021/05/14/calculus/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Multivariate Calculus (1) Fundamental Theorem of Calculus If \(f\) is continuous and \(F\) is indefinite integral of \(f\) (i.e \(F^{\prime} &#x3D; f\) or \(\int f(x) dx &#x3D; F(x) + c\), without bounds) on cl">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/15_1_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/12_1_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/12_2_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/12_3_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/12_3_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/12_3_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/12_4_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/12_4_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/12_4_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/12_4_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/12_5_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/12_5_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/12_5_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/12_5_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/13_1_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/13_2_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/13_2_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/13_2_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/13_2_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/13_2_5.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/13_3_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/13_3_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/13_3_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/13_3_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/13_3_5.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/13_3_6.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_1_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_1_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_1_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_1_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_2_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_2_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_2_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_3_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_3_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_3_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_3_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_4_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_4_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_4_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_4_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_4_5.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_5_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_5_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_5_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_5_5.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_5_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_6_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_6_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_6_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_6_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_6_5.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_6_6.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_6_7.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_6_9.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_6_8.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_6_10.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_6_11.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_7_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_7_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_7_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_7_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_7_5.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_7_6.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_8_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_8_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/14_8_3.png">
+<meta property="article:published_time" content="2021-05-14T13:34:18.000Z">
+<meta property="article:modified_time" content="2021-07-23T09:53:02.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="RL Basics">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swag1ong.github.io/images/cal/15_1_1.png">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/05/14/calculus/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;05&#x2F;14&#x2F;calculus&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;05&#x2F;14&#x2F;calculus&#x2F;&quot;,&quot;title&quot;:&quot;Calculus (1)&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Calculus (1) | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#multivariate-calculus-1"><span class="nav-number">1.</span> <span class="nav-text">Multivariate Calculus (1)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#fundamental-theorem-of-calculus"><span class="nav-number">1.1.</span> <span class="nav-text">Fundamental Theorem of Calculus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#definition-of-integral"><span class="nav-number">1.2.</span> <span class="nav-text">Definition of Integral</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vectors-and-the-geometric-of-space"><span class="nav-number">1.3.</span> <span class="nav-text">Vectors and the Geometric of Space</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#equation-of-a-sphere"><span class="nav-number">1.3.1.</span> <span class="nav-text">Equation of a sphere</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vectors"><span class="nav-number">1.3.2.</span> <span class="nav-text">Vectors</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dot-product"><span class="nav-number">1.3.3.</span> <span class="nav-text">Dot product</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#proof"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">Proof</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#projections"><span class="nav-number">1.3.4.</span> <span class="nav-text">Projections</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cross-product"><span class="nav-number">1.3.5.</span> <span class="nav-text">Cross Product</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#equations-of-lines-and-planes"><span class="nav-number">1.4.</span> <span class="nav-text">Equations of Lines and Planes</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#planes"><span class="nav-number">1.4.1.</span> <span class="nav-text">Planes</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#the-distance-to-plane"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">The distance to plane</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vector-functions"><span class="nav-number">1.5.</span> <span class="nav-text">Vector Functions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#vector-functions-and-space-curves"><span class="nav-number">1.5.1.</span> <span class="nav-text">Vector Functions and Space Curves</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#derivatives-and-integrals-of-vector-functions"><span class="nav-number">1.6.</span> <span class="nav-text">Derivatives and Integrals of Vector Functions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#derivatives"><span class="nav-number">1.6.1.</span> <span class="nav-text">Derivatives</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#differentiation-rules"><span class="nav-number">1.6.1.1.</span> <span class="nav-text">Differentiation Rules</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#integrals"><span class="nav-number">1.6.2.</span> <span class="nav-text">Integrals</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#arc-length-and-curvature"><span class="nav-number">1.7.</span> <span class="nav-text">Arc Length and Curvature</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#reparameterize-a-curve-with-respect-to-arc-length"><span class="nav-number">1.7.1.</span> <span class="nav-text">Reparameterize a curve with respect to arc length</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#curvature"><span class="nav-number">1.8.</span> <span class="nav-text">Curvature</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#the-normal-and-binormal-vectors"><span class="nav-number">1.9.</span> <span class="nav-text">The Normal and Binormal Vectors</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#partial-derivatives"><span class="nav-number">1.10.</span> <span class="nav-text">Partial Derivatives</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#functions-of-several-variables"><span class="nav-number">1.10.1.</span> <span class="nav-text">Functions of Several Variables</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#limits-and-continuity"><span class="nav-number">1.10.2.</span> <span class="nav-text">Limits and Continuity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#partial-derivatives-1"><span class="nav-number">1.10.3.</span> <span class="nav-text">Partial Derivatives</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#geometry-view-of-partial-derivatives"><span class="nav-number">1.10.3.1.</span> <span class="nav-text">Geometry View of Partial Derivatives</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tangent-planes-and-linear-approximations"><span class="nav-number">1.10.4.</span> <span class="nav-text">Tangent Planes and Linear Approximations</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#tangent-planes"><span class="nav-number">1.10.4.1.</span> <span class="nav-text">Tangent Planes</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#linear-approximation"><span class="nav-number">1.10.4.2.</span> <span class="nav-text">Linear Approximation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#differentials"><span class="nav-number">1.10.4.3.</span> <span class="nav-text">Differentials</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#functions-of-three-or-more-variables"><span class="nav-number">1.10.4.4.</span> <span class="nav-text">Functions of Three or More Variables</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#the-chain-rule"><span class="nav-number">1.10.5.</span> <span class="nav-text">The Chain Rule</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#implicit-differentiation"><span class="nav-number">1.10.5.1.</span> <span class="nav-text">Implicit Differentiation</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#directional-derivatives-and-the-gradient-vector"><span class="nav-number">1.10.6.</span> <span class="nav-text">Directional Derivatives and the Gradient Vector</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#directional-derivatives"><span class="nav-number">1.10.6.1.</span> <span class="nav-text">Directional Derivatives</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#the-gradient-vector"><span class="nav-number">1.10.6.2.</span> <span class="nav-text">The Gradient Vector</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#functions-of-three-variables"><span class="nav-number">1.10.6.3.</span> <span class="nav-text">Functions of Three Variables</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#maximizing-the-directional-derivative"><span class="nav-number">1.10.6.4.</span> <span class="nav-text">Maximizing the Directional Derivative</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#tangent-planes-to-level-surfaces"><span class="nav-number">1.10.6.5.</span> <span class="nav-text">Tangent Planes to Level Surfaces</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#maximum-and-minimum-values"><span class="nav-number">1.10.7.</span> <span class="nav-text">Maximum and Minimum Values</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#absolute-maximum-and-minimum-values"><span class="nav-number">1.10.7.1.</span> <span class="nav-text">Absolute Maximum and Minimum Values</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lagrange-multipliers"><span class="nav-number">1.10.8.</span> <span class="nav-text">Lagrange Multipliers</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#two-constraints"><span class="nav-number">1.10.8.1.</span> <span class="nav-text">Two Constraints</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/05/14/calculus/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Calculus (1)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-05-14 21:34:18" itemprop="dateCreated datePublished" datetime="2021-05-14T21:34:18+08:00">2021-05-14</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-23 17:53:02" itemprop="dateModified" datetime="2021-07-23T17:53:02+08:00">2021-07-23</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/05/14/calculus/" class="post-meta-item leancloud_visitors" data-flag-title="Calculus (1)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>21k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>19 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="multivariate-calculus-1">Multivariate Calculus (1)</h1>
+<h2 id="fundamental-theorem-of-calculus">Fundamental Theorem of Calculus</h2>
+<p>If <span class="math inline">\(f\)</span> is continuous and <span class="math inline">\(F\)</span> is indefinite integral of <span class="math inline">\(f\)</span> (i.e <span class="math inline">\(F^{\prime} = f\)</span> or <span class="math inline">\(\int f(x) dx = F(x) + c\)</span>, without bounds) on closed interval <span class="math inline">\([a, b]\)</span>, then:</p>
+<ol type="1">
+<li><span class="math inline">\(\int^{b}_{a} f(x) dx = F(b) - F(a)\)</span></li>
+<li><span class="math inline">\(\frac{d}{dx}\int^{x}_{a} f(t)dt = F^{\prime}(x) - F^{\prime}(a) = F^{\prime} (x) = f(x)\)</span></li>
+</ol>
+<h2 id="definition-of-integral">Definition of Integral</h2>
+<p>If <span class="math inline">\(f(x)\)</span> is defined for <span class="math inline">\(a \leq x \leq b\)</span>, we start by dividing the interval <span class="math inline">\([a, b]\)</span> into <span class="math inline">\(n\)</span> sub-intervals <span class="math inline">\([x_{i - 1}, x_{i}]\)</span> of equal width <span class="math inline">\(\Delta x = \frac{b - a}{n}\)</span> and we choose sample points <span class="math inline">\(x^{*}_i\)</span> in these subintervals. Then we form the <code>Riemann sum</code>:</p>
+<p><span class="math display">\[\sum^{n}_{i=1} f(x^{*}_n) \Delta x\]</span></p>
+<p>Then by taking the limit <span class="math inline">\(n \rightarrow \infty\)</span>, we have the definite integral of <span class="math inline">\(f\)</span> from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span>:</p>
+<p><span class="math display">\[\int^{b}_{a} f(x) dx = \lim_{n \rightarrow \infty} \sum^{n}_{i=1} f(x^{*}_n) \Delta x\]</span></p>
+<p>In the special case where <span class="math inline">\(f(x) \leq 0\)</span>, we can interpret the <code>Riemann sum</code> as the sum of the areas of the approximating rectangles, and <span class="math inline">\(\int^{b}_{a} f(x) dx\)</span> represents the area under the curve <span class="math inline">\(y = f(x)\)</span> from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span>.</p>
+<p><img src='/images/cal/15_1_1.png' width="600"></p>
+<h2 id="vectors-and-the-geometric-of-space">Vectors and the Geometric of Space</h2>
+<h3 id="equation-of-a-sphere">Equation of a sphere</h3>
+<p>By definition, a sphere is the set of all points <span class="math inline">\(P(x, y, z)\)</span> whose distance from <span class="math inline">\(C\)</span> is <span class="math inline">\(r\)</span>, where <span class="math inline">\(C\)</span> is the center <span class="math inline">\(C(h, k, l)\)</span>. Thus, <span class="math inline">\(P\)</span> is on the sphere if and only if</p>
+<p><span class="math display">\[|PC| = r \implies |PC|^2 = r^2\]</span></p>
+<p><span class="math display">\[(x - h)^2 + (y - k)^2 + (z - l)^2 = r^2\]</span></p>
+<p><img src='/images/cal/12_1_1.png' width="600"></p>
+<span id="more"></span>
+<h3 id="vectors">Vectors</h3>
+<p>The term vector is used by scientists to indicate a quantity that has both magnitude and direction.</p>
+<p><img src='/images/cal/12_2_1.png' width="600"></p>
+<p>In three dimensions, the vector <span class="math inline">\(a = \vec{OP}\)</span> is the <strong>position vector</strong> of the point <span class="math inline">\(P\)</span>. We can think of all geometric vectors as representation of the position vector of the point <span class="math inline">\(P\)</span>.</p>
+<h3 id="dot-product">Dot product</h3>
+<p><img src='/images/cal/12_3_1.png' width="600"></p>
+<h4 id="proof">Proof</h4>
+<p>Recall the law of cosines for vector <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> and their difference <span class="math inline">\(a - b\)</span>:</p>
+<p><span class="math display">\[|a - b|^2 = |a|^2 + |b|^2 - 2|a||b|\cos\theta\]</span></p>
+<p>If we expand left side:</p>
+<p><span class="math display">\[|a - b|^2 = (a - b) \cdot (a - b) = |a|^2 + |b|^2 - 2 a \cdot b\]</span></p>
+<p>Then we have:</p>
+<p><span class="math display">\[|a|^2 + |b|^2 - 2 a \cdot b = |a|^2 + |b|^2 - 2|a||b|\cos\theta \implies a \cdot b = |a||b|\cos \theta\]</span> </br></p>
+<p>If two vectors are <strong>perpendicular</strong> or <strong>orthogonal</strong> <span class="math inline">\(\Longleftrightarrow\)</span> the angle between them is <span class="math inline">\(\theta = 90^\circ\)</span> and <span class="math inline">\(a \cdot b = 0\)</span></p>
+<h3 id="projections">Projections</h3>
+<p><img src='/images/cal/12_3_2.png' width="600"></p>
+<p>The vector projection of <span class="math inline">\(b\)</span> onto <span class="math inline">\(a\)</span> is denoted as <span class="math inline">\(proj_a b\)</span>. The <span class="math inline">\(comp_a b\)</span> is defined to be the signed magnitude of the vector projection.</p>
+<p><span class="math inline">\(\cos \theta = \frac{adjacent}{hypotenuse} \implies\)</span> the magnitude of the project vector is <span class="math inline">\(comp_{a} b = |b| \cos \theta\)</span>.</p>
+<p>Recall that the dot product:</p>
+<p><span class="math display">\[a \cdot b = |a|(|b|\cos \theta)\]</span></p>
+<p>So:</p>
+<p><span class="math display">\[com_{a} b = \frac{a \cdot b }{|a|}\]</span></p>
+<p>Remember that <span class="math inline">\(proj_a b\)</span> is a vector, we need to add direction of <span class="math inline">\(a\)</span> which is <span class="math inline">\(\frac{a}{|a|}\)</span> to the magnitude <span class="math inline">\(comp_a b\)</span>:</p>
+<p><span class="math display">\[proj_a b = \frac{a \cdot b }{|a|} \frac{a}{|a|} = \frac{a \cdot b}{|a|^2} a\]</span></p>
+<p><img src='/images/cal/12_3_3.png' width="600"></p>
+<h3 id="cross-product">Cross Product</h3>
+<p><img src='/images/cal/12_4_1.png' width="600"></p>
+<p>The cross product of <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> is a vector. Note that <span class="math inline">\(a \times b\)</span> is only defined when <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are three-dimensional vectors.</p>
+<p><img src='/images/cal/12_4_2.png' width="600"></p>
+<p><img src='/images/cal/12_4_3.png' width="600"></p>
+<p><img src='/images/cal/12_4_4.png' width="600"></p>
+<p><br></p>
+<p><strong>Two non-zero vectors <span class="math inline">\(a, b\)</span> are parallel if and only if <span class="math inline">\(a \times b = 0\)</span></strong></p>
+<h2 id="equations-of-lines-and-planes">Equations of Lines and Planes</h2>
+<p>A line on xy-plane is determined when a point on the line and the direction of the line. Likewise, a line <span class="math inline">\(L\)</span> in 3 dimensional space is determined when we know a point <span class="math inline">\(P_0 (x_0, y_0, z_0)\)</span> on <span class="math inline">\(L\)</span> and the direction of <span class="math inline">\(L\)</span>.</p>
+<p>In 3 d space the direction of the line is described as a vector, so we let <span class="math inline">\(v = \vec{OV}\)</span> be a vector parallel to <span class="math inline">\(L\)</span>. Let <span class="math inline">\(P(x, y, z)\)</span> be an arbitrary point on <span class="math inline">\(L\)</span> and let <span class="math inline">\(r_0 = \vec{OP_0}\)</span> and <span class="math inline">\(r= \vec{OP}\)</span> be the position vectors of Let <span class="math inline">\(a = \vec{P_0P}\)</span>, then</p>
+<p><span class="math display">\[\vec{P_0P} = \vec{OP} - \vec{OP_0} \implies r = r_0 + a\]</span></p>
+<p>Since <span class="math inline">\(a, v\)</span> are parallel vectors, there is a scalar such that <span class="math inline">\(a = tv\)</span>. Thus:</p>
+<p><span class="math display">\[r = r_0 + tv\]</span></p>
+<p>This is the <strong>vector equation</strong> of <span class="math inline">\(L\)</span> in 3 d. Each value of the parameter <span class="math inline">\(t\)</span> gives the position vector <span class="math inline">\(r\)</span> of a point on <span class="math inline">\(L\)</span>. So the line in 3 d is represented by a position vector on the line and a scalar multiple of direction vector <span class="math inline">\(tv\)</span>.</p>
+<p><br></p>
+<p>In component form <span class="math inline">\(r = &lt;x, y, z&gt;, r_0 = &lt;x_0, y_0, z_0&gt;, v=&lt;a, b, c&gt;\)</span>, each component is called <strong>parametric equation</strong> of the line <span class="math inline">\(L\)</span> through point <span class="math inline">\(P_0\)</span>:</p>
+<p><span class="math display">\[&lt;x, y, z&gt; = &lt;x_0 + ta, y_0 + tb, z_0 + tc&gt;\]</span> </br></p>
+<p><img src='/images/cal/12_5_1.png' width="600"></p>
+<p><br></p>
+<p>In general, we know that the vector equation of a line through the tip of the vector <span class="math inline">\(r_0\)</span> in the direction of a vector <span class="math inline">\(v\)</span> is <span class="math inline">\(r(t) = r_0 + tv\)</span>. If the line also passes through the tip of <span class="math inline">\(r_1\)</span>, then we can take <span class="math inline">\(v = r_1 - r_0\)</span> because <span class="math inline">\(v = r_1 - r_0\)</span> is parallel to the line <span class="math inline">\(L\)</span>, thus satisfies the vector equation of line:</p>
+<p><span class="math display">\[r(t) = r_0 + tv = r_0 + t(r_1 - r_0)\]</span></p>
+<p>If <span class="math inline">\(t = 1 \implies r = r_1\)</span>, if <span class="math inline">\(t = 0 \implies r = r_0\)</span>, the line segment from $r_0 $ to <span class="math inline">\(r_1\)</span> is ten given by the parameter interval <span class="math inline">\(0 \leq t \leq 1\)</span>:</p>
+<p><img src='/images/cal/12_5_2.png' width="600"></p>
+<h3 id="planes">Planes</h3>
+<p>Although a line in space is determined by a point and a direction, a plane in space is more difficult to describe.</p>
+<p>A plane in the space is determined by a point <span class="math inline">\(P_0\)</span> in the plane and a vector <span class="math inline">\(n\)</span> that is orthogonal to the plane. This orthogonal vector <span class="math inline">\(n\)</span> is called a <strong>normal vector</strong>.</p>
+<p>Let <span class="math inline">\(P(x, y, z), P_0 (x_0, y_0, z_0)\)</span> be an arbitrary point in the plane, and let <span class="math inline">\(r_0\)</span> and <span class="math inline">\(r\)</span> be the position vectors of <span class="math inline">\(P_0\)</span> and <span class="math inline">\(P\)</span>. Then the vector <span class="math inline">\(r - r_0 = \vec{P_0 P}\)</span> is on the plane. The normal vector <span class="math inline">\(n = &lt;a, b, c&gt;\)</span> is orthogonal to every vector on the plane, that is:</p>
+<p><span class="math display">\[n \cdot (r - r_0) = 0\]</span></p>
+<p>We can rewrite this as:</p>
+<p><span class="math display">\[n \cdot r = n \cdot r_0\]</span></p>
+<p>Either of these equations are called a <strong>vector equation of the plane</strong>.</p>
+<p>The <strong>scalar equation of the plane through <span class="math inline">\(P_0\)</span> with normal vector <span class="math inline">\(n\)</span></strong> can be written as:</p>
+<p><span class="math display">\[&lt;a, b, c&gt; \cdot &lt;x - x_0, y - y_0, z - z_0&gt; = 0 \implies a (x - x_0) + b (y - y_0) + c (z - z_0) = 0\]</span></p>
+<p>By collecting terms, we can have:</p>
+<p><span class="math display">\[ax + by + cz + d = 0\]</span></p>
+<p>Where <span class="math inline">\(d = -(ax_0 + by_0 + cz_0)\)</span>. If <span class="math inline">\(a, b, c\)</span> are not all zero, this equation can represent the plane.</p>
+<p><br></p>
+<p>Two planes are parallel if their normal vectors are parallel. If two planes are not parallel, then they intersact in a straight line and the angle between them is defined as the acute angle between their normal vectors.</p>
+<h4 id="the-distance-to-plane">The distance to plane</h4>
+<p><img src='/images/cal/12_5_3.png' width="600"></p>
+<p>We know that the <span class="math inline">\(D = comp_n b = \frac{n \cdot b}{|n|}\)</span>, since the distance is positive, we need to find <span class="math inline">\(|comp_n b|\)</span>:</p>
+<p><span class="math display">\[|D| = |comp_n b| = \frac{|n \cdot b|}{|n|}\]</span></p>
+<p><img src='/images/cal/12_5_4.png' width="600"></p>
+<h2 id="vector-functions">Vector Functions</h2>
+<h3 id="vector-functions-and-space-curves">Vector Functions and Space Curves</h3>
+<p>In general, a function is a rule that assigns to each element in the domain an element in the range. A <strong>vector-valued function</strong>, is simply a function whose domain is a set of real numbers and whose range is a set of vectors.</p>
+<p>We are most interested in vector functions <span class="math inline">\(r\)</span> whose values are three-dimensional vectors. This means that for every number <span class="math inline">\(t\)</span> in the domain of <span class="math inline">\(r\)</span> three is a unique vector in <span class="math inline">\(V_3\)</span> denoted by <span class="math inline">\(r(t)\)</span>. If <span class="math inline">\(f(t), g(t), h(t)\)</span> are the components of the vector <span class="math inline">\(r(t)\)</span>, then <span class="math inline">\(f, g\)</span> and <span class="math inline">\(h\)</span> are real-valued functions called the <strong>component functions</strong> of <span class="math inline">\(r\)</span> and we can write:</p>
+<p><span class="math display">\[r(t) = &lt;f(t), \;g(t), \;h(t)&gt;\]</span></p>
+<p><br></p>
+<p><img src='/images/cal/13_1_1.png' width="600"></p>
+<p><br></p>
+<p>if <span class="math inline">\(\lim_{t \rightarrow \infty} r(t) = L\)</span>, then this is equivalent to saying that the length and direction of the vector <span class="math inline">\(r(t)\)</span> approach the length and direction of the vector <span class="math inline">\(L\)</span>.</p>
+<p>A vector function <span class="math inline">\(r\)</span> is continuous at <span class="math inline">\(a\)</span> if:</p>
+<p><span class="math display">\[\lim_{t \rightarrow a} r(t) = r(a)\]</span></p>
+<p>That is, <span class="math inline">\(r(t)\)</span> is continuous at <span class="math inline">\(a\)</span> if and only if all the components are continuous at <span class="math inline">\(a\)</span>.</p>
+<h2 id="derivatives-and-integrals-of-vector-functions">Derivatives and Integrals of Vector Functions</h2>
+<h3 id="derivatives">Derivatives</h3>
+<p><img src='/images/cal/13_2_1.png' width="600"></p>
+<p>If the limit exists, let <span class="math inline">\(P, Q\)</span> with position vector <span class="math inline">\(r(t), r(t + h)\)</span>, then <span class="math inline">\(r(t + h) - r(t)\)</span> is the vector between them, <span class="math inline">\(\frac{r(t + h) - r(t)}{h}\)</span> has same direction as <span class="math inline">\(r(t + h) - r(t)\)</span>. As <span class="math inline">\(h \rightarrow 0\)</span>, <span class="math inline">\(r(t + h)\)</span> gets closer to <span class="math inline">\(r(t)\)</span> so <span class="math inline">\(\frac{r(t + h) - r(t)}{h}\)</span> becomes the <strong>tangent vector</strong> to the curve defined by <span class="math inline">\(r\)</span> at the point <span class="math inline">\(P\)</span>.</p>
+<p><img src='/images/cal/13_2_2.png' width="600"></p>
+<p>The <strong>tangent line</strong> at <span class="math inline">\(P\)</span> is defined to be the line through <span class="math inline">\(P\)</span> parallel to the tangent vector <span class="math inline">\(r^{\prime}(t)\)</span></p>
+<p><img src='/images/cal/13_2_3.png' width="600"></p>
+<h4 id="differentiation-rules">Differentiation Rules</h4>
+<p><img src='/images/cal/13_2_4.png' width="600"></p>
+<h3 id="integrals">Integrals</h3>
+<p><img src='/images/cal/13_2_5.png' width="600"></p>
+<h2 id="arc-length-and-curvature">Arc Length and Curvature</h2>
+<p>Suppose that the curve has the vector equation <span class="math inline">\(r(t) = &lt;f(t), g(t), h(t)&gt;, \; a\geq t \leq b\)</span>. The length of the space curve as t traverses exactly once from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span> can be shown:</p>
+<p><span class="math display">\[L = \int^{b}_{a} \sqrt{[f^{\prime}(t)]^2 + [g^{\prime}(t)]^2 + [h^{\prime}(t)]^2} dt = \int^{b}_{a} |r^{\prime}(t)| dt\]</span></p>
+<p>Where <span class="math inline">\(|r^\prime(t)| = \sqrt{[f^{\prime}(t)]^2 + [g^{\prime}(t)]^2 + [h^{\prime}(t)]^2}\)</span> is the length of tangent vector at any point defined by space curve <span class="math inline">\(r(t)\)</span>.</p>
+<p><br></p>
+<h3 id="reparameterize-a-curve-with-respect-to-arc-length">Reparameterize a curve with respect to arc length</h3>
+<p>Let <span class="math inline">\(s(t)\)</span> be the arc length between point <span class="math inline">\(r(a), r(t)\)</span>:</p>
+<p><span class="math display">\[s(t) = \int^{t}_{a} |r^{\prime}(u)| du\]</span></p>
+<p>Then by the fundamental theorem of calculus, we have:</p>
+<p><span class="math display">\[s^{\prime}(t) = |r^{\prime}(t)|\]</span></p>
+<p>By calculating <span class="math inline">\(|r^{\prime} (t)|\)</span>, and <span class="math inline">\(s(t)\)</span> with <span class="math inline">\(t\)</span> as function of <span class="math inline">\(s\)</span>, we can reparameterize the space curve by <span class="math inline">\(r(t(s))\)</span>.</p>
+<h2 id="curvature">Curvature</h2>
+<p>A parameterization <span class="math inline">\(r(t)\)</span> is called <strong>smooth</strong> on an interval <span class="math inline">\(I\)</span> if <span class="math inline">\(r^{\prime}\)</span> is continuous and <span class="math inline">\(r^{\prime} (t) \neq 0\)</span> on <span class="math inline">\(I\)</span>.</p>
+<p>A curve is called <strong>smooth</strong> if it has a smooth parametrization. A smooth curve has no sharp corners or cusps when the tangent vector turns, it does so continuously.</p>
+<p><img src='/images/cal/13_3_1.png' width="600"></p>
+<p>If <span class="math inline">\(C\)</span> is a smooth curve defined by the vector function <span class="math inline">\(r\)</span>, the unit tangent vector <span class="math inline">\(T(t)\)</span> is given by:</p>
+<p><span class="math display">\[T(t) = \frac{r^{\prime} (t)}{|r(t)|}\]</span></p>
+<p>and this indicates the direction of the curve.</p>
+<p>The curvature of <span class="math inline">\(C\)</span> at a given point is a measure of how quickly the curve changes direction at that point. Specifically, we define it to be the magnitude of the rate of change of the unit tangent vector with respect to arc length.</p>
+<p><img src='/images/cal/13_3_2.png' width="600"></p>
+<p><br></p>
+<p><span class="math display">\[\frac{dT}{dt} = \frac{dT}{ds} \frac{ds}{dt} \implies |\frac{dT}{ds}| = |\frac{\frac{dT}{dt}}{\frac{ds}{dt}}|\]</span></p>
+<p>Remember <span class="math inline">\(\frac{ds}{dt} = |r^{\prime} (t)|\)</span>:</p>
+<p><span class="math display">\[|\frac{dT}{ds}| = \frac{|T^{\prime} (t)|}{|r^{\prime} (t)|}\]</span></p>
+<p>In general, the below formula is more convenient to apply:</p>
+<p><img src='/images/cal/13_3_3.png' width="600"></p>
+<p><br></p>
+<p>In 2d case:</p>
+<p><img src='/images/cal/13_3_4.png' width="600"></p>
+<h2 id="the-normal-and-binormal-vectors">The Normal and Binormal Vectors</h2>
+<p>Since <span class="math inline">\(|T(t)| = 1 \implies T(t) \cdot T(t) = 1\)</span>, we have:</p>
+<p><span class="math display">\[\frac{T(t) \cdot T(t)}{t} = T^{\prime}(t) \cdot T(t) +  T^{\prime}(t) \cdot T(t) = 2 T^{\prime}(t)  \cdot T(t) = 0\]</span></p>
+<p>Thus, <span class="math inline">\(T^{\prime} (t) \cdot T(t) = 0\)</span>. <span class="math inline">\(T^{\prime} (t)\)</span> is orthogonal to <span class="math inline">\(T(t)\)</span>. Note that <span class="math inline">\(T^{\prime} (t)\)</span> is itself not a unit vector. But at any point where <span class="math inline">\(k \neq 0\)</span> we can define the <strong>principal unit normal vector N(t)</strong> as:</p>
+<p><span class="math display">\[N(t) = \frac{T^{\prime} (t)}{|T(t)|}\]</span></p>
+<p>The vector <span class="math inline">\(B(t) = T(t) \times N(t)\)</span> is called the <strong>binormal vector</strong>. It is perpendicular to both <span class="math inline">\(T\)</span> and <span class="math inline">\(N\)</span> and is also a unit vector at particular point.</p>
+<p><img src='/images/cal/13_3_5.png' width="600"></p>
+<p><br></p>
+<p>The plane determined by the normal and binormal vectors <span class="math inline">\(N\)</span> and <span class="math inline">\(B\)</span> at a point <span class="math inline">\(P\)</span> on a curve <span class="math inline">\(C\)</span> is called the <strong>normal plane</strong> of <span class="math inline">\(C\)</span> at <span class="math inline">\(P\)</span>. It consists of all lines that are orthogonal to the tangent vector <span class="math inline">\(T\)</span>.</p>
+<p>The plane determined by the vectors <span class="math inline">\(T\)</span> and <span class="math inline">\(N\)</span> is called the <strong>osculating plane</strong> of <span class="math inline">\(C\)</span> at <span class="math inline">\(P\)</span>. It is the plane that comes closest to containing the part of the curve near <span class="math inline">\(P\)</span>.</p>
+<p><img src='/images/cal/13_3_6.png' width="600"></p>
+<h2 id="partial-derivatives">Partial Derivatives</h2>
+<h3 id="functions-of-several-variables">Functions of Several Variables</h3>
+<p><img src='/images/cal/14_1_1.png' width="600"></p>
+<p>A function of two variables is just a function whose domain is a subset of <span class="math inline">\(\mathbb{R}^2\)</span> and whose range is subset of <span class="math inline">\(\mathbb{R}\)</span></p>
+<p><img src='/images/cal/14_1_2.png' width="600"></p>
+<p><img src='/images/cal/14_1_3.png' width="600"></p>
+<p><img src='/images/cal/14_1_3.png' width="600"></p>
+<p><br></p>
+<p>A function of three variables, <span class="math inline">\(f\)</span>, is a rule that assigns to each ordered triple <span class="math inline">\((x, y, z)\)</span> in a domain <span class="math inline">\(D \in \mathbb{R}^3\)</span> a unique real number denoted by <span class="math inline">\(f(x, y, z)\)</span>.</p>
+<p>In general, function of any number of variables can be considered. A <strong>function of n variables</strong> is a rule that assigns a number <span class="math inline">\(z = f(x_1, ...., x_n)\)</span> to an <span class="math inline">\(n\)</span>-tuple <span class="math inline">\((x_1, x_2, ..., x_n)\)</span> of real numbers. We denote by <span class="math inline">\(\mathbb{R}^{n}\)</span> the set of all such <span class="math inline">\(n\)</span>-tuples. Sometimes we will use vector notation to write such functions more compactly as <span class="math inline">\(f(\mathbf{x}), \quad \mathbf{x} = &lt;x_1, ....., x_n&gt;\)</span>.</p>
+<p>In this view of the one to one correspondence between points <span class="math inline">\((x_1, ......, x_n)\)</span> in <span class="math inline">\(\mathbb{R}^n\)</span> and their position vectors <span class="math inline">\(\mathbf{x} = &lt;x_1, ....., x_n&gt;\)</span>. In general, we have three ways of looking at a function <span class="math inline">\(f\)</span> defined on a subset of <span class="math inline">\(\mathbb{R}^n\)</span>:</p>
+<ol type="1">
+<li>As a function of <span class="math inline">\(n\)</span> real variables <span class="math inline">\(x_1, ....., x_n\)</span></li>
+<li>As a function of a single point variable <span class="math inline">\((x_1, ....., x_n)\)</span></li>
+<li>As a single vector variable <span class="math inline">\(\mathbf{x} = &lt;x_1, ....., x_n&gt;\)</span></li>
+</ol>
+<h3 id="limits-and-continuity">Limits and Continuity</h3>
+<p><img src='/images/cal/14_2_2.png' width="600"></p>
+<p><img src='/images/cal/14_2_3.png' width="600"></p>
+<p><img src='/images/cal/14_2_1.png' width="600"></p>
+<h3 id="partial-derivatives-1">Partial Derivatives</h3>
+<p>In general if <span class="math inline">\(f\)</span> is a function of two variables <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, suppose we let only <span class="math inline">\(x\)</span> vary while keeping <span class="math inline">\(y=b\)</span> fixed. Then, we are really considering a function of a single variable <span class="math inline">\(x\)</span>, namely, <span class="math inline">\(g(x) = f(x, b)\)</span>. If <span class="math inline">\(g\)</span> has a derivative at <span class="math inline">\(a\)</span>, then we call it the partial derivative of <span class="math inline">\(f\)</span> with respect to <span class="math inline">\(x\)</span> at <span class="math inline">\((a, b)\)</span> and denote it by <span class="math inline">\(f_x (a, b)\)</span>. Thus,</p>
+<p><img src='/images/cal/14_3_1.png' width="600"></p>
+<h4 id="geometry-view-of-partial-derivatives">Geometry View of Partial Derivatives</h4>
+<p>We recall that the equation <span class="math inline">\(z = f(x, y)\)</span> represents a surface <span class="math inline">\(S\)</span> (the graph of <span class="math inline">\(f\)</span>) that maps points on <span class="math inline">\((x, y, 0)\)</span> to <span class="math inline">\((x, y, z)\)</span>. By fixing <span class="math inline">\(y=b\)</span>, we have a curve <span class="math inline">\(C_1\)</span> that is the vertical plane <span class="math inline">\(y=b\)</span> intersecting <span class="math inline">\(S\)</span>. Likewise, the vertical plane <span class="math inline">\(x=a\)</span> intersects <span class="math inline">\(S\)</span> in a curve <span class="math inline">\(C_2\)</span>, both of curves <span class="math inline">\(C_1\)</span>, <span class="math inline">\(C_2\)</span> passes through the point <span class="math inline">\((a, b, z)\)</span>.</p>
+<p><img src='/images/cal/14_3_2.png' width="600"></p>
+<p>Thus, the partial derivatives <span class="math inline">\(f_x (a, b)\)</span> and <span class="math inline">\(f_y(a, b)\)</span> can be interpreted geometrically as the slopes of the tangent lines at <span class="math inline">\(P(a, b, z)\)</span> to the curves <span class="math inline">\(C_1\)</span>, <span class="math inline">\(C_2\)</span> of <span class="math inline">\(S\)</span> in the planes <span class="math inline">\(y=b\)</span> and <span class="math inline">\(x=a\)</span></p>
+<p><img src='/images/cal/14_3_3.png' width="600"></p>
+<p>The partial derivatives can also be interpreted as <strong>rate of changes</strong>. If <span class="math inline">\(z = f(x, y)\)</span>, then <span class="math inline">\(f_x\)</span> represents the rate of change of <span class="math inline">\(f\)</span> or <span class="math inline">\(z\)</span> (<span class="math inline">\(z = f(x, y)\)</span>, to emphasize this is a function depends on <span class="math inline">\(x, y\)</span>) with respect to <span class="math inline">\(x\)</span> when <span class="math inline">\(y\)</span> is fixed.</p>
+<p><img src='/images/cal/14_3_4.png' width="600"></p>
+<h3 id="tangent-planes-and-linear-approximations">Tangent Planes and Linear Approximations</h3>
+<h4 id="tangent-planes">Tangent Planes</h4>
+<p>Suppose a surface <span class="math inline">\(S\)</span> (the graph of <span class="math inline">\(f(x, y)\)</span>) has equation <span class="math inline">\(z = f(x, y)\)</span>, where <span class="math inline">\(f\)</span> has continuous first partial derivative, and let <span class="math inline">\(P(x_0, y_0, z_0)\)</span> be a point on <span class="math inline">\(S\)</span>. Let <span class="math inline">\(C_1, C_2\)</span> be the curves obtained by intersecting the vertical planes <span class="math inline">\(y=y_0, \; x=x_0\)</span> (The curves are the graphs of <span class="math inline">\(f(x, y_0), \; f(x_0, y)\)</span>). Let <span class="math inline">\(T_1, T_2\)</span> be the tangent lines to the curves <span class="math inline">\(C_1, C_2\)</span> at point <span class="math inline">\(P\)</span>. Then the slopes of these tangent lines are the partial derivatives (<span class="math inline">\(f_x, f_y\)</span>) at point <span class="math inline">\(P\)</span>. Then the <code>tagent plane</code> to the surface <span class="math inline">\(S\)</span> at the point <span class="math inline">\(P\)</span> is defined to be the plane that contains both tangent lines <span class="math inline">\(T_1\)</span> and <span class="math inline">\(T_2\)</span>.</p>
+<p>If <span class="math inline">\(C\)</span> is any other curve that lies on the surface <span class="math inline">\(S\)</span> and passes through <span class="math inline">\(P\)</span>, then its tangent line at <span class="math inline">\(P\)</span> also lies in the tangent plane (plane contains of all possible tangent lies at <span class="math inline">\(P\)</span> to curves that lie on <span class="math inline">\(S\)</span> and pass through <span class="math inline">\(P\)</span>). <strong>The tangent plane at <span class="math inline">\(P\)</span> is the plane that most closely approximates the surface <span class="math inline">\(S\)</span> near the point <span class="math inline">\(P\)</span></strong>.</p>
+<p>We know that any plane passing through the point <span class="math inline">\(P(x_0, y_0, z_0)\)</span> has an equation of the form:</p>
+<p><span class="math display">\[A(x - x_0) + B(y - y_0) + C(z - z_0) = 0\]</span></p>
+<p>By dividing this equation by <span class="math inline">\(C\)</span> and letting <span class="math inline">\(a = -\frac{A}{C}, \; b = -\frac{B}{C}\)</span>, we can rewrite:</p>
+<p><span class="math display">\[z - z_0 = a(x - x_0) + b(y - y_0)\]</span></p>
+<p>Then the intersection between the plane <span class="math inline">\(y = y_0\)</span> and the tangent plane at point <span class="math inline">\(P\)</span> must be the tangent line <span class="math inline">\(T_2\)</span> (<span class="math inline">\(y = y_0\)</span>):</p>
+<p><span class="math display">\[z - z_0 = a(x - x_0)\]</span></p>
+<p>We know that this is the equation of tangent line <span class="math inline">\(C_2\)</span> with slope <span class="math inline">\(a\)</span>, at the same time, we know that the slopes of this tangent line is the partial derivative at point <span class="math inline">\(P\)</span>:</p>
+<p><span class="math display">\[a = f_x(x_0, y_0)\]</span></p>
+<p>Similiar for <span class="math inline">\(C_1\)</span>, we have:</p>
+<p><span class="math display">\[b = f_y(x_0, y_0)\]</span></p>
+<p><img src='/images/cal/14_4_1.png' width="600"></p>
+<h4 id="linear-approximation">Linear Approximation</h4>
+<p>We know that the equation of the tangent plane to the graph of function <span class="math inline">\(f(x, y)\)</span> at point <span class="math inline">\(P\)</span> is:</p>
+<p><span class="math display">\[z - z_0 = f_x(x_0, y_0) (x - x_0) + f_y(x_0, y_0) (y - y_0) \implies z - z_0 = f_x(x_0, y_0) (x - x_0) + f_y(x_0, y_0) (y - y_0) + f(x_0, y_0)\]</span></p>
+<p>The linear function whose graph is the tangent plant, namely:</p>
+<p><span class="math display">\[L(x, y) = f_x(x_0, y_0) (x - x_0) + f_y(x_0, y_0) (y - y_0) + f(x_0, y_0)\]</span></p>
+<p>is called the <code>lineariation</code> of <span class="math inline">\(f\)</span> at <span class="math inline">\((x_0, y_0)\)</span> and the approximation at point <span class="math inline">\((x_0, y_0)\)</span></p>
+<p><span class="math display">\[L(x, y) \approx f(x, y)\]</span></p>
+<p>is called <code>linear approximation</code> of <span class="math inline">\(f\)</span> at point <span class="math inline">\((x_0, y_0)\)</span>.</p>
+<p><br></p>
+<p><img src='/images/cal/14_4_2.png' width="600"></p>
+<p><img src='/images/cal/14_4_3.png' width="600"></p>
+<p><br></p>
+<h4 id="differentials">Differentials</h4>
+<p>For a differentiable function of one variable <span class="math inline">\(y = f(x)\)</span>, we define the <code>differential</code> <span class="math inline">\(dx\)</span> to be an independent variable, that is, <span class="math inline">\(dx\)</span> can be given the value of any real number. The differential of y is then defined as:</p>
+<p><span class="math display">\[dy = f^{\prime} (x)dx\]</span></p>
+<p><img src='/images/cal/14_4_4.png' width="600"></p>
+<p><br></p>
+<p>For a differentiable function of two variables <span class="math inline">\(z = f(x, y)\)</span>, we define the <code>differentials</code> <span class="math inline">\(dx,\; dy\)</span> to be independent variables. Then the differential <span class="math inline">\(dz\)</span> which is also called <code>total differential</code> is defined by:</p>
+<p><img src='/images/cal/14_4_5.png' width="600"></p>
+<p>We can rewrite the differential of <span class="math inline">\(z\)</span> as the equation of tangent plane at point <span class="math inline">\(P\)</span> to the graph of function <span class="math inline">\(f\)</span> with</p>
+<p><span class="math display">\[dz = \Delta z = z - z_0\]</span> <span class="math display">\[dy = \Delta y = y - y_0\]</span> <span class="math display">\[dx = \Delta x = x - x_0\]</span></p>
+<p>Thus, the <code>linear approximation</code> equation can be rewrite in terms of differentials:</p>
+<p><span class="math display">\[f(x, y) \approx z = f(a, b) + dz\]</span></p>
+<h4 id="functions-of-three-or-more-variables">Functions of Three or More Variables</h4>
+<p>Linear approximations, differentiability, and differentials can be defined in a similar manner for functions of more than two variables.</p>
+<h3 id="the-chain-rule">The Chain Rule</h3>
+<p><img src='/images/cal/14_5_1.png' width="600"> <img src='/images/cal/14_5_2.png' width="600"> <img src='/images/cal/14_5_3.png' width="600"></p>
+<h4 id="implicit-differentiation">Implicit Differentiation</h4>
+<p>Suppose we have function of the form <span class="math inline">\(F(x, y) = 0, \forall x \in \mathbb{D}\)</span>, where <span class="math inline">\(y = f(x)\)</span> is a function of <span class="math inline">\(x\)</span>. If <span class="math inline">\(F\)</span> is differentiable, <span class="math inline">\(\frac{\partial F}{\partial y} \neq 0\)</span>, then:</p>
+<p><img src='/images/cal/14_5_5.png' width="600"></p>
+<p>By <code>Implicit Differentiation Theorem</code>, this is valid only if:</p>
+<ol type="1">
+<li><span class="math inline">\(F\)</span> is defined on a disk containing <span class="math inline">\((a, b)\)</span>, where <span class="math inline">\(F(a, b) = 0, \; F_y (a, b) \neq 0\)</span></li>
+<li><span class="math inline">\(F_x, \; F_y\)</span> is continuous on the disk</li>
+</ol>
+<p><br></p>
+<p>Also, if we have function defined <span class="math inline">\(f (x, y, z) = 0, \; z = f(x, y)\)</span>:</p>
+<p><img src='/images/cal/14_5_4.png' width="600"></p>
+<h3 id="directional-derivatives-and-the-gradient-vector">Directional Derivatives and the Gradient Vector</h3>
+<h4 id="directional-derivatives">Directional Derivatives</h4>
+<p>We know that the paritial derivatives represent the rates of change of <span class="math inline">\(z\)</span> in the <span class="math inline">\(x, y\)</span> directions, that is, in the direction of unit vectors <span class="math inline">\(i, j\)</span>. Suppose that we know wish to find the rate of change of <span class="math inline">\(z\)</span> at <span class="math inline">\((x_0, y_0)\)</span> in the direction of an arbitrary unit vector <span class="math inline">\(\mathbf{u} = &lt;a, b&gt;\)</span>.</p>
+<p>To do this, we consider a surface <span class="math inline">\(S\)</span> with equation <span class="math inline">\(z = f(x, y)\)</span> (the graph of <span class="math inline">\(f\)</span>) and we let <span class="math inline">\(z_0 = f(x_0, y_0)\)</span>, then the point <span class="math inline">\(P_0 (x_0, y_0, z_0)\)</span> lies on the surface <span class="math inline">\(S\)</span>. The vertical plane that passes through <span class="math inline">\(P\)</span> in the direction of <span class="math inline">\(\mathbf{u}\)</span> intersects <span class="math inline">\(S\)</span> in a curve <span class="math inline">\(C\)</span>. The slope of the tangent line <span class="math inline">\(T\)</span> to <span class="math inline">\(C\)</span> at point <span class="math inline">\(P\)</span> is the rate of change of <span class="math inline">\(z\)</span> in the direction of <span class="math inline">\(\mathbf{u}\)</span></p>
+<p><img src='/images/cal/14_6_2.png' width="600"></p>
+<p>If <span class="math inline">\(Q(x, y, z)\)</span> is another point on <span class="math inline">\(C\)</span> and <span class="math inline">\(P^{\prime}, Q^{\prime}\)</span> are the projections of <span class="math inline">\(P, Q\)</span> onto the <span class="math inline">\(x, y\)</span>-plane, then the vector <span class="math inline">\(\vec{P^{\prime}Q^{\prime}}\)</span> is parallel to <span class="math inline">\(\mathbf{u}\)</span> and:</p>
+<p><span class="math display">\[\vec{P^{\prime}Q^{\prime}} = h \mathbf{u} = &lt;ha, hb&gt;\]</span></p>
+<p>for some scalar <span class="math inline">\(h\)</span>. Therefore, <span class="math inline">\(\Delta x = x - x_0 = ha, \; \Delta y = y - y_0 = hb\)</span>:</p>
+<p><span class="math display">\[\Delta z = z - z_0 = f(ha + x_0, hb + y_0) - f(x_0, y_0)\]</span></p>
+<p><span class="math display">\[\frac{\Delta z}{h} = \frac{f(ha + x_0, hb + y_0) - f(x_0, y_0)}{h}\]</span></p>
+<p><br></p>
+<p>If we take limit to 0, we have the rate of change of <span class="math inline">\(z\)</span> with respect to distance in the direction of <span class="math inline">\(\mathbf{u}\)</span>, we call this the <code>directional derivative</code> of <span class="math inline">\(f\)</span> in the direction of <span class="math inline">\(\mathbf{u}\)</span>:</p>
+<p><img src='/images/cal/14_6_1.png' width="600"></p>
+<p><br></p>
+<p>If we let <span class="math inline">\(\mathbf{u} = \mathbf{i} = &lt;1, \;0&gt;\)</span>, then we have <span class="math inline">\(D_i f = f_x\)</span>. If we let <span class="math inline">\(\mathbf{u} = \mathbf{j} = &lt;0, \;1&gt;\)</span>, then we have <span class="math inline">\(D_j f = f_y\)</span>. <strong>Partial derivatives are special cases of the directional derivative in the direction of x axis and y axis</strong></p>
+<p><br></p>
+<p><img src='/images/cal/14_6_3.png' width="600"></p>
+<h4 id="the-gradient-vector">The Gradient Vector</h4>
+<p>We can write the directional derivative formula as dot product:</p>
+<p><span class="math display">\[D_u f(x, y) = f_x(x, y)a + f_y(x, y)b = \; &lt;f_x(x, y), \; f_y(x, y)&gt; \cdot \; \mathbf{u}\]</span></p>
+<p>The first vector in the dot product is called the <code>gradient of f</code></p>
+<p><img src='/images/cal/14_6_4.png' width="600"></p>
+<p>Recall that, the scalar projection <span class="math inline">\(comp_a b = \frac{a \cdot b}{|a|}\)</span>, so the directional derivative can be interpreted as the <strong>scalar projection of gradient vector onto the unit vector <span class="math inline">\(u\)</span></strong>.</p>
+<h4 id="functions-of-three-variables">Functions of Three Variables</h4>
+<p>For functions of three variables, we can define directional derivatives similarly</p>
+<p><img src='/images/cal/14_6_5.png' width="600"> <img src='/images/cal/14_6_6.png' width="600"></p>
+<h4 id="maximizing-the-directional-derivative">Maximizing the Directional Derivative</h4>
+<p>Suppose that we have a function <span class="math inline">\(f\)</span> of two or three variables, and we consider all possible directional derivatives of <span class="math inline">\(f\)</span> at a given point. These give the rates of change of <span class="math inline">\(f\)</span> in all possible directions. What is the maximum rate of change?</p>
+<p>Recall that:</p>
+<p><span class="math display">\[D_{\mathbf{u}} f = \nabla f \cdot \; \mathbf{u} = |\nabla f||\mathbf{u}| \cos \theta\]</span></p>
+<p>When <span class="math inline">\(\theta = 0\)</span>, <span class="math inline">\(cos \;\theta = 1\)</span> and this is at its maximum. Thus:</p>
+<p><span class="math display">\[\max D_{\mathbf{u}} f = |\nabla f|\]</span></p>
+<p>The maximum of the directional derivatives is the length of gradient vector at the direction of gradient vector. Since, the slope or rate of change is positive, we have <strong><code>steepest increase</code></strong>.</p>
+<p><img src='/images/cal/14_6_7.png' width="600"></p>
+<p><br></p>
+<h4 id="tangent-planes-to-level-surfaces">Tangent Planes to Level Surfaces</h4>
+<p>Suppose <span class="math inline">\(S\)</span> is a surface with equation <span class="math inline">\(F(x, y, z) = k\)</span>, that is, it is a level surface of a function <span class="math inline">\(F\)</span> of three variables, and let <span class="math inline">\(P(x_0, y_0, z_0)\)</span> be a point on <span class="math inline">\(S\)</span>. Let <span class="math inline">\(C\)</span> be any curve that lies on the surface <span class="math inline">\(S\)</span> and passes through the point <span class="math inline">\(P\)</span>. Recall that, the curve is described by a vector function <span class="math inline">\(r(t) = &lt;x(t), y(t), z(t)&gt;\)</span>. Let <span class="math inline">\(t_0\)</span> be the parameter value corresponding to <span class="math inline">\(P\)</span>. That is <span class="math inline">\(r(t_0) = P = &lt;x_0, y_0, z_0&gt;\)</span>. Since <span class="math inline">\(C\)</span> lies on <span class="math inline">\(S\)</span>, any point <span class="math inline">\((x(t), y(t), z(t))\)</span> must satisfy the equation of <span class="math inline">\(S\)</span>, that is:</p>
+<p><span class="math display">\[F(x(t), y(t), z(t)) = k\]</span></p>
+<p>If <span class="math inline">\(F, x, y, z\)</span> is differentiable w.r.t <span class="math inline">\(t\)</span>:</p>
+<p><span class="math display">\[\frac{dF}{dt} = \frac{\partial F \partial x}{\partial x \partial t} + \frac{\partial F \partial y}{\partial y \partial t} + \frac{\partial F \partial z}{\partial z \partial t} = 0\]</span></p>
+<p>But, since <span class="math inline">\(\nabla F = &lt;F_x, F_y, F_z&gt;\)</span> and <span class="math inline">\(r^{\prime} (t) = &lt;x^{\prime} (t), y^{\prime} (t), z^{\prime} (t)&gt;\)</span>, we can rewrite the above equation as:</p>
+<p><span class="math display">\[\nabla F \cdot r^{\prime} (t) = 0\]</span></p>
+<p>Thus, <span class="math inline">\(\nabla F\)</span> is orthogonal to the tangent vector <span class="math inline">\(r^{\prime} (t)\)</span>, in particular at point <span class="math inline">\(P\)</span>:</p>
+<p><span class="math display">\[\nabla F(x_0, y_0, z_0) \cdot r^{\prime} (t_0) = 0\]</span></p>
+<p>So, if <span class="math inline">\(\nabla F(x_0, y_0, z_0) \neq 0\)</span>, it is natural to define the <code>tangent plane to the level surface</code> <span class="math inline">\(F(x, y, z) = k\)</span> at <span class="math inline">\(P(x_0, y_0, z_0)\)</span> as the plane that pass through <span class="math inline">\(P\)</span> that has normal vector <span class="math inline">\(\nabla F(x_0, y_0, z_0)\)</span>. Using the standard equation of a plane, we have:</p>
+<p><span class="math display">\[F_x(x_0, y_0, z_0) (x - x_0) + F_y (x_0, y_0, z_0) (y - y_0) + F_z (x_0, y_0, z_0) (z - z_0) = 0\]</span></p>
+<p>The <code>normal line</code> to <span class="math inline">\(S\)</span> at <span class="math inline">\(P\)</span> is the line passing through <span class="math inline">\(P\)</span> and perpendicular to the tangent plane. The direction of the normal line is therefore given by the gradient vector <span class="math inline">\(\nabla F(x_0, y_0, z_0)\)</span>.</p>
+<p><img src='/images/cal/14_6_9.png' width="600"></p>
+<p>Note that, the tangent plane equation for function of two variables can be derived from this more general form of equation:</p>
+<p><img src='/images/cal/14_6_8.png' width="600"></p>
+<p><br></p>
+<p><img src='/images/cal/14_6_10.png' width="600"></p>
+<p><img src='/images/cal/14_6_11.png' width="600"></p>
+<h3 id="maximum-and-minimum-values">Maximum and Minimum Values</h3>
+<p><img src='/images/cal/14_7_1.png' width="600"></p>
+<p>If the inequalities in definition 1 hold for all points <span class="math inline">\((x, y)\)</span> in the domain of <span class="math inline">\(f\)</span>, then <span class="math inline">\(f\)</span> has an <code>absolute maximum or absolute minimum</code>at <span class="math inline">\((a, b)\)</span>.</p>
+<p><br></p>
+<p><img src='/images/cal/14_7_2.png' width="600"></p>
+<p>If <span class="math inline">\(f_x(a, b) = 0, \; f_y (a, b) = 0\)</span>, then the tangent plane at point <span class="math inline">\((a, b)\)</span> is:</p>
+<p><span class="math display">\[f_x(a, b) (x - a) + f_y (a, b) (y - b) - (z - z_0) = 0 \implies z = z_0\]</span></p>
+<p>Thus, if <span class="math inline">\(f\)</span> has a local maximum or minimum at point <span class="math inline">\((a, b)\)</span>, then the tangent plane at this point on the graph must be horizontal (<span class="math inline">\(z = z_0\)</span>).</p>
+<p>This point <span class="math inline">\((a, b)\)</span> is called <code>critical point or stationary point</code> of <span class="math inline">\(f\)</span> if <span class="math inline">\(f_x(a, b) = 0, \; f_y (a, b) = 0\)</span> (has gradient 0) or <strong>if one of these partial derivatives does not exist.</strong> All local maximum and minimum are critical points, however, not all critical points are local maximum or minimum.</p>
+<p>Example:</p>
+<blockquote>
+<p>Consider the example <span class="math inline">\(f(x, y) = y^2 - x^2\)</span>, then <span class="math inline">\(f_x = -2x, \; f_y = 2y\)</span>. This implies there is only one critical point <span class="math inline">\((0, 0)\)</span> for function <span class="math inline">\(f\)</span>. We compute <span class="math inline">\(x &gt; 0\)</span> for <span class="math inline">\(y = 0\)</span>, we have <span class="math inline">\(f(x, y) &lt; 0\)</span>. If we compute <span class="math inline">\(y &gt; 0\)</span> for <span class="math inline">\(x = 0\)</span>, we have <span class="math inline">\(f(x, y) &gt; 0\)</span>. Thus, we do not have a minimum, or a maximum at this critical point.</p>
+</blockquote>
+<p><img src='/images/cal/14_7_3.png' width="600"></p>
+<p><br></p>
+<p>In this case, we have maximum in the direction of <span class="math inline">\(x\)</span> but minimum in the direction of <span class="math inline">\(y\)</span>, thus, we have a <code>saddle point</code> at <span class="math inline">\((0, 0)\)</span>.</p>
+<p>In order to distinguish between critical points, we can use <code>second derivative test</code>:</p>
+<p><img src='/images/cal/14_7_4.png' width="600"></p>
+<p>Notes:</p>
+<ol type="1">
+<li>In case c, the point <span class="math inline">\((a, b)\)</span> is the saddle point of <span class="math inline">\(f\)</span> and the graph of <span class="math inline">\(f\)</span> crosses its tangent plane at <span class="math inline">\((a, b)\)</span>.</li>
+<li>If <span class="math inline">\(D = 0\)</span>, the test is useless.</li>
+<li><span class="math inline">\(D\)</span> is actually the determinant of the Hessian matrix</li>
+</ol>
+<h4 id="absolute-maximum-and-minimum-values">Absolute Maximum and Minimum Values</h4>
+<p>A <code>bounded set</code> in <span class="math inline">\(\mathbb{R}^2\)</span> is one that is contained within some disk (less than and greater than some real numbers). In other words, it is finite in extent. A <code>close set</code> in <span class="math inline">\(\mathbb{R}^2\)</span> is one that contains all its boundary points.</p>
+<p><img src='/images/cal/14_7_5.png' width="600"></p>
+<p><img src='/images/cal/14_7_6.png' width="600"></p>
+<h3 id="lagrange-multipliers">Lagrange Multipliers</h3>
+<p><code>Lagrange's method</code> is used for maximizing or minimizing a general function <span class="math inline">\(f(x, y, z)\)</span> subject to a constraint of the form <span class="math inline">\(g(x, y, z) = k\)</span>. We start by considering function of two variables, <span class="math inline">\(f(x, y)\)</span> subject to constraint <span class="math inline">\(g(x, y) = k\)</span>. Recall that <span class="math inline">\(g(x, y) = k\)</span> is a level curve, that is we can think of the optimization problem as finding the extreme value of <span class="math inline">\(f(x, y)\)</span> when the points <span class="math inline">\((x, y)\)</span> are restricted on the level curve <span class="math inline">\(g(x, y) = k\)</span>. It is also equivalent to find the largest value of <span class="math inline">\(c\)</span> s.t the level curve <span class="math inline">\(f(x, y)=c\)</span> intersects with the level curve <span class="math inline">\(g(x, y) = k\)</span>. That is, when they have common tangent line and their gradient vectors are parallel:</p>
+<p><span class="math display">\[\nabla f(x_0, y_0) = \lambda \nabla g(x_0, y_0)\]</span></p>
+<p>This kind of argument also applies to the problem of finding the extreme values of <span class="math inline">\(f(x, y, z)\)</span> subject to <span class="math inline">\(g(x, y, z) = k\)</span>. Thus, the point <span class="math inline">\((x, y, z)\)</span> is restricted to lie on the level surface <span class="math inline">\(S\)</span> with equation <span class="math inline">\(g(x, y, z) = k\)</span>.</p>
+<p><img src='/images/cal/14_8_1.png' width="600"></p>
+<p>The number <span class="math inline">\(\lambda\)</span> is called <code>lagrange multiplier</code>. We assume that <span class="math inline">\(\nabla g \neq 0\)</span>.</p>
+<h4 id="two-constraints">Two Constraints</h4>
+<p>Suppose now we want to find the maximum and minimum values of a function <span class="math inline">\(f(x, y, z)\)</span> subject to two constraints <span class="math inline">\(g(x, y, z) = k, h(x, y, z) = c\)</span>. Geometrically, this means that we are looking for the extreme values of <span class="math inline">\(f\)</span> when <span class="math inline">\((x, y, z)\)</span> is restricted to lie on the curve of intersection <span class="math inline">\(C\)</span> of the level surfaces <span class="math inline">\(g(x, y, z) = k\)</span> and <span class="math inline">\(h(x, y, z) = c\)</span>.</p>
+<p><img src='/images/cal/14_8_2.png' width="600"></p>
+<p><img src='/images/cal/14_8_3.png' width="600"></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/MDP/" rel="bookmark">MDP</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-equations/" rel="bookmark">Bellman Equations</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-optimality-equations/" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/dp/" rel="bookmark">Dynamic Programming</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/18/cheat-sheet/" rel="bookmark">Cheat Sheet</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RL-Basics/" rel="tag"># RL Basics</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/13/Dueling/" rel="prev" title="Dueling Network Architectures for DRL">
+                  <i class="fa fa-chevron-left"></i> Dueling Network Architectures for DRL
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/15/mc/" rel="next" title="Monte Carlo Estimation">
+                  Monte Carlo Estimation <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

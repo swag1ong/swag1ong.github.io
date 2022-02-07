@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Time Series (Introduction) Characteristics of Time Series The primary objective of time series analysis is to develop mathematical models that provide plausible descriptions for sample data with time">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Time Series (1)">
+<meta property="og:url" content="https://swag1ong.github.io/2021/11/15/time-series-1/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Time Series (Introduction) Characteristics of Time Series The primary objective of time series analysis is to develop mathematical models that provide plausible descriptions for sample data with time">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_1_3_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_1_3_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_1_3_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_1_4_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_1_4_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_1_4_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_1_4_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_1_4_5.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_1_5_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_1_5_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_1_5_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_1_5_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_1_5_5.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_1_5_6.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_1_6_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_1_6_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_1_6_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_1_6_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_1_6_5.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_1_7_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_2_2_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_2_2_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_2_2_3.png">
+<meta property="article:published_time" content="2021-11-15T05:10:49.000Z">
+<meta property="article:modified_time" content="2021-11-19T07:19:43.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="RL Basics">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swag1ong.github.io/images/RL/background/ts_1_3_1.png">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/11/15/time-series-1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;11&#x2F;15&#x2F;time-series-1&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;11&#x2F;15&#x2F;time-series-1&#x2F;&quot;,&quot;title&quot;:&quot;Time Series (1)&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Time Series (1) | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#time-series-introduction"><span class="nav-number">1.</span> <span class="nav-text">Time Series (Introduction)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#characteristics-of-time-series"><span class="nav-number">1.1.</span> <span class="nav-text">Characteristics of Time Series</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#autocorrelation-and-cross-correlation"><span class="nav-number">1.1.1.</span> <span class="nav-text">Autocorrelation and Cross-Correlation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#autocovariance"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">Autocovariance</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#autocorrelation"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">Autocorrelation</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cross-covariance-and-cross-correlation"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">Cross-covariance and Cross-correlation</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#stationary-time-series"><span class="nav-number">1.1.2.</span> <span class="nav-text">Stationary Time Series</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#strictly-stationarity"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Strictly Stationarity</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#weak-stationarity"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">Weak Stationarity</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gaussian-process"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">Gaussian Process</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#linear-process"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">Linear Process</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#estimation-of-correlation"><span class="nav-number">1.1.3.</span> <span class="nav-text">Estimation of Correlation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vector-valued-and-multidimensional-series"><span class="nav-number">1.1.4.</span> <span class="nav-text">Vector-Valued and Multidimensional Series</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#eda"><span class="nav-number">1.2.</span> <span class="nav-text">EDA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#trend"><span class="nav-number">1.2.1.</span> <span class="nav-text">Trend</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#detrend"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Detrend</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#differencing"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Differencing</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#backshift-operator"><span class="nav-number">1.2.1.2.1.</span> <span class="nav-text">Backshift Operator</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#transformations"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">Transformations</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#smoothing"><span class="nav-number">1.2.2.</span> <span class="nav-text">Smoothing</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#moving-average-smoother"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">Moving Average Smoother</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kernel-smoothing"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">Kernel Smoothing</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lowess-and-nearest-neighbor-regression"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">Lowess and Nearest Neighbor Regression</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#visualization"><span class="nav-number">1.2.3.</span> <span class="nav-text">Visualization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#lagged-scatterplot-matrices-non-linearity-and-lag-correlation"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">Lagged Scatterplot Matrices (Non-linearity and Lag correlation)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ref"><span class="nav-number">1.3.</span> <span class="nav-text">Ref</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/11/15/time-series-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Time Series (1)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-11-15 13:10:49" itemprop="dateCreated datePublished" datetime="2021-11-15T13:10:49+08:00">2021-11-15</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-11-19 15:19:43" itemprop="dateModified" datetime="2021-11-19T15:19:43+08:00">2021-11-19</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/11/15/time-series-1/" class="post-meta-item leancloud_visitors" data-flag-title="Time Series (1)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>12k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>11 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="time-series-introduction">Time Series (Introduction)</h1>
+<h2 id="characteristics-of-time-series">Characteristics of Time Series</h2>
+<p>The primary objective of time series analysis is to develop mathematical models that provide plausible descriptions for sample data with time correlations. In order to provide a statistical setting for describing the character of data that seemingly fluctuate in a random fashion over time, we assume a time series can be defined as a collection of random variables indexed according to the order they are obtained in time. In general, a collection of random variables <span class="math inline">\(\{X_t\}\)</span> indexed by <span class="math inline">\(t\)</span> is referred to as a stochastic process. In this text, <span class="math inline">\(t\)</span> will typically be discrete and vary over the integers.</p>
+<p><strong>Example of Series:</strong></p>
+<blockquote>
+<p><strong>White Noise</strong>: A collection of uncorrelated, independent and identically distributed random variables <span class="math inline">\(W_t\)</span> with mean 0 and finite variance <span class="math inline">\(\sigma^2_w\)</span>. A particular useful white noise is Gaussian white noise, that is <span class="math inline">\(W_t \overset{i.i.d}{\sim} N(0, \sigma^2_w)\)</span> <img src="/images/RL/background/ts_1_3_1.png" width="600"></p>
+</blockquote>
+<blockquote>
+<p><strong>Moving Average</strong>: We might replace the white noise series <span class="math inline">\(W_t\)</span> by a moving average that smooths the series: <span class="math display">\[V_t = \frac{1}{3} (W_{t-1} + W_{t} + W_{t+1})\]</span> This introduces a smoother version of white noise series, reflecting the fact that the slower oscillations are more apparent and some of the faster oscillations are taken out. <img src="/images/RL/background/ts_1_3_2.png" width="600"></p>
+</blockquote>
+<blockquote>
+<p><strong>Autoregressions</strong>: Suppose we consider the white noise series <span class="math inline">\(W_t\)</span> as input and calculate the output using the second-order equation: <span class="math display">\[X_t = X_{t-1} - 0.9 X_{t-2} + W_t\]</span> For <span class="math inline">\(t=1, ..., 500\)</span>. We can see the periodic behavior of the series. <img src="/images/RL/background/ts_1_3_3.png" width="600"></p>
+</blockquote>
+<span id="more"></span>
+<h3 id="autocorrelation-and-cross-correlation">Autocorrelation and Cross-Correlation</h3>
+<p>A complete description of a time series with <span class="math inline">\(N\)</span> random variables at arbitrary integer time points <span class="math inline">\(t_1, ..., t_N\)</span> is given by joint distribution function (joint CDF), evaluated as the probability that the values of the series are jointly less than the <span class="math inline">\(N\)</span> constants <span class="math inline">\(c_1, ..., c_N\)</span>:</p>
+<p><span class="math display">\[F_{X_{t_1}, ..., X_{t_N}}(c_1, ...., c_N) = P(X_{t_1} \leq c_1, ..., X_{t_N} \leq c_N)\]</span></p>
+<p>In practice, the multidimensional distribution function cannot usually be written easily unless the random variables are jointly normal. It is an unwieldy tool for displaying and analyzing time series data. On the other hand, the marginal distribution functions:</p>
+<p><span class="math display">\[F_{X_t} (x_t) = P(X_t \leq x_t)\]</span></p>
+<p>or the corresponding marginal density functions:</p>
+<p><span class="math display">\[f_{X_t} (x_t) = \frac{\partial F_{X_t} (x_t)}{\partial x_t}\]</span></p>
+<p>And The <strong>Mean Function</strong>:</p>
+<p><img src="/images/RL/background/ts_1_4_1.png" width="600"></p>
+<p>When they exist, are often informative for examining the marginal behavior of the series.</p>
+<p><br></p>
+<h4 id="autocovariance">Autocovariance</h4>
+<p><img src="/images/RL/background/ts_1_4_2.png" width="600"></p>
+<p>The autocovariance measures the linear dependence between two points on the same series observed at different times:</p>
+<ol type="1">
+<li>Very <strong>Smooth</strong> series exhibit autocovariance functions that stay large even when <span class="math inline">\(t\)</span> and <span class="math inline">\(s\)</span> are far apart</li>
+<li>Very <strong>Choppy</strong> series tend to have auto covariance functions that are nearly zero for large separations.</li>
+</ol>
+<p><br></p>
+<h4 id="autocorrelation">Autocorrelation</h4>
+<p><img src="/images/RL/background/ts_1_4_3.png" width="600"></p>
+<p>The ACF measures the linear predictability of the series at time <span class="math inline">\(t\)</span>, say <span class="math inline">\(X_t\)</span>, using only the value <span class="math inline">\(X_s\)</span>. iF we can predict <span class="math inline">\(X_t\)</span> perfectly from <span class="math inline">\(X_s\)</span> through a linear relationship <span class="math inline">\(X_t = \beta_0 + \beta_1 X_s\)</span>, then the correlation will be <span class="math inline">\(+1\)</span> or <span class="math inline">\(-1\)</span> depends on the sign of <span class="math inline">\(\beta_1\)</span>. Hence, we have a rough measure of the ability to forecast the series at time <span class="math inline">\(t\)</span> from the value at time <span class="math inline">\(s\)</span>.</p>
+<p><br></p>
+<h4 id="cross-covariance-and-cross-correlation">Cross-covariance and Cross-correlation</h4>
+<p>Often, we want to measure the predictability of another series (different components) <span class="math inline">\(Y_t\)</span> from the series <span class="math inline">\(X_s\)</span>. Assuming both series have finite variances, we have the following definition:</p>
+<p><img src="/images/RL/background/ts_1_4_4.png" width="600"></p>
+<p><img src="/images/RL/background/ts_1_4_5.png" width="600"></p>
+<p>We can easily extend the idea to multivariate time series where each sample contains r attributes:</p>
+<p><span class="math display">\[X_{t} = &lt;X_{t1}, ...., X_{tR}&gt;\]</span></p>
+<p>The extension of autocovariance is then:</p>
+<p><span class="math display">\[\gamma_{jk} (s, t) = E[(X_{sj} - \mu_{sj}) (X_{tk} - \mu_{tk})]\]</span></p>
+<h3 id="stationary-time-series">Stationary Time Series</h3>
+<p>There may exist a sort of regularity over time in the behavior of a time series.</p>
+<h4 id="strictly-stationarity">Strictly Stationarity</h4>
+<p><img src="/images/RL/background/ts_1_5_1.png" width="600"></p>
+<p><img src="/images/RL/background/ts_1_5_2.png" width="600"></p>
+<p>When <span class="math inline">\(k = 1\)</span>, we can conclude that random variables are identically distributed and mean is constant regardless of time:</p>
+<p><span class="math display">\[P(X_s \leq c) = P(X_t \leq c) = P(X_1 \leq c), \;\; \forall c, s, t \implies E[X_s]  = E[X_t] = \mu\]</span></p>
+<p>When <span class="math inline">\(k = 2\)</span>, we can conclude that for any pairs of <span class="math inline">\(s, t\)</span>, the joint distribution is identical regardless of time:</p>
+<p><span class="math display">\[P(X_{s} \leq c_1, X_{t} \leq c_2) = P(X_{s + h} \leq c_1, X_{t} \leq c_2), \; \forall h, c_1, c_2\]</span></p>
+<blockquote>
+<p><span class="math inline">\((X_1, X_2), (X_3, X_4), (X_8, X_9)\)</span> are identically distributed</p>
+<p><span class="math inline">\((X_2, X_4), (X_3, X_5), (X_8, X_{10})\)</span> are identically distributed</p>
+</blockquote>
+<p>Thus, if the variance function of the process exists, we have autocovariance function of the series <span class="math inline">\(\{X_t\}\)</span> satisfies:</p>
+<p><span class="math display">\[\gamma(s, t) = \gamma(s + h, t + h)\]</span></p>
+<p>Same conclusions for all possible values of <span class="math inline">\(k\)</span>. The version of strictly stationarity is too strong for most applications and it is difficult to assess strict stationarity from a single data set.</p>
+<h4 id="weak-stationarity">Weak Stationarity</h4>
+<p><img src="/images/RL/background/ts_1_5_3.png" width="600"></p>
+<p>Thus, <span class="math inline">\(\forall s, t, h\)</span>:</p>
+<ol type="1">
+<li><span class="math inline">\(E[X_t] = E[X_s] = \mu\)</span></li>
+<li><span class="math inline">\(\gamma(s, s + h) = Cov(X_s, X_{s+h}) = Cov(X_0, X_{h}) = \gamma(0, h) \;\)</span> or <span class="math inline">\(\; \gamma(s, t) = \gamma(s + h, t + h)\)</span></li>
+</ol>
+<p>From above, we can clearly see that a strictly stationary, finite variance, time series is also stationary. The converse is not true unless there are further conditions.</p>
+<p><img src="/images/RL/background/ts_1_5_4.png" width="600"></p>
+<p><img src="/images/RL/background/ts_1_5_5.png" width="600"></p>
+<p>Several Properties:</p>
+<ol type="1">
+<li><span class="math inline">\(|\gamma(h)| \leq Var[X_t] = \gamma(0)\)</span></li>
+<li><span class="math inline">\(\gamma(h) = \gamma(-h)\)</span></li>
+<li><span class="math inline">\(\rho_{xy}(h) = \rho_{yx}(-h)\)</span></li>
+<li><span class="math inline">\(\gamma(\cdot)\)</span> is <strong>non-negative definite</strong>, for all positive integers <span class="math inline">\(N\)</span> and vector <span class="math inline">\(&lt;X_1, ..., X_N&gt;^T \in \mathbb{R}^N\)</span>: <span class="math display">\[\sum^N_{i=1} \sum^N_{j=1} X_i \gamma(i - j) X_j \geq 0\]</span></li>
+</ol>
+<h4 id="gaussian-process">Gaussian Process</h4>
+<p><img src="/images/RL/background/ts_1_5_6.png" width="600"></p>
+<p>If a Gaussian Process is weakly stationary then it is also strictly stationary.</p>
+<h4 id="linear-process">Linear Process</h4>
+<p>A Linear process <span class="math inline">\(X_t\)</span> is a stationary process defined to be a linear combination of white noise variates <span class="math inline">\(X_t\)</span> and is given by:</p>
+<p><span class="math display">\[X_t = \mu + \sum^\infty_{j=-\infty} \psi_j W_{t-j},  \quad \sum^{\infty}_{j=-\infty} |\psi_j| &lt; \infty\]</span></p>
+<p>The autocovariance function for linear process is:</p>
+<p><span class="math display">\[\gamma(h) = \sigma^2_w \sum^\infty_{j=-\infty} \psi_{j+h} \psi_j\]</span></p>
+<h3 id="estimation-of-correlation">Estimation of Correlation</h3>
+<p>If a time series is <strong>stationary</strong>, the mean function is constant, so that we can estimate it by the sample mean:</p>
+<p><span class="math display">\[\bar{X} = \frac{1}{N} \sum^N_{t=1} X_t\]</span></p>
+<p><br></p>
+<p><img src="/images/RL/background/ts_1_6_1.png" width="600"></p>
+<p>The sum runs over a restricted range because <span class="math inline">\(X_{t+h}\)</span> is not available for <span class="math inline">\(t+h &gt; n\)</span>. Thus, this estimator is a biased estimator of <span class="math inline">\(\gamma(h)\)</span>. The normalizing term <span class="math inline">\(\frac{1}{N}\)</span> guarantees a non-negative definite function because autocovariance function is non-negative definite for stationary series, so it is preferred over <span class="math inline">\(\frac{1}{N - h}\)</span>.</p>
+<p><br></p>
+<p><img src="/images/RL/background/ts_1_6_2.png" width="600"></p>
+<p>The sample autocorrelation function has a sampling distribution that allows us to assess whether the data comes from a completely random or white series or whether correlations are statistically significant at some lags.</p>
+<p><img src="/images/RL/background/ts_1_6_3.png" width="600"></p>
+<p>Based on the property, we obtain a rough method of assessing whether peaks in <span class="math inline">\(\hat{\rho}(h)\)</span> are significant by determining whether the observed peak is outside the interval <span class="math inline">\(0 \pm \frac{2}{\sqrt{N}}\)</span> (95% of data should be within 2 s.e of a standard normal distribution).</p>
+<p><br></p>
+<p><img src="/images/RL/background/ts_1_6_4.png" width="600"></p>
+<p><img src="/images/RL/background/ts_1_6_5.png" width="600"></p>
+<h3 id="vector-valued-and-multidimensional-series">Vector-Valued and Multidimensional Series</h3>
+<p>Consider the notion of a vector time series <span class="math inline">\(\mathbf{X}_t = &lt;X_{t1}, ...., X_{tp}&gt;^T \in \mathbb{R}^p\)</span> that contains <span class="math inline">\(p\)</span> univariate time series. For the stationary case, the mean vector <span class="math inline">\(\boldsymbol{\mu}\)</span> is:</p>
+<p><span class="math display">\[\boldsymbol{\mu} = E[\mathbf{X}_t] = &lt;\mu_{t1}, ...., \mu_{tp}&gt;^T\]</span></p>
+<p>And the <span class="math inline">\(p\times p\)</span> autocovariance matrix is denoted as:</p>
+<p><span class="math display">\[\Gamma (h) = E[(\mathbf{X}_{t+h} - \boldsymbol{\mu}) (\mathbf{X}_t - \boldsymbol{\mu})^T]\]</span> <span class="math display">\[\gamma_{ij} (h) = E[(X_{t+h, i} - \mu_i) (X_{t, j} - \mu_j)], \;\; i,j = 1, ...., p\]</span></p>
+<p>Since, <span class="math inline">\(\gamma_{ij}(h) = \gamma_{ji} (-h)\)</span>:</p>
+<p><span class="math display">\[\Gamma(-h) = \Gamma^T(h)\]</span></p>
+<p>The sample autocovariance matrix is defined as:</p>
+<p><span class="math display">\[\hat{\Gamma}(h) = \frac{1}{N}\sum^{N-h}_{t=1} (\mathbf{X}_{t+h} - \bar{\mathbf{X}}) (\mathbf{X}_t - \bar{\mathbf{X}})^T\]</span> <span class="math display">\[\hat{\Gamma} (-h) = \hat{\Gamma}^T(h)\]</span></p>
+<p>Where <span class="math inline">\(\bar{\mathbf{X}} = \frac{1}{N} \sum^{N}_{t=1} \mathbf{X}_t\)</span> is the sample mean vector.</p>
+<p>In many applied problems, an observed series may be indexed by more than one time alone. For example, the position in space of an experimental unit might be described by two coordinates. We may proceed in these cases by defining a <strong>multidimensional process</strong> (does not have multiple dependent variables as multivariate case)<span class="math inline">\(\mathbf{X}_\mathbf{s}\)</span> as a function of the <span class="math inline">\(r \times 1\)</span> vector <span class="math inline">\(\mathbf{s} = &lt;s_1, ..., s_r&gt;^T\)</span>, where <span class="math inline">\(s_i\)</span> denotes the coordinate of the <span class="math inline">\(i\)</span>th index. The autocovariance function of a stationary multidimensional process, <span class="math inline">\(X_{\mathbf{s}}\)</span> can be defined as a function of the multidimensional lag vector, <span class="math inline">\(\mathbf{h} = &lt;h_1, ..., h_r&gt;^T\)</span> as:</p>
+<p><span class="math display">\[\gamma (\mathbf{h}) = E[(X_{\mathbf{s} + \mathbf{h}}) - \mu) (X_{\mathbf{s}} - \mu)]\]</span></p>
+<p>Where <span class="math inline">\(\mu = E[X_{\mathbf{s}}]\)</span></p>
+<p>The multidimensional sample autocovariance function is defined as:</p>
+<p><span class="math display">\[\hat{\gamma}(\mathbf{h}) = (S_1S_2...S_r)^{-1} \sum_{s_1} .... \sum_{s_r} (X_{\mathbf{s} + \mathbf{h}} - \bar{X})(X_{\mathbf{s}} - \bar{X})\]</span></p>
+<p>Where each summation has range <span class="math inline">\(1 \leq s_i \leq S_i - h_i, \;\; \forall i=1, ..., r\)</span></p>
+<p><span class="math display">\[\bar{X} = (S_1 ... S_r)^{-1} \sum_{s_1} ... \sum_{s_r} X_{\mathbf{s}}\]</span></p>
+<p>Where each summation has range <span class="math inline">\(1 \leq s_i \leq S_i, \;\; \forall i=1, ..., r\)</span></p>
+<p>The multidimensional sample autocorrelation function follows:</p>
+<p><span class="math display">\[\hat{\rho}(\mathbf{h}) = \frac{\hat{\gamma}(\mathbf{h})}{\hat{\gamma}(\mathbf{0})}\]</span></p>
+<p><img src="/images/RL/background/ts_1_7_1.png" width="600"></p>
+<h2 id="eda">EDA</h2>
+<p>In general, it is necessary for time series data to be stationary, so averaging lagged products over time will be a sensible thing to do (fixed mean). Hence, to achieve any meaningful statistical analysis of time series data, it will be crucial that the mean and the autocovariance functions satisfy the conditions of stationarity.</p>
+<h3 id="trend">Trend</h3>
+<h4 id="detrend">Detrend</h4>
+<p>The easiest form of nonstationarity to work with is the trend stationary model wherein the process has stationary behavior around a trend. We define this as:</p>
+<p><span class="math display">\[X_t = \mu_t + Y_t\]</span></p>
+<p>Where <span class="math inline">\(X_t\)</span> are the observations, <span class="math inline">\(\mu_t\)</span> denotes the trend, and <span class="math inline">\(Y_t\)</span> is a stationary process. Strong trend will obscure the behavior of the stationary process <span class="math inline">\(Y_t\)</span>. Hence, there is some advantage to removing the trend as a first step in an exploratory analysis of such time series. The steps involved are to obtain a reasonable estimate of the trend component, and then work with the residuals:</p>
+<p><span class="math display">\[\hat{Y}_t = X_t - \hat{\mu}_t\]</span></p>
+<blockquote>
+<p><span class="math inline">\(\hat{\mu} = -11.2 + 0.006t \implies \hat{Y}_t = X_t + 11.2 - 0.006t\)</span></p>
+</blockquote>
+<h4 id="differencing">Differencing</h4>
+<p>Differencing can be used to produce a stationary time series. The first difference operator is a <strong>linear operator</strong> denoted as:</p>
+<p><span class="math display">\[\nabla X_t = X_t - X_{t-1}\]</span></p>
+<p>If <span class="math inline">\(\mu_t = \beta_1 + \beta_2 t\)</span>, then:</p>
+<p><span class="math display">\[\nabla X_t = (\mu_t + Y_t) - (\mu_{t-1} + Y_{t-1}) = \beta_2 + Y_t - Y_{t-1} \implies Z_t = X_t - \beta_2\]</span></p>
+<p>Where <span class="math inline">\(Z_t = Y_t - Y_{t-1}\)</span> is a stationary time series given <span class="math inline">\(Y_t\)</span> is a stationary time series.</p>
+<p>One advantage of differencing over detrending to remove trend is that no parameters are estimated in the differencing operation. One disadvantage, however, is that differencing does not yield an estimate of the stationary process <span class="math inline">\(Y_t\)</span> as detrending. If an estimate of <span class="math inline">\(Y_t\)</span> is essential, then detrending may be more appropriate. If the goal is to coerce the data to be stationarity, then differencing is more appropriate.</p>
+<h5 id="backshift-operator">Backshift Operator</h5>
+<p><img src="/images/RL/background/ts_2_2_1.png" width="600"></p>
+<p>Backshift Operator is <strong>linear</strong>. We can rewrite first difference as:</p>
+<p><span class="math display">\[\nabla X_t = X_t - X_{t-1} = (1 - B) X_t\]</span></p>
+<p>And second difference as:</p>
+<p><span class="math display">\[\nabla^2 (X_t) = \nabla (\nabla X_t) = (1 - B)^2 X_t\]</span></p>
+<p><img src="/images/RL/background/ts_2_2_2.png" width="600"></p>
+<h4 id="transformations">Transformations</h4>
+<p>If a time series presents nonstationary as well as nonlinear behavior, transformations may be useful to equalize the variability over the length of a single series. A particular useful transformation is the log transformation:</p>
+<p><span class="math inline">\(Y_t = \log X_t\)</span>$</p>
+<p>Which tends to suppress larger fluctuations that occur over portions of the series where the underlying values are larger.</p>
+<h3 id="smoothing">Smoothing</h3>
+<p>Smoothing is useful in discovering certain traits in a time series, such as long-term trend and seasonal components.</p>
+<h4 id="moving-average-smoother">Moving Average Smoother</h4>
+<p>If <span class="math inline">\(X_t\)</span> represents the observations, then</p>
+<p><span class="math display">\[M_t = \sum^k_{j=-k} a_j x_{t-j}\]</span></p>
+<p>Where <span class="math inline">\(a_j = a_{j} \geq 0\)</span> and <span class="math inline">\(\sum^k_{j=-k} a_j = 1\)</span> is a <strong>symmetric moving average</strong> of the data centered at <span class="math inline">\(X_t\)</span>.</p>
+<h4 id="kernel-smoothing">Kernel Smoothing</h4>
+<p>Kernel smoothing is a moving average smoother that uses a weight function or kernel to average the observations:</p>
+<p><span class="math display">\[\hat{f}_t = \sum^N_{i=1} w_i(t) X_i\]</span></p>
+<p><span class="math display">\[w_i (t) = \frac{K(\frac{t - i}{b})}{\sum^N_{j=1} K(\frac{t - j}{b})}\]</span></p>
+<p>Where <span class="math inline">\(b\)</span> is a bandwidth parameter, the wider the bandwidth, the smoother the result. <span class="math inline">\(K(\cdot)\)</span> is a kernel function that is often the normal kernel:</p>
+<p><span class="math display">\[K(z) = \frac{1}{\sqrt{2\pi}}\exp(\frac{-z^2}{2})\]</span></p>
+<h4 id="lowess-and-nearest-neighbor-regression">Lowess and Nearest Neighbor Regression</h4>
+<p>Another approach to smooth a time series is <strong>nearest neighbor regression</strong>. The technique is based on <span class="math inline">\(k\)</span>-nearest neighbors linear regression, wherein one uses the neighbouring data <span class="math inline">\(\{X_{t-\frac{k}{2}}, ..., X_t, ..., X_{t + \frac{k}{2}}\}\)</span> to predict <span class="math inline">\(X_t\)</span> using a linear regression. The result is <span class="math inline">\(\hat{f}_t\)</span>.</p>
+<p><strong>Lowess</strong> is a method of smoothing that is complex but similar to nearest neighbor regression:</p>
+<ol type="1">
+<li>A certain proportion of nearest neighbors to <span class="math inline">\(X_t\)</span> are included in a weighting scheme, values closer to <span class="math inline">\(X_t\)</span> in time get more weight.</li>
+<li>A robust weighted regression is used to predict <span class="math inline">\(X_t\)</span> and obtain the smoothed estimate of <span class="math inline">\(f_t\)</span>.</li>
+</ol>
+<h3 id="visualization">Visualization</h3>
+<h4 id="lagged-scatterplot-matrices-non-linearity-and-lag-correlation">Lagged Scatterplot Matrices (Non-linearity and Lag correlation)</h4>
+<p>In the definition of the ACF, we are essentially interested in relations between <span class="math inline">\(X_t\)</span> and <span class="math inline">\(X_{t-h}\)</span>. The autocorrelation function tells us whether a substantial linear relation exists between the series and its own lagged values. The ACF gives a profile of the linear correlation at all possible lags and shows which values of <span class="math inline">\(h\)</span> leads to the best predictability. The restriction of this idea to linear predictability, however, may mask a possible nonlinear relation between current values and past values. Thus, to check for nonlinear relationship of this form, it is convenient to display a <strong>lagged scatterplot matrix</strong>.</p>
+<blockquote>
+<p>The plot displays values <span class="math inline">\(S_t\)</span> on the vertical axis plotted against <span class="math inline">\(S_{t-h}\)</span> on the horizontal axis.The sample autocorrelations are displayed in the upper right-hand corner and superimposed on the sctterplots are <strong>locally weighted scatterplot smoothing lines (LOWESS)</strong> that can be used to help discover any nonlinearities. <img src="/images/RL/background/ts_2_2_3.png" width="600"></p>
+</blockquote>
+<h2 id="ref">Ref</h2>
+<p>Time Series Analysis and Its Applications With R Examples by Robert H.Shumway and David S.Stoffer</p>
+<p>https://www.math-stat.unibe.ch/e237483/e237655/e243381/e281679/files281692/Chap13_ger.pdf</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/MDP/" rel="bookmark">MDP</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-equations/" rel="bookmark">Bellman Equations</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-optimality-equations/" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/14/calculus/" rel="bookmark">Calculus (1)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/dp/" rel="bookmark">Dynamic Programming</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RL-Basics/" rel="tag"># RL Basics</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/09/16/hmm/" rel="prev" title="Sequential Data">
+                  <i class="fa fa-chevron-left"></i> Sequential Data
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/11/19/time-series-2/" rel="next" title="Time Series (2)">
+                  Time Series (2) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

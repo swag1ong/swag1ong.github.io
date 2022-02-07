@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Value Function Approximation (Algorithms) Approximate Value Iteration Population Version Recall that the procedure for VI is: \[V_{k+1} \leftarrow T^{\pi}V_{k}\] \[V_{k+1} \leftarrow T^{*}V_{k}\] One">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Value Function Approximation (2)">
+<meta property="og:url" content="https://swag1ong.github.io/2021/07/13/vfa-2/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Value Function Approximation (Algorithms) Approximate Value Iteration Population Version Recall that the procedure for VI is: \[V_{k+1} \leftarrow T^{\pi}V_{k}\] \[V_{k+1} \leftarrow T^{*}V_{k}\] One">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/vfa/brm_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/vfa/pbe_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/vfa/lstd_1.png">
+<meta property="article:published_time" content="2021-07-13T14:00:16.000Z">
+<meta property="article:modified_time" content="2021-08-31T03:42:09.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swag1ong.github.io/images/RL/vfa/brm_1.png">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/07/13/vfa-2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;07&#x2F;13&#x2F;vfa-2&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;07&#x2F;13&#x2F;vfa-2&#x2F;&quot;,&quot;title&quot;:&quot;Value Function Approximation (2)&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Value Function Approximation (2) | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#value-function-approximation-algorithms"><span class="nav-number">1.</span> <span class="nav-text">Value Function Approximation (Algorithms)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#approximate-value-iteration"><span class="nav-number">1.1.</span> <span class="nav-text">Approximate Value Iteration</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#population-version"><span class="nav-number">1.1.1.</span> <span class="nav-text">Population Version</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#batch-version"><span class="nav-number">1.1.2.</span> <span class="nav-text">Batch Version</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bellman-residual-minimization"><span class="nav-number">1.2.</span> <span class="nav-text">Bellman Residual Minimization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#population-version-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">Population Version</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#batch-version-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">Batch Version</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#projected-bellman-error"><span class="nav-number">1.3.</span> <span class="nav-text">Projected Bellman Error</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#population-version-2"><span class="nav-number">1.3.1.</span> <span class="nav-text">Population Version</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#least-square-temporal-difference-learning-population-version"><span class="nav-number">1.3.2.</span> <span class="nav-text">Least Square Temporal Difference Learning (Population Version)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#batch-version-2"><span class="nav-number">1.3.3.</span> <span class="nav-text">Batch Version</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#semi-gradient-td"><span class="nav-number">1.4.</span> <span class="nav-text">Semi-Gradient TD</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/13/vfa-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Value Function Approximation (2)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-13 22:00:16" itemprop="dateCreated datePublished" datetime="2021-07-13T22:00:16+08:00">2021-07-13</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-08-31 11:42:09" itemprop="dateModified" datetime="2021-08-31T11:42:09+08:00">2021-08-31</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/VFA/" itemprop="url" rel="index"><span itemprop="name">VFA</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/07/13/vfa-2/" class="post-meta-item leancloud_visitors" data-flag-title="Value Function Approximation (2)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>13k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>12 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="value-function-approximation-algorithms">Value Function Approximation (Algorithms)</h1>
+<h2 id="approximate-value-iteration">Approximate Value Iteration</h2>
+<h3 id="population-version">Population Version</h3>
+<p>Recall that the procedure for VI is:</p>
+<p><span class="math display">\[V_{k+1} \leftarrow T^{\pi}V_{k}\]</span> <span class="math display">\[V_{k+1} \leftarrow T^{*}V_{k}\]</span></p>
+<p>One way to develop its approximation version is to perform each step only approximately (i.e find <span class="math inline">\(V_{k+1} \in \mathbf{F}\)</span>) such that:</p>
+<p><span class="math display">\[V_{k+1} \approx TV_{k}\]</span></p>
+<p>Where <span class="math inline">\(T\)</span> can be <span class="math inline">\(T^*\)</span> or <span class="math inline">\(T^\pi\)</span>.</p>
+<p>We start from a <span class="math inline">\(V_0 \in \mathbf{F}\)</span>, and then at each iteration <span class="math inline">\(k\)</span> of AVI, we solve (i.e <span class="math inline">\(p\)</span> is often 2):</p>
+<p><span class="math display">\[V_{k+1} \leftarrow \underset{V \in \mathbf{F}}{\arg\min} \|V - TV_{k}\|^p_{p, \mu}\]</span></p>
+<p>At each iteration, <span class="math inline">\(TV_k\)</span> (our target) may not be within <span class="math inline">\(\mathbf{F}\)</span> anymore even though <span class="math inline">\(V_{k} \in \mathbf{F}\)</span>, we may have some approximation error at each iteration of AVI. The amount of error depends on how expressive <span class="math inline">\(\mathbf{F}\)</span> is and how much <span class="math inline">\(T\)</span> can push a function within <span class="math inline">\(\mathbf{F}\)</span> outside that space.</p>
+<h3 id="batch-version">Batch Version</h3>
+<p>The objective of AVI cannot be computed because:</p>
+<ul>
+<li><span class="math inline">\(\mu\)</span> is unknown</li>
+<li>Environment <span class="math inline">\(R, P\)</span> is often not available, thus <span class="math inline">\(TQ_k\)</span> cannot be computed.</li>
+</ul>
+<p>If we have samples in the form of <span class="math inline">\((X, A, R, X^{\prime})\)</span>, we can compute the unbiased sample of <span class="math inline">\(TQ_k\)</span>:</p>
+<p><span class="math display">\[\hat{T}^{\pi}Q_k = R + \gamma Q(X^{\prime}, A^{\prime})\]</span> <span class="math display">\[\hat{T}^{*} Q_k = R + \gamma \max_{a^{\prime} \in A} Q(X^{\prime}, a^{\prime}) \]</span></p>
+<p>Where <span class="math inline">\(A^{\prime} \sim \pi(\cdot | X^{\prime})\)</span></p>
+<p><br></p>
+<p><strong>The question is: can we replace <span class="math inline">\(TQ_k\)</span> with <span class="math inline">\(\hat{T}Q_k\)</span>?</strong></p>
+Given any <span class="math inline">\(Z = (X, A)\)</span>
+<span class="math display">\[\begin{aligned}
+E_{\hat{T}Q_k}[|Q(Z) - \hat{T}Q_k (Z)|^2 | Z] &amp;= E_{\hat{T}Q_k}[|Q(Z) - TQ_k (Z) + TQ_k (Z) - \hat{T}Q_k (Z)|^2 | Z]\\
+&amp;= E_{\hat{T}Q_k}[|Q(Z) - TQ_k (Z)|^2 | Z] + E_{\hat{T}Q_k}[|TQ_k (Z) - \hat{T}Q_k(Z)|^2 | Z] + 2 E_{\hat{T}Q_k}[(Q(Z) - TQ_k (Z))(TQ_k (Z) - \hat{T}Q_k (Z)) | Z]\\
+&amp;= E_{\hat{T}Q_k}[|Q(Z) - TQ_k (Z)|^2 | Z] + E_{\hat{T}Q_k}[|TQ_k (Z) - \hat{T}Q_k(Z)|^2 | Z]
+\end{aligned}\]</span>
+<p>Since <span class="math inline">\(Z \sim \mu\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+E_{\mu} [E_{\hat{T}Q_k}[|Q(Z) - TQ_k (Z)|^2 | Z] + E_{\hat{T}Q_k}[|TQ_k (Z) - \hat{T}Q_k(Z)|^2 | Z]] &amp;= E_{\mu, \hat{T}Q_k} [|Q(Z) - TQ_k (Z)|^2] + E_{\mu, \hat{T}Q_k} [|TQ_k (Z) - \hat{T}Q_k(Z)|^2]\\
+&amp;= \|Q(Z) - TQ_k (Z)\|^2_{2, \mu} + E_{\mu} [Var[\hat{T}Q_k (Z) | Z]]
+\end{aligned}\]</span>
+<p>Since the expectation of variance term does not depend on <span class="math inline">\(Q\)</span>, the solution to the surrogate objective is the same as the original objective:</p>
+<p><span class="math display">\[\underset{Q \in \mathbf{F}}{\arg\min} \; E_{\mu, \hat{T}Q_k}[|Q(Z) - \hat{T}Q_k (Z)|^2] = \underset{Q \in \mathbf{F}}{\arg\min} \; \|Q(Z) - TQ_k (Z)\|^2_{2, \mu}\]</span></p>
+<p>Similar to ERM, we do not know the environment dynamics <span class="math inline">\(R, P\)</span> and distribution <span class="math inline">\(\mu\)</span>. We can use samples and estimate the expectation:</p>
+<p><span class="math display">\[\frac{1}{N} \sum^{N}_{i=1} |Q(X_i, A_i) - \hat{T}Q_k (X_i, A_i)|^2 = \|Q - \hat{T}Q_k\|^2_{2, D_n}\]</span></p>
+<p><strong>This is the basis of DQN</strong>.</p>
+<h2 id="bellman-residual-minimization">Bellman Residual Minimization</h2>
+<h3 id="population-version-1">Population Version</h3>
+<p>Recall that:</p>
+<p><span class="math display">\[V = T^{\pi}V \implies V = V^{\pi}\]</span></p>
+<p>Under FA, we may not achieve this exact equality, instead:</p>
+<p><span class="math display">\[V \approx V^{\pi}\]</span></p>
+<p>Thus, we can formulate our objective:</p>
+<p><span class="math display">\[V = \underset{V \in \mathbf{F}}{\arg\min} \|V - T^{\pi}V\|^p_{p, \mu} = \|BR(V)\|^p_{p, \mu}\]</span></p>
+<p>By minimizing this objective (<span class="math inline">\(p\)</span> is usually 2), we have <code>Bellman Residual Minimization</code>.</p>
+<p>This procedure is different from AVI in that we do not mimic the iterative process of VI (which is convergent in the exact case without any FA), but instead directly go for the solution of fixed-point equation (<span class="math inline">\(V - T^{\pi}V\)</span> instead of <span class="math inline">\(V - T^{\pi}V_k\)</span>).</p>
+<p><img src='/images/RL/vfa/brm_1.png' width="600"></p>
+<p>If there exists a <span class="math inline">\(V \in \mathbf{F}\)</span> that makes <span class="math inline">\(\|V - T^{\pi}V\|^2_{2, \mu} = 0\)</span> and if we assume <span class="math inline">\(\mu(x) &gt; 0, \; \forall x \in \chi\)</span>, we can conclude that <span class="math inline">\(V(x) = V^{\pi}(x), \; \forall x \in \chi\)</span> so <span class="math inline">\(V = V^{\pi}\)</span>.</p>
+<h3 id="batch-version-1">Batch Version</h3>
+<p>Similar to AVI, we may want to replace <span class="math inline">\(TV\)</span> or <span class="math inline">\(TQ\)</span> by <span class="math inline">\(\hat{T}Q\)</span>. Thus, our empirical objective is:</p>
+<p><span class="math display">\[Q = \underset{Q \in \mathbf{F}}{\arg\min} \frac{1}{N} \sum^N_{i=1} |Q(X_i, A_i) - \hat{T}^{\pi} Q (X_i, A_i)|^2 = \|Q - \hat{T}^{\pi}Q\|^2_{2, D_n}\]</span></p>
+<p>Using <span class="math inline">\(D_n = \{(X_i, A_i, R_i, X^{\prime}_i)\}^N_{i=1}\)</span></p>
+<p>We can see that <span class="math inline">\(Q\)</span> appears in both <span class="math inline">\(\hat{T}^{\pi}Q\)</span> and <span class="math inline">\(Q\)</span>, which is different from AVI and ERM. <strong>This causes an issue: the minimizer of <span class="math inline">\(\|Q - T^{\pi}Q\|^2_{2, \mu}\)</span> and <span class="math inline">\(\|Q - \hat{T}^{\pi}Q\|^2_{2, \mu}\)</span> are not necessarily the same for stochastic dynamics.</strong></p>
+<p><br></p>
+<p>To see this, for any <span class="math inline">\(Q\)</span> and <span class="math inline">\(Z = (X, A)\)</span> we compute:</p>
+<p><span class="math display">\[E_{\hat{T}^{\pi}Q} [|Q(Z) - \hat{T}Q(Z)|^2 | Z]\]</span></p>
+<p>Then:</p>
+<span class="math display">\[\begin{aligned}
+E_{\hat{T}^{\pi}Q}[|Q(Z) - \hat{T}^{\pi}Q (Z)|^2 | Z] &amp;= E_{\hat{T}^{\pi}Q}[|Q(Z) - T^{\pi}Q (Z) + T^{\pi}Q (Z) - \hat{T}^{\pi}Q (Z)|^2 | Z]\\
+&amp;= E_{\hat{T}^{\pi}Q}[|Q(Z) - T^{\pi}Q (Z)|^2 | Z] + E_{\hat{T}^{\pi}Q}[|T^{\pi}Q (Z) - \hat{T}^{\pi}Q(Z)|^2 | Z] + 2 E_{\hat{T}^{\pi}Q}[(Q(Z) - T^{\pi}Q (Z))(T^{\pi}Q (Z) - \hat{T}^{\pi}Q (Z)) | Z]\\
+&amp;= E_{\hat{T}^{\pi}Q}[|Q(Z) - T^{\pi}Q (Z)|^2 | Z] + E_{\hat{T}^{\pi}Q}[|T^{\pi}Q (Z) - \hat{T}^{\pi}Q(Z)|^2 | Z]
+\end{aligned}\]</span>
+<p>Since <span class="math inline">\(Z \sim \mu\)</span>, the first term is:</p>
+<p><span class="math display">\[E_{\hat{T}^{\pi}Q, \mu}[|Q(Z) - T^{\pi}Q (Z)|^2] = \|Q - T^{\pi}Q\|^2_{2, \mu}\]</span></p>
+<p>The second term is:</p>
+<p><span class="math display">\[E_{\mu}[E_{\hat{T}^{\pi}Q}[|T^{\pi}Q (Z) - \hat{T}^{\pi}Q(Z)|^2 | Z]] = E_{\mu}[Var[\hat{T}^{\pi}Q(Z) | Z]]\]</span></p>
+<p>We can see that the variance term <span class="math inline">\(Var[\hat{T}^{\pi}Q(Z)\)</span> depends on <span class="math inline">\(Q\)</span>, <strong>as we minimize the objective w.r.t <span class="math inline">\(Q\)</span> in stochastic dynamical systems (for deterministic ones, it is zero)</strong>, we have $ E_{}[Var[^{}Q(Z) | Z]] $, so the minimizer of the batch version objective is not the same as population version for BRM in stochastic dynamics.</p>
+<h2 id="projected-bellman-error">Projected Bellman Error</h2>
+<p>From BRM, we know that even though <span class="math inline">\(V \in \mathbf{F}\)</span>, <span class="math inline">\(T^{\pi} V\)</span> may not be in <span class="math inline">\(\mathbf{F}\)</span>. Thus, a good approximator <span class="math inline">\(V \in \mathbf{F}\)</span> should have distance to <span class="math inline">\(T^{\pi}V\)</span> small. Thus, we want to find <span class="math inline">\(V \in \mathbf{F}\)</span> such that <span class="math inline">\(V\)</span> is the projection of <span class="math inline">\(T^{\pi}V\)</span> onto the space <span class="math inline">\(\mathbf{F}\)</span>.</p>
+<p><img src='/images/RL/vfa/pbe_1.png' width="600"></p>
+<p>We want to find a <span class="math inline">\(V \in \mathbf{F}\)</span> such that:</p>
+<p><span class="math display">\[V = \prod_{\mathbf{F}, \mu} T^{\pi}V\]</span></p>
+<p>Where <span class="math inline">\(\prod_{\mathbf{F}, \mu}\)</span> is the projection operator.</p>
+<p>TRhe projectio operator <span class="math inline">\(\prod_{\mathbf{F}, \mu}\)</span> is a linear operator that takes <span class="math inline">\(V \in B(\chi)\)</span> and maps it to closest point on <span class="math inline">\(F\)</span> measured according to its <span class="math inline">\(L_{2} (\mu)\)</span> norm:</p>
+<p><span class="math display">\[\prod_{\mathbf{F}, \mu} V \triangleq \underset{V^{\prime} \in \mathbf{F}}{\arg\min} \|V^{\prime} - V\|^2_{2, \mu}\]</span></p>
+<p>It has some properties:</p>
+<ol type="1">
+<li>The projection belongs to function space <span class="math inline">\(\mathbf{F}\)</span>: <span class="math display">\[\prod_{\mathbf{F}, \mu} V \in \mathbf{F}\]</span></li>
+<li>If <span class="math inline">\(V \in \mathbf{F}\)</span>, the projection is itself: <span class="math display">\[V \in \mathbf{F} \implies \prod_{\mathbf{F}, \mu} V = V\]</span></li>
+<li>The projection operator onto a subspace is a non-expansion: <span class="math display">\[\|\prod_{\mathbf{F}, \mu} V_1 - \prod_{\mathbf{F}, \mu} V_2\|^2_{2, \mu} \leq \|V_1 - V_2\|^2_{2, \mu}\]</span></li>
+</ol>
+<h3 id="population-version-2">Population Version</h3>
+<p>We can define a loss function based on <span class="math inline">\(V = \prod_{\mathbf{F}, \mu} T^{\pi}V\)</span>:</p>
+<p><span class="math display">\[\|V - \prod_{\mathbf{F}, \mu} T^{\pi}V\|^2_{2, \mu}\]</span></p>
+<p>This is called <code>Projected Bellman Error</code> or <code>Mean Square Projected Bellman Error</code>.</p>
+<p>We find the value function by solving the following optimization problem:</p>
+<p><span class="math display">\[V = \underset{V \in \mathbf{F}}{\arg\min} \|V - \prod_{\mathbf{F}, \mu} T^{\pi}V\|^2_{2, \mu}\]</span></p>
+<p>Since <span class="math inline">\(V \in \mathbf{F}\)</span>, the projection operator is linear:</p>
+<span class="math display">\[\begin{aligned}
+V -  \prod_{\mathbf{F}, \mu} T^{\pi}V &amp;= \prod_{\mathbf{F}, \mu} V - \prod_{\mathbf{F}, \mu} T^{\pi}V\\
+&amp;= \prod_{\mathbf{F}, \mu} (V - T^{\pi}V)\\
+&amp;= - \prod_{\mathbf{F}, \mu} (T^{\pi}V - V)\\
+&amp;= - \prod_{\mathbf{F}, \mu} (BR(V))
+\end{aligned}\]</span>
+<p>So the objective can be rewritten as:</p>
+<p><span class="math display">\[V = \underset{V \in \mathbf{F}}{\arg\min}  \|\prod_{\mathbf{F}, \mu} BR(V)\|^2_{2, \mu}\]</span></p>
+<p>Which is the norm of the projection of the Bellman Residual onto <span class="math inline">\(\mathbf{F}\)</span>.</p>
+<p><br></p>
+<p>We can think of solving the projected bellman error objective as solving the <strong>two coupled optimization problems</strong>:</p>
+<ol type="1">
+<li>Find the projection point given value function <span class="math inline">\(V^{\prime}\)</span>: <span class="math display">\[V^{\prime\prime} = \underset{V^{\prime\prime} \in \mathbf{F}}{\arg\min} \|V^{\prime\prime} - T^{\pi}V^{\prime}\|^2_{2, \mu}\]</span></li>
+<li>Find the value function <span class="math inline">\(V^{\prime}\)</span> on <span class="math inline">\(\mathbf{F}\)</span> that is closest to the projection point <span class="math inline">\(V^{\prime\prime}\)</span>: <span class="math display">\[V^{\prime} = \underset{V^{\prime} \in \mathbf{F}}{\arg\min} \|V^{\prime} - V^{\prime\prime}\|^2_{2, \mu}\]</span></li>
+</ol>
+<h3 id="least-square-temporal-difference-learning-population-version">Least Square Temporal Difference Learning (Population Version)</h3>
+<p>If <span class="math inline">\(\mathbf{F}\)</span> is a linear FA with basis functions <span class="math inline">\(\phi_1, ...., \phi_p\)</span>:</p>
+<p><span class="math display">\[\mathbf{F}: \{x \rightarrow \boldsymbol{\phi}(x)^T \mathbf{w}; \; \mathbf{w} \in \mathbb{R}^p\}\]</span></p>
+<p>We can find a direct solution to the PBE objective, that is we want to find <span class="math inline">\(V \in \mathbf{F}\)</span> s.t:</p>
+<p><span class="math display">\[V = \prod_{\mathbf{F}, \mu} T^{\pi}V\]</span></p>
+<p>We assume that:</p>
+<ul>
+<li><span class="math inline">\(\chi\)</span> is finite and <span class="math inline">\(|\chi| = N\)</span>, <span class="math inline">\(N \gg p\)</span>, each <span class="math inline">\(\boldsymbol{\phi}_i = [\phi_i(x_1) .... \phi_i(x_N)]^T\)</span> is a <span class="math inline">\(N\)</span>-dimentional vector.</li>
+</ul>
+<p>Then, we define <span class="math inline">\(\Phi_{N\times p}\)</span> as the matrix of concatenating all features:</p>
+<p><span class="math display">\[\Phi = [\boldsymbol{\phi}_1 .... \boldsymbol{\phi}_p]_{N\times p}\]</span></p>
+<p>The value function <span class="math inline">\(V \in \mathbf{F}\)</span> is then:</p>
+<p><span class="math display">\[V_{N \times 1} = \Phi_{N\times p} \mathbf{w}_{p \times 1}\]</span></p>
+<p>Our <strong>goal</strong> is to find a weight vector <span class="math inline">\(\mathbf{w} \in \mathbb{R}^p\)</span> such that:</p>
+<p><span class="math display">\[V = \prod_{\mathbf{F}, \mu} T^{\pi}V \implies \Phi\mathbf{w} = \prod_{\mathbf{F}, \mu} T^{\pi}(\Phi \mathbf{w})\]</span></p>
+<p>Let <span class="math inline">\(M = \text{diag}(\mu)\)</span>, since:</p>
+<p><span class="math display">\[\|V\|^2_{2, \mu} = &lt;V, V&gt;_{\mu} = \sum_{x \in \chi} |V(x)|^2\mu(x) = V^TMV\]</span></p>
+<p><span class="math display">\[&lt;V_1, V_2&gt;_{\mu} = \sum_{x \in \chi} V_1(x)V_2(x) = V^T_1 M V_2\]</span></p>
+<p>Then, the projection operator onto the linear <span class="math inline">\(\mathbf{F}\)</span> would be:</p>
+<span class="math display">\[\begin{aligned}
+\prod_{\mathbf{F}, \mu} V &amp;= \underset{V^{\prime} \in \mathbf{F}}{\arg\min}\|V^{\prime} - V\|^2_{2, \mu}\\
+&amp;= \underset{\mathbf{w} \in \mathbb{R}^p}{\arg\min}\|\Phi\mathbf{w} - V\|^2_{2, \mu}\\
+&amp;= \underset{\mathbf{w} \in \mathbb{R}^p}{\arg\min} (\Phi\mathbf{w} - V)^T M (\Phi\mathbf{w} - V)
+\end{aligned}\]</span>
+<p>By taking the derivative and setting it to zero (assuming that <span class="math inline">\(\Phi^TM\Phi\)</span> is invertible):</p>
+<p><span class="math display">\[\frac{\partial \prod_{\mathbf{F}, \mu} V}{\partial \mathbf{w}} = \Phi^TM(\Phi\mathbf{w} - V) = 0\]</span> <span class="math display">\[\implies \mathbf{w^{*}} = (\Phi^TM\Phi)^{-1}\Phi^TMV\]</span></p>
+<p>Then the projection is:</p>
+<p><span class="math display">\[\prod_{\mathbf{F}, \mu} V = \Phi \mathbf{w} = \Phi (\Phi^TM\Phi)^{-1}\Phi^TMV\]</span></p>
+<p>Since <span class="math inline">\(T^{\pi} V = r^{\pi} (x) + \gamma \sum_{x \in \chi, a \in \mathbf{A}}P^{\pi}(x^{\prime} | x, a) \pi(a | s) V(x^{\prime})\)</span>, we can write it in vector form for all states:</p>
+<p><span class="math display">\[(T^{\pi}V)_{N\times 1} = \mathbf{r}^{\pi}_{N \times 1} + \gamma P^{\pi}_{N\times N} V_{N \times 1}\]</span> <span class="math display">\[\implies (T^{\pi}\Phi\mathbf{w})_{N\times 1} = \mathbf{r}^{\pi}_{N \times 1} + \gamma P^{\pi}_{N\times N} \Phi_{N\times p}\mathbf{w}_{p \times 1}\]</span></p>
+<p>Substitute the equation of <span class="math inline">\(T^{\pi}\Phi\mathbf{w}\)</span> into <span class="math inline">\(V\)</span> in the projection equation:</p>
+<p><span class="math display">\[\prod_{\mathbf{F}, \mu} T^{\pi}\Phi\mathbf{w} = \Phi \mathbf{w} = \Phi (\Phi^TM\Phi)^{-1}\Phi^TM(T^{\pi}\Phi\mathbf{w})\]</span> <span class="math display">\[\implies \Phi \mathbf{w} = [\Phi (\Phi^TM\Phi)^{-1}\Phi^TM][\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w}]\]</span></p>
+<p>Multiply both sides by <span class="math inline">\(\Phi^T M\)</span> and simply:</p>
+<p><span class="math display">\[\Phi^T M \Phi \mathbf{w} = [\Phi^T M\Phi (\Phi^TM\Phi)^{-1}\Phi^TM][\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w}]\]</span> <span class="math display">\[\implies \Phi^T M \Phi \mathbf{w} = \Phi^TM[\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w}]\]</span> <span class="math display">\[\implies \Phi^T M \Phi \mathbf{w} - \Phi^TM[\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w}] = 0\]</span> <span class="math display">\[\implies  \Phi^T M[\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w} - \Phi \mathbf{w}] = 0\]</span> <span class="math display">\[\implies \mathbf{w}_{TD} = [\Phi^T M (\Phi - \gamma P^{\pi}\Phi)]^{-1}\Phi^T M \mathbf{r}^{\pi}\]</span></p>
+<p>The solution <span class="math inline">\(\mathbf{w}_{TD}\)</span> is called <code>Least Square Temporal Difference Method (LSTD)</code>.</p>
+<p>Notice that the term <span class="math inline">\(\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w} - \Phi \mathbf{w} = T^{\pi} V - V = BR(V)\)</span>. Hence:</p>
+<p><span class="math display">\[\Phi^TM (BR(V)) = 0\]</span> <span class="math display">\[\implies &lt;\mathbf{\phi}_i, BR(V)&gt; = 0\]</span></p>
+<p>Thus, <strong>LSTD</strong> finds a <span class="math inline">\(\mathbf{w}\)</span> s.t the <strong>Bellman Residual is orthogonal</strong> to the basis of <span class="math inline">\(\mathbf{F}\)</span> which is exactly what we want.</p>
+<h3 id="batch-version-2">Batch Version</h3>
+<p>We have showed that the solution to <span class="math inline">\(V = \prod_{\mathbf{F}, \mu} T^{\pi}V\)</span> with linear FA <span class="math inline">\(V = \Phi\mathbf{w}\)</span> is:</p>
+<p><span class="math display">\[\mathbf{w}_{TD} = A^{-1}_{p\times p} \mathbf{b}_{p \times 1}\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(A^{-1} = \Phi^T M (\Phi - \gamma P^{\pi}\Phi)]^{-1}\)</span></li>
+<li><span class="math inline">\(\mathbf{b} = \Phi^T M \mathbf{r}^{\pi}\)</span></li>
+</ul>
+<p>Expand <span class="math inline">\(A\)</span> and <span class="math inline">\(\mathbf{b}\)</span> in terms of summations, we have:</p>
+<p><span class="math display">\[A_{ij} = \sum^{N}_{n=1} \Phi^T_{in} \mu(n) (\Phi - \gamma P^{\pi}\Phi)_{ij}\]</span> <span class="math display">\[b_i = \sum^N_{n=1} \Phi^T_{in} \mu(n) r^{\pi}_n\]</span></p>
+<p>Thus, in terms of current state <span class="math inline">\(x\)</span> and next state <span class="math inline">\(x^{\prime}\)</span>:</p>
+<p><span class="math display">\[A = \sum_{x \in \chi} \mu (x) \boldsymbol{\phi} (x) [\boldsymbol{\phi}(x) - \gamma \sum_{x^{\prime} \in \chi} P^{\pi}(x^{\prime} | x)\boldsymbol{\phi}(x^{\prime})]^T = E_{\mu}[\boldsymbol{\phi}(X) [\boldsymbol{\phi}(X) - \gamma E_{P^{\pi}}[\boldsymbol{\phi} (X^{\prime})]]^T]\]</span></p>
+<p><span class="math display">\[\mathbf{b} = \sum_{x \in \chi} \mu(x) \boldsymbol{\phi} (x) r^{\pi}(x) = E_{\mu} [\boldsymbol{\phi}(X)r^{\pi}(X)]\]</span></p>
+<p>Given data set <span class="math inline">\(D_n = \{X_i, R_i, X^{\prime}_i\}^{M}_{i=1}\)</span> with <span class="math inline">\(X_i \sim \mu\)</span>, <span class="math inline">\(X^{\prime} \sim P^{\pi}(\cdot | X_i)\)</span> and <span class="math inline">\(R_i \sim R^{\pi}(\cdot | X_i)\)</span>, we define the empirical estimator <span class="math inline">\(\hat{A}_n, \hat{ \mathbf{b}}_n\)</span> as:</p>
+<p><span class="math display">\[\hat{A}_n = \frac{1}{M} \sum^{M}_{i=1} \boldsymbol{\phi}(X_i) [\boldsymbol{\phi}(X_i) - \gamma \boldsymbol{\phi} (X^{\prime}_i)]^T\]</span> <span class="math display">\[\hat{\mathbf{b}}_n = \frac{1}{M} \sum^{M}_{i=1} \boldsymbol{\phi}(X)R_i\]</span></p>
+<p><br></p>
+<p>We can use LSTD to define an approximate policy iteration procedure to obtain a close to optimal policy (LSPI):</p>
+<p><img src='/images/RL/vfa/lstd_1.png' width="600"></p>
+<h2 id="semi-gradient-td">Semi-Gradient TD</h2>
+<p>Suppose that we know the true value function <span class="math inline">\(V^{\pi}\)</span> and we want to find an approximation <span class="math inline">\(\hat{V}\)</span>, parameterized by <span class="math inline">\(\mathbf{w}\)</span>. The population loss:</p>
+<p><span class="math display">\[V = \underset{\hat{V} \in \mathbf{F}}{\arg\min} \frac{1}{2}\|V^{\pi} - \hat{V}\|^2_{2, \mu}\]</span></p>
+<p>Using samples <span class="math inline">\(X_t \sim \mu\)</span>, we can define an SGD procedure that updates <span class="math inline">\(\mathbf{w}_t\)</span> as follows:</p>
+<span class="math display">\[\begin{aligned}
+\mathbf{w}_{t+1} &amp;\leftarrow \mathbf{w}_t - \alpha_t \nabla_{\mathbf{w}_t} [\frac{1}{2} |V^{\pi} (X_t) - \hat{V}(X_t; \mathbf{w}_t)|^2]\\
+&amp;= \mathbf{w}_t + \alpha_t (V^{\pi} (X_t) - \hat{V}(X_t; \mathbf{w}_t))\nabla_{\mathbf{w}_t} \hat{V}(X_t; \mathbf{w}_t)
+\end{aligned}\]</span>
+<p>If we select proper step size <span class="math inline">\(\alpha_t\)</span>, then the SGD converges to the stationary point.</p>
+<p>When we do not know <span class="math inline">\(V^{\pi}\)</span>, we can use bootstrapped estimate (TD estimate <span class="math inline">\(\hat{T}^{\pi}V_t\)</span>) instead:</p>
+<p><span class="math display">\[\mathbf{w}_{t+1} \leftarrow \mathbf{w}_t + \alpha_t (\hat{T}^{\pi}V_t - \hat{V}(X_t; \mathbf{w}_t))\nabla_{\mathbf{w}_t} \hat{V}(X_t; \mathbf{w}_t)\]</span> <span class="math display">\[\mathbf{w}_{t+1} \leftarrow \mathbf{w}_t + \alpha_t (R_t + \hat{V}(X^{\prime}_t; \mathbf{w}_t) - \hat{V}(X_t; \mathbf{w}_t))\nabla_{\mathbf{w}_t} \hat{V}(X_t; \mathbf{w}_t)\]</span></p>
+<p><strong>The substitution of <span class="math inline">\(V^{\pi}(X_t)\)</span> with <span class="math inline">\(\hat{T}^{\pi}V_t (X_t)\)</span> does not follow from the SGD of any loss function. The TD update is note a true SGD update, that is, we call it a semi-gradient update.</strong></p>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/13/leet-code-4/" rel="prev" title="LeetCode(4)">
+                  <i class="fa fa-chevron-left"></i> LeetCode(4)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/07/15/probability-3/" rel="next" title="probability-3">
+                  probability-3 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Linear Algebra (2) Finite Dimensional Vector Space Span and Linear Independence List of vectors are written without surrounding parentheses. For example \((4, 1, 6), (9, 5, 7)\) is a list of length 2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linear Algebra (2)">
+<meta property="og:url" content="https://swag1ong.github.io/2022/01/09/linear-algebra-2/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Linear Algebra (2) Finite Dimensional Vector Space Span and Linear Independence List of vectors are written without surrounding parentheses. For example \((4, 1, 6), (9, 5, 7)\) is a list of length 2">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-01-09T13:32:35.000Z">
+<meta property="article:modified_time" content="2022-01-23T15:31:03.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="RL Basics">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2022/01/09/linear-algebra-2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2022&#x2F;01&#x2F;09&#x2F;linear-algebra-2&#x2F;&quot;,&quot;path&quot;:&quot;2022&#x2F;01&#x2F;09&#x2F;linear-algebra-2&#x2F;&quot;,&quot;title&quot;:&quot;Linear Algebra (2)&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Linear Algebra (2) | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#linear-algebra-2"><span class="nav-number">1.</span> <span class="nav-text">Linear Algebra (2)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#finite-dimensional-vector-space"><span class="nav-number">1.1.</span> <span class="nav-text">Finite Dimensional Vector Space</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#span-and-linear-independence"><span class="nav-number">1.1.1.</span> <span class="nav-text">Span and Linear Independence</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-2.3-linear-combination"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">Definition 2.3: Linear Combination</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-2.5-span-linear-span"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">Definition 2.5: Span (Linear Span)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-2.8-spans"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">Definition 2.8: Spans</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-2.10-finite-dimensional-vector-space"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">Definition 2.10: Finite-dimensional Vector Space</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-2.11-polynomial-pmathbbf"><span class="nav-number">1.1.1.5.</span> <span class="nav-text">Definition 2.11: Polynomial, \(P(\mathbb{F})\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-2.12-degree-of-a-polynomial"><span class="nav-number">1.1.1.6.</span> <span class="nav-text">Definition 2.12: Degree of a Polynomial</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-2.13-p_mmathbbf"><span class="nav-number">1.1.1.7.</span> <span class="nav-text">Definition 2.13: \(P_m(\mathbb{F})\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-2.15-infinite-dimensional-vector-space"><span class="nav-number">1.1.1.8.</span> <span class="nav-text">Definition 2.15: Infinite-Dimensional Vector Space</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-2.17-linearly-independent"><span class="nav-number">1.1.1.9.</span> <span class="nav-text">Definition 2.17: Linearly Independent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-2.19-linearly-dependent"><span class="nav-number">1.1.1.10.</span> <span class="nav-text">Definition 2.19: Linearly Dependent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lemma-2.21-linear-dependence-lemma"><span class="nav-number">1.1.1.11.</span> <span class="nav-text">Lemma 2.21: Linear Dependence Lemma</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-2.23-length-of-linearly-independent-list-leq-length-of-spanning-list"><span class="nav-number">1.1.1.12.</span> <span class="nav-text">Definition: 2.23: Length of Linearly Independent List \(\leq\) Length of Spanning List</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-2.26-finite-dimensional-subspaces"><span class="nav-number">1.1.1.13.</span> <span class="nav-text">Definition 2.26: Finite-dimensional Subspaces</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bases"><span class="nav-number">1.1.2.</span> <span class="nav-text">Bases</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-2.27-basis"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Definition 2.27: Basis</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-2.31-spanning-list-contains-a-basis"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">Corollary 2.31: Spanning List Contains a Basis</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-2.32-basis-of-finite-dimensional-vector-space"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">Corollary 2.32: Basis of Finite-Dimensional Vector Space</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-2.33-linearly-independent-list-extands-to-a-basis"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">Corollary 2.33: Linearly Independent List Extands to a Basis</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-2.34-every-subspace-of-v-is-part-of-a-direct-sum-equal-to-v"><span class="nav-number">1.1.2.5.</span> <span class="nav-text">Corollary 2.34: Every Subspace of \(V\) is part of a Direct Sum Equal to \(V\)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dimension"><span class="nav-number">1.1.3.</span> <span class="nav-text">Dimension</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-2.35-basis-length-does-not-depend-on-basis"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">Corollary 2.35: Basis Length Does Not Depend on Basis</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-2.36-dimension-dim-v"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">Definition 2.36: Dimension, dim \(V\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-2.38-dimension-of-a-subspace"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">Corollary 2.38: Dimension of a Subspace</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-2.39-linearly-independent-list-of-the-right-length-is-a-basis"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">Corollary 2.39: Linearly Independent List of the Right Length is a Basis</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-2.42-spanning-list-of-the-right-length-is-a-basis"><span class="nav-number">1.1.3.5.</span> <span class="nav-text">Corollary 2.42: Spanning List of the Right Length is a Basis</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-2.43-dimension-of-a-sum"><span class="nav-number">1.1.3.6.</span> <span class="nav-text">Corollary 2.43: Dimension of a Sum</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#linear-maps"><span class="nav-number">1.2.</span> <span class="nav-text">Linear Maps</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#the-vector-space-of-linear-map"><span class="nav-number">1.2.1.</span> <span class="nav-text">The Vector Space of Linear Map</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.2-linear-map-linear-transformation"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Definition 3.2: Linear Map (Linear Transformation)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#notation-3.3-lv-w"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Notation 3.3: \(L(V, W)\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.5-linear-maps-and-basis-of-domain"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">Corollary 3.5: Linear Maps and Basis of Domain</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.6-addition-and-scalar-multiplication-on-lv-w"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">Definition 3.6: Addition and Scalar Multiplication on \(L(V, W)\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.7-lw-v-is-a-vector-space"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">Corollary 3.7: \(L(W, V)\) is a Vector Space</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.8-product-of-linear-maps"><span class="nav-number">1.2.1.6.</span> <span class="nav-text">Definition 3.8: Product of Linear Maps</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.9-algebraic-properties-of-products-of-linear-maps"><span class="nav-number">1.2.1.7.</span> <span class="nav-text">Corollary 3.9: Algebraic Properties of Products of Linear Maps</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.11-linear-maps-take-0-to-0"><span class="nav-number">1.2.1.8.</span> <span class="nav-text">Corollary 3.11: Linear Maps Take \(0\) to \(0\)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#null-spaces-and-ranges"><span class="nav-number">1.2.2.</span> <span class="nav-text">Null Spaces and Ranges</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.12-null-space-null-t"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">Definition 3.12: Null Space, null \(T\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.14-the-null-space-is-a-subspace"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">Corollary 3.14: The Null Space is a Subspace</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.15-injective-one-to-one"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">Definition 3.15: Injective (One to One)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.16-injectivity-is-equivalent-to-null-space-equals-0"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">Corollary 3.16: Injectivity is Equivalent to Null Space Equals \(\{0\}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.17-range-image"><span class="nav-number">1.2.2.5.</span> <span class="nav-text">Definition 3.17: Range (Image)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.19-the-range-is-a-subspace"><span class="nav-number">1.2.2.6.</span> <span class="nav-text">Corollary 3.19: The Range is a Subspace</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.20-surjective-on-to"><span class="nav-number">1.2.2.7.</span> <span class="nav-text">Definition 3.20: Surjective (On to)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.22-fundamental-theorem-of-linear-maps"><span class="nav-number">1.2.2.8.</span> <span class="nav-text">Theorem 3.22: Fundamental Theorem of Linear Maps</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.23-a-map-to-a-smaller-dimensional-space-is-not-injective"><span class="nav-number">1.2.2.9.</span> <span class="nav-text">Corollary 3.23: A Map to a Smaller Dimensional Space is not Injective</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.24-a-map-to-a-larger-dimensional-space-is-not-surjective"><span class="nav-number">1.2.2.10.</span> <span class="nav-text">Corollary 3.24: A Map to a Larger Dimensional Space is not Surjective</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.26-homogeneous-system-of-linear-equations-ax-0"><span class="nav-number">1.2.2.11.</span> <span class="nav-text">Corollary 3.26: Homogeneous System of Linear Equations (\(Ax &#x3D; 0\))</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.29-inhomogeneous-system-of-linear-equations-ax-c"><span class="nav-number">1.2.2.12.</span> <span class="nav-text">Corollary 3.29: Inhomogeneous System of Linear Equations (\(Ax &#x3D; c\))</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#matrices"><span class="nav-number">1.2.3.</span> <span class="nav-text">Matrices</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.30-matrix-a_jk"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">Definition 3.30: Matrix \(A_{j,k}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.32-matrix-of-a-linear-map-m-t"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">Definition 3.32: Matrix of a Linear Map, \(M (T)\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.35-matrix-addition"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">Definition 3.35: Matrix Addition</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.36-the-matrix-of-the-sum-of-linear-maps"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">Corollary 3.36: The Matrix of the Sum of Linear Maps</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.37-scalar-multiplication-of-a-matrix"><span class="nav-number">1.2.3.5.</span> <span class="nav-text">Definition 3.37: Scalar Multiplication of a Matrix</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.38-the-matrix-of-a-scalar-times-a-linear-map"><span class="nav-number">1.2.3.6.</span> <span class="nav-text">Corollary 3.38: The Matrix of a Scalar Times a Linear Map</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#notation-3.39-mathbbfm-times-n"><span class="nav-number">1.2.3.7.</span> <span class="nav-text">Notation 3.39: \(\mathbb{F}^{m \times n}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.40-dim-mathbbfm-n-mn"><span class="nav-number">1.2.3.8.</span> <span class="nav-text">Corollary 3.40: \(\dim \mathbb{F}^{m, n} &#x3D; mn\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.41-matrix-multiplication"><span class="nav-number">1.2.3.9.</span> <span class="nav-text">Definition 3.41: Matrix Multiplication</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.43-the-matrix-of-the-product-of-linear-maps"><span class="nav-number">1.2.3.10.</span> <span class="nav-text">Corollary 3.43: The Matrix of the Product of Linear Maps</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#notation-3.44-a_j-cdot-a_cdot-k"><span class="nav-number">1.2.3.11.</span> <span class="nav-text">Notation 3.44: \(A_{j, \cdot}, A_{\cdot, k}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.49-column-of-matrix-product-equals-matrix-times-column"><span class="nav-number">1.2.3.12.</span> <span class="nav-text">Corollary 3.49: Column of Matrix Product Equals Matrix Times Column</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.52-linear-combination-of-columns"><span class="nav-number">1.2.3.13.</span> <span class="nav-text">Corollary 3.52: Linear Combination of Columns</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.53-row-of-matrix-product-equals-row-times-matrix"><span class="nav-number">1.2.3.14.</span> <span class="nav-text">Corollary 3.53: Row of Matrix Product Equals Row Times Matrix</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.54-linear-combination-of-rows"><span class="nav-number">1.2.3.15.</span> <span class="nav-text">Corollary 3.54: Linear Combination of Rows</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#invertibility-and-isomorphic-vector-spaces"><span class="nav-number">1.2.4.</span> <span class="nav-text">Invertibility and Isomorphic Vector Spaces</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.53-invertible-inverse"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">Definition 3.53: Invertible, Inverse</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.54-inverse-is-unique"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">Definition 3.54: Inverse is Unique</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#notation-3.55-t-1"><span class="nav-number">1.2.4.3.</span> <span class="nav-text">Notation 3.55: \(T^{-1}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.56-invertibility-is-equivalent-to-injectivity-and-surjectivity"><span class="nav-number">1.2.4.4.</span> <span class="nav-text">Corollary 3.56: Invertibility is Equivalent to Injectivity and Surjectivity</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.58-isomorphism-isomorphic-equal-shape"><span class="nav-number">1.2.4.5.</span> <span class="nav-text">Definition 3.58: Isomorphism, Isomorphic (Equal Shape)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.59-dimension-shows-whether-vector-spaces-are-isomorphic"><span class="nav-number">1.2.4.6.</span> <span class="nav-text">Corollary 3.59: Dimension Shows Whether Vector Spaces are Isomorphic</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.60-m-is-a-linear-mapping"><span class="nav-number">1.2.4.7.</span> <span class="nav-text">Corollary 3.60: \(M\) is a Linear Mapping</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.60-lv-w-and-mathbbfmn-are-isomorphic"><span class="nav-number">1.2.4.8.</span> <span class="nav-text">Corollary 3.60: \(L(V, W)\) and \(\mathbb{F}^{m,n}\) are Isomorphic</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-3.61-dim-lv-w-dim-v-dim-w"><span class="nav-number">1.2.4.9.</span> <span class="nav-text">Corollary 3.61: \(\dim L(V, W) &#x3D; (\dim V) (\dim W)\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.62-matrix-of-a-vector-mv"><span class="nav-number">1.2.4.10.</span> <span class="nav-text">Definition 3.62: Matrix of a Vector, \(M(v)\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.64-mt_cdot-k-mtv_k"><span class="nav-number">1.2.4.11.</span> <span class="nav-text">Definition 3.64: \(M(T)_{\cdot, k} &#x3D; M(T(v_k))\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.65-linear-maps-act-like-matrix-multiplication"><span class="nav-number">1.2.4.12.</span> <span class="nav-text">Theorem 3.65: Linear Maps Act Like Matrix Multiplication</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.67-operator-lv"><span class="nav-number">1.2.4.13.</span> <span class="nav-text">Definition 3.67: Operator, \(L(V)\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.69-injectivity-is-equivalent-ot-surjectivity-in-finite-dimensions"><span class="nav-number">1.2.4.14.</span> <span class="nav-text">Theorem 3.69: Injectivity is Equivalent ot Surjectivity in Finite Dimensions</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#products-and-quotients-of-vector-spaces"><span class="nav-number">1.2.5.</span> <span class="nav-text">Products and Quotients of Vector Spaces</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.71-product-of-vector-spaces"><span class="nav-number">1.2.5.1.</span> <span class="nav-text">Definition 3.71: Product of Vector Spaces</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.73-product-of-vector-space-is-a-vector-space"><span class="nav-number">1.2.5.2.</span> <span class="nav-text">Theorem 3.73: Product of Vector Space is a Vector Space</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.76-dimension-of-a-product-is-the-sum-of-dimensions"><span class="nav-number">1.2.5.3.</span> <span class="nav-text">Theorem 3.76: Dimension of a Product is the Sum of Dimensions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#proof-of-theorem-3.76"><span class="nav-number">1.2.5.4.</span> <span class="nav-text">Proof of Theorem 3.76</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.77-products-and-direct-sums"><span class="nav-number">1.2.5.5.</span> <span class="nav-text">Theorem 3.77: Products and Direct Sums</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-3.77"><span class="nav-number">1.2.5.5.1.</span> <span class="nav-text">Proof of Theorem 3.77:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.78-a-sum-is-a-direct-sum-iff-dimensions-add-up"><span class="nav-number">1.2.5.6.</span> <span class="nav-text">Theorem 3.78: A Sum is a Direct Sum IFF Dimensions Add Up</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-3.78"><span class="nav-number">1.2.5.6.1.</span> <span class="nav-text">Proof of Theorem 3.78:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.79-v-u"><span class="nav-number">1.2.5.7.</span> <span class="nav-text">Definition 3.79: \(v + U\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.81-affine-subset-parallel"><span class="nav-number">1.2.5.8.</span> <span class="nav-text">Definition 3.81: Affine subset, Parallel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.83-quotient-space-v-u"><span class="nav-number">1.2.5.9.</span> <span class="nav-text">Definition 3.83: Quotient Space, \(V &#x2F; U\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.85-two-affine-subsets-parallel-to-u-are-equal-or-disjoint"><span class="nav-number">1.2.5.10.</span> <span class="nav-text">Theorem 3.85: Two Affine Subsets Parallel to \(U\) are Equal or Disjoint</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-3.85"><span class="nav-number">1.2.5.10.1.</span> <span class="nav-text">Proof of Theorem 3.85</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.86-addition-and-scalar-multiplication-on-v-u"><span class="nav-number">1.2.5.11.</span> <span class="nav-text">Definition 3.86: Addition and Scalar Multiplication on \(V &#x2F; U\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.87-quotient-space-is-a-vector-space"><span class="nav-number">1.2.5.12.</span> <span class="nav-text">Theorem 3.87 Quotient Space is a Vector Space</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.88-quotient-map-pi"><span class="nav-number">1.2.5.13.</span> <span class="nav-text">Definition 3.88: Quotient Map, \(\pi\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.89-dimension-of-a-quotient-space"><span class="nav-number">1.2.5.14.</span> <span class="nav-text">Theorem 3.89: Dimension of a Quotient Space</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-3.89"><span class="nav-number">1.2.5.14.1.</span> <span class="nav-text">Proof of Theorem 3.89</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.90-tildet"><span class="nav-number">1.2.5.15.</span> <span class="nav-text">Definition 3.90: \(\tilde{T}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.91-null-space-and-range-of-tildet"><span class="nav-number">1.2.5.16.</span> <span class="nav-text">Theorem 3.91: Null Space and Range of \(\tilde{T}\)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#duality"><span class="nav-number">1.2.6.</span> <span class="nav-text">Duality</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.92-linear-functional"><span class="nav-number">1.2.6.1.</span> <span class="nav-text">Definition 3.92: Linear Functional</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.94-dual-space-vprime"><span class="nav-number">1.2.6.2.</span> <span class="nav-text">Definition 3.94: Dual Space, \(V^{\prime}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.95-dim-vprime-dim-v"><span class="nav-number">1.2.6.3.</span> <span class="nav-text">Theorem 3.95: \(\dim V^{\prime} &#x3D; \dim V\)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-3.95"><span class="nav-number">1.2.6.3.1.</span> <span class="nav-text">Proof of Theorem 3.95:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.96-dual-basis"><span class="nav-number">1.2.6.4.</span> <span class="nav-text">Definition 3.96: Dual Basis</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.98-dual-basis-is-a-basis-of-the-dual-space"><span class="nav-number">1.2.6.5.</span> <span class="nav-text">Theorem 3.98: Dual Basis is a Basis of the Dual Space</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-3.98"><span class="nav-number">1.2.6.5.1.</span> <span class="nav-text">Proof of Theorem 3.98</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.99-dual-map-tprime"><span class="nav-number">1.2.6.6.</span> <span class="nav-text">Definition 3.99: Dual Map, \(T^{\prime}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.101-algebraic-properties-of-dual-maps"><span class="nav-number">1.2.6.7.</span> <span class="nav-text">Theorem 3.101: Algebraic Properties of Dual Maps</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-3.101"><span class="nav-number">1.2.6.7.1.</span> <span class="nav-text">Proof of Theorem 3.101</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.102-annihilator-u0"><span class="nav-number">1.2.6.8.</span> <span class="nav-text">Definition 3.102: Annihilator, \(U^0\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.105-the-annihilator-is-a-subspace"><span class="nav-number">1.2.6.9.</span> <span class="nav-text">Theorem 3.105: The Annihilator is a Subspace</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.106-dimension-of-the-annihilator"><span class="nav-number">1.2.6.10.</span> <span class="nav-text">Theorem 3.106: Dimension of the Annihilator</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.107-the-null-space-of-tprime"><span class="nav-number">1.2.6.11.</span> <span class="nav-text">Theorem 3.107: The Null Space of \(T^{\prime}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.108-t-surjective-is-equivalent-to-tprime-injective"><span class="nav-number">1.2.6.12.</span> <span class="nav-text">Theorem 3.108: \(T\) Surjective is Equivalent to \(T^{\prime}\) Injective</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.109-the-range-of-tprime"><span class="nav-number">1.2.6.13.</span> <span class="nav-text">Theorem 3.109: The Range of \(T^{\prime}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.110-t-injective-is-equivalent-to-tprime-surjective"><span class="nav-number">1.2.6.14.</span> <span class="nav-text">Theorem 3.110: \(T\) injective is equivalent to \(T^{\prime}\) Surjective</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#matrix-of-the-dual-of-a-linear-map"><span class="nav-number">1.2.7.</span> <span class="nav-text">Matrix of the Dual of a Linear Map</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.111-transpose-at"><span class="nav-number">1.2.7.1.</span> <span class="nav-text">Definition 3.111: Transpose, \(A^T\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.113"><span class="nav-number">1.2.7.2.</span> <span class="nav-text">Theorem 3.113:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.114-the-matrix-of-tprime-is-the-transpose-of-the-matrix-of-t"><span class="nav-number">1.2.7.3.</span> <span class="nav-text">Theorem 3.114: The Matrix of \(T^{\prime}\) is the Transpose of the Matrix of \(T\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.115-row-rank-column-rank"><span class="nav-number">1.2.7.4.</span> <span class="nav-text">Definition 3.115: Row Rank, Column Rank</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.117-dimension-of-range-t-equals-column-rank-of-mt"><span class="nav-number">1.2.7.5.</span> <span class="nav-text">Theorem 3.117: Dimension of range \(T\) Equals Column Rank of \(M(T)\)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-3.117"><span class="nav-number">1.2.7.5.1.</span> <span class="nav-text">Proof of Theorem 3.117:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.118-row-rank-equals-column-rank"><span class="nav-number">1.2.7.6.</span> <span class="nav-text">Theorem 3.118: Row Rank Equals Column Rank</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#definition-3.119-rank"><span class="nav-number">1.2.7.6.1.</span> <span class="nav-text">Definition 3.119: Rank</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2022/01/09/linear-algebra-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linear Algebra (2)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-01-09 21:32:35" itemprop="dateCreated datePublished" datetime="2022-01-09T21:32:35+08:00">2022-01-09</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2022-01-23 23:31:03" itemprop="dateModified" datetime="2022-01-23T23:31:03+08:00">2022-01-23</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2022/01/09/linear-algebra-2/" class="post-meta-item leancloud_visitors" data-flag-title="Linear Algebra (2)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>27k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>24 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="linear-algebra-2">Linear Algebra (2)</h1>
+<h2 id="finite-dimensional-vector-space">Finite Dimensional Vector Space</h2>
+<h3 id="span-and-linear-independence">Span and Linear Independence</h3>
+<p><strong>List of vectors are written without surrounding parentheses. For example <span class="math inline">\((4, 1, 6), (9, 5, 7)\)</span> is a list of length 2 of vectors in <span class="math inline">\(\mathbb{R}^3\)</span></strong>.</p>
+<h4 id="definition-2.3-linear-combination">Definition 2.3: Linear Combination</h4>
+<p>A <strong>linear combination</strong> of a list <span class="math inline">\(v_1, ..., v_m\)</span> of vectors in <span class="math inline">\(V\)</span> is a vector of the form:</p>
+<p><span class="math display">\[a_1v_1 + ... + a_m v_m\]</span></p>
+<p>where <span class="math inline">\(a_1, ..., a_m \in \mathbb{F}\)</span></p>
+<blockquote>
+<p><span class="math inline">\((17, -4, 2)\)</span> is a linear combination of list of vectosr <span class="math inline">\((2, 1, -3), (1, -2, 4)\)</span> with <span class="math inline">\(a_1 = 6, a_2=5\)</span>.</p>
+</blockquote>
+<h4 id="definition-2.5-span-linear-span">Definition 2.5: Span (Linear Span)</h4>
+<p>The set of all linear combinations of a list of vectors <span class="math inline">\(v_1, ..., v_m\)</span> in <span class="math inline">\(V\)</span> is called the <strong>span</strong> of <span class="math inline">\(v_1, ..., v_m\)</span>, denoted <span class="math inline">\(span(v_1, ..., v_m)\)</span>. In other words,</p>
+<p><span class="math display">\[span(v_1, ..., v_m) = \{a_1v_1 + .... + a_m v_m; a_1, ..., a_m \in \mathbb{F}\}\]</span></p>
+<p><strong>The span of a list of vectors in <span class="math inline">\(V\)</span> is the smallest subspace of <span class="math inline">\(V\)</span> containing all the vectors in the list.</strong></p>
+<h4 id="definition-2.8-spans">Definition 2.8: Spans</h4>
+<p>If <span class="math inline">\(span(v_1, .., v_m) = V\)</span>, we say that <span class="math inline">\(v_1, ..., v_m\)</span> <strong>spans</strong> <span class="math inline">\(V\)</span>.</p>
+<h4 id="definition-2.10-finite-dimensional-vector-space">Definition 2.10: Finite-dimensional Vector Space</h4>
+<p>A vector space is called <strong>finite-dimensional</strong> if some list of vectors in it spans the space. (every list has finite length)</p>
+<h4 id="definition-2.11-polynomial-pmathbbf">Definition 2.11: Polynomial, <span class="math inline">\(P(\mathbb{F})\)</span></h4>
+<p>A function <span class="math inline">\(p: \mathbb{F} \rightarrow \mathbb{F}\)</span> is called a <strong>polynomial</strong> with coefficients in <span class="math inline">\(\mathbb{F}\)</span> if there exist <span class="math inline">\(a_0, ..., a_m \in \mathbb{F}\)</span> s.t:</p>
+<p><span class="math display">\[p(z) = a_0 + a_1z + a_2z^2 + .... + a_m z^m\]</span></p>
+<p>for all <span class="math inline">\(z \in \mathbb{F}\)</span>.</p>
+<p><span class="math inline">\(P(\mathbb{F})\)</span> is the set of all polynomials with coefficients in <span class="math inline">\(\mathbb{F}\)</span>. (so it is the set of functions) With the usual operations of addition and scalar multiplication, <span class="math inline">\(P(\mathbb{F})\)</span> is a vector space over <span class="math inline">\(\mathbb{F}\)</span> or it is a subspace of <span class="math inline">\(\mathbb{F}^{\mathbb{F}}\)</span>.</p>
+<h4 id="definition-2.12-degree-of-a-polynomial">Definition 2.12: Degree of a Polynomial</h4>
+<p>A polynomial <span class="math inline">\(p \in P(\mathbb{F})\)</span> is said to have <strong>degree</strong> <span class="math inline">\(m\)</span> if there exist scalars <span class="math inline">\(a_0 ,..., a_m \in \mathbb{F}\)</span> with <span class="math inline">\(a_m \neq 0\)</span> s.t</p>
+<p><span class="math display">\[p(z) = a_0 + a_1z + ... + a_m z^m\]</span></p>
+<p>for all <span class="math inline">\(z \in \mathbb{F}\)</span> . If <span class="math inline">\(p\)</span> has degree <span class="math inline">\(m\)</span>, we write <span class="math inline">\(\text{deg} \;p = m\)</span>.</p>
+<p>The polynomial that is identically <span class="math inline">\(0\)</span> is said to have degree <span class="math inline">\(-\infty\)</span>.</p>
+<h4 id="definition-2.13-p_mmathbbf">Definition 2.13: <span class="math inline">\(P_m(\mathbb{F})\)</span></h4>
+<p>For <span class="math inline">\(m\)</span> a nonnegative integer, <span class="math inline">\(P_m (\mathbb{F})\)</span> denotes the set of all polynomials with coefficients in <span class="math inline">\(\mathbb{F}\)</span> and degree at most <span class="math inline">\(m\)</span>. Then <span class="math inline">\(P_m (\mathbb{F})\)</span> is a finite-dimensional vector space for each nonnegative integer <span class="math inline">\(m\)</span>.</p>
+<h4 id="definition-2.15-infinite-dimensional-vector-space">Definition 2.15: Infinite-Dimensional Vector Space</h4>
+<p>A vector space is called <strong>infinite-dimensional</strong> if it is not finite-dimensional.</p>
+<h4 id="definition-2.17-linearly-independent">Definition 2.17: Linearly Independent</h4>
+<p>A list <span class="math inline">\(v_1, ..., v_m\)</span> of vectors in <span class="math inline">\(V\)</span> is called <strong>linearly independent</strong> if the only choice of <span class="math inline">\(a_1, ..., a_m \in \mathbb{F}\)</span> that makes <span class="math inline">\(a_1v_1 + ... + a_mv_m = 0\)</span> is <span class="math inline">\(a_1 = ... = a_m = 0\)</span>.</p>
+<p>The empty list <span class="math inline">\(()\)</span> is also declared to be linearly independent.</p>
+<h4 id="definition-2.19-linearly-dependent">Definition 2.19: Linearly Dependent</h4>
+<p>A list of vector in <span class="math inline">\(V\)</span> is called <strong>linearly dependent</strong> if it is not linearly independent.</p>
+<p>In other words, a list <span class="math inline">\(v_1, ..., v_m\)</span> of vectors in <span class="math inline">\(V\)</span> is linearly dependent if there exist <span class="math inline">\(a_1, ..., a_m \in \mathbb{F}\)</span>, not all <span class="math inline">\(0\)</span>, such that:</p>
+<p><span class="math display">\[a_1v_1 + ... + a_mv_m = 0\]</span></p>
+<h4 id="lemma-2.21-linear-dependence-lemma">Lemma 2.21: Linear Dependence Lemma</h4>
+<p>Suppose <span class="math inline">\(v_1, ..., v_m\)</span> is a linearly dependent list in <span class="math inline">\(V\)</span>. Then there exists <span class="math inline">\(j \in \{1, 2, ...., m\}\)</span> such that the following hold:</p>
+<ol type="1">
+<li><span class="math inline">\(v_j \in span(v_1, ..., v_{j-1})\)</span></li>
+<li>If the <span class="math inline">\(j\)</span>th term is removed from <span class="math inline">\(v_1, ...., v_m\)</span>, the span of the remaining list equals <span class="math inline">\(span(v_1, ..., v_m)\)</span>.</li>
+</ol>
+<h4 id="definition-2.23-length-of-linearly-independent-list-leq-length-of-spanning-list">Definition: 2.23: Length of Linearly Independent List <span class="math inline">\(\leq\)</span> Length of Spanning List</h4>
+<p>In a finite-dimensional vector space, the length of every linearly independent list of vectors is less than or equal to the length of every spanning list of vectors (i.e every list of vectors that spans <span class="math inline">\(V\)</span>).</p>
+<h4 id="definition-2.26-finite-dimensional-subspaces">Definition 2.26: Finite-dimensional Subspaces</h4>
+<p>Every subspace of a finite-dimensional vector space is finite-dimensional.</p>
+<h3 id="bases">Bases</h3>
+<h4 id="definition-2.27-basis">Definition 2.27: Basis</h4>
+<p>A <strong>basis</strong> of <span class="math inline">\(V\)</span> is a list of vectors in <span class="math inline">\(V\)</span> that is linearly independent and spans <span class="math inline">\(V\)</span>.</p>
+<h4 id="corollary-2.31-spanning-list-contains-a-basis">Corollary 2.31: Spanning List Contains a Basis</h4>
+<p>Every spanning list in a vector space can be reduced to a basis of the vector space.</p>
+<h4 id="corollary-2.32-basis-of-finite-dimensional-vector-space">Corollary 2.32: Basis of Finite-Dimensional Vector Space</h4>
+<p>Every finite-dimensional vector space has a basis.</p>
+<h4 id="corollary-2.33-linearly-independent-list-extands-to-a-basis">Corollary 2.33: Linearly Independent List Extands to a Basis</h4>
+<p>Every linearly independent list of vectors in a finite-dimensional vector space can be extended to a basis of the vector space.</p>
+<h4 id="corollary-2.34-every-subspace-of-v-is-part-of-a-direct-sum-equal-to-v">Corollary 2.34: Every Subspace of <span class="math inline">\(V\)</span> is part of a Direct Sum Equal to <span class="math inline">\(V\)</span></h4>
+<p>Suppose <span class="math inline">\(V\)</span> is finite-dimensional and <span class="math inline">\(U\)</span> is a subspace of <span class="math inline">\(V\)</span>. Then there is a subspace <span class="math inline">\(W\)</span> of <span class="math inline">\(V\)</span> s.t <span class="math inline">\(V = U \oplus W\)</span>.</p>
+<h3 id="dimension">Dimension</h3>
+<h4 id="corollary-2.35-basis-length-does-not-depend-on-basis">Corollary 2.35: Basis Length Does Not Depend on Basis</h4>
+<p>Any two bases of a finite-dimensional vector space have the same length.</p>
+<h4 id="definition-2.36-dimension-dim-v">Definition 2.36: Dimension, dim <span class="math inline">\(V\)</span></h4>
+<p>The <strong>dimension</strong> of a finite-dimensional vector space is the length of any basis of the vector space.</p>
+<p>The dimension of <span class="math inline">\(V\)</span> (if <span class="math inline">\(V\)</span> is finite-dimensional) is denoted by dim <span class="math inline">\(V\)</span></p>
+<h4 id="corollary-2.38-dimension-of-a-subspace">Corollary 2.38: Dimension of a Subspace</h4>
+<p>If <span class="math inline">\(V\)</span> is finite-dimensional and <span class="math inline">\(U\)</span> is a subspace of <span class="math inline">\(V\)</span>, then dim <span class="math inline">\(U\)</span> dim <span class="math inline">\(V\)</span>.</p>
+<h4 id="corollary-2.39-linearly-independent-list-of-the-right-length-is-a-basis">Corollary 2.39: Linearly Independent List of the Right Length is a Basis</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is finite-dimensional. Then every linearly independent list of vectors in <span class="math inline">\(V\)</span> with length dim <span class="math inline">\(V\)</span> is a basis of <span class="math inline">\(V\)</span>.</p>
+<h4 id="corollary-2.42-spanning-list-of-the-right-length-is-a-basis">Corollary 2.42: Spanning List of the Right Length is a Basis</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is finite-dimensional. Then, every spanning list of vectors in <span class="math inline">\(V\)</span> with length dim <span class="math inline">\(V\)</span> is a basis of <span class="math inline">\(V\)</span>.</p>
+<h4 id="corollary-2.43-dimension-of-a-sum">Corollary 2.43: Dimension of a Sum</h4>
+<p>If <span class="math inline">\(U_1\)</span> amd <span class="math inline">\(U_2\)</span> are subspaces of a finite-dimensional vector space, then</p>
+<p><span class="math display">\[\text{dim}(U_1 + U_2) = \text{dim } U_1 + \text{dim } U_2 - \dim(U_1 \cap U_2)\]</span></p>
+<h2 id="linear-maps">Linear Maps</h2>
+<h3 id="the-vector-space-of-linear-map">The Vector Space of Linear Map</h3>
+<p>Assume <span class="math inline">\(V, U, W\)</span> are vector spaces.</p>
+<h4 id="definition-3.2-linear-map-linear-transformation">Definition 3.2: Linear Map (Linear Transformation)</h4>
+<p>A <strong>linear map</strong> from <span class="math inline">\(V\)</span> to <span class="math inline">\(W\)</span> is a function <span class="math inline">\(T: V \rightarrow W\)</span> with the following properties:</p>
+<ol type="1">
+<li><strong>Additivity</strong>: <span class="math display">\[T(v + w) = T(v) + T(w)\]</span></li>
+<li><strong>Homogeneity</strong>: <span class="math display">\[T(\lambda v) = \lambda (Tv), \; \forall \lambda \in \mathbb{F}, \; \forall v \in V\]</span></li>
+</ol>
+<p><span class="math inline">\(Tv = T(v)\)</span></p>
+<h4 id="notation-3.3-lv-w">Notation 3.3: <span class="math inline">\(L(V, W)\)</span></h4>
+<p>The set of all linear maps from <span class="math inline">\(V\)</span> to <span class="math inline">\(W\)</span> is denoted <span class="math inline">\(L(V, W)\)</span>.</p>
+<h4 id="corollary-3.5-linear-maps-and-basis-of-domain">Corollary 3.5: Linear Maps and Basis of Domain</h4>
+<p>Suppose <span class="math inline">\(v_1, ..., v_n\)</span> is a basis of <span class="math inline">\(V\)</span> and <span class="math inline">\(w_1, ..., w_n\)</span> is a basis of <span class="math inline">\(W\)</span>. Then there exists a unique linear map <span class="math inline">\(T: V \rightarrow W\)</span> s.t</p>
+<p><span class="math display">\[Tv_j = w_j\]</span></p>
+<p>for each <span class="math inline">\(j=1, ..., n\)</span></p>
+<h4 id="definition-3.6-addition-and-scalar-multiplication-on-lv-w">Definition 3.6: Addition and Scalar Multiplication on <span class="math inline">\(L(V, W)\)</span></h4>
+<p>Suppose <span class="math inline">\(S,T \in L(V, W)\)</span> and <span class="math inline">\(\lambda \in \mathbb{F}\)</span>. The <strong>sum</strong> <span class="math inline">\(S+T\)</span> and the <strong>product</strong> <span class="math inline">\(\lambda T\)</span> are the linear maps from <span class="math inline">\(V\)</span> to <span class="math inline">\(W\)</span> defined by:</p>
+<p><span class="math display">\[(S + T) (v) = Sv + Tv\]</span></p>
+<p><span class="math display">\[\lambda (T)(v) = \lambda (Tv)\]</span></p>
+<h4 id="corollary-3.7-lw-v-is-a-vector-space">Corollary 3.7: <span class="math inline">\(L(W, V)\)</span> is a Vector Space</h4>
+<p>With the operations of addition and scalar multiplication as defined in <code>Definition 3.6</code>, <span class="math inline">\(L(V, W)\)</span> is a vector space.</p>
+<h4 id="definition-3.8-product-of-linear-maps">Definition 3.8: Product of Linear Maps</h4>
+<p>If <span class="math inline">\(T \in L(U, V)\)</span> and <span class="math inline">\(S \in L(V, W)\)</span>, then the <strong>product</strong> <span class="math inline">\(ST \in L(U, W)\)</span> is defined by</p>
+<p><span class="math display">\[(ST)(u) = S(T(u))\]</span></p>
+<p>for <span class="math inline">\(u \in U\)</span>. In other words, we can write this as composition:</p>
+<p><span class="math display">\[(S \circ T) (u)\]</span></p>
+<h4 id="corollary-3.9-algebraic-properties-of-products-of-linear-maps">Corollary 3.9: Algebraic Properties of Products of Linear Maps</h4>
+<p>Assume all products make sense.</p>
+<ol type="1">
+<li><p><strong>Associativity</strong>: <span class="math display">\[(T_1T_2)T_3 = T_1(T_2T_3)\]</span></p></li>
+<li><p><strong>Identity</strong>: <span class="math display">\[TI = IT = T\]</span> Whenever <span class="math inline">\(T \in L(V, W)\)</span>, the first <span class="math inline">\(I\)</span> is the identity map on <span class="math inline">\(V\)</span>, the second <span class="math inline">\(I\)</span> is the identity map on <span class="math inline">\(W\)</span>.</p></li>
+<li><p><strong>Distributive</strong>: <span class="math display">\[(S_1 + S_2) T = S_1T + S_2T\]</span> <span class="math display">\[S(T_1 + T_2) = ST_1 + ST_2\]</span></p>
+<p>Whenever <span class="math inline">\(T, T_1, T_2 \in L(U, V)\)</span>, <span class="math inline">\(S, S_1, S_2 \in L(V, W)\)</span></p></li>
+</ol>
+<h4 id="corollary-3.11-linear-maps-take-0-to-0">Corollary 3.11: Linear Maps Take <span class="math inline">\(0\)</span> to <span class="math inline">\(0\)</span></h4>
+<p>Suppose <span class="math inline">\(T\)</span> is a linear map from <span class="math inline">\(V\)</span> to <span class="math inline">\(W\)</span>. Then <span class="math inline">\(T(0) = 0\)</span>. In other words, the linear map, maps additive identity in <span class="math inline">\(V\)</span> to additive identity in <span class="math inline">\(W\)</span>.</p>
+<p><br></p>
+<h3 id="null-spaces-and-ranges">Null Spaces and Ranges</h3>
+<h4 id="definition-3.12-null-space-null-t">Definition 3.12: Null Space, null <span class="math inline">\(T\)</span></h4>
+<p>For <span class="math inline">\(T \in L(V, W)\)</span>, the <strong>null space</strong> of <span class="math inline">\(T\)</span>, denoted null <span class="math inline">\(T\)</span>, is the subset of <span class="math inline">\(V\)</span> consisting of those vectors that <span class="math inline">\(T\)</span> maps to <span class="math inline">\(0\)</span>:</p>
+<p><span class="math display">\[\text{null } T = \{v \in V: T(v) = 0\}\]</span></p>
+<h4 id="corollary-3.14-the-null-space-is-a-subspace">Corollary 3.14: The Null Space is a Subspace</h4>
+<p>Suppose <span class="math inline">\(T \in L(V, W)\)</span>. Then null <span class="math inline">\(T\)</span> is a subspace of <span class="math inline">\(V\)</span>.</p>
+<h4 id="definition-3.15-injective-one-to-one">Definition 3.15: Injective (One to One)</h4>
+<p>A fuinction <span class="math inline">\(T: V \rightarrow W\)</span> is called <strong>injective</strong> if <span class="math inline">\(T(u) = T(v) \implies u = v\)</span>.</p>
+<h4 id="corollary-3.16-injectivity-is-equivalent-to-null-space-equals-0">Corollary 3.16: Injectivity is Equivalent to Null Space Equals <span class="math inline">\(\{0\}\)</span></h4>
+<p>Let <span class="math inline">\(T \in L(V, W)\)</span>. Then <span class="math inline">\(T\)</span> is injective if and only if null <span class="math inline">\(T = \{0\}\)</span>.</p>
+<h4 id="definition-3.17-range-image">Definition 3.17: Range (Image)</h4>
+<p>For <span class="math inline">\(T: V \rightarrow W\)</span>, the <strong>range</strong> of <span class="math inline">\(T\)</span> is the subset of <span class="math inline">\(W\)</span> consisting of those vectors that are of the form <span class="math inline">\(T(v)\)</span> for some <span class="math inline">\(v \in V\)</span>:</p>
+<p><span class="math display">\[\text{range } T = \{T(v): v \in V\}\]</span></p>
+<h4 id="corollary-3.19-the-range-is-a-subspace">Corollary 3.19: The Range is a Subspace</h4>
+<p>If <span class="math inline">\(T \in L(V, W)\)</span>, then range <span class="math inline">\(T\)</span> is a subspace of <span class="math inline">\(W\)</span>.</p>
+<h4 id="definition-3.20-surjective-on-to">Definition 3.20: Surjective (On to)</h4>
+<p>A function <span class="math inline">\(T: V \rightarrow W\)</span> is called <strong>surjective</strong> if its range equals <span class="math inline">\(W\)</span>:</p>
+<p><span class="math display">\[\text{range } T = W\]</span></p>
+<h4 id="theorem-3.22-fundamental-theorem-of-linear-maps">Theorem 3.22: Fundamental Theorem of Linear Maps</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is finite-dimensional and <span class="math inline">\(T \in L(V, W)\)</span>. The range <span class="math inline">\(T\)</span> is finite-dimensional and</p>
+<p><span class="math display">\[\dim V = \dim \text{null } T + \dim \text{range } T\]</span></p>
+<h4 id="corollary-3.23-a-map-to-a-smaller-dimensional-space-is-not-injective">Corollary 3.23: A Map to a Smaller Dimensional Space is not Injective</h4>
+<p>Suppose <span class="math inline">\(V\)</span> and <span class="math inline">\(W\)</span> are finite-dimensional vector spaces such that <span class="math inline">\(\dim V &gt; \dim W\)</span>. Then no linear map from <span class="math inline">\(V\)</span> to <span class="math inline">\(W\)</span> is injective.</p>
+<h4 id="corollary-3.24-a-map-to-a-larger-dimensional-space-is-not-surjective">Corollary 3.24: A Map to a Larger Dimensional Space is not Surjective</h4>
+<p>Suppose <span class="math inline">\(V\)</span> and <span class="math inline">\(W\)</span> are finite-dimensional vector spaces such that <span class="math inline">\(\dim V &lt; \dim W\)</span>. Then no linear map from <span class="math inline">\(V\)</span> to <span class="math inline">\(W\)</span> is surjective.</p>
+<h4 id="corollary-3.26-homogeneous-system-of-linear-equations-ax-0">Corollary 3.26: Homogeneous System of Linear Equations (<span class="math inline">\(Ax = 0\)</span>)</h4>
+<p>A homogeneous system of linear equations with more variables than equations has nonzero solutions. (followed by Corollary 3.23)</p>
+<h4 id="corollary-3.29-inhomogeneous-system-of-linear-equations-ax-c">Corollary 3.29: Inhomogeneous System of Linear Equations (<span class="math inline">\(Ax = c\)</span>)</h4>
+<p>An inhomogeneous system of linear equations with more equations than variables has no solution for <strong>some choice</strong> of the constant terms. (followed by Corollary 3.24)</p>
+<h3 id="matrices">Matrices</h3>
+<p><strong>If <span class="math inline">\(T\)</span> is a linear map from <span class="math inline">\(\mathbb{F}^n\)</span> to <span class="math inline">\(\mathbb{F^m}\)</span>, then unless stated, assume the bases in question are the standard ones where the <span class="math inline">\(k\)</span>th basis vector is <span class="math inline">\(1\)</span> in the <span class="math inline">\(k\)</span>th slot and <span class="math inline">\(0\)</span> o.w.</strong></p>
+<h4 id="definition-3.30-matrix-a_jk">Definition 3.30: Matrix <span class="math inline">\(A_{j,k}\)</span></h4>
+<p>Let <span class="math inline">\(m, n\)</span> denote positive integers. An <span class="math inline">\(m \times n\)</span> <strong>matrix</strong> <span class="math inline">\(A\)</span> is a rectangular array of elements of <span class="math inline">\(\mathbb{F}\)</span> with <span class="math inline">\(m\)</span> rows and <span class="math inline">\(n\)</span> columns:</p>
+<p><span class="math display">\[
+A = 
+\begin{bmatrix}
+A_{1, 1} &amp; ... &amp; A_{1, n}\\
+. &amp; ... &amp; .\\
+. &amp; ... &amp; .\\
+. &amp; ... &amp; .\\
+A_{m, 1} &amp; ... &amp; A_{m, n}
+\end{bmatrix}
+\]</span> The notation <span class="math inline">\(A_{j, k}\)</span> denotes the entry in row <span class="math inline">\(j\)</span>, column <span class="math inline">\(k\)</span> of <span class="math inline">\(A\)</span>.</p>
+<h4 id="definition-3.32-matrix-of-a-linear-map-m-t">Definition 3.32: Matrix of a Linear Map, <span class="math inline">\(M (T)\)</span></h4>
+<p>Suppose <span class="math inline">\(T \in L(V, W)\)</span> and <span class="math inline">\(v_1, ..., v_n\)</span> is a basis of <span class="math inline">\(V\)</span> and <span class="math inline">\(w_1, ..., w_m\)</span> is a basis of <span class="math inline">\(W\)</span>. The <strong>matrix</strong> of <span class="math inline">\(T\)</span> with respect to these bases is the <span class="math inline">\(m\)</span> by <span class="math inline">\(n\)</span> matrix <span class="math inline">\(M(T)\)</span> whose entries <span class="math inline">\(A_{j, k}\)</span> are defined by:</p>
+<p><span class="math display">\[T(v_k) = A_{1, k} w_1 + .... + A_{m, k} w_m\]</span></p>
+<p>If the bases are not clear from the context, then the notation <span class="math inline">\(M(T, (v_1, ...., v_n), (w_1, ...., w_m))\)</span> are used.</p>
+<p><strong>We can think of the <span class="math inline">\(k\)</span>th column of <span class="math inline">\(M(T)\)</span> as <span class="math inline">\(T\)</span> applied to the <span class="math inline">\(k\)</span>th standard basis vector and formed by standard basis in <span class="math inline">\(W\)</span>.</strong></p>
+<blockquote>
+<p>Suppose <span class="math inline">\(T \in L(\mathbb{F}^2, \mathbb{F}^3)\)</span> is defined as <span class="math display">\[T(x, y) = (x + 3y, 2x+5y, 7x + 9y)\]</span> then, the matrix of <span class="math inline">\(T\)</span> w.r.t the standard bases of <span class="math inline">\(\mathbb{F}^2\)</span> and <span class="math inline">\(\mathbb{F}^3\)</span> is: <span class="math display">\[T(1, 0) = A_1 = (1, 2, 7)\]</span> <span class="math display">\[T(0, 1) = A_2 = (3, 5, 9)\]</span> <span class="math display">\[M(T)  = [A_1, A_2]\]</span></p>
+</blockquote>
+<h4 id="definition-3.35-matrix-addition">Definition 3.35: Matrix Addition</h4>
+<p>The <strong>sum of two matrices <span class="math inline">\(A, C\)</span> of the same size</strong> is the matrix obtained by adding corresponding entries in the matrices:</p>
+<p><span class="math display">\[(A + C)_{j, k} = A_{j, k} + C_{j, k}\]</span></p>
+<h4 id="corollary-3.36-the-matrix-of-the-sum-of-linear-maps">Corollary 3.36: The Matrix of the Sum of Linear Maps</h4>
+<p>Suppose <span class="math inline">\(S, T \in L(V, W)\)</span>. Then <span class="math inline">\(M(S + T) = M(S) + M(T)\)</span></p>
+<h4 id="definition-3.37-scalar-multiplication-of-a-matrix">Definition 3.37: Scalar Multiplication of a Matrix</h4>
+<p>The product of a scalar <span class="math inline">\(\lambda\)</span> and a matrix <span class="math inline">\(A\)</span> is the matrix obtained by multiplying each entry in the matrix by the scalar:</p>
+<p><span class="math display">\[(\lambda A)_{j, k} = \lambda A_{j, k}\]</span></p>
+<h4 id="corollary-3.38-the-matrix-of-a-scalar-times-a-linear-map">Corollary 3.38: The Matrix of a Scalar Times a Linear Map</h4>
+<p>Suppose <span class="math inline">\(\lambda \in \mathbb{F}\)</span> and <span class="math inline">\(T \in L(V, W)\)</span>. Then <span class="math inline">\(M(\lambda T) = \lambda M(T)\)</span>.</p>
+<h4 id="notation-3.39-mathbbfm-times-n">Notation 3.39: <span class="math inline">\(\mathbb{F}^{m \times n}\)</span></h4>
+<p>For <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> positive integers, the <strong>set</strong> of all <span class="math inline">\(m\)</span>-by-<span class="math inline">\(n\)</span> matrices with entries in <span class="math inline">\(\mathbb{F}\)</span> is denoted by <span class="math inline">\(\mathbb{F}^{m, n}\)</span>.</p>
+<h4 id="corollary-3.40-dim-mathbbfm-n-mn">Corollary 3.40: <span class="math inline">\(\dim \mathbb{F}^{m, n} = mn\)</span></h4>
+<p>Suppose <span class="math inline">\(m, n\)</span> are positive integers. With addition and scalar multiplication defined in <code>3.35, 3.35</code>, <span class="math inline">\(\mathbb{F}^{m, n}\)</span> is a vector space with dimension <span class="math inline">\(mn\)</span>.</p>
+<h4 id="definition-3.41-matrix-multiplication">Definition 3.41: Matrix Multiplication</h4>
+<p>Suppose <span class="math inline">\(A\)</span> is an <span class="math inline">\(m\)</span> by <span class="math inline">\(n\)</span> matrix and <span class="math inline">\(C\)</span> is an <span class="math inline">\(n\)</span> by <span class="math inline">\(p\)</span> matrix. Then <span class="math inline">\(AC\)</span> is defined to be the <span class="math inline">\(m\)</span> by <span class="math inline">\(p\)</span> matrix whose entry in row <span class="math inline">\(j\)</span>, column <span class="math inline">\(k\)</span>, is given by the following equation:</p>
+<p><span class="math display">\[(AC)_{j,k} = \sum^{n}_{r=1} A_{j, r}C_{r, k}\]</span></p>
+<p>In other words, the entry in row <span class="math inline">\(j\)</span>, column <span class="math inline">\(k\)</span>, of <span class="math inline">\(AC\)</span> is computed by taking row <span class="math inline">\(j\)</span> of <span class="math inline">\(A\)</span> and column <span class="math inline">\(k\)</span> of <span class="math inline">\(C\)</span>, multiplying together corresponding entries and then summing.</p>
+<h4 id="corollary-3.43-the-matrix-of-the-product-of-linear-maps">Corollary 3.43: The Matrix of the Product of Linear Maps</h4>
+<p>If <span class="math inline">\(T \in L(U, V)\)</span> and <span class="math inline">\(S \in L(V, W)\)</span>, then <span class="math inline">\(M(ST) = M(S) M(T)\)</span></p>
+<h4 id="notation-3.44-a_j-cdot-a_cdot-k">Notation 3.44: <span class="math inline">\(A_{j, \cdot}, A_{\cdot, k}\)</span></h4>
+<p>Suppose <span class="math inline">\(A\)</span> is an <span class="math inline">\(m\)</span> by <span class="math inline">\(n\)</span> matrix:</p>
+<ul>
+<li>If <span class="math inline">\(1 \leq j \leq m\)</span>, then <span class="math inline">\(A_{j, \cdot}\)</span>, donotes the <span class="math inline">\(1\)</span> by <span class="math inline">\(n\)</span> matrix consisting of row <span class="math inline">\(j\)</span> of <span class="math inline">\(A\)</span>.</li>
+<li>If <span class="math inline">\(1 \leq k \leq n\)</span>, then <span class="math inline">\(A_{\cdot, k}\)</span> denotes the <span class="math inline">\(n\)</span> by <span class="math inline">\(1\)</span> matrix consisting of column <span class="math inline">\(k\)</span> of <span class="math inline">\(A\)</span>.</li>
+</ul>
+<p>Thus, we can think of matrix multiplication as row times column.</p>
+<h4 id="corollary-3.49-column-of-matrix-product-equals-matrix-times-column">Corollary 3.49: Column of Matrix Product Equals Matrix Times Column</h4>
+<p>Suppose <span class="math inline">\(A\)</span> is an <span class="math inline">\(m\)</span> by <span class="math inline">\(n\)</span> matrix and <span class="math inline">\(C\)</span> is an <span class="math inline">\(n\)</span> by <span class="math inline">\(p\)</span> matrix. Then</p>
+<p><span class="math display">\[(AC)_{\cdot, k} = A C_{\cdot, k}\]</span></p>
+<p>for <span class="math inline">\(1 \leq k \leq p\)</span>.</p>
+<h4 id="corollary-3.52-linear-combination-of-columns">Corollary 3.52: Linear Combination of Columns</h4>
+<p>Suppose <span class="math inline">\(A\)</span> is an <span class="math inline">\(m\)</span> by <span class="math inline">\(n\)</span> matrix and <span class="math inline">\(c = [c_1 .... c_n]^T\)</span> is an <span class="math inline">\(n\)</span> by <span class="math inline">\(1\)</span> matrix, then:</p>
+<p><span class="math display">\[Ac = c_1 A_{\cdot, 1} + ... + c_n A_{\cdot, n}\]</span></p>
+<p>In other words, <span class="math inline">\(Ac\)</span> is a linear combination of the columns of <span class="math inline">\(A\)</span>, with the scalars that multiply the columns coming from <span class="math inline">\(c\)</span>.</p>
+<h4 id="corollary-3.53-row-of-matrix-product-equals-row-times-matrix">Corollary 3.53: Row of Matrix Product Equals Row Times Matrix</h4>
+<p>Suppose <span class="math inline">\(A\)</span> is an <span class="math inline">\(m\)</span> by <span class="math inline">\(n\)</span> matrix and <span class="math inline">\(C\)</span> is an <span class="math inline">\(n\)</span> by <span class="math inline">\(p\)</span> matrix, then:</p>
+<p><span class="math display">\[(AC)_{j, \cdot} = A_{j, \cdot} C\]</span></p>
+<p>for <span class="math inline">\(1 \leq j \leq m\)</span>.</p>
+<h4 id="corollary-3.54-linear-combination-of-rows">Corollary 3.54: Linear Combination of Rows</h4>
+<p>Suppose <span class="math inline">\(a = [a_1 ... a_n]\)</span> is a <span class="math inline">\(1 \times n\)</span> matrix and <span class="math inline">\(C\)</span> is a <span class="math inline">\(n \times p\)</span> matrix:</p>
+<p><span class="math display">\[aC = a_1 C_{1, \cdot} + ... + a_n C_{n, \cdot}\]</span></p>
+<p><br></p>
+<h3 id="invertibility-and-isomorphic-vector-spaces">Invertibility and Isomorphic Vector Spaces</h3>
+<h4 id="definition-3.53-invertible-inverse">Definition 3.53: Invertible, Inverse</h4>
+<ul>
+<li>A linear map <span class="math inline">\(T \in L(V, W)\)</span> is called <strong>invertible</strong> if there exists a linear map <span class="math inline">\(S \in L(W, V)\)</span> s.t <span class="math inline">\(ST\)</span> equals the identity map on <span class="math inline">\(V\)</span> and <span class="math inline">\(TS\)</span> equals the identity map on <span class="math inline">\(W\)</span>.</li>
+<li>A linear map <span class="math inline">\(S \in L(W, V)\)</span> satisfying <span class="math inline">\(ST = I\)</span> and <span class="math inline">\(TS = I\)</span> is called an <strong>inverse</strong> of <span class="math inline">\(T\)</span> (note that the first <span class="math inline">\(I\)</span> is the identity map on <span class="math inline">\(V\)</span> and the second <span class="math inline">\(I\)</span> is the identity map on <span class="math inline">\(W\)</span>).</li>
+</ul>
+<h4 id="definition-3.54-inverse-is-unique">Definition 3.54: Inverse is Unique</h4>
+<p>An invertible linear map has a unique inverse.</p>
+<h4 id="notation-3.55-t-1">Notation 3.55: <span class="math inline">\(T^{-1}\)</span></h4>
+<p>If <span class="math inline">\(T\)</span> is invertible, then its inverse is denoted by <span class="math inline">\(T^{-1}\)</span>. In other words, if <span class="math inline">\(T \in L(V, W)\)</span> is invertible, then <span class="math inline">\(T^{-1}\)</span> is the unique element of <span class="math inline">\(L(W, V)\)</span> s.t <span class="math inline">\(T^{-1}T = I\)</span> and <span class="math inline">\(TT^{-1} = I\)</span>.</p>
+<h4 id="corollary-3.56-invertibility-is-equivalent-to-injectivity-and-surjectivity">Corollary 3.56: Invertibility is Equivalent to Injectivity and Surjectivity</h4>
+<p>A linear map is invertible if and only if it is injective and surjective.</p>
+<h4 id="definition-3.58-isomorphism-isomorphic-equal-shape">Definition 3.58: Isomorphism, Isomorphic (Equal Shape)</h4>
+<ul>
+<li>An <strong>isomorphism</strong> is an invertible linear map.</li>
+<li>Two vector space are called <strong>isomorphic</strong> if there is an isomorphism from one vector space onto the other one.</li>
+</ul>
+<p>One way to think of <strong>isomorphic</strong> is that we can always label <span class="math inline">\(v \in V\)</span> by <span class="math inline">\(T(v) \in W\)</span>, because there is always a linear map that maps <span class="math inline">\(T(v) \in W\)</span> back to <span class="math inline">\(v \in V\)</span>.</p>
+<h4 id="corollary-3.59-dimension-shows-whether-vector-spaces-are-isomorphic">Corollary 3.59: Dimension Shows Whether Vector Spaces are Isomorphic</h4>
+<p>Two finite-dimensional vector spaces over <span class="math inline">\(\mathbb{F}\)</span> are isomorphic if and only if they have the same dimension.</p>
+<h4 id="corollary-3.60-m-is-a-linear-mapping">Corollary 3.60: <span class="math inline">\(M\)</span> is a Linear Mapping</h4>
+<p>Given bases of <span class="math inline">\(V\)</span> and <span class="math inline">\(W\)</span>, <span class="math inline">\(M\)</span> is a linear mapping following <code>3.36, 3.38</code>.</p>
+<h4 id="corollary-3.60-lv-w-and-mathbbfmn-are-isomorphic">Corollary 3.60: <span class="math inline">\(L(V, W)\)</span> and <span class="math inline">\(\mathbb{F}^{m,n}\)</span> are Isomorphic</h4>
+<p>Suppose <span class="math inline">\(v_1, ..., v_n\)</span> is a basis of <span class="math inline">\(V\)</span> and <span class="math inline">\(w_1, ..., w_m\)</span> is a basis of <span class="math inline">\(W\)</span>. Then <span class="math inline">\(M\)</span> is an isomorphism between <span class="math inline">\(L(V, W)\)</span> and <span class="math inline">\(\mathbb{F}^{m, n}\)</span>.</p>
+<h4 id="corollary-3.61-dim-lv-w-dim-v-dim-w">Corollary 3.61: <span class="math inline">\(\dim L(V, W) = (\dim V) (\dim W)\)</span></h4>
+<p>Suppose <span class="math inline">\(V, W\)</span> are finite-dimensional. Then <span class="math inline">\(L(V, W)\)</span> is finite dimensional and:</p>
+<p><span class="math display">\[\dim L(V, W) = (\dim V) (\dim W)\]</span></p>
+<h4 id="definition-3.62-matrix-of-a-vector-mv">Definition 3.62: Matrix of a Vector, <span class="math inline">\(M(v)\)</span></h4>
+<p>Suppose <span class="math inline">\(v \in V\)</span> and <span class="math inline">\(v_1, ...., v_n\)</span> is a basis of <span class="math inline">\(V\)</span>. The <strong>matrix of <span class="math inline">\(v\)</span></strong> w.r.t this basis is the <span class="math inline">\(n\)</span> by <span class="math inline">\(1\)</span> matrix:</p>
+<p><span class="math display">\[
+M(v) = 
+\begin{bmatrix}
+c_1\\
+.\\
+.\\
+.\\
+c_n
+\end{bmatrix}
+\]</span></p>
+<p>where <span class="math inline">\(c_1, ..., c_n\)</span> are the scalars such that:</p>
+<p><span class="math display">\[v = c_1 v_1 + ... + c_n v_n\]</span></p>
+<p><span class="math inline">\(M(v)\)</span> depends on the bases, so they should be clear from the context and thus it is not included in the notation. <strong>M</strong> is an isomorphism of <span class="math inline">\(V\)</span> onto <span class="math inline">\(\mathbb{F}^{n, 1}\)</span>.</p>
+<h4 id="definition-3.64-mt_cdot-k-mtv_k">Definition 3.64: <span class="math inline">\(M(T)_{\cdot, k} = M(T(v_k))\)</span></h4>
+<p>Suppose <span class="math inline">\(T \in L(V, W)\)</span> and <span class="math inline">\(v_1, ..., v_n\)</span> is a basis of <span class="math inline">\(V\)</span> and <span class="math inline">\(w_1, ..., w_m\)</span> is a basis of <span class="math inline">\(W\)</span>. Let <span class="math inline">\(1 \leq k \leq n\)</span>. Then the <span class="math inline">\(k\)</span>th column of <span class="math inline">\(M(T)\)</span>, which is denoted by <span class="math inline">\(M(T)_{\cdot, k}\)</span>, equals <span class="math inline">\(M(T(v_k))\)</span>.</p>
+<h4 id="theorem-3.65-linear-maps-act-like-matrix-multiplication">Theorem 3.65: Linear Maps Act Like Matrix Multiplication</h4>
+<p>Suppose <span class="math inline">\(T \in L(V, W)\)</span> and <span class="math inline">\(v \in V\)</span>. Suppose <span class="math inline">\(v_1, ..., v_n\)</span> is a basis of <span class="math inline">\(V\)</span> and <span class="math inline">\(w_1, ..., w_m\)</span> is a basis of <span class="math inline">\(W\)</span>. Then:</p>
+<p><span class="math display">\[M(T(v)) = M(T) M(v)\]</span></p>
+<p><br></p>
+<p>We can think of every linear map as Matrix because, we can identify any <span class="math inline">\(T(v) \in W\)</span> by:</p>
+<p><span class="math display">\[M(T(v)) = M(T) M(v)\]</span></p>
+<p><span class="math inline">\(M(T(v))\)</span> can be used to recover any <span class="math inline">\(T(v)\)</span>.</p>
+<h4 id="definition-3.67-operator-lv">Definition 3.67: Operator, <span class="math inline">\(L(V)\)</span></h4>
+<ul>
+<li>A linear map from a vector space to itself is called an <strong>operator</strong>.</li>
+<li>The notation <span class="math inline">\(L(V)\)</span> denotes the set of all operators on <span class="math inline">\(V\)</span>: <span class="math display">\[L(V) = L(V, V)\]</span></li>
+</ul>
+<h4 id="theorem-3.69-injectivity-is-equivalent-ot-surjectivity-in-finite-dimensions">Theorem 3.69: Injectivity is Equivalent ot Surjectivity in Finite Dimensions</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is finite-dimensional and <span class="math inline">\(T \in L(V)\)</span>. Then the following are equivalent:</p>
+<ol type="1">
+<li>T is invertible.</li>
+<li>T is injective.</li>
+<li>T is surjective.</li>
+</ol>
+<p><strong>In infinite-dimensional vector space, neither injectivity nor surjectivity implies invertibility.</strong></p>
+<h3 id="products-and-quotients-of-vector-spaces">Products and Quotients of Vector Spaces</h3>
+<p>As usual when dealing with more than oen vector space, all the vector spaces in use should be over the same field.</p>
+<h4 id="definition-3.71-product-of-vector-spaces">Definition 3.71: Product of Vector Spaces</h4>
+<p>Suppose <span class="math inline">\(V_1, ..., V_m\)</span> are vector spaces over <span class="math inline">\(\mathbb{F}\)</span>.</p>
+<ul>
+<li>The <strong>product</strong> <span class="math inline">\(V_1 \times V_2 \times .... \times V_m\)</span> is defined by: <span class="math display">\[V_1 \times ... \times V_2 = \{(v_1, ..., v_m): v_1 \in V_1 , ..., v_m \in V_m\}\]</span></li>
+<li>Addition on <span class="math inline">\(V_1 \times V_2 \times ... \times V_m\)</span> is defined by: <span class="math display">\[(u_1, ...., u_m) + (v_1, ...., v_m) = (u_1 + v_1 , ...., u_m + v_m)\]</span></li>
+<li>Scalar multiplication on <span class="math inline">\(V_1 \times .... \times V_m\)</span> is defined by: <span class="math display">\[\lambda (v_1, ..., v_m) = (\lambda v_1 , ..., \lambda v_m)\]</span></li>
+</ul>
+<blockquote>
+<p>Elements of <span class="math inline">\(P_2(\mathbb{R}) \times \mathbb{R}^3\)</span> are lists of length 2:</p>
+<p><span class="math display">\[(5 - 6x + 16x^2, (1, 2, 3)) \in P_2(\mathbb{R}) \times \mathbb{R}^3\]</span></p>
+</blockquote>
+<h4 id="theorem-3.73-product-of-vector-space-is-a-vector-space">Theorem 3.73: Product of Vector Space is a Vector Space</h4>
+<p>Suppose <span class="math inline">\(V_1, ..., V_m\)</span> are vector spaces over <span class="math inline">\(\mathbb{F}\)</span>. Then <span class="math inline">\(V_1 \times ... \times V_m\)</span> is a vector space over <span class="math inline">\(\mathbb{F}\)</span>.</p>
+<p><strong>Elements in <span class="math inline">\(\mathbb{R}^2 \times \mathbb{R}^3\)</span> has length 2 and elements in <span class="math inline">\(\mathbb{R}^5\)</span> has length 5, so they are not identical. But the linear map that takes a vector from first space to second space is clearly an isomorphism, thus these two vector spaces are isomorphic.</strong></p>
+<h4 id="theorem-3.76-dimension-of-a-product-is-the-sum-of-dimensions">Theorem 3.76: Dimension of a Product is the Sum of Dimensions</h4>
+<p>Suppose <span class="math inline">\(V_1, ..., V_m\)</span> are finite-dimensional vector spaces. Then <span class="math inline">\(V_1 \times ... \times V_m\)</span> is finite-dimensional and:</p>
+<p><span class="math display">\[\dim(V_1 \times ... \times V_m) = \dim V_1 + ... + \dim V_m\]</span></p>
+<h4 id="proof-of-theorem-3.76">Proof of Theorem 3.76</h4>
+<p>Choose a basis of each <span class="math inline">\(V_j\)</span>. For each basis vector of each <span class="math inline">\(V_j\)</span>, consider the element of <span class="math inline">\(V_1 \times ... \times V_m\)</span> that equals the basis vector in the <span class="math inline">\(j\)</span>th slot and 0 in other slots. The list of all such vectors is linearly independent and spans the product space. Thus, it is a basis of <span class="math inline">\(V_1 \times ... \times V_m\)</span>. The length is <span class="math inline">\(\dim V_1 + ... + \dim V_m\)</span>.</p>
+<h4 id="theorem-3.77-products-and-direct-sums">Theorem 3.77: Products and Direct Sums</h4>
+<p>Suppose that <span class="math inline">\(U_1, ..., U_m\)</span> are subspaces of <span class="math inline">\(V\)</span>. Define a linear map <span class="math inline">\(\Gamma: U_1 \times .... \times U_m \rightarrow U_1 + ... + U_m\)</span> by:</p>
+<p><span class="math display">\[\gamma (u_1, ...., u_m) = u_1 + ... + u_m\]</span></p>
+<p>Then <span class="math inline">\(U_1 + ... + U_m\)</span> is a direct sum if and only if <span class="math inline">\(\Gamma\)</span> is injective (By definition of sum of subspace, we have <span class="math inline">\(\Gamma\)</span> surjective, so we can replace the <strong>injective</strong> by <strong>invertible</strong>).</p>
+<h5 id="proof-of-theorem-3.77">Proof of Theorem 3.77:</h5>
+<ol type="1">
+<li><span class="math inline">\(\leftarrow\)</span>: The linear map <span class="math inline">\(\Gamma\)</span> is injective iff the only way to write <span class="math inline">\(0\)</span> as a sum <span class="math inline">\(u_1 + ... + u_m\)</span> is by taking every <span class="math inline">\(u_j = 0\)</span>, this leads to the <code>Def 1.44</code>.</li>
+<li><span class="math inline">\(\rightarrow\)</span>: by <code>Def 1.44</code>, the only way for <span class="math inline">\(U_1 + ... + U_m\)</span> to be direct sum is to have <span class="math inline">\(\text{null } \Gamma = \{0\}\)</span>, which implies injectivity.</li>
+</ol>
+<h4 id="theorem-3.78-a-sum-is-a-direct-sum-iff-dimensions-add-up">Theorem 3.78: A Sum is a Direct Sum IFF Dimensions Add Up</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is finite-dimensional and <span class="math inline">\(U_1, ..., U_m\)</span> are subspaces of <span class="math inline">\(V\)</span>. Then <span class="math inline">\(U_1 + ... + U_m\)</span> is a direct sum IFF:</p>
+<p><span class="math display">\[\dim (U_1 + ... + U_m) = \dim (U_1) + ... + \dim (U_m)\]</span></p>
+<h5 id="proof-of-theorem-3.78">Proof of Theorem 3.78:</h5>
+<p>Suppose that <span class="math inline">\(\Gamma\)</span> is invertible, then by <code>3.22</code>:</p>
+<p><span class="math display">\[\dim (U_1 \times ... \times U_m) = \dim \text{null } (\Gamma) + \dim \text{range } \Gamma\]</span></p>
+<p>Since <span class="math inline">\(\Gamma\)</span> is injective, we have:</p>
+<p><span class="math display">\[\dim (U_1 \times ... \times U_m) =  \dim \text{range } \Gamma\]</span></p>
+<p>Since <span class="math inline">\(\Gamma\)</span> is surjective, we have:</p>
+<p><span class="math display">\[\dim \text{range } \Gamma = \dim (U_1 + ... + U_m)\]</span> <span class="math display">\[\implies \dim (U_1 \times ... \times U_m) = \dim (U_1 + ... + U_m)\]</span></p>
+<p>By <code>3.76</code> and <code>3.77</code>, we have <span class="math inline">\(\dim (U_1 + ... + U_m)\)</span> is a direct sum and:</p>
+<p><span class="math display">\[\dim (U_1) + ... + \dim(U_m) = \dim (U_1 + ... + U_m)\]</span></p>
+<h4 id="definition-3.79-v-u">Definition 3.79: <span class="math inline">\(v + U\)</span></h4>
+<p>Suppose <span class="math inline">\(v \in V\)</span> and <span class="math inline">\(U\)</span> is a subspace of <span class="math inline">\(V\)</span>. Then <span class="math inline">\(v + U\)</span> is the subset of <span class="math inline">\(V\)</span> defined by:</p>
+<p><span class="math display">\[v + U = \{v + u: u \in U\}\]</span></p>
+<h4 id="definition-3.81-affine-subset-parallel">Definition 3.81: Affine subset, Parallel</h4>
+<ul>
+<li>An <strong>affine subset</strong> of <span class="math inline">\(V\)</span> is a subset of <span class="math inline">\(V\)</span> of the form <span class="math inline">\(v + U\)</span> for some <span class="math inline">\(v \in V\)</span> and some subspace <span class="math inline">\(U\)</span> of <span class="math inline">\(V\)</span>.</li>
+<li>For <span class="math inline">\(v \in V\)</span> and <span class="math inline">\(U\)</span> a subspace of <span class="math inline">\(V\)</span>, the affine subset <span class="math inline">\(v + U\)</span> is said to be <strong>parallel</strong> to <span class="math inline">\(U\)</span>.</li>
+</ul>
+<blockquote>
+<p>If <span class="math inline">\(U = \{(x, y, 0) \in \mathbb{R}^3: x, y \in \mathbb{R}\}\)</span>, then the affine subsets of <span class="math inline">\(\mathbb{R}^3\)</span> parallel to <span class="math inline">\(U\)</span> are the planes in <span class="math inline">\(\mathbb{R}^3\)</span> that are parallel to the <span class="math inline">\(xy\)</span>-plane <span class="math inline">\(U\)</span> in the usual sense.</p>
+</blockquote>
+<h4 id="definition-3.83-quotient-space-v-u">Definition 3.83: Quotient Space, <span class="math inline">\(V / U\)</span></h4>
+<p>Suppose <span class="math inline">\(U\)</span> is a subspace of <span class="math inline">\(V\)</span>. Then the <strong>quotient space</strong> <span class="math inline">\(V / U\)</span> is the set of all affine subsets of <span class="math inline">\(V\)</span> parallel to <span class="math inline">\(U\)</span>. In other words:</p>
+<p><span class="math display">\[V / U = \{v + U: v \in V\}\]</span></p>
+<blockquote>
+<p>If <span class="math inline">\(U = \{(x, 2x) \in \mathbb{R}^2: x \in \mathbb{R}\}\)</span>, then <span class="math inline">\(\mathbb{R}^2 / U\)</span> is the subset of all lines with slope of <span class="math inline">\(2\)</span>. If <span class="math inline">\(U\)</span> is a line in <span class="math inline">\(\mathbb{R}^3\)</span> containing the origin, then <span class="math inline">\(\mathbb{R}^3 / U\)</span> is the set of all lines in <span class="math inline">\(\mathbb{R}^3\)</span> parallel to <span class="math inline">\(U\)</span>.</p>
+</blockquote>
+<h4 id="theorem-3.85-two-affine-subsets-parallel-to-u-are-equal-or-disjoint">Theorem 3.85: Two Affine Subsets Parallel to <span class="math inline">\(U\)</span> are Equal or Disjoint</h4>
+<p>Suppose <span class="math inline">\(U\)</span> is a subspace of <span class="math inline">\(V\)</span> and <span class="math inline">\(v, w \in V\)</span>. Then the following are equivalent:</p>
+<ol type="1">
+<li><span class="math inline">\(v - w \in U\)</span></li>
+<li><span class="math inline">\(v + U = w + U\)</span></li>
+<li><span class="math inline">\((v + U) \cap (w + U) = \emptyset\)</span></li>
+</ol>
+<h5 id="proof-of-theorem-3.85">Proof of Theorem 3.85</h5>
+<p>Assume <span class="math inline">\((1)\)</span> holds, then we have for some <span class="math inline">\(u \in U\)</span>:</p>
+<p><span class="math display">\[v + u = w + \underbrace{(v - w + u)}{$\in U$} \in w + U\]</span></p>
+<p>Since the additive inverse <span class="math inline">\(w - v\)</span>, is also in <span class="math inline">\(U\)</span>,</p>
+<p><span class="math display">\[w + u = v + \underbrace{(w - v + u)}{$\in U$} \in v + U\]</span></p>
+<p>Then we have:</p>
+<p><span class="math display">\[v + U \subseteq w + U\]</span></p>
+<p>and</p>
+<p><span class="math display">\[w + U \subseteq v + U\]</span></p>
+<p>Thus, <span class="math inline">\(v + U = w + U\)</span>, this implies <span class="math inline">\((3)\)</span> holds.</p>
+<p>Assume <span class="math inline">\((3)\)</span> holds, then <span class="math inline">\(\exists \; u_1, u_2 \in U\)</span>, then we have:</p>
+<p><span class="math display">\[v + u_1 = w + u_2 \implies v - w = u_2 - u_1 \in U\]</span></p>
+<p>Since <span class="math inline">\((1) \implies (2)\)</span>, we have <span class="math inline">\((3) \implies (2)\)</span>.</p>
+<h4 id="definition-3.86-addition-and-scalar-multiplication-on-v-u">Definition 3.86: Addition and Scalar Multiplication on <span class="math inline">\(V / U\)</span></h4>
+<p>Suppose <span class="math inline">\(U\)</span> is a subspace of <span class="math inline">\(V\)</span>. Then <strong>addition</strong> and <strong>scalar multiplication</strong> are defined on <span class="math inline">\(V / U\)</span> by:</p>
+<p><span class="math display">\[(v + U) + (w + U) = (v + w) + U\]</span> <span class="math display">\[\lambda (v + U) = (\lambda v) + U\]</span></p>
+<p>for <span class="math inline">\(v, w \in V\)</span> and <span class="math inline">\(\lambda \in \mathbb{F}\)</span>.</p>
+<h4 id="theorem-3.87-quotient-space-is-a-vector-space">Theorem 3.87 Quotient Space is a Vector Space</h4>
+<p>Suppose <span class="math inline">\(U\)</span> is a subspace of <span class="math inline">\(V\)</span>. Then <span class="math inline">\(V / U\)</span>, with the operations of addition and scalar multiplication as defined above, is a vector space.</p>
+<p>Notice the additive inverse of <span class="math inline">\(v + U\)</span> is <span class="math inline">\((-v) + U\)</span>, and additive identity is <span class="math inline">\(0 + U\)</span>.</p>
+<h4 id="definition-3.88-quotient-map-pi">Definition 3.88: Quotient Map, <span class="math inline">\(\pi\)</span></h4>
+<p>Suppose <span class="math inline">\(U\)</span> is a subspace of <span class="math inline">\(V\)</span>. The <strong>quotient map <span class="math inline">\(\pi\)</span></strong> is the linear map <span class="math inline">\(\pi : V \rightarrow V / U\)</span> defined by:</p>
+<p><span class="math display">\[\pi(v) = v + U\]</span></p>
+<p>for <span class="math inline">\(v \in V\)</span>.</p>
+<h4 id="theorem-3.89-dimension-of-a-quotient-space">Theorem 3.89: Dimension of a Quotient Space</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is finite-dimensional and <span class="math inline">\(U\)</span> is a subspace of <span class="math inline">\(V\)</span>. Then:</p>
+<p><span class="math display">\[\dim V / U = \dim V - \dim U\]</span></p>
+<h5 id="proof-of-theorem-3.89">Proof of Theorem 3.89</h5>
+<p>Since <span class="math inline">\(0 + U\)</span> is the additive identity in <span class="math inline">\(V / U\)</span>, so it is the set of <span class="math inline">\(U\)</span>, and we can clearly see that the range <span class="math inline">\(\pi = V / U\)</span>. Thus:</p>
+<p><span class="math display">\[\dim V = \dim U + \dim V / U \implies \dim V / U = \dim V - \dim U\]</span></p>
+<h4 id="definition-3.90-tildet">Definition 3.90: <span class="math inline">\(\tilde{T}\)</span></h4>
+<p>Suppose <span class="math inline">\(T \in L(V, W)\)</span>. Define <span class="math inline">\(\tilde{T}: V / (\text{null } T) \rightarrow W\)</span> by:</p>
+<p><span class="math display">\[\tilde{T} (v + \text{null } T) = T(v)\]</span></p>
+<h4 id="theorem-3.91-null-space-and-range-of-tildet">Theorem 3.91: Null Space and Range of <span class="math inline">\(\tilde{T}\)</span></h4>
+<p>Suppose <span class="math inline">\(T \in L(V, W)\)</span>. Then</p>
+<ol type="1">
+<li><span class="math inline">\(\tilde{T}\)</span> is a linear map from <span class="math inline">\(V / \text{null } T\)</span> to <span class="math inline">\(W\)</span>.</li>
+<li><span class="math inline">\(\tilde{T}\)</span> is injective.</li>
+<li><span class="math inline">\(\text{range } \tilde{T} = \text{range }T\)</span>.</li>
+<li><span class="math inline">\(V / (\text{null } T)\)</span> is isomorphic to <span class="math inline">\(\text{range }T\)</span>.</li>
+</ol>
+<h3 id="duality">Duality</h3>
+<h4 id="definition-3.92-linear-functional">Definition 3.92: Linear Functional</h4>
+<p>A <strong>linear functional</strong> on <span class="math inline">\(V\)</span> is a linear map from <span class="math inline">\(V\)</span> to the scalar field <span class="math inline">\(\mathbb{F}\)</span>. In other words, a linear functional is an element of <span class="math inline">\(L(V, \mathbb{F})\)</span>.</p>
+<blockquote>
+<p>Define <span class="math inline">\(\phi: \mathbb{R}^3 \rightarrow \mathbb{R}\)</span> by <span class="math inline">\(\phi(x, y, z) = 4x - 5y + 2z\)</span>. Then <span class="math inline">\(\phi\)</span> is a linear functional on <span class="math inline">\(\mathbb{R}^3\)</span></p>
+</blockquote>
+<h4 id="definition-3.94-dual-space-vprime">Definition 3.94: Dual Space, <span class="math inline">\(V^{\prime}\)</span></h4>
+<p>The <strong>dual space</strong> of <span class="math inline">\(V\)</span>, denoted <span class="math inline">\(V^{\prime}\)</span>, is the vector space of all linear functionals on <span class="math inline">\(V\)</span>. In other words:</p>
+<p><span class="math display">\[T^{\prime} = L(V, \mathbb{F})\]</span></p>
+<h4 id="theorem-3.95-dim-vprime-dim-v">Theorem 3.95: <span class="math inline">\(\dim V^{\prime} = \dim V\)</span></h4>
+<p>Suppose <span class="math inline">\(V\)</span> is finite-dimensional. Then <span class="math inline">\(V^{\prime}\)</span> is also finite-dimensional and <span class="math inline">\(\dim V^{\prime} = \dim V\)</span>.</p>
+<h5 id="proof-of-theorem-3.95">Proof of Theorem 3.95:</h5>
+<p>By <code>Corollary 3.6.1</code>, we have <span class="math inline">\(\dim L(V, \mathbb{F}) = \dim (V) \dim (\mathbb{F}) = \dim V\)</span></p>
+<h4 id="definition-3.96-dual-basis">Definition 3.96: Dual Basis</h4>
+<p>If <span class="math inline">\(v_1, ..., v_n\)</span> is a basis of <span class="math inline">\(V\)</span>, then the <strong>dual basis</strong> of <span class="math inline">\(v_1, ..., v_n\)</span> is the list <span class="math inline">\(\psi_1 , ..., \psi_n\)</span> of elements of <span class="math inline">\(V^{\prime}\)</span>, where each <span class="math inline">\(\psi_j\)</span> is a linear functional on <span class="math inline">\(V\)</span> s.t:</p>
+<p><span class="math display">\[
+\psi_j(v_k)=
+\begin{cases}
+1, \quad \text{if} \;\; k = j\\
+0, \quad \text{if} \;\; k \neq j
+\end{cases}
+\]</span></p>
+<blockquote>
+<p>What is the dual basis of the standard basis <span class="math inline">\(e_1, ..., e_n\)</span> of <span class="math inline">\(\mathbb{F}^n\)</span>?</p>
+<p>For <span class="math inline">\(1 \leq j \leq n\)</span>, define <span class="math inline">\(\psi_j\)</span> to be the linear functional on <span class="math inline">\(\mathbb{F}^n\)</span> that:</p>
+<p><span class="math display">\[\psi_j(x_1, ..., x_n) = x_j, \quad \quad (x_1, ..., x_n) \in \mathbb{F}^n\]</span> Clearly: <span class="math display">\[
+\psi_j(e_k)=
+\begin{cases}
+1, \quad \text{if} \;\; k = j\\
+0, \quad \text{if} \;\; k \neq j
+\end{cases}
+\]</span></p>
+</blockquote>
+<h4 id="theorem-3.98-dual-basis-is-a-basis-of-the-dual-space">Theorem 3.98: Dual Basis is a Basis of the Dual Space</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is finite-dimensional. Then the dual basis of a basis of <span class="math inline">\(V\)</span> is a basis of <span class="math inline">\(V^{\prime}\)</span>.</p>
+<h5 id="proof-of-theorem-3.98">Proof of Theorem 3.98</h5>
+<p>Suppose <span class="math inline">\(v_1, ..., v_n\)</span> is a basis of <span class="math inline">\(V\)</span>, let <span class="math inline">\(\psi_1, ..., \psi_n\)</span> be dual basis. Then, for all <span class="math inline">\(v_j \in (v_1, ..., v_n)\)</span>:</p>
+<p><span class="math display">\[a_1 \psi_n + ... + a_n \psi_n = 0 \implies (a_1 \psi_n + ... + a_n \psi_n) (v_j) = a_j = 0\]</span></p>
+<p>Thus, all <span class="math inline">\(a_j = 0\)</span>, the dual basis is independent.</p>
+<p>Since <span class="math inline">\(\psi_1, ..., \psi_n\)</span> is independent, by <code>theorem 3.95, 2.39</code>, it is a basis of the dual space.</p>
+<h4 id="definition-3.99-dual-map-tprime">Definition 3.99: Dual Map, <span class="math inline">\(T^{\prime}\)</span></h4>
+<p>If <span class="math inline">\(T \in L(V, W)\)</span>, then the <strong>dual map</strong> of <span class="math inline">\(T\)</span> is the linear map <span class="math inline">\(T^{\prime} \in L(W^{\prime}, V^{\prime})\)</span> defined by <span class="math inline">\(T^{\prime} (\psi) = \psi \circ T\)</span> for <span class="math inline">\(\psi \in W^{\prime}\)</span>. so:</p>
+<p><span class="math display">\[T^{\prime} (\psi): V \rightarrow \mathbb{F}\]</span></p>
+<h4 id="theorem-3.101-algebraic-properties-of-dual-maps">Theorem 3.101: Algebraic Properties of Dual Maps</h4>
+<ol type="1">
+<li><span class="math inline">\((S+T)^{\prime} = S^{\prime} + T^{\prime}\)</span></li>
+<li><span class="math inline">\((\lambda T)^{\prime} = \lambda T^{\prime}\)</span> for all <span class="math inline">\(\lambda \in \mathbb{F}\)</span> and all <span class="math inline">\(T \in L(V, W)\)</span></li>
+<li><span class="math inline">\((ST)^{\prime} = T^{\prime}S^{\prime}\)</span> for all <span class="math inline">\(T \in L(U, V)\)</span> and all <span class="math inline">\(S \in L(V, W)\)</span></li>
+</ol>
+<h5 id="proof-of-theorem-3.101">Proof of Theorem 3.101</h5>
+<ol type="1">
+<li><span class="math inline">\((S + T)^{\prime} (\psi) = \psi \circ (S + T) = \psi \circ S + \psi \circ T = S^{\prime} + T^{\prime}\)</span></li>
+<li><span class="math inline">\((\lambda T)^{\prime} (\psi)= \lambda \psi \circ T = \lambda T^{\prime}\)</span></li>
+<li><span class="math inline">\((ST)^\prime (\psi) = \psi \circ (ST) = (\psi \circ S) \circ T = T^{\prime} (\psi \circ S) = T^{\prime} (S^{\prime} (\psi)) = T^{\prime} S^{\prime}\)</span> by <code>definition 3.8</code></li>
+</ol>
+<h4 id="definition-3.102-annihilator-u0">Definition 3.102: Annihilator, <span class="math inline">\(U^0\)</span></h4>
+<p>For <span class="math inline">\(U \subseteq V\)</span>, the <strong>annihilator</strong> of <span class="math inline">\(U\)</span>, denoted <span class="math inline">\(U^0\)</span> is defined by:</p>
+<p><span class="math display">\[U^0 = \{\psi \in V^{\prime}: \psi (u) = 0, \; \forall u \in U\}\]</span></p>
+<h4 id="theorem-3.105-the-annihilator-is-a-subspace">Theorem 3.105: The Annihilator is a Subspace</h4>
+<p>Suppose <span class="math inline">\(U \subseteq V\)</span>. Then <span class="math inline">\(U^0\)</span> is a subspace of <span class="math inline">\(V^\prime\)</span>. Where <span class="math inline">\(0 \in U^0\)</span> the is <span class="math inline">\(0\)</span> linear functional that maps every <span class="math inline">\(v \in V\)</span> to <span class="math inline">\(0 \in \mathbb{F}\)</span>.</p>
+<h4 id="theorem-3.106-dimension-of-the-annihilator">Theorem 3.106: Dimension of the Annihilator</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is finite-dimensional and <span class="math inline">\(U\)</span> is a subspace of <span class="math inline">\(V\)</span>. Then:</p>
+<p><span class="math display">\[\dim U + \dim U^0 = \dim V\]</span></p>
+<h4 id="theorem-3.107-the-null-space-of-tprime">Theorem 3.107: The Null Space of <span class="math inline">\(T^{\prime}\)</span></h4>
+<ol type="1">
+<li>null <span class="math inline">\(T^\prime\)</span> = <span class="math inline">\((\text{range } T)^0\)</span></li>
+<li><span class="math inline">\(\dim \text{null }T^{\prime} = \dim \text{null }T + \dim W - \dim V\)</span></li>
+</ol>
+<h4 id="theorem-3.108-t-surjective-is-equivalent-to-tprime-injective">Theorem 3.108: <span class="math inline">\(T\)</span> Surjective is Equivalent to <span class="math inline">\(T^{\prime}\)</span> Injective</h4>
+<p>Suppose <span class="math inline">\(V, W\)</span> are finite-dimensional and <span class="math inline">\(T \in L(V, W)\)</span>. Then <span class="math inline">\(T\)</span> is surjective iff <span class="math inline">\(T^{\prime}\)</span> is injective.</p>
+<h4 id="theorem-3.109-the-range-of-tprime">Theorem 3.109: The Range of <span class="math inline">\(T^{\prime}\)</span></h4>
+<p>Suppose <span class="math inline">\(V, W\)</span> are finite-dimensional and <span class="math inline">\(T \in L(V, W)\)</span>. Then:</p>
+<ol type="1">
+<li><span class="math inline">\(\dim \text{range }T^{\prime} = \dim \text{range } T\)</span></li>
+<li><span class="math inline">\(\text{range }T^{\prime} = (\text{null } T)^0\)</span></li>
+</ol>
+<h4 id="theorem-3.110-t-injective-is-equivalent-to-tprime-surjective">Theorem 3.110: <span class="math inline">\(T\)</span> injective is equivalent to <span class="math inline">\(T^{\prime}\)</span> Surjective</h4>
+<p>Suppose <span class="math inline">\(V, W\)</span> are finite-dimensional and <span class="math inline">\(T \in L(V, W)\)</span>. Then <span class="math inline">\(T\)</span> is injective if and only if <span class="math inline">\(T^{\prime}\)</span> is surjective.</p>
+<h3 id="matrix-of-the-dual-of-a-linear-map">Matrix of the Dual of a Linear Map</h3>
+<h4 id="definition-3.111-transpose-at">Definition 3.111: Transpose, <span class="math inline">\(A^T\)</span></h4>
+<p>The <strong>transpose</strong> of a matrix <span class="math inline">\(A\)</span>, denoted <span class="math inline">\(A^T\)</span>, is the matrix obtained from <span class="math inline">\(A\)</span> by interchanging the rows and columns. More specifically, if <span class="math inline">\(A\)</span> is an <span class="math inline">\(m \times n\)</span> matrix, then <span class="math inline">\(A^T\)</span> is a <span class="math inline">\(n \times m\)</span> matrix whose entries are given by:</p>
+<p><span class="math display">\[(A^T)_{k, j} = A_{j, k}\]</span></p>
+<h4 id="theorem-3.113">Theorem 3.113:</h4>
+<p>If <span class="math inline">\(A\)</span> is an <span class="math inline">\(m \times n\)</span> matrix and <span class="math inline">\(C\)</span> is an <span class="math inline">\(n \times p\)</span> matrix:</p>
+<p><span class="math display">\[(AC)^T = C^TA^T\]</span> <span class="math display">\[(A + C)^T = A^T + C^T\]</span> <span class="math display">\[(\lambda A)^T = \lambda A^T\]</span></p>
+<h4 id="theorem-3.114-the-matrix-of-tprime-is-the-transpose-of-the-matrix-of-t">Theorem 3.114: The Matrix of <span class="math inline">\(T^{\prime}\)</span> is the Transpose of the Matrix of <span class="math inline">\(T\)</span></h4>
+<p>Suppose <span class="math inline">\(T \in L(V, W)\)</span>, then <span class="math inline">\(M(T^{\prime}) = (M(T))^T\)</span></p>
+<h4 id="definition-3.115-row-rank-column-rank">Definition 3.115: Row Rank, Column Rank</h4>
+<p>Suppose <span class="math inline">\(A\)</span> is an <span class="math inline">\(m \times n\)</span> matrix with entries in <span class="math inline">\(\mathbb{F}\)</span>.</p>
+<ul>
+<li>The <strong>row rank</strong> of <span class="math inline">\(A\)</span> is the dimension of the span of the rows of <span class="math inline">\(A\)</span> in <span class="math inline">\(\mathbb{F}^{1, n}\)</span>.</li>
+<li>The <strong>column rank</strong> of <span class="math inline">\(A\)</span> is the dimension of the span of the columns of <span class="math inline">\(A\)</span> in <span class="math inline">\(\mathbb{F}^{m , 1}\)</span></li>
+</ul>
+<h4 id="theorem-3.117-dimension-of-range-t-equals-column-rank-of-mt">Theorem 3.117: Dimension of range <span class="math inline">\(T\)</span> Equals Column Rank of <span class="math inline">\(M(T)\)</span></h4>
+<p>Suppose <span class="math inline">\(V, W\)</span> are finite-dimensional and <span class="math inline">\(T \in L(V, W)\)</span>. Then <span class="math inline">\(\dim \text{range } T\)</span> equals the column rank of <span class="math inline">\(M(T)\)</span>.</p>
+<h5 id="proof-of-theorem-3.117">Proof of Theorem 3.117:</h5>
+<p>Assume <span class="math inline">\(v_1, ..., v_n, w_1, ..., w_m\)</span> are basis of <span class="math inline">\(V, W\)</span> respectively. Since <span class="math inline">\(M\)</span> is an isomorphism from <span class="math inline">\(W \rightarrow \mathbb{F}^{m \times 1}\)</span> (<code>def 3.62</code>), we have <span class="math inline">\(M: \text{span }(Tv_1, ..., Tv_n) \rightarrow \text{range } M\)</span> isomorphic. Then:</p>
+<p><span class="math display">\[M(a_1 Tv_1 + ... + a_n Tv_n) = a_1 M (Tv_1) + .... + a_n M(Tv_n) \implies \text{span }(M(Tv_1), ..., M(Tv_n)) = \text{range } M\]</span></p>
+<p>Thus, <span class="math inline">\(M: \text{span }(Tv_1, ..., Tv_n) \rightarrow \text{span }(M(Tv_1), ..., M(Tv_n))\)</span> isomorphic and by <code>corollary 3.59</code>, we have:</p>
+<p><span class="math display">\[\dim \text{span }(Tv_1, ..., Tv_n) = \dim \text{span }(M(Tv_1), ..., M(Tv_n))\]</span></p>
+<p>in other words, we have:</p>
+<p><span class="math display">\[\dim \text{range } T  = \text{span } (\text{columns of $A$}) = \text{The column rank of $M(T)$}\]</span></p>
+<h4 id="theorem-3.118-row-rank-equals-column-rank">Theorem 3.118: Row Rank Equals Column Rank</h4>
+<p>Suppose <span class="math inline">\(A \in \mathbb{F^{m, n}}\)</span>. Then the row rank of <span class="math inline">\(A\)</span> equals the column rank of <span class="math inline">\(A\)</span>.</p>
+<h5 id="definition-3.119-rank">Definition 3.119: Rank</h5>
+<p>The <strong>rank</strong> of a matrix <span class="math inline">\(A \in \mathbb{F}^{m, n}\)</span> is the column rank of <span class="math inline">\(A\)</span>.</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/MDP/" rel="bookmark">MDP</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-equations/" rel="bookmark">Bellman Equations</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-optimality-equations/" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/14/calculus/" rel="bookmark">Calculus (1)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/dp/" rel="bookmark">Dynamic Programming</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RL-Basics/" rel="tag"># RL Basics</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/01/06/real-analysis-4/" rel="prev" title="real-analysis-4">
+                  <i class="fa fa-chevron-left"></i> real-analysis-4
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/01/19/linear-algebra-3/" rel="next" title="Linear Algebra (3)">
+                  Linear Algebra (3) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

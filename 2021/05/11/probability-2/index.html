@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Probability Background (2) Distribution of Two Random Variables Intuitive Example:  Let our experiment be flipping a coin 3 times. Then our sample space \(\Omega &#x3D; \{HHH, THH, TTH, TTT, THT, HTH, HTT,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="probability (2)">
+<meta property="og:url" content="https://swag1ong.github.io/2021/05/11/probability-2/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Probability Background (2) Distribution of Two Random Variables Intuitive Example:  Let our experiment be flipping a coin 3 times. Then our sample space \(\Omega &#x3D; \{HHH, THH, TTH, TTT, THT, HTH, HTT,">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_33.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_34.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_35.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_36.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_2_3_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_2_4_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_2_4_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_2_4_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_2_4_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_2_4_5.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_2_5_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_2_5_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_2_5_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_2_5_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/mprob_2_6_1.png">
+<meta property="article:published_time" content="2021-05-11T15:50:10.000Z">
+<meta property="article:modified_time" content="2021-07-15T15:52:14.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="RL Basics">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swag1ong.github.io/images/RL/background/prob_33.png">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/05/11/probability-2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;05&#x2F;11&#x2F;probability-2&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;05&#x2F;11&#x2F;probability-2&#x2F;&quot;,&quot;title&quot;:&quot;probability (2)&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>probability (2) | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#probability-background-2"><span class="nav-number">1.</span> <span class="nav-text">Probability Background (2)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#distribution-of-two-random-variables"><span class="nav-number">1.1.</span> <span class="nav-text">Distribution of Two Random Variables</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#discrete-random-vector"><span class="nav-number">1.1.1.</span> <span class="nav-text">Discrete Random Vector</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#continuous-random-vector"><span class="nav-number">1.1.2.</span> <span class="nav-text">Continuous Random Vector</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#marginal-distributions"><span class="nav-number">1.1.3.</span> <span class="nav-text">Marginal Distributions</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#marginal-pmf"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">Marginal PMF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#marginal-pdf"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">Marginal PDF</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#expectation"><span class="nav-number">1.1.4.</span> <span class="nav-text">Expectation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#transformation-bivariate-random-variables"><span class="nav-number">1.1.5.</span> <span class="nav-text">Transformation: Bivariate Random Variables</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#conditional-distributions-and-expectations"><span class="nav-number">1.1.6.</span> <span class="nav-text">Conditional Distributions and Expectations</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#discrete-conditional-pmf"><span class="nav-number">1.1.6.1.</span> <span class="nav-text">Discrete Conditional PMF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#continuous-conditional-pmf"><span class="nav-number">1.1.6.2.</span> <span class="nav-text">Continuous Conditional PMF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#conditional-expectation-and-variance"><span class="nav-number">1.1.6.3.</span> <span class="nav-text">Conditional Expectation and Variance</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#double-expectation"><span class="nav-number">1.1.6.4.</span> <span class="nav-text">Double Expectation</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#independent-random-variables"><span class="nav-number">1.1.7.</span> <span class="nav-text">Independent Random Variables</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#correlation-coefficient"><span class="nav-number">1.1.8.</span> <span class="nav-text">Correlation Coefficient</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#extension-to-several-random-variables"><span class="nav-number">1.2.</span> <span class="nav-text">Extension to Several Random Variables</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#expectation-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">Expectation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#marginal-distribution"><span class="nav-number">1.2.2.</span> <span class="nav-text">Marginal Distribution</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#conditional-distribution"><span class="nav-number">1.2.3.</span> <span class="nav-text">Conditional Distribution</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#conditional-expectation"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">Conditional Expectation</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mutually-independent"><span class="nav-number">1.2.4.</span> <span class="nav-text">Mutually Independent</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#pairwise-independent"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">Pairwise Independent</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/05/11/probability-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          probability (2)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-05-11 23:50:10" itemprop="dateCreated datePublished" datetime="2021-05-11T23:50:10+08:00">2021-05-11</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-15 23:52:14" itemprop="dateModified" datetime="2021-07-15T23:52:14+08:00">2021-07-15</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/05/11/probability-2/" class="post-meta-item leancloud_visitors" data-flag-title="probability (2)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>16k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>14 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="probability-background-2">Probability Background (2)</h1>
+<h2 id="distribution-of-two-random-variables">Distribution of Two Random Variables</h2>
+<p>Intuitive Example:</p>
+<blockquote>
+<p>Let our experiment be flipping a coin 3 times. Then our sample space <span class="math inline">\(\Omega = \{HHH, THH, TTH, TTT, THT, HTH, HTT, HHT\}\)</span>. Let <span class="math inline">\(X_1\)</span> be the number of head on the first two tosses and <span class="math inline">\(X_2\)</span> be the number of heads on all three tosses. Then, our interest can be represented by the pair of random variables <span class="math inline">\((X_1, X_2)\)</span>, for example <span class="math inline">\((X_1 (HTH), X_2(HTH)) = (1, 2)\)</span>. Continuing this way, <span class="math inline">\(X_1, X_2\)</span> are real-valued functions defined on the sample space <span class="math inline">\(\Omega\)</span>, which take the outcome and map from sample space to ordered number pairs: <span class="math display">\[\mathbb{D} = \{(0, 0), (0, 1), (1, 1), (1, 2), (2, 2), (2, 3)\}\]</span></p>
+<p>One the other hand, we can regard this ordered pair of functions as a vector function <span class="math inline">\(f: \Omega \rightarrow \mathbb{D} \subset \mathbb{R}^2\)</span> defined by <span class="math inline">\(f(x) = &lt;X_1(x), \; X_2(x)&gt;, \quad x \in \Omega\)</span>.</p>
+</blockquote>
+<p><img src="/images/RL/background/prob_33.png" width="600"></p>
+<p>We often denote random vectors using vector notations <span class="math inline">\(\mathbf{X} = (X_1, X_2)^{\prime}\)</span> as a column vector.</p>
+<p>Let <span class="math inline">\(\mathbb{D}\)</span> be the range space of <span class="math inline">\((X_1, X_2)\)</span>. Let <span class="math inline">\(A\)</span> be a subset of <span class="math inline">\(\mathbb{D}\)</span>. We can uniquely define the distribution of this random vector <span class="math inline">\(P_{X_1, X_2}\)</span> in terms of the <code>CDF</code>:</p>
+<p><span class="math display">\[F_{X_1, X_2} (x_1, x_2) = P_{X_1, X_2}((X_1 \leq x_1) \cap (X_2 \leq x_2)) = P_{X_1, X_2}(X_1 \leq x_1, \; X_2 \leq x_2)\]</span></p>
+<p>For all <span class="math inline">\((x_1, x_2) \in \mathbb{R}^2\)</span>. At the same time:</p>
+<p><span class="math display">\[P_{X_1, X_2}(a_1 &lt; X_1 \leq b_1, \; a_2 &lt; X_2 \leq b_2) = F_{X_1, X_2} (b_1, b_2) -  F_{X_1, X_2} (a_1, b_2) -  F_{X_1, X_2} (b_1, a_2) +  F_{X_1, X_2} (a_1, a_2)\]</span></p>
+<p>Hence, all induced probabilities can be formulated in terms of the cdf. We often call this cdf the <code>joint cumulative distribution</code>.</p>
+<span id="more"></span>
+<p><br></p>
+<h3 id="discrete-random-vector">Discrete Random Vector</h3>
+<p>A random vector <span class="math inline">\((X_1, X_2)\)</span> is <code>discrete random vector</code> if its range space <span class="math inline">\(\mathbb{D}\)</span> is finite or countable. Hence, <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> are <strong>both discrete</strong>. The <code>joint probability mass function</code> of <span class="math inline">\((X_1, X_2)\)</span> <span class="math inline">\(p_{X_1, X_2}\)</span> is defined by:</p>
+<p><span class="math display">\[p_{X_1, X_2} (x_1, x_2) = P(\{c_1: X_1 (c_1) = x_1\} \cap \{c_2: X_2 (c_2) = x_2\}) = P(X_1 = x_1, X_2 = x_2)\]</span></p>
+<p>for all <span class="math inline">\((x_1, x_2) \in \mathbb{D}\)</span>. The pmf uniquely defines the cdf, it also is characterized by the two properties:</p>
+<p><span class="math display">\[0 \leq p_{X_1, X_2} (x_1, x_2) \leq 1, \quad \quad \underset{D}{\sum \sum} p_{X_1, X_2} (x_1, x_2) = 1\]</span></p>
+<p>For an event <span class="math inline">\(B \subset \mathbb{D}\)</span>, we have:</p>
+<p><span class="math display">\[P_{X_1, X_2} (B) = P((X_1, X_2) \in B) = \underset{B}{\sum \sum} p_{x_1, X_2} (x_1, x_2)\]</span></p>
+<p>The <code>support</code> of a discrete random vector <span class="math inline">\((X_1, X_2)\)</span> is defined as all points <span class="math inline">\((x_1, x_2)\)</span> in the range space of <span class="math inline">\((X_1, X_2)\)</span> such that <span class="math inline">\(p_{X_1, X_2} (x_1, x_2) &gt; 0\)</span>.</p>
+<p><br></p>
+<h3 id="continuous-random-vector">Continuous Random Vector</h3>
+<p>We say a random vector <span class="math inline">\((X_1, X_2)\)</span> with range space <span class="math inline">\(\mathbb{D}\)</span> is of the <code>continuous</code> type if its cdf <span class="math inline">\(F_{X_1, X_2} (x_1, x_2)\)</span> is continuous:</p>
+<p><span class="math display">\[F_{X_1, X_2} (x_1, x_2) = \int^{x_1}_{-\infty} \int^{x_2}_{-\infty} f_{X_1, X_2} (w_1, w_2) dw_1 dw_2\]</span></p>
+<p>For all <span class="math inline">\((x_1, x_2) \in \mathbb{R}^2\)</span>. We call <span class="math inline">\(f_{X_1, X_2}\)</span> the <code>joint probability density function</code> of <span class="math inline">\((X_1, X_2)\)</span>. Then:</p>
+<p><span class="math display">\[\frac{\partial^2 F_{X_1, X_2} (x_1, x_2)}{\partial x_1 \partial x_2} = f_{X_1, X_2} (x_1, x_2)\]</span></p>
+<p>The pdf is essentially characterized by the two properties:</p>
+<p><span class="math display">\[0 \leq f_{X_1, X_2} (x_1, x_2), \quad \quad \int^{\infty}_{-\infty} \int^{\infty}_{-\infty}  f_{X_1, X_2} (x_1, x_2) dx_1dx_2= 1\]</span></p>
+<p>Then, the probability distribution <span class="math inline">\(P_{X_1, X_2}\)</span> is defined as:</p>
+<p><span class="math display">\[P_{X_1, X_2} (A) = P((X_1, X_2) \in A) = \underset{A}{\int \int} f_{X_1, X_2} (x_1, x_2) dx_1dx_2\]</span></p>
+<p>Note that <span class="math inline">\(P((X_1, X_2) \in A)\)</span> is just the volumn under the surface (graph) <span class="math inline">\(z = f_{X_1, X_2} (x_1, x_2)\)</span> over the set <span class="math inline">\(A\)</span> (uncountable).</p>
+<p>For continuous random vector the <code>support</code> of <span class="math inline">\((X_1, X_2)\)</span> contains all points <span class="math inline">\((x_1, x_2)\)</span> for which <span class="math inline">\(f(x_1, x_2) &gt; 0\)</span></p>
+<h3 id="marginal-distributions">Marginal Distributions</h3>
+<p>Let <span class="math inline">\((X_1, X_2)\)</span> be a random vector, we can obtain their individual distributions in terms of the joint distribution.</p>
+<p>Consider events which defined the cdf of <span class="math inline">\(X_1\)</span> at <span class="math inline">\(x_1\)</span> is <span class="math inline">\(\{X_1 \leq x_1\}\)</span>, in scenario of random vector, this is the same as no limitation on <span class="math inline">\(X_2\)</span>:</p>
+<p><span class="math display">\[\{X_1 \leq x_1\} \cap \{-\infty &lt; X_2 &lt; \infty\}\]</span></p>
+<p>Taking the joint probability:</p>
+<p><span class="math display">\[P(\{X_1 \leq x_1\} \cap \{-\infty &lt; X_2 &lt; \infty\}) = F_{X_1} (x_1) = \lim_{x_2 \rightarrow \infty} F_{X_1, X_2} (x_1, x_2)\]</span></p>
+<p>For all <span class="math inline">\(x_1 \in \mathbb{R}\)</span>.</p>
+<h4 id="marginal-pmf">Marginal PMF</h4>
+<p>Now, we have the relationship between the cdfs. Let <span class="math inline">\(\mathbb{D}_1\)</span> be the support of <span class="math inline">\(X_1\)</span> and <span class="math inline">\(w_1 \in \mathbb{D}_1\)</span>, let <span class="math inline">\(\mathbb{D}_2\)</span> be the support of <span class="math inline">\(X_2\)</span> and <span class="math inline">\(x_2 \in \mathbb{D}_2\)</span>, we can extend pmf:</p>
+<p><span class="math display">\[P(\{X_1 \leq x_1\} \cap \{-\infty &lt; X_2 &lt; \infty\}) = \sum_{w_1 \leq x_1} \sum_{x_2 \in \mathbb{D}_2} p_{X_1, X_2} (w_1, x_2)\]</span></p>
+<p>Then, by <strong>the uniqueness of cdfs</strong>, the quantity <span class="math inline">\(\sum_{x_2 \in \mathbb{D}_2} p_{X_1, X_2} (w_1, x_2)\)</span> is the pmf of <span class="math inline">\(X_1\)</span> evaluated at <span class="math inline">\(w_1\)</span>:</p>
+<p><span class="math display">\[p_{X_1}(x_1) = \sum_{x_2 \in \mathbb{D}_2} p_{X_1, X_2} (x_1, x_2)\]</span></p>
+<p>For all <span class="math inline">\(x_1 \in \mathbb{D}_{1}\)</span>.</p>
+<p>That is, to find <span class="math inline">\(p_{X_1}(x_1)\)</span> we can fix <span class="math inline">\(x_1\)</span> and sum <span class="math inline">\(p_{X_1, X_2}\)</span> over all the values of <span class="math inline">\(x_2\)</span>. Same is for <span class="math inline">\(X_2\)</span>. These individual pmfs are called the <code>marginal pmfs</code>.</p>
+<h4 id="marginal-pdf">Marginal PDF</h4>
+<p>For continuous <code>case</code>:</p>
+<p><span class="math display">\[P(\{X_1 \leq x_1\} \cap \{-\infty &lt; X_2 &lt; \infty\}) = \int^{x_1}_{-\infty} \int^{\infty}_{-\infty} f_{X_1, X_2} (w_1, x_2) dx_2 dw_1\]</span></p>
+<p>Then, by <strong>the uniqueness of cdfs</strong>, the quantity in braces must be the pdf of <span class="math inline">\(X_1\)</span>, evaluated at <span class="math inline">\(w_1\)</span>:</p>
+<p><span class="math display">\[f_{X_1} (x_1) = \int^{\infty}_{-\infty} f_{X_1, X_2} (x_1, x_2) dx_2\]</span></p>
+<p>That is, in the continuous case the <code>marginal pdf</code> of <span class="math inline">\(X_1\)</span> is found by integrating out <span class="math inline">\(x_2\)</span>. Same is for <span class="math inline">\(X_2\)</span></p>
+<h3 id="expectation">Expectation</h3>
+<p>Let <span class="math inline">\((X_1, X_2)\)</span> be continuous random vector, let <span class="math inline">\(Y = g(X_1, X_2)\)</span> where <span class="math inline">\(g: \mathbb{R}^2 \rightarrow \mathbb{R}\)</span>. Then the expectation of <span class="math inline">\(Y\)</span>, <span class="math inline">\(E[Y]\)</span> exists if:</p>
+<p><span class="math display">\[\int^{\infty}_{-\infty}\int^{\infty}_{-\infty} |g(x_1, x_2)| f_{X_1, X_2} (x_1, x_2) dx_1 dx_2 &lt; \infty\]</span></p>
+<p>Then,</p>
+<p><span class="math display">\[E[Y] = \int^{\infty}_{-\infty}\int^{\infty}_{-\infty} g(x_1, x_2) f_{X_1, X_2} (x_1, x_2) dx_1 dx_2\]</span></p>
+<p>Likewise, if <span class="math inline">\((X_1, X_2)\)</span> is discrete, then:</p>
+<p><span class="math display">\[E[Y] = \sum_{x_1} \sum_{x_2} g(x_1, x_2) p_{X_1, X_2} (x_1, x_2)\]</span></p>
+<p><br></p>
+<p><img src="/images/RL/background/prob_34.png" width="600"></p>
+<p><br></p>
+<p>The expectation of function of individual random variable <span class="math inline">\(X_1\)</span> can be found in two ways:</p>
+<p><span class="math display">\[E[g(X_1)] = \int^{\infty}_{-\infty}\int^{\infty}_{-\infty} g(x_1) f_{X_1, X_2} (x_1, x_2) dx_1 dx_2 = \int^{\infty}_{-\infty} g(x_1) f_{X_1} (x_1) dx_1\]</span></p>
+<p><br></p>
+<p><img src="/images/RL/background/prob_35.png" width="600"></p>
+<p><br></p>
+<p>If <code>moment generating function</code> exists, then it uniquely determines the distribution of random vector <span class="math inline">\(\mathbf{X}\)</span>. Let <span class="math inline">\(\mathbf{t} = (t_1, t_2)^{\prime}\)</span>, then the moment generating function can be rewritten as:</p>
+<p><span class="math display">\[M_{X_1, X_2} (\mathbf{t}) = E[e^{\mathbf{t^{\prime}} \mathbf{X}}]\]</span></p>
+<p>With <span class="math inline">\(t_2 = 0\)</span> or <span class="math inline">\(t_1 = 0\)</span>, we recover the MGFs for individual random variables.</p>
+<p><br></p>
+<p><img src="/images/RL/background/prob_36.png" width="600"></p>
+<p>This is saying that, the expectation of a random vector is a vector function of expectation.</p>
+<h3 id="transformation-bivariate-random-variables">Transformation: Bivariate Random Variables</h3>
+<p>Let <span class="math inline">\(X_1, X_2\)</span> denote random variables of the discrete type, which have the joint pmf <span class="math inline">\(p_{X_1, X_2} (x_1, x_2)\)</span> that is positive on the support set <span class="math inline">\(S\)</span>. Let <span class="math inline">\(y_1 = u_1(x_1, x_2)\)</span> and <span class="math inline">\(y_2 = u_2(x_1, x_2)\)</span> define a one-to-one transformation that maps <span class="math inline">\(S\)</span> onto <span class="math inline">\(T\)</span>. The joint pmf of the two new random variables <span class="math inline">\(Y_1 = u_1 (X_1, X_2)\)</span> and <span class="math inline">\(Y_2 = u_2(X_1, X_2)\)</span> is given by:</p>
+<p><span class="math display">\[
+p_{Y_1, Y_2}(y_1, y_2)=
+\begin{cases}
+p_{X_1, X_2} (w_1(y_1, y_2), w_2 (y_1, y_2)), \quad &amp;(y_1, y_2) \in T\\
+0, \quad &amp;o.w
+\end{cases}
+\]</span></p>
+<p>Where <span class="math inline">\(w_1(y_1, y_2) = x_1\)</span>, <span class="math inline">\(w_2(y_1, y_2) = x_2\)</span> is the single-valued inverse of <span class="math inline">\(y_1 = u_1(x_1, x_2)\)</span> and <span class="math inline">\(y_2 = u_2 (x_1, x_2)\)</span> (form function of <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> using <span class="math inline">\(y_1\)</span> and <span class="math inline">\(y_2\)</span>).</p>
+<h3 id="conditional-distributions-and-expectations">Conditional Distributions and Expectations</h3>
+<h4 id="discrete-conditional-pmf">Discrete Conditional PMF</h4>
+<p>Let <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> denote random variables of the discrete type, which have the joint pmf defined to be <span class="math inline">\(p_{X_1, X_2} (x_1, x_2)\)</span> that is positive on the support set <span class="math inline">\(S\)</span> and is zero elsewhere. Let <span class="math inline">\(p_{X_1} (x_1)\)</span> and <span class="math inline">\(p_{X_2} (x_2)\)</span> denote, respectively the marginal probability mass function of <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span>. Let <span class="math inline">\(x_1\)</span> be a point in the support of <span class="math inline">\(X_1\)</span>, then <span class="math inline">\(p_{X_1} (x_1) &gt; 0\)</span>. We have:</p>
+<p><span class="math display">\[P(X_2 = x_2 | X_1 = x_1) = \frac{P(X_1=x, X_2=x_2)}{P(X_1 = x_1)} = \frac{p_{X_1, X_2}(x_1, x_2)}{p_{X_1}(x_1)}\]</span></p>
+<p>For all <span class="math inline">\(x_2\)</span> in the support of <span class="math inline">\(S_{X_2}\)</span>. Then we define this function as:</p>
+<p><span class="math display">\[p_{X_2 | X_1} (x_2 | x_1) = \frac{p_{X_1, X_2}(x_1, x_2)}{p_{X_1}(x_1)}, \quad x_2 \in S_{X_2}\]</span></p>
+<p>For any fixed <span class="math inline">\(x_1\)</span> with <span class="math inline">\(p_{X_1} (x_1) &gt; 0\)</span>, this function has the conditions of being a pmf of the discrete type becuase:</p>
+<ol type="1">
+<li><p><span class="math inline">\(p_{X_2 | X_1} (x_2 | x_1)\)</span> is non-negative: <span class="math display">\[p_{X_1} (x_1) &gt; 0, \quad p_{X_1, X_2} (x_1, x_2) &gt; 0, \; \forall (x_1, x_2) \in (S_{X_1} \times S_{X_2})\]</span></p></li>
+<li><p><span class="math inline">\(\sum_{x_2} p_{X_2 | X_1} (x_2 | x_1) = \sum_{x_2} \frac{p_{X_1, X_2}(x_1, x_2)}{p_{X_1}(x_1)} = \frac{\sum_{x_2}p_{X_1, X_2}(x_1, x_2)}{p_{X_1}(x_1)} = 1\)</span></p></li>
+</ol>
+<p>We call <span class="math inline">\(p_{X_2 | X_1} (x_2 | x_1)\)</span> the <code>conditional pmf</code> of discrete type of random variable <span class="math inline">\(X_2\)</span> given the discrete type of random variable <span class="math inline">\(X_1 = x_1\)</span>. Similar formula can be derived for conditional pmf of <span class="math inline">\(X_1\)</span> given <span class="math inline">\(X_2 = x_2\)</span>.</p>
+<p><br></p>
+<h4 id="continuous-conditional-pmf">Continuous Conditional PMF</h4>
+<p>Now, let <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> be random variables of continuous type and have the joint pdf defined as <span class="math inline">\(f_{X_1, X_2} (x_1, x_2)\)</span> and the marginal pdf defined as <span class="math inline">\(f_{X_1}(x_1)\)</span> and <span class="math inline">\(f_{X_2} (x_2)\)</span>. When <span class="math inline">\(f_{X_1}(x_1) &gt; 0\)</span>, we defined the function <span class="math inline">\(f_{X_1, X_2}\)</span> as:</p>
+<p><span class="math display">\[f_{X_2 | X_1} (x_2 | x_1) = \frac{f_{X_1, X_2}(x_1, x_2)}{f_{X_1}(x_1)}\]</span></p>
+<p>Then, this function has the conditions of being a pdf of the continuous type becuase:</p>
+<ol type="1">
+<li><p><span class="math inline">\(f_{X_2 | X_1} (x_2 | x_1)\)</span> is non-negative: <span class="math display">\[f_{X_1} (x_1) &gt; 0, \quad f_{X_1, X_2} (x_1, x_2) &gt; 0, \; \forall (x_1, x_2) \in (S_{X_1} \times S_{X_2})\]</span></p></li>
+<li><p><span class="math inline">\(\int^{\infty}_{-\infty} f_{X_2 | X_1} (x_2 | x_1) dx_2 = \int^{\infty}_{-\infty} \frac{p_{X_1, X_2}(x_1, x_2)}{p_{X_1}(x_1)} dx_2 = \frac{\int^{\infty}_{-\infty} f_{X_1, X_2}(x_1, x_2) dx_2}{f_{X_1}(x_1)} = 1\)</span></p></li>
+</ol>
+<p>That is, this function is called <code>conditional pdf</code> of the continuous type of random variable <span class="math inline">\(X_2\)</span>, given that the continuous type of random variable <span class="math inline">\(X_1=x_1\)</span>. Similar formula can be derived for conditional pdf of <span class="math inline">\(X_1\)</span> given <span class="math inline">\(X_2 = x_2\)</span>.</p>
+<p>Since each of the pdfs <span class="math inline">\(f_{X_2 | X_1} (x_2 | x_1), f_{X_1 | X_2} (x_1 | x_2)\)</span> is a pdf of one variable, each has all the propertiees of such a pdf. Thus we can compute probabilities and mathmetical expectations. If the random variables are of the continuous type, the probability:</p>
+<p><span class="math display">\[P(a &lt; X_2 &lt; b | X_1 = x_1) = \int^{b}_{a} f_{X_2 | X_1} (x_2 | x_1) dx_2\]</span></p>
+<p>This is called <strong>the conditional probability that <span class="math inline">\(a &lt; X_2 &lt; b\)</span>, given that <span class="math inline">\(X_1 = x_1\)</span></strong></p>
+<h4 id="conditional-expectation-and-variance">Conditional Expectation and Variance</h4>
+<p>If <span class="math inline">\(u(X_2)\)</span> is a function of <span class="math inline">\(X_2\)</span>, the <code>conditional expectation (continuous case)</code> of <span class="math inline">\(u(X_2)\)</span>, given that <span class="math inline">\(X_1=x_1\)</span>, if it exists, is given by:</p>
+<p><span class="math display">\[E_{X_2 | X_1}[u(X_2) | X_1=x_1] = \int^{\infty}_{-\infty} u(x_2) f_{X_2 | X_2} (x_2 | x_1) dx_2\]</span></p>
+<p>Notice that, the conditional expectation <span class="math inline">\(E_{X_2 | X_1}[X_2 | X_1=x_1]\)</span> is function of <span class="math inline">\(x_1\)</span>. If they do exist, then <span class="math inline">\(E_{X_2 | X_1}[X_2 | X_1=x_1]\)</span> is the mean and:</p>
+<p><span class="math display">\[Var(X_2 | x_1) = E_{X_2 | X_1}[(X_2 - E_{X_2 | X_1}[X_2 | X_1=x_1])^2 | X_1 = x_1]\]</span></p>
+<p>is the <code>conditional variance</code> of the conditional distribution of <span class="math inline">\(X_2\)</span>, given <span class="math inline">\(X_1 = x_1\)</span>.</p>
+<p>The similar rule holds for conditional variance:</p>
+<p><span class="math display">\[Var(X_2 | x_1) = E_{X_2 | X_1}[X_2^2 | X_1=x_1]- (E_{X_2 | X_1}[X_2 | X_1=x_1])^2\]</span></p>
+<h4 id="double-expectation">Double Expectation</h4>
+<p><img src="/images/RL/background/mprob_2_3_1.png" width="600"></p>
+<p>Proof:</p>
+<blockquote>
+<span class="math display">\[\begin{aligned}
+E[X_2] &amp;= \int^{\infty}_{-\infty} f_{X_2} (x_2) x_2 dx_2\\
+&amp;= \int^{\infty}_{-\infty} \int^{\infty}_{-\infty}  x_2 f_{X_2, X_1} (x_2, x_1)dx_1 dx_2\\
+&amp;= \int^{\infty}_{-\infty} \int^{\infty}_{-\infty} x_2 f_{X_2, X_1} (x_2, x_1) dx_2 dx_1\\
+&amp;= \int^{\infty}_{-\infty}\int^{\infty}_{-\infty} x_2 f_{X_2 | X_1} (x_2 | x_1) f_{x_1} (x_1) dx_2 dx_1\\
+&amp;= \int^{\infty}_{-\infty} E_{X_2 | X_1}[X_2 | x_1] f_{x_1} (x_1) dx_2 dx_1\\
+&amp;= E_{X_1}[E_{X_2 | X_1}[X_2 | X_1]]
+\end{aligned}\]</span>
+</blockquote>
+<p>Intuitively, this result could have this useful interpretation. Both the random variables <span class="math inline">\(X_2\)</span> and <span class="math inline">\(E[X_2 | X_1]\)</span> have the same mean <span class="math inline">\(\mu\)</span>. If we did not know <span class="math inline">\(\mu\)</span>, we can use either of the two random variables to guess. Since however, <span class="math inline">\(Var[X_2] \geq Var[E[X_2 | X_1]]\)</span>, we would put more reliance in <span class="math inline">\(E[X_2 | X_1]\)</span> as a guess. That is, if we observe the pair <span class="math inline">\((x_1, x_2)\)</span>, we would prefer to use <span class="math inline">\(E[X_2 | x_1]\)</span> over <span class="math inline">\(x_2\)</span> to estimate <span class="math inline">\(\mu\)</span>.</p>
+<h3 id="independent-random-variables">Independent Random Variables</h3>
+<p>Let <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> denote the random variables of the continuous type that have the joint pdf <span class="math inline">\(f(x_1, x_2)\)</span> and marginal probability density functions defined as <span class="math inline">\(f_1 (x_1)\)</span> and <span class="math inline">\(f_2 (x_2)\)</span> respectively. Suppose we have an instance where <span class="math inline">\(f_{X_2 | X_1} (x_2 | x_1)\)</span> does not depend upon <span class="math inline">\(x_1\)</span>. Then the marginal pdf of <span class="math inline">\(X_2\)</span> is</p>
+<span class="math display">\[\begin{aligned}
+f_{X_2} (x_2) &amp;= \int^{\infty}_{-\infty} f_{X_2, X_1} f(x_2, x_1) dx_1 \\
+&amp;= \int^{\infty}_{-\infty} f_{X_2 | X_1} f(x_2 | x_1) f_{X_1}(x_1) dx_1 \\
+&amp;= f_{X_2 | X_1} f(x_2 | x_1) \int^{\infty}_{-\infty} f_{X_1}(x_1) dx_1 \\
+&amp;= f_{X_2 | X_1} f(x_2 | x_1)
+\end{aligned}\]</span>
+<p>Then the joint pdf is:</p>
+<p><span class="math display">\[f_{X_2, X_1} f(x_2, x_1) = f_{X_2 | X_1} f(x_2 | x_1) f_{X_1} (x_1) = f_{X_2} (x_2) f_{X_1} (x_1)\]</span></p>
+<p><img src="/images/RL/background/mprob_2_4_1.png" width="600"></p>
+<p><br></p>
+<p><code>Theorem 2.4.1</code></p>
+<blockquote>
+<p>Let random variables <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> have supports <span class="math inline">\(S_1\)</span> and <span class="math inline">\(S_2\)</span>, respectively, and have the joint pdf <span class="math inline">\(f(x_1, x_2)\)</span>. Then <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> are independent if and only if <span class="math inline">\(f(x_1, x_2)\)</span> can be written as a product of a nonnegative function of <span class="math inline">\(x_1\)</span> and a nonnegative function of <span class="math inline">\(x_2\)</span>. That is: <span class="math display">\[f(x_1, x_2) \equiv g(x_1) h(x_2)\]</span></p>
+<p>Where <span class="math inline">\(g(x_1) &gt; 0 \; \forall x_1 \in S_{1}\)</span> and <span class="math inline">\(h(x_2) &gt; 0, \; \forall x_2 \in S_{2}\)</span>, 0 elsewhere.</p>
+</blockquote>
+<p><img src="/images/RL/background/mprob_2_4_2.png" width="600"></p>
+<p><img src="/images/RL/background/mprob_2_4_3.png" width="600"></p>
+<p><img src="/images/RL/background/mprob_2_4_4.png" width="600"></p>
+<p><img src="/images/RL/background/mprob_2_4_5.png" width="600"></p>
+<h3 id="correlation-coefficient">Correlation Coefficient</h3>
+<p>Let <span class="math inline">\((X, Y)\)</span> denote a random vector. How do we know the correlation between them? There are many measures of dependence, we investigate a parameter <span class="math inline">\(\rho\)</span> of the joint distribution of <span class="math inline">\((X, Y)\)</span> which measures linearity between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>.</p>
+<p><img src="/images/RL/background/mprob_2_5_1.png" width="600"></p>
+<p>It follows by the linearity of expectation, that the covariance of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> can be expressed as:</p>
+<p><span class="math display">\[Cov(X, Y) = E[XY - \mu_2 X - \mu_1 Y + \mu_1\mu_2] = E[XY] - \mu_1\mu_2\]</span></p>
+<p><img src="/images/RL/background/mprob_2_5_2.png" width="600"></p>
+<p><img src="/images/RL/background/mprob_2_5_3.png" width="600"></p>
+<p><img src="/images/RL/background/mprob_2_5_4.png" width="600"></p>
+<p><strong>The converse is not true</strong> (i.e if <span class="math inline">\(Cov(X, Y) = 0 \implies X, Y\)</span> are independent). However, the contrapositive is true:</p>
+<blockquote>
+<p>If <span class="math inline">\(\rho \neq 0\)</span>, then <span class="math inline">\(X, Y\)</span> are dependent.</p>
+</blockquote>
+<h2 id="extension-to-several-random-variables">Extension to Several Random Variables</h2>
+<p><img src="/images/RL/background/mprob_2_6_1.png" width="600"></p>
+<p>We denote the random vector by n-dimensional column vector <span class="math inline">\(\mathbf{X}\)</span> and the observed values (realization) of random vector by <span class="math inline">\(\mathbf{x}\)</span>. The joint cdf is defined to be:</p>
+<p><span class="math display">\[F_{\mathbf{X}} (\mathbf{x}) = P[X_1 \leq x_1 ,....., X_n \leq x_n]\]</span></p>
+<p>We say that the <span class="math inline">\(n\)</span> random variables <span class="math inline">\(X_1\)</span>, ...., <span class="math inline">\(X_n\)</span> are of the discrete type or of the continuous type and have a distribution of that type according to whether the joint cdf can be expressed as:</p>
+<p><span class="math display">\[F_{\mathbf{X}} (\mathbf{x}) = \sum_{w_1 \leq x_1} .... \sum_{w_n \leq x_n} p_{\mathbf{X}}(w_1, ....., w_n)\]</span></p>
+<p>or</p>
+<p><span class="math display">\[F_{\mathbf{X}} (\mathbf{x}) = \int^{x_1}_{-\infty} .... \int^{x_n}_{-\infty} f(w_1, ....., w_n)dw_n .... dw_1\]</span></p>
+<p>For continuous case:</p>
+<p><span class="math display">\[\frac{\partial^n}{\partial x_1, ...., x_n} F_{\mathbf{X}} (\mathbf{x}) = f(\mathbf{x})\]</span></p>
+<p>For the discrete case, the support set <span class="math inline">\(S\)</span> of a random vector is all points in <span class="math inline">\(\mathbb{D}\)</span> that have positive mass while for the continuous case these would be all points in <span class="math inline">\(\mathbb{D}\)</span> that have positive mass that can be embedded in an open set of positive probability.</p>
+<h3 id="expectation-1">Expectation</h3>
+<p>Let <span class="math inline">\(\mathbf{X}\)</span> be a <span class="math inline">\(n\)</span> dimensional column random vector, let <span class="math inline">\(Y = u(\mathbf{X})\)</span> for some function <span class="math inline">\(u\)</span>. As in the bivariate case, the expected value of a continuous random variable exists if the <span class="math inline">\(n\)</span>-fold integral exists:</p>
+<p><span class="math display">\[\int^{\infty}_{-\infty} .... \int^{\infty}_{-\infty} |u(\mathbf{x})|f(x_1, ....., x_n)dx_n .... dx_1\]</span></p>
+<p>The expected value of a discrete random variable exists if the <span class="math inline">\(n\)</span>-fold sum exists:</p>
+<p><span class="math display">\[\sum_{x_1} .... \sum_{x_n} |u(\mathbf{x})|p_{\mathbf{X}}(x_1, ....., x_n)\]</span></p>
+<p>Then the expectation is:</p>
+<ol type="1">
+<li><p>Discrete case: <span class="math display">\[E[Y] = \sum_{x_1} .... \sum_{x_n} u(\mathbf{x})p_{\mathbf{X}}(x_1, ....., x_n)\]</span></p></li>
+<li><p>Continuous case: <span class="math display">\[E[Y] = \int^{\infty}_{-\infty} .... \int^{\infty}_{-\infty} u(\mathbf{x})f(x_1, ....., x_n)dx_n .... dx_1\]</span></p></li>
+</ol>
+<h3 id="marginal-distribution">Marginal Distribution</h3>
+<p>By an argument similar to the two-variable case, we have:</p>
+<p><span class="math display">\[f_{X_1} (x_1) = \int^{\infty}_{-\infty} .... \int^{\infty}_{-\infty} f(x_1, ....., x_n)dx_n .... dx_2\]</span></p>
+<p><span class="math display">\[p_{X_1} (x_1) = \sum_{x_2} .... \sum_{x_n} p_{\mathbf{X}}(x_1, ....., x_n)\]</span></p>
+<p>Now, if we take subset of <span class="math inline">\(k\)</span> where <span class="math inline">\(k &lt; n\)</span> from <span class="math inline">\(\mathbf{X}\)</span>, then we can define the <code>Marginal pdf of subset of k</code> variables.</p>
+<h3 id="conditional-distribution">Conditional Distribution</h3>
+<p>Similarly, we can extend the definition of a conditional distribution from bivariate conditional distribution.</p>
+<p>Suppose, <span class="math inline">\(f_{X_1} (x_1) &gt; 0\)</span>. Then we define the symbol <span class="math inline">\(f_{X_2,....,X_n | X_1} (x_2,.....,x_n | x_1)\)</span> by the relation:</p>
+<p><span class="math display">\[f_{X_2,....,X_n | X_1} (x_2,.....,x_n | x_1) = \frac{f_{\mathbf{X}} (\mathbf{x})}{f_{X_1} (x_1)}\]</span></p>
+<p>Then <span class="math inline">\(f_{X_2,....,X_n | X_1} (x_2,.....,x_n | x_1)\)</span> is called the <code>joint conditional pdf</code> of <span class="math inline">\(X_2, ...., X_n\)</span> given <span class="math inline">\(X_1 = x_1\)</span>.</p>
+<p>More general, <strong>the joint conditional pdf of <span class="math inline">\(n - k\)</span> of the random variables, for given values of the remaining <span class="math inline">\(k\)</span> variables, is defined as the joint pdf of the <span class="math inline">\(n\)</span> variables divided by the marginal pdf of the particular subset group of <span class="math inline">\(k\)</span> variables, provided that the latter pdf is positive.</strong></p>
+<h4 id="conditional-expectation">Conditional Expectation</h4>
+<p>The <code>conditional expectation</code> of <span class="math inline">\(u(X_2, ...., X_n)\)</span> given <span class="math inline">\(X_1 = x_1\)</span> (continuous) is given by:</p>
+<p><span class="math display">\[E[u(X_2, ...., X_n) | x_1] = \int^{\infty}_{-\infty} .... \int^{\infty}_{-\infty} u(x_2, ...., x_n) f_{X_2, ..., X_n | X_1}(x_2, ....., x_n | x_1)dx_n .... dx_2\]</span></p>
+<h3 id="mutually-independent">Mutually Independent</h3>
+<p>The random variables <span class="math inline">\(X_1, ...., X_n\)</span> are said to be <code>mutually independent</code> IFF</p>
+<p><span class="math display">\[f_{\mathbf{X}}(\mathbf{x}) = f_{X_1} (x_1) .... f_{X_n} (x_n)\]</span></p>
+<p>for the continuous case. Similar for discrete case.</p>
+<p>Suppose <span class="math inline">\(X_1, ...., X_n\)</span> are mutually independent. Then,</p>
+<ol type="1">
+<li><p>CDF: <span class="math display">\[P(a_1 &lt; X_1 &lt; b_1, a_2 &lt; X_2 &lt; b_2, ....., a_n &lt; X_n &lt; b_n) = P(a_1 &lt; X_1 &lt; b_1) .... P(a_n &lt; X_n &lt; b_n) = \prod^{n}_{i=1} P(a_i &lt; X_i &lt; b_i)\]</span></p></li>
+<li><p>Expectation: <span class="math display">\[E[u_1(X_1) ... u_n(X_n)] = E[u_1(X_1)] ... E[u_n (X_n)]\]</span></p></li>
+</ol>
+<p><br></p>
+<h4 id="pairwise-independent">Pairwise Independent</h4>
+<p>If <span class="math inline">\(X_i, X_j, i \neq j\)</span> are independent, we say that they are <code>pairwise independent</code>. If random variables are mutually independent, they are pairwise independent. <strong>However, the converse is false, pairwise independence does not imply mutual independence</strong>:</p>
+<p>In addition, if several random variables are mutually independent and have the same distribution, we say that they are <code>independent and identically distributed (i.i.d)</code>.</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/MDP/" rel="bookmark">MDP</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-equations/" rel="bookmark">Bellman Equations</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-optimality-equations/" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/14/calculus/" rel="bookmark">Calculus (1)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/dp/" rel="bookmark">Dynamic Programming</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RL-Basics/" rel="tag"># RL Basics</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/11/probability/" rel="prev" title="Probability (1)">
+                  <i class="fa fa-chevron-left"></i> Probability (1)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/13/Dueling/" rel="next" title="Dueling Network Architectures for DRL">
+                  Dueling Network Architectures for DRL <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

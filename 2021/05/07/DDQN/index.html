@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Deep Reinforcement Learning with Double Q-Learning Introduction The authors show that the double Q-learning algorithm which was first proposed in a tabular setting, can be generalized to arbitrary fun">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DDQN">
+<meta property="og:url" content="https://swag1ong.github.io/2021/05/07/DDQN/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Deep Reinforcement Learning with Double Q-Learning Introduction The authors show that the double Q-learning algorithm which was first proposed in a tabular setting, can be generalized to arbitrary fun">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/papers/DDQN_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/papers/DDQN_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/papers/DDQN_3.png">
+<meta property="article:published_time" content="2021-05-07T05:56:27.000Z">
+<meta property="article:modified_time" content="2021-05-18T04:33:35.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="Function Approximation">
+<meta property="article:tag" content="Continuous State Space">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swag1ong.github.io/images/RL/papers/DDQN_1.png">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/05/07/DDQN/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;05&#x2F;07&#x2F;DDQN&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;05&#x2F;07&#x2F;DDQN&#x2F;&quot;,&quot;title&quot;:&quot;DDQN&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>DDQN | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#deep-reinforcement-learning-with-double-q-learning"><span class="nav-number">1.</span> <span class="nav-text">Deep Reinforcement Learning with Double Q-Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#introduction"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#notations"><span class="nav-number">1.2.</span> <span class="nav-text">Notations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#background"><span class="nav-number">1.3.</span> <span class="nav-text">Background</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#double-q-learning"><span class="nav-number">1.3.1.</span> <span class="nav-text">Double Q-learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#maximization-problem"><span class="nav-number">1.3.2.</span> <span class="nav-text">Maximization Problem</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#algorithm"><span class="nav-number">1.4.</span> <span class="nav-text">Algorithm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#implementation"><span class="nav-number">1.5.</span> <span class="nav-text">Implementation</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/05/07/DDQN/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          DDQN
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-05-07 13:56:27" itemprop="dateCreated datePublished" datetime="2021-05-07T13:56:27+08:00">2021-05-07</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-05-18 12:33:35" itemprop="dateModified" datetime="2021-05-18T12:33:35+08:00">2021-05-18</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/VFA/" itemprop="url" rel="index"><span itemprop="name">VFA</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/05/07/DDQN/" class="post-meta-item leancloud_visitors" data-flag-title="DDQN" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>4.8k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="deep-reinforcement-learning-with-double-q-learning"><a target="_blank" rel="noopener" href="https://arxiv.org/abs/1509.06461">Deep Reinforcement Learning with Double Q-Learning</a></h1>
+<h2 id="introduction">Introduction</h2>
+<p>The authors show that the double Q-learning algorithm which was first proposed in a tabular setting, can be generalized to arbitrary function approximation, including DNN. They use this to construct a new algorithm called double DQN to solve the overestimation problem in DQN.</p>
+<h2 id="notations">Notations</h2>
+<p>Define:</p>
+<p><span class="math display">\[Q_{\pi} (s, a) = E[R_1 + \gamma R_2 + ... | S_0=s, A_0=a, \pi]\]</span></p>
+<p><span class="math display">\[Q_{*} (s, a) = max_{\pi} Q_{\pi} (s, a)\]</span></p>
+<p><span class="math display">\[\pi_{*} (s) = argmax_{a \in A} Q_{*} (s, a)\]</span></p>
+<p>The Target:</p>
+<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma max_{a} Q(S_{t+1}, a; \theta_{t})\]</span></p>
+<p>A standard Q update using stochastic gradient decent is (Semi-gradient Q):</p>
+<p><span class="math display">\[\theta_{t+1} = \theta_t + \alpha (Y_{t}^{Q} - Q(S_t, A_t; \theta_t)) \nabla_{\theta_t} Q(S_t, A_t; \theta_t)\]</span></p>
+<p>Where <span class="math inline">\(\alpha\)</span> is a scalar step size.</p>
+<span id="more"></span>
+<h2 id="background">Background</h2>
+<h3 id="double-q-learning">Double Q-learning</h3>
+<p>The max operator in standard Q-learning and DQN uses the same values both to select and to evaluate an action (ie. same Q is used to select the max action and use the value of this max action to update the Value of the state action pair). This makes it more likely to select overestimated values, resulting in overoptimistic value estimates.</p>
+<p>In Double Q-learning, two value functions are learned by assigning experiences randomly to update one of the two value functions, resulting in two sets of weights, <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\theta^{\prime}\)</span>. For each update, one set of weights is used to determine the greedy action, and the other to determine its value.</p>
+<p>Previous Q target:</p>
+<p><span class="math display">\[Y_t^{Q} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta_{t}})\]</span></p>
+<p>The double Q-learning target:</p>
+<p><span class="math display">\[Y_t^{\text{DoubleQ}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a \in A} Q(S_{t+1}, a; \boldsymbol{\theta_t}); \boldsymbol{\theta^{\prime}_{t}})\]</span></p>
+<h3 id="maximization-problem">Maximization Problem</h3>
+<p><img src='/images/RL/papers/DDQN_1.png'></p>
+<p>This theorem shows that even if the value estimates are on average correct, estimation errors of any source can drive the estimates up and away from the true optimal values.</p>
+<p>The lower bound in Theorem 1 decreases with the number of actions. This is an artifact of considering the lower bound, which requires very specific values to be attained. More typically, the overoptimism increases with the number of actions.</p>
+<p><img src='/images/RL/papers/DDQN_2.png'></p>
+<p><span class="math display">\[E[Q(s, a) - V_{*}(s)] = E[V_{*}(s) - V_{*}(s) + \epsilon ] = 0\]</span></p>
+<p>But, Q-learning updates have large bias due to max operation, the phenomena is severer as number of actions increases.</p>
+<p>In function approximation setting:</p>
+<p><img src='/images/RL/papers/DDQN_3.png'></p>
+<h2 id="algorithm">Algorithm</h2>
+<p>The target network in the DQN architecture provides a natural candidate for the second value function, without having to introduce additional networks. Thus, we can evaluate the greedy policy according to the online network, but using the target network to estimate its value. The resulting update:</p>
+<p><span class="math display">\[Y_t^{\text{DoubleDQN}} = R_{t+1} + \gamma Q(S_{t+1}, argmax_{a} Q(S_{t+1}, a; \theta_{t}), \theta_{t}^{-})\]</span></p>
+<h2 id="implementation">Implementation</h2>
+<p>This is an implementation of DDQN in PARL. This implementation is written using PaddlePaddle.</p>
+<p>https://github.com/PaddlePaddle/PARL</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#   Copyright (c) 2020 PaddlePaddle Authors. All Rights Reserved.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span></span><br><span class="line"><span class="comment"># you may not use this file except in compliance with the License.</span></span><br><span class="line"><span class="comment"># You may obtain a copy of the License at</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#     http://www.apache.org/licenses/LICENSE-2.0</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Unless required by applicable law or agreed to in writing, software</span></span><br><span class="line"><span class="comment"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span></span><br><span class="line"><span class="comment"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span></span><br><span class="line"><span class="comment"># See the License for the specific language governing permissions and</span></span><br><span class="line"><span class="comment"># limitations under the License.</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> copy</span><br><span class="line"><span class="keyword">import</span> parl</span><br><span class="line"><span class="keyword">import</span> paddle</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DQN</span>(<span class="params">parl.Algorithm</span>):</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, model, gamma=<span class="literal">None</span>, lr=<span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; DQN algorithm</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        Args:</span></span><br><span class="line"><span class="string">            model (parl.Model): forward neural network representing the Q function.</span></span><br><span class="line"><span class="string">            gamma (float): discounted factor for `accumulative` reward computation</span></span><br><span class="line"><span class="string">            lr (float): learning rate.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.model = model</span><br><span class="line">        self.target_model = copy.deepcopy(model)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(gamma, <span class="built_in">float</span>)</span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(lr, <span class="built_in">float</span>)</span><br><span class="line">        self.gamma = gamma</span><br><span class="line">        self.lr = lr</span><br><span class="line"></span><br><span class="line">        self.mse_loss = paddle.nn.MSELoss(reduction=<span class="string">&#x27;mean&#x27;</span>)</span><br><span class="line">        self.optimizer = paddle.optimizer.Adam(</span><br><span class="line">            learning_rate=lr, parameters=self.model.parameters())</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, obs</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; use self.model (Q function) to predict the action values</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.model.value(obs)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">learn</span>(<span class="params">self, obs, action, reward, next_obs, terminal</span>):</span></span><br><span class="line">        <span class="string">&quot;&quot;&quot; update the Q function (self.model) with DQN algorithm</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="comment"># Q</span></span><br><span class="line">        pred_values = self.model.value(obs)</span><br><span class="line">        action_dim = pred_values.shape[-<span class="number">1</span>]</span><br><span class="line">        action = paddle.squeeze(action, axis=-<span class="number">1</span>)</span><br><span class="line">        action_onehot = paddle.nn.functional.one_hot(</span><br><span class="line">            action, num_classes=action_dim)</span><br><span class="line">        pred_value = paddle.multiply(pred_values, action_onehot)</span><br><span class="line">        pred_value = paddle.<span class="built_in">sum</span>(pred_value, axis=<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># target Q</span></span><br><span class="line">        <span class="keyword">with</span> paddle.no_grad():</span><br><span class="line">            greedy_actions = self.model.value(next_obs).argmax(<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">            max_v = self.target_model.value(next_obs).gather(index=greedy_actions, axis=<span class="number">1</span>)</span><br><span class="line">            target = reward + (<span class="number">1</span> - terminal) * self.gamma * max_v</span><br><span class="line"></span><br><span class="line">        loss = self.mse_loss(pred_value, target)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># optimize</span></span><br><span class="line">        self.optimizer.clear_grad()</span><br><span class="line">        loss.backward()</span><br><span class="line">        self.optimizer.step()</span><br><span class="line">        <span class="keyword">return</span> loss</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sync_target</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.model.sync_weights_to(self.target_model)</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/13/Dueling/" rel="bookmark">Dueling Network Architectures for DRL</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/07/FA-issues/" rel="bookmark">Double Q Learning</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Function-Approximation/" rel="tag"># Function Approximation</a>
+              <a href="/tags/Continuous-State-Space/" rel="tag"># Continuous State Space</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/06/DPG/" rel="prev" title="Deterministic Policy Gradient">
+                  <i class="fa fa-chevron-left"></i> Deterministic Policy Gradient
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/07/FA-issues/" rel="next" title="Double Q Learning">
+                  Double Q Learning <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

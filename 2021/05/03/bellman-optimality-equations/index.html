@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Please read posts on MDP and Bellman Equations prior this post. Bellman Equations for Optimal Value Functions  So it is natural to ask, does the optimal value function of optimal policy \(V^{\pi^*}\)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Bellman Equations for Optimal Value Functions">
+<meta property="og:url" content="https://swag1ong.github.io/2021/05/03/bellman-optimality-equations/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Please read posts on MDP and Bellman Equations prior this post. Bellman Equations for Optimal Value Functions  So it is natural to ask, does the optimal value function of optimal policy \(V^{\pi^*}\)">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/bellman_equation/optimal_policy_value_func.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/bellman_equation/bellman-operator.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/bellman_equation/bell-opt-operator.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/bellman_equation/monotonicity.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/bellman_equation/contraction_mapping.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/bellman_equation/gamma_contraction.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/bellman_equation/fixed_point.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/bellman_equation/bfpt.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/bellman_equation/unique_fixed_points.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/bellman_equation/br_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/bellman_equation/br_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/bellman_equation/claim_2.png">
+<meta property="article:published_time" content="2021-05-03T10:11:55.000Z">
+<meta property="article:modified_time" content="2021-05-03T14:31:52.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="RL Basics">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swag1ong.github.io/images/RL/bellman_equation/optimal_policy_value_func.png">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/05/03/bellman-optimality-equations/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;05&#x2F;03&#x2F;bellman-optimality-equations&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;05&#x2F;03&#x2F;bellman-optimality-equations&#x2F;&quot;,&quot;title&quot;:&quot;Bellman Equations for Optimal Value Functions&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Bellman Equations for Optimal Value Functions | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#bellman-equations-for-optimal-value-functions"><span class="nav-number">1.</span> <span class="nav-text">Bellman Equations for Optimal Value Functions</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bellman-operators"><span class="nav-number">1.1.</span> <span class="nav-text">Bellman Operators</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#properties-of-bellman-operators"><span class="nav-number">1.1.1.</span> <span class="nav-text">Properties of Bellman Operators</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#monotonicity"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">Monotonicity</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#contraction"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">Contraction</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#consequences-of-monotonicity-and-contraction"><span class="nav-number">1.1.2.</span> <span class="nav-text">Consequences of Monotonicity and Contraction</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#uniqueness-of-fixed-points"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Uniqueness of fixed points</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#value-of-the-greedy-policy-of-v-is-v"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">Value of the greedy policy of \(V^{*}\) is \(V^{*}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#an-error-bound-based-on-the-bellman-error"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">An error bound based on the bellman error</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#proof-of-claim-2-v-t-v-is-the-same-as-vpi"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">Proof of claim 2: \(V^{*} &#x3D; T^{*} V^{*}\) is the same as \(V^{\pi^{*}}\)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-v-x-leq-sup_pi-in-prod-vpi-x"><span class="nav-number">1.1.2.4.1.</span> <span class="nav-text">Proof \(V^{*} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)\)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-v-x-geq-sup_pi-in-prod-vpi-x"><span class="nav-number">1.1.2.4.2.</span> <span class="nav-text">Proof \(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/05/03/bellman-optimality-equations/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Bellman Equations for Optimal Value Functions
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-05-03 18:11:55 / Modified: 22:31:52" itemprop="dateCreated datePublished" datetime="2021-05-03T18:11:55+08:00">2021-05-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/Basics/" itemprop="url" rel="index"><span itemprop="name">Basics</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/05/03/bellman-optimality-equations/" class="post-meta-item leancloud_visitors" data-flag-title="Bellman Equations for Optimal Value Functions" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>8.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>8 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><em>Please read posts on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> and <a href="/2021/05/03/bellman-equations/" title="Bellman Equations">Bellman Equations</a> prior this post.</em></p>
+<h1 id="bellman-equations-for-optimal-value-functions">Bellman Equations for Optimal Value Functions</h1>
+<p><img src='/images/RL/bellman_equation/optimal_policy_value_func.png'></p>
+<p>So it is natural to ask, does the optimal value function of optimal policy <span class="math inline">\(V^{\pi^*}\)</span> have similar recursive structure? the answer is yes, however, we need to prove this. The proof goes with 3 claims which we will prove later: <span id="more"></span></p>
+<ol type="1">
+<li><ol type="a">
+<li><p><span class="math inline">\(\exists\)</span> a value function <span class="math inline">\(V^*\)</span> s.t <span class="math inline">\(\forall x \in X\)</span>, we have:</p>
+<p><span class="math display">\[V^{*}(x) = max_{a} \{Q^{*}(x, a)\} = max_{a} \{r(x, a) + \gamma \int P(dx^\prime | x, a) V^{*}(x^\prime)\}\]</span></p></li>
+<li><p><span class="math inline">\(\exists\)</span> a value function <span class="math inline">\(Q^*\)</span> s.t <span class="math inline">\(\forall x, a \in X, A\)</span>, we have:</p>
+<p><span class="math display">\[Q^{*}(x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) max_{a^\prime} \{Q^{*} (x^\prime, a^\prime)\}\]</span></p></li>
+</ol>
+<p>These equations are called <span style="color:red"><strong>bellman optimality equations for the value functions</strong></span></p></li>
+<li><p><span class="math inline">\(V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^*}\)</span>, the optimal value function when <span class="math inline">\(\pi\)</span> is restricted to be within the space of all stationary and non-stationary policies.</p></li>
+<li><p>For discounted continuing MDPs, we can always find a stationary policy that is optimal within the space of all stationary and non-stationary policies.</p></li>
+</ol>
+<p>In summary, we claim that:</p>
+<p><strong><span class="math inline">\(V^{*}\)</span> exists and it is unique, <span class="math inline">\(V^{*} = V^{\pi^{*}}\)</span>. Same for <span class="math inline">\(Q^{*}\)</span></strong></p>
+<h2 id="bellman-operators">Bellman Operators</h2>
+<p>In order to prove the claims, we need several concepts:</p>
+<p><img src='/images/RL/bellman_equation/bellman-operator.png'> <img src='/images/RL/bellman_equation/bell-opt-operator.png'></p>
+<p>These operators are linear and recall that:</p>
+<p><span class="math display">\[Q^{\pi} (x, a) = r(x, a) + \gamma \int P(dx^\prime | x, a) V^{\pi}(x^\prime) = r(x, a) + \gamma \int P(dx^\prime | x, a) \pi (a^\prime | x^\prime) Q^{\pi} (x^\prime, a^\prime)\]</span></p>
+<p>This implies <span class="math inline">\(T^{\pi} Q^{\pi} = Q^{\pi}\)</span>, same for state-value function and bellman optimality operators. Thus, we can conclude that:</p>
+<p><span class="math display">\[V^{\pi} = T^{\pi} V^{\pi}\]</span> <span class="math display">\[Q^{\pi} = T^{\pi} Q^{\pi}\]</span> <span class="math display">\[V^{*} = T^{*} V^{*}\]</span> <span class="math display">\[Q^{*} = T^{*} Q^{*}\]</span></p>
+<h3 id="properties-of-bellman-operators">Properties of Bellman Operators</h3>
+<p>Bellman operators have several important properties. The properties that matters for us the most are:</p>
+<ol type="1">
+<li>Monotonicity</li>
+<li>Contraction</li>
+</ol>
+<h4 id="monotonicity">Monotonicity</h4>
+<p><img src='/images/RL/bellman_equation/monotonicity.png'></p>
+<p>we can easily prove this (only prove <span class="math inline">\(T^{\pi}\)</span>, <span class="math inline">\(T^{*}\)</span> is the same):</p>
+<p>Assume:</p>
+<p><span class="math display">\[V_1(x^{\prime}) \geq V_2(x^{\prime}), \forall x^{\prime} \in X\]</span></p>
+<p>we get that for any <span class="math inline">\(x \in X\)</span>:</p>
+<p><span class="math display">\[T^{\pi}V_{1} (x) = r^{\pi} (x) + \gamma \int P^{\pi}(dx^{\prime} | x) V_{1} (x^\prime) \geq r^{\pi} (x) + \gamma \int P^{\pi}(dx^{\prime} | x) V_{2} (x^\prime) = T^{\pi}V_2(x)\]</span></p>
+<p>Thus:</p>
+<p><span class="math display">\[T^{\pi}V_{1} (x) \geq T^{\pi}V_{2} (x)\]</span></p>
+<h4 id="contraction">Contraction</h4>
+<p><img src='/images/RL/bellman_equation/contraction_mapping.png'></p>
+<p>we can also easily prove that <span class="math inline">\(T^{*}, T^{\pi}\)</span> are contraction mappings (only prove <span class="math inline">\(T^{\pi}\)</span>, <span class="math inline">\(T^{*}\)</span> is the same):</p>
+<p>Consider two action-value functions:</p>
+<p><span class="math display">\[Q_1, Q_2 \in B(X\times A)\]</span></p>
+<p>Consider the metric:</p>
+<p><span class="math display">\[d(Q_1, Q_2) = \| Q_1 - Q_2 \|_{\infty}\]</span></p>
+<p>We show the contraction w.r.t <span class="math inline">\(l-\infty\)</span> norm.</p>
+<p>For any <span class="math inline">\((x, a) \in X \times A\)</span>, we have:</p>
+<span class="math display">\[\begin{aligned}
+\lvert T^{\pi} Q_1 (x, a) - T^{\pi} Q_2 (x, a) \rvert &amp;= \lvert r (x, a) + \gamma \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) Q_{1} (x^\prime, a^{\prime}) - r (x, a) - \gamma \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) Q_{2} (x^\prime, a^{\prime}) \rvert\\
+&amp; = \gamma \lvert \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) [Q_{1} (x^\prime, a^{\prime}) -  Q_{2} (x^\prime, a^{\prime})] \rvert\\
+&amp; \leq \gamma \int \underbrace{P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime)}_{\text{these are probabilities which $ \geq $ 0}} \lvert [Q_{1} (x^\prime, a^{\prime}) -  Q_{2} (x^\prime, a^{\prime})] \rvert\\
+&amp; \leq \gamma \int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime) \sup_{x, a}\lvert [Q_{1} (x, a) -  Q_{2} (x, a)] \rvert\\
+&amp; = \gamma \sup_{x, a}\lvert Q_{1} (x, a) -  Q_{2} (x, a) \rvert \underbrace{\int P(dx^{\prime} | x, a) \pi(da^\prime | x^\prime)}_{\text{this is a probability distribution which sums to 1}}\\
+&amp; = \gamma \sup_{x, a}\lvert Q_{1} (x, a) -  Q_{2} (x, a) \rvert = \gamma \|Q_{1} -  Q_{2}\|_{\infty}
+\end{aligned}\]</span>
+<p>This inequality holds for all state action pair, thus, we have showed that bellman operators are contraction mappings.</p>
+<p><img src='/images/RL/bellman_equation/gamma_contraction.png'></p>
+<h3 id="consequences-of-monotonicity-and-contraction">Consequences of Monotonicity and Contraction</h3>
+<h4 id="uniqueness-of-fixed-points">Uniqueness of fixed points</h4>
+<p><img src='/images/RL/bellman_equation/fixed_point.png'> <img src='/images/RL/bellman_equation/bfpt.png'> <img src='/images/RL/bellman_equation/unique_fixed_points.png'></p>
+<p>Proof of the proposition is also simple (Same for <span class="math inline">\(Q^{\pi}, Q^{*}\)</span>):</p>
+<p>For any <span class="math inline">\(\pi\)</span>, <span class="math inline">\(T^{\pi}\)</span> is a <span class="math inline">\(\gamma-\)</span>contraction mapping (same for <span class="math inline">\(T^{*}\)</span>), thus, by the Banach fixed point theorem, they have unique fixed point</p>
+<p><span class="math display">\[T^{*} V^{*} = V^{*}, T^{\pi} V^{\pi} = V^{\pi}\]</span></p>
+<p>Moreover, the update rule <span class="math inline">\(V_{k+1} \leftarrow T^{\pi} V_{k}\)</span> converges, which means:</p>
+<p><span class="math display">\[lim_{k \rightarrow \infty} \| V_{k} - V^{\pi}\|_{\infty} = 0\]</span></p>
+<h4 id="value-of-the-greedy-policy-of-v-is-v">Value of the greedy policy of <span class="math inline">\(V^{*}\)</span> is <span class="math inline">\(V^{*}\)</span></h4>
+<p>We know if:</p>
+<p><span class="math display">\[T^{\pi} V^{*} = T^{*}V^{*} \implies T^{\pi} V^{*} = V^{*}\]</span></p>
+<p>This is also the fix point of <span class="math inline">\(T^{\pi}\)</span>, this implies <span class="math inline">\(V^{\pi} = V^{*}\)</span>.</p>
+<p>On the other hand, if we know <span class="math inline">\(V^\pi = V^{*}\)</span>, the by applying <span class="math inline">\(T^{\pi}\)</span> to both side we have</p>
+<p><span class="math display">\[T^{\pi} V^{\pi} = T^{\pi} V^{*} \implies T^{\pi} V^{\pi} = T^{*} V^{*} = T^{\pi} V^{*}\]</span></p>
+<p>Thus, we can conclude that:</p>
+<p><span class="math display">\[T^{\pi} V^{*} = T^{*}V^{*} \text{ iff } V^\pi = V^{*}\]</span></p>
+<p><strong>The Connection To Greedy Policy</strong></p>
+<p>Given <span class="math inline">\(V^{*}\)</span>, the greedy policy of <span class="math inline">\(V^{*}\)</span> is defined as:</p>
+<p><span class="math display">\[\pi_{g} (x; V^{*}) = argmax_{a \in A} Q^{*}(x, a) = argmax_{a \in A} r(x, a) + \gamma \int P(dx^{\prime} | x, a) V^{*}(x^{\prime})\]</span></p>
+<p>So:</p>
+<p><span class="math display">\[T^{\pi_{g} (x; V^{*})} V^{*} = r(x, \pi_{g} (x; V^{*})) + \gamma \int P(dx^{\prime} | x, \pi_{g} (x; V^{*})) V^{*}(x^{\prime}) = max_{a \in A} r(x, a) + \gamma \int P(dx^{\prime} | x, a) V^{*}(x^{\prime})\]</span></p>
+<p>Compare with <span class="math inline">\(T^{*} V^{*}\)</span>:</p>
+<p><span class="math display">\[T^{*} V^{*} =  max_{a \in A} r(x, a) + \gamma \int P(dx^{\prime} | x, a) V^{*}(x^{\prime})\]</span></p>
+<p>Thus:</p>
+<p><span class="math display">\[T^{*} V^{*} = T^{\pi_{g} (x; V^{*})} V^{*}\]</span></p>
+<p>Since:</p>
+<p><span class="math display">\[T^{\pi} V^{*} = T^{*}V^{*} \text{ iff } V^\pi = V^{*} \implies V^{*} = V^{\pi_{g} (x; V^{*})}\]</span></p>
+<p>That is, the value of following <span class="math inline">\(\pi_{g} (x; V^{*})\)</span> is the same as <span class="math inline">\(V^{*}\)</span>. This means that if we find <span class="math inline">\(V^{*}\)</span> and its greedy policy, the value of following the greedy policy is <span class="math inline">\(V^{*}\)</span>.</p>
+<p><span style="color:red"><strong>To find an optimal policy, we can find <span class="math inline">\(V^{*}\)</span> first, then find its greedy policy</strong></span></p>
+<p>following this conclusion: Although we have not yet prove that <span class="math inline">\(V^{*}\)</span> is the optimal value function (<span class="math inline">\(\pi^{*} = argmax_{\pi \in \prod} V^{\pi} (x)\)</span>, <span class="math inline">\(V^{*} = V^{\pi^{*}}\)</span> (claim 2)), this is indeed true. (prove later)</p>
+<h4 id="an-error-bound-based-on-the-bellman-error">An error bound based on the bellman error</h4>
+<p>If we find a V s.t <span class="math inline">\(V = T^{*} V\)</span>, we know that <span class="math inline">\(V = V^{*}\)</span> (same for <span class="math inline">\(T^{\pi} and Q\)</span>), what if <span class="math inline">\(V \approx T^{*} V\)</span>, what can we say about the closeness of <span class="math inline">\(V\)</span> to <span class="math inline">\(V^{*}\)</span>?</p>
+<p><img src='/images/RL/bellman_equation/br_1.png'> <img src='/images/RL/bellman_equation/br_2.png'></p>
+<p><strong>Proof:</strong></p>
+<span class="math display">\[\begin{aligned}
+V - V^{*} &amp;= V - T^{*} V + T^{*} V - V^{*}\\
+\implies \| V - V^{*} \|_{\infty} &amp;= \| V - T^{*} V + T^{*} V - V^{*} \|_{\infty}\\
+&amp;\leq   \|V - T^{*} V \|_{\infty} + \|T^{*} V - T^{*}V^{*} \|_{\infty} \\
+&amp;\leq   \|V - T^{*} V \|_{\infty} + \gamma \|V - V^{*} \|_{\infty} (i.e. \|T^{*} V - T^{*}V^{*} \|_{\infty} \leq \gamma \|V - V^{*} \|_{\infty}, \text{contraction property} )\\
+\implies \| V - V^{*} \|_{\infty} &amp;\leq \frac{\|V - T^{*} V \|_{\infty}}{(1 - \gamma)}\\
+\implies \| V - V^{*} \|_{\infty} &amp;\leq \frac{BE^{*}}{(1 - \gamma)}
+\end{aligned}\]</span>
+<h4 id="proof-of-claim-2-v-t-v-is-the-same-as-vpi">Proof of claim 2: <span class="math inline">\(V^{*} = T^{*} V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^{*}}\)</span></h4>
+<p><img src='/images/RL/bellman_equation/claim_2.png'></p>
+<p>The proof has three parts:</p>
+<ol type="1">
+<li><p>Prove that <span class="math inline">\(V^{*} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)\)</span></p></li>
+<li><p>Prove that <span class="math inline">\(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></p></li>
+<li><p>Combine 1 and 2, we show that claim 2 is true, that is, <span class="math inline">\(V^{*} = T^{*} V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^{*}}\)</span></p></li>
+</ol>
+<h5 id="proof-v-x-leq-sup_pi-in-prod-vpi-x">Proof <span class="math inline">\(V^{*} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)\)</span></h5>
+<p>From the error bound with the choice of <span class="math inline">\(V = V^{*}\)</span>, we have for any <span class="math inline">\(\pi \in \prod\)</span>,</p>
+<p><span class="math display">\[\| V^{*} - V^{\pi} \|_{\infty} \leq \frac{\| V^{*} - T^{\pi}V^{*} \|_{\infty}}{1 - \gamma}\]</span></p>
+<p>Let <span class="math inline">\(\epsilon &gt; 0\)</span>. Choose a policy <span class="math inline">\(\pi_{\epsilon}\)</span> s.t:</p>
+<p><span class="math display">\[\| V^{*} - T^{\pi_{\epsilon}} V^{*} \|_{\infty} \leq (1 - \gamma) \epsilon\]</span></p>
+<p>We know that this <span class="math inline">\(\pi_{\epsilon}\)</span> exists because we can always pick a <span class="math inline">\(\pi_{\epsilon}\)</span> s.t it is the maximizer of <span class="math inline">\(T^{*}V^{*}\)</span> (ie. pick <span class="math inline">\(\pi_{\epsilon}\)</span> to be <span class="math inline">\(\pi_{g} (x; V^{*})\)</span>, from above proof we know that <span class="math inline">\(T^{\pi_{g} (x; V^{*})} V^{*} = T^{*} V^{*}\)</span>), then:</p>
+<p><span class="math display">\[\| V^{*} - T^{\pi_{\epsilon}} V^{*} \|_{\infty} = 0 \leq (1 - \gamma) * \epsilon, \forall \epsilon &gt; 0\]</span></p>
+<p>For any policy <span class="math inline">\(\pi_{\epsilon}\)</span> that satisfies above equation:</p>
+<p><span class="math display">\[\| V^{*} - V^{\pi_{\epsilon}} \|_{\infty} \leq \epsilon\]</span></p>
+<p>This means that:</p>
+<p><span class="math display">\[sup_{x_i} \{|V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)|\} \leq \epsilon\]</span></p>
+<p><span class="math display">\[\implies |V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)| \leq sup_{x_i} \{|V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)|\} \leq \epsilon, \forall x_i \in X\]</span></p>
+<p><span class="math display">\[\implies V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i) \leq  |V^{*} (x_i) - V^{\pi_{\epsilon}} (x_i)| \leq \epsilon\]</span></p>
+<p><span class="math display">\[\implies V^{*} (x_i) \leq \epsilon + V^{\pi_{\epsilon}} (x_i)\]</span></p>
+<p>Since:</p>
+<p><span class="math display">\[V^{\pi_{\epsilon}} (x) \leq sup_{\pi \in \prod} V^{\pi} (x)\]</span></p>
+<p>As we take <span class="math inline">\(\epsilon \rightarrow 0\)</span>, we have:</p>
+<p><span class="math display">\[V^{*} (x) \leq lim_{\epsilon \rightarrow 0} (\epsilon + V^{\pi_{\epsilon}} (x)) \leq lim_{\epsilon \rightarrow 0} (\epsilon + sup_{\pi \in \prod} V^{\pi}  (x)) = sup_{\pi \in \prod} V^{\pi} (x)\]</span></p>
+<p><strong>This shows that <span class="math inline">\(V^{*} = T^{*} V^{*}\)</span> is upper bounded by the optimal value function within the space of stationary policies</strong></p>
+<h5 id="proof-v-x-geq-sup_pi-in-prod-vpi-x">Proof <span class="math inline">\(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></h5>
+<p>Consider any <span class="math inline">\(\pi \in \prod\)</span>. By the definition of <span class="math inline">\(T^{\pi}\)</span> and <span class="math inline">\(T^{*}\)</span>, for any <span class="math inline">\(V \in B(X)\)</span>, we have that for any <span class="math inline">\(x \in X\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+T^{\pi} V &amp;= r^{\pi}(x) + \int P(dx^{\prime} | x, a) \pi(da | x) V(x^{\prime})\\
+&amp;= \int  \pi(da | x) [P(dx^{\prime} | x, a) V(x^{\prime}) + r(x, a)]\\
+&amp;\leq sup_{a \in A} \{r(x, a) + \int P(dx^{\prime} | x, a) V(x^{\prime})\} = T^{*} V
+\end{aligned}\]</span>
+<p>In particular, with the choice of <span class="math inline">\(V = V^{*}\)</span>, we have:</p>
+<span class="math display">\[\begin{aligned}
+T^{\pi} V^{*} &amp;\leq T^{*} V^{*} = V^{*}\\
+\implies T^{\pi}T^{\pi} V^{*} &amp;\leq T^{\pi}V^{*} \leq V^{*} \text{(Monotonicity)}\\
+\implies (T^{\pi})^{k} V^{*} &amp;\leq V^{*} \text{(apply bellman operator k times)}
+\end{aligned}\]</span>
+<p>as <span class="math inline">\(k \rightarrow \infty\)</span>, by fix point theorem, we know that <span class="math inline">\((T^{\pi})^k V^{*} = V^{\pi}\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+\implies V^{\pi} &amp;= lim_{k \rightarrow \infty} (T^{\pi})^k V^{*} \leq V^{*}, \forall \pi \in \prod\\
+\implies V^{*} (x) &amp;\geq sup_{\pi \in \prod} V^{\pi} (x)
+\end{aligned}\]</span>
+<p><strong>Thus, we can conclude that <span class="math inline">\(V^{*} (x) \geq sup_{\pi \in \prod} V^{\pi} (x)\)</span></strong></p>
+<p><span style="color:red"><strong>Together, we showed that <span class="math inline">\(V^{*}\)</span> is the same as <span class="math inline">\(V^{\pi^{*}}\)</span>, the solution of bellman optimality equation is the optimal value function</strong></span></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/MDP/" rel="bookmark">MDP</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-equations/" rel="bookmark">Bellman Equations</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/14/calculus/" rel="bookmark">Calculus (1)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/dp/" rel="bookmark">Dynamic Programming</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/18/cheat-sheet/" rel="bookmark">Cheat Sheet</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RL-Basics/" rel="tag"># RL Basics</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/03/bellman-equations/" rel="prev" title="Bellman Equations">
+                  <i class="fa fa-chevron-left"></i> Bellman Equations
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/03/dp/" rel="next" title="Dynamic Programming">
+                  Dynamic Programming <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Trust Region Policy Optimization Notations \(A_{\pi}, A^{\pi}\) are the same, just some mismatch in the notations during writing, same for \(V, Q\) :&lt; Consider an infinite-horizon discounted MDP, d">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TRPO">
+<meta property="og:url" content="https://swag1ong.github.io/2021/06/11/TRPO/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Trust Region Policy Optimization Notations \(A_{\pi}, A^{\pi}\) are the same, just some mismatch in the notations during writing, same for \(V, Q\) :&lt; Consider an infinite-horizon discounted MDP, d">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/pg/trpo_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/pg/trpo_2.png">
+<meta property="article:published_time" content="2021-06-11T06:56:00.000Z">
+<meta property="article:modified_time" content="2021-06-24T08:17:07.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="Policy Search">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swag1ong.github.io/images/RL/pg/trpo_1.png">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/06/11/TRPO/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;06&#x2F;11&#x2F;TRPO&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;06&#x2F;11&#x2F;TRPO&#x2F;&quot;,&quot;title&quot;:&quot;TRPO&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>TRPO | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#trust-region-policy-optimization"><span class="nav-number">1.</span> <span class="nav-text">Trust Region Policy Optimization</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#notations"><span class="nav-number">1.1.</span> <span class="nav-text">Notations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#the-difference-in-policy-performance-as-expected-advantages-over-states-and-actions"><span class="nav-number">1.2.</span> <span class="nav-text">The difference in policy performance as expected advantages over states and actions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#proof"><span class="nav-number">1.2.1.</span> <span class="nav-text">Proof</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#local-approximation-to-eta"><span class="nav-number">1.3.</span> <span class="nav-text">Local Approximation to \(\eta\)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#monotonic-improvement-guarantee-for-general-stochastic-policies"><span class="nav-number">1.4.</span> <span class="nav-text">Monotonic Improvement Guarantee for General Stochastic Policies</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#population-version-of-the-algorithm"><span class="nav-number">1.5.</span> <span class="nav-text">Population Version of the Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#optimization-of-parameterized-policies"><span class="nav-number">1.5.1.</span> <span class="nav-text">Optimization of Parameterized Policies</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sample-based-algorithm"><span class="nav-number">1.6.</span> <span class="nav-text">Sample-Based Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#collecting-samples-single-path"><span class="nav-number">1.6.1.</span> <span class="nav-text">Collecting Samples (Single Path)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#collecting-samples-vine"><span class="nav-number">1.6.2.</span> <span class="nav-text">Collecting Samples (Vine)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#conclusions"><span class="nav-number">1.7.</span> <span class="nav-text">Conclusions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-number">1.8.</span> <span class="nav-text">Reference</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/06/11/TRPO/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          TRPO
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-06-11 14:56:00" itemprop="dateCreated datePublished" datetime="2021-06-11T14:56:00+08:00">2021-06-11</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-24 16:17:07" itemprop="dateModified" datetime="2021-06-24T16:17:07+08:00">2021-06-24</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/PG/" itemprop="url" rel="index"><span itemprop="name">PG</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/06/11/TRPO/" class="post-meta-item leancloud_visitors" data-flag-title="TRPO" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>12k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>11 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="trust-region-policy-optimization">Trust Region Policy Optimization</h1>
+<h2 id="notations">Notations</h2>
+<p><strong><span class="math inline">\(A_{\pi}, A^{\pi}\)</span></strong> are the same, just some mismatch in the notations during writing, same for <span class="math inline">\(V, Q\)</span> :&lt;</p>
+<p>Consider an infinite-horizon discounted MDP, defined by the tuple <span class="math inline">\((S, A, P, r, \rho_0, \gamma)\)</span>. <span class="math inline">\(S\)</span> is finite set of states and <span class="math inline">\(A\)</span> is finite set of actions $r: S $.</p>
+<p>The expected discounted return over initial state distribution <span class="math inline">\(\rho_0\)</span> (performance measure):</p>
+<p><span class="math display">\[\eta (\pi) = E_{s_0, a_0, ...} [\sum^{\infty}_{t=0} \gamma^t r(s_t)]\]</span></p>
+<p>Where <span class="math inline">\(s_0 \sim \rho_0, a_t \sim \pi (\cdot | s_t), s_{t+1} \sim P(\cdot | s_t, a_t)\)</span></p>
+<p>Value functions:</p>
+<p><span class="math display">\[Q_{\pi} (s_t, a_t) = E_{s_{t+1}, a_{t+1}, ..}[\sum^{\infty}_{l=0} \gamma^{l} r(s_{t+l}) | S_t=s_t, A_t=a_t]\]</span></p>
+<p><span class="math display">\[V_{\pi} (s_t) = E_{a_{t}, s_{t+1}, a_{t+1}, ..}[\sum^{\infty}_{l=0} \gamma^{l} r(s_{t+l}) | S_t=s_t]\]</span></p>
+<p>The advantage:</p>
+<p><span class="math display">\[A(s, a) = Q_{\pi} (s, a) - V_{\pi} (s)\]</span></p>
+<p>The discounted future state distribution (unormalized):</p>
+<p><span class="math display">\[\rho_{\pi} (s) = \lim_{t \rightarrow \infty} \sum_{t} \rho(s_0) \gamma^t P(s_0 \rightarrow s; t, \pi)\]</span></p>
+<span id="more"></span>
+<h2 id="the-difference-in-policy-performance-as-expected-advantages-over-states-and-actions">The difference in policy performance as expected advantages over states and actions</h2>
+<p>Given two policies <span class="math inline">\(\pi, \tilde{\pi}\)</span>, the performance of <span class="math inline">\(\tilde{\pi}\)</span>:</p>
+<p><span class="math display">\[\eta (\tilde{\pi}) = \eta(\pi) + E_{\tau \sim \tilde{\pi}} [\sum^{\infty}_{t = 0} \gamma^t A_{\pi} (s_t, a_t)]\]</span></p>
+<h3 id="proof">Proof</h3>
+<p>First:</p>
+<span class="math display">\[\begin{aligned}
+E_{s^{\prime}} [r(s) + \gamma V^{\pi} (s^{\prime}) - V^{\pi} (s) | s, a] &amp;= E_{s^{\prime}} [r(s) + \gamma V^{\pi} (s^{\prime}) | s, a] - V^{\pi} (s)\\
+&amp;= r(s) + \gamma \int_{s^{\prime}, a^{\prime}} P(ds^{\prime} | s, a)\pi(da^{\prime} | s^{\prime}) Q^{\pi} (s^{\prime}, a^{\prime}) - V^{\pi} (s)\\
+&amp;= Q^{\pi}(s, a) - V^{\prime} (s)\\
+&amp;= A_{\pi}(s, a)
+\end{aligned}\]</span>
+<p>Thus:</p>
+<span class="math display">\[\begin{aligned}
+E_{\tau \sim \tilde{\pi}} [\sum^{\infty}_{t=0} \gamma^t A_{\pi} (s_t, a_t)] &amp;= E_{\tau \sim \tilde{\pi}} [\sum^{\infty}_{t=0} \gamma^t E_{s_{t+1}} [r(s_t) + \gamma V^{\pi} (s_{t+1}) - V^{\pi} (s_t) | s_t, a_t]]\\
+&amp;= E_{\tau \sim \tilde{\pi}} [\sum^{\infty}_{t=0} \gamma^t (r(s_t) + V^{\pi} (s_{t+1}) - V^{\pi} (s_t))]\\
+&amp;= E_{\tau \sim \tilde{\pi}} [\sum^{\infty}_{t=0} \gamma^t(\gamma V^{\pi}(s_{t+1}) - V^{\pi}(s_{t})) + \sum^{\infty}_{t=0} \gamma^t r(s_t)]\\
+&amp;= E_{\tau \sim \tilde{\pi}} [ - V^{\pi}(s_{0}) + \sum^{\infty}_{t=0} \gamma^t r(s_t)]\\
+&amp;= E_{s_0} [- V^{\pi}(s_{0})] + E_{\tau \sim \tilde{\pi}} [\sum^{\infty}_{t=0} \gamma^t r(s_t)]\\
+&amp;= - \eta (\pi) + \eta (\tilde{\pi})
+\end{aligned}\]</span>
+<p>The improvement can be written as per timestep advantage.</p>
+<p>At the same time, the improvement can rewrite using discounted future state distribution (unormalized):</p>
+<span class="math display">\[\begin{aligned}
+\eta (\tilde{\pi}) &amp;= \eta (\pi) + E_{\tau \sim \tilde{\pi}} [\sum^{\infty}_{t=0} \gamma^t A_{\pi} (s_t, a_t)]\\
+&amp;= \eta (\pi) + \sum^{\infty}_{t=0} \gamma^t E_{\tau \sim \tilde{\pi}} [A_{\pi} (s_t, a_t)]\\
+&amp;= \eta (\pi) + \sum^{\infty}_{t=0} \gamma^t E_{s_t, a_t} [A_{\pi} (s_t, a_t)]\\
+&amp;= \eta (\pi) + \sum^{\infty}_{t=0} \gamma^t \sum_{s_{t}, a_{t}, s_0} \rho(s_0) P(s_0 \rightarrow s_t; t, \tilde{\pi}) \tilde{\pi}(a_t|s_t) A_{\pi} (s_t, a_t) \\
+&amp;= \eta (\pi) + \sum_{s_{t}, a_{t}, s_{0}} \sum^{\infty}_{t=0} \gamma^t \rho(s_0) P(s_0 \rightarrow s_t; t, \tilde{\pi}) \tilde{\pi}(a_t|s_t) A_{\pi} (s_t, a_t) \\
+&amp;= \eta (\pi) + \sum_{s_{t}} \rho_{\tilde{\pi}} (s_t) \sum_{a_{t}} \tilde{\pi}(a_t|s_t) A_{\pi}(s_t, a_t)
+\end{aligned}\]</span>
+<p><strong>This equation implies that any policy update <span class="math inline">\(\pi \rightarrow \tilde{\pi}\)</span> that has non-negative expected advantage over actions at every state <span class="math inline">\(s_t\)</span> is guaranteed to increase the policy performance measure <span class="math inline">\(\eta\)</span> or leave it constant</strong></p>
+<h2 id="local-approximation-to-eta">Local Approximation to <span class="math inline">\(\eta\)</span></h2>
+<p>In the approximate setting, it will typically be unavoidable, due to estimation error and approximation error that there will be some states with expected advantage over actions less than 0:</p>
+<p><span class="math display">\[E_{a \sim \tilde{\pi} (\cdot | s)}[A_{\pi} (s, a) | s] &lt; 0\]</span></p>
+<p>At the same time, the expectation also depends on <span class="math inline">\(\rho^{\tilde{\pi}}\)</span> which makes it difficult to optimize directly (the future state distribution is unknown, we cannot sample from unknown distribution), instead, we can use following local approximation to <span class="math inline">\(\eta\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+L_{\pi} (\tilde{\pi}) &amp;= \eta (\pi) + \underbrace{\sum_{s_t} \rho_{\pi} (s_t)}_{\text{we replace unnormalized state distribution}} \sum_{a_t} \tilde{\pi}(a_t|s_t) [A_{\pi}(s_t, a_t)]\\
+&amp;= \eta (\pi) + \frac{1}{1 - \gamma}E_{s_t \sim \rho^{\pi} (\cdot), a_t \sim \tilde{\pi}(\cdot | s_t)} [A^{\pi}(s_t, a_t)]\\
+&amp;= \eta (\pi) + \frac{1}{1 - \gamma}\mathbb{A}_{\pi} (\tilde{\pi})
+\end{aligned}\]</span>
+<p>We now ignore the change in state distribution due to the changes in the policy. If <span class="math inline">\(\pi\)</span> is parametrized by <span class="math inline">\(\theta\)</span>, then:</p>
+<p><span class="math display">\[L_{\pi_\theta} (\pi_{\theta}) = \eta (\pi_{\theta}) + \underbrace{ \sum_{s_t} \rho_{\pi_{\theta}} (s_t) \sum_{a_t} \pi(a_t|s_t) [A_{\pi_{\theta}}(s_t, a_t)]}_{E_{a \sim \pi}[A_{\pi_{\theta}} (s, a) | s] = 0} = \eta (\pi_{\theta})\]</span></p>
+<p>Consider a small update on <span class="math inline">\(\theta\)</span> such that <span class="math inline">\(\pi_{\theta_{new}} = (1 - \alpha) \pi_{\theta} + \alpha \pi_{\theta^{\prime}}\)</span>, then:</p>
+<span class="math display">\[\begin{aligned}
+\nabla_{\alpha} \eta (\pi_{\theta_{new}}) |_{\alpha = 0} &amp;= \nabla_{\pi_{\theta_{new}}} \eta (\pi_{\theta_{new}}) \nabla_{\alpha} \pi_{\theta_{new}} |_{\pi_{\theta_{new}} = \pi_{\theta}}\\
+&amp;= \sum_{s_t, a_t} \rho^{\pi_{\theta_{new}}} (s_t) \nabla_{\pi_{\theta_{new}}} \pi_{\theta_{new}} (a_t | s_t) (\pi_{\theta^{\prime}} (a_t | s_t) - \pi_{\theta} (a_t | s_t)) A^{\pi_{\theta_{new}}}(s_t, a_t)|_{\pi_{\theta_{new}} = \pi_{\theta}}\\
+&amp;= \sum_{s_t, a_t} \rho^{\pi_{\theta}} (s_t) \pi_{\theta^{\prime}} (a_t | s_t) A^{\pi_{\theta}}(s_t, a_t) - \sum_{s_t, a_t} \rho^{\pi_{\theta}} (s_t) \pi_{\theta} (a_t | s_t) A(s_t, a_t)\\
+&amp;= \sum_{s_t, a_t} \rho^{\pi_{\theta}} (s_t) \pi_{\theta^{\prime}} (a_t | s_t) A^{\pi_{\theta}}(s_t, a_t) - \sum_{s_t} \rho^{\pi_{\theta}} (s_t) \sum_{a_t} \pi_{\theta} (a_t | s_t) Q^{\pi_{\theta}}(s_t, a_t) - V^{\pi_{\theta}} (s_t)\\
+&amp;= \sum_{s_t, a_t} \rho^{\pi_{\theta}} (s_t) \pi_{\theta^{\prime}} (a_t | s_t) A^{\pi_{\theta}}(s_t, a_t)\\
+&amp;= \frac{1}{1 - \gamma}\sum_{s_t, a_t} (1 - \gamma)\rho^{\pi_{\theta}} (s_t) \pi_{\theta^{\prime}} (a_t | s_t) A^{\pi_{\theta}}(s_t, a_t)\\
+&amp;= \frac{1}{1 - \gamma} E_{s_t \sim \rho^{\pi_{\theta}} (\cdot), a_t \sim \pi_{\theta^{\prime}}(\cdot | s_t)} [A^{\pi_{\theta}}(s_t, a_t)]\\
+&amp;=  \frac{1}{1 - \gamma}\mathbb{A}_{\pi_{\theta}} (\pi_{\theta^{\prime}})
+\end{aligned}\]</span>
+<p></br></p>
+<p>By the same insight, we can conclude that <span class="math inline">\(\alpha A_{\pi_{\theta}} (\pi_{\theta^\prime}) = A_{\pi_{\theta}} (\pi_{\theta_{new}})\)</span>. Using Talyor's expansion and above first order results, we can see that the change in <span class="math inline">\(\Delta \eta\)</span>:</p>
+<p><span class="math display">\[\eta (\pi_{\theta_{new}}) - \eta (\pi_{\theta}) \geq \frac{1}{1 - \gamma}\mathbb{A}_{\pi_{\theta}} (\pi_{\theta_{new}}) - O(\alpha^2)\]</span></p>
+<p><span class="math display">\[\implies \eta (\pi_{\theta_{new}}) \geq L_{\pi_{\theta}} (\pi_{\theta_{new}}) - O(\alpha^2)\]</span></br></p>
+<p>These results imply that a sufficiently small step <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\pi_{\theta} \rightarrow \tilde{\pi}\)</span> that improves <span class="math inline">\(L_{\pi_{\theta}}\)</span> will also improve <span class="math inline">\(\eta\)</span>. However, it does not tell us how big of the step to take. To address this issue, some previous works proposed:</p>
+<p><span class="math display">\[\pi_{new} (a | s) = (1 - \alpha) \pi_{old} (a | s) + \alpha \pi^{\prime} (a | s)\]</span></p>
+<p>Where <span class="math inline">\(\pi^{\prime} = \arg\max_{\pi^{\prime}} L_{\pi_{old}} (\pi^{\prime})\)</span></p>
+<p>They also derive the lower bound:</p>
+<p><span class="math display">\[\eta (\pi_{new}) \geq L_{\pi_{old}} (\pi_{new}) - \frac{2 \epsilon \gamma}{(1 - \gamma)^2} \alpha^2\]</span></p>
+<p>Where <span class="math inline">\(\epsilon = \max_{s} | E_{a \sim \pi^{\prime}} [A_{\pi} (s, a)]|\)</span></p>
+<p><strong>However, this bound only applies to the above policy update rule and is restrictive in practice.</strong></p>
+<h2 id="monotonic-improvement-guarantee-for-general-stochastic-policies">Monotonic Improvement Guarantee for General Stochastic Policies</h2>
+<p>We can extend the above lower bound to more general case stochastic policies by replacing <span class="math inline">\(\alpha\)</span> with some distance measurement between <span class="math inline">\(\pi\)</span> and <span class="math inline">\(\tilde{\pi}\)</span> and change <span class="math inline">\(\epsilon\)</span> accordingly. The particular distance measure in this case is total variation divergence, for discrete probability distributions <span class="math inline">\(p, q\)</span></p>
+<p><span class="math display">\[D_{TV} (p || q) = \frac{1}{2} \sum_{i} |p_i - q_i|\]</span></p>
+<p>Define the maximum distance to be the maximum total variation divergence over states:</p>
+<p><span class="math display">\[D^{\max}_{TV} (\pi, \tilde{\pi}) = \max_{s} D_{TV} (\pi(\cdot | s) || \tilde{\pi} (\cdot | s))\]</span> </br></p>
+<p><img src="/images/RL/pg/trpo_1.png" width="600"></p>
+<p>Notice that the relationship between KL divergence and total variation divergence:</p>
+<p><span class="math display">\[D_{TV} (p || q)^2 \leq D_{KL} (p || q)\]</span></p>
+<p>Let:</p>
+<p><span class="math display">\[D^{\max}_{KL} (\pi, \tilde{\pi}) = \max_{s} D_{KL} (\pi(\cdot | s) || \tilde{\pi} (\cdot | s)) \geq D^{\max}_{TV} (\pi, \tilde{\pi})\]</span></p>
+<p>Then, the lower bound becomes:</p>
+<p><span class="math display">\[\eta (\tilde{\pi}) \geq L_{\pi} (\tilde{\pi}) - C D^{\max}_{TV} (\pi, \tilde{\pi})^2 \geq L_{\pi} (\tilde{\pi}) - C D^{\max}_{KL} (\pi, \tilde{\pi})\]</span></p>
+<p>Where <span class="math inline">\(C = \frac{4\epsilon \gamma}{(1 - \gamma)^2}\)</span>, <span class="math inline">\(\epsilon = \max_{s, a} |A_{\pi} (s, a)|\)</span></p>
+<h2 id="population-version-of-the-algorithm">Population Version of the Algorithm</h2>
+<p><strong>The population version of the algorithm assumes exact evaluation of the advantage function:</strong></p>
+<p><img src="/images/RL/pg/trpo_2.png" width="600"></p>
+<p>We can see that the algorithm generate monotonically improved sequence of performance measure <span class="math inline">\(\eta (\pi_0) \leq \eta (\pi_1) \leq \eta (\pi_2) \leq ...\)</span>. To see this, let <span class="math inline">\(M_i (\pi) = L_{\pi_i} (\pi) - CD^{\max}_{KL} (\pi, \tilde{\pi})\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+\eta (\pi_{i + 1}) &amp;\geq M_i (\pi_{i + 1})\\
+\eta (\pi_{i}) &amp;= M_i (\pi_i)\\
+\eta (\pi_{i + 1}) - \eta (\pi_{i}) &amp;\geq M_i (\pi_{i + 1}) - M_i (\pi_i)
+\end{aligned}\]</span>
+<p></br></p>
+<p>Since we are maximizing <span class="math inline">\(M_i (\pi_i)\)</span> at each iteration <span class="math inline">\(\implies M_i (\pi_i) \geq M_i (\pi_i)\)</span>. The improvement is non-decreasing.</p>
+<h3 id="optimization-of-parameterized-policies">Optimization of Parameterized Policies</h3>
+<p>Since we are parameterizing policy by <span class="math inline">\(\theta\)</span>, some additional notations are used in place of the <span class="math inline">\(\pi\)</span></p>
+<p><span class="math display">\[\eta (\theta) := \eta(\pi_\theta) \;\;\;\;\; L_{\theta}(\tilde{\theta}) := L_{\pi_{\theta}} (\pi_{\tilde{\theta}})  \;\;\;\;\; D_{KL} (\theta || \tilde{\theta}) := D_{KL} (\pi_{\theta} || \tilde{\pi}_{\theta})\]</span></p>
+<p><span class="math inline">\(\theta_{old}\)</span> is used to denote the previous policy parameters that we want to improve upon.</p>
+<p>The previous theorem suggest that, if we maximize:</p>
+<p><span class="math display">\[\max_{\theta} \quad [L_{\theta_{old}} (\theta) - CD^{\max}_{KL} (\theta_{old}, \theta)]\]</span> </br></p>
+<p>Then we are guaranteed to improve our policy with equality when <span class="math inline">\(\theta_{old} = \theta\)</span>.</p>
+<p>However, since the penalty term is <span class="math inline">\(CD^{\max}_{KL} (\theta_{old}, \theta)\)</span> which means smaller change in policy distribution is preferred. If we maximize this objective with penalty coefficient <span class="math inline">\(C\)</span>, we will end up with very small step-size. One way to take larger step size is to use a constraint on the KL divergence between the new policy and the old policy (Trust Region Constraint):</p>
+<span class="math display">\[\begin{aligned}
+\max_{\theta} \quad &amp; L_{\theta_{old}} (\theta)\\
+\textrm{s.t.} \quad &amp; D^{\max}_{KL} (\theta_{old}, \theta) \leq \delta
+\end{aligned}\]</span>
+<p></br></p>
+<p>This optimization problem is impractical to solve due to large number of constraints, but we can use a heuristic approximation which considers the average KL divergence:</p>
+<p><span class="math display">\[\bar{D}^\rho_{KL} (\theta_1, \theta_2) := E_{s \sim \rho}[D_{KL} (\pi_{\theta_1} (\cdot | s) || \pi_{\theta_2} (\cdot | s))]\]</span></p>
+<p>Then the optimization problem can be rewritten as:</p>
+<span class="math display">\[\begin{aligned}
+\max_{\theta} \quad &amp; L_{\theta_{old}} (\theta)\\
+\textrm{s.t.} \quad &amp; \bar{D}^{\rho_{\theta_{old}}}_{KL} (\theta_1, \theta_2) \leq \delta
+\end{aligned}\]</span>
+<p></br></p>
+<h2 id="sample-based-algorithm">Sample-Based Algorithm</h2>
+<p>The above population version optimization problem can be approximated using MC simulation:</p>
+<span class="math display">\[\begin{aligned}
+\max_{\theta} \quad &amp; E_{s \sim \rho_{\theta_{old}} (\cdot), \; a \sim q (\cdot | s)} [\frac{\pi_{\theta} (a | s)}{q (a | s)} \hat{Q}_{\theta_{old}} (s, a)]\\
+\textrm{s.t.} \quad &amp; E_{s \sim \rho_{\theta_{old}} (\cdot)}[D_{KL} (\pi_{\theta_{old}} (\cdot | s) || \pi_{\theta} (\cdot | s))] \leq \delta
+\end{aligned}\]</span>
+<p></br></p>
+<ol type="1">
+<li>Drop constant <span class="math inline">\(\eta (\theta_{old})\)</span> from the objective</li>
+<li>Replace advantage <span class="math inline">\(A_{\theta_{old}}\)</span> with <span class="math inline">\(Q_{\theta_{old}}\)</span>, because <span class="math inline">\(V_{\pi_{old}} (s)\)</span> only affects the value at each state by a constant (does not depend on policy).</li>
+<li>Place sampling of action <span class="math inline">\(a\)</span> by an importance sampling, we can use one trajectory to sample both actions and states if <span class="math inline">\(q = \pi_{\theta_{old}}\)</span>.</li>
+<li>Substitute an estimate <span class="math inline">\(\hat{Q}_{\theta_{old}}\)</span> for <span class="math inline">\(Q_{\theta_{old}}\)</span></li>
+</ol>
+<h3 id="collecting-samples-single-path">Collecting Samples (Single Path)</h3>
+<p>In this estimation procedure, we collect a sequence of states by sampling <span class="math inline">\(s_0 \sim \rho_0\)</span>, then simulating the trajectory <span class="math inline">\(\tau = (s_0, a_1, s_1, a_2, ..., s_T)\)</span> by following <span class="math inline">\(\pi_{old}\)</span>, and discount each estimate of the expectation by <span class="math inline">\(\gamma^t\)</span>, then the samples of <span class="math inline">\(s_i\)</span> would be from the discounted state distribution. Then, we use discounted return <span class="math inline">\(G\)</span> to be the unbiased estimator of <span class="math inline">\(Q_{\theta_{old}}\)</span>, that is, <span class="math inline">\(\hat{Q}_{\theta_{old}} = G\)</span></p>
+<h3 id="collecting-samples-vine">Collecting Samples (Vine)</h3>
+<p>Ignored Here</p>
+<h2 id="conclusions">Conclusions</h2>
+<ol type="1">
+<li><p>The theory justifies optimizing a surrogate objective with a penalty on step size (KL divergence) would guarantee policy improvement. However, the large penalty coefficient C leads to prohibitively small steps, so we relax the penalty by converting the problem to a constraint optimization problem with hard threshold on the step size <span class="math inline">\(\alpha\)</span> which is defined as the average DL divergence. This divergence is easier for numerical optimization and estimation than max KL divergence.</p></li>
+<li><p>The theory in this paper ignores estimation error for the advantage function.</p></li>
+</ol>
+<h2 id="reference">Reference</h2>
+<p>https://ieor8100.github.io/rl/docs/Lecture%207%20-Approximate%20RL.pdf</p>
+<p>https://people.eecs.berkeley.edu/~pabbeel/cs287-fa09/readings/KakadeLangford-icml2002.pdf</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/06/09/DDPG/" rel="bookmark">Deep Deterministic Policy Gradient</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/06/DPG/" rel="bookmark">Deterministic Policy Gradient</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/06/11/PPO/" rel="bookmark">PPO</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/30/policy-gradient-2/" rel="bookmark">Policy Gradient (2)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/06/05/policy-gradient-3/" rel="bookmark">Policy Gradient (3)</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Policy-Search/" rel="tag"># Policy Search</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/06/09/DDPG/" rel="prev" title="Deep Deterministic Policy Gradient">
+                  <i class="fa fa-chevron-left"></i> Deep Deterministic Policy Gradient
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/06/11/PPO/" rel="next" title="PPO">
+                  PPO <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

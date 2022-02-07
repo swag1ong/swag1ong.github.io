@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Probability Background (1) Sets A set is a collection of objects, which are the elements of set. If S is a set and \(x\) is an element of \(S\), we write \(x \in S\). If \(x\) is not an element of \(S">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Probability (1)">
+<meta property="og:url" content="https://swag1ong.github.io/2021/05/11/probability/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Probability Background (1) Sets A set is a collection of objects, which are the elements of set. If S is a set and \(x\) is an element of \(S\), we write \(x \in S\). If \(x\) is not an element of \(S">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_15.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_14.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_5.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_16.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_17.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_18.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_7.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_8.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_9.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_19.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_11.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_10.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_20.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_21.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_22.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_23.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_24.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_25.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_26.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_27.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_28.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_29.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_30.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/prob_31.png">
+<meta property="article:published_time" content="2021-05-11T11:06:51.000Z">
+<meta property="article:modified_time" content="2021-07-12T15:58:01.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="RL Basics">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swag1ong.github.io/images/RL/background/prob_1.png">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/05/11/probability/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;05&#x2F;11&#x2F;probability&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;05&#x2F;11&#x2F;probability&#x2F;&quot;,&quot;title&quot;:&quot;Probability (1)&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Probability (1) | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#probability-background-1"><span class="nav-number">1.</span> <span class="nav-text">Probability Background (1)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#sets"><span class="nav-number">1.1.</span> <span class="nav-text">Sets</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#finite-countable-uncountable"><span class="nav-number">1.1.1.</span> <span class="nav-text">Finite, Countable, Uncountable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#subsets-and-universal-set"><span class="nav-number">1.1.2.</span> <span class="nav-text">Subsets and Universal set</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#set-functions"><span class="nav-number">1.1.3.</span> <span class="nav-text">Set Functions</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#probability-models"><span class="nav-number">1.2.</span> <span class="nav-text">Probability Models</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sample-spaces-and-events"><span class="nav-number">1.2.1.</span> <span class="nav-text">Sample Spaces and Events</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#probability-laws-and-probability-set-function"><span class="nav-number">1.2.2.</span> <span class="nav-text">Probability Laws and Probability Set Function</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#discrete-model"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">Discrete Model</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#additional-properties-of-probability"><span class="nav-number">1.2.3.</span> <span class="nav-text">Additional Properties of Probability</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#conditional-probability"><span class="nav-number">1.3.</span> <span class="nav-text">Conditional Probability</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#chain-rule"><span class="nav-number">1.3.1.</span> <span class="nav-text">Chain Rule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#law-of-total-probability"><span class="nav-number">1.3.2.</span> <span class="nav-text">Law of Total Probability</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bayes-rule"><span class="nav-number">1.3.3.</span> <span class="nav-text">Bayes&#39; Rule</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#random-variables"><span class="nav-number">1.4.</span> <span class="nav-text">Random Variables</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#distribution-of-random-variable"><span class="nav-number">1.4.1.</span> <span class="nav-text">Distribution of Random Variable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cumulative-distribution-function"><span class="nav-number">1.4.2.</span> <span class="nav-text">Cumulative Distribution Function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#equal-in-distribution"><span class="nav-number">1.4.3.</span> <span class="nav-text">Equal in Distribution</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#theorems-for-cdf"><span class="nav-number">1.4.4.</span> <span class="nav-text">Theorems for CDF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#discrete-random-variables"><span class="nav-number">1.4.5.</span> <span class="nav-text">Discrete Random Variables</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#support"><span class="nav-number">1.4.5.1.</span> <span class="nav-text">Support</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#transformations"><span class="nav-number">1.4.5.2.</span> <span class="nav-text">Transformations</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#continuous-random-variables"><span class="nav-number">1.4.6.</span> <span class="nav-text">Continuous Random Variables</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#quantiles"><span class="nav-number">1.4.6.1.</span> <span class="nav-text">Quantiles</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#transformations-1"><span class="nav-number">1.4.6.2.</span> <span class="nav-text">Transformations</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#expectation"><span class="nav-number">1.4.7.</span> <span class="nav-text">Expectation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/05/11/probability/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Probability (1)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-05-11 19:06:51" itemprop="dateCreated datePublished" datetime="2021-05-11T19:06:51+08:00">2021-05-11</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-12 23:58:01" itemprop="dateModified" datetime="2021-07-12T23:58:01+08:00">2021-07-12</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/05/11/probability/" class="post-meta-item leancloud_visitors" data-flag-title="Probability (1)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>16k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>14 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="probability-background-1">Probability Background (1)</h1>
+<h2 id="sets">Sets</h2>
+<p>A set is a collection of objects, which are the elements of set. If S is a set and <span class="math inline">\(x\)</span> is an element of <span class="math inline">\(S\)</span>, we write <span class="math inline">\(x \in S\)</span>. If <span class="math inline">\(x\)</span> is not an element of <span class="math inline">\(S\)</span>, we write <span class="math inline">\(x \notin S\)</span>. A set can have no elements, in which case it is called the empty set, denoted by <span class="math inline">\(\emptyset\)</span>.</p>
+<h3 id="finite-countable-uncountable">Finite, Countable, Uncountable</h3>
+<p>If <span class="math inline">\(S\)</span> contains a finite number of elements, say <span class="math inline">\(x_1, x_2, ..., x_n\)</span>, we write it as list of the elements in braces:</p>
+<p><span class="math display">\[S = \{x_1, x_2, ...., x_n\}\]</span></p>
+<p>if <span class="math inline">\(S\)</span> contains countable infinitely many elements <span class="math inline">\(x_1, x_2, ...\)</span>, we can write:</p>
+<p><span class="math display">\[S = \{x_1, x_2, ... \}\]</span></p>
+<p><span class="math inline">\(S\)</span> is countable infinite, if the set is countable but has infinitely many elements. However, a set with uncountable elements can not be written down in a list.</p>
+<p>We can denote set of all <span class="math inline">\(x\)</span> that have certain property <span class="math inline">\(P\)</span>:</p>
+<p><span class="math display">\[\{x | x \text{ satisfies } P\}\]</span></p>
+<p>ie. the set of even integers can be written as <span class="math inline">\(\{k | k/2 \text{ is integer}\}\)</span>, <span class="math inline">\(\{x | 0 \leq x \leq 1\}\)</span> (uncountable)</p>
+<span id="more"></span>
+<h3 id="subsets-and-universal-set">Subsets and Universal set</h3>
+<p>If every element of a set <span class="math inline">\(S\)</span> is also an element of a set <span class="math inline">\(T\)</span>, then <span class="math inline">\(S\)</span> is a subset of <span class="math inline">\(T\)</span>, we denote as <span class="math inline">\(S \subset T\)</span> or <span class="math inline">\(T \subset S\)</span>. If <span class="math inline">\(S \subset T\)</span> and <span class="math inline">\(T \subset S\)</span>, the two sets are equal. We also denote universal set to be <span class="math inline">\(\Omega\)</span> which contains all objects that could conceivably be of interest in a particular context.</p>
+<h3 id="set-functions">Set Functions</h3>
+<p>Many of the functions used in calculus are functions that map real numbers into real numbers. We are concerned also with functions that map sets into real numbers. Such functions are naturally called functions of a set or more simply <strong>set functions</strong>. They are usually used to measure subsets of a given set.</p>
+<p>Examples:</p>
+<blockquote>
+<p>Let <span class="math inline">\(C=\mathbf{R}\)</span>, the set of real numbers. For a subset <span class="math inline">\(A \in C\)</span>, let <span class="math inline">\(Q(A)\)</span> be equal to the number of points in <span class="math inline">\(A\)</span> that correspond to positive integers. Then <span class="math inline">\(Q(A)\)</span> is a set function of the set <span class="math inline">\(A\)</span>. Thus, if <span class="math inline">\(A = \{x: 0 &lt; x &lt; 5\} \implies Q(A) = 4\)</span></p>
+</blockquote>
+<p>Often our set functions are defined in terms of sums or integrals, the symbol:</p>
+<p><span class="math display">\[\int_A f(x) dx\]</span></p>
+<p>means the ordinary integral of <span class="math inline">\(f(x)\)</span> over a prescribed one-dimensional set <span class="math inline">\(A\)</span>, and the symbol</p>
+<p><span class="math display">\[\underset{A}{\int\int} g(x, y) dx dy\]</span></p>
+<p>means the integral of <span class="math inline">\(g(x, y)\)</span> over a prescribed two-dimensional set <span class="math inline">\(A\)</span>.</p>
+<p>Examples:</p>
+<blockquote>
+<p>Let <span class="math inline">\(C\)</span> be the set of all nonnegative integers and let <span class="math inline">\(A\)</span> be a subset of <span class="math inline">\(C\)</span>. Define the set function <span class="math inline">\(Q\)</span> by <span class="math display">\[Q(A) = \sum_{n \in A} 3^{n}\]</span></p>
+</blockquote>
+<blockquote>
+<p>Let <span class="math inline">\(C\)</span> be the interval of positive real numbers, <span class="math inline">\(C = (0, \infty)\)</span>. Let <span class="math inline">\(A\)</span> be a subset of <span class="math inline">\(C\)</span>. Define the set function <span class="math inline">\(Q\)</span> by <span class="math display">\[Q(A = \int_{A} e^{-x} dx\]</span> <span class="math display">\[Q((1, 3)) = \int^{3}_{1} e^{-x} dx\]</span> <span class="math display">\[Q(C) = \int^{\infty}_{0} e^{-x} dx = 1\]</span></p>
+</blockquote>
+<h2 id="probability-models">Probability Models</h2>
+<p>A probabilistic model is a mathematical description of an uncertain situation.</p>
+<p><img src='/images/RL/background/prob_1.png' width="600"></p>
+<h3 id="sample-spaces-and-events">Sample Spaces and Events</h3>
+<p>Every probabilistic model involves an underlying process, called the <strong>experiment</strong>, that will produce exactly <strong>one</strong> out of several possible outcomes. The set of all possible outcomes is called the sample space of the experiment, and is denoted by <span class="math inline">\(\Omega\)</span> (Universal Set). A subset of the sample space, that is, a collection of possible outcomes, is called an <strong>event</strong>. Any collection of possible outcomes, including the entire sample space <span class="math inline">\(\Omega\)</span> and its complement the empty set. There is no restriction on what constitutes an experiment. (ie. it can be one toss of the coin, three tosses of coin, or an infinite sequence of tosses). However, in this formulation, there is only one experiment (three tosses is one experiment rather than three experiments).</p>
+<p>The sample space of an experiment may consist of a finite, or an infinite number of possible outcomes.</p>
+<p>Regardless of their number. different elements of the sample space should be <strong>distinct and mutually exclusive</strong>, so that when the experiment is carried out there is a unique outcome. For example, the sample space associated with the roll of a die cannot contain "1 or 3" as a possible outcome and also "1 or 4" as another possible outcome. If it did, we would not be able to assign a unique outcome when the roll is a 1.</p>
+<p>A given physical situation may be modeled in several ways, depending pending on the kind of questions that we are interested in . Generally, the sample space chosen for a probabilistic model must be <strong>collectively exhaustive</strong>, in the sense that no matter what happens in the experiment, we always obtain an outcome that has been included in the sample space. In addition, the sample space should have enough detail to distinguish between all outcomes of interest to the modeler, while avoiding irrelevant details.</p>
+<p><img src="/images/RL/background/prob_2.png" width="600"> <img src="/images/RL/background/prob_3.png" width="600"></p>
+<h3 id="probability-laws-and-probability-set-function">Probability Laws and Probability Set Function</h3>
+<p>Given an experiment, let <span class="math inline">\(C\)</span> denotes the sample space of all possible outcomes. We assume that in all cases:</p>
+<ol type="1">
+<li>The collection of events is sufficiently rich to include all possible events of interest.</li>
+<li>The collection is closed under complements and countable unions of these events.</li>
+<li>The collection is closed under countable intersections.</li>
+</ol>
+<p>Technically, such a collection of events <span class="math inline">\(\mathbb{B}\)</span> is called a <strong><span class="math inline">\(\sigma-\)</span>field of subsets</strong>.</p>
+<p><img src="/images/RL/background/prob_15.png" width="600"></p>
+<p><img src="/images/RL/background/prob_14.png" width="600"></p>
+<p>In order to visualize a probability law. Consider a unit of mass which is spread over the sample space. Then, <span class="math inline">\(P(A)\)</span> is simply the total mass that was assigned collectively to the elements of A. For example, <span class="math inline">\(\Omega = {1, 2, 3, 4, 5, 6}, A = {1, 2}\)</span>, <span class="math inline">\(P(A) = \frac{1}{3}\)</span></p>
+<p>A collection of events whose members are pairwise disjoint, is said to be a mutually exclusive collection and its union is often referred to as a disjoint union. The collection is further said to be <strong>exhaustive</strong> if the union of its events is the sample space. in which case <span class="math inline">\(\sum^{\infty}_{n=1} P(A_n) = 1\)</span>. We often say that a mutually exclusive and exhaustive collection of events forms a <strong>partition</strong> of the sample space <span class="math inline">\(C\)</span>.</p>
+<p>The probability set function <span class="math inline">\(P: \mathbb{B} \rightarrow \mathbb{R}\)</span> tells us how the probability is distributed over the set of events, <span class="math inline">\(\mathbb{B}\)</span>. In this sense, we speak of a distribution of probability. We often drop the word set and refer to <span class="math inline">\(P\)</span> as the probability function.</p>
+<h4 id="discrete-model">Discrete Model</h4>
+<p><img src="/images/RL/background/prob_4.png" width="600"> <img src="/images/RL/background/prob_5.png" width="600"></p>
+<h3 id="additional-properties-of-probability">Additional Properties of Probability</h3>
+<p><img src="/images/RL/background/prob_16.png" width="600"></p>
+<p><img src="/images/RL/background/prob_17.png" width="600"></p>
+<p><br></p>
+<p>The <strong>Inclusion Exclusion Formula</strong>:</p>
+<p><span class="math display">\[P(C_1 \cup C_2 \cup C_3) = p_1 - p_2 + p_3\]</span></p>
+<p>Where:</p>
+<p><span class="math display">\[p_1 = P(C_1) + P(C_2) + P(C_3)\]</span></p>
+<p><span class="math display">\[p_2 = P(C_1 \cap C_2) + P(C_1 \cap C_3) + P(C_2 \bigcap C_3)\]</span></p>
+<p><span class="math display">\[p_3 = P(C_1 \cap C_2 \cap C_3)\]</span></p>
+<p>The <strong>Bonferroni's inequality</strong>:</p>
+<p><span class="math display">\[P(C_1 \cap C_2) \geq P(C_1) + P(C_2) - 1\]</span></p>
+<h2 id="conditional-probability">Conditional Probability</h2>
+<p>In some random experiment, we are interested only in those outcomes that are elements of a subset <span class="math inline">\(A\)</span> of the sample space <span class="math inline">\(C\)</span>. This means, for our purposes, that the sample space is effectively the subset <span class="math inline">\(A\)</span>.</p>
+<p>Let the probability set function <span class="math inline">\(P(A)\)</span> be defined on the sample space <span class="math inline">\(C\)</span> and let <span class="math inline">\(A\)</span> be a subset of <span class="math inline">\(C\)</span> such that <span class="math inline">\(P(A &gt; 0)\)</span>. We only take those outcomes of the random experiment that are elements of <span class="math inline">\(A\)</span> to be the sample space. Let <span class="math inline">\(B\)</span> be another subset of <span class="math inline">\(C\)</span>. The <strong>conditional probability</strong> of event <span class="math inline">\(B\)</span> given <span class="math inline">\(A\)</span> is denoted by the symbol <span class="math inline">\(P(B | A)\)</span> .</p>
+<p>Since <span class="math inline">\(A\)</span> is now the sample space, the only elements of <span class="math inline">\(B\)</span> that concern us are those that are also elements of <span class="math inline">\(A\)</span>, that is the elements of <span class="math inline">\(A \cap B\)</span> and <span class="math inline">\(A\)</span>, relative to the space <span class="math inline">\(A\)</span>, be the same as the ratio of the probabilities of these events relative to the space <span class="math inline">\(C\)</span>, that is, we should have:</p>
+<p><span class="math display">\[P(A | A) = 1 \;\;\;\;\;\; P(A \cap B | A) = P(B | A)\]</span></p>
+<p>Moreover, it would seem logically inconsistent if we did not require that the ratio of the probabilities of the events <span class="math inline">\(A \cap B\)</span> and <span class="math inline">\(A\)</span>, relative to the space <span class="math inline">\(A\)</span>, be the same as the ratio of the probabilities of these events relative to the space <span class="math inline">\(C\)</span> (ie. if <span class="math inline">\(P(A) = 0.5, P(B) = 0.2, P(A \cap B) = 0.1, P(A) / P(C) = 1 / 2, P(A \cap B | A) = 0.2\)</span>), that is, we should have:</p>
+<p><span class="math display">\[\frac{P(A \cap B | A) }{P(A | A)} = \frac{P(A \cap B)}{P(A)}\]</span></p>
+<p><img src="/images/RL/background/prob_18.png" width="600"></p>
+<p><br></p>
+<p><span class="math inline">\(P(B|A)\)</span> the conditional probability set function, defined for subsets of <span class="math inline">\(A\)</span>.</p>
+<p>Conditional probability provides us with a way to reason about the outcome of an experiment, based on <strong>partial information</strong>. In more precise terms, given an experiment, a corresponding sample space, and a probability law, suppose that we know that the outcome is within some given event <span class="math inline">\(B\)</span>. We wish to quantify the likelihood that the outcome also belongs to some other given event <span class="math inline">\(A\)</span>. This concept specifies the conditional probability of <span class="math inline">\(A\)</span> given <span class="math inline">\(B\)</span>, denoted by <span class="math inline">\(P(A | B)\)</span>.</p>
+<p>Furthermore, for a fixed event <span class="math inline">\(B\)</span>, it can be verified that the conditional probabilities <span class="math inline">\(P(A | B), \forall A\)</span> form a legitimate probability law that satisfies the requirements.</p>
+<h3 id="chain-rule">Chain Rule</h3>
+<p><img src="/images/RL/background/prob_7.png" width="600"></p>
+<h3 id="law-of-total-probability">Law of Total Probability</h3>
+<p><img src="/images/RL/background/prob_8.png" width="600"></p>
+<h3 id="bayes-rule">Bayes' Rule</h3>
+<p><img src="/images/RL/background/prob_9.png" width="600"></p>
+<h2 id="random-variables">Random Variables</h2>
+<p>Given an experiment and the corresponding set of possible outcomes (the sample space), a <strong>random variable</strong> is a real-valued <strong>function</strong> (max, min etc.) of experiment outcome that associates a <strong>particular number with each outcome</strong>. We refer to this number as the numerical value or simply the value of the random variable.</p>
+<p><img src="/images/RL/background/prob_19.png" width="600"> <img src="/images/RL/background/prob_11.png" width="600"> <img src="/images/RL/background/prob_10.png" width="600"></p>
+<h3 id="distribution-of-random-variable">Distribution of Random Variable</h3>
+<p>Given a random variable <span class="math inline">\(X\)</span>, its range <span class="math inline">\(\mathbb{D}\)</span> becomes <strong>the sample space of interest</strong>. Besides, inducing the sample space <span class="math inline">\(\mathbb{D}\)</span>, <span class="math inline">\(X\)</span> also induces a probability which we call the distribution of <span class="math inline">\(X\)</span>.</p>
+<p>Assume <span class="math inline">\(X\)</span> is a discrete random variable with a finite space <span class="math inline">\(\mathbb{D} = \{d_1, ...., d_m\}\)</span>. Define the function <span class="math inline">\(p_{X} (d_i)\)</span> on <span class="math inline">\(\mathbb{D}\)</span> by:</p>
+<p><span class="math display">\[p_X(d_i) = P[\{c: X(c) = d_i\}], \quad \quad \forall i=1, .... ,m\]</span></p>
+<p><br></p>
+<p>Which is the probability of event that contains the outcomes with value <span class="math inline">\(X(c) = d_i\)</span>, this is called the <strong>probability mass function</strong> of <span class="math inline">\(X\)</span>. Then the <strong>induced probability distribution</strong>, <span class="math inline">\(P_X (\cdot): D \rightarrow \mathbb{R}\)</span>, of <span class="math inline">\(X\)</span> is:</p>
+<p><span class="math display">\[P_X (D) = \sum_{d_i \in D} p_X (d_i), \quad \quad D \subset \mathbb{D}\]</span></p>
+<p>Similar to <span class="math inline">\(P\)</span> which is defined on <span class="math inline">\(\mathbb{B}\)</span>. This <span class="math inline">\(P_X (\cdot)\)</span> is basically the probability distribution of events defined on sets <span class="math inline">\(D\)</span>, <span class="math inline">\(P_X (D)\)</span> is the probability of event <span class="math inline">\(D\)</span> defined on <span class="math inline">\(\mathbb{D}\)</span>.</p>
+<h3 id="cumulative-distribution-function">Cumulative Distribution Function</h3>
+<p>The pmf of discrete random variable and the pdf of a continuous random variable are quite different entities. The distribution function, though, uniquely determines the probability distribution of a random variable:</p>
+<p><img src="/images/RL/background/prob_20.png" width="600"></p>
+<p><strong>Note that, cdf is defined <span class="math inline">\(\quad \forall x \in \mathbb{R}\)</span>.</strong></p>
+<p>Remember that <span class="math inline">\(P_X (\cdot)\)</span> is the probability set function (distribution) of the random variable <span class="math inline">\(X\)</span>. The cdf is the probability of event (subset of <span class="math inline">\(\mathbb{D}\)</span>, the random variable range space): <span class="math inline">\(\{a: a \leq x, a \in \mathbb{D}\}\)</span>, this is the same as the event (defined on sample space): <span class="math inline">\(\{c: X(c) \leq x, c \in \mathbb{B}\}\)</span>.</p>
+<p><br></p>
+<h3 id="equal-in-distribution">Equal in Distribution</h3>
+<p>Let <span class="math inline">\(X, Y\)</span> be two random variables. We say that <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are <strong>equal in distribution</strong> and write:</p>
+<p><span class="math display">\[X \overset{D}{=} Y\]</span></p>
+<p>IFF:</p>
+<p><span class="math display">\[F_X(x) = F_Y (x), \quad \quad \quad \forall x \in \mathbb{R}\]</span></p>
+<p>Notice that, equal in distribution does not mean the random variables are the same. For examples, let <span class="math inline">\(X\)</span> be a random variable sampled from range <span class="math inline">\([0, 1)\)</span>, let <span class="math inline">\(Y = 1 - X\)</span>, then <span class="math inline">\(Y\)</span> also has range <span class="math inline">\([0, 1)\)</span>. At the same time, for <span class="math inline">\(x &lt; 0\)</span>, the cdf for both random variables is 0, for <span class="math inline">\(x &lt; 0\)</span>, the cdf for both random variables is 1. And, for <span class="math inline">\(0 \leq x &lt; 1\)</span>, the cdf is <span class="math inline">\(x\)</span> for both random variables. But this two random variables are clearly different.</p>
+<p><img src="/images/RL/background/prob_21.png" width="600"></p>
+<p><br></p>
+<h3 id="theorems-for-cdf">Theorems for CDF</h3>
+<p><img src="/images/RL/background/prob_22.png" width="600"></p>
+<p><img src="/images/RL/background/prob_23.png" width="600"></p>
+<p><strong>Proof of Theorem 1.5.2</strong></p>
+<p>Note that the event <span class="math inline">\(\{-\infty &lt; X \leq b\} = \{-\infty &lt; X \leq a\} \cup \{a &lt; X \leq b\}\)</span>, Then <span class="math inline">\(\{-\infty &lt; X \leq a\} \cup \{a &lt; X \leq b\}\)</span> are disjoint events, which means:</p>
+<p><span class="math display">\[P_X(\{-\infty &lt; X \leq a\} \cup \{a &lt; X \leq b\}) = P_X(\{-\infty &lt; X \leq a\}) + P_X(\{a &lt; X \leq b\})\]</span></p>
+<p>Then,</p>
+<span class="math display">\[\begin{aligned}
+P(\{-\infty &lt; X \leq b\}) &amp;= P_X(\{-\infty &lt; X \leq a\}) + P_X(\{a &lt; X \leq b\})\\
+\implies F_X (b) &amp;= F_X(a) + P_X(\{a &lt; X \leq b\})\\
+\end{aligned}\]</span>
+<p><br></p>
+<p><img src="/images/RL/background/prob_24.png" width="600"></p>
+<p>This basically means that the discontinuities of a cdf have mass. That is, if <span class="math inline">\(x\)</span> is a point of discontinuity of <span class="math inline">\(F_x\)</span>, then we have <span class="math inline">\(P(X=x) &gt; 0\)</span>.</p>
+<p>Example:</p>
+<blockquote>
+<p>Let <span class="math inline">\(X\)</span> have discontinuous cdf: <span class="math display">\[
+F_X(x)=
+\begin{cases}
+0, \quad &amp;x &lt; 0\\
+\frac{x}{2}, \quad &amp;0 \leq x &lt; 1\\
+1, \quad &amp;1 \leq x
+\end{cases}
+\]</span> Then: <span class="math display">\[P(X=1) = F_X (1) - F_X(1 - ) = 1 - \frac{1}{2} = \frac{1}{2}\]</span></p>
+</blockquote>
+<h3 id="discrete-random-variables">Discrete Random Variables</h3>
+<p><img src="/images/RL/background/prob_25.png" width="600"></p>
+<p><img src="/images/RL/background/prob_26.png" width="600"></p>
+<p>If a function satisfies properties 1, 2 of the pmf, then this function <span class="math inline">\(p_X\)</span> uniquely determines the distribution (probability set function) of a random variable <span class="math inline">\(P_X\)</span>.</p>
+<h4 id="support">Support</h4>
+<p>Let <span class="math inline">\(X\)</span> be a discrete random variable with space <span class="math inline">\(\mathbb{D}\)</span>. We define the <code>support</code> of a discrete random variable <span class="math inline">\(X\)</span> to be the points in the space (range) of <span class="math inline">\(X\)</span> which have positive probability. We often denote <span class="math inline">\(S\)</span> as the support of <span class="math inline">\(X\)</span>. Note that <span class="math inline">\(S \in \mathbb{D}\)</span>, but it may be that <span class="math inline">\(S = \mathbb{D}\)</span>.</p>
+<p>If <span class="math inline">\(x \in S\)</span>, then <span class="math inline">\(p_X (x)\)</span> is equal to the size of the discontinuity of <span class="math inline">\(F_X\)</span> at <span class="math inline">\(x\)</span>. If <span class="math inline">\(x \neq S\)</span> then <span class="math inline">\(P[X=x] = 0\)</span> and hence, <span class="math inline">\(F_X\)</span> is continues at this <span class="math inline">\(x\)</span>.</p>
+<h4 id="transformations">Transformations</h4>
+<p>If we have a random variable <span class="math inline">\(X\)</span> and we know its distribution (<span class="math inline">\(P_X, p_X\)</span>). We are interested, though, in a random variable <span class="math inline">\(Y\)</span> which is some transformation of <span class="math inline">\(X\)</span> say <span class="math inline">\(g(X) = Y\)</span>. In particular, we want to determine the distribution of <span class="math inline">\(Y\)</span>. Assume <span class="math inline">\(X\)</span> is discrete with space <span class="math inline">\(\mathbb{D}_X\)</span>. Then the space of <span class="math inline">\(Y\)</span> is <span class="math inline">\(D_Y = {g(x): x \in \mathbb{D}_X}\)</span>. We consider two case of <span class="math inline">\(g\)</span>:</p>
+<ol type="1">
+<li><p>If <span class="math inline">\(g\)</span> is one to one. Then, clearly, the pmf of <span class="math inline">\(Y\)</span> is:</p>
+<p><span class="math display">\[p_Y (y) = P_Y(Y = y) = P_X(g(X) = y) = p_X (X = g^{-1} (y)) = p_X (g^{-1} (y))\]</span></p></li>
+<li><p>If <span class="math inline">\(g\)</span> is not one to one. We basically infer the pmf of <span class="math inline">\(Y\)</span> in a straight forward manner: For each value of <span class="math inline">\(Y=y\)</span>, we infer it:</p>
+<p><span class="math display">\[P_X(\{x: g(x) = y, x \in \mathbb{D}\})\]</span></p></li>
+</ol>
+<p><br></p>
+<p>Example (case 1):</p>
+<blockquote>
+<p>Let X have the pmf: <span class="math display">\[
+p_X(x)=
+\begin{cases}
+\frac{3!}{x!(3 - x)!} {\frac{2}{3}}^x {\frac{1}{3}}^{3 - x}, \quad &amp;x = 0, 1, 2, 3\\
+0, \quad &amp;\text{o. w}\\
+\end{cases}
+\]</span> If <span class="math inline">\(Y = 2X\)</span>, then this is a one to one mapping and <span class="math inline">\(\frac{1}{2} Y = X\)</span>, the pmf of <span class="math inline">\(Y\)</span>: <span class="math display">\[p_Y (y) = p_X (\frac{1}{2} y)\]</span> That is: <span class="math display">\[
+p_Y(y)=
+\begin{cases}
+\frac{3!}{(\frac{1}{2} y)!(3 - \frac{1}{2} y)!} {\frac{2}{3}}^x {\frac{1}{3}}^{3 - \frac{1}{2} y}, \quad &amp;y = 0, \frac{1}{2}, 1, \frac{3}{2}\\
+0, \quad &amp;\text{o. w}\\
+\end{cases}
+\]</span></p>
+</blockquote>
+<p>Example (case 2):</p>
+<blockquote>
+<p>If <span class="math inline">\(Y = X^2\)</span>, for <span class="math inline">\(\mathbb{D_X} = \{-1, 1\}\)</span>. Then the pmf of <span class="math inline">\(Y\)</span>: <span class="math display">\[
+p_Y(y)=
+\begin{cases}
+P_X (\{-1, 1\}) = \underset{x \in \{-1, 1\}}{\sum} p_X (x), \quad &amp;y = 1\\
+0, \quad &amp;\text{o. w}\\
+\end{cases}
+\]</span></p>
+</blockquote>
+<h3 id="continuous-random-variables">Continuous Random Variables</h3>
+<p><img src="/images/RL/background/prob_27.png" width="600"></p>
+<p>Recall that, a point of discontinuity in cdf has <span class="math inline">\(P(X=x) = F_X(x) - F_X (x -) &gt; 0\)</span>, for any random variable. Hence, for a continuous random variable <span class="math inline">\(X\)</span>, there are no points of discrete mass <span class="math inline">\(\implies P(X=x) =0, \quad \forall x \in \mathbb{R}\)</span>. Most continuous random variables are <code>absolutely continuous</code>:</p>
+<p><span class="math display">\[F_X (x) = \int^{x}_{-\infty} f_X(t) dt\]</span></p>
+<p>For some function <span class="math inline">\(f_X\)</span> or <span class="math inline">\(f_X (t)\)</span>. The function <span class="math inline">\(f_X (t)\)</span> is called a <code>probabability density function</code> (pdf) of <span class="math inline">\(X\)</span>. If <span class="math inline">\(f_X (x)\)</span> is also continuous, then the fundamental theorem of calculus implies that:</p>
+<p><span class="math display">\[\frac{d}{dx}F_X (x) = \frac{d}{dx}\int^{x}_{-\infty} f_X(t) dt = f_X (x)\]</span></p>
+<p><br></p>
+<p>The <code>support</code> <span class="math inline">\(S\)</span> of a continuous random variable <span class="math inline">\(X\)</span> consists of all points <span class="math inline">\(x\)</span> such that <span class="math inline">\(f_X(x) &gt; 0\)</span>.</p>
+<p>If <span class="math inline">\(X\)</span> is a continuous random variable, then probabilities can be obtained by integration:</p>
+<p><span class="math display">\[P_X (a &lt; X \leq b) = F_{X} (b) - F_{X} (a) = \int^{b}_{-\infty} f_X(t) dt - \int^{a}_{-\infty} f_X(t) dt = \int^{b}_{a} f_X(t) dt\]</span></p>
+<p>Also, for continuous random variables:</p>
+<p><span class="math display">\[P_X(a &lt; X \leq b) = P_X(a \leq X \leq b) = P_X (a \leq X &lt; b) = P_X(a &lt; X &lt; b)\]</span></p>
+<p>The pdfs satisfy two properties:</p>
+<p><span class="math display">\[f_X(x) \geq 0 \quad \quad \quad \int^{\infty}_{-\infty} f_X(t) dt = 1\]</span></p>
+<p>At the same time, if a function satisfies the above two properties then it is a pdf for a continuous random variable.</p>
+<h4 id="quantiles">Quantiles</h4>
+<p><code>Quantile</code> (percentiles) are easily interpretable characteristics of a distribution.</p>
+<p><img src="/images/RL/background/prob_28.png" width="600"></p>
+<p><code>Median</code> is the quantile <span class="math inline">\(\xi_{\frac{1}{2}}\)</span>. It is a point in the domain of <span class="math inline">\(X\)</span> that divides the mass of the pdf into its lower and upper halves. The first and third quartiles divide each of these halves into quarters. They are respectively <span class="math inline">\(\xi_{\frac{1}{4}}, \xi_{\frac{3}{4}}\)</span>. We label them <span class="math inline">\(q_1, \; q_2, \; q_3\)</span> respectvely. The difference <span class="math inline">\(iqr = q_3 - q_1\)</span> is called the <code>inter-quartile range</code> of <span class="math inline">\(X\)</span>.</p>
+<p>The median is often used as a measure of center of the distribution of <span class="math inline">\(X\)</span> (<span class="math inline">\(P_X\)</span>), while the interquartile range is used as a measure of <code>spread</code> and <code>dispersion</code> of the distribution of <span class="math inline">\(X\)</span>.</p>
+<p><strong>Quantiles need not be unique even for continuous random variables with pdfs.</strong></p>
+<p>Example:</p>
+<blockquote>
+<p>Any point in the interval (2, 3) serves as a median for the following pdf <span class="math display">\[
+f(x)=
+\begin{cases}
+3(1 - x)(x - 2), \quad &amp;1 &lt; x &lt; 2\\
+3(3 - x)(x - 4), \quad &amp;3 &lt; x &lt; 4\\
+0, \quad &amp; o. w\
+\end{cases}
+\]</span></p>
+</blockquote>
+<p><br></p>
+<p>If, however, a quantile, say <span class="math inline">\(\xi\)</span> is in the support of an absolutely continuous random variable <span class="math inline">\(X\)</span> with cdf <span class="math inline">\(F_X(x)\)</span> then <span class="math inline">\(\xi\)</span> is unique solution to the equation:</p>
+<p><span class="math display">\[P_X (X &lt; \xi) = p \implies F_X (\xi) = p \implies \xi = F^{-1}_X (p)\]</span></p>
+<h4 id="transformations-1">Transformations</h4>
+<p>Let <span class="math inline">\(X\)</span> be a continuous random variable with pdf <span class="math inline">\(f_X\)</span>. Let <span class="math inline">\(Y = g(X)\)</span> be some transformation of <span class="math inline">\(X\)</span>. We can obtain the pdf of <span class="math inline">\(Y\)</span> by first obtain its cdf.</p>
+<p>Example:</p>
+<blockquote>
+<p><span class="math display">\[
+F_X(x)=
+\begin{cases}
+0, \quad &amp;x &lt; 0\\
+x^2, \quad &amp;0 \leq x &lt; 1\\
+1, \quad &amp; 1 \leq x
+\end{cases}
+\]</span> Let <span class="math inline">\(Y = X^2\)</span> and let <span class="math inline">\(y\)</span> be in the support of <span class="math inline">\(Y\)</span>, that is <span class="math inline">\(0&lt; f_Y(y) \implies 0 &lt; y &lt; 1\)</span> (If <span class="math inline">\(y = 1 \implies f_Y (y) = 0\)</span>). <span class="math display">\[F_Y(y) = P_Y (Y &lt; y) = P_X (X &lt; \sqrt{y}) = F_X (\sqrt{y}), \quad \forall 0 &lt; y &lt; 1\]</span> <span class="math display">\[\implies F_Y(y) = F_X (\sqrt(y)) = y, \quad \forall 0 &lt; y &lt; 1\]</span> <span class="math display">\[
+\implies f_Y(y)=
+\begin{cases}
+1, \quad &amp;0 &lt; y &lt; 1\\
+0, \quad &amp;o.w
+\end{cases}
+\]</span></p>
+</blockquote>
+<p><br></p>
+<p><img src="/images/RL/background/prob_29.png" width="600"></p>
+<p><strong>Proof</strong>:</p>
+<p><span class="math display">\[F_Y(y) = P(X &lt; g^{-1} (y) = F_X (g^{-1} (y)) \implies \frac{d}{dy} F_Y(y) = \frac{d}{dy} F_X (g^{-1} (y)) = f_X (g^{-1} y) |\frac{d}{dy} g^{-1} (y)|\]</span></p>
+<p><br></p>
+<p>In this case, we refer <span class="math inline">\(\frac{d}{dy} g^{-1} (y)\)</span> as the <code>Jacobian of the inverse transformation</code>.</p>
+<p><img src="/images/RL/background/prob_30.png" width="600"></p>
+<h3 id="expectation">Expectation</h3>
+<p>When dealing with R.V that takes a countably infinite number of values, one has to deal with the possibility that the infinite sum <span class="math inline">\(\sum_x xp_X(x)\)</span> is not well-defined. More concretely, the expectation is well-defined if</p>
+<p><span class="math display">\[\sum_x |x| p_X(x) &lt; \infty\]</span></p>
+<p><img src="/images/RL/background/prob_31.png" width="600"></p>
+<p>Sometimes, the expectation <span class="math inline">\(E[x]\)</span> is called the <code>mathmematical expectation</code> of <span class="math inline">\(X\)</span>, the <code>expected value</code> of <span class="math inline">\(X\)</span> or the <code>mean</code> of <span class="math inline">\(X\)</span>. When the name mean is used, we often denote the <span class="math inline">\(E[X]\)</span> by <span class="math inline">\(\mu\)</span>.</p>
+<h1 id="reference">Reference</h1>
+<ol type="1">
+<li>D. P. Bertsekas and J. N. Tsitsiklis, Introduction to Probability, NH, Nashua:Athena Scientific, 2008.</li>
+<li></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/MDP/" rel="bookmark">MDP</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-equations/" rel="bookmark">Bellman Equations</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-optimality-equations/" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/14/calculus/" rel="bookmark">Calculus (1)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/dp/" rel="bookmark">Dynamic Programming</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RL-Basics/" rel="tag"># RL Basics</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/05/07/value-function-learning/" rel="prev" title="Learning From Stream of Data">
+                  <i class="fa fa-chevron-left"></i> Learning From Stream of Data
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/05/11/probability-2/" rel="next" title="probability (2)">
+                  probability (2) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

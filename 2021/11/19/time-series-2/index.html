@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Time Series (ARIMA) Autoregressive Moving Average Models (ARMA) Autoregressive Models Autoregressive models are based on the idea that the current value of the series \(X_t\) can be explained as a fun">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Time Series (2)">
+<meta property="og:url" content="https://swag1ong.github.io/2021/11/19/time-series-2/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Time Series (ARIMA) Autoregressive Moving Average Models (ARMA) Autoregressive Models Autoregressive models are based on the idea that the current value of the series \(X_t\) can be explained as a fun">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_3_1_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_3_1_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_3_2_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_3_3_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_3_4_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_3_4_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_3_5_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_3_5_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_3_5_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ts_3_5_4.png">
+<meta property="article:published_time" content="2021-11-19T05:10:49.000Z">
+<meta property="article:modified_time" content="2021-11-29T07:08:03.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="RL Basics">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swag1ong.github.io/images/RL/background/ts_3_1_1.png">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/11/19/time-series-2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;11&#x2F;19&#x2F;time-series-2&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;11&#x2F;19&#x2F;time-series-2&#x2F;&quot;,&quot;title&quot;:&quot;Time Series (2)&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Time Series (2) | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#time-series-arima"><span class="nav-number">1.</span> <span class="nav-text">Time Series (ARIMA)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#autoregressive-moving-average-models-arma"><span class="nav-number">1.1.</span> <span class="nav-text">Autoregressive Moving Average Models (ARMA)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#autoregressive-models"><span class="nav-number">1.1.1.</span> <span class="nav-text">Autoregressive Models</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#autoregressive-operator"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">Autoregressive Operator</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#moving-average-models"><span class="nav-number">1.1.2.</span> <span class="nav-text">Moving Average Models</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#moving-average-operator"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Moving Average Operator</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#altogether-arma"><span class="nav-number">1.1.3.</span> <span class="nav-text">Altogether: ARMA</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ar-and-ma-polynomials"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">AR and MA Polynomials</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#causality"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">Causality</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#property-3.1-causality-of-an-armap-q-process"><span class="nav-number">1.1.3.2.1.</span> <span class="nav-text">Property 3.1 Causality of an \(ARMA(p, q)\) Process</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#invertible-and-uniqueness"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">Invertible and Uniqueness</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#property-3.2-invertibility-of-an-armap-q-process"><span class="nav-number">1.1.3.3.1.</span> <span class="nav-text">Property 3.2 Invertibility of an \(ARMA(p, q)\) Process</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#difference-equations"><span class="nav-number">1.1.4.</span> <span class="nav-text">Difference Equations</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#homogeneous-difference-equation-of-order-1"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">Homogeneous Difference Equation of Order 1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#homogeneous-difference-equation-of-order-2"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">Homogeneous Difference Equation of Order 2</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#case-1-z_1-neq-z_2"><span class="nav-number">1.1.4.2.1.</span> <span class="nav-text">Case 1: \(z_1 \neq z_2\)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#case-2-z_1-z_2-z_0"><span class="nav-number">1.1.4.2.2.</span> <span class="nav-text">Case 2: \(z_1 &#x3D; z_2 &#x3D; z_0\)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#autocorrelation-and-partial-autocorrelation"><span class="nav-number">1.1.5.</span> <span class="nav-text">Autocorrelation and Partial Autocorrelation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#partial-autocorrelation-function-pacf"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">Partial Autocorrelation Function (PACF)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#forecasting"><span class="nav-number">1.1.6.</span> <span class="nav-text">Forecasting</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#minimum-mean-square-error-prediction"><span class="nav-number">1.1.6.1.</span> <span class="nav-text">Minimum Mean-Square Error Prediction</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#property-3.3-best-linear-prediction-for-stationary-processes"><span class="nav-number">1.1.6.2.</span> <span class="nav-text">Property 3.3: Best Linear Prediction for Stationary Processes</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#one-step-ahead-prediction"><span class="nav-number">1.1.6.3.</span> <span class="nav-text">One-step-ahead Prediction</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#prediction-arp"><span class="nav-number">1.1.6.3.1.</span> <span class="nav-text">Prediction: \(AR(p)\)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#the-durbin-levinson-algorithm"><span class="nav-number">1.1.6.3.2.</span> <span class="nav-text">The Durbin-Levinson Algorithm</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#the-innovations-algorithm"><span class="nav-number">1.1.6.3.3.</span> <span class="nav-text">The Innovations Algorithm</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#iterative-solution-for-the-pcaf"><span class="nav-number">1.1.6.3.4.</span> <span class="nav-text">Iterative Solution for the PCAF</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#m-step-ahead-prediction"><span class="nav-number">1.1.6.4.</span> <span class="nav-text">\(m\)-step-ahead Prediction</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#forecasting-arma-processes"><span class="nav-number">1.1.6.5.</span> <span class="nav-text">Forecasting \(ARMA\) Processes</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#integrated-models-for-nonstationary-data"><span class="nav-number">1.1.7.</span> <span class="nav-text">Integrated Models for Nonstationary Data</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-arima"><span class="nav-number">1.1.7.1.</span> <span class="nav-text">Definition: \(ARIMA\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ema"><span class="nav-number">1.1.7.2.</span> <span class="nav-text">EMA</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/11/19/time-series-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Time Series (2)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-11-19 13:10:49" itemprop="dateCreated datePublished" datetime="2021-11-19T13:10:49+08:00">2021-11-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-11-29 15:08:03" itemprop="dateModified" datetime="2021-11-29T15:08:03+08:00">2021-11-29</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/11/19/time-series-2/" class="post-meta-item leancloud_visitors" data-flag-title="Time Series (2)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>22k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>20 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="time-series-arima">Time Series (ARIMA)</h1>
+<h2 id="autoregressive-moving-average-models-arma">Autoregressive Moving Average Models (ARMA)</h2>
+<h3 id="autoregressive-models">Autoregressive Models</h3>
+<p>Autoregressive models are based on the idea that the current value of the series <span class="math inline">\(X_t\)</span> can be explained as a function of <span class="math inline">\(p\)</span> past values, <span class="math inline">\(X_{t-1}, X_{t-2}, ..., X_{t-p}\)</span> where <span class="math inline">\(p\)</span> determines the number of steps into the past needed to forecast the current value.</p>
+<p>An autoregressive model of order <span class="math inline">\(p\)</span>, abbreviated <span class="math inline">\(AR(p)\)</span> with <span class="math inline">\(E[X_t] = 0\)</span>, is of the form:</p>
+<p><span class="math display">\[X_t = \phi_1 X_{t-1} + \phi_2 X_{t-2} + ... + \phi_p X_{t-p} + W_t\]</span></p>
+<p>Where <span class="math inline">\(X_t\)</span> is stationary, <span class="math inline">\(\phi_1, ..., \phi_p \neq 0\)</span> are constants, <span class="math inline">\(W_t\)</span> is a Gaussian white noise series with mean zero and variance <span class="math inline">\(\sigma^2_w\)</span>. <strong>We assume above equation <span class="math inline">\(X_t\)</span> has mean zero</strong>, if it has non zero mean <span class="math inline">\(\mu\)</span>, we can replace it by:</p>
+<p><span class="math display">\[X_t - \mu = \phi(X_{t-1} - \mu) + \phi_2(X_{t-2} - \mu) + ... + \phi_p (X_{t-p} - \mu) + W_t\]</span> <span class="math display">\[\implies X_t = \alpha + \phi_1 X_{t-1} + \phi_2 X_{t-2} + ... + \phi_p X_{t-p} + W_t\]</span></p>
+<p>Where <span class="math inline">\(\alpha = \mu(1 - \phi_1 - ... - \phi_p)\)</span>.</p>
+<p>We can also use the backshift operator to rewrite the zero mean <span class="math inline">\(AR(p)\)</span> process as:</p>
+<p><span class="math display">\[(1 - \phi_1 B - \phi_2 B^2 - ... - \phi_p B^p) X_t = W_t\]</span></p>
+<p>or using <strong>autoregressive operator</strong>:</p>
+<p><span class="math display">\[\phi(B)X_t = W_t\]</span></p>
+<span id="more"></span>
+<h4 id="autoregressive-operator">Autoregressive Operator</h4>
+<p>The Autoregressive operator is defined to be:</p>
+<p><span class="math display">\[\phi_p(B) = 1 - \phi_1 B - \phi_2 B^2 - ... - \phi_p B^p\]</span></p>
+<p><br></p>
+<p>We can write the <span class="math inline">\(AR\)</span> models as a <strong>linear process</strong>. Start with <span class="math inline">\(AR(1)\)</span> with zero mean, given by <span class="math inline">\(X_t = \phi_1 X_{t-1} + W_t\)</span> and iterating backwards <span class="math inline">\(k\)</span> times, we get:</p>
+<span class="math display">\[\begin{aligned}
+X_t &amp;= \phi_1 X_{t-1} + W_t = \phi (\phi X_{t-2} + W_{t-1}) + W_t\\
+&amp;= \phi^2 X_{t-2} + \phi W_{t-1} + W_t\\
+&amp; \; .\\
+&amp; \; .\\
+&amp; \; .\\
+&amp;= \phi^k X_{t-k} + \sum^{k-1}_{j=0}\phi^j W_{t-j}\\
+\end{aligned}\]</span>
+<p>If we keep iterating, we have:</p>
+<p><span class="math display">\[X_t = \sum^{\infty}_{j=0} \phi^j W_{t-j}\]</span></p>
+<p>If <span class="math inline">\(|\phi_j| &lt; 1\)</span>, we have the infinite sum defined and the process is a linear process (with <span class="math inline">\(\psi_j = \phi^j\)</span>).</p>
+<p>To calculate the mean, autocovariance and autocorrelation of the <span class="math inline">\(AR(1)\)</span> process:</p>
+<p><strong>Mean</strong>:</p>
+<p><span class="math display">\[E[\sum^{\infty}_{j=0} \phi^j W_{t-j}] = 0\]</span></p>
+<p><strong>Autocovariacne</strong></p>
+<p><span class="math display">\[\gamma(h) = \sigma^2_w \sum^\infty_{j=0} \phi^{j + h} \phi^{j} = \sigma^2_w \phi^h \sum^\infty_{j=0} \phi^{2j} = \frac{\sigma^2_w \phi^h}{1 - \phi^2}, \;\; h \geq 0\]</span></p>
+<p><strong>Autocorrelation</strong>:</p>
+<p><span class="math display">\[\rho(h) = \frac{\gamma(h)}{\gamma(0)} = \phi^h\]</span></p>
+<p><img src="/images/RL/background/ts_3_1_1.png" width="600"></p>
+<h3 id="moving-average-models">Moving Average Models</h3>
+<p>The moving average model of order <span class="math inline">\(q\)</span>, abbreviated as <span class="math inline">\(MA(q)\)</span>, assumes the white noise <span class="math inline">\(W_t\)</span> on the right-hand side of the defining equation are combined linearly to form the observed data.</p>
+<p><br></p>
+<p>The <strong>Moving Average</strong> or <span class="math inline">\(MA(q)\)</span> model is defined to be:</p>
+<p><span class="math display">\[X_t = W_t + \theta_1W_{t-1} + \theta_2 W_{t-2} + ... + \theta_q W_{t-q}\]</span></p>
+<p>Where there are <span class="math inline">\(q\)</span> lags in the moving average and <span class="math inline">\(\theta_1, ..., \theta_q (\theta_q \neq 0)\)</span> are parameters. Assume <span class="math inline">\(W_{t}\)</span> is a Gaussian white noise series with mean zero and variance <span class="math inline">\(\sigma^2_w\)</span>.</p>
+<p><br></p>
+<p>The system is the same as the linear process with <span class="math inline">\(\psi_j = \theta_j, \psi_0 = 1, \; \; \forall j=0, 1, ..., q\)</span> and <span class="math inline">\(\psi_j = 0\)</span> for all other values of <span class="math inline">\(j\)</span>.</p>
+<h4 id="moving-average-operator">Moving Average Operator</h4>
+<p>The <strong>Moving Average Operator</strong> is:</p>
+<p><span class="math display">\[\theta_q(B) = 1 + \theta_1 B + \theta_2 B^2 + .... + \theta_q B^q\]</span></p>
+<p>The model can be written in terms of operator:</p>
+<p><span class="math display">\[X_t = \theta_q(B) W_t\]</span></p>
+<p>Unlike the autoregressive process, <strong>the moving average process is stationary for any values of <span class="math inline">\(\theta\)</span>.</strong></p>
+<p><br></p>
+<p>Consider the <span class="math inline">\(MA(1)\)</span> model <span class="math inline">\(X_t = W_t + \theta W_{t-1}\)</span>. Then <span class="math inline">\(E[X_t] = 0\)</span> and the autocovariance:</p>
+<p><span class="math display">\[\gamma(0) = (\psi_0^2 + \psi_1^2)\sigma^2_w = (1 + \theta^2)\sigma^2_w\]</span> <span class="math display">\[\gamma(1) = (\psi_0\psi_1 + 0 * \psi_1) \sigma^2_w = \theta\sigma^2_w\]</span> <span class="math display">\[\gamma(i) = 0, \;\; \forall i &gt; 1\]</span></p>
+<p>The autocorrelation:</p>
+<p><span class="math display">\[\rho(1) = \frac{\theta}{1 + \theta^2}\]</span> <span class="math display">\[\rho(i) = 0, \;\; \forall i &gt; 1\]</span></p>
+<p>In contrast with <span class="math inline">\(AR(1)\)</span> model, the autocorrelation only exists between <span class="math inline">\(X_t, X_{t-1}\)</span> and <span class="math inline">\(|\rho(1)| \leq 0.5, \; \forall \theta\)</span></p>
+<p><img src="/images/RL/background/ts_3_1_2.png" width="600"></p>
+<h3 id="altogether-arma">Altogether: ARMA</h3>
+<p>We now proceed with the general development of autoregressive, moving average and mixed autoregressive moving average models for stationary series.</p>
+<p><br></p>
+<p>A time series <span class="math inline">\(\{X_t; \; t=0, \pm 1, \pm 2, ....\}\)</span> is <span class="math inline">\(\mathbf{ARMA(p, q)}\)</span> if it is stationary and:</p>
+<p><span class="math display">\[X_t = \phi_1 X_{t-1} + ... + \phi_p X_{t-p} + W_t + \theta_1 W_{t-1} + .... + \theta_q W_{t-q}\]</span> <span class="math display">\[\phi(B)X_t = \theta(B) W_t\]</span></p>
+<p>With <span class="math inline">\(W_t\)</span> being a Gaussian white noise with mean zero, variance <span class="math inline">\(\sigma^2_w\)</span> and <span class="math inline">\(\theta_q \neq 0\)</span>, <span class="math inline">\(\phi_q \neq 0\)</span> and <span class="math inline">\(\sigma^2_w &gt; 0\)</span>. The parameters <span class="math inline">\(p, q\)</span> are called the autoregressive and moving average orders respectively. If <span class="math inline">\(X_t\)</span> has non-zero mean <span class="math inline">\(\mu\)</span>, we set <span class="math inline">\(\alpha = \mu(1 - \phi_1 - .... - \phi_p)\)</span> and write the model as:</p>
+<p><span class="math display">\[X_t = \alpha + \phi_1 X_{t-1} + ... + \phi_p X_{t-p} + W_t + \theta_1 W_{t-1} + .... + \theta_q W_{t-q}\]</span></p>
+<p><br></p>
+<p>Problems with general definitions of <span class="math inline">\(\mathbf{ARMA(p, q)}\)</span>:</p>
+<ol type="1">
+<li>Parameter redundant models</li>
+<li>Stationary AR models that depend on the future (Causal)</li>
+<li>MA models that are not unique (Invertibility)</li>
+</ol>
+<p>To overcome these problems, we will require some additional restrictions on the model parameters.</p>
+<h4 id="ar-and-ma-polynomials">AR and MA Polynomials</h4>
+<p><img src="/images/RL/background/ts_3_2_1.png" width="600"></p>
+<p>To address the parameter redundancy, we will henceforth refer to an <span class="math inline">\(ARMA(p, q)\)</span> model to mean that <strong>it is in its simplest form</strong>. That is, in addition to the original definition, we will also require that <span class="math inline">\(\phi(z)\)</span> and <span class="math inline">\(\theta(z)\)</span> have no common factors (<span class="math inline">\(z\)</span> is often <span class="math inline">\(B\)</span> the backshift operator, <strong>we can treat <span class="math inline">\(B\)</span> as complex number here</strong>).</p>
+<blockquote>
+<p>The process <span class="math display">\[X_t = 0.5X_{t-1} - 0.5W_{t-1} + W_t \implies (1 - 0.5B)X_t = (1 - 0.5B)W_t \implies X_t = W_t\]</span> is not <span class="math inline">\(ARMA(1, 1)\)</span> process because the original process has common factor <span class="math inline">\((1 - 0.5B)\)</span>. In its reduced form, <span class="math inline">\(X_t\)</span> is a white noise.</p>
+</blockquote>
+<h4 id="causality">Causality</h4>
+<p>An <span class="math inline">\(ARMA(p, q)\)</span> model is said to be <strong>causal</strong>, if the time series <span class="math inline">\(\{X_t; t = 0, \pm 1, \pm 2 ...\}\)</span> can be written as a one-sided linear process:</p>
+<p><span class="math display">\[X_t = \sum^\infty_{j=0} \psi_jW_{t-j} = \psi (B) W_t\]</span></p>
+<p>Where <span class="math inline">\(\psi(B) = \sum^\infty_{j=0} \psi_j B^j\)</span> and <span class="math inline">\(\sum^\infty_{j=0} |\psi_j| &lt; \infty\)</span>, we set <span class="math inline">\(\psi_0 = 1\)</span></p>
+<h5 id="property-3.1-causality-of-an-armap-q-process">Property 3.1 Causality of an <span class="math inline">\(ARMA(p, q)\)</span> Process</h5>
+<p>An <span class="math inline">\(ARMA(p, q)\)</span> model is causal if and only if <span class="math inline">\(\phi(z) \neq 0\)</span> for <span class="math inline">\(|z| \leq 1\)</span>. The coefficient of the linear process above can be determined by solving:</p>
+<p><span class="math display">\[\psi(z) = \sum^\infty_{j=0} \psi_j z^j = \frac{\theta(z)}{\phi(z)}, \;\; |z| \leq 1\]</span></p>
+<p>Another way to phrase the property is that an <span class="math inline">\(ARMA(p, q)\)</span> process is <strong>causal</strong> only when the roots of <span class="math inline">\(\phi(z)\)</span> lie outside the unit circle:</p>
+<p><span class="math display">\[\phi(z) = 0 \implies |z| &gt; 1\]</span></p>
+<blockquote>
+<p>Consider the <span class="math inline">\(AR(1)\)</span> process: <span class="math display">\[X_t = \phi X_{t-1} + W_t\]</span> This process is causal only when <span class="math inline">\(|\phi| &lt; 1\)</span>. Equivalently, the process is causal only when the root of <span class="math inline">\(\phi(z) = 1 - \phi z = 0\)</span> is bigger than one in absolute value. That is: <span class="math display">\[1 - \phi z = 0 \implies z = \frac{1}{\phi}\]</span> Since <span class="math inline">\(|\phi| &lt; 1\)</span>, we have <span class="math inline">\(|z| &gt; 1\)</span></p>
+</blockquote>
+<h4 id="invertible-and-uniqueness">Invertible and Uniqueness</h4>
+<p>To address the problem of uniqueness, we choose the model that allows an infinite autoregressive representation.</p>
+<p><br></p>
+<p>An <span class="math inline">\(ARMA(p, q)\)</span> model is said to be <strong>invertible</strong>, if the time series <span class="math inline">\(\{X_t; t = 0, \pm 1, \pm 2 ...\}\)</span> can be written as:</p>
+<p><span class="math display">\[\pi(B)X_t = \sum^\infty_{j=0} \pi_j X_{t-j} = W_t\]</span></p>
+<p>Where <span class="math inline">\(\pi(B) = \sum^\infty_{j=0} \pi_j B^j\)</span> and <span class="math inline">\(\sum^\infty_{j=0} |\pi_j| &lt; \infty\)</span>. We set <span class="math inline">\(\pi_0 = 1\)</span></p>
+<h5 id="property-3.2-invertibility-of-an-armap-q-process">Property 3.2 Invertibility of an <span class="math inline">\(ARMA(p, q)\)</span> Process</h5>
+<p>An <span class="math inline">\(ARMA(p, q)\)</span> model is invertible if and only if <span class="math inline">\(\theta(z) \neq 0\)</span> for <span class="math inline">\(|z| \leq 1\)</span>. The coefficient <span class="math inline">\(\pi_j\)</span> above can be determined by solving:</p>
+<p><span class="math display">\[\pi(z) = \sum^\infty_{j=0} \pi_j z^j = \frac{\phi(z)}{\theta(z)}, \;\; |z| \leq 1\]</span></p>
+<p>Another way to phrase the property is that an <span class="math inline">\(ARMA(p, q)\)</span> process is <strong>invertible</strong> only when the roots of <span class="math inline">\(\theta(z)\)</span> lies outside the unit circle:</p>
+<p><span class="math display">\[\theta(z) = 0 \implies |z| &gt; 1\]</span></p>
+<blockquote>
+<p>Consider the process: <span class="math display">\[X_t = 0.4 X_{t-1} + 0.45 X_{t-2} + W_t + W_{t-1} + 0.25 W_{t-2}\]</span> In operator form: <span class="math display">\[\phi(B)X_t = \theta(B)W_t\]</span> Where: <span class="math display">\[\phi(B) = 1 - 0.4B - 0.45 B^2\]</span> <span class="math display">\[\theta(B) = 1 + B + 0.25 B^2\]</span> At first, this appears to be an <span class="math inline">\(ARMA(2, 2)\)</span> process: <span class="math display">\[\phi(z) = (1 + 0.5z) (1 - 0.9z) \implies |z| &gt; 1\]</span> <span class="math display">\[\theta(z) = (1 + 0.5z)^2 \implies |z| &gt; 1\]</span> however, the polynomial has common factor <span class="math inline">\((1 + 0.5z)\)</span>, so the model is not an <span class="math inline">\(ARMA(2, 2)\)</span> process. After cancellation, the model is an <span class="math inline">\(ARMA(1, 1)\)</span> model. It is causal and invertible. Using properties 3.2 and 3.1, we can find the coefficients for linear process: <span class="math display">\[\phi(z) \psi(z) = \theta(z) \implies (1 - 0.9z) (\psi_0 + \psi z + ...) = (1 + 0.5z) \implies X_t = W_t + 1.4 \sum^\infty_{j=1} 0.9^{j-1}W_{t-j}\]</span> <span class="math display">\[\theta(z) \psi(z) = \phi(z) \implies X_t = 1.4\sum^\infty_{j=1} (-0.5)^{j-1} X_{t-j} + W_t\]</span></p>
+</blockquote>
+<p><br></p>
+<h3 id="difference-equations">Difference Equations</h3>
+<p>The study of the behavior of <span class="math inline">\(ARMA\)</span> process and their ACFs is greatly enhanced by a basic knowledge of <strong>difference equations</strong>.</p>
+<p><img src="/images/RL/background/ts_3_3_1.png"></p>
+<h4 id="homogeneous-difference-equation-of-order-1">Homogeneous Difference Equation of Order 1</h4>
+<p>Suppose we have a sequence of numbers <span class="math inline">\(u_0, u_1, ....\)</span> s.t:</p>
+<p><span class="math display">\[u_n - \alpha u_{n-1} = 0, \;\; \alpha \neq 0, \; n = 1, 2, ....\]</span></p>
+<p>This equation represents a homogeneous difference equation of order 1. To solve the equation, we write:</p>
+<p><span class="math display">\[u_1 = \alpha u_0\]</span> <span class="math display">\[u_2 = \alpha u_1 = \alpha^2 u_0\]</span> <span class="math display">\[u_n = \alpha^n u_0\]</span></p>
+<p>Given the initial condition <span class="math inline">\(u_0 = c\)</span>, we may solve <span class="math inline">\(u_n = \alpha^n c\)</span>. In operator notation:</p>
+<p><span class="math display">\[u_n - \alpha u_{n-1} = 0 \implies (1 - \alpha B) u_n = 0\]</span></p>
+<p>The polynomial associated with this is <span class="math inline">\(\alpha(z) = 1 - \alpha z\)</span>. We know that <span class="math inline">\((1 - \alpha z) = 0 \implies z = \frac{1}{\alpha} \implies \alpha = \frac{1}{z}\)</span>. Thus, a solution can be obtained given the initial condition <span class="math inline">\(u_0 = c\)</span>:</p>
+<p><span class="math display">\[u_n = \alpha^n c = (z^{-1})^n c\]</span></p>
+<p>If we know the root <span class="math inline">\(z\)</span>, we will know the solution to the equation. In other words, the solution ot the difference equation above depends only on the initial condition and the inverse of the root to the associated polynomial <span class="math inline">\(\alpha(z)\)</span>.</p>
+<h4 id="homogeneous-difference-equation-of-order-2">Homogeneous Difference Equation of Order 2</h4>
+<p>Suppose that the sequence satisfies:</p>
+<p><span class="math display">\[u_n - \alpha_1 u_{n-1} - \alpha_2 u_{n-2} = 0, \;\; \alpha_2 \neq 0, \; n=2, 3, ...\]</span></p>
+<p>This equation is a homogeneous difference equation of order 2. The corresponding polynomial is:</p>
+<p><span class="math display">\[\alpha(z) = 1 - \alpha_1 z - \alpha_2 z^2\]</span></p>
+<p>which has two roots say <span class="math inline">\(z_1, z_2\)</span> s.t <span class="math inline">\(\alpha(z_1) = \alpha(z_2) = 0\)</span>. We will consider 2 cases:</p>
+<h5 id="case-1-z_1-neq-z_2">Case 1: <span class="math inline">\(z_1 \neq z_2\)</span></h5>
+<p>In this case, the general solution to the difference equation is:</p>
+<p><span class="math display">\[u_n = c_1 z_1^{-n} + c_2 z_2^{-n}\]</span></p>
+<p>Given two initial conditions <span class="math inline">\(u_0, u_1\)</span>, we may solve for <span class="math inline">\(c_1, c_2\)</span>:</p>
+<p><span class="math display">\[u_0 = c_1 + c_2\]</span> <span class="math display">\[u_1 = c_1 z_1^{-1} + c_2 z_2^{-1}\]</span></p>
+<p>In case of distinct roots, the solution to the homogeneous difference equation of degree two is:</p>
+<p><span class="math display">\[u_n = z_1^{-n} \times \text{(a polynomial in $n$ of degree $m_1 - 1$)} + z_2^{-n} \times \text{(a polynomial in $n$ of degree $m_2 - 1$)}\]</span></p>
+<p>Where <span class="math inline">\(m_1\)</span> is the multiplicity of the root <span class="math inline">\(z_1\)</span> and <span class="math inline">\(m_2\)</span> is the multiplicity of the root <span class="math inline">\(z_2\)</span>. In this case <span class="math inline">\(m_1 = m_2 = 1\)</span> (zero degree polynomial is represented as <span class="math inline">\(c_1\)</span> and <span class="math inline">\(c_2\)</span>)</p>
+<h5 id="case-2-z_1-z_2-z_0">Case 2: <span class="math inline">\(z_1 = z_2 = z_0\)</span></h5>
+<p>In this case, the general solution to the difference equation is:</p>
+<p><span class="math display">\[u_n = z_0^{-n} (c_1 + c_2 n)\]</span></p>
+<p>Given two initial conditions <span class="math inline">\(u_0, u_1\)</span>, we may solve for <span class="math inline">\(c_1, c_2\)</span>:</p>
+<p><span class="math display">\[u_0 = c_1, u_1 = (c_1 + c_2)z_0^{-1}\]</span></p>
+<p>In the case of repeated root, the solution is:</p>
+<p><span class="math display">\[u_n = z_0^{-n} \times \text{(a polynomial in $n$ of degree $m_0 - 1$)}\]</span></p>
+<p>Where <span class="math inline">\(m_0\)</span> is the multiplicity of the root <span class="math inline">\(z_0\)</span> that is <span class="math inline">\(m_0 = 2\)</span> (first degree polynomial is represented as <span class="math inline">\(c_1 + c_2 n\)</span>)</p>
+<h3 id="autocorrelation-and-partial-autocorrelation">Autocorrelation and Partial Autocorrelation</h3>
+<p>For a causal <span class="math inline">\(ARMR(p, q)\)</span> model, <span class="math inline">\(\phi(B)X_t = \theta(B)W_t\)</span>, where the roots of <span class="math inline">\(\phi(z)\)</span> are outside of unit circle, write:</p>
+<p><span class="math display">\[X_t  = \sum^{\infty}_{j=0} \psi_j W_{t-j}\]</span></p>
+<p>It follows immediately that <span class="math inline">\(E[X_t] = 0\)</span> and the autocovariance function of <span class="math inline">\(X_t\)</span> can be write as:</p>
+<p><span class="math display">\[\gamma(h) = Cov(X_{t+h}, X_{t}) = \sigma^2_w \sum^{\infty}_{j=0} \psi_j \psi_{j+h}, \; \; h\geq 0\]</span></p>
+<p>We could obtain a homogeneous difference equation direcrtly in terms of <span class="math inline">\(\gamma(h)\)</span> to solve for the <span class="math inline">\(\psi\)</span> weights. First, we write:</p>
+<span class="math display">\[\begin{aligned}
+\gamma(h) &amp;= Cov(X_{t+h}, X_{t}) \\
+&amp;= Cov(\sum^{p}_{j=1} \phi_j X_{t+h-j} + \sum^{q}_{j=0} \theta_j W_{t+h-j}, X_t)\\
+&amp;= \sum^{p}_{j=1} \phi_j Cov(X_{t+h-j}, X_t) + \sum^p_{j=0} \theta_j Cov(W_{t+h-j}, \sum^{\infty}_{k=0}\psi_k W_{t-k})\\
+&amp;= \sum^{p}_{j=1} \phi_j \gamma(h - j) + \sum^p_{j=h}\theta_j \sigma^2_w \psi_{j-h}
+\end{aligned}\]</span>
+<p>Where, white noise with different index has zero covariance:</p>
+<p><span class="math display">\[Cov(W_{t+h-j}, \sum^{\infty}_{k=0}\psi_k W_{t-k}) = \psi_{j-h} \sigma^2_w\]</span></p>
+<p>Then we can write the general difference equation of the autocovariance function:</p>
+<p><span class="math display">\[\gamma(h) - \phi_1\gamma(h - 1) - ... - \phi_p\gamma(h - p) = 0, \;\; h \geq \max(p, q + 1)\]</span></p>
+<p>With initial conditions:</p>
+<p><span class="math display">\[\gamma(h) -  \sum^{p}_{j=1} \phi_j \gamma(h - j) = \sum^p_{j=h}\theta_j \sigma^2_w \psi_{j-h}, \;\; 0 \leq h \leq \max(p, q)\]</span></p>
+<p>Dividing the <span class="math inline">\(\gamma(h)\)</span> by <span class="math inline">\(\gamma(0)\)</span>, we have the ACF.</p>
+<h4 id="partial-autocorrelation-function-pacf">Partial Autocorrelation Function (PACF)</h4>
+<p>Consider a causal <span class="math inline">\(AR(1)\)</span> model <span class="math inline">\(X_t = \phi X_{t-1} + W_t\)</span>, the covariance function for lag 2 is:</p>
+<p><span class="math display">\[\gamma(2) = \frac{\sigma^2_w \phi^2}{1 - \phi^2} = \sigma^2_w \gamma(0)\]</span></p>
+<p>The correlation between <span class="math inline">\(X_t\)</span> and <span class="math inline">\(X_{t-2}\)</span> is not zero, as it would be for <span class="math inline">\(MA(1)\)</span> process, because <span class="math inline">\(X_t\)</span> is dependent on <span class="math inline">\(X_{t-2}\)</span> through <span class="math inline">\(X_{t-1}\)</span>. Suppose we break this chain of dependence by removing the effect of <span class="math inline">\(X_{t-1}\)</span>, in other words, we consider the correlation between <span class="math inline">\(X_{t} - \phi X_{t-1}\)</span> and <span class="math inline">\(X_{t-2} - \phi X_{t-1}\)</span>, because it is the correlation between <span class="math inline">\(X_t\)</span> and <span class="math inline">\(X_{t-2}\)</span> with the linear dependence of each on <span class="math inline">\(X_t\)</span> removed. In this way, we have broken the dependence chain between <span class="math inline">\(X_t\)</span> and <span class="math inline">\(X_{t-2}\)</span>:</p>
+<p><span class="math display">\[Cov(X_{t} - \phi X_{t-1}, X_{t-2} - \phi X_{t-1}) = 0\]</span></p>
+<p>Hence, the tool we need is <strong>partial autocorrelation</strong>, which is the correlation between <span class="math inline">\(X_s, X_t\)</span> with everything in the middle removed.</p>
+<p><br></p>
+<p>The <strong>partial autocorrelation function (PACF)</strong> of a stationary process <span class="math inline">\(X_t\)</span>, denoted <span class="math inline">\(\phi_{hh}\)</span>, for <span class="math inline">\(h = 1, 2, ...\)</span> is:</p>
+<p><span class="math display">\[\phi_{11} = \rho(1)\]</span> <span class="math display">\[\phi_{hh} = Corr(X_{t+h} - \hat{X}_{t+h}, X_{t} - \hat{X}_{t}), \;\; h \geq 2\]</span></p>
+<p>Where <span class="math inline">\(\hat{X}_{t+h}\)</span> denotes the regression of a zero mean stationary time series <span class="math inline">\(X_{t+h}\)</span> on <span class="math inline">\(\{X_{t+h-1}, ...., X_{t+1}\}\)</span> which we write as:</p>
+<p><span class="math display">\[\hat{X}_{t+h} = \beta_1 X_{t+h-1} + \beta_2 X_{t+h-2} + .. + \beta_{h-1} X_{t+1}\]</span></p>
+<p>And <span class="math inline">\(\hat{X}_t\)</span> denotes the regression of <span class="math inline">\(X_t\)</span> on <span class="math inline">\(\{X_t, ...., X_{t+h-1}\}\)</span>:</p>
+<p><span class="math display">\[\hat{X}_t = \beta_1 X_{t+1} + \beta_2 X_{t+2} + .. + \beta_{h-1} X_{t+h-1}\]</span></p>
+<p>These <span class="math inline">\(\beta\)</span> are the same for both regressions and are found by minimizing the expected mean squared error:</p>
+<p><span class="math display">\[E[X_{t-h} - \sum^{h-1}_{j=1}\beta_j X_{t+j}]^2\]</span></p>
+<p>Both <span class="math inline">\(X_{t+h} - \hat{X}_{t+h}\)</span> and <span class="math inline">\(X_{t} - \hat{X}_{t}\)</span> are uncorrelated with <span class="math inline">\(\{X_{t+1}, ..., X_{t+h-1}\}\)</span>. The PACF, <span class="math inline">\(\phi_{hh}\)</span> is <strong>the correlation between <span class="math inline">\(X_{t+h}\)</span> and <span class="math inline">\(X_t\)</span> with the linear dependence of <span class="math inline">\(\{X_{t+1}, ..., X_{t+h-1}\}\)</span> on each removed</strong>.</p>
+<blockquote>
+<p>Consider the PACF of the <span class="math inline">\(AR(1)\)</span> process given by <span class="math inline">\(X_t = \phi X_{t-1} + W_t\)</span> with <span class="math inline">\(|\phi| &lt; 1\)</span>. By definition, <span class="math inline">\(\phi_{11} = \rho(1) = \phi\)</span>. To calculate <span class="math inline">\(\phi_{22}\)</span>, consider regression of <span class="math inline">\(\hat{X}_{t+2} = \beta X_{t+1}\)</span>. We choose <span class="math inline">\(\beta\)</span> to minimize: <span class="math display">\[E[X_{t+2} - \hat{X}_{t+2}]^2 = E[(X_{t+2} - \beta X_{t+1})^2] - Var[X_{t+2} - \hat{X}_{t+2}] = \gamma(0) - 2 \beta \gamma(1) + \beta^2 \gamma(0)\]</span> Taking the derivative w.r.t <span class="math inline">\(\beta\)</span>, setting the result to zero, we have: <span class="math display">\[\beta = \frac{\gamma(1)}{\gamma(0)} = \rho(1) = \phi\]</span> Hence, <span class="math display">\[\phi_{22} = Corr(X_{t+2} - \hat{X}_{t+2}, X_t - \hat{X}_t) = Corr(X_{t+2} - \phi X_{t+1}, X_{t} - \phi {X}_{t+1}) = 0\]</span> <strong>In fact for <span class="math inline">\(AR(p)\)</span> model, <span class="math inline">\(\phi_{hh} = 0, \;\; \forall h &gt; p\)</span></strong> <img src="/images/RL/background/ts_3_4_1.png"></p>
+</blockquote>
+<p><img src="/images/RL/background/ts_3_4_2.png"></p>
+<p><br></p>
+<h3 id="forecasting">Forecasting</h3>
+<p>In forecasting, the goal is to predict future values of a time series, <span class="math inline">\(X_{n+m}, \; m= 1, 2, ...\)</span> based on the data collected to the present, <span class="math inline">\(\mathbf{X} = \{X_n, ...., X_1\}\)</span>. <strong>We begin by assuming that <span class="math inline">\(X_t\)</span> is stationary and model parameters are known.</strong></p>
+<h4 id="minimum-mean-square-error-prediction">Minimum Mean-Square Error Prediction</h4>
+<p>The minimum mean square error predictor of <span class="math inline">\(X_{n+m}\)</span> is:</p>
+<p><span class="math display">\[X^n_{n+m} = E[X_{n+m} | \mathbf{X}]\]</span></p>
+<p>Because the conditional expectation minimizes the mean square error. More formally:</p>
+<p>Let <span class="math inline">\(X^n_{n+m} = E[X_{n+m} | \mathbf{X}]\)</span> be the conditional expectation of <span class="math inline">\(X_{n+m}\)</span> given <span class="math inline">\(\mathbf{X}\)</span>. Then:</p>
+<p><span class="math display">\[E[(X_{n+m} - X^n_{n+m})^2] \leq E[(X_{n+m} - \pi(\mathbf{X}))^2]\]</span></p>
+<p>Where <span class="math inline">\(\pi(\mathbf{X})\)</span> is any function of the history <span class="math inline">\(\mathbf{X}\)</span>.</p>
+<p><br></p>
+<p><strong>Proof</strong>:</p>
+<span class="math display">\[\begin{aligned}
+E[(X_{n+m} - \pi(\mathbf{X}))^2] &amp;= E[((X_{n+m} - X^n_{n+m}) - (X^{n}_{n+m} - \pi(\mathbf{X})))^2]\\
+&amp;=E[(X_{n+m} - X^n_{n+m})^2] + 2E[(X_{n+m} - X^n_{n+m})(X^{n}_{n+m} - \pi(\mathbf{X}))] + E[(X^{n}_{n+m} - \pi(\mathbf{X}))^2]\\
+\end{aligned}\]</span>
+<p>For clarification, replace <span class="math inline">\(\mathbf{X}\)</span> with <span class="math inline">\(\mathbf{Y}\)</span> and let <span class="math inline">\(\hat{\mathbf{Y}} = X^n_{n+m} = E[X_{n+m} | \mathbf{Y}]\)</span> with pdf <span class="math inline">\(P_{\mathbf{Y}}(\mathbf{y}), \pi(\mathbf{X}) = \pi(\mathbf{Y})\)</span></p>
+The second term:
+<span class="math display">\[\begin{aligned}
+2E[(X_{n+m} - X^n_{n+m})(X^{n}_{n+m} - \pi(\mathbf{X}))] &amp;= 2\int_{x} \int_{\mathbf{y}}(x - \hat{\mathbf{y}})(\hat{\mathbf{y}} - \pi(\mathbf{y})) p_{\mathbf{Y}, X_{n+m}} (\mathbf{y}, x) d\mathbf{y}dx\\
+&amp;= 2\int_{\mathbf{y}} \underbrace{\{\int_{x}(x - \hat{\mathbf{y}})p_{X_{n+m} | \mathbf{Y}} (x | \mathbf{y}) dx\}}_{E[X | \mathbf{Y}=\mathbf{y}] - E[X | \mathbf{Y}=\mathbf{y}] = 0} (\hat{\mathbf{y}} - \pi(\mathbf{y})) p_{\mathbf{Y}} (\mathbf{y}) d\mathbf{y}\\
+&amp;= 0
+\end{aligned}\]</span>
+<p>Thus, we have:</p>
+<p><span class="math display">\[E[(X_{n+m} - \pi(\mathbf{X}))^2] = E[(X_{n+m} - X^n_{n+m})^2] + E[(X^{n}_{n+m} - \pi(\mathbf{X}))^2] \geq E[(X_{n+m} - X^n_{n+m})^2]\]</span></p>
+<p><br></p>
+<h4 id="property-3.3-best-linear-prediction-for-stationary-processes">Property 3.3: Best Linear Prediction for Stationary Processes</h4>
+<p>Given data <span class="math inline">\(X_1, ..., X_n\)</span>, the <strong>best linear predictor (BLP)</strong>, <span class="math inline">\(X^n_{n+m} = \alpha_0 + \sum^N_{k=1} \alpha_k X_k\)</span>, of <span class="math inline">\(X_{n+m}\)</span> for <span class="math inline">\(m \geq 1\)</span>, is found by solving:</p>
+<p><span class="math display">\[E[(X_{n+m} - X^n_{n+m})x_k] = 0, \;\;\; k = 0, 1, ...., n\]</span></p>
+<p>Where <span class="math inline">\(X_0 = 1\)</span>, for <span class="math inline">\(\alpha_0, ..., \alpha_n\)</span>.</p>
+<p><br></p>
+<p>The equation above is called the <strong>prediction equations</strong>, and they are used to solve for the coefficients <span class="math inline">\(\{\alpha_0, ..., \alpha_n\}\)</span>. If <span class="math inline">\(E[X_t] = \mu\)</span>, the first equation (<span class="math inline">\(k=0\)</span>) implies:</p>
+<p><span class="math display">\[E[X_{n+m} - X^n_{n+m}] = 0 \implies E[X_{n+m}] = E[X^n_{n+m}] = \mu\]</span></p>
+<p>By expanding the expectation:</p>
+<p><span class="math display">\[E[X^n_{n+m}] = \mu = E[\alpha_0 + \sum^N_{k=1} \alpha_k X_k] = \alpha_0 + \sum^N_{k=1} \alpha_k \mu\]</span></p>
+<p>Thus, for <span class="math inline">\(k=0\)</span> the BLP has the form:</p>
+<p><span class="math display">\[X^n_{n+m} = \mu + \sum^n_{k=1} \alpha_k (X_k - \mu)\]</span></p>
+<p><strong>If the process is Gaussian, minimum mean square error predictors and BLP are the same</strong>.</p>
+<h4 id="one-step-ahead-prediction">One-step-ahead Prediction</h4>
+<p>Then consider one-step-ahead prediction with <span class="math inline">\(m = 1\)</span>. The BLP of <span class="math inline">\(X_{n+1}\)</span> is of the form:</p>
+<p><span class="math display">\[X^{n}_{n+1} = \phi_{n1} X_n + .... + \phi_{nn} X_1\]</span></p>
+<p>Where the original coefficients <span class="math inline">\(\alpha_k\)</span> are replaced by <span class="math inline">\(\phi_{n, n+1-k}\)</span> for <span class="math inline">\(k=1, ..., n\)</span> which will become clear later. Then the coefficients satisfies:</p>
+<p><span class="math display">\[E[(X_{n+1} - \sum^{n}_{j=1} \phi_{nj} X_{n + 1 - j})X_{n+1-k}] = 0, \;\; k = 1, 2, ... , n\]</span></p>
+<p>or:</p>
+<p><span class="math display">\[\sum^n_{j=1} \phi_{nj} \gamma(k - j) = \gamma(k), \;\; k = 1, 2, ... , n\]</span></p>
+<p>In matrix form we have:</p>
+<p><span class="math display">\[\Gamma_n \boldsymbol{\phi}_n = \boldsymbol{\gamma}_n\]</span></p>
+<p>Where <span class="math inline">\(\Gamma_n = \{\gamma(k - j)\}^n_{j, k = 1}\)</span> is a <span class="math inline">\(n \times n\)</span> matrix, <span class="math inline">\(\boldsymbol{\phi}_n = [\phi_{n1} ,..., \phi_{nn}]^T\)</span> is a <span class="math inline">\(n \times 1\)</span> vector, and <span class="math inline">\(\boldsymbol{\gamma}_n = [\gamma(1), ..., \gamma(n)]^T\)</span> is a <span class="math inline">\(n \times 1\)</span> vector. If the elements of <span class="math inline">\(\boldsymbol{\phi}_n\)</span> are unique and <span class="math inline">\(\Gamma_n\)</span> is invertible (<strong>For ARMA models, <span class="math inline">\(\Gamma_n\)</span> is positive definite, so it is invertible</strong>), the coefficients can be found by:</p>
+<p><span class="math display">\[\boldsymbol{\phi}_n = \Gamma^{-1}_n \boldsymbol{\gamma}_n\]</span></p>
+<p>Similarly, the BLP of one step forecasting can be written in matrix form:</p>
+<p><span class="math display">\[X^n_{n+1} = \boldsymbol{\phi}^T_n \mathbf{X}\]</span></p>
+<p>Where <span class="math inline">\(\boldsymbol{X} = [X_n, ...., X_1]^T\)</span></p>
+<p>The mean square one-step prediction error is:</p>
+<p><span class="math display">\[P^n_{n+1} = E[X_{n+1} - X^{n}_{n+1}]^2 = \gamma(0) - \boldsymbol{\gamma}^T_n \Gamma^{-1}_n \boldsymbol{\gamma}_n\]</span></p>
+<h5 id="prediction-arp">Prediction: <span class="math inline">\(AR(p)\)</span></h5>
+<p>If the time series is a causal <span class="math inline">\(AR(p)\)</span> process, then, for <span class="math inline">\(n \geq p\)</span>:</p>
+<p><span class="math display">\[X^n_{n+1} = \phi_1 X_n + ... + \phi_p X_{n - p + 1}\]</span></p>
+<h5 id="the-durbin-levinson-algorithm">The Durbin-Levinson Algorithm</h5>
+<p><img src="/images/RL/background/ts_3_5_1.png"></p>
+<h5 id="the-innovations-algorithm">The Innovations Algorithm</h5>
+<p><img src="/images/RL/background/ts_3_5_2.png"></p>
+<h5 id="iterative-solution-for-the-pcaf">Iterative Solution for the PCAF</h5>
+<p>The PCAF of a stationary process <span class="math inline">\(X_t\)</span>, can be obtained iteratively using Durbin-Levinson Algorithm as <span class="math inline">\(\phi_{nn}\)</span> for <span class="math inline">\(n = 1, 2, ...\)</span></p>
+<p>Thus, we know that the last coefficient of <span class="math inline">\(AR(p)\)</span> model is the partial autocorrelation at lag <span class="math inline">\(p\)</span>, <span class="math inline">\(\phi_p = \phi_{pp}\)</span>.</p>
+<p><br></p>
+<h4 id="m-step-ahead-prediction"><span class="math inline">\(m\)</span>-step-ahead Prediction</h4>
+<p>Property 3.3 allows us to calculate the BLP of <span class="math inline">\(X_{n+m}\)</span> for any <span class="math inline">\(m \geq 1\)</span>. Given data, the <span class="math inline">\(m\)</span>-step-ahead predictor is:</p>
+<p><span class="math display">\[X^n_{n+m} = \phi^{(m)}_{n1} X_n + \phi^{(m)}_{n2} X_{n-1} + ,..., + \phi^{(m)}_{nn} X_1\]</span></p>
+<p>Where the coefficients <span class="math inline">\(\boldsymbol{\phi}^{(m)}_n\)</span> satisfies:</p>
+<p><span class="math display">\[\sum^n_{j=1} \phi^{(m)}_{nj} \gamma(k - j) = \gamma(m + k - 1), \;\; k = 1, 2, ... , n\]</span></p>
+<p>The prediction equation in matrix form:</p>
+<p><span class="math display">\[\Gamma_n \boldsymbol{\phi}^{(m)}_n = \boldsymbol{\gamma}^{(m)}_n\]</span></p>
+<p>Where <span class="math inline">\(\boldsymbol{\gamma}^{(m)}_n = [\gamma(m), ...., \gamma(m + n - 1)]^T\)</span> and <span class="math inline">\(\boldsymbol{\phi}^{(m)}_n = [\phi^{(m)}_{n1}, ..., \phi^{(m)}_{nn}]^T\)</span></p>
+<p>The mean square <span class="math inline">\(m\)</span>-step-ahead prediction error is:</p>
+<p><span class="math display">\[P^n_{n+m} = E[X_{n + m} - X^n_{n + m}]^2 = \gamma(0) -  \boldsymbol{\gamma}^{(m)^T}_n \Gamma^{-1}_n \boldsymbol{\gamma}^{(m)}_n\]</span></p>
+<p>Given the data <span class="math inline">\(X_1, ..., X_n\)</span>, the innovations algorithm can be calculated successively for <span class="math inline">\(t=1\)</span> then <span class="math inline">\(t=2\)</span> and so on. The <span class="math inline">\(m\)</span>-step-ahead predictor and its mean-square error based on the innovative algorithm are given by:</p>
+<p><img src="/images/RL/background/ts_3_5_3.png"></p>
+<h4 id="forecasting-arma-processes">Forecasting <span class="math inline">\(ARMA\)</span> Processes</h4>
+<p>The general prediction equations of BLP provides little insight into forecasting for <span class="math inline">\(ARMA\)</span> models in general especially when <span class="math inline">\(n\)</span> is large, we need to invert a <span class="math inline">\(n \times n\)</span> matrix which is computationally expensive. There are a number of different ways to express these forecasts, and each aids in understanding the special structure of <span class="math inline">\(ARMA\)</span> prediction. Throughout, we assume <span class="math inline">\(X_t\)</span> is a causal and invertible zero-mean <span class="math inline">\(ARMA\)</span> process, <span class="math inline">\(\phi(B)X_t = \theta(B)W_t\)</span>, where <span class="math inline">\(W_t \overset{i.i.d}{\sim} N(0, \sigma^2_w)\)</span>.</p>
+<p>We denote the predictor of <span class="math inline">\(X_{n+m}\)</span> based on the infinite past as:</p>
+<p><span class="math display">\[\tilde{X}_{n+m} = E[X_{n+m} | X_n, ...., X_1, X_0, X_{-1}, ...]\]</span></p>
+<p>In general, <span class="math inline">\(\tilde{X}_{n+m}\)</span> is not the same as the minimum mean square error predictor <span class="math inline">\(X^n_{n+m}\)</span>, but for large samples <span class="math inline">\(\tilde{X}_{n+m}\)</span> will provide a good approximation to it. We now write the process in invertible and causal forms:</p>
+<p><span class="math display">\[X_{n+m} = \sum^\infty_{j=0} \psi_j W_{n+m-j}, \;\; \psi_0 = 1\]</span> <span class="math display">\[W_{n+m} = \sum^{\infty}_{j=0} \pi_j X_{n+m-j}, \;\; \pi_0 = 1\]</span></p>
+<p>Then by taking the conditional expectation on infinite past, we have:</p>
+<p><span class="math display">\[\tilde{X}_{n+m} = \sum^\infty_{j=0}\psi_j \tilde{W}_{n+m-j} = \sum^{\infty}_{j=m}\psi_j W_{n+m-j}\]</span></p>
+<p>Since by causality and invertibility:</p>
+<p><span class="math display">\[\tilde{W}_t = E[W_t | X_n, ...., X_0, ....] = E[\sum^{\infty}_{j=0} \pi_j X_{t-j} | X_n, ..., X_0, ...] = 
+\begin{cases}
+0 &amp; t &gt; n\\
+&amp;\\  % blank row
+W_{t} &amp; t \leq n 
+\end{cases}\]</span></p>
+<p>Similarly, using the second equation we have:</p>
+<p><span class="math display">\[E[W_{n+m}] = 0 = E[\sum^\infty_{j=0} \pi_j X_{n+m-j} | X_n ,...., X_0, ..] = \sum^{\infty}_{j=0}\pi_j \tilde{X}_{n+m-j} = \tilde{X}_{n+m} + \sum^{\infty}_{j=1}\pi_j \tilde{X}_{n+m-j}\]</span></p>
+<p>Since <span class="math inline">\(E[X_{t} | X_n ,..., X_0, ...] = X_{t}\)</span> for <span class="math inline">\(t \leq n\)</span>, we have:</p>
+<p><span class="math display">\[\tilde{X}_{n+m} = -\sum^{\infty}_{j=1}\pi_j \tilde{X}_{n+m-j} = -\sum^{m-1}_{j=1} \pi_j \tilde{X}_{n+m-j} - \sum^{\infty}_{k=m} \pi_k X_{n + m -k}\]</span></p>
+<p><strong>Prediction is accomplished recursively using the above equation, starting from <span class="math inline">\(m=1\)</span>, and then continuing for $m=2, 3, .. $. When <span class="math inline">\(n\)</span> is large, we would use this by truncating, because we only observe <span class="math inline">\(X_1, X_2, ..., X_n\)</span> but not the whole history <span class="math inline">\(X_n, ..., X_0, X_{-1}, ...\)</span>. In this case, we can truncate the above equation by setting <span class="math inline">\(\sum^{\infty}_{j=n+m} \pi_j X_{n+m-j} = 0\)</span>:</strong></p>
+<p><span class="math display">\[\tilde{X}^n_{n+m} =  -\sum^{m-1}_{j=1} \pi_j \tilde{X}^n_{n+m-j} - \sum^{n + m - 1}_{k=m} \pi_k X_{n + m -k}\]</span></p>
+<p><br></p>
+<p>Hence, we can write the mean square prediction error as:</p>
+<p><span class="math display">\[P^n_{n+m} = E[(X_{n+m} - \tilde{X}_{n+m})^2] = Var[(X_{n+m} - \tilde{X}_{n+m})^2] + E^2[X_{n+m} - \tilde{X}_{n+m}] = \sigma^2_w\sum^{m-1}_{j=0}\psi^2_j\]</span></p>
+<p>Where <span class="math inline">\(X_{n+m} - \tilde{X}_{n+m} = \sum^\infty_{j=0} \psi_j W_{n+m-j} - \sum^{\infty}_{j=m}\psi_j W_{n+m-j} = \sum^{m-1}_{j=0}\psi_j W_{n+m-j}\)</span></p>
+<p><strong>The <span class="math inline">\(ARMA\)</span> forecasts quickly settle to the mean with a constant prediction error as the forecast horizon <span class="math inline">\(m\)</span> grows.</strong></p>
+<p><img src="/images/RL/background/ts_3_5_4.png" width="800"></p>
+<h3 id="integrated-models-for-nonstationary-data">Integrated Models for Nonstationary Data</h3>
+<p>If <span class="math inline">\(X_t\)</span> is a random walk, <span class="math inline">\(X_t = X_{t-1} + W_t\)</span>, then by differencing <span class="math inline">\(X_t\)</span>, we find that <span class="math inline">\(\nabla X_t = X_{t} - X_{t-1} = W_t\)</span> is stationary. In many situations, time series can be thought of as being composed of two components:</p>
+<ol type="1">
+<li>A nonstationary trend component.</li>
+<li>A zero-mean stationary component.</li>
+</ol>
+<p>The <strong>intergrated ARMA (ARIMA)</strong> model is a broadening of the class of <span class="math inline">\(ARMA\)</span> models to include differencing.</p>
+<h4 id="definition-arima">Definition: <span class="math inline">\(ARIMA\)</span></h4>
+<p>A process <span class="math inline">\(X_t\)</span> is said to be <span class="math inline">\(\mathbf{ARIMA}(p, d, q)\)</span> if:</p>
+<p><span class="math display">\[\nabla^d X_t = (1 - B)^d X_t\]</span></p>
+<p>is a <span class="math inline">\(ARMA(p, q)\)</span>. In general, we will write the model as:</p>
+<p><span class="math display">\[\phi(B) (1 - B)^d X_t = \theta (B) W_t\]</span></p>
+<p>If <span class="math inline">\(E[\nabla^d X_t] = \mu\)</span>, we write the model as:</p>
+<p><span class="math display">\[\phi(B) (1 - B)^d X_t = \theta (B) W_t + \delta\]</span></p>
+<p>Where:</p>
+<p><span class="math display">\[\delta = \mu(1 - \phi_1 - ... - \phi_p)\]</span></p>
+<p><br></p>
+<p>For <span class="math inline">\(ARIMA\)</span> model, since <span class="math inline">\(Y_t = \nabla^d X_t\)</span> is a <span class="math inline">\(ARMA\)</span> model, we can use the forecasting methods to obtain forecasts for <span class="math inline">\(Y_t\)</span> which in turn leads to forecasts for <span class="math inline">\(X_t\)</span>.</p>
+<blockquote>
+<p>If <span class="math inline">\(d=1\)</span>, given forecasts <span class="math inline">\(Y^n_{n+m}\)</span> for <span class="math inline">\(m=1, 2, ...\)</span>, we have <span class="math display">\[Y^n_{n+m} = X^n_{n+m} - X^n_{n+m-1}\]</span> <span class="math display">\[\implies X^n_{n+m} =  X^n_{n+m-1} + Y^n_{n+m}\]</span> With initial condition: <span class="math display">\[X^n_{n+1} = X_{n} + Y^n_{n+1}\]</span> Since: <span class="math display">\[X^n_{n} = X_n\]</span></p>
+</blockquote>
+<p>For <span class="math inline">\(ARIMA\)</span> models, the mean-squared error can be approximated by:</p>
+<p><span class="math display">\[P^n_{n+m} = \sigma^2_w \sum^{m-1}_{j=0} {\psi^*_j}^2\]</span></p>
+<p>Where <span class="math inline">\(\psi^*_j\)</span> is the coefficient of <span class="math inline">\(z^j\)</span> in <span class="math inline">\(\psi^*(z) = \frac{\theta(z)}{\phi(z)(1 - z)^d}\)</span></p>
+<h4 id="ema">EMA</h4>
+<p>The <strong>Exponentially Weighted Moving Average(EWMA)</strong> is defined as a <span class="math inline">\(ARIMA(0, 1, 1)\)</span> model:</p>
+<p><span class="math display">\[X_t = X_{t-1} + W_t- \lambda W_{t-1}\]</span></p>
+<p>Where <span class="math inline">\(|\lambda| &lt; 1\)</span> for <span class="math inline">\(t = 1, 2, ...\)</span> and <span class="math inline">\(X_0 = 0\)</span>.</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/MDP/" rel="bookmark">MDP</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-equations/" rel="bookmark">Bellman Equations</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-optimality-equations/" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/14/calculus/" rel="bookmark">Calculus (1)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/dp/" rel="bookmark">Dynamic Programming</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RL-Basics/" rel="tag"># RL Basics</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/11/15/time-series-1/" rel="prev" title="Time Series (1)">
+                  <i class="fa fa-chevron-left"></i> Time Series (1)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/12/25/tcn/" rel="next" title="TCN">
+                  TCN <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

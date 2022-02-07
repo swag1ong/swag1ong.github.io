@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Real Analysis (4) Sequences and Series of Functions [1] Uniform Convergence of a Seuqence of Functions Definition 6.2.1: Pointwise Convergence For each \(n \in \mathbb{N}\), let \(f_n\) be a function">
+<meta property="og:type" content="article">
+<meta property="og:title" content="real-analysis-4">
+<meta property="og:url" content="https://swag1ong.github.io/2022/01/06/real-analysis-4/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Real Analysis (4) Sequences and Series of Functions [1] Uniform Convergence of a Seuqence of Functions Definition 6.2.1: Pointwise Convergence For each \(n \in \mathbb{N}\), let \(f_n\) be a function">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/ra_6_2_3.png">
+<meta property="article:published_time" content="2022-01-06T13:01:03.000Z">
+<meta property="article:modified_time" content="2022-01-17T13:28:20.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="RL Basics">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swag1ong.github.io/images/RL/background/ra_6_2_3.png">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2022/01/06/real-analysis-4/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2022&#x2F;01&#x2F;06&#x2F;real-analysis-4&#x2F;&quot;,&quot;path&quot;:&quot;2022&#x2F;01&#x2F;06&#x2F;real-analysis-4&#x2F;&quot;,&quot;title&quot;:&quot;real-analysis-4&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>real-analysis-4 | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#real-analysis-4"><span class="nav-number">1.</span> <span class="nav-text">Real Analysis (4)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#sequences-and-series-of-functions-1"><span class="nav-number">1.1.</span> <span class="nav-text">Sequences and Series of Functions [1]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#uniform-convergence-of-a-seuqence-of-functions"><span class="nav-number">1.1.1.</span> <span class="nav-text">Uniform Convergence of a Seuqence of Functions</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-6.2.1-pointwise-convergence"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">Definition 6.2.1: Pointwise Convergence</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-6.2.1b-pointwise-convergence"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">Definition 6.2.1B: Pointwise Convergence</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-6.2.3-uniform-convergence-stronger-than-pointwise"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">Definition 6.2.3: Uniform Convergence (Stronger than Pointwise)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.2.5-cauchy-criterion-for-uniform-convergence"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">Theorem 6.2.5: Cauchy Criterion for Uniform Convergence</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.2.6-continuous-limit-theorem"><span class="nav-number">1.1.1.5.</span> <span class="nav-text">Theorem 6.2.6: Continuous Limit Theorem</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#uniform-convergence-and-differentiation"><span class="nav-number">1.1.2.</span> <span class="nav-text">Uniform Convergence and Differentiation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.3.1-differentiable-limit-theorem"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Theorem 6.3.1: Differentiable Limit Theorem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.3.2"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">Theorem 6.3.2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.3.3-combine-theorem-6.3.1-and-6.3.2"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">Theorem 6.3.3: Combine Theorem 6.3.1 and 6.3.2</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#series-of-functions"><span class="nav-number">1.1.3.</span> <span class="nav-text">Series of Functions</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-6.4.1-pointwise-convergence-and-uniform-convergence-of-series-of-functions"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">Definition 6.4.1: Pointwise Convergence and Uniform Convergence of Series of Functions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.4.2-term-by-term-continuity-theorem"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">Theorem 6.4.2: Term-by-Term Continuity Theorem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.4.3-term-by-term-differentiability-theorem"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">Theorem 6.4.3: Term-by-Term Differentiability Theorem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.4.4-cauchy-criterion-for-uniform-convergence-of-series"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">Theorem 6.4.4: Cauchy Criterion for Uniform Convergence of Series</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-6.4.5-weierstrass-m-test"><span class="nav-number">1.1.3.5.</span> <span class="nav-text">Corollary 6.4.5: Weierstrass M-Test</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#power-series"><span class="nav-number">1.1.4.</span> <span class="nav-text">Power Series</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.5.1"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">Theorem 6.5.1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.5.2"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">Theorem 6.5.2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lemma-6.5.3-abels-lemma"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">Lemma 6.5.3: Abel&#39;s Lemma</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.5.4-abels-theorem"><span class="nav-number">1.1.4.4.</span> <span class="nav-text">Theorem 6.5.4: Abel&#39;s Theorem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.5.5"><span class="nav-number">1.1.4.5.</span> <span class="nav-text">Theorem 6.5.5</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.5.6"><span class="nav-number">1.1.4.6.</span> <span class="nav-text">Theorem 6.5.6</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.5.7"><span class="nav-number">1.1.4.7.</span> <span class="nav-text">Theorem 6.5.7</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#taylor-series"><span class="nav-number">1.1.5.</span> <span class="nav-text">Taylor Series</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.6.2-taylors-formula-centered-at-zero-maclaurin-series"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">Theorem 6.6.2: Taylor&#39;s Formula Centered at Zero (Maclaurin Series)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.6.3-lagranges-remainder-theorem"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">Theorem 6.6.3: Lagrange&#39;s Remainder Theorem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-6.6.7-taylor-series-centered-at-a-neq-0"><span class="nav-number">1.1.5.3.</span> <span class="nav-text">Definition 6.6.7: Taylor Series Centered at \(a \neq 0\)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#the-weierstrass-approximation-theorem"><span class="nav-number">1.1.6.</span> <span class="nav-text">The Weierstrass Approximation Theorem</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.7.1-weierstrass-approximation-theorem"><span class="nav-number">1.1.6.1.</span> <span class="nav-text">Theorem 6.7.1: Weierstrass Approximation Theorem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-6.7.2-polygonal"><span class="nav-number">1.1.6.2.</span> <span class="nav-text">Definition 6.7.2: Polygonal</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-6.7.3"><span class="nav-number">1.1.6.3.</span> <span class="nav-text">Theorem 6.7.3</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#the-riemann-integral"><span class="nav-number">1.2.</span> <span class="nav-text">The Riemann Integral</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#the-definition-of-the-riemann-integral"><span class="nav-number">1.2.1.</span> <span class="nav-text">The Definition of the Riemann Integral</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-7.2.1-partition-lower-sum-upper-sum"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Definition 7.2.1: Partition, Lower Sum, Upper Sum</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-7.2.2-refinement"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Definition 7.2.2: Refinement</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lemma-7.2.3"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">Lemma 7.2.3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lemma-7.2.4"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">Lemma 7.2.4</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-7.2.5-upper-integral-lower-integral"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">Definition 7.2.5: Upper Integral, Lower Integral</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lemma-7.2.6"><span class="nav-number">1.2.1.6.</span> <span class="nav-text">Lemma 7.2.6</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-7.2.7-riemann-integrability"><span class="nav-number">1.2.1.7.</span> <span class="nav-text">Definition 7.2.7: Riemann Integrability</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#criteria-for-integrability"><span class="nav-number">1.2.2.</span> <span class="nav-text">Criteria for Integrability</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.2.8-integrability-criterion"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">Theorem 7.2.8: Integrability Criterion</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.2.9"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">Theorem 7.2.9</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.3.2"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">Theorem 7.3.2</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#properties-of-the-integral"><span class="nav-number">1.2.3.</span> <span class="nav-text">Properties of the Integral</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.4.1"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">Theorem 7.4.1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.4.2"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">Theorem 7.4.2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-7.4.3"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">Definition 7.4.3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.4.4-integrable-limit-theorem"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">Theorem 7.4.4: Integrable Limit Theorem</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#the-fundamental-theorem-of-calculus"><span class="nav-number">1.2.4.</span> <span class="nav-text">The Fundamental Theorem of Calculus</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.5.1-fundamental-theorem-of-calculus"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">Theorem 7.5.1: Fundamental Theorem of Calculus</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-7.6.1-measure-zero"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">Definition 7.6.1: Measure Zero</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-7.6.3-alpha-continuity"><span class="nav-number">1.2.4.3.</span> <span class="nav-text">Definition 7.6.3: \(\alpha\)-Continuity</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-7.6.4-uniformly-alpha-continuous"><span class="nav-number">1.2.4.4.</span> <span class="nav-text">Definition 7.6.4: Uniformly \(\alpha\)-continuous</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-7.6.5-lebesgues-theorem"><span class="nav-number">1.2.4.5.</span> <span class="nav-text">Theorem 7.6.5 Lebesgue&#39;s Theorem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-8.4.3-improper-riemann-integrals"><span class="nav-number">1.2.4.6.</span> <span class="nav-text">Definition 8.4.3: Improper Riemann Integrals</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#interchange-of-limits-2"><span class="nav-number">1.2.5.</span> <span class="nav-text">Interchange of Limits [2]</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.2.4"><span class="nav-number">1.2.5.1.</span> <span class="nav-text">Theorem 8.2.4</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.2.5-bounded-convergence-theorem"><span class="nav-number">1.2.5.2.</span> <span class="nav-text">Theorem 8.2.5: Bounded Convergence Theorem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.2.6-dinis-theorem"><span class="nav-number">1.2.5.3.</span> <span class="nav-text">Theorem 8.2.6: Dini&#39;s Theorem</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#the-exponential-function"><span class="nav-number">1.2.6.</span> <span class="nav-text">The Exponential Function</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.3.1"><span class="nav-number">1.2.6.1.</span> <span class="nav-text">Theorem 8.3.1:</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#partial-proof-of-theorem-8.3.1"><span class="nav-number">1.2.6.1.1.</span> <span class="nav-text">Partial Proof of Theorem 8.3.1</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-8.3.2"><span class="nav-number">1.2.6.2.</span> <span class="nav-text">Corollary 8.3.2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-8.3.3"><span class="nav-number">1.2.6.3.</span> <span class="nav-text">Corollary 8.3.3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.3.4"><span class="nav-number">1.2.6.4.</span> <span class="nav-text">Theorem 8.3.4</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-8.3.5"><span class="nav-number">1.2.6.5.</span> <span class="nav-text">Definition 8.3.5</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.3.6"><span class="nav-number">1.2.6.6.</span> <span class="nav-text">Theorem 8.3.6</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.3.7"><span class="nav-number">1.2.6.7.</span> <span class="nav-text">Theorem 8.3.7</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#the-logarithm-function"><span class="nav-number">1.2.7.</span> <span class="nav-text">The Logarithm Function</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-8.3.8-logarithm-function"><span class="nav-number">1.2.7.1.</span> <span class="nav-text">Definition 8.3.8: Logarithm Function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.3.9"><span class="nav-number">1.2.7.2.</span> <span class="nav-text">Theorem 8.3.9</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#power-function"><span class="nav-number">1.2.8.</span> <span class="nav-text">Power Function</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-8.3.10-power-function"><span class="nav-number">1.2.8.1.</span> <span class="nav-text">Definition 8.3.10: Power Function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.3.11"><span class="nav-number">1.2.8.2.</span> <span class="nav-text">Theorem 8.3.11</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.3.12"><span class="nav-number">1.2.8.3.</span> <span class="nav-text">Theorem 8.3.12</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.3.13"><span class="nav-number">1.2.8.4.</span> <span class="nav-text">Theorem 8.3.13</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#function-log_a"><span class="nav-number">1.2.9.</span> <span class="nav-text">Function \(\log_a\)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-8.3.14"><span class="nav-number">1.2.9.1.</span> <span class="nav-text">Definition 8.3.14</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#the-trigonometric-function"><span class="nav-number">1.2.10.</span> <span class="nav-text">The Trigonometric Function</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.4.1"><span class="nav-number">1.2.10.1.</span> <span class="nav-text">Theorem 8.4.1</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#partial-proof-of-theorem-8.4.1"><span class="nav-number">1.2.10.1.1.</span> <span class="nav-text">Partial Proof of Theorem 8.4.1</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-8.4.2"><span class="nav-number">1.2.10.2.</span> <span class="nav-text">Corollary 8.4.2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-8.4.3"><span class="nav-number">1.2.10.3.</span> <span class="nav-text">Corollary 8.4.3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.4.4"><span class="nav-number">1.2.10.4.</span> <span class="nav-text">Theorem 8.4.4</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-8.4.5"><span class="nav-number">1.2.10.5.</span> <span class="nav-text">Definition 8.4.5</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.4.6"><span class="nav-number">1.2.10.6.</span> <span class="nav-text">Theorem 8.4.6</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-8.4.7"><span class="nav-number">1.2.10.7.</span> <span class="nav-text">Theorem 8.4.7:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ref"><span class="nav-number">1.3.</span> <span class="nav-text">Ref</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2022/01/06/real-analysis-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          real-analysis-4
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-01-06 21:01:03" itemprop="dateCreated datePublished" datetime="2022-01-06T21:01:03+08:00">2022-01-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2022-01-17 21:28:20" itemprop="dateModified" datetime="2022-01-17T21:28:20+08:00">2022-01-17</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2022/01/06/real-analysis-4/" class="post-meta-item leancloud_visitors" data-flag-title="real-analysis-4" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>20k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>18 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="real-analysis-4">Real Analysis (4)</h1>
+<h2 id="sequences-and-series-of-functions-1">Sequences and Series of Functions [1]</h2>
+<h3 id="uniform-convergence-of-a-seuqence-of-functions">Uniform Convergence of a Seuqence of Functions</h3>
+<h4 id="definition-6.2.1-pointwise-convergence">Definition 6.2.1: Pointwise Convergence</h4>
+<p>For each <span class="math inline">\(n \in \mathbb{N}\)</span>, let <span class="math inline">\(f_n\)</span> be a function defined on a set <span class="math inline">\(A \subseteq \mathbb{R}\)</span>. The sequence <span class="math inline">\((f_n)\)</span> of functions <strong>converges pointwise</strong> on <span class="math inline">\(A\)</span> to a function <span class="math inline">\(f\)</span> if, for all <span class="math inline">\(x \in A\)</span>, the sequence of real numbers <span class="math inline">\(f_{n} (x)\)</span> converges to <span class="math inline">\(f(x)\)</span>.</p>
+<p>In this case, we write <span class="math inline">\(f_n \rightarrow f\)</span>, <span class="math inline">\(\lim_{n \rightarrow \infty} f_n = f\)</span> or <span class="math inline">\(\lim_{n \rightarrow \infty} f_n(x) = f(x)\)</span>.</p>
+<h4 id="definition-6.2.1b-pointwise-convergence">Definition 6.2.1B: Pointwise Convergence</h4>
+<p>Let <span class="math inline">\((f_n)\)</span> be a sequence of functions defined on a set <span class="math inline">\(A \subseteq \mathbb{R}\)</span>. Then, <span class="math inline">\((f_n)\)</span> <strong>convergence pointwise</strong> on <span class="math inline">\(A\)</span> to a limit function <span class="math inline">\(f\)</span> defined on <span class="math inline">\(A\)</span> if, for every <span class="math inline">\(\epsilon &gt; 0\)</span> and <span class="math inline">\(x \in A\)</span>, there exists an <span class="math inline">\(N \in \mathbb{N}\)</span> (<strong>perhaps depends on <span class="math inline">\(x\)</span></strong>) such that <span class="math inline">\(|f_{n} (x) - f(x) | &lt; \epsilon\)</span> whenever <span class="math inline">\(n \geq N\)</span>.</p>
+<h4 id="definition-6.2.3-uniform-convergence-stronger-than-pointwise">Definition 6.2.3: Uniform Convergence (Stronger than Pointwise)</h4>
+<p>Let <span class="math inline">\((f_n)\)</span> be a sequence of functions defined on a set <span class="math inline">\(A \subseteq \mathbb{R}\)</span>. Then, <span class="math inline">\((f_n)\)</span> <strong>convergence uniformly</strong> on <span class="math inline">\(A\)</span> to a limit function <span class="math inline">\(f\)</span> defined on <span class="math inline">\(A\)</span> if, for every <span class="math inline">\(\epsilon &gt; 0\)</span>, there exists an <span class="math inline">\(N \in \mathbb{N}\)</span> such that <span class="math inline">\(|f_{n} (x) - f(x) | &lt; \epsilon\)</span> whenever <span class="math inline">\(n \geq N\)</span> and <span class="math inline">\(x \in A\)</span>.</p>
+<p><strong>Similar to uniform continuous, this is a stronger, which involves finding <span class="math inline">\(N \in \mathbb{N}\)</span> for a given <span class="math inline">\(\epsilon &gt; 0\)</span> for all <span class="math inline">\(x \in A\)</span></strong>.</p>
+<p>Graphically speaking, the uniform convergence of <span class="math inline">\(f_n\)</span> to a limit <span class="math inline">\(f\)</span> on a set <span class="math inline">\(A\)</span> can be seen as there exists a point in the sequence after which each <span class="math inline">\(f_n\)</span> is <strong>completely</strong> contained in the <span class="math inline">\(\epsilon\)</span>-strip.</p>
+<p><img src="/images/RL/background/ra_6_2_3.png" width="600"></p>
+<h4 id="theorem-6.2.5-cauchy-criterion-for-uniform-convergence">Theorem 6.2.5: Cauchy Criterion for Uniform Convergence</h4>
+<p>A sequence of functions <span class="math inline">\((f_n)\)</span> defined on a set <span class="math inline">\(A \subseteq \mathbb{R}\)</span> converges uniformly on <span class="math inline">\(A\)</span> if and only if for every <span class="math inline">\(\epsilon &gt; 0\)</span> there exists an <span class="math inline">\(N \in \mathbb{N}\)</span> such that <span class="math inline">\(|f_n(x) - f_m(x)| &lt; \epsilon\)</span> whenever <span class="math inline">\(m, n \geq N\)</span> for all <span class="math inline">\(x \in A\)</span>.</p>
+<h4 id="theorem-6.2.6-continuous-limit-theorem">Theorem 6.2.6: Continuous Limit Theorem</h4>
+<p>Let <span class="math inline">\((f_n)\)</span> be a sequence of functions defined on <span class="math inline">\(A \subseteq \mathbb{R}\)</span> that converges uniformly on <span class="math inline">\(A\)</span> to a function <span class="math inline">\(f\)</span>. If each <span class="math inline">\(f_n\)</span> is continuous at <span class="math inline">\(c \in A\)</span>, then <span class="math inline">\(f\)</span> is continuous at <span class="math inline">\(c\)</span>.</p>
+<h3 id="uniform-convergence-and-differentiation">Uniform Convergence and Differentiation</h3>
+<h4 id="theorem-6.3.1-differentiable-limit-theorem">Theorem 6.3.1: Differentiable Limit Theorem</h4>
+<p>Let <span class="math inline">\(f_n \rightarrow f\)</span> pointwise on the closed interval <span class="math inline">\([a, b]\)</span>, and assume that each <span class="math inline">\(f_n\)</span> is differentiable. If <span class="math inline">\((f^{\prime}(c))\)</span> converges uniformly on <span class="math inline">\([a, b]\)</span> to a function <span class="math inline">\(g\)</span>, then the function <span class="math inline">\(f\)</span> is differentiable and <span class="math inline">\(f^{\prime} = g\)</span>.</p>
+<h4 id="theorem-6.3.2">Theorem 6.3.2</h4>
+<p>Let <span class="math inline">\((f_n)\)</span> be a sequence of differentiable functions defined on the closed interval <span class="math inline">\([a, b]\)</span>, and assume <span class="math inline">\((f^{\prime}_n)\)</span> converges uniformly on <span class="math inline">\([a, b]\)</span>. If there exists a point <span class="math inline">\(x_0 \in [a, b]\)</span>, where <span class="math inline">\(f_{n} (x_0)\)</span> is convergent, then <span class="math inline">\((f_n)\)</span> converges uniformly on <span class="math inline">\([a, b]\)</span>.</p>
+<h4 id="theorem-6.3.3-combine-theorem-6.3.1-and-6.3.2">Theorem 6.3.3: Combine Theorem 6.3.1 and 6.3.2</h4>
+<p>Let <span class="math inline">\((f_n)\)</span> be a sequence of differentiable functions defined on the closed interval <span class="math inline">\([a, b]\)</span>, and assume <span class="math inline">\((f^{\prime}_n)\)</span> converges uniformly on <span class="math inline">\([a, b]\)</span> to a function <span class="math inline">\(g\)</span> on <span class="math inline">\([a, b]\)</span>. If there exists a point <span class="math inline">\(x_0 \in [a, b]\)</span>, where <span class="math inline">\(f_{n} (x_0)\)</span> is convergent, then <span class="math inline">\((f_n)\)</span> converges uniformly on <span class="math inline">\([a, b]\)</span>. Moreover, the limit function <span class="math inline">\(f = \lim_{n\rightarrow \infty} f_n\)</span> is differentiable and satisfies <span class="math inline">\(f^{\prime} = g\)</span>.</p>
+<h3 id="series-of-functions">Series of Functions</h3>
+<h4 id="definition-6.4.1-pointwise-convergence-and-uniform-convergence-of-series-of-functions">Definition 6.4.1: Pointwise Convergence and Uniform Convergence of Series of Functions</h4>
+<p>For each <span class="math inline">\(n \in \mathbb{N}\)</span>, let <span class="math inline">\(f_n\)</span> and <span class="math inline">\(f\)</span> be functions defined on a set <span class="math inline">\(A \subseteq \mathbb{R}\)</span>. The infinite series:</p>
+<p><span class="math display">\[\sum^{\infty}_{n=1} f_n  = f_1 + f_2 + .... \]</span></p>
+<p><strong>converges pointwise</strong> on <span class="math inline">\(A\)</span> to <span class="math inline">\(f\)</span> if the sequence <span class="math inline">\(s_k\)</span> of partial sums defined by:</p>
+<p><span class="math display">\[s_k = f_1  + f_2  + ... + f_k\]</span></p>
+<p>converges pointwise to <span class="math inline">\(f\)</span>. The series <strong>converges uniformly</strong> on <span class="math inline">\(A\)</span> to <span class="math inline">\(f\)</span> if the sequence <span class="math inline">\(s_k\)</span> converges uniformly on <span class="math inline">\(A\)</span> to <span class="math inline">\(f\)</span>. In either case, we can write:</p>
+<p><span class="math display">\[f = \sum^{\infty}_{n=1} f_n\]</span></p>
+<p>or</p>
+<p><span class="math display">\[f(x) = \sum^{\infty}_{n=1} f_n(x)\]</span></p>
+<h4 id="theorem-6.4.2-term-by-term-continuity-theorem">Theorem 6.4.2: Term-by-Term Continuity Theorem</h4>
+<p>Let <span class="math inline">\(f_n\)</span> be continuous functions defined on a set <span class="math inline">\(A \subseteq \mathbb{R}\)</span>, and assume <span class="math inline">\(\sum^{\infty}_{m=1} f_n\)</span> converges uniformly on <span class="math inline">\(A\)</span> to a function <span class="math inline">\(f\)</span>. Then <span class="math inline">\(f\)</span> is continuous on <span class="math inline">\(A\)</span>.</p>
+<h4 id="theorem-6.4.3-term-by-term-differentiability-theorem">Theorem 6.4.3: Term-by-Term Differentiability Theorem</h4>
+<p>Let <span class="math inline">\(f_n\)</span> be differentiable functions defined on an interval <span class="math inline">\(A\)</span>, and assume <span class="math inline">\(\sum^{\infty}_{n=1} f^{\prime}_n\)</span> converges uniformly to a limit function <span class="math inline">\(g\)</span> on <span class="math inline">\(A\)</span>. If there exists a point <span class="math inline">\(x_0 \in [a, b]\)</span> where <span class="math inline">\(\sum^{\infty}_{n=1} f_n (x_0)\)</span> converges, then the series <span class="math inline">\(\sum^{\infty}_{n=1} f_n\)</span> converges uniformly to a differentiable function <span class="math inline">\(f\)</span> satisfying <span class="math inline">\(f^{\prime} = g\)</span> on <span class="math inline">\(A\)</span>.</p>
+<h4 id="theorem-6.4.4-cauchy-criterion-for-uniform-convergence-of-series">Theorem 6.4.4: Cauchy Criterion for Uniform Convergence of Series</h4>
+<p>A series <span class="math inline">\(\sum^{\infty}_{n=1} f_n\)</span> converges uniformly on <span class="math inline">\(A \subseteq \mathbb{R}\)</span> if and only if for every <span class="math inline">\(\epsilon &gt; 0\)</span> there exists an <span class="math inline">\(N \in \mathbb{N}\)</span> s.t</p>
+<p><span class="math display">\[|f_{m+1} (x) + f_{m+2} (x) + ... + f_{n} (x) | &lt; \epsilon\]</span></p>
+<p>whenever <span class="math inline">\(n &gt; m \geq N\)</span> and <span class="math inline">\(x \in A\)</span></p>
+<h4 id="corollary-6.4.5-weierstrass-m-test">Corollary 6.4.5: Weierstrass M-Test</h4>
+<p>For each <span class="math inline">\(n \in \mathbb{N}\)</span>, let <span class="math inline">\(f_n\)</span> be a function defined on a set <span class="math inline">\(A \subseteq \mathbb{R}\)</span>, and let <span class="math inline">\(M_n &gt; 0\)</span> be a real number satisfying:</p>
+<p><span class="math display">\[|f_n(x)| \leq M_n\]</span></p>
+<p>for all <span class="math inline">\(x \in A\)</span>. If <span class="math inline">\(\sum^{\infty}_{n=1} M_n\)</span> converges, then <span class="math inline">\(\sum^{\infty}_{n=1} f_n\)</span> converges uniformly on <span class="math inline">\(A\)</span>.</p>
+<h3 id="power-series">Power Series</h3>
+<p><span class="math display">\[f(x) = \sum^{\infty}_{n=0} a_n x^n = a_0 + a_1x + a_2x^2 + a_3 x^3 + ...\]</span></p>
+<h4 id="theorem-6.5.1">Theorem 6.5.1</h4>
+<p>If a power series <span class="math inline">\(\sum^{\infty}_{n=0} a_n x^n\)</span> converges at some point <span class="math inline">\(x_0 \in \mathbb{R}\)</span>, then it converges absolutely for any <span class="math inline">\(x\)</span> satisfying <span class="math inline">\(|x| &lt; |x_0|\)</span>.</p>
+<h4 id="theorem-6.5.2">Theorem 6.5.2</h4>
+<p>If a power series <span class="math inline">\(\sum^{\infty}_{n=0} a_n x^n\)</span> converges absolutely at a point <span class="math inline">\(x_0\)</span>, then it converges uniformly on the closed interval <span class="math inline">\([-c, c]\)</span>, where <span class="math inline">\(c=|x_0|\)</span>.</p>
+<h4 id="lemma-6.5.3-abels-lemma">Lemma 6.5.3: Abel's Lemma</h4>
+<p>Let <span class="math inline">\(b_n\)</span> satisfy <span class="math inline">\(b_1 \geq b_2 \geq b_3 \geq .... \geq 0\)</span>, and let <span class="math inline">\(\sum^{\infty}_{n=1} a_n\)</span> be a series for which the partial sums are bounded. In other words, assume there exists <span class="math inline">\(A &gt; 0\)</span> s.t</p>
+<p><span class="math display">\[|a_1 + a_2 + ... + a_n| \leq A\]</span></p>
+<p>for all <span class="math inline">\(n \in \mathbb{N}\)</span>. Then for all <span class="math inline">\(n \in \mathbb{N}\)</span>,</p>
+<p>$$|a_1b_1 + a_2b_2 + .... + a_nb_n| </p>
+<h4 id="theorem-6.5.4-abels-theorem">Theorem 6.5.4: Abel's Theorem</h4>
+<p>Let <span class="math inline">\(g(x) = \sum^{\infty}_{n=0} a_nx^n\)</span> be a power series that converges at the point <span class="math inline">\(x = R &gt; 0\)</span>. Then the series converges uniformly on the interval <span class="math inline">\([0, R]\)</span>. A similar result holds if the series converges at <span class="math inline">\(x = -R\)</span>.</p>
+<h4 id="theorem-6.5.5">Theorem 6.5.5</h4>
+<p>If a power series converges pointwise on the set <span class="math inline">\(A \subseteq \mathbb{R}\)</span>, then it converges uniformly on any compact set <span class="math inline">\(K \subseteq A\)</span>.</p>
+<h4 id="theorem-6.5.6">Theorem 6.5.6</h4>
+<p>If <span class="math inline">\(\sum^{\infty}_{n=0}a_n x^n\)</span> converges for all <span class="math inline">\(x \in (-R, R)\)</span>, then the differentiated series <span class="math inline">\(\sum^{\infty}_{n=1} na_n x^{n-1}\)</span> converges at each <span class="math inline">\(x\in (-R, R)\)</span> as well. Consequently, the convergence is unifrom on compact sets contained in <span class="math inline">\((-R, R)\)</span>.</p>
+<h4 id="theorem-6.5.7">Theorem 6.5.7</h4>
+<p>Assume</p>
+<p><span class="math display">\[f(x) = \sum^{\infty}_{n=0} a_n x^n\]</span></p>
+<p>converges on an interval <span class="math inline">\(A \subseteq \mathbb{R}\)</span>. The function <span class="math inline">\(f\)</span> is continuous on <span class="math inline">\(A\)</span> and differentiable on any open interval <span class="math inline">\((-R, R) \subseteq A\)</span>. The derivative is given by:</p>
+<p><span class="math display">\[f^{\prime} (x) = \sum^{\infty}_{n=1} na_nx^{n-1}\]</span></p>
+<p>Moreover, <span class="math inline">\(f\)</span> is infinitely differentiable on <span class="math inline">\((-R, R)\)</span>, and the successive derivatives can be obtained via term-by-term differentiation of the appropriate series.</p>
+<h3 id="taylor-series">Taylor Series</h3>
+<p>Given an infinitely differentiable function <span class="math inline">\(f\)</span> defined on some interval centered at zero, the idea is to assume that <span class="math inline">\(f\)</span> has a power series expansion and deduce what the coefficients must be. (<strong>Not every infinitely differentiable function can be represented by its taylor series</strong>)</p>
+<h4 id="theorem-6.6.2-taylors-formula-centered-at-zero-maclaurin-series">Theorem 6.6.2: Taylor's Formula Centered at Zero (Maclaurin Series)</h4>
+<p>Let</p>
+<p><span class="math display">\[f(x) = a_0 + a_1x + a_2x^2 + ...\]</span></p>
+<p>be defined on some nontrivial interval centered at zero. Then:</p>
+<p><span class="math display">\[a_n = \frac{f^{(n)}(0)}{n!}\]</span></p>
+<p>Where <span class="math inline">\(f^{(n)}(0)\)</span> is the <span class="math inline">\(n\)</span>th derivative of <span class="math inline">\(f\)</span> evaluate at <span class="math inline">\(0\)</span>.</p>
+<p><strong>This formula assumes that the function <span class="math inline">\(f\)</span> has a power series representation.</strong></p>
+<h4 id="theorem-6.6.3-lagranges-remainder-theorem">Theorem 6.6.3: Lagrange's Remainder Theorem</h4>
+<p>Let <span class="math inline">\(f\)</span> be differentiable <span class="math inline">\(N + 1\)</span> times on <span class="math inline">\((-R, R)\)</span>, define <span class="math inline">\(a_n = \frac{f^{n} (0)}{n!}\)</span> for <span class="math inline">\(n=0, 1, ... , N\)</span>, and let:</p>
+<p><span class="math display">\[S_N(x) = a_0 + a_1 x + a_2 x^2 + ... + a_N x^N\]</span></p>
+<p>Given <span class="math inline">\(x \neq 0\)</span> in <span class="math inline">\((-R, R)\)</span>, there exists a point <span class="math inline">\(c\)</span> satisfying <span class="math inline">\(|c| &lt; |x|\)</span> where the error function <span class="math inline">\(E_N(x) = f(x) - S_N (x)\)</span> satisfies:</p>
+<p><span class="math display">\[E_N(x) = \frac{f^{(N+1)} (c)}{(N+1)!} x^{N+1}\]</span></p>
+<h4 id="definition-6.6.7-taylor-series-centered-at-a-neq-0">Definition 6.6.7: Taylor Series Centered at <span class="math inline">\(a \neq 0\)</span></h4>
+<p>If <span class="math inline">\(f\)</span> is defined in some neighborhood of <span class="math inline">\(a \in \mathbb{R}\)</span> and infinitely differentiable at <span class="math inline">\(a\)</span>, then the Taylor series expansion around <span class="math inline">\(a\)</span> takes the form:</p>
+<p><span class="math display">\[\sum^{\infty}_{n=0}c_n (x - a)^n\]</span></p>
+<p>where <span class="math inline">\(c_n = \frac{f^{(n)} (a)}{n!}\)</span></p>
+<h3 id="the-weierstrass-approximation-theorem">The Weierstrass Approximation Theorem</h3>
+<h4 id="theorem-6.7.1-weierstrass-approximation-theorem">Theorem 6.7.1: Weierstrass Approximation Theorem</h4>
+<p>Let <span class="math inline">\(f: [a, b] \rightarrow \mathbb{R}\)</span> be continuous. Given <span class="math inline">\(\epsilon &gt; 0\)</span>, there exists a polynomial <span class="math inline">\(p(x)\)</span> satisfying:</p>
+<p><span class="math display">\[|f(x) - p(x) | &lt; \epsilon\]</span></p>
+<p>for all <span class="math inline">\(x \in [a, b]\)</span>.</p>
+<p>In other words, every continuous function on a closed interval can be uniformly approximated by a polynomial.</p>
+<h4 id="definition-6.7.2-polygonal">Definition 6.7.2: Polygonal</h4>
+<p>A continuous function <span class="math inline">\(\phi: [a, b] \rightarrow \mathbb{R}\)</span> is <strong>polygonal</strong> if there is a partition:</p>
+<p><span class="math display">\[a = x_0 &lt; x_1 &lt; x_2 &lt; .... &lt; x_n = b\]</span></p>
+<p>of <span class="math inline">\([a, b]\)</span> such that <span class="math inline">\(\phi\)</span> is linear on each subinterval <span class="math inline">\([x_{i-1}, x_i]]\)</span> where <span class="math inline">\(i=1, ..., n\)</span></p>
+<h4 id="theorem-6.7.3">Theorem 6.7.3</h4>
+<p>Let <span class="math inline">\(f: [a, b] \rightarrow \mathbb{R}\)</span> be continuous. Given <span class="math inline">\(\epsilon &gt; 0\)</span>, there exists a polygonal function <span class="math inline">\(\phi\)</span> satisfying:</p>
+<p><span class="math display">\[|f(x) - \phi(x) | &lt; \epsilon\]</span></p>
+<h2 id="the-riemann-integral">The Riemann Integral</h2>
+<h3 id="the-definition-of-the-riemann-integral">The Definition of the Riemann Integral</h3>
+<p><strong>Throughout this section, it is assumed that we are working with a bounded function <span class="math inline">\(f\)</span> on a closed interval <span class="math inline">\([a, b]\)</span>, meaning that there exists an <span class="math inline">\(M &gt; 0\)</span> s.t <span class="math inline">\(|f(x)| \leq M, \; \forall x \in [a, b]\)</span></strong></p>
+<h4 id="definition-7.2.1-partition-lower-sum-upper-sum">Definition 7.2.1: Partition, Lower Sum, Upper Sum</h4>
+<p>A <strong>partition</strong> <span class="math inline">\(P\)</span> of <span class="math inline">\([a, b]\)</span> is a finite set of points from <span class="math inline">\([a, b]\)</span> that includes both <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>. A partition <span class="math inline">\(P = \{x_0, ...., x_n\}\)</span> is listed in increasing order:</p>
+<p><span class="math display">\[a=x_0 &lt; x_1 &lt; x_2 &lt; ... &lt; x_n = b\]</span></p>
+<p>For each subinterval <span class="math inline">\([x_{k-1}, x_k]\)</span> of <span class="math inline">\(P\)</span>, let:</p>
+<p><span class="math display">\[m_k = \inf\{f(x): x \in [x_{k-1}, x_k]\}\]</span></p>
+<p>and</p>
+<p><span class="math display">\[M_k = \sup\{f(x): x\in[x_{k-1}, x_k]\}\]</span></p>
+<p>Since the function is bounded, the supreme and infimum always exists.</p>
+<p>The <strong>lower sum</strong> of <span class="math inline">\(f\)</span> w.r.t <span class="math inline">\(P\)</span> is given by:</p>
+<p><span class="math display">\[L(f, P) = \sum^{n}_{k=1} m_k (x_k - x_{k-1})\]</span></p>
+<p>The <strong>upper sum</strong> of <span class="math inline">\(f\)</span> w.r.t <span class="math inline">\(P\)</span> is given by:</p>
+<p><span class="math display">\[U(f, P) = \sum^{n}_{k=1} M_k (x_k - x_{k-1})\]</span></p>
+<p>For a particular partition <span class="math inline">\(P\)</span>, it is clear that:</p>
+<p><span class="math display">\[U(f, P) \geq L(f, P)\]</span></p>
+<h4 id="definition-7.2.2-refinement">Definition 7.2.2: Refinement</h4>
+<p>A partition <span class="math inline">\(Q\)</span> is a <strong>refinement</strong> of a partition <span class="math inline">\(P\)</span> if <span class="math inline">\(Q\)</span> contains all of the points of <span class="math inline">\(P\)</span> if <span class="math inline">\(Q\)</span> contains all of the points of <span class="math inline">\(P\)</span>; that is, if <span class="math inline">\(P \in Q\)</span>.</p>
+<h4 id="lemma-7.2.3">Lemma 7.2.3</h4>
+<p>If <span class="math inline">\(P \subseteq Q\)</span>, then <span class="math inline">\(L(f, P) \leq L(f, Q)\)</span>, and <span class="math inline">\(U(f, P) \geq U(f, Q)\)</span>.</p>
+<h4 id="lemma-7.2.4">Lemma 7.2.4</h4>
+<p>If <span class="math inline">\(P_1, P_2\)</span> are any two partitions of <span class="math inline">\([a, b]\)</span>, then <span class="math inline">\(L(f, P_1) \leq U(f, P_2)\)</span>.</p>
+<p><strong>We can think of upper sum as an overestimate for the value of the integral and a lower sum as an underestimate. As the partitions get more refined, the upper sums get potentially smaller while the lower sums get potentially larger.</strong></p>
+<h4 id="definition-7.2.5-upper-integral-lower-integral">Definition 7.2.5: Upper Integral, Lower Integral</h4>
+<p>Let <span class="math inline">\(\mathbf{P}\)</span> be the collection of all possible partitions of the interval <span class="math inline">\([a, b]\)</span>. The <strong>upper integral</strong> of <span class="math inline">\(f\)</span> is defined to be:</p>
+<p><span class="math display">\[U(f) = \inf\{U(f, P): P \in \mathbf{P}\}\]</span></p>
+<p>In a similar way, define the <strong>lower integral</strong> of <span class="math inline">\(f\)</span> by:</p>
+<p><span class="math display">\[L(f) = \sup\{L(f, P): P\in\mathbf{P}\}\]</span></p>
+<h4 id="lemma-7.2.6">Lemma 7.2.6</h4>
+<p>For any bounded function <span class="math inline">\(f\)</span> on <span class="math inline">\([a, b]\)</span>, it is always the case that <span class="math inline">\(U(f) \geq L(f)\)</span>.</p>
+<h4 id="definition-7.2.7-riemann-integrability">Definition 7.2.7: Riemann Integrability</h4>
+<p>A bounded function <span class="math inline">\(f\)</span> defined on the interval <span class="math inline">\([a, b]\)</span> is <strong>Riemann-integrable</strong> if <span class="math inline">\(U(f) = L(f)\)</span>. In this case, we define <span class="math inline">\(\int^{b}_{a} f\)</span> or <span class="math inline">\(\int^{a}_{b} f(x) dx\)</span> to be this common value, namely:</p>
+<p><span class="math display">\[\int^b_{a} f = U(f) = L(f)\]</span></p>
+<h3 id="criteria-for-integrability">Criteria for Integrability</h3>
+<h4 id="theorem-7.2.8-integrability-criterion">Theorem 7.2.8: Integrability Criterion</h4>
+<p>A bounded function <span class="math inline">\(f\)</span> is integrable on <span class="math inline">\([a, b]\)</span> if and only if, for every <span class="math inline">\(\epsilon &gt; 0\)</span>, there exists a partition <span class="math inline">\(P_{\epsilon}\)</span> of <span class="math inline">\([a, b]\)</span> s.t</p>
+<p><span class="math display">\[U(f, P_\epsilon) - L(f, P_{\epsilon}) &lt; \epsilon\]</span></p>
+<h4 id="theorem-7.2.9">Theorem 7.2.9</h4>
+<p>If <span class="math inline">\(f\)</span> is continuous on <span class="math inline">\([a, b]\)</span>, then it is integrable.</p>
+<h4 id="theorem-7.3.2">Theorem 7.3.2</h4>
+<p>If <span class="math inline">\(f: [a, b] \rightarrow \mathbb{R}\)</span> is bounded, and <span class="math inline">\(f\)</span> is integrable on <span class="math inline">\([c, b]\)</span> for all <span class="math inline">\(c \in (a, b)\)</span>, then <span class="math inline">\(f\)</span> is integrable on <span class="math inline">\([a, b]\)</span>. An analogous result holds at the other end point.</p>
+<h3 id="properties-of-the-integral">Properties of the Integral</h3>
+<h4 id="theorem-7.4.1">Theorem 7.4.1</h4>
+<p>Assume <span class="math inline">\(f: [a, b] \rightarrow \mathbb{R}\)</span> is bounded, and let <span class="math inline">\(c \in (a, b)\)</span>. Then, <span class="math inline">\(f\)</span> is integrable on <span class="math inline">\([a, b]\)</span> if and only if <span class="math inline">\(f\)</span> is integrable on <span class="math inline">\([a, c]\)</span> and <span class="math inline">\([c, b]\)</span>. In this case, we have:</p>
+<p><span class="math display">\[\int^{b}_{a} f = \int^{c}_{a} f + \int^{b}_{c} f\]</span></p>
+<h4 id="theorem-7.4.2">Theorem 7.4.2</h4>
+<p>Assume <span class="math inline">\(f, g\)</span> are integrable functions on the interval <span class="math inline">\([a, b]\)</span>.</p>
+<ol type="1">
+<li>The function <span class="math inline">\(f + g\)</span> is integrable on <span class="math inline">\([a, b]\)</span> with <span class="math inline">\(\int^{b}_{a} (f + g) = \int^{b}_{a} f + \int^{b}_{a} g\)</span>.</li>
+<li>For <span class="math inline">\(k \in \mathbb{R}\)</span>, the function <span class="math inline">\(kf\)</span> is integrable with <span class="math inline">\(\int^{b}_{a} kf = k \int^{b}_{a} f\)</span>.</li>
+<li>If <span class="math inline">\(m \leq f(x) \leq M\)</span> on <span class="math inline">\([a, b]\)</span>, then <span class="math inline">\(m(b - a) \leq \int^{b}_{a} f \leq M (b - a)\)</span>.</li>
+<li>If <span class="math inline">\(f(x) \leq g(x)\)</span> on <span class="math inline">\([a, b]\)</span>, then <span class="math inline">\(\int^{b}_{a} f \leq \int^b_a g\)</span></li>
+<li>The function <span class="math inline">\(|f|\)</span> is integrable and <span class="math inline">\(|\int^{b}_{a} f| \leq \int^{b}_{a} |f|\)</span></li>
+</ol>
+<h4 id="definition-7.4.3">Definition 7.4.3</h4>
+<p>If <span class="math inline">\(f\)</span> is integrable on the interval <span class="math inline">\([a, b]\)</span>, define:</p>
+<p><span class="math display">\[\int^a_{b} f = - \int^b_a f\]</span></p>
+<p>Also, for <span class="math inline">\(c \in [a, b]\)</span>, definte:</p>
+<p><span class="math display">\[\int^c_c f = 0\]</span></p>
+<h4 id="theorem-7.4.4-integrable-limit-theorem">Theorem 7.4.4: Integrable Limit Theorem</h4>
+<p>Assume that <span class="math inline">\(f_n \rightarrow f\)</span> uniformly on <span class="math inline">\([a, b]\)</span> and that each <span class="math inline">\(f_n\)</span> is integrable. Then <span class="math inline">\(f\)</span> is integrable and:</p>
+<p><span class="math display">\[\lim_{n \rightarrow \infty} f_n = \int^b_{a} f\]</span></p>
+<h3 id="the-fundamental-theorem-of-calculus">The Fundamental Theorem of Calculus</h3>
+<h4 id="theorem-7.5.1-fundamental-theorem-of-calculus">Theorem 7.5.1: Fundamental Theorem of Calculus</h4>
+<ol type="1">
+<li><p>If <span class="math inline">\(f: [a, b] \rightarrow \mathbb{R}\)</span> is integrable, and <span class="math inline">\(\mathbb{F}: [a, b] \rightarrow \mathbb{R}\)</span> satisfies <span class="math inline">\(F^{\prime} (x) = f(x) \;\; \forall x \in [a, b]\)</span> satisfies <span class="math inline">\(F^{\prime} (x) = f(x), \; \forall x \in [a, b]\)</span>, then:</p>
+<p><span class="math display">\[\int^b_a f = F(b) - F(a)\]</span></p></li>
+<li><p>Let <span class="math inline">\(g: [a, b] \rightarrow \mathbb{R}\)</span> be integrable, and for <span class="math inline">\(x \in [a, b]\)</span>, define:</p>
+<p><span class="math display">\[G(x) = \int^x_a g\]</span></p>
+<p>Then <span class="math inline">\(G\)</span> is continuous on <span class="math inline">\([a, b]\)</span>. If <span class="math inline">\(g\)</span> is continuous at some point <span class="math inline">\(c \in [a, b]\)</span>, then <span class="math inline">\(G\)</span> is differentiable at <span class="math inline">\(c\)</span> and <span class="math inline">\(G^{\prime}(c) = g(c)\)</span></p>
+<p><span class="math display">\[G^{\prime}(x) = \frac{d}{dx} \int^x_a g = g(x)\]</span></p></li>
+</ol>
+<h4 id="definition-7.6.1-measure-zero">Definition 7.6.1: Measure Zero</h4>
+<p>A set <span class="math inline">\(A \subseteq \mathbb{R}\)</span> has <strong>measure zero</strong> if, for all <span class="math inline">\(\epsilon &gt; 0\)</span>, there exists a countable collection of open intervals <span class="math inline">\(O_n\)</span> with the property that <span class="math inline">\(A\)</span> is contained in the union of all of the intervals <span class="math inline">\(O_n\)</span> and the sum of the lengths of all of the intervals is less than or equal to <span class="math inline">\(\epsilon\)</span>. More precisely, if <span class="math inline">\(|O_n|\)</span> refers to the length of the interval <span class="math inline">\(O_n\)</span>, then we have:</p>
+<p><span class="math display">\[A \subseteq \bigcup^{\infty}_{n=1} O_n\]</span></p>
+<p>and</p>
+<p><span class="math display">\[\sum^{\infty}_{n=1} | O_n | \leq \epsilon\]</span></p>
+<blockquote>
+<p>Consider a finite set <span class="math inline">\(A = \{a_1, ..., a_n\}\)</span>. To show that <span class="math inline">\(A\)</span> has measure zero, let <span class="math inline">\(\epsilon &gt; 0\)</span> be arbitrary. For each <span class="math inline">\(1 \leq n &lt; N\)</span>, construct the interval: <span class="math display">\[G_n = (a_n - \frac{\epsilon}{2N}, a_n + \frac{\epsilon}{2N})\]</span></p>
+<p>Clearly, <span class="math inline">\(A\)</span> is contained in the union of these intervals, and <span class="math display">\[\sum^N_{n=1} | G_n | = \sum^N_{n=1}\frac{\epsilon}{N} = \epsilon\]</span></p>
+</blockquote>
+<h4 id="definition-7.6.3-alpha-continuity">Definition 7.6.3: <span class="math inline">\(\alpha\)</span>-Continuity</h4>
+<p>Let <span class="math inline">\(f\)</span> be defined on <span class="math inline">\([a, b]\)</span>, and let <span class="math inline">\(\alpha &gt; 0\)</span>. The function <span class="math inline">\(f\)</span> is <span class="math inline">\(\alpha\)</span>-continuous at <span class="math inline">\(x \in [a, b]\)</span> if there exists <span class="math inline">\(\delta &gt; 0\)</span> s.t for all <span class="math inline">\(y, z \in (x - \delta, x + \delta)\)</span>, it follows that <span class="math inline">\(|f(y) - f(z)| &lt; \alpha\)</span>.</p>
+<p>Let <span class="math inline">\(f\)</span> be a bounded function on <span class="math inline">\([a, b]\)</span>, for each <span class="math inline">\(\alpha &gt; 0\)</span>, defined <span class="math inline">\(D^{\alpha}\)</span> to be the set of points in <span class="math inline">\([a, b]\)</span>, where the function <span class="math inline">\(f\)</span> fails to be <span class="math inline">\(\alpha\)</span>-continuous;</p>
+<h4 id="definition-7.6.4-uniformly-alpha-continuous">Definition 7.6.4: Uniformly <span class="math inline">\(\alpha\)</span>-continuous</h4>
+<p>A function <span class="math inline">\(f: A \rightarrow \mathbb{R}\)</span> is uniformly <span class="math inline">\(\alpha\)</span>-continuous on <span class="math inline">\(A\)</span>, if there exists a <span class="math inline">\(\delta &gt; 0\)</span> s.t whenever <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> are points in <span class="math inline">\(A\)</span> satisfying <span class="math inline">\(|x - y| &lt; \delta\)</span>, it follows that <span class="math inline">\(|f(x) - f(y)| &lt; \alpha\)</span>..</p>
+<h4 id="theorem-7.6.5-lebesgues-theorem">Theorem 7.6.5 Lebesgue's Theorem</h4>
+<p>Let <span class="math inline">\(f\)</span> be a bounded function defined on the interval <span class="math inline">\([a, b]\)</span>. Then, <span class="math inline">\(f\)</span> is Riemann-integrable if and only if the set of points where <span class="math inline">\(f\)</span> is not continuous has measure zero.</p>
+<h4 id="definition-8.4.3-improper-riemann-integrals">Definition 8.4.3: Improper Riemann Integrals</h4>
+<p>Assume <span class="math inline">\(f\)</span> is defined on <span class="math inline">\([a, \infty)\)</span> and integrable on every interval of the form <span class="math inline">\([a, b]\)</span>. Then define <span class="math inline">\(\int^{\infty}_{a} f\)</span> to be:</p>
+<p><span class="math display">\[\lim_{b \rightarrow \infty} \int^{b}_{a} f\]</span></p>
+<p>provided the limit exists, in this case we say that the <strong>improper integral</strong> <span class="math inline">\(\int^{\infty}_a f\)</span> converges.</p>
+<h3 id="interchange-of-limits-2">Interchange of Limits [2]</h3>
+<h4 id="theorem-8.2.4">Theorem 8.2.4</h4>
+<p>Let <span class="math inline">\((f_n)\)</span> be a sequence of functions be defined on <span class="math inline">\([a, b] \in \mathbb{R}\)</span> and suppose that <span class="math inline">\((f_n)\)</span> converges <strong>uniformly</strong> on <span class="math inline">\([a, b]\)</span> to <span class="math inline">\(f\)</span>. Then <span class="math inline">\(f \in \mathbb{R}\)</span> and:</p>
+<p><span class="math display">\[\int^{a}_{b} f = \lim_{n \rightarrow \infty} \int^b_a f_n\]</span></p>
+<p>We can switch the integral and the limit.</p>
+<h4 id="theorem-8.2.5-bounded-convergence-theorem">Theorem 8.2.5: Bounded Convergence Theorem</h4>
+<p>Let <span class="math inline">\((f_n)\)</span> be a sequence defined on <span class="math inline">\(\mathbb{R}[a, b]\)</span> that converges on <span class="math inline">\([a, b]\)</span> to a function <span class="math inline">\(f \in \mathbb{R} [a, b]\)</span>. Suppose also that there exists a <span class="math inline">\(B &gt; 0\)</span> s.t <span class="math inline">\(|f_n(x)| \leq B, \; \forall x \in [a, b]\)</span>, <span class="math inline">\(n \in \mathbb{N}\)</span>. Then:</p>
+<p><span class="math display">\[\int^{a}_{b} f = \lim_{n \rightarrow \infty} \int^b_a f_n\]</span></p>
+<h4 id="theorem-8.2.6-dinis-theorem">Theorem 8.2.6: Dini's Theorem</h4>
+<p>Suppose that <span class="math inline">\((f_n)\)</span> is a monotone sequence of continuous functions on <span class="math inline">\(I:=[a, b]\)</span> that converges on <span class="math inline">\(I\)</span> to a continuous function <span class="math inline">\(f\)</span>. Then the convergence of the sequence is uniform.</p>
+<h3 id="the-exponential-function">The Exponential Function</h3>
+<h4 id="theorem-8.3.1">Theorem 8.3.1:</h4>
+<p>There exists a function <span class="math inline">\(E: \mathbb{R} \rightarrow \mathbb{R}\)</span> s.t:</p>
+<ol type="1">
+<li><span class="math inline">\(E^{\prime} (x) = E(x)\)</span></li>
+<li><span class="math inline">\(E(0) = 1\)</span></li>
+</ol>
+<h5 id="partial-proof-of-theorem-8.3.1">Partial Proof of Theorem 8.3.1</h5>
+<p>We define a sequence <span class="math inline">\((E_n)\)</span> of continuous functions as follows:</p>
+<ol type="1">
+<li><span class="math inline">\(E_{1} (x) := 1 + x\)</span></li>
+<li><span class="math inline">\(E_{n + 1} (x) := 1 + \int^x_0 E_n(t) dt\)</span></li>
+</ol>
+<p>for all <span class="math inline">\(n \in \mathbb{N}, x \in \mathbb{R}\)</span>, we can also show that:</p>
+<p><span class="math display">\[E_{n} (x) = 1 + \frac{x}{1!} + \frac{x^2}{2!} + ... + \frac{x^n}{n!}\]</span></p>
+<p>We can show that the limiting function <span class="math inline">\(E = \lim_{n\rightarrow \infty}\)</span> exists and satisfies all two points of <code>theorem 8.3.1</code>.</p>
+<h4 id="corollary-8.3.2">Corollary 8.3.2</h4>
+<p>The function <span class="math inline">\(E\)</span> has a derivative of every order and <span class="math inline">\(E^(n) (x) = E(x), \; \forall n \in \mathbb{N}, x \in \mathbb{R}\)</span>.</p>
+<h4 id="corollary-8.3.3">Corollary 8.3.3</h4>
+<p>If <span class="math inline">\(x &gt; 0\)</span>, then <span class="math inline">\(1 + x &lt; E(x)\)</span></p>
+<h4 id="theorem-8.3.4">Theorem 8.3.4</h4>
+<p>The function <span class="math inline">\(E: \mathbb{R} \rightarrow \mathbb{R}\)</span> that satisfies <code>theorem 8.3.1 (i) and (ii)</code> is unique.</p>
+<h4 id="definition-8.3.5">Definition 8.3.5</h4>
+<p>The unique function <span class="math inline">\(E: \mathbb{R} \rightarrow \mathbb{R}\)</span>, such that <span class="math inline">\(E^{\prime} (x) = E(x)\)</span> for all <span class="math inline">\(x \in \mathbb{R}\)</span> and <span class="math inline">\(E(0) = 1\)</span> is called the <strong>exponential function</strong>. The number <span class="math inline">\(e := E(1)\)</span> is called <strong>Euler's number</strong>:</p>
+<p><span class="math display">\[\exp(x) := E(x)\]</span></p>
+<p>or</p>
+<p><span class="math display">\[e^x := E(x)\]</span></p>
+<p>for <span class="math inline">\(x \in \mathbb{R}\)</span></p>
+<h4 id="theorem-8.3.6">Theorem 8.3.6</h4>
+<p>The exponential function satisfies the following properties:</p>
+<ol type="1">
+<li><span class="math inline">\(E(x) \neq 0, \; \forall x \in \mathbb{R}\)</span></li>
+<li><span class="math inline">\(E(x + y) = E(x)E(y), \; \forall x, y \in \mathbb{R}\)</span></li>
+<li><span class="math inline">\(E(r) = e^r, \;\forall r \in \mathbb{Q}\)</span></li>
+</ol>
+<h4 id="theorem-8.3.7">Theorem 8.3.7</h4>
+<p>The exponential function <span class="math inline">\(E\)</span> is <strong>strictly increasing</strong> on <span class="math inline">\(\mathbb{R}\)</span> and has range equal to <span class="math inline">\(y \in \mathbb{R}: y &gt; 0\)</span>. Further, we have:</p>
+<ol type="1">
+<li><span class="math inline">\(\lim_{x \rightarrow \infty} E(x) = 0\)</span></li>
+<li><span class="math inline">\(\lim_{x \rightarrow \infty} E(x) = \infty\)</span></li>
+</ol>
+<h3 id="the-logarithm-function">The Logarithm Function</h3>
+<h4 id="definition-8.3.8-logarithm-function">Definition 8.3.8: Logarithm Function</h4>
+<p>The function inverse to <span class="math inline">\(E: \mathbb{R} \rightarrow \mathbb{R}\)</span> is called the <strong>logarithm (natural logarithm)</strong> denoted by <span class="math inline">\(L\)</span> or by <span class="math inline">\(\ln\)</span>.</p>
+<p>Since they are inverse, we have:</p>
+<p><span class="math display">\[(L \circ E) (x) = x, \; \forall x \in \mathbb{R}\]</span></p>
+<p>and</p>
+<p><span class="math display">\[(E \circ L) (y) = y, \; \forall y \in \mathbb{R}, y &gt; 0\]</span></p>
+<h4 id="theorem-8.3.9">Theorem 8.3.9</h4>
+<p>The logarithm is a strictly increasing function <span class="math inline">\(L\)</span> with doman <span class="math inline">\(x \in \mathbb{R}: x &gt; 0\)</span> and range <span class="math inline">\(\mathbb{R}\)</span>. The derivative of <span class="math inline">\(L\)</span> is given by:</p>
+<ol type="1">
+<li><span class="math inline">\(L^{\prime} (x) = \frac{1}{x}\)</span></li>
+<li><span class="math inline">\(L(xy) = L(x) L(y)\)</span></li>
+<li><span class="math inline">\(L(1) = 0, L(e) = 1\)</span></li>
+<li><span class="math inline">\(L(x^r) = rL(x), \; \forall r \in \mathbb{Q}\)</span></li>
+<li><span class="math inline">\(\lim_{x \rightarrow 0^+} L(x) = -\infty\)</span> and <span class="math inline">\(\lim_{x \rightarrow \infty} L(x) = \infty\)</span></li>
+</ol>
+<h3 id="power-function">Power Function</h3>
+<h4 id="definition-8.3.10-power-function">Definition 8.3.10: Power Function</h4>
+<p>If <span class="math inline">\(\alpha \in \mathbb{R}\)</span> and <span class="math inline">\(x &gt; 0\)</span>, the number <span class="math inline">\(x^\alpha\)</span> is defined to be</p>
+<p><span class="math display">\[x^\alpha := e^{\alpha \ln x} = E(\alpha L(x))\]</span></p>
+<p>The function <span class="math inline">\(x \rightarrow x^\alpha\)</span> for <span class="math inline">\(x &gt; 0\)</span> is called the <strong>power function</strong> with exponent <span class="math inline">\(\alpha\)</span>.</p>
+<h4 id="theorem-8.3.11">Theorem 8.3.11</h4>
+<p>If <span class="math inline">\(\alpha \in \mathbb{R}\)</span> and <span class="math inline">\(x, y\)</span> belong to <span class="math inline">\((0, \infty)\)</span>, then:</p>
+<ol type="1">
+<li><span class="math inline">\(1^\alpha = 1\)</span></li>
+<li><span class="math inline">\(x^\alpha &gt; 0\)</span></li>
+<li><span class="math inline">\((xy)^\alpha = x^\alpha y^\alpha\)</span></li>
+<li><span class="math inline">\((\frac{x}{y})^{\alpha} = \frac{x^\alpha}{y^\alpha}\)</span></li>
+</ol>
+<h4 id="theorem-8.3.12">Theorem 8.3.12</h4>
+<p>If <span class="math inline">\(\alpha, \beta \in \mathbb{R}\)</span> and <span class="math inline">\(x \in (0, \infty)\)</span>, then:</p>
+<ol type="1">
+<li><span class="math inline">\(x^{\alpha + \beta} = x^{\alpha} + x^{\beta}\)</span></li>
+<li><span class="math inline">\((x^\alpha)^\beta = x^{\alpha\beta} = (x^{\beta})^\alpha\)</span></li>
+<li><span class="math inline">\(x^{-\alpha} = \frac{1}{x^\alpha}\)</span></li>
+<li>If <span class="math inline">\(\alpha &lt; \beta\)</span>, then <span class="math inline">\(x^\alpha &lt; x^\beta\)</span> for <span class="math inline">\(x &gt; 1\)</span></li>
+</ol>
+<h4 id="theorem-8.3.13">Theorem 8.3.13</h4>
+<p>Let <span class="math inline">\(\alpha \in \mathbb{R}\)</span>. Then the function <span class="math inline">\(x \rightarrow x^\alpha\)</span> on <span class="math inline">\((0, \infty)\)</span> to <span class="math inline">\(\mathbb{R}\)</span> is continuous and differentiable, and</p>
+<p><span class="math display">\[D x^\alpha = \alpha x^{\alpha - 1}\]</span></p>
+<p>If <span class="math inline">\(\alpha &gt; 0\)</span> the power function is strictly increasing, if <span class="math inline">\(\alpha &lt; 0\)</span>, the power function is strictly decreasing.</p>
+<h3 id="function-log_a">Function <span class="math inline">\(\log_a\)</span></h3>
+<p>if <span class="math inline">\(a &gt; 0\)</span>, <span class="math inline">\(a \neq 1\)</span>, it is sometimes useful to define the function <span class="math inline">\(\log_a\)</span></p>
+<h4 id="definition-8.3.14">Definition 8.3.14</h4>
+<p>Let <span class="math inline">\(a &gt; 0, a \neq 1\)</span>. We define:</p>
+<p><span class="math display">\[\log_a (x) := \frac{\ln x}{\ln a}\]</span></p>
+<p>for <span class="math inline">\(x \in (0, \infty)\)</span></p>
+<p>This is called <strong>logarithm of <span class="math inline">\(x\)</span> to the base <span class="math inline">\(a\)</span>.</strong></p>
+<h3 id="the-trigonometric-function">The Trigonometric Function</h3>
+<h4 id="theorem-8.4.1">Theorem 8.4.1</h4>
+<p>There exist functions <span class="math inline">\(C: \mathbb{R} \rightarrow \mathbb{R}\)</span> and <span class="math inline">\(S: \mathbb{R} \rightarrow \mathbb{R}\)</span> such that:</p>
+<ol type="1">
+<li><span class="math inline">\(C^{\prime\prime} (x) = - C(x)\)</span> and <span class="math inline">\(S^{\prime\prime} (x) = - S(x)\)</span> for all <span class="math inline">\(S: \mathbb{R} \rightarrow \mathbb{R}\)</span>.</li>
+<li><span class="math inline">\(C(0) = 1, C^{\prime} (0)\)</span>, and <span class="math inline">\(S(0) = 0, S^{\prime} (0) = 1\)</span></li>
+</ol>
+<h5 id="partial-proof-of-theorem-8.4.1">Partial Proof of Theorem 8.4.1</h5>
+<p>Define the sequences <span class="math inline">\((C_n), (S_n)\)</span> of continuous functions inductively as:</p>
+<ol type="1">
+<li><span class="math inline">\(C_1 (x) := 1, \; S_1 (x) := x\)</span></li>
+<li><span class="math inline">\(S_n(x) := \int^x_0 C_n(t) dt\)</span></li>
+<li><span class="math inline">\(C_{n+1} (x) := 1 - \int^x_0 S_n(t) dt\)</span></li>
+</ol>
+<p>for all <span class="math inline">\(n \in \mathbb{N}, x \in \mathbb{R}\)</span>. By induction, we have:</p>
+<p><span class="math display">\[C_{n+1} (x) = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - ... + (-1)^n \frac{x^{2n}}{(2n)!}\]</span> <span class="math display">\[S_{n+1} (x) = x - \frac{x^3}{3!} + \frac{x^5}{t!} - .... + (-1)^n \frac{x^{2n+1}}{(2n+1)!}\]</span></p>
+<p>Then the sequences converges uniformly to some function <span class="math inline">\(C, S\)</span> that satisfies all the properties of <code>theorem 8.4.1</code>.</p>
+<h4 id="corollary-8.4.2">Corollary 8.4.2</h4>
+<p>If <span class="math inline">\(C, S\)</span> are the functions in <code>theorem 8.4.1</code>, then:</p>
+<ol type="1">
+<li><span class="math inline">\(C^{\prime} (x) = -S(x)\)</span> and <span class="math inline">\(S^{\prime} (x) = C(x)\)</span> for all <span class="math inline">\(x \in \mathbb{R}\)</span>.</li>
+</ol>
+<p>Moreover, these functions have derivatives of all orders.</p>
+<h4 id="corollary-8.4.3">Corollary 8.4.3</h4>
+<p>The functions <span class="math inline">\(C, S\)</span> satisfy the pythagorean identity:</p>
+<ol type="1">
+<li><span class="math inline">\((C(x))^2 + (S(x))^2 = 1\)</span></li>
+</ol>
+<h4 id="theorem-8.4.4">Theorem 8.4.4</h4>
+<p>The function <span class="math inline">\(C, S\)</span> satisfying properties of <code>theorem 8.4.1</code> are unique.</p>
+<h4 id="definition-8.4.5">Definition 8.4.5</h4>
+<p>The unique functions <span class="math inline">\(C: \mathbb{R} \rightarrow \mathbb{R}\)</span>, <span class="math inline">\(S: \mathbb{R} \rightarrow \mathbb{R}\)</span> satisfying properties in <code>theorem 8.4.1</code> are called <strong>cosine function</strong> and <strong>sine function</strong>:</p>
+<p><span class="math display">\[\cos x := C(x)\]</span> <span class="math display">\[\sin x := S(x)\]</span></p>
+<h4 id="theorem-8.4.6">Theorem 8.4.6</h4>
+<p>If <span class="math inline">\(f: \mathbb{R} \rightarrow \mathbb{R}\)</span> is such that</p>
+<p><span class="math display">\[f^{\prime\prime} (x) = -f(x), \;\; \forall x \in \mathbb{R}\]</span></p>
+<p>then there exist real numbers <span class="math inline">\(\alpha, \beta\)</span> s.t</p>
+<p><span class="math display">\[f(x) = \alpha C(x) + \beta S(x)\]</span></p>
+<h4 id="theorem-8.4.7">Theorem 8.4.7:</h4>
+<p>The function <span class="math inline">\(C\)</span> is even and <span class="math inline">\(S\)</span> is odd in the sense that:</p>
+<ol type="1">
+<li><span class="math inline">\(C(-x) = C(x)\)</span> and <span class="math inline">\(S(-x) = - S(x)\)</span></li>
+</ol>
+<p>If <span class="math inline">\(x, y \in \mathbb{R}\)</span>, then we have the <strong>addition formula</strong>:</p>
+<p><span class="math display">\[C(x + y) = C(x) C(y) - S(x)S(y)\]</span> <span class="math display">\[S(x + y) = S(x)C(y) + C(x)S(y)\]</span></p>
+<h2 id="ref">Ref</h2>
+<p>[1] Understanding Analysis by Stephen Abbott</p>
+<p>[2] Introduction to Real Analysis by G.Bartle, R.Sherbert</p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/MDP/" rel="bookmark">MDP</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-equations/" rel="bookmark">Bellman Equations</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-optimality-equations/" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/14/calculus/" rel="bookmark">Calculus (1)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/dp/" rel="bookmark">Dynamic Programming</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RL-Basics/" rel="tag"># RL Basics</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/01/06/linear-algebra/" rel="prev" title="linear-algebra">
+                  <i class="fa fa-chevron-left"></i> linear-algebra
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/01/09/linear-algebra-2/" rel="next" title="Linear Algebra (2)">
+                  Linear Algebra (2) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

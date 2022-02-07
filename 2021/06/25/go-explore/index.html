@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Go-Explore: a New Approach for Hard-Exploration Problems Definitions What is hard-exploration problem?  Sparse rewards: precise sequences of many actions must be taken between obtaining rewards. Decep">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go Explore">
+<meta property="og:url" content="https://swag1ong.github.io/2021/06/25/go-explore/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Go-Explore: a New Approach for Hard-Exploration Problems Definitions What is hard-exploration problem?  Sparse rewards: precise sequences of many actions must be taken between obtaining rewards. Decep">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/papers/go_explore.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/papers/go_explore_3.png">
+<meta property="article:published_time" content="2021-06-25T06:44:26.000Z">
+<meta property="article:modified_time" content="2021-07-03T14:26:03.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="Policy Gradient">
+<meta property="article:tag" content="Imitation Learning">
+<meta property="article:tag" content="IM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swag1ong.github.io/images/RL/papers/go_explore.png">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/06/25/go-explore/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;06&#x2F;25&#x2F;go-explore&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;06&#x2F;25&#x2F;go-explore&#x2F;&quot;,&quot;title&quot;:&quot;Go Explore&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Go Explore | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#go-explore-a-new-approach-for-hard-exploration-problems"><span class="nav-number">1.</span> <span class="nav-text">Go-Explore: a New Approach for Hard-Exploration Problems</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#definitions"><span class="nav-number">1.1.</span> <span class="nav-text">Definitions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#go-explore-algorithm"><span class="nav-number">1.2.</span> <span class="nav-text">Go Explore Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#phase-1-explore-until-solved"><span class="nav-number">1.2.1.</span> <span class="nav-text">Phase 1: Explore until solved</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#cell-representations"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Cell representations</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#selecting-cells"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Selecting cells</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#count-subscore"><span class="nav-number">1.2.1.2.0.1.</span> <span class="nav-text">Count Subscore</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#neighbor-subscore"><span class="nav-number">1.2.1.2.0.2.</span> <span class="nav-text">Neighbor Subscore</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#level-weight-only-montezumas-revenge"><span class="nav-number">1.2.1.2.0.3.</span> <span class="nav-text">Level Weight (Only Montezuma&#39;s Revenge)</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#final-score-and-final-cell-probability"><span class="nav-number">1.2.1.2.1.</span> <span class="nav-text">Final Score and Final Cell Probability</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#new-version"><span class="nav-number">1.2.1.2.2.</span> <span class="nav-text">New Version</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#returning-to-cells-and-opportunities-to-exploit-deterministic-simulators"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">Returning to cells and opportunities to exploit deterministic simulators</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#exploration-from-cells"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">Exploration from cells</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#updating-the-archive"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">Updating the archive</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#batch-implementation"><span class="nav-number">1.2.1.6.</span> <span class="nav-text">Batch Implementation</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#phase-2"><span class="nav-number">1.2.2.</span> <span class="nav-text">Phase 2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#policy-based-go-explore"><span class="nav-number">1.3.</span> <span class="nav-text">Policy-based Go-Explore</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/06/25/go-explore/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Go Explore
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-06-25 14:44:26" itemprop="dateCreated datePublished" datetime="2021-06-25T14:44:26+08:00">2021-06-25</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-03 22:26:03" itemprop="dateModified" datetime="2021-07-03T22:26:03+08:00">2021-07-03</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/PG/" itemprop="url" rel="index"><span itemprop="name">PG</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/06/25/go-explore/" class="post-meta-item leancloud_visitors" data-flag-title="Go Explore" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>18k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>17 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="go-explore-a-new-approach-for-hard-exploration-problems">Go-Explore: a New Approach for Hard-Exploration Problems</h1>
+<h2 id="definitions">Definitions</h2>
+<p><strong>What is hard-exploration problem?</strong></p>
+<ol type="1">
+<li>Sparse rewards: precise sequences of many actions must be taken between obtaining rewards.</li>
+<li>Deceptive rewards: the reward function provides misleading feedback for reaching overall global objective.</li>
+</ol>
+<p>Both sparse and deceptive reward problems constitute "hard-exploration" problems.</p>
+<p><br></p>
+<p><strong>What is Derailment?</strong></p>
+<p>Typical IM agents have two layers of exploration mechanisms:</p>
+<ol type="1">
+<li>Higher level IR incentive that rewards when new states are reached, the IM agents rely on this mechanism to return to high IR promising states.</li>
+<li>A more basic exploratory mechanism such as epsilon-greedy exploration, action-space noise, or parameter-space noise. The IM agents rely on this mechanism to explore high IR states.</li>
+</ol>
+<p>However, to return to a previously discovered high IR state, a longer, more complex and more precise sequence of actions is needed. In this case, the lower level exploration mechanism (e.g epsilon greedy) will "derail" the agent from ever returning to that state (The needed precise actions are naively perturbed by the basic exploration mechanism).</p>
+<p><br></p>
+<p><strong>What is detachment?</strong></p>
+<p>Detachment is idea that an agent driven by Intrinsic Motivation could become detached from the frontiers of high intrinsic reward. IM is nearly always a consumable resource: a curious agent is curious about state to the extent that it has not often visited them. If an agent discovers multiple areas of the state space that produce high IR, its policy may in the short term focus on one such area. After exhausting some of the IR offered by that area, the policy may by chance begin consuming IR in another area. Once it has exhausted that IR, it is difficult for it to rediscover the frontier it detached from in the initial area, because it has already consumed the IR that led to that frontier and it likely will not remember how to return to that frontier due to catastrophic forgetting.</p>
+<p>In theory, a replay buffer could prevent detachment, but in practicce it would have to be large to prevent data about the abandoned frontier to not be purged before it becomes needed, and large replay buffers introduce their own optimization stability difficulties.</p>
+<p><img src="/images/RL/papers/go_explore.png" width="600"></p>
+<span id="more"></span>
+<h2 id="go-explore-algorithm">Go Explore Algorithm</h2>
+<p>Go-Explore is an explicit response to both detachment and derailment that is also designed to achieve robust solutions in stochastic environments. To deal with:</p>
+<ol type="1">
+<li><strong>Detachment</strong>: The algorithm explicitly stores an archive of promising states visited so taht they can then be revisited and explored from later.</li>
+<li><strong>Derailment</strong>: The algorithm decomposes the basic exploration mechanism into first returning to a promising state without intentionally adding any exploration then exploring further from the promising state.</li>
+</ol>
+<p>The algorithm works in two phases:</p>
+<ol type="1">
+<li><p><strong>Phase 1</strong>: solve the problem in a way that may be brittle, such as solving a deterministic version of the problem. Phase 1 focuses on exploring infrequently visited states which forms the basis for dealing with sparse-reward and deceptive problems.</p>
+<ol type="a">
+<li>Add all interestingly different states visited so far into the archive</li>
+<li>Each time a state from the archive is selected to explore from, first <strong>GO</strong> back to the state without adding exploration, and then <strong>Explore</strong> further from that state in search of new states.</li>
+</ol></li>
+</ol>
+<p><br></p>
+<ol start="2" type="1">
+<li><p><strong>Phase 2</strong>: robustify (train to be able to reliably perform the solution in the presence of stochasticity) via imitation learning or learning from demonstrations. The only difference with Go-Explore is that the solution demonstrations are produced automatically by Phase 1 instead of being provided by humans. If in the first phase, we obtain a policy that is robust in stochastic environment, then we do not need this second phase.</p>
+<ul>
+<li><strong>Input</strong>: One or more high-performing trajectories from phase 1</li>
+<li><strong>Output</strong>: A robust policy able to consistently achieve similar performance.</li>
+</ul></li>
+</ol>
+<h3 id="phase-1-explore-until-solved">Phase 1: Explore until solved</h3>
+<p>The purpose of Phase 1 is to explore the state space and find one or model high-performing trajectories that can later be turned into a robust policy in Phase 2. To do this, phase 1 builds up an archive of interestingly different game states, which we call <code>cells</code>, and the trajectories that lead to them. It starts with an archive that only contains the starting state. From there, it builds the archive by repeating the following procedure:</p>
+<ol type="1">
+<li><p>choose a cell from the current archive</p></li>
+<li><p>return to that cell without adding any stochastic exploration</p></li>
+<li><p>explore from that location stochastically</p></li>
+</ol>
+<h4 id="cell-representations">Cell representations</h4>
+<p>In theory, one can store high-dimensional states as cell with one cell representing one state. However, this is intractable in practice. To be tractable in high-dimensional state spaces, we need to reduce the dimensionality of the state space (although the final policy will still play in the same original state space). Thus, we want the cell representation to conflate similar states while not conflating states that are meaningfully different (aggregating similar frames to one frame).</p>
+<p>Since appropriate downscaling parameters can vary across games and even as exploration progresses within a given game, such parameters are optimized <strong>dynamically</strong> at regular intervals by maximizing the objective function over a sample of recently discovered frames.</p>
+<p><br></p>
+<p><strong>Cell representations without domain knowledge</strong></p>
+<p>We found that a very simple dimensionality reduction procedure produces surprisingly good results on Montezuma's Revenge. Specifically:</p>
+<ol type="1">
+<li>Convert each game frame image to grayscale</li>
+<li><strong>Downscale</strong> it to an <span class="math inline">\(w \leq 160, \; h \leq 120\)</span> image with area interpolation (i.e using the average pixel value in the area of the downsampled pixel)</li>
+<li>rescale <strong>pixel intensities</strong> <span class="math inline">\(d \leq 255\)</span> using the formula <span class="math inline">\(\lfloor \frac{d\cdot p}{255} \rfloor\)</span>, instead of original 0 to 255.</li>
+</ol>
+<p>The downscaling dimensions and pixel-intensity range <span class="math inline">\(w, h, d\)</span> are updated <strong>dynamically</strong> by proposing different values for each, calculating how a sample of recent frames would be grouped into cells under these proposed parameters, and then selecting the values that result in the best cell distribution as determined by the objective function:</p>
+<p>The objective function for candidate downscaling parameters is calculated based on:</p>
+<ol type="1">
+<li><p>A target number of cells <span class="math inline">\(T\)</span>, where <span class="math inline">\(T\)</span> is a fixed fraction of the number of cells in the sample (target groups of frames formed from the samples of frames)</p></li>
+<li><p>The actual number of cells produced by the parameters currently considered, <span class="math inline">\(n\)</span> (actual groups of frames formed from the samples)</p></li>
+<li><p>The distribution of sample frames over cells <span class="math inline">\(\mathbf{p}\)</span></p></li>
+</ol>
+<p><span class="math display">\[O(\mathbf{p}, n) = \frac{H_n (\mathbf{p})}{L(n, T)}\]</span></p>
+<p>Where:</p>
+<ol type="1">
+<li><p><strong>Cell number control</strong>: <span class="math inline">\(L(n, T)\)</span> measures the discrepancy between the number of cells under the current parameters <span class="math inline">\(n\)</span> and the target number of cells <span class="math inline">\(T\)</span>. It prevents the representation that is discovered from aggregating too many frames together, which would result in low exploration, or from aggregating too few frames together, which would result in an intractable time and memory complexity.</p>
+<p><span class="math display">\[L(n, T) = \sqrt{|\frac{n}{T} - 1| + 1}\]</span></p>
+<p>If <span class="math inline">\(n &gt;&gt; T \implies L(n, T) \rightarrow \infty\)</span>, if <span class="math inline">\(n &lt;&lt; T \implies L(n, T) \rightarrow \sqrt{2}\)</span>, more penalty on large number of groups.</p></li>
+<li><p><strong>Frame distribution control</strong>: <span class="math inline">\(H_n (\mathbf{p})\)</span> is the ratio of the entropy of how frames were distributed across cells to the entropy of the discrete uniform distribution of size <span class="math inline">\(n\)</span>.</p>
+<p><span class="math display">\[H_n (\mathbf{p}) = - \sum^{n}_{i=1} \frac{p_i \log(p_i)}{\log(n)}\]</span></p>
+<p>Larger entropy gives a uniform distribution, that is, the objective encourages frames to be distributed as uniformly as possible across cells. Normalized entropy is comparable across different number of cells, allowing the number of cells to be controlled solely by <span class="math inline">\(L(n, T)\)</span>.</p></li>
+</ol>
+<p><br></p>
+<p>At each step of the randomized search, new values of each tuple of parameter <span class="math inline">\(w, h, d\)</span> are proposed by sampling from a geometric distribution (close to zero values have higher probability of being selected) whose mean (<span class="math inline">\(\mu = \frac{1}{p}\)</span>) is the current best known value of the given parameter. If the current best known value is lower than a heuristic minimum mean <span class="math inline">\(w=8, h=10.5, d=12\)</span>, then the minimum mean is used as the mean of the geometric distribution. New parameter values are resampled if they fall outside of the valid range for the parameter. Then, the scaled frames are grouped into groups and objective are calculated.</p>
+<p>The sample of frames are obtained by maintaining a set of recently seen smaple frames as GO-Explore runs: each time a frame not realy in the set is seen during the explore step, it is added to the running set with a probability of 1%. If the resulting set contains more than 10,000 frames, the oldest frame it contains is removed.</p>
+<p><strong>Cell representations with domain knowledge</strong></p>
+<p>In <strong>Montezuma's Revenge</strong>, domain knowledge is provided as unique combinations of:</p>
+<ol type="1">
+<li><p>the <span class="math inline">\(x, y\)</span> position of the agent (descretized into a grid in which each cell is <span class="math inline">\(16 \times 16\)</span> pixels)</p></li>
+<li><p>room number</p></li>
+<li><p>level number</p></li>
+<li><p>rooms that the currently-held keys were found</p></li>
+</ol>
+<p>In <strong>Pitfall</strong>, only the <span class="math inline">\(x, y\)</span> position of the agent and room number is used.</p>
+<p>All of this information was extracted directly from pixels with simple hand-coded classifiers to detect objects such as the main character's location combined with our knowledge of the map structure in the two games.</p>
+<p>While Phase 1 provides the opportunity to leverage domain knowledge in the cell representation, the robustified Neural Network produced by Phase 2 still plays directly form pixels only.</p>
+<h4 id="selecting-cells">Selecting cells</h4>
+<p>In each iteration of Phase 1, a cell is chosen from the archive to explore from. This choice could be made:</p>
+<ol type="1">
+<li>Uniformly at random</li>
+<li>Assign a positive weight to each cell that is higher for cells that are deemed more promising (less often visited cells, have recently contributed to discovering a new cell, expected to be near undiscovered cells and etc..). The weights of all cells are normalized to represent the probability distribution over the current cell space. No cell is ever given a weight of 0.</li>
+</ol>
+<h6 id="count-subscore">Count Subscore</h6>
+<p>The score of a cell is the sum of separate subscores. One important set of such subscores is called the <code>count subscore</code>s. <code>Count subscore</code>s are computed from attributes of cells that represent the number of times a cell was interacted with in different ways. Specifically:</p>
+<ol type="1">
+<li><p>The number of times the cell has already been chosen (i.e selected as a cell to explore from)</p></li>
+<li><p>The number of times the cell was visited at any point during the exploration phase</p></li>
+<li><p>the number of times a cell has been chosen since exploration from it last produced the discovery of a new or better cell.</p></li>
+</ol>
+<p>Lower counts of these attributes indicate a more promising cell to explore from (e.g. a cell that has been chosen more times already is less likely to lead to new cells than a cell that has been chosen fewer times). The <code>count subscore</code> for each of these attribute is given by:</p>
+<p><span class="math display">\[CntScore (c, a) = w_a \cdot (\frac{1}{v(c, a) + \epsilon_1})^{p_a} + \epsilon_2\]</span></p>
+<p>Here:</p>
+<ul>
+<li><p><span class="math inline">\(c\)</span> is the cell for which we are calculating the score</p></li>
+<li><p><span class="math inline">\(v(c, a)\)</span> is the value of attribute <span class="math inline">\(a\)</span> for cell <span class="math inline">\(c\)</span></p></li>
+<li><p><span class="math inline">\(w_a\)</span> is the weight hyperparameter for attribute <span class="math inline">\(a\)</span></p></li>
+<li><p><span class="math inline">\(p_a\)</span> is the power hyperparameter for attribute <span class="math inline">\(a\)</span></p></li>
+<li><p><span class="math inline">\(\epsilon_1\)</span> is a normalization parameter to prevent zero division</p></li>
+<li><p><span class="math inline">\(\epsilon_2\)</span> helps guarantee that no cell ever has a 0 probability of being chosen</p>
+<p><span class="math inline">\(\epsilon_1=0.001, \epsilon_2=0.00001\)</span> are the default values.</p></li>
+</ul>
+<h6 id="neighbor-subscore">Neighbor Subscore</h6>
+<p>Given the position of <span class="math inline">\(x, y\)</span>, it is possible to determine the possible neighbors of given cells and whether these neighbors are already present in the archive. For these cases, we define a set of <code>neighbor subscore</code>s. Each neighbor subscore is defined as <span class="math inline">\(w_n\)</span> if neighbor <span class="math inline">\(n\)</span> does not exist in the archive, 0 if the does exist.</p>
+<p>The motivation of neighbor subscore is that the cells that are lacking neighbors are likely at the edge of the current frontier of knowledge and are thus more likely to yield new cells. We consider 3 types of neighbors:</p>
+<ol type="1">
+<li>Vertical (2)</li>
+<li>Horizontal (2)</li>
+<li>Cells that are in the same level, room, <span class="math inline">\(x, y\)</span> position, but are holding a larger number of keys</li>
+</ol>
+<p>Neighbors of the same type share the same value for <span class="math inline">\(w_n\)</span>, then the score is calculated by:</p>
+<p><span class="math display">\[NeighScore(c, n) = w_n * (1 - HasNeighbor(c, n))\]</span></p>
+<p>Where <span class="math inline">\(c\)</span> is current cell and <span class="math inline">\(n \in Vertical \cup Horizontal \cup MoreKeys\)</span> is current neighbor. In cases without domain knowledge, it is unclear what exactly would constitute a cell's neighbor, and so <code>neighbor score</code> is defined as 0.</p>
+<h6 id="level-weight-only-montezumas-revenge">Level Weight (Only Montezuma's Revenge)</h6>
+<p>In the case of Montezuma's Revenge with domain knowledge, cells are exponentially downweighted based on the distance to the maximum level currently reached, thereby favoring progress in the furthest level reached, while skill keeping open the possibility of improving previous level's trajectories:</p>
+<p><span class="math display">\[LevelWeight (c) = 0.1^{MaxLevel - Level(c)}\]</span></p>
+<p>In the case of no domain knowledge, <span class="math inline">\(LevelWeight (c) = 1, \quad \forall c\)</span></p>
+<h5 id="final-score-and-final-cell-probability">Final Score and Final Cell Probability</h5>
+<p>The final score is then:</p>
+<p><span class="math display">\[CellScore (c) = LevelWeight (c) \cdot [(\sum_n NeighScore (c, n)) + \sum_a CntScore (c, a) + 1]\]</span></p>
+<p>The final probability is then:</p>
+<p><span class="math display">\[CellProb (c) = \frac{CellScore (c)}{\sum_{c^{\prime}}CellScore (c^{\prime})}\]</span></p>
+<p><br></p>
+<h5 id="new-version">New Version</h5>
+<p><strong>In the new version (except Montezuma's Revenge with domain knowledge but without a return policy), the selection weight (score) is reduced to:</strong></p>
+<p><span class="math display">\[W = \frac{1}{\sqrt{C_{seen} + 1}}\]</span></p>
+<p>In case of Montezuma's Revenge with domain knowledge but without a return policy, three addtional domain knowledge features further contribute to the weight:</p>
+<ol type="1">
+<li><p>The number of horizontal neighbours to the cell present in the archive (<span class="math inline">\(h\)</span>).</p></li>
+<li><p>A key bonus: for each location (defined by level, room, and x, y position), the cell with the largest number of keys at that location gets a bonus of <span class="math inline">\(k=1\)</span> (<span class="math inline">\(k=0\)</span> for other cells).</p></li>
+<li><p>The current level.</p>
+<p><span class="math display">\[W_{location} = \frac{2 - h}{10} + k\]</span> <span class="math display">\[W_{mont_domain} = 0.1^{L-l}(W + W_{location})\]</span></p></li>
+</ol>
+<p>Where, <span class="math inline">\(l\)</span> is the level given current cell and the maximum level in the archive <span class="math inline">\(L\)</span>.</p>
+<p><br></p>
+<h4 id="returning-to-cells-and-opportunities-to-exploit-deterministic-simulators">Returning to cells and opportunities to exploit deterministic simulators</h4>
+<p>The easiest way to return to a cell is if the world is deterministic and resettable, such that one can reset the state of the simulator to a previous visit to that cell. The ability to harness determinism and perform such resets forces us to recognize that there are two different types of problems we wish to solve with RL algorithms:</p>
+<ol type="1">
+<li>Require stochasticity at test time only</li>
+<li>Require stochasticity during both testing and training time (further research)</li>
+<li>Environment that prevents return to cells (further research)</li>
+</ol>
+<p>We can take advantage of the fact simulators can be made deterministic to improve performance, especially on hard-exploration problems. For many types of problems, we want a reliable final solution (e.g. a robot that reliably finds survivors after a natural disaster) and there is no principled reason to care whether we obtain this solution via initially deterministic training. If we can solve previously unsolvable problems, including ones that are stochastic at evaluation (test) time, via making simulators deterministic, we should take advantage of this opportunity.</p>
+<p>There are also cases where a simulator is not available and where learning algorithms must confront stochasticity during training. We can train goal-conditioned policies that reliably return to cells in the archive during the exploration phase. This strategy would result in a fully trained policy at the end of the exploration phase meaning there would be no need for a phase 2 at the end.</p>
+<p>For problems in which all we care about is a reliable policy at test time, a key insight behind Go-Explore is that we can first solve the problem (Phase 1), and then (if necessary) deal with making the solution more robust later (Phase 2).</p>
+<p>Due to the fact that the present version of Go-Explore operates in a deterministic setting during Phase 1, each cell is associated with an open-loop sequence of instructions that lead to it given the <strong>initial state</strong>, not a proper policy that maps any state to an action. A true policy is produced during robustification in Phase 2.</p>
+<p><strong>Sequence of actions and states are stored for each cell</strong></p>
+<p><br></p>
+<h4 id="exploration-from-cells">Exploration from cells</h4>
+<p>Once a cell is reached, any exploration method can be applied to find new cells. In this work, the agent explores by taking random actions <span class="math inline">\(k = 100\)</span> training frames, with a 95% probability of repeating the previous action at each training frame. Besides reaching the <span class="math inline">\(k = 100\)</span> training frame limit for exploration, exploration is also aborted at the episodes' end, and the action that led to the episode ending is ignored because it does not produce a destination cell.</p>
+<p>This exploration does not require a neural network or other controller.</p>
+<p><br></p>
+<h4 id="updating-the-archive">Updating the archive</h4>
+<p>While an agent is exploring from a cell, the archive updates in two conditions:</p>
+<ol type="1">
+<li><p>When the agent visits a cell that was no yet in the archive (which can happen multiple times while exploring from a given cell). In this case, , that cell is added to the archive with four associated pieces of meta data:</p>
+<ul>
+<li>A full trajectory from the starting state to that cell (states and actions)</li>
+<li>The state of the environment at the time of discovering the cell (if the environment supports such an operation)</li>
+<li>The cumulative score of that trajectory</li>
+<li>The length of that trajectory</li>
+</ul></li>
+<li><p>The second condition is when a newly-encountered trajectory is "better" than that belonging to a cell already in the archive. We define a new trajectory is "better" than an existing trajectory when the new trajectory either has:</p>
+<ul>
+<li>A higher cumulative score</li>
+<li>A shorter trajectory with the same score</li>
+</ul>
+<p>In either case, we update the existing cell in the archive with new trajectory, new trajectory length, new environment state and new score. In addition, information regarding the likelihood of this cell being chosen resets including the total number of times the cell has been chosen and the number of times the cell has been chosen since leading to the discovery of another cell. Resetting these values is beneficial when cells conflate many different states because a new way of reaching a cell may actually be a more promising stepping stone to explore from (so we want to encourage its selection).</p></li>
+</ol>
+<h4 id="batch-implementation">Batch Implementation</h4>
+<p>Phase 1 is implemented in parallel to take advantage of multiple CPUs. At each step, a batch of <span class="math inline">\(b\)</span> cells is selected with replacement and exploration from each of these cells proceeds in parallel. A high <span class="math inline">\(b\)</span> saves time of recomputing cell selection probabilities less frequently, which is important as this computation accounts for a significant portion of run time as the archive gets large.</p>
+<h3 id="phase-2">Phase 2</h3>
+<p>If successful, the result of Phase 1 is one or more high-performing trajectories. However, if Phase 1 of Go-Explore harness ed determinism in a simulator, such trajectories will not be robust to any stochasticity, which is present at test time. Phase 2 addresses this gap by creating a policy robust to noise via imitation learning. Thus, the policy that is trained has to lean how to mimic or perform as well as the trajectory obtained from the Go-Explore exploration phase while simultaneously dealing with circumstances that were not present in the original trajectory.</p>
+<p>The <code>Backward Algorithm</code> is used for imitation learning. It works by starting the agent near the last state in the trajectory, and then running an ordinary RL algorithm from there (In this case <code>PPO</code>). Once the algorithm has learned to obtain the same or a higher reward than the example trajectory from that starting place near the end of the trajectory, the algorithm backs the agent's starting point up to a slightly earlier place along the trajectory and repeats the process until eventually the agent has learned to obtain a score greater than or equal to the example trajectory all the way from the initial state.</p>
+<p><strong>Advantages</strong>:</p>
+<ol type="1">
+<li>The policy is only optimized to maximize its own score, and not actually forced to accurately mimic the trajectory, for this reason, this phase is able to further optimize the expert trajectories as well as generalize beyond them.</li>
+<li>RL algorithms with discounting factor that prizes near-term rewards more than those gathered later. Thus, if the original trajectory contains unnecessary actions, such behavior could be eliminated during robustification.</li>
+</ol>
+<h2 id="policy-based-go-explore">Policy-based Go-Explore</h2>
+<p>In policy-based Go-Explore, a goal-conditioned (i.e conditioned on the cell to return to) policy <span class="math inline">\(\pi_{\theta} (a | s, g)\)</span> is trained during the exploration phase with <code>PPO</code>. Instead of training the policy to directly reach cells in the archive, the policy is trained to follow the best trajectory of cells that previously led to the selected state (cell). The goal-conditioned policy has the potential to greatly improve exploration effectiveness over random actions. In addition to returning to previously visited cells, the policy can also be queried during the explore step by presenting it with additional goals, including goals not already in the archive. Such goal cells are chosen according to a simple strategy that either:</p>
+<ol type="1">
+<li><p>Chooses a cell adjacent to the current position of the agent, possibly leading to a new cell.</p></li>
+<li><p>Randomly selects a cell from the archive, potentially repositioning the agent within the archive or finding new cells while trying to do so.</p></li>
+</ol>
+<p><strong>Every time post-return exploration (after reaching the selected cell from archive) is started, the algorithm randomly commits with equal probability to either take random actions or sampling from the policy for the duration of the post-return exploration step.</strong></p>
+<p>The total reward <span class="math inline">\(r_t\)</span> is the sum of the trajectory reward <span class="math inline">\(r^{\tau}_t\)</span> and the environment reward <span class="math inline">\(r^e_t\)</span>, where <span class="math inline">\(r^e_t\)</span> is clipped to the <span class="math inline">\([-2, 2]\)</span> range. Policy based Go-Explore also includes self-imitation learning, where self-initation actors follow the same procedure as regular actors, except that they replay the trajectory associated with the cell they select from the archive.</p>
+<p><img src="/images/RL/papers/go_explore_3.png" width="600"></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/06/09/DDPG/" rel="bookmark">Deep Deterministic Policy Gradient</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/06/DPG/" rel="bookmark">Deterministic Policy Gradient</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/06/11/PPO/" rel="bookmark">PPO</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/30/policy-gradient-2/" rel="bookmark">Policy Gradient (2)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/06/05/policy-gradient-3/" rel="bookmark">Policy Gradient (3)</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Policy-Gradient/" rel="tag"># Policy Gradient</a>
+              <a href="/tags/Imitation-Learning/" rel="tag"># Imitation Learning</a>
+              <a href="/tags/IM/" rel="tag"># IM</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/06/25/overfeat/" rel="prev" title="overfeat">
+                  <i class="fa fa-chevron-left"></i> overfeat
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/06/25/instrinsic-motivation/" rel="next" title="Intrinsic Motivation">
+                  Intrinsic Motivation <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

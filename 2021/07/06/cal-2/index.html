@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Multivariate Calculus (2) Double Integrals Double Integrals over Rectangles In a similar manner as definite integral, we consider a function \(f\) of two variables defined on a closed rectangle: \[R &#x3D;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Calculus (2)">
+<meta property="og:url" content="https://swag1ong.github.io/2021/07/06/cal-2/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Multivariate Calculus (2) Double Integrals Double Integrals over Rectangles In a similar manner as definite integral, we consider a function \(f\) of two variables defined on a closed rectangle: \[R &#x3D;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/15_1_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/15_1_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/15_1_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/15_2_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/15_2_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/15_2_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/15_2_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/15_2_5.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/15_2_6.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/15_1_5.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/15_2_7.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/cal/matrix_5_2_1.png">
+<meta property="article:published_time" content="2021-07-06T14:09:59.000Z">
+<meta property="article:modified_time" content="2021-07-12T14:59:17.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swag1ong.github.io/images/cal/15_1_2.png">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/07/06/cal-2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;07&#x2F;06&#x2F;cal-2&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;07&#x2F;06&#x2F;cal-2&#x2F;&quot;,&quot;title&quot;:&quot;Calculus (2)&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Calculus (2) | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#multivariate-calculus-2"><span class="nav-number">1.</span> <span class="nav-text">Multivariate Calculus (2)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#double-integrals"><span class="nav-number">1.1.</span> <span class="nav-text">Double Integrals</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#double-integrals-over-rectangles"><span class="nav-number">1.1.1.</span> <span class="nav-text">Double Integrals over Rectangles</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iterated-integral"><span class="nav-number">1.2.</span> <span class="nav-text">Iterated Integral</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#double-integrals-over-general-regions"><span class="nav-number">1.3.</span> <span class="nav-text">Double Integrals over General Regions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#properties-of-double-expectation"><span class="nav-number">1.3.1.</span> <span class="nav-text">Properties of Double Expectation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#surface-area"><span class="nav-number">1.3.2.</span> <span class="nav-text">Surface Area</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#triple-integral"><span class="nav-number">1.3.3.</span> <span class="nav-text">Triple Integral</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#change-of-variable"><span class="nav-number">1.3.4.</span> <span class="nav-text">Change of Variable</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#vector-and-matrix-differentiation"><span class="nav-number">1.4.</span> <span class="nav-text">Vector and Matrix Differentiation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#numerator-layout"><span class="nav-number">1.4.1.</span> <span class="nav-text">Numerator Layout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#denominator-layout"><span class="nav-number">1.4.2.</span> <span class="nav-text">Denominator Layout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#derivative-of-function-of-the-form-mathbfy-amathbfx"><span class="nav-number">1.4.3.</span> <span class="nav-text">Derivative of Function of the Form: \(\; \mathbf{y} &#x3D; A\mathbf{x}\)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ref"><span class="nav-number">2.</span> <span class="nav-text">Ref</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/06/cal-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Calculus (2)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-06 22:09:59" itemprop="dateCreated datePublished" datetime="2021-07-06T22:09:59+08:00">2021-07-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-12 22:59:17" itemprop="dateModified" datetime="2021-07-12T22:59:17+08:00">2021-07-12</time>
+      </span>
+
+  
+    <span id="/2021/07/06/cal-2/" class="post-meta-item leancloud_visitors" data-flag-title="Calculus (2)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>8.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>7 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="multivariate-calculus-2">Multivariate Calculus (2)</h1>
+<h2 id="double-integrals">Double Integrals</h2>
+<h3 id="double-integrals-over-rectangles">Double Integrals over Rectangles</h3>
+<p>In a similar manner as definite integral, we consider a function <span class="math inline">\(f\)</span> of two variables defined on a closed rectangle:</p>
+<p><span class="math display">\[R = [a, b] \times [c, d] = \{(x, y, z) \in \mathbb{R}^2 | a \leq x \leq b, c \leq y \leq d\}\]</span></p>
+<p>and we first suppose that <span class="math inline">\(f(x, y) \leq 0\)</span>. The graph of <span class="math inline">\(f\)</span> is a surface with equation <span class="math inline">\(z = f(x, y)\)</span>. Let <span class="math inline">\(S\)</span> be the solid that lies above <span class="math inline">\(R\)</span> and under the graph of <span class="math inline">\(f\)</span>:</p>
+<p><span class="math display">\[S = \{(x, y, z) \in \mathbb{R}^3 | a \leq x \leq b, c \leq y \leq d, 0 \leq z \leq f(x, y)\}\]</span></p>
+<p>We first divide the <span class="math inline">\(R\)</span> into subrectangles. We accomplish this by dividing the interval <span class="math inline">\([a, b]\)</span> into <span class="math inline">\(m\)</span> subintervals <span class="math inline">\([x_{i-1}, x_{i}]\)</span> of equal width <span class="math inline">\(\Delta x = \frac{(b - a)}{m}\)</span> and dividing <span class="math inline">\([c, d]\)</span> into <span class="math inline">\(n\)</span> subintervals <span class="math inline">\([y_{j - 1}, y_j]\)</span> of equal width <span class="math inline">\(\Delta y = \frac{(d - c)}{n}\)</span>. Then the subrectangles are defined as:</p>
+<p><span class="math display">\[R_{i, j} = [x_{i - 1}, x_i] \times [y_{j - 1}, y_j] = \{(x, y) | x_{i - 1} \leq x \leq x_i, y_{j - 1} \leq y leq y_j\}\]</span></p>
+<p>Then the area of individual subrectangle is:</p>
+<p><span class="math display">\[\Delta A = \Delta x \Delta y\]</span></p>
+<p>If we choose a sample point <span class="math inline">\((x^{*}_{i, j}, y^{*}_{i, j}) \in R_{i, j}\)</span>, then we can approximate the part of <span class="math inline">\(S\)</span> that lies above each <span class="math inline">\(R_{i, j}\)</span> (The volume) by a column with height <span class="math inline">\(f(x^{*}_{i, j}, y^{*}_{i, j})\)</span> and base area <span class="math inline">\(\Delta A\)</span>. The volume of the column:</p>
+<p><span class="math display">\[f(x^{*}_{i, j}, y^{*}_{i, j})\Delta A\]</span></p>
+<p><img src='/images/cal/15_1_2.png' width="600"></p>
+<p>Then the volume (<strong>only when <span class="math inline">\(f(x, y) \leq 0 \; \forall (x, y) \in S\)</span></strong>) of <span class="math inline">\(S\)</span> can be approximated:</p>
+<p><span class="math display">\[V \approx \sum^{m}_{i=1} \sum^{n}_{j=1}f(x^{*}_{i, j}, y^{*}_{i, j})\Delta A\]</span></p>
+<p>This sum is called <code>double Riemann sum</code>.</p>
+<span id="more"></span>
+<p>Then the approximation becomes better as <span class="math inline">\(n, m \rightarrow \infty\)</span>:</p>
+<p><span class="math display">\[V = \lim_{n, m \rightarrow \infty} \sum^{m}_{i=1} \sum^{n}_{j=1}f(x^{*}_{i, j}, y^{*}_{i, j})\Delta A\]</span></p>
+<p><img src='/images/cal/15_1_3.png' width="600"></p>
+<p>A function <span class="math inline">\(f\)</span> is called <code>integrable</code> if the limit above exists, it can be showed that <strong>all continuous functions are integrable.</strong> If <span class="math inline">\(f\)</span> is bounded (<span class="math inline">\(\exists \; M, \; s.t \; |f(x, y)| \leq M, \; \forall (x, y) \in R\)</span>), then if <span class="math inline">\(f\)</span> is continuous there, except on a finite number of smooth curves, then <span class="math inline">\(f\)</span> is integrable over <span class="math inline">\(R\)</span>.</p>
+<p><img src='/images/cal/15_1_4.png' width="600"></p>
+<h2 id="iterated-integral">Iterated Integral</h2>
+<p>Suppose that <span class="math inline">\(f\)</span> is a function of two variables that is integrable on the rectangle <span class="math inline">\(R = [a, b] \times [c, d]\)</span>. Now, <span class="math inline">\(\int^{d}_{c} f(x, y) dy\)</span> is a function that depends on the value of <span class="math inline">\(x\)</span>:</p>
+<p><span class="math display">\[A(x) = \int^{d}_{c} f(x, y) dy\]</span></p>
+<p>If we now integrate the function <span class="math inline">\(A\)</span> w.r.t <span class="math inline">\(x\)</span> from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span>, we have:</p>
+<p><span class="math display">\[\int^{b}_{a} A(x) dx = \int^{b}_{a} \int^{d}_{c} f(x, y) dy dx\]</span></p>
+<p>This integral on the right side is called <code>iterated integral</code> means that we first integrate w.r.t <span class="math inline">\(y\)</span> from <span class="math inline">\(c\)</span> to <span class="math inline">\(d\)</span>, then we integral w.r.t <span class="math inline">\(x\)</span> from <span class="math inline">\(a\)</span> to <span class="math inline">\(b\)</span>.</p>
+<p><img src='/images/cal/15_2_1.png' width="600"></p>
+<p><br></p>
+<p>If <span class="math inline">\(f(x, y)\)</span> can be factored s.t <span class="math inline">\(f(x, y) = g(x)h(y)\)</span>, then:</p>
+<p><span class="math display">\[\int^{b}_{a} \int^{d}_{c} f(x, y) dy dx = \int^{b}_{a} g(x) dx \int^{d}_{c} h(y) dy\]</span></p>
+<p><br></p>
+<h2 id="double-integrals-over-general-regions">Double Integrals over General Regions</h2>
+<p>We want to extend the previous idea from region of rectangle (<span class="math inline">\(R = [a, b] \times [c, d]\)</span>) to a bounded region <span class="math inline">\(D\)</span> (<span class="math inline">\(D\)</span> can be enclosed in a rectangular region <span class="math inline">\(R\)</span>) of more general shape. Then we define a new function <span class="math inline">\(F\)</span> with domain <span class="math inline">\(R\)</span> by:</p>
+<p><span class="math display">\[
+F(x, y)=
+\begin{cases}
+f(x, y), &amp; (x, y) \in D\\
+0, \quad &amp; (x, y) \notin D \; \text{ but } \in R
+\end{cases}
+\]</span></p>
+<p>If <span class="math inline">\(F\)</span> is integrable over <span class="math inline">\(R\)</span>, then we define the <code>double integral of $f$ over $D$</code> by:</p>
+<p><span class="math display">\[\underset{D}{\int\int} f(x, y) dA = \underset{R}{\int\int} F(x, y) dA\]</span></p>
+<p><img src='/images/cal/15_2_2.png' width="600"></p>
+<p>This makes sense because:</p>
+<ol type="1">
+<li>The rectangle version has been previously defined.</li>
+<li><span class="math inline">\(F(x, y) = 0\)</span> when <span class="math inline">\((x, y) \notin D\)</span>, so it contributes nothing to the integral.</li>
+</ol>
+<p>Notice here that <span class="math inline">\(D\)</span> might have discontinuities at the boundary points. However, if the boundary curve of <span class="math inline">\(D\)</span> is <code>well-behaved</code> ("Any function for which the mathematical theorem I am about to quote is true, only I don't remember exactly which functions these are"), it can be shown that <span class="math inline">\(\underset{R}{\int\int} F(x, y) dA\)</span> exists and <span class="math inline">\(\underset{D}{\int\int} f(x, y) dA\)</span> exists.</p>
+<p>A plane region <span class="math inline">\(D\)</span> is said to be of <code>type I</code> if it lies between the graphs of two continuous function of <span class="math inline">\(x\)</span>:</p>
+<p><span class="math display">\[D = \{(x, y) | a \leq x \leq b, g_1(x) \leq y \leq g_2(x)\}\]</span></p>
+<p>Where <span class="math inline">\(g_1\)</span>, <span class="math inline">\(g_2\)</span> are continuous on <span class="math inline">\([a, b]\)</span>.</p>
+<p><img src='/images/cal/15_2_3.png' width="600"></p>
+<p>Then:</p>
+<p><img src='/images/cal/15_2_4.png' width="600"></p>
+<p><br></p>
+<p>A plane region <span class="math inline">\(D\)</span> is said to be of <code>type II</code> if it is defined as:</p>
+<p><span class="math display">\[D = \{(x, y) | c \leq y \leq d, h_1(y) \leq x \leq h_2(y)\}\]</span></p>
+<p>Where <span class="math inline">\(h_1, h_2\)</span> are continuous.</p>
+<p><img src='/images/cal/15_2_5.png' width="600"></p>
+<p>Then:</p>
+<p><img src='/images/cal/15_2_6.png' width="600"></p>
+<h3 id="properties-of-double-expectation">Properties of Double Expectation</h3>
+<p><img src='/images/cal/15_1_5.png' width="600"></p>
+<p>If <span class="math inline">\(D = D_1 \cup D_2\)</span> where <span class="math inline">\(D_1\)</span> and <span class="math inline">\(D_2\)</span> don't overlap except perhaps on their boundaries, then:</p>
+<p><span class="math display">\[\underset{D}{\int\int} f(x, y) dA = \underset{D_1}{\int\int} f(x, y) dA + \underset{D_2}{\int\int} f(x, y) dA\]</span></p>
+<p>This property can be used to evaluate double integrals over regions <span class="math inline">\(D\)</span> that are neither <code>type I</code> nor <code>type II</code> by converting it to regions of type I or type II.</p>
+<p><br></p>
+<p>If we integrate the constant function <span class="math inline">\(f(x, y) = 1\)</span> over a region <span class="math inline">\(D\)</span>, we end up with the area of <span class="math inline">\(D\)</span>:</p>
+<p><span class="math display">\[A(D) = \underset{D}{\int\int} 1 dA\]</span></p>
+<p><img src='/images/cal/15_2_7.png' width="600"></p>
+<h3 id="surface-area">Surface Area</h3>
+<h3 id="triple-integral">Triple Integral</h3>
+<h3 id="change-of-variable">Change of Variable</h3>
+<h2 id="vector-and-matrix-differentiation">Vector and Matrix Differentiation</h2>
+<h3 id="numerator-layout">Numerator Layout</h3>
+<p>Let:</p>
+<p><span class="math display">\[\mathbf{y} = \psi(\mathbf{x})\]</span></p>
+<p>Where, <span class="math inline">\(\mathbf{x}, \mathbf{y}\)</span> are column vectors with size <span class="math inline">\(n, m\)</span> respectively. Then the partial derivative of <span class="math inline">\(\mathbf{y}\)</span> w.r.t <span class="math inline">\(\mathbf{x}\)</span> is a <span class="math inline">\(m \times n\)</span> matrix:</p>
+<p><span class="math display">\[
+\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
+\begin{bmatrix}
+\frac{\partial y_1}{\partial x_1} &amp; \frac{\partial y_1}{\partial x_2} &amp; .... &amp; \frac{\partial y_1}{\partial x_n}\\
+.\\
+.\\
+.\\
+\frac{\partial y_m}{\partial x_1} &amp; \frac{\partial y_m}{\partial x_2} &amp; .... &amp; \frac{\partial y_m}{\partial x_n}
+\end{bmatrix}_{m \times n}
+\]</span></p>
+<p>This matrix is called the <code>Jacobian Matrix</code>. Notice that, each row of this matrix is a gradient vector <span class="math inline">\(\frac{\partial y_1}{\partial \mathbf{x}}\)</span>, thus, we can rewrite <code>Jacobian Matrix</code> as:</p>
+<p><span class="math display">\[
+\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
+\begin{bmatrix}
+\nabla_{\mathbf{x}} y_1\\
+.\\
+.\\
+.\\
+\nabla_{\mathbf{x}} y_m
+\end{bmatrix}_{m \times n}
+\]</span></p>
+<p>Notice that, single gradient vector <span class="math inline">\(\nabla_{\mathbf{x}} y_i\)</span> is a row vector, we can represent it as a column vector by</p>
+<p><span class="math display">\[\nabla^T_{\mathbf{x}} y_i = \frac{\partial y_i}{\partial \mathbf{x}^T} = (\frac{\partial y_i}{\partial \mathbf{x}})^T\]</span></p>
+<p>At the same time:</p>
+<p><span class="math display">\[
+\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
+\begin{bmatrix}
+\frac{\partial \mathbf{y}}{\partial x_1} &amp; ..... &amp; \frac{\partial \mathbf{y}}{\partial x_n}\\
+\end{bmatrix}
+\]</span></p>
+<p>Where:</p>
+<p><span class="math display">\[
+\frac{\partial \mathbf{y}}{\partial x_i} = 
+\begin{bmatrix}
+\frac{\partial y_1}{\partial x_i}\\
+.\\
+.\\
+.\\
+\frac{\partial y_m}{\partial x_i}
+\end{bmatrix}
+\]</span></p>
+<h3 id="denominator-layout">Denominator Layout</h3>
+<p><span class="math display">\[\mathbf{y} = \psi(\mathbf{x})\]</span></p>
+<p>Where, <span class="math inline">\(\mathbf{x}, \mathbf{y}\)</span> are <strong>row</strong> vectors with size <span class="math inline">\(n, m\)</span> respectively. Then the partial derivative of <span class="math inline">\(\mathbf{y}\)</span> w.r.t <span class="math inline">\(\mathbf{x}\)</span> is a <span class="math inline">\(n \times m\)</span> matrix:</p>
+<p><span class="math display">\[
+\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
+\begin{bmatrix}
+\frac{\partial y_1}{\partial x_1} &amp; \frac{\partial y_2}{\partial x_1} &amp; .... &amp; \frac{\partial y_m}{\partial x_1}\\
+.\\
+.\\
+.\\
+\frac{\partial y_1}{\partial x_n} &amp; \frac{\partial y_2}{\partial x_n} &amp; .... &amp; \frac{\partial y_m}{\partial x_n}
+\end{bmatrix}_{n \times m}
+\]</span></p>
+<p>In terms of gradient vectors (<strong>to be consistent with the layout, they are column vectors now. It is possible to represent gradient vectors as row vectors while using denominator layout just by adding transpose to the formula below</strong> ):</p>
+<p><span class="math display">\[
+\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
+\begin{bmatrix}
+\nabla_{\mathbf{x}} y_1 &amp; .... &amp; \nabla_{\mathbf{x}} y_m\\
+\end{bmatrix}_{n \times m}
+\]</span></p>
+<p>At the same time:</p>
+<p><span class="math display">\[
+\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
+\begin{bmatrix}
+\frac{\partial \mathbf{y}}{\partial x_1} \\
+.\\
+.\\
+.\\
+\frac{\partial \mathbf{y}}{\partial x_n}\\
+\end{bmatrix}
+\]</span></p>
+<p>Where <span class="math inline">\(\frac{\partial \mathbf{y}}{\partial x_i}\)</span> is now a row vector:</p>
+<p><span class="math display">\[
+\frac{\partial \mathbf{y}}{\partial x_i} = 
+\begin{bmatrix}
+\frac{\partial y_1}{\partial x_i} &amp; .... &amp; \frac{\partial y_m}{\partial x_i}\\
+\end{bmatrix}_{n \times m}
+\]</span></p>
+<p><br></p>
+<h3 id="derivative-of-function-of-the-form-mathbfy-amathbfx">Derivative of Function of the Form: <span class="math inline">\(\; \mathbf{y} = A\mathbf{x}\)</span></h3>
+<p><img src='/images/cal/matrix_5_2_1.png' width="600"></p>
+<p><br></p>
+<p><strong>Proof</strong>:</p>
+<blockquote>
+<p>Since <span class="math inline">\(y_i = \sum^{n}_{k=1} a_{ik} x_k \implies \frac{\partial y_i}{\partial x_j} = a_{ij}\)</span></p>
+<p>Thus, the <code>Jacobian Matrix</code> is:</p>
+<p><span class="math display">\[
+\frac{\partial \mathbf{y}}{\partial \mathbf{x}} = 
+\begin{bmatrix}
+\nabla_{\mathbf{x}} y_1\\
+.\\
+.\\
+.\\
+\nabla_{\mathbf{x}} y_m
+\end{bmatrix}_{m \times n}
+= A
+\]</span></p>
+</blockquote>
+<p><br></p>
+<p>Now, let <span class="math inline">\(\mathbf{x} = f(\mathbf{\alpha})\)</span>, where <span class="math inline">\(\mathbf{\alpha}\)</span> is a <span class="math inline">\(r\)</span> dimensional vector, then the above results can be extended using chain rule:</p>
+<p><span class="math display">\[\frac{\partial \mathbf{y}}{\partial \mathbf{r}} = \frac{\partial \mathbf{y}}{\partial \mathbf{x}}\frac{\partial \mathbf{x}}{\partial \mathbf{\alpha}} = [A \frac{\partial \mathbf{x}}{\partial \mathbf{\alpha}}]_{m \times r}\]</span></p>
+<p><br></p>
+<p><strong>Proof</strong>:</p>
+<blockquote>
+<p>Since <span class="math inline">\(y_i = \sum^{n}_{k=1} a_{ik} x_k(\alpha_1, ...., \alpha_r) \implies \frac{\partial y_i}{\partial r_j} = \sum^{n}_{k=1} a_{ik} \frac{\partial y_i}{\partial x_k}\frac{\partial x_k}{\partial \alpha_j} = \sum^{n}_{k=1} a_{ik} \frac{\partial x_k}{\partial \alpha_j}\)</span></p>
+<p>Thus, the <code>Jacobian Matrix</code> is:</p>
+<p><span class="math display">\[
+\frac{\partial \mathbf{y}}{\partial \mathbf{\alpha}} = 
+\begin{bmatrix}
+\sum^{n}_{k=1} a_{1k} \frac{\partial x_k}{\partial \alpha_1} &amp; ... &amp; \sum^{n}_{k=1} a_{1k} \frac{\partial x_k}{\partial \alpha_r}\\
+.\\
+.\\
+.\\
+\sum^{n}_{k=1} a_{mk} \frac{\partial x_k}{\partial \alpha_1} &amp; ... &amp; \sum^{n}_{k=1} a_{mk} \frac{\partial x_k}{\partial \alpha_r}
+\end{bmatrix}_{m \times n}
+= [A \frac{\partial \mathbf{x}}{\partial \mathbf{\alpha}}]_{m \times r}
+\]</span></p>
+</blockquote>
+<p><br></p>
+<h1 id="ref">Ref</h1>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/05/xavier/" rel="prev" title="Xavier Initialization">
+                  <i class="fa fa-chevron-left"></i> Xavier Initialization
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/07/08/knapsack/" rel="next" title="knapsack">
+                  knapsack <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

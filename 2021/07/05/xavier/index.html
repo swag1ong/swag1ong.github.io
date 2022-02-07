@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Understanding the Difficulty of Training Deep Feedforward Neural Networks The analysis is driven by investigative experiments to monitor activations (watching for saturation of hidden units) and gradi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Xavier Initialization">
+<meta property="og:url" content="https://swag1ong.github.io/2021/07/05/xavier/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Understanding the Difficulty of Training Deep Feedforward Neural Networks The analysis is driven by investigative experiments to monitor activations (watching for saturation of hidden units) and gradi">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/xavier_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/xavier_2.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/xavier_3.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/xavier_4.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/ML/xavier_5.png">
+<meta property="article:published_time" content="2021-07-05T09:35:07.000Z">
+<meta property="article:modified_time" content="2021-07-08T14:12:05.000Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="Deep Learning">
+<meta property="article:tag" content="Initialization">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swag1ong.github.io/images/ML/xavier_1.png">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2021/07/05/xavier/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2021&#x2F;07&#x2F;05&#x2F;xavier&#x2F;&quot;,&quot;path&quot;:&quot;2021&#x2F;07&#x2F;05&#x2F;xavier&#x2F;&quot;,&quot;title&quot;:&quot;Xavier Initialization&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Xavier Initialization | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#understanding-the-difficulty-of-training-deep-feedforward-neural-networks"><span class="nav-number">1.</span> <span class="nav-text">Understanding the Difficulty of Training Deep Feedforward Neural Networks</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#experimental-setting"><span class="nav-number">1.1.</span> <span class="nav-text">Experimental Setting</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#effect-of-activation-functions-and-saturation-during-training"><span class="nav-number">1.2.</span> <span class="nav-text">Effect of Activation Functions and Saturation During Training</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#experiments-with-the-sigmoid"><span class="nav-number">1.2.1.</span> <span class="nav-text">Experiments with the Sigmoid</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#experiments-with-the-tanh-and-softsign"><span class="nav-number">1.2.2.</span> <span class="nav-text">Experiments with the Tanh and Softsign</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#studying-gradients-and-their-propagation"><span class="nav-number">1.3.</span> <span class="nav-text">Studying Gradients and their Propagation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#effect-of-the-cost-function"><span class="nav-number">1.3.1.</span> <span class="nav-text">Effect of the Cost Function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gradients-at-initialization"><span class="nav-number">1.3.2.</span> <span class="nav-text">Gradients at Initialization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#back-propagated-gradients-during-learning"><span class="nav-number">1.3.3.</span> <span class="nav-text">Back-propagated Gradients During Learning</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#conclusions"><span class="nav-number">1.4.</span> <span class="nav-text">Conclusions</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/05/xavier/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Xavier Initialization
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-05 17:35:07" itemprop="dateCreated datePublished" datetime="2021-07-05T17:35:07+08:00">2021-07-05</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-08 22:12:05" itemprop="dateModified" datetime="2021-07-08T22:12:05+08:00">2021-07-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DL/" itemprop="url" rel="index"><span itemprop="name">DL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DL/Techniques/" itemprop="url" rel="index"><span itemprop="name">Techniques</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/07/05/xavier/" class="post-meta-item leancloud_visitors" data-flag-title="Xavier Initialization" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>9.3k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>8 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="understanding-the-difficulty-of-training-deep-feedforward-neural-networks">Understanding the Difficulty of Training Deep Feedforward Neural Networks</h1>
+<p>The analysis is driven by investigative experiments to monitor activations (watching for saturation of hidden units) and gradients, across layers and across training iterations.</p>
+<h2 id="experimental-setting">Experimental Setting</h2>
+<p>Feedforward neural networks with one to five hidden layers, one thousand hidden units per layer and a softmax logistic regression for the output layer are optimized. The cost function is the negative log-liklihood <span class="math inline">\(-\log p_{Y | X}(y | x)\)</span>, where <span class="math inline">\((x, y)\)</span> is the (input image, target class) ordered pair. The neural networks were optimized with stochastic back-propagation on mini-batches of size ten. An average gradient over the mini-batch are used to update parameters <span class="math inline">\(\theta\)</span> in that direction, with <span class="math inline">\(\theta \leftarrow \theta - \epsilon g\)</span>.</p>
+<p>We varied the type of non-linear activation function in the hidden layers:</p>
+<ol type="1">
+<li>Sigmoid: <span class="math inline">\(\frac{1}{(1 + e^{-x})}\)</span></li>
+<li>Hyperbolic tangent: <span class="math inline">\(tanh (x)\)</span></li>
+<li>Softsign: <span class="math inline">\(\frac{x}{(1 + |x|)}\)</span> (similar to tanh but approaches asymptotes much slower, softer slope)</li>
+</ol>
+<p>The initial weights <span class="math inline">\(W_{i, j} \sim U[-\frac{1}{\sqrt{n}}, \frac{1}{\sqrt{n}}]\)</span>, biases are initialized to 0. Where <span class="math inline">\(n\)</span> is the size of the previous layer.</p>
+<span id="more"></span>
+<h2 id="effect-of-activation-functions-and-saturation-during-training">Effect of Activation Functions and Saturation During Training</h2>
+<h3 id="experiments-with-the-sigmoid">Experiments with the Sigmoid</h3>
+<p><img src='/images/ML/xavier_1.png' width="600"></p>
+<p>The graph shows the mean and standard deviation of activations after apply sigmoid function for each layer(activations are computed using a fixed set of 300 test examples at different time during training). We can see very clearly that the deepest layer (top layer) at the beginning have all activation values around lower saturation value of 0. Inversely, the others layers have a mean activation value that is above 0.5 and decreasing as we go from the output layer to the input layer.</p>
+<p>With random initialization, the lower layers of the network computes initially is not useful to the classification task, so the output layer <span class="math inline">\(softmax(b + Wh)\)</span> might initially rely more on the bias <span class="math inline">\(b\)</span> (which are learned very quickly) than on the top hidden activations <span class="math inline">\(h\)</span> derived from the input image (because <span class="math inline">\(h\)</span> may not be predictive at beginning due to random initialization). Thus, the error gradient would tend to push <span class="math inline">\(Wh\)</span> towards 0, which can be achieved by pushing <span class="math inline">\(h\)</span> towards 0 (saturation regime of the sigmoid activation function). Then, this will prevent gradients to flow backward and prevent the lower layers form learning useful features. Eventually but slowly, the lower layers move toward more useful features and the top hidden layer then moves out of the saturation regime.</p>
+<h3 id="experiments-with-the-tanh-and-softsign">Experiments with the Tanh and Softsign</h3>
+<p>The hyperbolic tangent networks do not suffer from the kind of saturation behavior of the top hidden layer observed with sigmoid network (tanh (0) has large gradient norm). However, sequentially saturation can occur starting with layer 1 and propagating up in the network (one by one).</p>
+<p><img src='/images/ML/xavier_2.png' width="600"></p>
+<p>The softsign is similar to tanh but behave differently in terms of saturation because of its smoother asymptotes. We can see that the saturation does not occur one layer after the other like for the tanh, it is faster at the beginning and then slow, and all layers move together towards larger weights.</p>
+<p><img src='/images/ML/xavier_3.png' width="600"></p>
+<h2 id="studying-gradients-and-their-propagation">Studying Gradients and their Propagation</h2>
+<h3 id="effect-of-the-cost-function">Effect of the Cost Function</h3>
+<p>The loss function is very important in terms of better learning. In classification, cross entropy (negative log-likelihood) couped with softmax outputs worked much better than quadratic cost. The plateaus in the traning criterion are less present with the log-likelihood cost-function.</p>
+<p><img src='/images/ML/xavier_4.png' width="600"></p>
+<h3 id="gradients-at-initialization">Gradients at Initialization</h3>
+<p>We will start by studying the linear regime (activation). For a dense artificial NN using symmetric activation function <span class="math inline">\(f\)</span> with unit derivative at 0 (ie. <span class="math inline">\(f^{\prime} (0) = 1\)</span>). If we write <span class="math inline">\(\mathbf{z}^{i}\)</span> for the activation vector of layer <span class="math inline">\(i\)</span> (row vector), and <span class="math inline">\(\mathbf{s}^i\)</span> the argument vector of the activation function at layer <span class="math inline">\(i\)</span>, we have (<strong>denominator layout</strong>):</p>
+<p><span class="math display">\[\mathbf{s}^{i}_{1 \times d} = \mathbf{z}^{i} W^i + \mathbf{b}^{i}\]</span></p>
+<p>and <span class="math inline">\(\mathbf{z}^{i+1} = f(\mathbf{s}^{i})\)</span>, Then:</p>
+<span class="math display">\[\begin{aligned}
+{\frac{\partial Cost}{\partial s^{i}_{k}}}_{1 \times 1} &amp;= \frac{\partial \mathbf{z}^{i + 1}}{\partial s^{i}_{k}}\frac{\partial \mathbf{s}^{i+1}}{\partial \mathbf{z}^{i + 1}}\frac{\partial Cost}{\partial \mathbf{s}^{i+1}}\\
+&amp;= [\frac{\partial z^{i + 1}_1}{\partial s^{i}_{k}} ... \frac{\partial z^{i + 1}_k}{\partial s^{i}_{k}} ... \frac{\partial z^{i + 1}_d}{\partial s^{i}_{k}}] W^{i} \frac{\partial Cost}{\partial \mathbf{s}^{i+1}}\\
+&amp;= [0 ... f^{\prime} (s^{i}_{k}) ... 0] W^{i + 1} \frac{\partial Cost}{\partial \mathbf{s}^{i+1}}\\
+&amp;= [f^{\prime} (s^{i}_{k}) W^{i + 1}_{k, \cdot}]_{1 \times d} \frac{\partial Cost}{\partial \mathbf{s}^{i+1}}_{d \times 1}\\
+\\
+\frac{\partial Cost}{\partial w^{i}_{l, k}}_{1 \times 1} &amp;= \frac{\partial \mathbf{s}^{i}}{\partial w^{i}_{l, k}}_{1 \times d} \frac{\partial Cost}{\partial \mathbf{s}^{i}}_{d \times 1}\\
+&amp;= [0 ... \frac{\partial s^{i}_{k}}{\partial w^{i}_{l, k}} ... 0] \frac{\partial Cost}{\partial \mathbf{s}^{i}}\\
+&amp;= z^{i}_{l} \frac{\partial Cost}{\partial s^{i}_{k}}\\
+\end{aligned}\]</span>
+<p>Assume that we are in a linear regime (activation) at the initialization, that the weights are initialized i.i.d with mean zero , same variance (i.e <span class="math inline">\(Var[w^{l}_1] = Var[w^l_i] = Var[w^l]\)</span>) and that the inputs features have mean zero and variances are the same (i.e <span class="math inline">\(Var[x_1] = Var[x_i] = Var[x]\)</span>), we can say that with <span class="math inline">\(n_i\)</span> the size of layer <span class="math inline">\(i\)</span> and <span class="math inline">\(\mathbf{x}\)</span> the network input:</p>
+<p><span class="math display">\[f^{\prime} (s^i_k) \approx 1\]</span></p>
+<p><span class="math display">\[Var[\mathbf{z}^{1}] = Var[\mathbf{x}W^{0} + \mathbf{b}^{0}] = n_{0}[Var[x]Var[w^{0}]]_{1 \times d} = n_0 Var[\mathbf{x}] Var[W^0]\]</span></p>
+<p><span class="math display">\[Var[\mathbf{z}^{i}] = Var[\mathbf{z^{i - 1}}W^{i - 1} + \mathbf{b}^{i - 1}] = Var[\mathbf{x}] \prod^{i - 1}_{i^{\prime} = 0} n_{i^{\prime}}Var[W]^{i^{\prime}}\]</span></p>
+<p>Where <span class="math inline">\(Var[W^{l}] = [Var[w^l]]_{n_{l - 1} \times n_{l}}\)</span> is the shared scalar variance of all weights at layer <span class="math inline">\(l\)</span>. Then for a network with <span class="math inline">\(d\)</span> layers:</p>
+<span class="math display">\[\begin{aligned}
+Var[\frac{\partial Cost}{\partial \mathbf{s}^{i}}] &amp;= Var[\frac{\partial \mathbf{z}^{i + 1}}{\partial \mathbf{s}^{i}} W^{i + 1} \frac{\partial Cost}{\partial \mathbf{s}^{i+1}}]\\
+&amp;= Var[W^{i + 1} \frac{\partial Cost}{\partial \mathbf{s}^{i+1}}]\\
+&amp;= Var[W^{i + 1}W^{i + 2}\frac{\partial Cost}{\partial \mathbf{s}^{i+2}}]\\
+&amp;= (\prod^{d}_{i^{\prime} = i} n_{i^{\prime} + 1} Var[W^{i^{\prime}}]) Var[\frac{\partial Cost}{\partial \mathbf{s}^{d}}] 
+\\
+\\
+\\
+Var[\frac{\partial Cost}{\partial w^{i}_{l, k}}] &amp;= Var[z^{i}_{l} \frac{\partial Cost}{\partial s^{i}_{k}}]\\
+&amp;= Var[x] \prod^{i - 1}_{i^{\prime} = 0} n_{i^{\prime}} Var[w^{i^{\prime}}]  \prod^{d}_{i^{\prime} = i} n_{i^{\prime} + 1} Var[w^{i^{\prime}}]\\
+&amp;= \prod^{i - 1}_{i^{\prime} = 0} n_{i^{\prime}} Var[w^{i^{\prime}}] \prod^{d}_{i^{\prime} = i} n_{i^{\prime} + 1}  Var[w^{i^{\prime}}] \times Var[x] Var[\frac{\partial Cost}{\partial s^{d}}]
+\end{aligned}\]</span>
+<p><br></p>
+<p>From a forward-propagation point of view (We want to make sure that we have similar variance initialization at deeper layers as all layers, so we do not stuck at small gradients at beginning), we would like to keep things flowing (want inputs to have similar mean and variance, similar distribution):</p>
+<p><span class="math display">\[Var[z^{i}] = Var[z^{i^{\prime}}]\]</span></p>
+<p>This transforms to:</p>
+<p><span class="math display">\[Var[x] \prod^{i - 1}_{k = 0} n_{k} Var[w^{k}] = Var[x] \prod^{i^{\prime} - 1}_{j = 0} n_{j} Var[w^{j}]\]</span></p>
+<p><span class="math display">\[\implies \prod^{\max (i - 1, i^{\prime} - 1)}_{j = \max (i - 1, i^{\prime} - 1) - \min (i - 1, i^{\prime} - 1)} n_j Var(w^j) = 1 \]</span></p>
+<p>If we let <span class="math inline">\(Var[w^i] = \frac{1}{n_i}\)</span>, then the above condition is satisfied for <span class="math inline">\((i, i^{\prime})\)</span>.</p>
+<p><br></p>
+<p>From a back-propagation point of view (We want to have similar variance so no gradients exploding or vanishing at the beginning), we would similarly like to have the gradients to have similar variance as we backpropagate through layers:</p>
+<p><span class="math display">\[Var[\frac{\partial Cost}{\partial s^{i^{\prime}}}] = Var[\frac{\partial Cost}{\partial s^{i}}]\]</span></p>
+<p><span class="math display">\[\implies (\prod^{d}_{j = i^{\prime}} n_{j + 1} Var[w^{j}]) Var[\frac{\partial Cost}{\partial s^{d}}] = (\prod^{d}_{k = i} n_{k + 1} Var[w^{k}]) Var[\frac{\partial Cost}{\partial s^{d}}]\]</span></p>
+<p><span class="math display">\[\implies \prod^{\max (i - 1, i^{\prime} - 1)}_{j = \min (i - 1, i^{\prime} - 1)} n_{j + 1} Var(w^j) = 1\]</span></p>
+<p>If we let <span class="math inline">\(Var[w^i] = \frac{1}{n_{i + 1}}\)</span>, then the above condition is satisfied for <span class="math inline">\((i, i^{\prime})\)</span>.</p>
+<p><br></p>
+<p>Thus, we have two conditions (to ensure no gradient exploding and vanishing):</p>
+<p><span class="math display">\[Var[w^i] = \frac{1}{n_{i + 1}} \quad \quad Var[w^i] = \frac{1}{n_i}\]</span></p>
+<p>When all layers have same size, we can satisfy both conditions. However, in most cases, we do not have this condition satisfied. Thus, by combining and compromising, we have:</p>
+<p><span class="math display">\[Var[w^i] = \frac{2}{n_{i} + n_{i + 1}}\]</span></p>
+<p>This initialization is called <code>normalized initialization</code>.</p>
+<p><br></p>
+<p>Example:</p>
+<blockquote>
+<p>If we have initialization <span class="math inline">\(w^{i} \sim U[-\frac{1}{\sqrt{n_{i - 1}}}, \frac{1}{\sqrt{n_{i - 1}}}]\)</span>, then the variance is <span class="math inline">\(Var[w^{i}] = \frac{1}{3 n_{i - 1}}\)</span>. <strong>This will cause the variance to depend on the layer and decreasing</strong>. The normalization factor may therefore be important when initializing deep networks because of the multiplicative effect through layers. Thus, we can refine this to be: <span class="math display">\[w^{i} \sim U[-\frac{\sqrt{6}}{\sqrt{n_{i + 1} + n_{i}}}, \frac{\sqrt{6}}{\sqrt{n_{i + 1} + n_{i}}}]\]</span> then the variance <span class="math inline">\(Var[w^{i}] = \frac{2}{n_{i} + n_{i + 1}}\)</span></p>
+</blockquote>
+<h3 id="back-propagated-gradients-during-learning">Back-propagated Gradients During Learning</h3>
+<p>The dynamic of learning in NN is complex and we would like to develop better tools to analyze and track it. In particular, we cannot use simple variance calculations like above because the weights values are not anymore independent of the activation values and the linearity hypothesis is also violated.</p>
+<p><img src='/images/ML/xavier_5.png' width="600"></p>
+<p>From the above graph, we can see that at the beginning of training:</p>
+<ol type="1">
+<li>The gradient variance gets smaller as it is propagated downwards.</li>
+<li>The distribution of gradient is roughly the same using <code>normalized initialization</code>.</li>
+</ol>
+<h2 id="conclusions">Conclusions</h2>
+<ol type="1">
+<li>The more classical NN with sigmoid or hyperbolic tangent units and standard initialization fare rather poorly, converging more slowly and apparently towards ultimately poorer local minima.</li>
+<li>The softsign networks seem to be more robust to the initialization procedure than the tanh network.</li>
+<li>For tanh networks, the proposed <code>normalized initialization</code> can be quite helpful, because the layer to layer transformation maintain magnitudes of activations and gradients.</li>
+<li>Sigmoid activations should be avoided when initializing from small random weights, because they yield poor learning dynamics with initial saturation of the top hidden layer.</li>
+<li>Keeping the layer to layer transformations such that both activations and gradients flow well (i.e with a jacobian around 1) appears helpful.</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/06/24/VGG/" rel="bookmark">VGG (Under Construction)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/07/29/adaptive-lr/" rel="bookmark">Basic Adaptive LR Algorithms</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/06/22/alex-net/" rel="bookmark">Alex Net</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/08/06/attention/" rel="bookmark">Attention</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/26/batch-norm/" rel="bookmark">Batch Normalization</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Deep-Learning/" rel="tag"># Deep Learning</a>
+              <a href="/tags/Initialization/" rel="tag"># Initialization</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/07/05/LReLU/" rel="prev" title="LReLU">
+                  <i class="fa fa-chevron-left"></i> LReLU
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/07/06/cal-2/" rel="next" title="Calculus (2)">
+                  Calculus (2) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">688k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">10:25</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>
