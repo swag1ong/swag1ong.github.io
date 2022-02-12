@@ -457,7 +457,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-02-09 23:09:12" itemprop="dateModified" datetime="2022-02-09T23:09:12+08:00">2022-02-09</time>
+        <time title="Modified: 2022-02-12 15:07:13" itemprop="dateModified" datetime="2022-02-12T15:07:13+08:00">2022-02-12</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -484,14 +484,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>20k</span>
+      <span>24k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>18 mins.</span>
+      <span>22 mins.</span>
     </span>
 </div>
 
@@ -941,6 +941,103 @@ A_j =
 <p><br></p>
 <h4 id="theorem-10.19-the-identity-is-not-the-difference-of-st-and-ts">Theorem 10.19: The Identity is not the Difference of <span class="math inline">\(ST\)</span> and <span class="math inline">\(TS\)</span></h4>
 <p>There do not exist operators <span class="math inline">\(S, T \in L(V)\)</span> s.t <span class="math inline">\(ST - TS = I\)</span></p>
+<p><br></p>
+<h3 id="determinant">Determinant</h3>
+<h4 id="determinant-of-an-operator-det-t">Determinant of an Operator, <span class="math inline">\(\det T\)</span></h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span></p>
+<ul>
+<li>If <span class="math inline">\(\mathbb{F} = \mathbb{C}\)</span>, then the <strong>determinant</strong> of <span class="math inline">\(T\)</span> is the product of the eigenvalues of <span class="math inline">\(T\)</span> with each eigenvalue repeated according to its multiplicity.</li>
+<li>If <span class="math inline">\(\mathbb{F} = \mathbb{R}\)</span>, then the <strong>determinant</strong> of <span class="math inline">\(T\)</span> is the product of the eigenvalues of <span class="math inline">\(T_C\)</span> with each eigenvalue repeated according to its multiplicity.</li>
+</ul>
+<p>The determinant of <span class="math inline">\(T\)</span> is denoted by <span class="math inline">\(\det T\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-10.22-determinant-and-characteristic-polynomial">Theorem 10.22: Determinant and Characteristic Polynomial</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span>. Let <span class="math inline">\(n = \dim V\)</span>. Then <span class="math inline">\(\det T\)</span> equals <span class="math inline">\((-1)^n\)</span> times the constant term of the characteristic polynomial of <span class="math inline">\(T\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-10.23-characteristic-polynomial-trace-and-determinant">Theorem 10.23: Characteristic Polynomial, Trace and Determinant</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span>. Then the characteristic polynomial of <span class="math inline">\(T\)</span> can be written as:</p>
+<p><span class="math display">\[z^n - (tr(T)) z^{n-1} + ... + (-1)^n \det T\]</span></p>
+<p><br></p>
+<h4 id="theorem-10.24-invertible-is-equivalent-to-nonzero-determinant">Theorem 10.24: Invertible is Equivalent to Nonzero Determinant</h4>
+<p>An operator on <span class="math inline">\(V\)</span> is invertible IFF its determinant is nonzero.</p>
+<h5 id="proof-of-theorem-10.24">Proof of Theorem 10.24:</h5>
+<p>Suppose <span class="math inline">\(V\)</span> is a complex vector space and <span class="math inline">\(T \in L(V)\)</span>, then by <code>theorem 5.30</code>, <span class="math inline">\(T\)</span> is invertible IFF all its eigenvalues are nonzero. Clearly this happens IFF the product of the eigenvalues of <span class="math inline">\(T\)</span> is not 0.</p>
+<p>Suppose <span class="math inline">\(V\)</span> is a real vector space, then if 0 is not an eigenvalue of <span class="math inline">\(T\)</span>, then the eigenvalues of <span class="math inline">\(T_C\)</span> do not contain 0, thus the product of eigenvalues does not equal 0.</p>
+<p><br></p>
+<h4 id="theorem-10.25-characteristic-polynomial-of-t-equals-det-zi---t">Theorem 10.25: Characteristic Polynomial of <span class="math inline">\(T\)</span> Equals <span class="math inline">\(\det (zI - T)\)</span></h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span>. Then the characteristic polynomial of <span class="math inline">\(T\)</span> equals <span class="math inline">\(\det (zI - T)\)</span>.</p>
+<h5 id="proof-of-theorem-10.25">Proof of Theorem 10.25:</h5>
+<p>Suppose <span class="math inline">\(V\)</span> is a complex vector space, if <span class="math inline">\(\lambda, z \in \mathbb{C}\)</span>, then <span class="math inline">\(\lambda\)</span> is an eigenvalue of <span class="math inline">\(T\)</span> IFF <span class="math inline">\(z - \lambda\)</span> is an eigenvalue of <span class="math inline">\((zI - T)\)</span> because:</p>
+<p><span class="math display">\[-(T - \lambda I) = (\underbrace{(zI - T)}_{\text{operator}} - \underbrace{(z - \lambda)}_{\text{eigenvalue}} I)\]</span></p>
+<p>Then we have:</p>
+<p><span class="math display">\[\dim (\text{null }(-(T - \lambda I))^{\dim V}) = \dim (\text{null }((zI - T) - (z - \lambda))^{\dim V})\]</span></p>
+<p>Suppose <span class="math inline">\(T\)</span> has eigenvalues <span class="math inline">\(\lambda_1, ..., \lambda_n\)</span> repeated to its multiplicity, then we have <span class="math inline">\((z - \lambda_1), ...., (z - \lambda_n)\)</span> as eigenvalues of <span class="math inline">\(zI - T\)</span> repeated to its multiplicity. Thus, we have:</p>
+<p><span class="math display">\[\det(zI - T) = (z - \lambda_1) .... (z - \lambda_n)\]</span></p>
+<p>Which is the same as the characteristic polynomial of <span class="math inline">\(T\)</span> with eigenvalues <span class="math inline">\(\lambda_1, ..., \lambda_n\)</span> repeated to its multiplicity.</p>
+<p>The proof of real vector space is the same as complex vector space.</p>
+<p><br></p>
+<h4 id="definition-10.27-permutation-textperm-n">Definition 10.27: Permutation, <span class="math inline">\(\text{perm } n\)</span></h4>
+<ul>
+<li>A <strong>permutation</strong> of <span class="math inline">\((1 ,..., n)\)</span> is a list <span class="math inline">\((m_1, ..., m_n)\)</span> that contains each of the numbers <span class="math inline">\(1, ..., n\)</span> exactly once.</li>
+<li>The set of all permutations of <span class="math inline">\((1, ..., n)\)</span> is denoted <span class="math inline">\(\text{perm } n.\)</span></li>
+</ul>
+<p>We should think of an element of <span class="math inline">\(\text{perm } n\)</span> as a rearrangement of the first <span class="math inline">\(n\)</span> items of the list.</p>
+<p><br></p>
+<h4 id="definition-10.30-sign-of-a-permutation">Definition 10.30: Sign of a Permutation</h4>
+<ul>
+<li>The <strong>sign</strong> of a permutation <span class="math inline">\((m_1, ..., m_n)\)</span> is defined to be <span class="math inline">\(1\)</span> if the number of paris of integers <span class="math inline">\((j, k)\)</span> with <span class="math inline">\(1 \leq j &lt; k \leq n\)</span> s.t <span class="math inline">\(j\)</span> appears after <span class="math inline">\(k\)</span> in the list <span class="math inline">\((m_1, ..., m_n)\)</span> is even and <span class="math inline">\(-1\)</span> if the number of such pairs is odd.</li>
+<li>In other words, the sign of a permutation equals <span class="math inline">\(1\)</span> if the natural order has been changed an even number of times and equals <span class="math inline">\(-1\)</span> if the natural order has been changed an odd number times.</li>
+</ul>
+<blockquote>
+<p>The only par of integers <span class="math inline">\((j, k)\)</span> with <span class="math inline">\(j &lt; k\)</span> s.t <span class="math inline">\(j\)</span> appears after <span class="math inline">\(k\)</span> in the permutation <span class="math inline">\(2, 1, 3, 4\)</span> is (1, 2), thus, the permutation has sign 1.</p>
+</blockquote>
+<p><br></p>
+<h4 id="theorem-10.32-interchanging-two-entries-in-a-permutation">Theorem 10.32: Interchanging Two Entries in a Permutation</h4>
+<p>Interchanging two entries in a permutation multiplies the sign of the permutation by <span class="math inline">\(-1\)</span>.</p>
+<p><br></p>
+<h4 id="definition-10.33-determinant-of-a-matrix-det-a">Definition 10.33: Determinant of a Matrix, <span class="math inline">\(\det A\)</span></h4>
+<p>Suppose <span class="math inline">\(A\)</span> is an <span class="math inline">\(n \times n\)</span> matrix:</p>
+<p><span class="math display">\[
+A = 
+\begin{bmatrix}
+A_{1,1} &amp; ... &amp; A_{1,n}\\
+. &amp; ... &amp; .\\
+A_{n,1} &amp; ... &amp; A_{n,n}\\
+\end{bmatrix}
+\]</span></p>
+<p>The <strong>determinant</strong> of <span class="math inline">\(A\)</span>, denoted <span class="math inline">\(\det A\)</span>, is defined by:</p>
+<p><span class="math display">\[\det A = \sum_{(m_1, ..., m_n) \in \text{perm n}} (sign(m_1, ..., m_n)) A_{m_1, 1} .... A_{m_n, n}\]</span></p>
+<p><br></p>
+<h4 id="theorem-10.36-interchanging-two-columns-in-a-matrix">Theorem 10.36: Interchanging Two Columns in a Matrix</h4>
+<p>Suppose <span class="math inline">\(A\)</span> is a square matrix and <span class="math inline">\(B\)</span> is the matrix obtained from <span class="math inline">\(A\)</span> by interchanging two columns. Then:</p>
+<p><span class="math display">\[\det A = -\det B\]</span></p>
+<p><br></p>
+<h4 id="theorem-10.37-matrix-with-two-equal-columns">Theorem 10.37: Matrix with Two Equal Columns</h4>
+<p>If <span class="math inline">\(A\)</span> is a square matrix that has two equal columns, then <span class="math inline">\(\det A = 0\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-10.38-permuting-the-columns-of-a-matrix">Theorem 10.38: Permuting the Columns of a Matrix</h4>
+<p>Suppose <span class="math inline">\(A = [A_{\cdot, 1} .... A_{\cdot, n}]\)</span> is an <span class="math inline">\(n \times n\)</span> matrix and <span class="math inline">\((m_1, ..., m_n)\)</span> is a permutation. Then:</p>
+<p><span class="math display">\[\det (A_{\cdot, m_1} .... A_{\cdot, m_n}) = sign(m_1, ..., m_n) \det A\]</span></p>
+<p><br></p>
+<h4 id="theorem-10.39-determinant-is-a-linear-function-of-each-column">Theorem 10.39: Determinant is a Linear Function of Each Column</h4>
+<p>Suppose <span class="math inline">\(k, n\)</span> are positive integers with <span class="math inline">\(1 \leq k \leq n\)</span>. Fix <span class="math inline">\(n \times 1\)</span> matrices <span class="math inline">\(A_{\cdot, 1}, ..., A_{\cdot, k}\)</span>. Then the function that takes an <span class="math inline">\(n \times 1\)</span> column vector <span class="math inline">\(A_{\cdot, k}\)</span> to:</p>
+<p><span class="math display">\[\det(A_{\cdot, 1} ... A_{\cdot, k} .... A_{\cdot, n})\]</span></p>
+<p>is a linear map from the vector space of <span class="math inline">\(n \times 1\)</span> matrices with entries in <span class="math inline">\(\mathbb{F}\)</span> to <span class="math inline">\(\mathbb{F}\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-10.40-determinant-is-multiplicative">Theorem 10.40: Determinant is Multiplicative</h4>
+<p>Suppose <span class="math inline">\(A, B\)</span> are square matrices of the same size. Then:</p>
+<p><span class="math display">\[\det(AB) = \det(BA) = \det(A)\det(B)\]</span></p>
+<p><br></p>
+<h4 id="theorem-10.41-determinant-of-matrix-of-operator-does-not-depend-on-basis">Theorem 10.41: Determinant of Matrix of Operator Does not Depend on Basis</h4>
+<p>Let <span class="math inline">\(T \in L(V)\)</span>. Suppose <span class="math inline">\(u_1, ..., u_j\)</span> and <span class="math inline">\(v_1, ...., v_n\)</span> are bases of <span class="math inline">\(V\)</span>. Then:</p>
+<p><span class="math display">\[\det M(T, (u_1, ..., u_n)) = \det M(T, (v_1, ..., v_n))\]</span></p>
+<p><br></p>
+<h4 id="theorem-10.42-determinant-of-an-operator-equals-determinant-of-its-matrix">Theorem 10.42: Determinant of an Operator Equals Determinant of Its Matrix</h4>
+<p>Suppose <span class="math inline">\(T \in L(V)\)</span>. Then <span class="math inline">\(\det T = \det M(T)\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-10.43-isometries-have-determinant-with-absolute-value-1">Theorem 10.43: Isometries Have Determinant with Absolute Value <span class="math inline">\(1\)</span></h4>
+<p>Suppose <span class="math inline">\(V\)</span> is an inner product space and <span class="math inline">\(S \in L(V)\)</span> is an isometry. Then <span class="math inline">\(|\det S| = 1\)</span>.</p>
+<p><br></p>
 
       
     </div>
@@ -3988,13 +4085,13 @@ c_n
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">693k</span>
+    <span title="Symbols count total">697k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10:30</span>
+    <span title="Reading time total">10:34</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
