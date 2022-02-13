@@ -86,7 +86,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">98</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -162,7 +162,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-count">98</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -215,6 +215,138 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/19/random-forests/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/19/random-forests/" class="post-title-link" itemprop="url">random_forests</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-19 16:32:53" itemprop="dateCreated datePublished" datetime="2021-07-19T16:32:53+08:00">2021-07-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-09-06 14:26:15" itemprop="dateModified" datetime="2021-09-06T14:26:15+08:00">2021-09-06</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/07/19/random-forests/" class="post-meta-item leancloud_visitors" data-flag-title="random_forests" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>3.6k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="random-forest">Random Forest</h1>
+<h2 id="bootstrap">Bootstrap</h2>
+<h2 id="bagging">Bagging</h2>
+<p>Earlier, we see that we can use bootstrap as a way of assessing the accuracy of a parameter estimate or a prediction. Here, we show how to use the bootstrap to improve the estimate or prediction itself.</p>
+<p>Consider</p>
+<h2 id="random-forest-1">Random Forest</h2>
+<p><code>Random Forests</code> is a substantial modification of bagging that builds a large collection of <strong>de-correlated</strong> trees and then averages them. The essential idea in bagging is to average many noisy but approximately unbiased models and hence reduce the variance. Trees are ideal candidates for bagging, since they can capture complex interaction structures in the data, and if grown sufficiently deep, have relatively low bias. Since trees are notoriously noisy, they benefit greatly from the averaging (variance reduction).</p>
+<p>Since each tree generated in bagging is identically distributed, the expectation of an average of <span class="math inline">\(B\)</span> such tres is the same as the expectation of any one of them, this means <strong>the bias of bagged trees is the same as that of the individual trees and the only hope is the variance reduction</strong>. This is contrast to boosting, <strong>where the trees are grown in an adaptive way to remove bias, and hence are not identically distributed</strong>.</p>
+<p>An average of <span class="math inline">\(B\)</span> i.i.d random variables each with variance <span class="math inline">\(\sigma^2\)</span>, has variance <span class="math inline">\(\frac{1}{B} \sigma^2\)</span>. If the variables are simply i.d (not necessarily independent) with <strong>positive</strong> pairwise correlation <span class="math inline">\(\rho\)</span>, the variance of the average is:</p>
+<p><span class="math display">\[\rho \sigma^2 + \frac{1 - \rho}{B} \sigma^2\]</span></p>
+<p>As <span class="math inline">\(B\)</span> increases, the second term disappears, but the first remains, and hence <strong>the size of the correlation of paris of bagged trees limits the benefits of averaging</strong>. The idea in random forest is to improve the variance reduction of bagging by reducing the correlation between the trees without increasing the variance too much. This is achieved in the tree-growing process through random selection of the input variables.</p>
+<p>Specifically, when growing a tree on a bootstrapped dataset:</p>
+<ul>
+<li>Before each split, select <span class="math inline">\(m \leq p\)</span> of the input variables at random as candidates for splitting (typically values for <span class="math inline">\(m\)</span> are <span class="math inline">\(\sqrt{p}\)</span> or even as low as 1)</li>
+<li>After <span class="math inline">\(B\)</span> such trees <span class="math inline">\(\{T(\mathbf{x};\; \Theta_b)\}^{B}_{b=1}\)</span> are grown, the random forest regression predictor is: <span class="math display">\[\hat{f}^B_{rf} (\mathbf{x}) = \frac{1}{B}\sum^{B}_{b=1} T(\mathbf{x};\; \Theta_b)\]</span></li>
+<li>For classification, a random forest obtains a class vote from each tree, and then classifies using majority vote.</li>
+</ul>
+<p><img src='/images/ML/rf_1.png' width="600"></p>
+<h3 id="out-of-bag-samples">Out of Bag Samples</h3>
+<p>An importance feature of random forest is its use of <code>out-of-bag</code> samples:</p>
+<ul>
+<li>For each observation <span class="math inline">\(\mathbf{z}_i = (\mathbf{x}_i, y_i)\)</span>, construct its random forest predictor by averaging only those trees corresponding to bootstrap samples in which <span class="math inline">\(\mathbf{z}_i\)</span> did not appear.</li>
+</ul>
+<p>An out-of-bag error estimate (If short of data, it can be used as validation error) is almost identical to that obtained by <span class="math inline">\(N\)</span>-fold cross validation, so unlike many other nonlinear estimators, random forest can be fit in one sequence, with cross-validation being performed along the way. Once the OOB error stabilizes, the training can be terminated.</p>
+<h3 id="variable-importance">Variable Importance</h3>
+<p>Random forests also use the OOB samples to construct a different variable-importance measure, apparently to measure the prediction strength of each variable. When the <span class="math inline">\(b\)</span>th tree is grown, the OOB samples are passed down the tree, and the prediction accuracy is recorded. The values for the <span class="math inline">\(j\)</span>th variable are randomly permuted in the OOB samples, and the accuracy is again computed. The decrease in accuracy as a result of this permuting is averaged over all trees, and is used as a measure of the importance of variable <span class="math inline">\(j\)</span> in the random forest.</p>
+<h3 id="overfitting">Overfitting</h3>
+<p>It is certainly true that increasing <span class="math inline">\(B\)</span> does not cause the random forest sequence to overfit. like bagging, the random forest estimate approximates the expectation:</p>
+<p><span class="math display">\[\hat{f}_{rf} (\mathbf{x}) = E[T(\mathbf{x}; \; \Theta)] = \lim_{B \rightarrow \infty} \hat{f}(\mathbf{x})^B_{rf}\]</span></p>
+<p>with an average over <span class="math inline">\(B\)</span> realizations of <span class="math inline">\(\Theta\)</span>. However, <strong>this limit can overfit the data, the average of fully grown trees can result in too rich a model and incur unnecessary variance.</strong> One possible solution is to reduce tree depth.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1531,126 +1663,6 @@ P(Y=1 | X=\mathbf{x}) \leq 0.5, \quad 0
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/15/probability-3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/15/probability-3/" class="post-title-link" itemprop="url">probability-3</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-07-15 23:54:46" itemprop="dateCreated datePublished" datetime="2021-07-15T23:54:46+08:00">2021-07-15</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-07-24 23:09:41" itemprop="dateModified" datetime="2021-07-24T23:09:41+08:00">2021-07-24</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/07/15/probability-3/" class="post-meta-item leancloud_visitors" data-flag-title="probability-3" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>11k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>10 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="statistics-inference">Statistics Inference</h1>
-<h2 id="sampling-and-statistics">Sampling and Statistics</h2>
-<p>In a typical statistical problem, we have <span class="math inline">\(p_X(x), f_X(x)\)</span> unknown. Our ignorance about the <span class="math inline">\(p_X(x), f_X(x)\)</span> can roughly be classified in one of two ways:</p>
-<ol type="1">
-<li><span class="math inline">\(f(x)\)</span> or <span class="math inline">\(p_X(x)\)</span> is completely unknown.</li>
-<li>The form of <span class="math inline">\(f_X(x)\)</span> or <span class="math inline">\(p_X(x)\)</span> is known down to an unknown <code>parameter</code> vector <span class="math inline">\(\mathbf{\theta}\)</span>.</li>
-</ol>
-<p>We will focus on the second case. We often denote this problem by saying that the random variable <span class="math inline">\(X\)</span> has density or mass function of the form <span class="math inline">\(f_{X}(x; \theta)\)</span> or <span class="math inline">\(p_X(x;\theta)\)</span>, where <span class="math inline">\(\theta \in \Omega\)</span> for a special parameter space <span class="math inline">\(\Omega\)</span>. Since <span class="math inline">\(\theta\)</span> is unknown, we want to estimate it.</p>
-<p>In the process, our information about case 1 or 2 comes from a sample on <span class="math inline">\(X\)</span>. The sample observations have the same distribution as <span class="math inline">\(X\)</span>, and we denote them as <span class="math inline">\(X_1, ...., X_n\)</span> where <span class="math inline">\(n\)</span> is the <code>sample size</code>. When the sample is actually drawn, we use lower case letters to represent the <code>realization</code> <span class="math inline">\(x_1, ..., x_n\)</span> of random samples.</p>
-<p><img src="/images/RL/background/mprob_4_1_2.png" width="600"> <img src="/images/RL/background/mprob_4_1_1.png" width="600"></p>
-<p>Once the sample is drawn, then <span class="math inline">\(t\)</span> is called the realization of <span class="math inline">\(T\)</span>, where <span class="math inline">\(t = T(x_1, ...., x_n)\)</span>.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/07/15/probability-3/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1675,13 +1687,13 @@ P(Y=1 | X=\mathbf{x}) \leq 0.5, \quad 0
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">697k</span>
+    <span title="Symbols count total">707k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10:34</span>
+    <span title="Reading time total">10:43</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

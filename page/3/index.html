@@ -86,7 +86,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">98</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -162,7 +162,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-count">98</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -215,6 +215,129 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/08/09/roc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/08/09/roc/" class="post-title-link" itemprop="url">ROC</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-08-09 16:46:50 / Modified: 17:27:36" itemprop="dateCreated datePublished" datetime="2021-08-09T16:46:50+08:00">2021-08-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/08/09/roc/" class="post-meta-item leancloud_visitors" data-flag-title="ROC" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>2.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="roc-curve">ROC Curve</h1>
+<p><code>ROC Curve</code> is a graph showing the performance of a classification model at all classification thresholds (e.g for logistic regression the threshold is default 0.5, we can adjust this threshold to 0.8 and assign examples to classes using this threhold). This curve plots two parameters:</p>
+<ul>
+<li>True Positive Rate (<span class="math inline">\(\text{sensitivity} = \frac{\text{True Positive}}{\text{True Positive + False Negative}}\)</span>)</li>
+<li>False Positive Rate (<span class="math inline">\(1 - \text{specificity} = 1 -\frac{\text{True Negative}}{\text{True Negative + False Positive}} = \frac{\text{False Positive}}{\text{True Negative + False Positive}}\)</span>)</li>
+</ul>
+<p>An ROC curve plots TRP vs FPR at different classification thresholds. Lowering the classification threshold classifies more items as positive (e.g threshold 0.1 for logistic regression), thus increasing both FP and TP.</p>
+<p><img src='/images/ML/roc_1.png' width="600"></p>
+<p>To compute the points an ROC curve, we could evaluate a classification model many times with different threshold and repeat this for all thresholds, but this is inefficient. Fortunately, there's an effective algorithm that can provide this information called <code>AUC</code>.</p>
+<h2 id="auc">AUC</h2>
+<p>AUC stands for <strong>Area under ROC curve</strong>. It measures the entire two-dimensional area underneath the entire ROC curve. Since <span class="math inline">\(TPR \in [0, 1]\)</span> and <span class="math inline">\(FPR \in [0, 1]\)</span>, the AUC can be interpreted as probability. It is the probability that the model ranks a random positive example more highly than a random negative example. Thus, by rearranging the predictions from left to right, AUC is the probability that a random positive example is positioned to the right of a random negative example:</p>
+<p><img src='/images/ML/roc_2.png' width="600"></p>
+<p>A model whose predictions are 100% wrong will have AUC 0, a model whose predictions are 100% correct has an AUC of 1.</p>
+<p><br></p>
+<h3 id="properties">Properties</h3>
+<p>AUC is desirable for the following two reasons:</p>
+<ul>
+<li><strong>Scale-invariant</strong>: It measures hwo well predictions are ranked, rather than their absolute values.</li>
+<li><strong>Classification-threshold-invariant</strong>: It measures the quality of the model's predictions irrespective of what classification threshold is chosen. (when we draw ROC, we are varying the threshold, the only thing matters to AUC is the predicted values (not class) and how true positive class samples ranked against negative class samples w.r.t their predicted values)</li>
+</ul>
+<p>However, AUC is not desirable when:</p>
+<ol type="1">
+<li><strong>Sometimes probabilities matters</strong>, AUC does not tell you how good is a predicted probability.</li>
+<li><strong>Sometimes classification threshold matters</strong>, In cases where there are wide disparities in the cost of false negatives vs. false positives, it may be critical to minimize one type of classification error. For example, when doing email spam detection, you likely want to prioritize minimizing false positives (even if that results in a significant increase of false negatives). AUC isn't a useful metric for this type of optimization.</li>
+</ol>
+<h1 id="ref">Ref</h1>
+<p>https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1499,138 +1622,6 @@ w^{(m + 1)}_i &amp;= e^{-y_i f_{m} (\mathbf{x}_i)}\\
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/19/random-forests/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/19/random-forests/" class="post-title-link" itemprop="url">random_forests</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-07-19 16:32:53" itemprop="dateCreated datePublished" datetime="2021-07-19T16:32:53+08:00">2021-07-19</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-09-06 14:26:15" itemprop="dateModified" datetime="2021-09-06T14:26:15+08:00">2021-09-06</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/07/19/random-forests/" class="post-meta-item leancloud_visitors" data-flag-title="random_forests" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>3.6k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="random-forest">Random Forest</h1>
-<h2 id="bootstrap">Bootstrap</h2>
-<h2 id="bagging">Bagging</h2>
-<p>Earlier, we see that we can use bootstrap as a way of assessing the accuracy of a parameter estimate or a prediction. Here, we show how to use the bootstrap to improve the estimate or prediction itself.</p>
-<p>Consider</p>
-<h2 id="random-forest-1">Random Forest</h2>
-<p><code>Random Forests</code> is a substantial modification of bagging that builds a large collection of <strong>de-correlated</strong> trees and then averages them. The essential idea in bagging is to average many noisy but approximately unbiased models and hence reduce the variance. Trees are ideal candidates for bagging, since they can capture complex interaction structures in the data, and if grown sufficiently deep, have relatively low bias. Since trees are notoriously noisy, they benefit greatly from the averaging (variance reduction).</p>
-<p>Since each tree generated in bagging is identically distributed, the expectation of an average of <span class="math inline">\(B\)</span> such tres is the same as the expectation of any one of them, this means <strong>the bias of bagged trees is the same as that of the individual trees and the only hope is the variance reduction</strong>. This is contrast to boosting, <strong>where the trees are grown in an adaptive way to remove bias, and hence are not identically distributed</strong>.</p>
-<p>An average of <span class="math inline">\(B\)</span> i.i.d random variables each with variance <span class="math inline">\(\sigma^2\)</span>, has variance <span class="math inline">\(\frac{1}{B} \sigma^2\)</span>. If the variables are simply i.d (not necessarily independent) with <strong>positive</strong> pairwise correlation <span class="math inline">\(\rho\)</span>, the variance of the average is:</p>
-<p><span class="math display">\[\rho \sigma^2 + \frac{1 - \rho}{B} \sigma^2\]</span></p>
-<p>As <span class="math inline">\(B\)</span> increases, the second term disappears, but the first remains, and hence <strong>the size of the correlation of paris of bagged trees limits the benefits of averaging</strong>. The idea in random forest is to improve the variance reduction of bagging by reducing the correlation between the trees without increasing the variance too much. This is achieved in the tree-growing process through random selection of the input variables.</p>
-<p>Specifically, when growing a tree on a bootstrapped dataset:</p>
-<ul>
-<li>Before each split, select <span class="math inline">\(m \leq p\)</span> of the input variables at random as candidates for splitting (typically values for <span class="math inline">\(m\)</span> are <span class="math inline">\(\sqrt{p}\)</span> or even as low as 1)</li>
-<li>After <span class="math inline">\(B\)</span> such trees <span class="math inline">\(\{T(\mathbf{x};\; \Theta_b)\}^{B}_{b=1}\)</span> are grown, the random forest regression predictor is: <span class="math display">\[\hat{f}^B_{rf} (\mathbf{x}) = \frac{1}{B}\sum^{B}_{b=1} T(\mathbf{x};\; \Theta_b)\]</span></li>
-<li>For classification, a random forest obtains a class vote from each tree, and then classifies using majority vote.</li>
-</ul>
-<p><img src='/images/ML/rf_1.png' width="600"></p>
-<h3 id="out-of-bag-samples">Out of Bag Samples</h3>
-<p>An importance feature of random forest is its use of <code>out-of-bag</code> samples:</p>
-<ul>
-<li>For each observation <span class="math inline">\(\mathbf{z}_i = (\mathbf{x}_i, y_i)\)</span>, construct its random forest predictor by averaging only those trees corresponding to bootstrap samples in which <span class="math inline">\(\mathbf{z}_i\)</span> did not appear.</li>
-</ul>
-<p>An out-of-bag error estimate (If short of data, it can be used as validation error) is almost identical to that obtained by <span class="math inline">\(N\)</span>-fold cross validation, so unlike many other nonlinear estimators, random forest can be fit in one sequence, with cross-validation being performed along the way. Once the OOB error stabilizes, the training can be terminated.</p>
-<h3 id="variable-importance">Variable Importance</h3>
-<p>Random forests also use the OOB samples to construct a different variable-importance measure, apparently to measure the prediction strength of each variable. When the <span class="math inline">\(b\)</span>th tree is grown, the OOB samples are passed down the tree, and the prediction accuracy is recorded. The values for the <span class="math inline">\(j\)</span>th variable are randomly permuted in the OOB samples, and the accuracy is again computed. The decrease in accuracy as a result of this permuting is averaged over all trees, and is used as a measure of the importance of variable <span class="math inline">\(j\)</span> in the random forest.</p>
-<h3 id="overfitting">Overfitting</h3>
-<p>It is certainly true that increasing <span class="math inline">\(B\)</span> does not cause the random forest sequence to overfit. like bagging, the random forest estimate approximates the expectation:</p>
-<p><span class="math display">\[\hat{f}_{rf} (\mathbf{x}) = E[T(\mathbf{x}; \; \Theta)] = \lim_{B \rightarrow \infty} \hat{f}(\mathbf{x})^B_{rf}\]</span></p>
-<p>with an average over <span class="math inline">\(B\)</span> realizations of <span class="math inline">\(\Theta\)</span>. However, <strong>this limit can overfit the data, the average of fully grown trees can result in too rich a model and incur unnecessary variance.</strong> One possible solution is to reduce tree depth.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1655,13 +1646,13 @@ w^{(m + 1)}_i &amp;= e^{-y_i f_{m} (\mathbf{x}_i)}\\
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">697k</span>
+    <span title="Symbols count total">707k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10:34</span>
+    <span title="Reading time total">10:43</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
