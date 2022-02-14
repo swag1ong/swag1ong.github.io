@@ -450,10 +450,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2022-02-13 12:16:16 / Modified: 17:03:42" itemprop="dateCreated datePublished" datetime="2022-02-13T12:16:16+08:00">2022-02-13</time>
+      <time title="Created: 2022-02-13 12:16:16" itemprop="dateCreated datePublished" datetime="2022-02-13T12:16:16+08:00">2022-02-13</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2022-02-14 15:39:55" itemprop="dateModified" datetime="2022-02-14T15:39:55+08:00">2022-02-14</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -479,14 +485,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>9.5k</span>
+      <span>11k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>9 mins.</span>
+      <span>10 mins.</span>
     </span>
 </div>
 
@@ -564,6 +570,25 @@ b, \quad \text{if} b \geq 0\\
 <h4 id="definition-0.20-mathbbr-the-field-of-real-numbers">Definition 0.20: <span class="math inline">\(\mathbb{R}\)</span>, The Field of Real Numbers</h4>
 <p>The symbol <span class="math inline">\(\mathbb{R}\)</span> denotes a complete ordered field. This field is called real numbers.</p>
 <p><br></p>
+<h4 id="definition-0.35-supremum-and-infimum">Definition 0.35: Supremum and Infimum</h4>
+<p>Suppose <span class="math inline">\(A \subseteq \mathbb{R}\)</span>. The <strong>supremum</strong> of <span class="math inline">\(A\)</span>, denoted <span class="math inline">\(\sup A\)</span>, is defined as:</p>
+<p><span class="math display">\[
+\sup A =
+\begin{cases}
+\text{The Least Upper Bound}, \quad \text{if $A$ has an upper bound and $A \neq \emptyset$}\\
+\infty, \quad \text{if $A$ does not have an upper bound}\\
+-\infty, \quad \text{if $A = \emptyset$}
+\end{cases}
+\]</span></p>
+<p>The <strong>Infimum</strong> of <span class="math inline">\(A\)</span>, denoted <span class="math inline">\(\inf A\)</span>, is defined as:</p>
+<p><span class="math display">\[
+\inf A =
+\begin{cases}
+\text{The Greatest Lower Bound}, \quad \text{if $A$ has a lower bound and $A \neq \emptyset$}\\
+-\infty, \quad \text{if $A$ does not have a lower bound}\\
+\infty, \quad \text{if $A = \emptyset$}
+\end{cases}
+\]</span></p>
 <h3 id="intervals">Intervals</h3>
 <p>Sometimes it is useful to consider a set consisting of <span class="math inline">\(\mathbb{R}\)</span> and two additional elements called <span class="math inline">\(\infty\)</span> and <span class="math inline">\(-\infty\)</span>. We define it as <span class="math inline">\(\mathbb{R} \cup \{\infty, -\infty\}\)</span>.</p>
 <h4 id="definition-0.40-ordering-on-mathbbr-cup-infty--infty">Definition 0.40: Ordering on <span class="math inline">\(\mathbb{R} \cup \{\infty, -\infty\}\)</span></h4>
@@ -714,6 +739,37 @@ b, \quad \text{if} b \geq 0\\
 <p><span class="math display">\[L(f, P, [a, b]) \leq L(f, P^{\prime\prime}, [a, b]) \leq U(f, P^{\prime\prime}, [a, b]) \leq U(f, P^{\prime}, [a, b])\]</span></p>
 <p>For any <span class="math inline">\(P, P^{\prime}\)</span>.</p>
 <p><br></p>
+<h4 id="definition-1.7-lower-and-upper-riemann-integrals">Definition 1.7: Lower and Upper Riemann Integrals</h4>
+<p>Suppose <span class="math inline">\(f:[a, b] \rightarrow \mathbb{R}\)</span> is a bounded function. The <strong>lower</strong> Riemann integral <span class="math inline">\(L(f, [a, b])\)</span> and the <strong>upper</strong> Riemann integral <span class="math inline">\(U(f, [a, b])\)</span> of <span class="math inline">\(f\)</span> are defined by:</p>
+<p><span class="math display">\[L(f, [a, b]) = \sup_{P} L(f, P, [a, b])\]</span></p>
+<p>and</p>
+<p><span class="math display">\[U(f, [a, b]) = \inf_P U(f, P, [a, b])\]</span></p>
+<p>Where the supremum and infimum above are taken over all partitions <span class="math inline">\(P\)</span> of <span class="math inline">\([a, b]\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-1.8-lower-riemann-integral-leq-upper-riemann-integral">Theorem 1.8: Lower Riemann Integral <span class="math inline">\(\leq\)</span> Upper Riemann Integral</h4>
+<p>Suppose <span class="math inline">\(f: [a, b] \rightarrow \mathbb{R}\)</span> is a bounded function. Then:</p>
+<p><span class="math display">\[L(f, [a, b]) \leq U(f, [a, b])\]</span></p>
+<p><br></p>
+<h4 id="definition-1.9-riemann-integrable-riemann-integral">Definition 1.9: Riemann Integrable; Riemann Integral</h4>
+<ul>
+<li>A <strong>bounded</strong> function on a <strong>closed bounded interval</strong> is called <strong>Riemann integrable</strong> if its lower Riemann integral equals its upper Riemann integral.</li>
+<li>If <span class="math inline">\(f: [a, b] \rightarrow \mathbb{R}\)</span> is Riemann integrable, then the <strong>Riemann integral <span class="math inline">\(\int^a_b f\)</span></strong> is defined by: <span class="math display">\[\int^b_a f = L(f, [a, b]) = U(f, [a, b])\]</span></li>
+</ul>
+<p><br></p>
+<h4 id="theorem-1.11-continuous-functions-are-riemann-integrable">Theorem 1.11: Continuous Functions are Riemann Integrable</h4>
+<p>Every continuous real-valued function on each closed bounded interval is Riemann integrable.</p>
+<p><br></p>
+<h4 id="theorem-1.13-bounds-on-riemann-integral">Theorem 1.13: Bounds on Riemann Integral</h4>
+<p>Suppose <span class="math inline">\(f:[a, b] \rightarrow \mathbb{R}\)</span> is Riemann integrable. Then:</p>
+<p><span class="math display">\[(b - a) \inf_{[a, b]}f \leq \int^b_a f \leq (b - a) \sup_{[a, b]} f\]</span></p>
+<p><br></p>
+<h3 id="riemann-integral-is-not-good-enough">Riemann Integral Is not Good Enough</h3>
+<p>The Riemann integral has several deficiencies:</p>
+<ol type="1">
+<li>Riemann integration does not handle functions with many discontinuities.</li>
+<li>Riemann integration does not handle unbounded functions.</li>
+<li>Riemann integration does not work well with limits.</li>
+</ol>
 
       
     </div>
@@ -4137,13 +4193,13 @@ c_n
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">707k</span>
+    <span title="Symbols count total">709k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10:43</span>
+    <span title="Reading time total">10:44</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
