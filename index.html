@@ -458,7 +458,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-02-14 15:39:55" itemprop="dateModified" datetime="2022-02-14T15:39:55+08:00">2022-02-14</time>
+        <time title="Modified: 2022-02-15 22:27:57" itemprop="dateModified" datetime="2022-02-15T22:27:57+08:00">2022-02-15</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -485,14 +485,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>11k</span>
+      <span>15k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>10 mins.</span>
+      <span>14 mins.</span>
     </span>
 </div>
 
@@ -770,6 +770,95 @@ b, \quad \text{if} b \geq 0\\
 <li>Riemann integration does not handle unbounded functions.</li>
 <li>Riemann integration does not work well with limits.</li>
 </ol>
+<p><br></p>
+<h2 id="measures">Measures</h2>
+<h3 id="outer-measure-on-mathbbr">Outer Measure on <span class="math inline">\(\mathbb{R}\)</span></h3>
+<h4 id="definition-2.1-length-of-open-interval-li">Definition 2.1: Length of Open Interval: <span class="math inline">\(l(I)\)</span></h4>
+<p>The <strong>length</strong> <span class="math inline">\(l(I)\)</span> of an <strong>open</strong> interval <span class="math inline">\(I\)</span> is defined by:</p>
+<p><span class="math display">\[
+l(I) =
+\begin{cases}
+b - a, \quad \text{if $I = (a, b)$ for some $a, b \in \mathbb{R}$ with $a &lt; b$}\\
+0, \quad \text{if $I = \emptyset$}\\
+\infty, \quad \text{if $I = (-\infty, a)$ or $I = (a, \infty)$ for some $a \in \mathbb{R}$}\\
+\infty, \quad \text{if $I = (-\infty, \infty)$}
+\end{cases}
+\]</span></p>
+<p><br></p>
+<h4 id="definition-2.2-outer-measure-a">Definition 2.2: Outer Measure: <span class="math inline">\(|A|\)</span></h4>
+<p>The <strong>outer measure</strong> <span class="math inline">\(|A|\)</span> of a set <span class="math inline">\(A \subseteq \mathbb{R}\)</span> is defined by:</p>
+<p><span class="math display">\[|A| = \inf\{\sum^{\infty}_{k=1} l(I_k): I_1, I_2, ... \text{ are open intervals such that $A \subseteq \bigcup_{k=1}^{\infty} I_k$}\}\]</span></p>
+<blockquote>
+<h4 id="example-2.3-finite-sets-have-outer-measure-0">Example 2.3: Finite sets have outer measure 0</h4>
+<p>Suppose <span class="math inline">\(A = \{a_1, ..., a_n\}\)</span> is a finite set of real numbers. Suppose <span class="math inline">\(\epsilon &gt; 0\)</span>. Define a sequence <span class="math inline">\(I_1, I_2, ...\)</span> of open intervals by:</p>
+<p><span class="math display">\[
+I_k =
+\begin{cases}
+(a_k - \epsilon, a_k + \epsilon), \quad \text{if $k \leq n$}\\
+\emptyset, \quad \text{if $k &gt; n$}\\
+\end{cases}
+\]</span></p>
+<p>Then <span class="math inline">\(I_1, I_2, ...\)</span> is a sequence of open interval whose union contains <span class="math inline">\(A\)</span>. Clearly <span class="math inline">\(\sum^{\infty}_{k=1}l(I_k) = 2\epsilon n \implies |A| \leq 2\epsilon n\)</span>, since <span class="math inline">\(\epsilon &gt; 0\)</span> is an arbitrary positive number, this implies that <span class="math inline">\(|A| = 0\)</span>.</p>
+</blockquote>
+<p><br></p>
+<h4 id="theorem-2.4-countable-sets-have-outer-measure-0">Theorem 2.4: Countable Sets Have Outer Measure <span class="math inline">\(0\)</span></h4>
+<p>Every countable subset of <span class="math inline">\(\mathbb{R}\)</span> has outer measure <span class="math inline">\(0\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-2.5-outer-measure-preserves-order">Theorem 2.5: Outer Measure Preserves Order</h4>
+<p>Suppose <span class="math inline">\(A, B\)</span> are subsets of <span class="math inline">\(\mathbb{R}\)</span> with <span class="math inline">\(A \subseteq B\)</span>. Then <span class="math inline">\(|A| \leq |B|\)</span>.</p>
+<p><br></p>
+<h4 id="definition-2.6-translation-t-a">Definition 2.6: Translation, <span class="math inline">\(t + A\)</span></h4>
+<p>If <span class="math inline">\(t \in \mathbb{R}\)</span> and <span class="math inline">\(A \subseteq \mathbb{R}\)</span>, then the <strong>translation</strong> <span class="math inline">\(t + A\)</span> is defined by:</p>
+<p><span class="math display">\[t + A = \{t + a: a \in A\}\]</span></p>
+<p>If <span class="math inline">\(t \in \mathbb{R}, a, b \in [-\infty, \infty]\)</span>, then <span class="math inline">\(t + (a, b) = (t + a, t + b)\)</span> and <span class="math inline">\(t + \infty = \infty\)</span> and <span class="math inline">\(t + -\infty = -\infty\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-2.7-outer-measure-is-translation-invariant">Theorem 2.7: Outer Measure is Translation Invariant</h4>
+<p>Suppose <span class="math inline">\(t \in \mathbb{R}\)</span> and <span class="math inline">\(A \subseteq \mathbb{R}\)</span>. Then <span class="math inline">\(|t + A| = |A|\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-2.8-countable-subadditivity-of-outer-measure">Theorem 2.8: Countable Subadditivity of Outer Measure</h4>
+<p>Suppose <span class="math inline">\(A_1, A_2, ...\)</span> is a sequence of subsets of <span class="math inline">\(\mathbb{R}\)</span>. Then:</p>
+<p><span class="math display">\[|\bigcup_{k=1}^{\infty} A_k| \leq \sum^{\infty}_{k=1} |A_k|\]</span></p>
+<p>In other words:</p>
+<p><span class="math display">\[|A_1 \cup A_2 \cup ... | \leq |A_1| + |A_2| + ... \]</span></p>
+<h5 id="proof-of-theorem-2.8">Proof of Theorem 2.8</h5>
+<p>Assume <span class="math inline">\(|A_k| &lt; \infty\)</span> for all <span class="math inline">\(k \in \mathbb{Z}^+\)</span>. Let <span class="math inline">\(\epsilon &gt; 0\)</span> and for each <span class="math inline">\(k \in \mathbb{Z}^+\)</span>, let <span class="math inline">\(I_{1, k}, I_{2, k}, ...\)</span> be a sequence of open intervals whose union contains <span class="math inline">\(A_k\)</span> s.t:</p>
+<p><span class="math display">\[\sum^{\infty}_{j=1} l(I_{j, k}) \leq \frac{\epsilon}{2^k} + |A_k|\]</span></p>
+<p>This makes sense because <span class="math inline">\(|A| = \inf\{\sum^{\infty}_{j=1} l(I_{j, k})\}\)</span> and <span class="math inline">\(|A| + \epsilon \geq \inf\{\sum^{\infty}_{j=1} l(I_{j, k})\}\)</span>.</p>
+<p>Sum both side over <span class="math inline">\(k\)</span>, we have:</p>
+<p><span class="math display">\[\sum^{\infty}_{k=1}\sum^{\infty}_{j=1} l(I_{j, k}) \leq \epsilon + \sum^{\infty}_{k=1}|A_k|\]</span></p>
+<p>The union of left hand side open intervals is the set $A_1 A_2 ... $, Thus, we have:</p>
+<p><span class="math display">\[|A_1 \cup A_2 \cup ... | \leq \sum^{\infty}_{k=1}\sum^{\infty}_{j=1} l(I_{j, k}) \leq \epsilon + \sum^{\infty}_{k=1}|A_k|\]</span></p>
+<p>Since <span class="math inline">\(\epsilon\)</span> is any positive real number, we have desired result.</p>
+<p><br></p>
+<h4 id="definition-2.10-open-cover-finite-subcover">Definition 2.10: Open Cover, Finite Subcover</h4>
+<p>Suppose <span class="math inline">\(A \subseteq \mathbb{R}\)</span>:</p>
+<ul>
+<li>A collection <span class="math inline">\(C\)</span> of open subsets of <span class="math inline">\(\mathbb{R}\)</span> is called an <strong>open cover</strong> of <span class="math inline">\(A\)</span> if <span class="math inline">\(A\)</span> is contained in the union of all the sets in <span class="math inline">\(C\)</span>.</li>
+<li>An open cover <span class="math inline">\(C\)</span> of <span class="math inline">\(A\)</span> is said to have a <strong>finite subcover</strong> if <span class="math inline">\(A\)</span> is contained in the union of some finite list of sets in <span class="math inline">\(C\)</span>.</li>
+</ul>
+<blockquote>
+<h4 id="example-2.11">Example 2.11</h4>
+<p>The collection <span class="math inline">\(\{(k, k+2): k \in \mathbb{Z}^+\}\)</span> is an open cover of <span class="math inline">\([2, 5]\)</span> because <span class="math inline">\([2, 5] \subseteq \bigcup^{\infty}_{k=1} (k, k+2)\)</span>. This open cover has finite subcover because <span class="math inline">\([2, 5] \subseteq (1, 3) \cup (2, 4) \cup (3, 5) \cup (4, 6)\)</span>.</p>
+<p>The collection above is an open cover of <span class="math inline">\([2, \infty)\)</span> but does not have a finite subcover.</p>
+</blockquote>
+<p><br></p>
+<h4 id="theorem-2.12-heine-borel-theorem">Theorem 2.12: Heine-Borel Theorem</h4>
+<p>Every open cover of a closed bounded subset of <span class="math inline">\(\mathbb{R}\)</span> has a finite subcover.</p>
+<p><br></p>
+<h4 id="theorem-2.14-outer-measure-of-a-closed-interval">Theorem 2.14: Outer Measure of a Closed Interval</h4>
+<p>Suppose <span class="math inline">\(a, b \in \mathbb{R}\)</span> with <span class="math inline">\(a &lt; b\)</span>. Then <span class="math inline">\(|[a, b]| = b - a\)</span></p>
+<p><br></p>
+<h4 id="theorem-2.17-nontrivial-intervals-are-uncountable">Theorem 2.17: Nontrivial Intervals are Uncountable</h4>
+<p>Every interval in <span class="math inline">\(\mathbb{R}\)</span> that contains at least two distinct elements is uncountable.</p>
+<h5 id="proof-of-theorem-2.17">Proof of Theorem 2.17:</h5>
+<p>Suppose <span class="math inline">\(I\)</span> is an interval that contains <span class="math inline">\(a, b \in \mathbb{R}\)</span> and <span class="math inline">\(b &gt; a\)</span>, then <span class="math inline">\([a, b] \subseteq I\)</span>, then by <code>theorem 2.5</code>, we have:</p>
+<p><span class="math display">\[|I| \geq |[a, b]|\]</span></p>
+<p>and</p>
+<p><span class="math display">\[|[a, b]| = b - a &gt; 0\]</span></p>
+<p><br></p>
+<h4 id="theorem-2.18-nonadditivity-of-outer-measure">Theorem 2.18: Nonadditivity of Outer Measure</h4>
+<p>There exist disjoint subsets <span class="math inline">\(A, B\)</span> of <span class="math inline">\(\mathbb{R}\)</span> s.t:</p>
+<p><span class="math display">\[|A \cup B| \neq |A| + |B|\]</span></p>
 
       
     </div>
@@ -4193,13 +4282,13 @@ c_n
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">709k</span>
+    <span title="Symbols count total">713k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10:44</span>
+    <span title="Reading time total">10:48</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
