@@ -458,7 +458,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-02-15 22:27:57" itemprop="dateModified" datetime="2022-02-15T22:27:57+08:00">2022-02-15</time>
+        <time title="Modified: 2022-02-19 18:26:26" itemprop="dateModified" datetime="2022-02-19T18:26:26+08:00">2022-02-19</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -485,14 +485,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>15k</span>
+      <span>26k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>14 mins.</span>
+      <span>23 mins.</span>
     </span>
 </div>
 
@@ -504,6 +504,7 @@
     
     <div class="post-body" itemprop="articleBody">
           <h1 id="measure-integral-and-real-analysis-1">Measure Integral and Real Analysis (1)</h1>
+<p><span class="math inline">\(X / A\)</span> means that the difference between set <span class="math inline">\(X\)</span> and <span class="math inline">\(A\)</span>.</p>
 <h2 id="fields">Fields</h2>
 <h3 id="complete-ordered-fields">Complete Ordered Fields</h3>
 <h4 id="definition-0.1-field">Definition 0.1: Field</h4>
@@ -704,6 +705,12 @@ b, \quad \text{if} b \geq 0\\
 <h4 id="theorem-0.62-characterization-of-closed-sets">Theorem 0.62: Characterization of Closed Sets</h4>
 <p>A subset of <span class="math inline">\(\mathbb{R}^n\)</span> is closed IFF it contains the limit of every convergent sequence of elements of the set.</p>
 <p><br></p>
+<h4 id="theorem-0.63-de-morgans-laws">Theorem 0.63: De Morgan's Laws</h4>
+<p>Suppose <span class="math inline">\(A\)</span> is a collection of subsets of some set <span class="math inline">\(X\)</span>. Then:</p>
+<p><span class="math display">\[X /\ \bigcup_{E \in A} E = \bigcap_{E \in A} (X /\ E)\]</span></p>
+<p>and</p>
+<p><span class="math display">\[X /\ \bigcap_{E \in A} E = \bigcup_{E \in A} (X /\ E)\]</span></p>
+<p><br></p>
 <h4 id="theorem-0.65-sets-that-are-both-open-and-closed">Theorem 0.65: Sets that are Both Open and Closed</h4>
 <p>The only subsets of <span class="math inline">\(\mathbb{R}^n\)</span> that are both open and closed are <span class="math inline">\(\emptyset\)</span> and <span class="math inline">\(\mathbb{R}^n\)</span>.</p>
 <p><br></p>
@@ -859,6 +866,192 @@ I_k =
 <h4 id="theorem-2.18-nonadditivity-of-outer-measure">Theorem 2.18: Nonadditivity of Outer Measure</h4>
 <p>There exist disjoint subsets <span class="math inline">\(A, B\)</span> of <span class="math inline">\(\mathbb{R}\)</span> s.t:</p>
 <p><span class="math display">\[|A \cup B| \neq |A| + |B|\]</span></p>
+<p><br></p>
+<h3 id="measurable-spaces-and-functions">Measurable Spaces and Functions</h3>
+<h4 id="theorem-2.22-nonexistence-of-extension-of-length-to-all-subsets-of-mathbbr">Theorem 2.22: Nonexistence of Extension of Length to All Subsets of <span class="math inline">\(\mathbb{R}\)</span></h4>
+<p>There does not exists a function <span class="math inline">\(\mu\)</span> with all the following properties:</p>
+<ol type="a">
+<li><span class="math inline">\(\mu\)</span> is a function from the set of subsets of <span class="math inline">\(\mathbb{R}\)</span> to <span class="math inline">\([0, \infty]\)</span>.</li>
+<li><span class="math inline">\(\mu(I) = l(I)\)</span> for every open interval <span class="math inline">\(I\)</span> of <span class="math inline">\(\mathbb{R}\)</span>.</li>
+<li><span class="math inline">\(\mu (\sum^{\infty}_{k=1} A_k) = \sum^{\infty}_{k=1} \mu(A_k)\)</span> for every disjoint sequence <span class="math inline">\(A_1, A_2, ...\)</span> of subsets of <span class="math inline">\(\mathbb{R}\)</span>.</li>
+<li><span class="math inline">\(\mu(t + A) = \mu(A)\)</span> for every <span class="math inline">\(A \subseteq \mathbb{R}\)</span> and every <span class="math inline">\(t \in \mathbb{R}\)</span>.</li>
+</ol>
+<p><br></p>
+<h4 id="definition-2.23-sigma-algebra">Definition 2.23: <span class="math inline">\(\sigma\)</span>-algebra</h4>
+<p>Suppose <span class="math inline">\(X\)</span> is a set and <span class="math inline">\(S\)</span> is a set of subsets of <span class="math inline">\(X\)</span>. Then <span class="math inline">\(S\)</span> is called a <strong><span class="math inline">\(\sigma\)</span>-algebra</strong> on <span class="math inline">\(X\)</span> if the following three conditions are satisfied:</p>
+<ul>
+<li><span class="math inline">\(\emptyset \in S\)</span>.</li>
+<li>If <span class="math inline">\(E \in S\)</span>, then <span class="math inline">\(X / E \in S\)</span>.</li>
+<li>If <span class="math inline">\(E_1, E_2, ...\)</span> is a sequence of elements of <span class="math inline">\(S\)</span>, then <span class="math inline">\(\bigcup^{\infty}_{k=1} E_k \in S\)</span>.</li>
+</ul>
+<blockquote>
+<p>{, X} is <span class="math inline">\(\sigma\)</span>-algebra on <span class="math inline">\(X\)</span>. The set of all subsets of <span class="math inline">\(X\)</span> is <span class="math inline">\(\sigma\)</span>-algebra on <span class="math inline">\(X\)</span>.</p>
+</blockquote>
+<p><br></p>
+<h4 id="theorem-2.25-sigma-algebras-are-closed-under-countable-intersection">Theorem 2.25: <span class="math inline">\(\sigma\)</span>-algebras are Closed Under Countable Intersection</h4>
+<p>Suppose <span class="math inline">\(S\)</span> is a <span class="math inline">\(\sigma\)</span>-algebra on a set <span class="math inline">\(X\)</span>. Then:</p>
+<ol type="a">
+<li><span class="math inline">\(X \in S\)</span>.</li>
+<li>If <span class="math inline">\(D, E \in S\)</span>, then <span class="math inline">\(D \cup E \in S\)</span> and <span class="math inline">\(D \cap E \in S\)</span> and <span class="math inline">\(D / E \in S\)</span>.</li>
+<li>If <span class="math inline">\(E_1, E_2, ....\)</span> is a sequence of elemnts of <span class="math inline">\(S\)</span>, then <span class="math inline">\(\bigcap^{\infty}_{k=1} E_k \in S\)</span>.</li>
+</ol>
+<p><br></p>
+<h4 id="definition-2.26-measurable-space-measurable-set">Definition 2.26: Measurable Space, Measurable Set</h4>
+<ul>
+<li>A <strong>measurable space</strong> is an ordered pair <span class="math inline">\((X, S)\)</span>, where <span class="math inline">\(X\)</span> is a set and <span class="math inline">\(S\)</span> is a <span class="math inline">\(\sigma-\)</span>algebra on <span class="math inline">\(X\)</span>.</li>
+<li>An element of <span class="math inline">\(S\)</span> is called an <strong><span class="math inline">\(S\)</span>-measurable set</strong> or just a <strong>measurable set</strong> if <span class="math inline">\(S\)</span> is clear from the context.</li>
+</ul>
+<blockquote>
+<p><span class="math inline">\(X = \mathbb{R}\)</span> and <span class="math inline">\(S\)</span> is the set of all subsets of <span class="math inline">\(\mathbb{R}\)</span> that are countable or have a countable complement, then the ordered pair <span class="math inline">\((X, S)\)</span> is a measurable space and <span class="math inline">\(\mathbb{Q} \in S\)</span> is <span class="math inline">\(S\)</span>-measurable set.</p>
+</blockquote>
+<p><br></p>
+<h4 id="theorem-2.27-smallest-sigma-algebra-containing-a-collection-of-subsets">Theorem 2.27: Smallest <span class="math inline">\(\sigma\)</span>-algebra Containing a Collection of Subsets</h4>
+<p>Suppose <span class="math inline">\(X\)</span> is a set and <span class="math inline">\(A\)</span> is a set of subsets of <span class="math inline">\(X\)</span>. Then the intersection of all <span class="math inline">\(\sigma-\)</span>algebras on <span class="math inline">\(X\)</span> that contain <span class="math inline">\(A\)</span> is a <span class="math inline">\(\sigma-\)</span>algebra on <span class="math inline">\(X\)</span>.</p>
+<p>Using the <strong>smallest</strong> for the intersection of all <span class="math inline">\(\sigma\)</span>-algebras that contain as set <span class="math inline">\(A\)</span> of subset of <span class="math inline">\(X\)</span> makes sense, because the smallest <span class="math inline">\(\sigma\)</span>-algebra will be one of those <span class="math inline">\(\sigma\)</span>-algebra that contains <span class="math inline">\(A\)</span>. If <span class="math inline">\(A\)</span> is already <span class="math inline">\(\sigma\)</span>-algebra, then the interaction is just <span class="math inline">\(A\)</span>.</p>
+<p><br></p>
+<h4 id="definition-2.29-borel-set">Definition 2.29: Borel Set</h4>
+<p>The smallest <span class="math inline">\(\sigma\)</span>-algebra on <span class="math inline">\(\mathbb{R}\)</span> containing all open subsets of <span class="math inline">\(\mathbb{R}\)</span> is called <strong>the collection of Borel subsets</strong> of <span class="math inline">\(\mathbb{R}\)</span>. An element of this <span class="math inline">\(\sigma-algebra\)</span> is called a <strong>Borel set</strong>.</p>
+<p>We can also define the collection of Borel subsets to be the smallest <span class="math inline">\(\sigma\)</span>-algebra on <span class="math inline">\(\mathbb{R}\)</span> containing all the <strong>open intervals</strong>. Because every open subset of <span class="math inline">\(\mathbb{R}\)</span> is the union of a sequence of open intervals.</p>
+<p><strong>The set contains every open sets, closed sets, countable union, intersection of open, closed sets. There exists subsets of <span class="math inline">\(\mathbb{R}\)</span> that are not Borel sets, but any subset of <span class="math inline">\(\mathbb{R}\)</span> that you can write down in a concrete fashion is a Borel set.</strong></p>
+<p><br></p>
+<h4 id="definition-2.31-inverse-image-f-1-a">Definition 2.31: Inverse Image: <span class="math inline">\(f^{-1} (A)\)</span></h4>
+<p>If <span class="math inline">\(f: X \rightarrow Y\)</span> is a function and <span class="math inline">\(A \subseteq Y\)</span>, then the set <span class="math inline">\(f^{-1} (A)\)</span> is defined by:</p>
+<p><span class="math display">\[f^{-1} (A) = \{x \in X: f(x) \in A\}\]</span></p>
+<p><br></p>
+<h4 id="theorem-2.33-algebra-of-inverse-images">Theorem 2.33: Algebra of Inverse Images</h4>
+<p>Suppose <span class="math inline">\(f: X \rightarrow Y\)</span> is a function. Then:</p>
+<ol type="a">
+<li><span class="math inline">\(f^{-1} (Y / A) = X / f^{-1}(A), \; \forall A \subseteq Y\)</span></li>
+<li><span class="math inline">\(f^{-1} (\bigcap_{A \in \mathbf{A}} A) = \bigcap_{A \in \mathbb{A}} f^{-1}(A)\)</span>, for every set <span class="math inline">\(\mathbf{A}\)</span> of subsets of <span class="math inline">\(Y\)</span>.</li>
+<li><span class="math inline">\(f^{-1} (\bigcup_{A \in \mathbf{A}} A) = \bigcup_{A \in \mathbb{A}} f^{-1}(A)\)</span>, for every set <span class="math inline">\(\mathbf{A}\)</span> of subsets of <span class="math inline">\(Y\)</span>.</li>
+</ol>
+<p>In other words, the inverse image of union or intersection of any subsets of <span class="math inline">\(Y\)</span>, is the same as the union or intersection of inverse image of these subsets of <span class="math inline">\(Y\)</span>.</p>
+<h5 id="proof-of-theorem-2.33">Proof of Theorem 2.33:</h5>
+<p>Suppose <span class="math inline">\(A \subseteq Y\)</span>. For <span class="math inline">\(x \in X\)</span>, we have:</p>
+<p><span class="math display">\[x \in f^{-1} (Y / A) \Longleftrightarrow  f(x) \in Y / A \Longleftrightarrow f(x) \notin A \Longleftrightarrow x \notin f^{-1}(A) \implies x \in X / f^{-1}(A) \]</span></p>
+<p>Let <span class="math inline">\(\mathbf{A}\)</span> be a set of subsets of <span class="math inline">\(Y\)</span>, then:</p>
+<p><span class="math display">\[x \in f^{-1} (\bigcap_{A \in \mathbf{A}} A) \Longleftrightarrow f(x) \in \bigcap_{A \in \mathbf{A}} A\]</span></p>
+<p>This implies that <span class="math inline">\(f(x)\)</span> is in every subset <span class="math inline">\(A \in \mathbf{A}\)</span>, thus, we have:</p>
+<p><span class="math display">\[x \in f^{-1}(A) \; \forall A \in \mathbf{A} \implies x \in \bigcap_{A \in \mathbf{A}} f^{-1}(A)\]</span></p>
+<p>The proof is similar for union.</p>
+<p><br></p>
+<h4 id="theorem-2.34-inverse-image-of-a-composition">Theorem 2.34: Inverse Image of a Composition</h4>
+<p>Suppose <span class="math inline">\(f: X \rightarrow Y\)</span> and <span class="math inline">\(g: Y \rightarrow W\)</span> are functions. Then:</p>
+<p><span class="math display">\[(g \circ f)^{-1} (A) = f^{-1} (g^{-1} (A))\]</span></p>
+<p>for every <span class="math inline">\(A \subseteq W\)</span></p>
+<h5 id="proof-of-theorem-2.34">Proof of Theorem 2.34:</h5>
+<p>Suppose <span class="math inline">\(A \subseteq W\)</span>, <span class="math inline">\(x \in X\)</span>, then we have:</p>
+<p><span class="math inline">\(x \in (g \circ f)^{-1} (A) \Longleftrightarrow g \circ f (x) \in A \Longleftrightarrow g(f(x)) \in A \Longleftrightarrow f(x) \in g^{-1} (A) \Longleftrightarrow x \in f^{-1}(g^{-1} (A))\)</span></p>
+<p><br></p>
+<h4 id="definition-2.35-measurable-function">Definition 2.35: Measurable Function</h4>
+<p>Suppose <span class="math inline">\((X, S)\)</span> is a measurable space. A function <span class="math inline">\(f: X \rightarrow \mathbb{R}\)</span> is called <strong><span class="math inline">\(S\)</span>-measurable</strong> (or just <strong>measurable</strong> if <span class="math inline">\(S\)</span> is clear from the context)</p>
+<p>if:</p>
+<p><span class="math display">\[f^{-1}(B) \in S\]</span></p>
+<p>for every Borel set <span class="math inline">\(B \in \mathbb{R}\)</span>.</p>
+<blockquote>
+<h5 id="example-2.36-measurable-functions">Example 2.36: Measurable Functions</h5>
+<p>If <span class="math inline">\(S = \{\emptyset, X\}\)</span>, then the only <span class="math inline">\(S\)</span>-measurable functions from <span class="math inline">\(X\)</span> to <span class="math inline">\(\mathbb{R}\)</span> are the constant functions, because otherwise each <span class="math inline">\(x \in X\)</span> will have multiple <span class="math inline">\(f(x)\)</span>, which will violate the definition of function.</p>
+<p>If <span class="math inline">\(S\)</span> is the set of all subsets of <span class="math inline">\(X\)</span>, then every function from <span class="math inline">\(X \rightarrow \mathbb{R}\)</span> is <span class="math inline">\(S\)</span>-measurable.</p>
+<p>If <span class="math inline">\(S = \{\emptyset, (-\infty, 0), [0, \infty), \mathbb{R}\}\)</span>, then a function <span class="math inline">\(f:\mathbb{R} \rightarrow \mathbb{R}\)</span> is <span class="math inline">\(S\)</span>-measurable IFF <span class="math inline">\(f\)</span> is constant on <span class="math inline">\((-\infty, 0)\)</span> and <span class="math inline">\(f\)</span> is constant on <span class="math inline">\([0, \infty)\)</span>.</p>
+</blockquote>
+<p><br></p>
+<h4 id="definition-2.37-characteristic-function-chi_e">Definition 2.37: Characteristic Function; <span class="math inline">\(\chi_E\)</span></h4>
+<p>Suppose <span class="math inline">\(E\)</span> is a subset of a set <span class="math inline">\(X\)</span>. The <strong>characteristic function</strong> of <span class="math inline">\(E\)</span> is the function <span class="math inline">\(\chi_E: X \rightarrow \mathbb{R}\)</span> defined by:</p>
+<p><span class="math display">\[
+\chi_E (x) =
+\begin{cases}
+1, \quad \text{if} \; x \in E\\
+0, \quad \text{if} \; x \notin E
+\end{cases}
+\]</span></p>
+<p><br></p>
+<h4 id="theorem-2.39-condition-for-measurable-function">Theorem 2.39: Condition for Measurable Function</h4>
+<p>Suppose <span class="math inline">\((X, S)\)</span> is a measurable space and <span class="math inline">\(f: X \rightarrow \mathbb{R}\)</span> is a function such that:</p>
+<p><span class="math display">\[f^{-1} ((a, \infty)) \in S\]</span></p>
+<p>for all <span class="math inline">\(a \in \mathbb{R}\)</span>. Then <span class="math inline">\(f\)</span> is an <span class="math inline">\(S\)</span>-measurable function.</p>
+<p>Where:</p>
+<p><span class="math display">\[f^{-1}((a, \infty)) = \{x \in X: f(x) &gt; a\}\]</span></p>
+<p><strong>We can replace the collection of sets <span class="math inline">\(\{(a, \infty): a\in \mathbb{R}\}\)</span> by any collection of subsets of <span class="math inline">\(\mathbb{R}\)</span> s.t the smallest <span class="math inline">\(\sigma\)</span>-algebra containing that collection contains the Borel subset of <span class="math inline">\(\mathbb{R}\)</span>.</strong></p>
+<p><br></p>
+<h4 id="definition-2.40-borel-measurable-function">Definition 2.40: Borel Measurable Function</h4>
+<p>Suppose <span class="math inline">\(X \subseteq \mathbb{R}\)</span>. A function <span class="math inline">\(f: X \rightarrow \mathbb{R}\)</span> is called <strong>Borel Measurable</strong> if <span class="math inline">\(f^{-1}(B)\)</span> is a Borel set for every Borel set <span class="math inline">\(B \subseteq \mathbb{R}\)</span>.</p>
+<p>If <span class="math inline">\(X\)</span> is a Borel subset of <span class="math inline">\(\mathbb{R}\)</span>, then <span class="math inline">\(S\)</span> might be the set of Borel sets contained in <span class="math inline">\(X\)</span>, in which case the phrase Borel Measurable is the same as <span class="math inline">\(S\)</span>-measuable.</p>
+<p><strong>If <span class="math inline">\(X \subseteq \mathbb{R}\)</span>, then <span class="math inline">\(f\)</span> is Borel measurable implies that <span class="math inline">\(X\)</span> is a borel set.</strong></p>
+<p><strong>If <span class="math inline">\(X \subseteq \mathbb{R}\)</span>, then <span class="math inline">\(f\)</span> is Borel measurable IFF <span class="math inline">\(f^{-1}((a, \infty))\)</span> is a borel set for all <span class="math inline">\(a \in \mathbb{R}\)</span>. Most of the proofs of Borel measurable function involves this result.</strong></p>
+<p><br></p>
+<h4 id="definition-2.41-every-continuous-function-is-borel-measurable">Definition 2.41: Every Continuous Function is Borel Measurable</h4>
+<p>Every continuous real-valued function defined on a Borel subset of <span class="math inline">\(\mathbb{R}\)</span> is a Borel measurable function.</p>
+<p><br></p>
+<h4 id="definition-2.42-increasing-function-strictly-increasing">Definition 2.42: Increasing Function; Strictly Increasing</h4>
+<p>Suppose <span class="math inline">\(X \subseteq \mathbb{R}\)</span> and <span class="math inline">\(f: X \rightarrow \mathbb{R}\)</span> is a function:</p>
+<ul>
+<li><span class="math inline">\(f\)</span> is called <strong>increasing</strong> if <span class="math inline">\(f(x) \leq f(y)\)</span> for all <span class="math inline">\(x, y \in X\)</span> with <span class="math inline">\(x &lt; y\)</span>.</li>
+<li><span class="math inline">\(f\)</span> is called <strong>strictly increasing</strong> if <span class="math inline">\(f(x) &lt; f(y)\)</span>, for all <span class="math inline">\(x, y \in X\)</span> with <span class="math inline">\(x &lt; y\)</span>.</li>
+</ul>
+<p><br></p>
+<h4 id="theorem-2.43-every-increasing-function-is-borel-measurable">Theorem 2.43: Every Increasing Function is Borel Measurable</h4>
+<p>Every increasing function defined on a Borel subset is Borel measurable.</p>
+<p><strong>similar results for decreasing function</strong>.</p>
+<h5 id="proof-of-theorem-2.43">Proof of Theorem 2.43:</h5>
+<p>Let <span class="math inline">\(X \subseteq \mathbb{R}\)</span> be a borel set, let <span class="math inline">\(f: X \rightarrow \mathbb{R}\)</span> be an increasing function. Then:</p>
+<p>Let <span class="math inline">\(b = \inf f^{-1}((a, \infty))\)</span>. So we can write it as:</p>
+<p><span class="math display">\[f^{-1}((a, \infty)) = [b, \infty) \cap X\]</span></p>
+<p>Thus, we have <span class="math inline">\(f^{-1}((a, \infty))\)</span> is a borel set which implies that <span class="math inline">\(f\)</span> is borel measurable.</p>
+<p><br></p>
+<h4 id="theorem-2.44-composition-of-measurable-functions">Theorem 2.44: Composition of Measurable Functions</h4>
+<p>Suppose <span class="math inline">\((X, S)\)</span> is a measurable space and <span class="math inline">\(f: X \rightarrow \mathbb{R}\)</span> is an <span class="math inline">\(S\)</span>-measurable function. Suppose <span class="math inline">\(g\)</span> is a real-valued Borel measurable function defined on a subset of <span class="math inline">\(\mathbb{R}\)</span> that includes the range of <span class="math inline">\(f\)</span>. Then <span class="math inline">\(g \circ f: X \rightarrow \mathbb{R}\)</span> is an <span class="math inline">\(S\)</span>-measurable function.</p>
+<blockquote>
+<h5 id="example-2.45">Example 2.45</h5>
+<p>If <span class="math inline">\(f\)</span> is measurable, then so are <span class="math inline">\(-f, |f|, f^2\)</span>.</p>
+<p>Since <span class="math inline">\(g(x) = -x\)</span>, <span class="math inline">\(g(x) = |x|\)</span>, <span class="math inline">\(g(x) = x^2\)</span> are all continuous functions defined on <span class="math inline">\(\mathbb{R}\)</span>, which is a borel subset of <span class="math inline">\(\mathbb{R}\)</span>, so <span class="math inline">\(g(f(x))\)</span> is measurable.</p>
+</blockquote>
+<h4 id="theorem-2.46-algebraic-operations-with-measurable-functions">Theorem 2.46: Algebraic Operations with Measurable Functions</h4>
+<p>Suppose <span class="math inline">\((X, S)\)</span> is a measurable space and <span class="math inline">\(f, g: X \rightarrow \mathbb{R}\)</span> are <span class="math inline">\(S\)</span>-measurable. Then:</p>
+<ol type="a">
+<li><span class="math inline">\(f + g\)</span>, <span class="math inline">\(f - g\)</span>, and <span class="math inline">\(fg\)</span> are <span class="math inline">\(S-measurable\)</span> functions.</li>
+<li>If <span class="math inline">\(g(x) \neq 0\)</span> for all <span class="math inline">\(x \in X\)</span>, then <span class="math inline">\(\frac{f}{g}\)</span> is an <span class="math inline">\(S\)</span>-measurable function.</li>
+</ol>
+<p><br></p>
+<h4 id="theorem-2.48-limit-of-s-measurable-functions">Theorem 2.48: Limit of <span class="math inline">\(S\)</span>-Measurable Functions</h4>
+<p>Suppose <span class="math inline">\((X, S)\)</span> is a measurable space and <span class="math inline">\(f_1, f_2, ...\)</span> is a sequence of <span class="math inline">\(S\)</span>-measurable functions from <span class="math inline">\(X \rightarrow \mathbb{R}\)</span>. Suppose <span class="math inline">\(\lim_{k \rightarrow \infty} f_k (x)\)</span> exists for each <span class="math inline">\(x \in X\)</span>. Define <span class="math inline">\(f: X \rightarrow \mathbb{R}\)</span> by:</p>
+<p><span class="math display">\[f(x) = \lim_{k \rightarrow \infty} f_k (x)\]</span></p>
+<p>Then, <span class="math inline">\(f\)</span> is an <span class="math inline">\(S\)</span>-measurable function.</p>
+<p><br></p>
+<h4 id="definition-2.50-borel-subsets-of--infty-infty-extended-definition-of-borel-subset-to-mathbbr-cup--infty-infty">Definition 2.50: Borel Subsets of <span class="math inline">\([-\infty, \infty]\)</span> (Extended definition of borel subset to <span class="math inline">\(\mathbb{R} \cup \{-\infty, \infty\}\)</span>)</h4>
+<p>A subset of <span class="math inline">\([-\infty, \infty]\)</span> is called a <strong>Borel set</strong> if its intersection with <span class="math inline">\(\mathbb{R}\)</span> is a Borel Set.</p>
+<blockquote>
+<p><span class="math inline">\([-\infty, \infty]\)</span> is a borel set because <span class="math inline">\([-\infty, \infty] \cap \mathbb{R} = \mathbb{R}\)</span> is a borel set.</p>
+</blockquote>
+<p><br></p>
+<h4 id="definition-2.51-measurable-function">Definition 2.51: Measurable Function</h4>
+<p>Suppose <span class="math inline">\((X, S)\)</span> is a measurable space. A function <span class="math inline">\(f: X \rightarrow [-\infty, \infty]\)</span> is called <span class="math inline">\(S\)</span>-measurable if:</p>
+<p><span class="math display">\[f^{-1}(B) \in S\]</span></p>
+<p><br></p>
+<h4 id="theorem-2.52-condition-for-measurable-function">Theorem 2.52: Condition for Measurable Function</h4>
+<p>Suppose <span class="math inline">\((X, S)\)</span> is a measurable space and <span class="math inline">\(f: X \rightarrow [-\infty, \infty]\)</span> is a function s.t:</p>
+<p><span class="math display">\[f^{-1} ((a, \infty]) \in S\]</span></p>
+<p>for all <span class="math inline">\(a \in \mathbb{R}\)</span>. Then <span class="math inline">\(f\)</span> is an <span class="math inline">\(S\)</span>-measurable function.</p>
+<p><br></p>
+<h4 id="theorem-2.53-infimum-and-supremum-of-a-sequence-of-s-measurable-functions">Theorem 2.53: Infimum and Supremum of a Sequence of <span class="math inline">\(S\)</span>-measurable Functions</h4>
+<p>Suppose <span class="math inline">\((X, S)\)</span> is a measurable space and <span class="math inline">\(f_1, f_2, ...\)</span> is a sequence of <span class="math inline">\(S\)</span>-measurable functions from <span class="math inline">\(X\)</span> to <span class="math inline">\([-\infty, \infty]\)</span>. Define <span class="math inline">\(g, h: X \rightarrow [-\infty, \infty]\)</span>. Define <span class="math inline">\(g, h: X \rightarrow [-\infty, \infty]\)</span> by:</p>
+<p><span class="math display">\[g(x) = \inf\{f_k (x): k \in \mathbb{Z}^+\}\]</span></p>
+<p>and</p>
+<p><span class="math display">\[h(x) = \sup\{f_k (x): k \in \mathbb{Z}^+\}\]</span></p>
+<p>Then <span class="math inline">\(g, h\)</span> are <span class="math inline">\(S\)</span>-measurable functions.</p>
+<h5 id="proof-of-theorem-2.53">Proof of Theorem 2.53:</h5>
+<p>Suppose <span class="math inline">\(a \in \mathbb{R}\)</span>, The definition of the supremum implies that:</p>
+<p><span class="math display">\[h^{-1} ((a, \infty]) = \{x; h(x) &gt; a\}\]</span></p>
+<p>Since,</p>
+<p><span class="math display">\[\{x; h(x) &gt; a\} \subseteq \bigcup_{k=1}^{\infty} \{x; f_k(x) &gt; a\}\]</span></p>
+<p>On the other hand, for all <span class="math inline">\(x \in \bigcup_{k=1}^{\infty} \{x; f_k(x) &gt; a\}\)</span>, we have <span class="math inline">\(\sup_k f_k (x) &gt; a\)</span>, thus:</p>
+<p><span class="math display">\[\bigcup_{k=1}^{\infty} \{x; f_k(x) &gt; a\}\subseteq \{x; h(x) &gt; a\} \]</span></p>
+<p>This implies that:</p>
+<p><span class="math display">\[h^{-1} ((a, \infty]) = \{x; h(x) &gt; a\} = \bigcup_{k=1}^{\infty} \{x; f_k(x) &gt; a\} = \bigcup_{k=1}^{\infty} f^{-1}_k ((a, \infty])\]</span></p>
+<p>Since <span class="math inline">\(f^{-1}_k ((a, \infty]) \in S\)</span> by assumption, we have:</p>
+<p><span class="math display">\[h^{-1} ((a, \infty]) \in S\]</span></p>
+<p>Note that:</p>
+<p><span class="math display">\[g(x) = - \sup\{-f_k (x): k \in \mathbb{Z}^+\}\]</span></p>
+<p>for all <span class="math inline">\(x \in X\)</span>. The result about supremum implies that <span class="math inline">\(g\)</span> is <span class="math inline">\(S\)</span>-measurable.</p>
 
       
     </div>
@@ -4282,13 +4475,13 @@ c_n
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">713k</span>
+    <span title="Symbols count total">723k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10:48</span>
+    <span title="Reading time total">10:57</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
