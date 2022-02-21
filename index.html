@@ -458,7 +458,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-02-19 18:26:26" itemprop="dateModified" datetime="2022-02-19T18:26:26+08:00">2022-02-19</time>
+        <time title="Modified: 2022-02-21 22:43:55" itemprop="dateModified" datetime="2022-02-21T22:43:55+08:00">2022-02-21</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -485,14 +485,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>26k</span>
+      <span>28k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>23 mins.</span>
+      <span>26 mins.</span>
     </span>
 </div>
 
@@ -1052,6 +1052,54 @@ I_k =
 <p>Note that:</p>
 <p><span class="math display">\[g(x) = - \sup\{-f_k (x): k \in \mathbb{Z}^+\}\]</span></p>
 <p>for all <span class="math inline">\(x \in X\)</span>. The result about supremum implies that <span class="math inline">\(g\)</span> is <span class="math inline">\(S\)</span>-measurable.</p>
+<p><br></p>
+<h3 id="measures-and-their-properties">Measures and Their Properties</h3>
+<p>The word <strong>measure</strong> allows us to use a single word instead of repeating theorems for length, area and volume.</p>
+<h4 id="definition-2.54-measure">Definition 2.54: Measure</h4>
+<p>Suppose <span class="math inline">\(X\)</span> is a set and <span class="math inline">\(S\)</span> is a <span class="math inline">\(\sigma\)</span>-algebra on <span class="math inline">\(X\)</span>. A <strong>measure</strong> on <span class="math inline">\((X, S)\)</span> is a function <span class="math inline">\(\mu: S \rightarrow [0, \infty]\)</span> s.t <span class="math inline">\(\mu(\emptyset) = 0\)</span> and:</p>
+<p><span class="math display">\[\mu(\bigcup_{k=1}^{\infty} E_k) = \sum^{\infty}_{k=1} \mu(E_k)\]</span></p>
+<p>for every disjoint sequence <span class="math inline">\(E_1, E_2, ...\)</span> of sets in <span class="math inline">\(S\)</span>.</p>
+<p>Notice that countable additivity implies finite additivity by constructing disjoint sequence <span class="math inline">\(E_1, E_2, ..., E_n, \emptyset, \emptyset, ...\)</span></p>
+<p><br></p>
+<h4 id="definition-2.56-measure-space">Definition 2.56: Measure Space</h4>
+<p>A <strong>measure space</strong> is an ordered triple <span class="math inline">\((X, S, \mu)\)</span>, where <span class="math inline">\(X\)</span> is a set, <span class="math inline">\(S\)</span> is a <span class="math inline">\(\sigma\)</span>-algebra on <span class="math inline">\(X\)</span>, and <span class="math inline">\(\mu\)</span> is a measure on <span class="math inline">\((X, S)\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-2.57-measure-preserves-order-measure-of-a-set-difference">Theorem 2.57: Measure Preserves Order; Measure of a Set Difference</h4>
+<p>Suppose <span class="math inline">\((X, S, \mu)\)</span> is a measure space and <span class="math inline">\(D, E \in S\)</span> are such that <span class="math inline">\(D \subseteq E\)</span>. Then:</p>
+<ol type="a">
+<li><span class="math inline">\(\mu(D) \leq \mu(E)\)</span></li>
+<li><span class="math inline">\(\mu(E / D) = \mu(E) - \mu(D)\)</span> provided that <span class="math inline">\(\mu(D) &lt; \infty\)</span></li>
+</ol>
+<h5 id="proof-of-theorem-2.57">Proof of Theorem 2.57:</h5>
+<p>Suppose <span class="math inline">\(D \subseteq E\)</span>, then <span class="math inline">\(E = D \cup (E / D)\)</span> and these two sets are disjoint, that is:</p>
+<p><span class="math display">\[\mu(E) = \mu(D \cup (E / D)) = \mu(D) + \mu(E / D) \geq \mu(D)\]</span></p>
+<p>given that <span class="math inline">\(\mu(D) &lt; \infty\)</span> subtract both sides by <span class="math inline">\(\mu(D)\)</span>, we have b.</p>
+<p><br></p>
+<h4 id="theorem-2.58-countable-subadditivity">Theorem 2.58: Countable Subadditivity</h4>
+<p>Suppose <span class="math inline">\((X, S, \mu)\)</span> is a measure space and <span class="math inline">\(E_1, E_2, ... \in S\)</span>. Then:</p>
+<p><span class="math display">\[\mu(\bigcup^{\infty}_{k=1} E_k) \leq \sum^{\infty}_{k=1}\mu(E_k)\]</span></p>
+<p><br></p>
+<h4 id="theorem-2.59-measure-of-an-increasing-union">Theorem 2.59: Measure of an Increasing Union</h4>
+<p>Suppose <span class="math inline">\((X, S, \mu)\)</span> is a measure space and <span class="math inline">\(E_1 \subseteq E_2 \subseteq ...\)</span> is an increasing sequence of sets in <span class="math inline">\(S\)</span>. Then:</p>
+<p><span class="math display">\[\mu(\sum^\infty_{k=1} E_k) = \lim_{k\rightarrow \infty} \mu(E_k)\]</span></p>
+<h5 id="proof-theorem-2.59">Proof Theorem 2.59</h5>
+<p>If <span class="math inline">\(\mu(E_k) = \infty\)</span> for some <span class="math inline">\(k \in \mathbb{Z}^+\)</span>, then the equation above holds because both sides equals <span class="math inline">\(\infty\)</span>:</p>
+<p><span class="math display">\[\mu(\bigcup^{\infty}_{k=1} E_k) \geq \mu(E_k) = \infty = \lim_{k\rightarrow \infty} \mu(E_k)\]</span></p>
+<p>Thus, we consider only the case where <span class="math inline">\(\mu(E_k) &lt; \infty\)</span> for all <span class="math inline">\(k \in \mathbb{Z}^+\)</span>.</p>
+<p>Let <span class="math inline">\(E_0 = \emptyset\)</span>. Then:</p>
+<p><span class="math display">\[\bigcup^{\infty}_{k=1} E_k = E_1 \cup (E_2 / E_1) \cup (E_3 / E_2) \cup ... = \bigcup^{\infty}_{j=1} E_{j} / E_{j-1}\]</span></p>
+<p>And the union on the right hand side is disjoint, that is:</p>
+<p><span class="math display">\[\mu(\bigcup^{\infty}_{j=1} E_{j} / E_{j-1}) = \sum^{\infty}_{j=1} \mu(E_{j} / E_{j-1}) = \lim_{k\rightarrow \infty} \sum^{k}_{j=1} \mu(E_{j} / E_{j-1})\]</span></p>
+<p>Since <span class="math inline">\(E_{j-1} &lt; \infty\)</span>, we have:</p>
+<p><span class="math display">\[\lim_{k\rightarrow \infty} \sum^{k}_{j=1} \mu(E_{j} / E_{j-1}) = \lim_{k\rightarrow \infty} \sum^{k}_{j=1} \mu(E_{j}) - \mu(E_{j-1}) = \lim_{k\rightarrow \infty} \mu(E_k)\]</span></p>
+<p><br></p>
+<h4 id="theorem-2.60-measure-of-a-decreasing-intersection">Theorem 2.60: Measure of a Decreasing Intersection</h4>
+<p>Suppose <span class="math inline">\((X, S, \mu)\)</span> is a measure space and <span class="math inline">\(E_1 \supseteq E_2 \supseteq ...\)</span> is a decreasing sequence of sets in <span class="math inline">\(S\)</span>, with <span class="math inline">\(\mu(E_1) &lt; \infty\)</span>. Then:</p>
+<p><span class="math display">\[\mu(\bigcap^{\infty}_{k=1}E_k) = \lim_{k\rightarrow \infty} \mu(E_k)\]</span></p>
+<p><br></p>
+<h4 id="theorem-2.61-measure-of-a-union">Theorem 2.61: Measure of a Union</h4>
+<p>Suppose <span class="math inline">\((X, S, \mu)\)</span> is a measure space and <span class="math inline">\(D, E \in S\)</span>, with <span class="math inline">\(\mu(D \cap E) &lt; \infty\)</span>. Then:</p>
+<p><span class="math display">\[\mu(D \cup E) = \mu(D) + \mu(E) - \mu(D \cap E)\]</span></p>
 
       
     </div>
@@ -4475,13 +4523,13 @@ c_n
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">723k</span>
+    <span title="Symbols count total">726k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">10:57</span>
+    <span title="Reading time total">11:01</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
