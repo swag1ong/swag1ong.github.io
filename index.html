@@ -458,7 +458,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-02-21 22:43:55" itemprop="dateModified" datetime="2022-02-21T22:43:55+08:00">2022-02-21</time>
+        <time title="Modified: 2022-02-26 16:34:31" itemprop="dateModified" datetime="2022-02-26T16:34:31+08:00">2022-02-26</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -485,14 +485,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>28k</span>
+      <span>39k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>26 mins.</span>
+      <span>36 mins.</span>
     </span>
 </div>
 
@@ -1100,6 +1100,178 @@ I_k =
 <h4 id="theorem-2.61-measure-of-a-union">Theorem 2.61: Measure of a Union</h4>
 <p>Suppose <span class="math inline">\((X, S, \mu)\)</span> is a measure space and <span class="math inline">\(D, E \in S\)</span>, with <span class="math inline">\(\mu(D \cap E) &lt; \infty\)</span>. Then:</p>
 <p><span class="math display">\[\mu(D \cup E) = \mu(D) + \mu(E) - \mu(D \cap E)\]</span></p>
+<p><br></p>
+<h3 id="lebesgue-measure">Lebesgue Measure</h3>
+<p>The main goal of this section is to prove that outer measure when restrict to borel sets is a measure.</p>
+<h4 id="theorem-2.62-additivity-of-outer-measure-if-one-of-the-sets-is-open">Theorem 2.62: Additivity of Outer Measure If One of the Sets is Open</h4>
+<p>Suppose <span class="math inline">\(A, G\)</span> are disjoint subsets of <span class="math inline">\(\mathbb{R}\)</span> and <span class="math inline">\(G\)</span> is open. Then:</p>
+<p><span class="math display">\[|A \cup G| = |A| + |G|\]</span></p>
+<p><br></p>
+<h4 id="theorem-2.63-additivity-of-outer-measure-iff-the-sets-is-closed">Theorem 2.63: Additivity of Outer Measure IFF the Sets is Closed</h4>
+<p>Suppose <span class="math inline">\(A, F\)</span> are disjoint subsets of <span class="math inline">\(\mathbb{R}\)</span> and <span class="math inline">\(\mathbb{F}\)</span> is closed. Then:</p>
+<p><span class="math display">\[|A \cup F| = |A| + |F|\]</span></p>
+<p><br></p>
+<h4 id="theorem-2.65-approximation-of-borel-sets-from-below-by-closed-sets">Theorem 2.65: Approximation of Borel Sets from Below by Closed Sets</h4>
+<p>Suppose <span class="math inline">\(B \subseteq \mathbb{R}\)</span> is a Borel set. Then for every <span class="math inline">\(\epsilon &gt; 0\)</span>, there exists a closed set <span class="math inline">\(F \subseteq B\)</span> s.t <span class="math inline">\(|B / F| &lt; \epsilon\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-2.66-additivity-of-outer-measure-if-one-of-the-sets-is-a-borel-set">Theorem 2.66: Additivity of Outer Measure If One of the Sets is a Borel Set</h4>
+<p>Suppose <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> are disjoint subsets of <span class="math inline">\(\mathbb{R}\)</span> and <span class="math inline">\(B\)</span> is a Borel set. Then:</p>
+<p><span class="math display">\[|A \cup B| = |A| + |B|\]</span></p>
+<p><br></p>
+<h4 id="theorem-2.67-existence-of-a-subset-of-mathbbr-that-is-not-a-borel-set">Theorem 2.67: Existence of a Subset of <span class="math inline">\(\mathbb{R}\)</span> that is not a Borel Set</h4>
+<p>There exists a set <span class="math inline">\(B \subseteq \mathbb{R}\)</span> s.t <span class="math inline">\(|B| &lt; \infty\)</span> and <span class="math inline">\(B\)</span> is not a Borel set.</p>
+<h5 id="proof-of-theorem-2.67">Proof of Theorem 2.67:</h5>
+<p>From <code>Theorem 2.18</code>, we know that there exists disjoint set <span class="math inline">\(A, B \subseteq \mathbb{R}\)</span> s.t:</p>
+<p><span class="math display">\[|A \cup B| \neq |A| + |B|\]</span></p>
+<p>Then, according to <code>Theorem 2.66</code>, if all subsets of <span class="math inline">\(\mathbb{R}\)</span> are Borel sets, we would have violated <code>Theorem 2.18</code>.</p>
+<p><br></p>
+<h4 id="theorem-2.68-outer-measure-is-a-measure-on-borel-sets">Theorem 2.68: Outer Measure is a Measure on Borel Sets</h4>
+<p>Outer measure is a measure on <span class="math inline">\((\mathbb{R}, \mathbb{B})\)</span>, where <span class="math inline">\(\mathbb{B}\)</span> is the <span class="math inline">\(\sigma\)</span>-algebra of Borel subsets of <span class="math inline">\(\mathbb{R}\)</span>.</p>
+<p><br></p>
+<h4 id="definition-2.69-lebesgue-measure-on-mathbbb">Definition 2.69: Lebesgue Measure (on <span class="math inline">\(\mathbb{B}\)</span>)</h4>
+<p><strong>Lebesgue Measure</strong> is the measure on <span class="math inline">\((\mathbb{R}, \mathbb{B})\)</span>, where <span class="math inline">\(\mathbb{B}\)</span> is the <span class="math inline">\(\sigma\)</span>-algebra of Borel subsets of <span class="math inline">\(\mathbb{R}\)</span>, that assigns to each Borel set its outer measure.</p>
+<p>In other words, the <strong>Lebesgue measure</strong> of a set is the same as its outer measure except it should not be applied to arbitrary sets but only to Borel sets.</p>
+<p><br></p>
+<h3 id="lebesgue-measurable-sets">Lebesgue Measurable Sets</h3>
+<h4 id="definition-2.70-lebesgue-meaurable-set">Definition 2.70: Lebesgue Meaurable Set</h4>
+<p>A set <span class="math inline">\(A \subseteq \mathbb{R}\)</span> is called <strong>Lebesgue measurable</strong> if there exists a Borel set <span class="math inline">\(B \subseteq A\)</span> s.t <span class="math inline">\(|A / B| = 0\)</span>.</p>
+<p>This definition implies that all Borel set is Lebesgue measurable because if <span class="math inline">\(A \subseteq \mathbb{R}\)</span> is a Borel set, then we can take <span class="math inline">\(B = A\)</span>. If <span class="math inline">\(A\)</span> is a set with outer measure <span class="math inline">\(0\)</span>, then <span class="math inline">\(A\)</span> is Lebesgue measurable because we can take <span class="math inline">\(B = \emptyset\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-2.71-equivalences-for-being-a-lebesgue-measurable-set">Theorem 2.71: Equivalences for Being a Lebesgue Measurable Set</h4>
+<p>Suppose <span class="math inline">\(A \subseteq \mathbb{R}\)</span>. Then the following are equivalent:</p>
+<ol type="a">
+<li><span class="math inline">\(A\)</span> is Lebesgue measurable.</li>
+<li>For each <span class="math inline">\(\epsilon &gt; 0\)</span>, there exists a closed set <span class="math inline">\(F \subseteq A\)</span> with <span class="math inline">\(|A / F| \leq \epsilon\)</span>.</li>
+<li>There exists closed sets <span class="math inline">\(F_1, F_2, ...\)</span> contained in <span class="math inline">\(A\)</span> s.t <span class="math inline">\(|A / \bigcup^{\infty}_{k=1} F_k| = 0\)</span>.</li>
+<li>There exists a Borel set <span class="math inline">\(B \subseteq A\)</span> s.t <span class="math inline">\(|A / B| = 0\)</span>.</li>
+<li>For each <span class="math inline">\(\epsilon &gt; 0\)</span>. There exists an open set <span class="math inline">\(G \supseteq A\)</span> s.t <span class="math inline">\(|G / A| &lt; \epsilon\)</span>.</li>
+<li>There exists open sets <span class="math inline">\(G_1, G_2, ...\)</span> containing <span class="math inline">\(A\)</span> s.t <span class="math inline">\(|(\bigcap^{\infty}_{k=1})G_k / A| = 0\)</span>.</li>
+<li>There exists a Borel set <span class="math inline">\(B \subseteq A\)</span> s.t <span class="math inline">\(|B / A| = 0\)</span>.</li>
+</ol>
+<p><br></p>
+<h4 id="theorem-2.72-outer-measure-is-a-measure-on-lebesgue-measurable-sets">Theorem 2.72: Outer Measure is a Measure on Lebesgue Measurable Sets</h4>
+<ol type="a">
+<li>The set <span class="math inline">\(L\)</span> of Lebesgue measurable subsets of <span class="math inline">\(\mathbb{R}\)</span> is a <span class="math inline">\(\sigma\)</span>-algebra on <span class="math inline">\(\mathbb{R}\)</span>.</li>
+<li>Outer measure is a measure on <span class="math inline">\((\mathbb{R}, L)\)</span>.</li>
+</ol>
+<p>b implies that there are sets in <span class="math inline">\(\mathbb{R}\)</span> that is not Lebesgue measurable.</p>
+<h5 id="proof-of-theorem-2.72">Proof of Theorem 2.72:</h5>
+<p>We know that from <code>theorem 2.71</code> that a and b are equivalent, that is, let <span class="math inline">\(L\)</span> be the set that contains all <span class="math inline">\(A\)</span> that satisfies b, we can show that <span class="math inline">\(L\)</span> is <span class="math inline">\(\sigma\)</span>-algebra.</p>
+<p>To show b, let <span class="math inline">\(A_1, A_2, ... \in L\)</span> be a disjoint sequence of Lebesgue measurable sets, then by definition, we have Borel set <span class="math inline">\(B_k \subseteq A_k\)</span> s.t</p>
+<p><span class="math display">\[|A_k / B_k| = 0\]</span></p>
+<p>for all <span class="math inline">\(k\)</span>. Then, <span class="math inline">\(B_1, B_2, ..\)</span> is a sequence of disjoint Borel sets.</p>
+<p>Then we have:</p>
+<p><span class="math display">\[|\bigcup^{\infty}_{k=1} A_k| \geq |\bigcup^{\infty}_{k=1} B_k| = \sum^{\infty}_{k=1} |B_k|\]</span></p>
+<p>Since <span class="math inline">\(|A_k| = |B_k \cup (A_k / B_k)| \leq |B_k| + |A_k / B_k| = |B_k|\)</span>, we have:</p>
+<p><span class="math display">\[|\bigcup^{\infty}_{k=1} A_k| \geq \sum^{\infty}_{k=1} |B_k| \geq \sum^{\infty}_{k=1} |A_k|\]</span></p>
+<p><br></p>
+<h4 id="definition-2.73-lebesgue-measure-more-general-on-l">Definition 2.73: Lebesgue Measure (More general, on <span class="math inline">\(L\)</span>)</h4>
+<p><strong>Lebesgue measure</strong> is the measure on <span class="math inline">\((\mathbb{R}, L)\)</span>, where <span class="math inline">\(L\)</span> is the <span class="math inline">\(\sigma\)</span>-algebra of Lebesgue measurable subsets of <span class="math inline">\(\mathbb{R}\)</span>, that assigns to each Lebesgue measurable set its outer measure.</p>
+<p><strong>Every Lebesgue measurable set differs from a Borel set by a set with outer measure <span class="math inline">\(0\)</span>.</strong></p>
+<p><strong>The two definitions differ only on the domain, which will be specified unless it is irrelevant.</strong></p>
+<p><br></p>
+<h4 id="definition-2.74-cantor-set">Definition 2.74: Cantor Set</h4>
+<p>The <strong>Cantor set</strong> <span class="math inline">\(C\)</span> is <span class="math inline">\([0, 1] / (\bigcup^{\infty}_{n=1}) G_n\)</span>, where <span class="math inline">\(G_1 = (\frac{1}{3}, \frac{2}{3})\)</span> and <span class="math inline">\(G_n\)</span> for <span class="math inline">\(n &gt; 1\)</span> is the union of the middle-third open intervals in the intervals of <span class="math inline">\([0, 1] / \bigcup^{n-1}_{j=1}G_j\)</span>.</p>
+<p>One way to envision the Cantor set <span class="math inline">\(C\)</span> is to start with the interval <span class="math inline">\([0, 1]\)</span> and then consdier the process that removes at each step the middle-third open intervals of all intervals left from the previous step.</p>
+<p><br></p>
+<h4 id="theorem-2.76-c-is-closed-has-measure-0-and-contains-no-nontrivial-intervals">Theorem 2.76: <span class="math inline">\(C\)</span> is Closed, has Measure <span class="math inline">\(0\)</span>, and Contains no nontrivial Intervals</h4>
+<ol type="a">
+<li>The Cantor set is a closed subset of <span class="math inline">\(\mathbb{R}\)</span>.</li>
+<li>The Cantor set has Lebesgue measure <span class="math inline">\(0\)</span>.</li>
+<li>The Cantor set contains no interval with more than one element.</li>
+</ol>
+<p><br></p>
+<h3 id="convergence-of-measurable-functions">Convergence of Measurable Functions</h3>
+<h4 id="definition-2.82-pointwise-and-uniform-convergence">Definition 2.82: Pointwise and Uniform Convergence</h4>
+<p>Suppose <span class="math inline">\(X\)</span> is a set, <span class="math inline">\(f_1, f_2, ...\)</span> is a sequence of functions from <span class="math inline">\(X \rightarrow \mathbb{R}\)</span>, and <span class="math inline">\(f\)</span> is a function from <span class="math inline">\(X \rightarrow \mathbb{R}\)</span>.</p>
+<ul>
+<li><p>The sequence <span class="math inline">\(f_1, f_2, ...\)</span> <strong>converges pointwise</strong> on <span class="math inline">\(X\)</span> to <span class="math inline">\(f\)</span>, if:</p>
+<p><span class="math display">\[\lim_{k \rightarrow \infty} f_k (x) = f(x)\]</span></p>
+<p>for each <span class="math inline">\(x \in X\)</span>. In other words, <span class="math inline">\(f_1, f_2, ...\)</span> converges pointwise on <span class="math inline">\(X\)</span> to <span class="math inline">\(f\)</span> if for each <span class="math inline">\(x \in X\)</span> and every <span class="math inline">\(\epsilon &gt; 0\)</span>, there exists a <span class="math inline">\(n &gt; \mathbb{Z}^+\)</span> s.t <span class="math display">\[|f_k(x) - f(x)| &lt; \epsilon\]</span> for all integers <span class="math inline">\(k \geq n\)</span>.</p></li>
+<li><p>The sequence <span class="math inline">\(f_1, f_2, ...\)</span> <strong>converges uniformly</strong> on <span class="math inline">\(X\)</span> to <span class="math inline">\(f\)</span> if for every <span class="math inline">\(\epsilon &gt; 0\)</span>, there exists <span class="math inline">\(n \in \mathbb{Z}^+\)</span> s.t <span class="math inline">\(|f_k (x) - f(x)| &lt; \epsilon\)</span>, forall integers <span class="math inline">\(k \geq n\)</span> and for all <span class="math inline">\(x \in X\)</span>.</p></li>
+</ul>
+<p><br></p>
+<h4 id="theorem-2.84-uniform-limit-of-continuous-function-is-continuous">Theorem 2.84: Uniform Limit of Continuous Function is Continuous</h4>
+<p>Suppose <span class="math inline">\(B \subseteq \mathbb{R}\)</span> and <span class="math inline">\(f_1, f_2, ...\)</span> is a sequence of functions from <span class="math inline">\(B \rightarrow \mathbb{R}\)</span> that converges uniformly on <span class="math inline">\(B\)</span> to a function <span class="math inline">\(f: B \rightarrow \mathbb{R}\)</span>. Suppose <span class="math inline">\(b \in B\)</span> and <span class="math inline">\(f_k\)</span> is continuous at <span class="math inline">\(b\)</span> for each <span class="math inline">\(k \in \mathbb{Z}^+\)</span>. Then <span class="math inline">\(f\)</span> is continuous at <span class="math inline">\(b\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-2.85-egorovs-theorem">Theorem 2.85: Egorov's Theorem</h4>
+<p>Suppose <span class="math inline">\((X, S, \mu)\)</span> is a measure space with <span class="math inline">\(\mu(X) &lt; \infty\)</span>. Suppose <span class="math inline">\(f_1, f_2, ...\)</span> is a sequence of <span class="math inline">\(S\)</span>-measurable functions from <span class="math inline">\(X \rightarrow \mathbb{R}\)</span> that converges pointwise on <span class="math inline">\(X\)</span> to a function <span class="math inline">\(f: X \rightarrow \mathbb{R}\)</span>. Then for every <span class="math inline">\(\epsilon &gt; 0\)</span>, there exists a set <span class="math inline">\(E \subseteq S\)</span> s.t <span class="math inline">\(\mu(X / E) &lt; \epsilon\)</span> and <span class="math inline">\(f_1, f_2, ...\)</span> converges uniformly to <span class="math inline">\(f\)</span> on <span class="math inline">\(E\)</span>.</p>
+<h5 id="proof-of-theorem-2.85">Proof of Theorem 2.85:</h5>
+<p>Suppose <span class="math inline">\((X, S, \mu)\)</span> is a measure space with <span class="math inline">\(\mu(X) &lt; \infty\)</span>. Suppose <span class="math inline">\(f_1, f_2, ...\)</span> is a sequence of <span class="math inline">\(S\)</span>-measurable functions from <span class="math inline">\(X \rightarrow \mathbb{R}\)</span> that converges pointwise on <span class="math inline">\(X\)</span> to a function <span class="math inline">\(f: X \rightarrow \mathbb{R}\)</span>.</p>
+<p>We want to prove that:</p>
+<ol type="1">
+<li><span class="math inline">\(E = \bigcap^{\infty}_{n=1} A_{m_n, n} \in S\)</span>.</li>
+<li><span class="math inline">\(\mu(X / E) &lt; \epsilon\)</span>.</li>
+<li><span class="math inline">\(f_1, f_2, ...\)</span> converges uniformly to <span class="math inline">\(f\)</span> on <span class="math inline">\(E\)</span>.</li>
+</ol>
+<p>Suppose <span class="math inline">\(\epsilon &gt; 0\)</span>, then for any <span class="math inline">\(n \in \mathbb{Z}^+\)</span>, the definition of pointwise convergence implies that for some <span class="math inline">\(k\)</span> for some <span class="math inline">\(x\)</span>:</p>
+<p><span class="math display">\[|f_k (x) - f(x)| &lt; \frac{1}{n}\]</span></p>
+<p>then:</p>
+<p><span class="math display">\[\bigcap^{\infty}_{k=1}\{x \in X: |f_k (x) - f(x)| &lt; \frac{1}{n}\} = X\]</span></p>
+<p><span class="math display">\[\bigcup^{\infty}_{m=1}\bigcap^{\infty}_{k=m}\{x \in X: |f_k (x) - f(x)| &lt; \frac{1}{n}\} = X\]</span></p>
+<p>For <span class="math inline">\(m \in \mathbb{Z}^+\)</span>, let:</p>
+<p><span class="math display">\[A_{m, n} = \bigcap^{\infty}_{k=m}\{x \in X: |f_k (x) - f(x)| &lt; \frac{1}{n}\}\]</span></p>
+<p>Since <span class="math inline">\(f_1, f_2, ...\)</span> is <span class="math inline">\(S\)</span>-measurable, by <code>theorem 2.48</code>, <span class="math inline">\(f\)</span> is <span class="math inline">\(S\)</span>-measurable, by <code>theorem 2.46</code> <span class="math inline">\(f_k - f\)</span> is <span class="math inline">\(S\)</span>-measurable, this implies that:</p>
+<p><span class="math display">\[(f_k - f)^{-1} ((-\frac{1}{n}, \frac{1}{n})) \in S\]</span></p>
+<p>So <span class="math inline">\(A_{m, n} \in S\)</span> <strong>which proves 1.</strong></p>
+<p>We can clearly see that <span class="math inline">\(A_{1, n} \subseteq A_{2, n} \subseteq ...\)</span> is an increasing sequence of sets, and by <code>theorem 2.59</code>:</p>
+<p><span class="math display">\[\lim_{m \rightarrow \infty} \mu(\bigcup^{\infty}_{m=1} A_{m, n}) = \mu(X)\]</span></p>
+<p>Thus, by sequence convergence theorem, there exists <span class="math inline">\(m_n \in \mathbb{Z}^+\)</span> s.t:</p>
+<p><span class="math display">\[\mu(X) - \mu(A_{m_n, n}) &lt; \frac{\epsilon}{2^n}\]</span></p>
+<p>Let <span class="math inline">\(E = \bigcap^{\infty}_{n=1} A_{m_n, n}\)</span>, then:</p>
+<p><span class="math display">\[\mu(X / E) = \mu(X /  \bigcap^{\infty}_{n=1} A_{m_n, n}) = \mu(\bigcup^{\infty}_{n=1}(X / A_{m_n, n})) \leq \sum^{\infty}_{n=1}\mu(X / A_{m_n, n}) = \sum^{\infty}_{n=1}\mu(X) - \mu(A_{m_n, n})\]</span></p>
+<p>Since <span class="math inline">\(\sum^{\infty}_{n=1} \epsilon (\frac{1}{2})^n = (\sum^{\infty}_{n=0} \epsilon (\frac{1}{2})^n) - \epsilon = \epsilon\)</span>, we have:</p>
+<p><span class="math display">\[\mu(X / E) &lt; \epsilon\]</span></p>
+<p><strong>which proves 2.</strong></p>
+<p>Now, suppose <span class="math inline">\(\epsilon^\prime &gt; 0\)</span> and let <span class="math inline">\(n\)</span> be such that <span class="math inline">\(\frac{1}{n} &lt; \epsilon^\prime\)</span>. Then <span class="math inline">\(E \subseteq A_{m_n, n}\)</span>, which implies that:</p>
+<p><span class="math display">\[|f_k (x) - f(x)| &lt; \frac{1}{n} &lt; \epsilon^\prime\]</span></p>
+<p>for all <span class="math inline">\(k \geq m_n\)</span> and <span class="math inline">\(x \in E\)</span>, thus, <strong>we have proved 3.</strong></p>
+<p><br></p>
+<h4 id="definition-2.88-simple-function">Definition 2.88: Simple Function</h4>
+<p>A function is called <strong>simple</strong> if it takes only finite many values.</p>
+<p><br></p>
+<h4 id="theorem-2.89-approximation-by-simple-function">Theorem 2.89: Approximation by Simple Function</h4>
+<p>Suppose <span class="math inline">\((X, S)\)</span> is a measurable space and <span class="math inline">\(f: X \rightarrow [-\infty, \infty]\)</span> is <span class="math inline">\(S\)</span>-measurable. Then there exists a sequence <span class="math inline">\(f_1, f_2, ...\)</span> of functions from <span class="math inline">\(X \rightarrow \mathbb{R}\)</span> s.t:</p>
+<ol type="a">
+<li>Each <span class="math inline">\(f_k\)</span> is simple <span class="math inline">\(S\)</span>-measurable function.</li>
+<li><span class="math inline">\(|f_k(x)| \leq |f_{k+1}(x)| \leq |f(x)|\)</span> for all <span class="math inline">\(k \in \mathbb{Z}^+\)</span> and all <span class="math inline">\(x \in X\)</span>.</li>
+<li><span class="math inline">\(\lim_{k \rightarrow \infty} f_k (x) = f(x)\)</span> for every <span class="math inline">\(x \in X\)</span>.</li>
+<li><span class="math inline">\(f_1, f_2, ...\)</span> converges uniformly on <span class="math inline">\(X\)</span> to <span class="math inline">\(f\)</span> if <span class="math inline">\(f\)</span> is bounded.</li>
+</ol>
+<p><br></p>
+<h4 id="theorem-2.91-luzins-theorem">Theorem 2.91: Luzin's Theorem</h4>
+<p>Suppose <span class="math inline">\(g: \mathbb{R} \rightarrow \mathbb{R}\)</span> is a Borel measurable function. Then for every <span class="math inline">\(\epsilon &gt; 0\)</span>, there exists a closed set <span class="math inline">\(F \subseteq \mathbb{R}\)</span> s.t <span class="math inline">\(|\mathbb{R} / F| &lt; \epsilon\)</span> and <span class="math inline">\(g|_{F}\)</span> is a continuous function on <span class="math inline">\(F\)</span>.</p>
+<p>In other words, if <span class="math inline">\(g\)</span> is Borel measurable function, then there exists a closed set <span class="math inline">\(F \subseteq \mathbb{R}\)</span>, s.t the outer measure of the complement of <span class="math inline">\(F\)</span> is arbitrarily large and <span class="math inline">\(g|_F\)</span> is continuous on this arbitrarily small open set. <strong><span class="math inline">\(g|_F\)</span> is continuous on <span class="math inline">\(F\)</span> is not the same as <span class="math inline">\(g\)</span> is continuous at every point of <span class="math inline">\(B\)</span>.</strong></p>
+<blockquote>
+<p><span class="math inline">\(\chi_\mathbb{Q}\)</span> is discontinuous as every point of <span class="math inline">\(\mathbb{R}\)</span>, however, <span class="math inline">\(\chi_{\mathbb{Q}} |_{\mathbb{R} / \mathbb{Q}}\)</span> is continuous everywhere on <span class="math inline">\(\mathbb{R} / \mathbb{Q}\)</span> because they are all 0.</p>
+</blockquote>
+<p><br></p>
+<h4 id="theorem-2.92-continuous-extensions-of-continuous-functions">Theorem 2.92: Continuous Extensions of Continuous Functions</h4>
+<ul>
+<li>Every continuous function on a closed subset of <span class="math inline">\(\mathbb{R}\)</span> can be extended to a continuous function on all of <span class="math inline">\(\mathbb{R}\)</span>.</li>
+<li>More precisely, if <span class="math inline">\(F \in \mathbb{R}\)</span> is closed and <span class="math inline">\(g: F \rightarrow \mathbb{R}\)</span> is continuous, then there exists a continuous function <span class="math inline">\(h: \mathbb{R} \rightarrow \mathbb{R}\)</span> s.t <span class="math inline">\(h|_F = g\)</span>.</li>
+</ul>
+<p><br></p>
+<h4 id="theorem-2.93-luzins-theorem-second-version">Theorem 2.93: Luzin's Theorem, Second Version</h4>
+<p>Suppose <span class="math inline">\(E \subseteq \mathbb{R}\)</span> and <span class="math inline">\(g: E \rightarrow \mathbb{R}\)</span> is a Borel measurable function. Then for every <span class="math inline">\(\epsilon &gt; 0\)</span>, there exists a closed set <span class="math inline">\(F \subseteq E\)</span> and a continuous function <span class="math inline">\(h: \mathbb{R} \rightarrow \mathbb{R}\)</span> s.t <span class="math inline">\(|E / F| &lt; \epsilon\)</span> and $h|_{F} = g |_F $.</p>
+<p><br></p>
+<h4 id="definition-2.94-lebesgue-measurable-function">Definition 2.94: Lebesgue Measurable Function</h4>
+<p>A function <span class="math inline">\(f: A \rightarrow \mathbb{R}\)</span>, where <span class="math inline">\(A \subseteq \mathbb{R}\)</span>, is called <strong>Lebesgue measurable</strong> if <span class="math inline">\(f^{-1}(B)\)</span> is a Lebesgue measurable set for every Borel set <span class="math inline">\(B \subseteq \mathbb{R}\)</span>.</p>
+<p><strong>The definition implies that if <span class="math inline">\(A\)</span> is Lebesgue measurable then <span class="math inline">\(A\)</span> is a Lebesgue measurable subset of <span class="math inline">\(\mathbb{R}\)</span>. If <span class="math inline">\(A\)</span> is a Lebesgue measurable subset of <span class="math inline">\(\mathbb{R}\)</span> and <span class="math inline">\(S\)</span> is a <span class="math inline">\(\sigma\)</span>-algebra of all Lebesgue measurable subsets of <span class="math inline">\(A\)</span>, then <span class="math inline">\(f\)</span> is <span class="math inline">\(S\)</span>-measurable</strong>.</p>
+<p><br></p>
+<h4 id="theorem-2.95-every-lebesgue-measurable-function-is-almost-borel-measurable">Theorem 2.95 Every Lebesgue Measurable Function is Almost Borel Measurable:</h4>
+<p>Suppose <span class="math inline">\(f: \mathbb{R} \rightarrow \mathbb{R}\)</span> is a Lebesgue measurable function. Then there exists a Borel measurable function <span class="math inline">\(g: \mathbb{R} \rightarrow \mathbb{R}\)</span> s.t:</p>
+<p><span class="math display">\[|\{x \in \mathbb{R}: g(x) \neq f(x)\}| = 0\]</span></p>
+<p><br></p>
+<h4 id="review-2.96">Review 2.96</h4>
+<ul>
+<li>A <strong>Borel set</strong> is an element of the smallest <span class="math inline">\(\sigma\)</span>-algebra on <span class="math inline">\(\mathbb{R}\)</span> that contains all the open subsets of <span class="math inline">\(\mathbb{R}\)</span>.</li>
+<li>A <strong>Lebesgue measurable set</strong> is an element of the smallest <span class="math inline">\(\sigma\)</span>-algebra on <span class="math inline">\(\mathbb{R}\)</span> that contains all the open subsets of <span class="math inline">\(\mathbb{R}\)</span> and all the subsets of <span class="math inline">\(\mathbb{R}\)</span> with outer measure <span class="math inline">\(0\)</span>.</li>
+<li>Every Lebesgue measurable set differs from a Borel set by a set with outer measure <span class="math inline">\(0\)</span>.</li>
+<li>Outer measure restricted to the <span class="math inline">\(\sigma\)</span>-algebra of Borel sets or Lebesgue measurable sets is called <strong>Lebesgue measure</strong>.</li>
+<li>A function <span class="math inline">\(f: A \rightarrow \mathbb{R}\)</span> is called <strong>Borel measurable</strong> if <span class="math inline">\(f^{-1}(B)\)</span> is a Borel set for every Borel set <span class="math inline">\(B \in \mathbb{B}\)</span>.</li>
+<li>A function <span class="math inline">\(f: A \rightarrow \mathbb{R}\)</span> is called <strong>Lebesgue measurable</strong> if <span class="math inline">\(f^{-1}(B)\)</span> is a Lebesgue measurable set for every Borel set <span class="math inline">\(B \in \mathbb{B}\)</span>.</li>
+</ul>
 
       
     </div>
@@ -4523,13 +4695,13 @@ c_n
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">726k</span>
+    <span title="Symbols count total">737k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">11:01</span>
+    <span title="Reading time total">11:10</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
