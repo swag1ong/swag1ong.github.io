@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Measure Integral and Real Analysis (2) Integration Integration w.r.t a Measure Definition 3.1: \(S\)-Partition Suppose \(S\) is a \(\sigma\)-algebra on a set \(X\). An \(S\)-partition of \(X\) is fini">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Measure Integral and Real Analysis (2)">
+<meta property="og:url" content="https://swag1ong.github.io/2022/02/27/mira-2/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Measure Integral and Real Analysis (2) Integration Integration w.r.t a Measure Definition 3.1: \(S\)-Partition Suppose \(S\) is a \(\sigma\)-algebra on a set \(X\). An \(S\)-partition of \(X\) is fini">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-02-27T05:06:47.000Z">
+<meta property="article:modified_time" content="2022-02-28T14:58:31.049Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="RL Basics">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2022/02/27/mira-2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2022&#x2F;02&#x2F;27&#x2F;mira-2&#x2F;&quot;,&quot;path&quot;:&quot;2022&#x2F;02&#x2F;27&#x2F;mira-2&#x2F;&quot;,&quot;title&quot;:&quot;Measure Integral and Real Analysis (2)&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Measure Integral and Real Analysis (2) | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">99</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#measure-integral-and-real-analysis-2"><span class="nav-number">1.</span> <span class="nav-text">Measure Integral and Real Analysis (2)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#integration"><span class="nav-number">1.1.</span> <span class="nav-text">Integration</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#integration-w.r.t-a-measure"><span class="nav-number">1.1.1.</span> <span class="nav-text">Integration w.r.t a Measure</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.1-s-partition"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">Definition 3.1: \(S\)-Partition</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.1-lower-lebesgue-sum"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">Definition 3.1: Lower Lebesgue Sum</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.3-integral-of-a-nonnegative-function"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">Definition 3.3: Integral of a Nonnegative Function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.4-integral-of-a-characteristic-function-chi_e"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">Theorem 3.4: Integral of a Characteristic Function \(\chi_E\)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-3.4"><span class="nav-number">1.1.1.4.1.</span> <span class="nav-text">Proof of Theorem 3.4:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.7-integral-of-a-simple-function"><span class="nav-number">1.1.1.5.</span> <span class="nav-text">Theorem 3.7: Integral of a Simple Function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.8-integration-is-order-preserving"><span class="nav-number">1.1.1.6.</span> <span class="nav-text">Theorem 3.8: Integration is Order Preserving</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-3.8"><span class="nav-number">1.1.1.6.1.</span> <span class="nav-text">Proof of Theorem 3.8:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.9-integral-via-simple-functions"><span class="nav-number">1.1.1.7.</span> <span class="nav-text">Theorem 3.9: Integral Via Simple Functions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.11-monotone-convergence-theorem"><span class="nav-number">1.1.1.8.</span> <span class="nav-text">Theorem 3.11: Monotone Convergence Theorem</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-3.11"><span class="nav-number">1.1.1.8.1.</span> <span class="nav-text">Proof of Theorem 3.11:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.13-integral-type-sums-for-simple-functions"><span class="nav-number">1.1.1.9.</span> <span class="nav-text">Theorem 3.13: Integral-type Sums for Simple Functions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.15-integral-of-a-linear-combination-of-characteristic-functions"><span class="nav-number">1.1.1.10.</span> <span class="nav-text">Theorem 3.15: Integral of a Linear Combination of Characteristic Functions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.16-additivity-of-integration"><span class="nav-number">1.1.1.11.</span> <span class="nav-text">Theorem 3.16: Additivity of Integration</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-3.16"><span class="nav-number">1.1.1.11.1.</span> <span class="nav-text">Proof of Theorem 3.16:</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2022/02/27/mira-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Measure Integral and Real Analysis (2)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-02-27 13:06:47" itemprop="dateCreated datePublished" datetime="2022-02-27T13:06:47+08:00">2022-02-27</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2022-02-28 22:58:31" itemprop="dateModified" datetime="2022-02-28T22:58:31+08:00">2022-02-28</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2022/02/27/mira-2/" class="post-meta-item leancloud_visitors" data-flag-title="Measure Integral and Real Analysis (2)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>6.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="measure-integral-and-real-analysis-2">Measure Integral and Real Analysis (2)</h1>
+<h2 id="integration">Integration</h2>
+<h3 id="integration-w.r.t-a-measure">Integration w.r.t a Measure</h3>
+<h4 id="definition-3.1-s-partition">Definition 3.1: <span class="math inline">\(S\)</span>-Partition</h4>
+<p>Suppose <span class="math inline">\(S\)</span> is a <span class="math inline">\(\sigma\)</span>-algebra on a set <span class="math inline">\(X\)</span>. An <strong><span class="math inline">\(S\)</span>-partition</strong> of <span class="math inline">\(X\)</span> is finite collection <span class="math inline">\(A_1, ..., A_m\)</span> of disjoint sets in <span class="math inline">\(S\)</span> s.t <span class="math inline">\(A_1 \cup ... \cup A_m = X\)</span>.</p>
+<p><br></p>
+<h4 id="definition-3.1-lower-lebesgue-sum">Definition 3.1: Lower Lebesgue Sum</h4>
+<p>Suppose <span class="math inline">\((X, S, \mu)\)</span> is a measure space, <span class="math inline">\(f: X \rightarrow [0, \infty]\)</span> is an <span class="math inline">\(S\)</span>-measurable function, and <span class="math inline">\(P\)</span> is an <span class="math inline">\(S\)</span>-partition <span class="math inline">\(A_1, ..., A_m\)</span> of <span class="math inline">\(X\)</span>. The <strong>lower Lebesgue sum</strong> <span class="math inline">\(L(f, P)\)</span> is defined by:</p>
+<p><span class="math display">\[L(f, P) = \sum^m_{j=1} \mu(A_j) \inf_{A_j} f\]</span></p>
+<p><strong>The definition does not assume <span class="math inline">\(X\)</span> is a subset of <span class="math inline">\(\mathbb{R}\)</span>.</strong></p>
+<p><br></p>
+<h4 id="definition-3.3-integral-of-a-nonnegative-function">Definition 3.3: Integral of a Nonnegative Function</h4>
+<p>Suppose <span class="math inline">\((X, S, \mu)\)</span> is a measure space and <span class="math inline">\(f: X \rightarrow [0, \infty]\)</span> is an <span class="math inline">\(S\)</span>-measurable function. The <strong>integral</strong> of <span class="math inline">\(f\)</span> w.r.t <span class="math inline">\(\mu\)</span>, denoted by <span class="math inline">\(\int f d\mu\)</span> is defined by:</p>
+<p><span class="math display">\[\int f d\mu = \sup\{L(f, P): \text{ $P$ is an $S$-partition of $X$}\}\]</span></p>
+<p><br></p>
+<h4 id="theorem-3.4-integral-of-a-characteristic-function-chi_e">Theorem 3.4: Integral of a Characteristic Function <span class="math inline">\(\chi_E\)</span></h4>
+<p>Suppose <span class="math inline">\((X, S, \mu)\)</span> is a measure space and <span class="math inline">\(E \in S\)</span>. Then:</p>
+<p><span class="math display">\[\int \chi_E d\mu = \mu(E)\]</span></p>
+<h5 id="proof-of-theorem-3.4">Proof of Theorem 3.4:</h5>
+<p>If <span class="math inline">\(P\)</span> is the <span class="math inline">\(S\)</span>-partition of <span class="math inline">\(E, X / E\)</span>, then:</p>
+<p><span class="math display">\[L(\chi_E, P) = \mu(E) * 1 + 0 * \mu(X / E) = \mu(E)\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[\int \chi_E d\mu \geq \mu(E)\]</span></p>
+<p>Let <span class="math inline">\(P\)</span> be an <span class="math inline">\(S\)</span>-partition <span class="math inline">\(A_1, ..., A_m\)</span> of <span class="math inline">\(X\)</span>, then</p>
+<p><span class="math display">\[
+\mu(A_j) \inf_{A_j} \chi_ E=
+\begin{cases}
+\mu(A_j), \quad \text{if } A_j \subseteq E\\
+0, \quad \text{ o. w }
+\end{cases}
+\]</span></p>
+<p>Then:</p>
+<p><span class="math display">\[\sum^{m}_{j=1} \mu(A_j) \inf_{A_j} \chi_E = \sum_{\{j: A_j \subseteq E\}} \mu(A_j) = \mu(\bigcup_{\{j: A_j \subseteq E\}} A_j) \leq \mu(E)\]</span></p>
+<p><br></p>
+<h4 id="theorem-3.7-integral-of-a-simple-function">Theorem 3.7: Integral of a Simple Function</h4>
+<p>Suppose <span class="math inline">\((X, S, \mu)\)</span> is a measure space, <span class="math inline">\(E_1, E_2, .., E_n\)</span> are disjoint sets in <span class="math inline">\(S\)</span>, and <span class="math inline">\(c_1, ..., c_n \in [0, \infty]\)</span>. Then:</p>
+<p><span class="math display">\[\int (\sum^n_{k=1} c_k \chi_{E_k}) d\mu = \sum^{n}_{k=1} c_k \mu(E_k)\]</span></p>
+<p><br></p>
+<h4 id="theorem-3.8-integration-is-order-preserving">Theorem 3.8: Integration is Order Preserving</h4>
+<p>Suppose <span class="math inline">\((X, S, \mu)\)</span> is a measure space and <span class="math inline">\(f, g: X \rightarrow [0, \infty]\)</span> are <span class="math inline">\(S\)</span>-measurable functions s.t <span class="math inline">\(f(x) \leq g(x)\)</span> for all <span class="math inline">\(x \in X\)</span>. Then:</p>
+<p><span class="math display">\[\int f d\mu \leq \int g d\mu\]</span></p>
+<h5 id="proof-of-theorem-3.8">Proof of Theorem 3.8:</h5>
+<p>Suppose <span class="math inline">\(P\)</span> is a <span class="math inline">\(S\)</span>-partition <span class="math inline">\(A_1, ..., A_n\)</span> of <span class="math inline">\(X\)</span>. Then:</p>
+<p><span class="math display">\[\inf_{A_i} f \leq \inf_{A_i} g \implies L(f, P) \leq L(g, P)\]</span></p>
+<p>Then for any <span class="math inline">\(P\)</span>, we have:</p>
+<p><span class="math display">\[\sup_P L(f, P) \leq \sup_P L(g, P)\]</span></p>
+<p><br></p>
+<h4 id="theorem-3.9-integral-via-simple-functions">Theorem 3.9: Integral Via Simple Functions</h4>
+<p>Suppose <span class="math inline">\((X, S, \mu)\)</span> is a measure space and <span class="math inline">\(f: X \rightarrow [0, \infty]\)</span> is <span class="math inline">\(S\)</span>-measurable. Then:</p>
+<p><span class="math display">\[\int f d\mu = \sup\{\sum^{m}_{j=1}c_j\mu(A_j): \text{ $A_1, ..., A_m$ are disjoint sets in $S$, $c_1, ...., c_m \in [0, \infty)$, $f(x)\geq \sum^m_{j=1}c_j \chi_{A_j}(x)$ for every $x \in X$}\}\]</span></p>
+<p>Here, we have <span class="math inline">\(A_1, ..., A_m \in S\)</span> as arbitrary disjoint sets, they do not have to be <span class="math inline">\(S\)</span>-partition.</p>
+<p><br></p>
+<h4 id="theorem-3.11-monotone-convergence-theorem">Theorem 3.11: Monotone Convergence Theorem</h4>
+<p>Suppose <span class="math inline">\((X, S, \mu)\)</span> is a measure space and <span class="math inline">\(0 \leq f_1 \leq f_2 \leq ...\)</span> is an increasing sequence of <span class="math inline">\(S\)</span>-measurable functions. Define <span class="math inline">\(f: X \rightarrow [0, \infty]\)</span> by:</p>
+<p><span class="math display">\[f(x) = \lim_{k \rightarrow \infty} f_k (x)\]</span></p>
+<p>Then:</p>
+<p><span class="math display">\[\lim_{k \rightarrow \infty} \int f_k d\mu = \int f d\mu\]</span></p>
+<h5 id="proof-of-theorem-3.11">Proof of Theorem 3.11:</h5>
+<p>To show that the equality holds, we need to show that:</p>
+<ol type="1">
+<li><span class="math inline">\(\lim_{k\rightarrow \infty} \int f_k d\mu \leq \int f d\mu\)</span></li>
+<li><span class="math inline">\(\lim_{k\rightarrow \infty} \int f_k d\mu \geq \int f d\mu\)</span></li>
+</ol>
+<p><strong>We first prove 1:</strong></p>
+<p>Suppose <span class="math inline">\((X, S, \mu)\)</span> is a measure space and <span class="math inline">\(0 \leq f_1 \leq f_2 \leq ...\)</span> is an increasing sequence of <span class="math inline">\(S\)</span>-measurable functions. Define <span class="math inline">\(f: X \rightarrow [0, \infty]\)</span> by:</p>
+<p><span class="math display">\[f(x) = \lim_{k \rightarrow \infty} f_k (x)\]</span></p>
+<p>Then by <code>theorem 2.53</code>, we have <span class="math inline">\(f\)</span> to be <span class="math inline">\(S\)</span>-measurable. Since <span class="math inline">\(f_k(x) \leq f(x), \;\; \forall x \in X, k \in \mathbb{Z}^+\)</span>, by <code>theorem 3.8</code>, we have:</p>
+<p><span class="math display">\[\int f_k d \mu \leq \int f d\mu \implies \lim_{k \rightarrow \infty} \int f_k d \mu \leq \int f d\mu\]</span></p>
+<p><strong>To prove 2, we need to use <code>theorem 3.9</code>:</strong></p>
+<p>Suppose <span class="math inline">\(A_1, ..., A_m\)</span> are disjoint sets in <span class="math inline">\(S\)</span>, and <span class="math inline">\(c_1, ..., c_m \in [0, \infty)\)</span> are s.t:</p>
+<p><span class="math display">\[f(x) \geq \sum^{m}_{j=1} c_j \chi_{A_j} (x)\]</span></p>
+<p>Then:</p>
+<p><span class="math display">\[\int f d\mu = \sup_{\text{all disjoint sets in $S$}}\{\sum^{m}_{j=1} c_j \mu(A_j)\}\]</span></p>
+<p>Let <span class="math inline">\(t \in (0, 1)\)</span>. For <span class="math inline">\(k \in \mathbb{Z}^+\)</span>, let:</p>
+<p><span class="math display">\[E_k = \{x \in X: f_k (x) \geq t \sum^{m}_{j=1} c_j \chi_{A_j} (x)\}\]</span></p>
+<p>Then <span class="math inline">\(E_1 \subseteq E_2 \subseteq , ...\)</span> is an increasing sequence of sets whose union is <span class="math inline">\(X\)</span> (because <span class="math inline">\(f(x) \geq \sum^{m}_{j=1} c_j \chi_{A_j} (x)\)</span>) and <span class="math inline">\((E_1 \cap A_j) \subseteq (E_2 \cap A_j) \subseteq .... \;\; \forall j \in \{1, ..., m\}\)</span> is also an increasing sequence of sets, this implies (by <code>theorem 2.59</code>) that:</p>
+<p><span class="math display">\[\mu(\lim_{k\rightarrow \infty} (E_k \cap A_j)) = \mu(X \cap A_j) = \mu(A_j)\]</span></p>
+<p>Then for all <span class="math inline">\(x \in X\)</span>:</p>
+<p><span class="math display">\[f_k (x) \geq t \sum^{m}_{j=1} c_j \chi_{A_j \cap E_k} (x) \implies \int f_k d\mu \geq \int t \sum^{m}_{j=1} c_j \chi_{A_j \cap E_k} d \mu \implies \int f_k d\mu \geq t\sum^{m}_{j=1} c_j \mu(A_j \cap E_k)\]</span></p>
+<p>Taking the limit to infinity:</p>
+<p><span class="math display">\[\lim_{k \rightarrow \infty} \int f_k d\mu \geq  \lim_{k\rightarrow \infty} t\sum^{m}_{j=1} c_j \mu(A_j \cap E_k) = t \sum^{m}_{j=1} c_j \mu(A_j)\]</span></p>
+<p>Taking the limit <span class="math inline">\(t \rightarrow 1\)</span>:</p>
+<p><span class="math display">\[\lim_{k \rightarrow \infty} \int f_k d\mu \geq  \sum^{m}_{j=1} c_j \mu(A_j)\]</span></p>
+<p>Since right-hand side works for any <span class="math inline">\(c_1, ...., c_m \in [0, \infty)\)</span>, disjoint sets <span class="math inline">\(A_1, ..., A_m\)</span> that satisfies <span class="math inline">\(f(x) \geq \sum^{m}_{j=1} c_j \chi_{A_j} (x)\)</span>, we have:</p>
+<p><span class="math display">\[\lim_{k \rightarrow \infty} f_k(x) \geq  \sup_{\text{all disjoint sets in $S$}}\{\sum^{m}_{j=1} c_j \mu(A_j)\} = \int f d\mu\]</span></p>
+<p><br></p>
+<h4 id="theorem-3.13-integral-type-sums-for-simple-functions">Theorem 3.13: Integral-type Sums for Simple Functions</h4>
+<p>Suppose <span class="math inline">\((X, S, \mu)\)</span> is a measurable space. Suppose <span class="math inline">\(a_1, ..., a_m, b_1, ..., b_n \in [0, \infty]\)</span> and <span class="math inline">\(A_1, ..., A_m, B_1, ..., B_n \in S\)</span> s.t <span class="math inline">\(\sum^m_{j=1} a_j \chi_{A_j} = \sum^n_{k=1} b_k \chi_{B_k}\)</span>. Then:</p>
+<p><span class="math display">\[\sum^{m}_{j=1} a_j \mu(A_j) = \sum^n_{k=1} b_k \mu(B_k)\]</span></p>
+<p><br></p>
+<h4 id="theorem-3.15-integral-of-a-linear-combination-of-characteristic-functions">Theorem 3.15: Integral of a Linear Combination of Characteristic Functions</h4>
+<p>Suppose <span class="math inline">\((X, S, \mu)\)</span> is a measure space, <span class="math inline">\(E_1, ..., E_n \in S\)</span>, and <span class="math inline">\(c_1, ..., c_n \in [0, \infty)\)</span>. Then:</p>
+<p><span class="math display">\[\int (\sum^{n}_{k=1} c_k \chi_{E_k}) d\mu = \sum^{n}_{k=1} c_k \mu(E_k)\]</span></p>
+<p><strong>The difference between this theorem and <code>theorem 3.7</code> is that, here we do not require <span class="math inline">\(E_1, ..., E_n\)</span> to be disjoint</strong></p>
+<p><br></p>
+<h4 id="theorem-3.16-additivity-of-integration">Theorem 3.16: Additivity of Integration</h4>
+<p>Suppose <span class="math inline">\((X . S, \mu)\)</span> is a measure space and <span class="math inline">\(f, g: X \rightarrow [0, \infty]\)</span> are <span class="math inline">\(S\)</span>-measurable functions. Then:</p>
+<p><span class="math display">\[\int (f+g) d\mu = \int f d\mu + \int g d\mu\]</span></p>
+<h5 id="proof-of-theorem-3.16">Proof of Theorem 3.16:</h5>
+<p>Suppose <span class="math inline">\(f, g\)</span> are simple functions, then:</p>
+<p><span class="math display">\[\int (f + g) d\mu = \int (\sum_j c_j \chi_{E_j} + \sum_k c_k \chi_{E_k}) d\mu = \sum_j c_j \mu(E_j) + \sum_{k} c_k \mu(E_k) = \int f d\mu + \int g d\mu\]</span></p>
+<p>So the integrals of simple functions are additive.</p>
+<p>Let <span class="math inline">\(f_1, f_2, ...\)</span>, <span class="math inline">\(g_1, g_2, ....\)</span> be increasing sequence of simple functions s.t:</p>
+<p><span class="math display">\[\lim_{k\rightarrow \infty} f_k = f\]</span></p>
+<p><span class="math display">\[\lim_{k\rightarrow \infty} g_k = g\]</span></p>
+<p>By <code>theorem 2.89</code>, these sequences exist.</p>
+<p>Since <span class="math inline">\(f_k, g_k, f, g\)</span> are <span class="math inline">\(S\)</span>-measurable functions, <span class="math inline">\(f + g\)</span> is <span class="math inline">\(S\)</span>-measurable function. Then by <code>Monotone Convergence Theorem</code>, we have:</p>
+<p><span class="math display">\[\int (f + g) d\mu = \lim_{k \rightarrow \infty} \int (f_k + g_k) d\mu = \lim_{k \rightarrow \infty} \int f_k \mu + \lim_{k \rightarrow \infty} \int g_k d\mu = \int f d\mu + \int g d\mu\]</span></p>
+<p><br></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/MDP/" rel="bookmark">MDP</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-optimality-equations/" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/14/calculus/" rel="bookmark">Calculus (1)</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-equations/" rel="bookmark">Bellman Equations</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/05/18/cheat-sheet/" rel="bookmark">Cheat Sheet</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RL-Basics/" rel="tag"># RL Basics</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/02/13/mira/" rel="prev" title="Measure Integral and Real Analysis (1)">
+                  <i class="fa fa-chevron-left"></i> Measure Integral and Real Analysis (1)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2030/05/30/aa_welcome/" rel="next" title="Welcome">
+                  Welcome <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">743k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:16</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>

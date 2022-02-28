@@ -86,7 +86,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">98</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">99</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -162,7 +162,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-count">99</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -215,6 +215,130 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/06/02/layer-norm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/06/02/layer-norm/" class="post-title-link" itemprop="url">Layer Normalization</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-06-02 14:15:19" itemprop="dateCreated datePublished" datetime="2021-06-02T14:15:19+08:00">2021-06-02</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-08-18 15:27:41" itemprop="dateModified" datetime="2021-08-18T15:27:41+08:00">2021-08-18</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DL/" itemprop="url" rel="index"><span itemprop="name">DL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DL/Techniques/" itemprop="url" rel="index"><span itemprop="name">Techniques</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/06/02/layer-norm/" class="post-meta-item leancloud_visitors" data-flag-title="Layer Normalization" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>4.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="layer-normalization">Layer Normalization</h1>
+<p>Unlike Batch normalization, layer normalization directly estimates the normalization statistics from the summed inputs (multiply part of activation) to the neurons within a hidden layer, so the normalization does not introduce any new dependencies between training cases.</p>
+<h2 id="notations">Notations</h2>
+<p>A feed-forward neural network is a non-linear mapping from a input pattern <span class="math inline">\(\mathbf{x}\)</span> to an output vector <span class="math inline">\(\mathbf{y}\)</span>. Let <span class="math inline">\(\mathbf{a}^l\)</span> be the vector representation of the summed inputs to the neurons in <span class="math inline">\(l\)</span>th layer. It is computed by the weight matrix <span class="math inline">\(W^l = [w_1, ...., w_{N^l}]\)</span> and previous input <span class="math inline">\(h^l\)</span>:</p>
+<p><span class="math display">\[a_i^{l} = {w^{l}_i}^T h^l \;\;\;\;\;\;\;\; h_i^{l+1} = f(a_i^l + b_i^l)\]</span></p>
+<p>where <span class="math inline">\(f(\cdot)\)</span> is an element-wise non-linear activation function <span class="math inline">\(b_i^l\)</span> is the scalar bias parameter. Batch normalization normalizes the summed inputs (multiply part of activation) to each hidden unit (<span class="math inline">\(a\)</span> + bias) over the training cases:</p>
+<p><span class="math display">\[\bar{a}_i^l = \frac{g_i^l}{\sigma_i^l} (a_i^l - \mu_i^l) \;\;\;\;\;\;\;\;\; \mu^l_i = \mathbb{E}_{\mathbf{x} \sim P(\cdot)} [a^l_i] \;\;\;\;\;\;\;\;\; \sigma_i^l = \sqrt{\mathbb{E}_{\mathbf{x} \sim P(\cdot)} [(a^l_i - \mu_i^l)^2]}\]</span></p>
+<p>Where <span class="math inline">\(\bar{a}_i^l\)</span> is the normalized summed inputs of <span class="math inline">\(i\)</span>th activation, <span class="math inline">\(g_i\)</span> is the scale parameter (<span class="math inline">\(\gamma_i\)</span> in BN paper). The expectation is over the whole training data, in reality, we use samples from this expectation (mini-batch) to estimate the variance and mean.</p>
+<p>In standard RNN, the summed inputs in the recurrent layer are computed from the current input <span class="math inline">\(\mathbf{x}^t\)</span> (one sample) and previous vector of hidden states <span class="math inline">\(\mathbf{h}^{t-1}\)</span>:</p>
+<p><span class="math display">\[\mathbf{a}^{t} = W_{hh}^T \mathbf{h}^{t-1} + W_{xh}^T\mathbf{x}^t\]</span></p>
+<p>Where <span class="math inline">\(W_{hh}\)</span> is the recurrent hidden to hidden wights and <span class="math inline">\(W_{xh}\)</span> is the input to hidden weights.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/02/layer-norm/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1247,142 +1371,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/05/18/cheat-sheet/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/18/cheat-sheet/" class="post-title-link" itemprop="url">Cheat Sheet</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-05-18 10:27:28" itemprop="dateCreated datePublished" datetime="2021-05-18T10:27:28+08:00">2021-05-18</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-08-20 13:28:20" itemprop="dateModified" datetime="2021-08-20T13:28:20+08:00">2021-08-20</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/05/18/cheat-sheet/" class="post-meta-item leancloud_visitors" data-flag-title="Cheat Sheet" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>1.1k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="cheat-sheet">Cheat Sheet</h1>
-<h2 id="permutation-and-combination">Permutation and Combination</h2>
-<p>Number of permutations for <span class="math inline">\(n\)</span> people and <span class="math inline">\(k\)</span> chairs:</p>
-<p><span class="math display">\[nPk = \frac{n!}{(n - k)!}\]</span></p>
-<p><span class="math display">\[nCk = \frac{nPk}{k!} = \frac{n!}{k! (n - k)!}\]</span></p>
-<h2 id="rl">RL</h2>
-<p><span class="math display">\[Q^{\pi} (s, a) = E_s^{\prime} [r + \gamma E_{a^{\prime}}[Q(s^{\prime}, a^{s^{\prime}}) | s^{\prime}] | s, a, \pi]\]</span></p>
-<p><span class="math display">\[V^{*} (s) = max_{a} Q^{*} (s, a)\]</span></p>
-<p><span class="math display">\[Q^{*} (s, a) = max_{\pi} Q^{\pi} (s, a), \forall (s, a) \in S X A\]</span></p>
-<p><span class="math display">\[V^{\pi} (s) = E_{a_t \sim pi(\cdot | s)}[R_t | s_t=s, \pi] = E_{a_t \sim pi(\cdot | s)}[E[R_t | s_t, a_t, \pi] | s_t=s] = E_{a_t \sim pi(\cdot | s)}[ Q^{\pi}(s, a_t)]\]</span></p>
-<p><span class="math display">\[A^{\pi} (s, a) = Q^{\pi} (s, a) - V^{\pi} (s)\]</span></p>
-<p><span class="math display">\[E_{a}[A^{\pi} (s, a) | s] = E_{a}[Q^{\pi} (s, a) | s] - V^{\pi} (s) = 0\]</span></p>
-<p><span class="math display">\[E_{s^{\prime}}[R_t + \gamma V^{\pi}(s^{\prime}) - V^{\pi} (s)] = A^{\pi}(s, a)\]</span></p>
-<span class="math display">\[\begin{aligned}
-Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
-&amp; = R + \gamma Q(s^{\prime}, a^{\prime})
-\end{aligned}\]</span>
-<h2 id="ml">ML</h2>
-<p>True Positive Rate (<strong>Sensitivity</strong> or <strong>Recall</strong>):</p>
-<p><span class="math display">\[\frac{TP}{TP + FN}\]</span></p>
-<p>Specificity:</p>
-<p><span class="math display">\[\frac{TN}{TN + FP}\]</span></p>
-<p>False Positive Rate (<strong>1 - specificity</strong>):</p>
-<p><span class="math display">\[\frac{FP}{TN + FP}\]</span></p>
-<p>Precision:</p>
-<p><span class="math display">\[\frac{TP}{TP + FP}\]</span></p>
-<p>Accuracy:</p>
-<p><span class="math display">\[\frac{TP + TN}{TP + TN + FP + FN}\]</span></p>
-<p>F-score:</p>
-<p><span class="math display">\[2 * \frac{Precision * Recall}{Precision + Recall}\]</span></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1407,13 +1395,13 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">737k</span>
+    <span title="Symbols count total">743k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">11:10</span>
+    <span title="Reading time total">11:16</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

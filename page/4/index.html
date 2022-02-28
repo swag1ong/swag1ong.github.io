@@ -86,7 +86,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">98</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">99</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -162,7 +162,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">98</span>
+          <span class="site-state-item-count">99</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -215,6 +215,218 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/19/adaboost/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/19/adaboost/" class="post-title-link" itemprop="url">Adaboost</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-19 16:33:03" itemprop="dateCreated datePublished" datetime="2021-07-19T16:33:03+08:00">2021-07-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-27 15:20:43" itemprop="dateModified" datetime="2021-07-27T15:20:43+08:00">2021-07-27</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/07/19/adaboost/" class="post-meta-item leancloud_visitors" data-flag-title="Adaboost" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>7.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>7 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="adaboost-discrete">AdaBoost (Discrete)</h1>
+<p>Consider a two-class problem, with the output variable coded as <span class="math inline">\(Y \in \{-1, 1\}\)</span>. Given a vector of input variables <span class="math inline">\(\mathbf{X}\)</span>, a classifier <span class="math inline">\(G(\mathbf{X})\)</span> produces a prediction taking one of the two values <span class="math inline">\(\{-1, 1\}\)</span>.</p>
+<p>Suppose we have samples <span class="math inline">\(D = \{(\mathbf{x}_1, y_1), ...., (\mathbf{x}_N, y_N); \; \mathbf{x} \in \mathbb{R}^d\}\)</span>. The error rate (misclassification) on the training sample is defined as:</p>
+<p><span class="math display">\[\bar{err} = \frac{1}{N} \sum^{N}_{i=1} I[y_i \neq G(\mathbf{x}_i)]\]</span></p>
+<p>The expected error rate is defined as:</p>
+<p><span class="math display">\[E_{X, Y} [I[Y \neq G(\mathbf{X})]]\]</span></p>
+<p>A weak classifier is one whose error rate is only slightly better than random guessing. The purpose of boosting is to sequentially apply the weak classification algorithm to repeatedly modified versions of the data, thereby producing a sequence of weak classifiers <span class="math inline">\(G_{m} (\mathbf{x}), \; m = 1, ...., M\)</span></p>
+<p>The predictions from all of them are then combined through a weighted majority vote to produce the final prediction:</p>
+<p><span class="math display">\[G(x) = sign (\sum^{M}_{m=1} \alpha_m G_m (\mathbf{x}))\]</span></p>
+<p>Here, <span class="math inline">\(\alpha_1, ...., \alpha_M\)</span> are parameters that weight the contribution of each corresponding classifier <span class="math inline">\(G(\mathbf{x})\)</span> and they are learned by the algorithm. They are here to give higher influence to the more accurate classifiers in the sequence.</p>
+<p>The data modifications at each boosting step consist of applying weights <span class="math inline">\(w_1, ...., w_N\)</span> to each of the training observations <span class="math inline">\((\mathbf{x}_i, y_i), \; i=1, ....., N\)</span>:</p>
+<ol type="1">
+<li>Initially all of the weights are set to <span class="math inline">\(w_i = \frac{1}{N}\)</span>, so the first step simply trains the classifier on the data in usual manner.</li>
+<li>For each successive iteration <span class="math inline">\(m = 2, 3, .... , M\)</span>, the observation weights are individually modified:
+<ul>
+<li>Observations that were misclassified by the classifier <span class="math inline">\(G_{m-1} (\mathbf{x})\)</span> induced at the previous step have their weights increased.</li>
+<li>Observations that were classified correctly by the previous classifier have their weights decreased.</li>
+</ul></li>
+<li>Then the classification algorithm is reapplied to the weighted observations</li>
+</ol>
+<p>So misclassified samples have their weights increased so that each successive classifier is thereby forced to concentrate on those samples.</p>
+<p><img src='/images/ML/adaboost_1.png' width="600"></p>
+<p>At each iteration <span class="math inline">\(m\)</span>:</p>
+<ol type="1">
+<li>A normalized weighted error rate (high penalty for misclassifying high weight samples)<span class="math inline">\(err_m\)</span> is calculated.</li>
+<li>The error rate is transformed by <span class="math inline">\(\log (\frac{1 - error_m}{error_m})\)</span>:
+<ul>
+<li>This function goes to positive infinity as <span class="math inline">\(error_m\)</span> goes to 0</li>
+<li>This function goes to negative infinity as <span class="math inline">\(error_m\)</span> goes to 1 (<strong>we should just predict class inversely</strong>)</li>
+<li>This function is 0 when error rate is 0.5</li>
+</ul></li>
+<li>The new weight update:
+<ul>
+<li>If <strong>correctly classified</strong>, then we simply keep the original weight for the sample (It will be smaller because we are weighting it by sum of error rate in the next classifier).</li>
+<li>If <strong>incorrectly classified</strong>:
+<ul>
+<li>If error rate is small, then <span class="math inline">\(\alpha\)</span> is positively large so each misclassified sample's weight is <strong>increased</strong></li>
+<li>If error rate is high, then <span class="math inline">\(\alpha\)</span> goes to negative infinity, so each misclassified sample's weight is <strong>decreased</strong> because this sample is correctly classified inversely so we decrease its weight.</li>
+<li>If error rate is 0.5, then <span class="math inline">\(\alpha\)</span> is 0, so each misclassified sample's weight is <strong>maintained</strong></li>
+</ul></li>
+</ul></li>
+</ol>
+<p><img src='/images/ML/adaboost_3.png' width="600"></p>
+<h2 id="boosting-fits-an-additive-model">Boosting Fits an Additive Model</h2>
+<p>Boosting is a way of fitting an additive expansion in a set of elementary basis functions. Here the basis functions are the individual classifiers <span class="math inline">\(G_m(\mathbf{x}) \in \{-1, 1\}\)</span>. More generally, basis function expansions take the form:</p>
+<p><span class="math display">\[f(\mathbf{x}) = \sum^{M}_{m=1} \beta_m b(\mathbf{x}; \boldsymbol{\gamma}_m)\]</span></p>
+<p>Where <span class="math inline">\(\beta_m, \; m=1, 2, ...., M\)</span> are the expansion coefficients, and <span class="math inline">\(b(\mathbf{x}; \gamma) \in \mathbb{R}\)</span> are usually simple functions of multivariate argument <span class="math inline">\(\mathbf{x}\)</span> characterized by a set of parameters <span class="math inline">\(\{\boldsymbol{\gamma}_1, ...., \boldsymbol{\gamma}_M\}\)</span>.</p>
+<p>Typically these models are fit and the parameters are found by minimizing a loss function averaged over the training data:</p>
+<p><span class="math display">\[\min_{ \{\beta_m, \boldsymbol{\gamma}_m\}^{M}_1 }\sum^{N}_{i=1} L(y_i, \sum^{M}_{m=1} \beta_m b(\mathbf{x}_i; \boldsymbol{\gamma}_m))\]</span></p>
+<h2 id="forward-stagewise-additive-modeling">Forward Stagewise Additive Modeling</h2>
+<p>How to solve the above optimization problem? We can use forward stagewise modeling (greedy) to approximate the solution to above equation by sequentially adding new basis functions to the expansion without adjusting the parameters and coefficients of those that have already been added.</p>
+<p><img src='/images/ML/adaboost_2.png' width="600"></p>
+<p>The loss function of optimization problem at each step <span class="math inline">\(m\)</span> can be rewritten as:</p>
+<p><span class="math display">\[L(y_i, f_m(\mathbf{x}_i)) = L(y_i, f_{m-1} (\mathbf{x}_i) + \beta b(\mathbf{x}_i; \boldsymbol{\gamma}))\]</span></p>
+<p>Using the square loss, we have:</p>
+<p><span class="math display">\[L(y_i, f_m(\mathbf{x}_i)) = (y_i - f_{m-1} (\mathbf{x}_i) - \beta b(\mathbf{x}_i; \boldsymbol{\gamma}))^2\]</span></p>
+<p><span class="math display">\[\implies L(y_i, f_m(\mathbf{x}_i)) = (\epsilon_{im-1} -  \beta b(\mathbf{x}_i; \boldsymbol{\gamma}))^2\]</span></p>
+<p>This implies that we are fitting a basis function at each step to minimizing the residual from the current model <span class="math inline">\(f_{m-1} (\mathbf{x})\)</span>.</p>
+<h2 id="adaboost-as-forward-stagewise-additive-modeling">AdaBoost as Forward Stagewise Additive Modeling</h2>
+<p>Let the loss function be the exponential function:</p>
+<p><span class="math display">\[L(y_i, f(\mathbf{x}_i)) = e^{-y_i f(\mathbf{x}_i)}\]</span></p>
+<p>For adaboost, the basis functions are individual weak classifier <span class="math inline">\(G_m(x) \in \{-1, 1\}\)</span>. Using the exponential loss for additive stagewise modeling, we must minimize the objective:</p>
+<p><span class="math display">\[(\beta_m, G_m) = \underset{\beta, G}{\arg\min} \sum^{N}_{i=1} e^{-y_i(f_{m-1} (\mathbf{x}_i) + \beta G(\mathbf{x}_i))}\]</span></p>
+<p>Let <span class="math inline">\(w^{(m)}_i = e^{-y_i \mathbf{x}_i}\)</span>, then the above optimization can be expressed as:</p>
+<p><span class="math display">\[(\beta_m, G_m) = \underset{\beta, G}{\arg\min} \sum^{N}_{i=1} w^{(m)}_i e^{-y_i\beta G(\mathbf{x}_i)}\]</span></p>
+<p>Since, <span class="math inline">\(w^{(m)}_i\)</span> does not depend on <span class="math inline">\(\beta, G(\mathbf{x})\)</span>, so it is just some constant and can be regard it as weight. Since this weight depends on previous prediction and current label, it is changing at each iteration <span class="math inline">\(m\)</span>.</p>
+<h3 id="solve-for-beta">Solve for <span class="math inline">\(\beta\)</span></h3>
+<p>In order to solve for <span class="math inline">\(\beta\)</span>, we can rewrite the objective as:</p>
+<span class="math display">\[\begin{aligned}
+\sum^{N}_{i=1} w^{(m)}_i e^{-y_i\beta G(\mathbf{x}_i)} &amp;= \sum^{N}_{i=1} w^{(m)}_i e^{-\beta} I[y_i = G(\mathbf{x}_i)] + w^{(m)}_i e^{\beta} I[y_i \neq G(\mathbf{x}_i)] \\
+&amp;= \sum^{N}_{i=1} w^{(m)}_i e^{-\beta} (1 - I[y_i \neq G(\mathbf{x}_i)]) + w^{(m)}_i e^{\beta} I[y_i \neq G(\mathbf{x}_i)]\\
+&amp;= (e^{\beta} - e^{-\beta})\sum^{N}_{i=1} w^{m}_i I[y_i \neq G(\mathbf{x}_i)] + e^{-\beta} \sum^{N}_{i=1} w^{(m)}_i
+\end{aligned}\]</span>
+<p>by taking the partial derivative w.r.t <span class="math inline">\(\beta\)</span> and set it to 0:</p>
+<p><span class="math display">\[\implies(e^\beta + e^{-\beta}) \sum_{i=1}^{N} w_i^{(m)}I(y_i \neq G(\mathbf{x}_i)) - e^{-\beta} \sum_{i=1}^{N} w_i^{(m)} = 0\]</span></p>
+<p><span class="math display">\[\implies \frac{e^\beta + e^{-\beta}}{e^{-\beta}} = \frac{\sum_{i=1}^{N} w_i^{(m)}}{\sum_{i=1}^{N} w_i^{(m)}I(y_i \neq G(\mathbf{x}_i))}\]</span></p>
+<p><span class="math display">\[\implies \frac{e^\beta}{e^{-\beta}} = \frac{\sum_{i=1}^{N} w_i^{(m)}}{\sum_{i=1}^{N} w_i^{(m)}I(y_i \neq G(\mathbf{x}_i))} - 1\]</span></p>
+<p><span class="math display">\[\implies 2\beta = \log(\frac{1}{error_m} - 1)\]</span></p>
+<p><span class="math display">\[\implies \beta_m = \frac{1}{2} \log (\frac{1 - error_m}{error_m})\]</span></p>
+<p>Where <span class="math inline">\(error_m = \frac{\sum_{i=1}^{N} w_i^{(m)}I(y_i \neq G(\mathbf{x}_i))}{\sum_{i=1}^{N} w_i^{(m)}}\)</span></p>
+<p>That is, for any classifier <span class="math inline">\(G\)</span>:</p>
+<ul>
+<li><span class="math inline">\(\beta_m &gt; 0\)</span>, if <span class="math inline">\(error_m &lt; 0.5\)</span></li>
+<li><span class="math inline">\(\beta_m &lt; 0\)</span>, if <span class="math inline">\(error_m &gt; 0.5\)</span></li>
+</ul>
+<h3 id="solve-for-g">Solve for <span class="math inline">\(G\)</span></h3>
+<p>We want our basis function (weak classifier) to have better misclassification rate than random classifier, so we want <span class="math inline">\(error_m &lt; 0.5\)</span> which implies that we want <span class="math inline">\(\beta &gt; 0\)</span>. Thus, for any value <span class="math inline">\(\beta &gt; 0\)</span>, we can see that if we let <span class="math inline">\(G(\mathbf{x}_i) = y_i\)</span> for all samples, we have minimum objective. Thus, we can transform the minimization problem to minimize the error rate:</p>
+<span class="math display">\[\begin{aligned}
+G_m = \underset{G}{\arg\min} \sum^{N}_{i=1} w^{(m)}_i I[y_i \neq G(\mathbf{x}_i)]
+\end{aligned}\]</span>
+<p><br></p>
+<p>By substitute <span class="math inline">\(G_m\)</span> back to the solution of <span class="math inline">\(\beta\)</span>, we have:</p>
+<p><span class="math display">\[\beta_m = \frac{1}{2} \log (\frac{1 - error_m}{error_m})\]</span></p>
+<p>Where <span class="math inline">\(error_m = \frac{\sum_{i=1}^{N} w_i^{(m)}I(y_i \neq G_m(\mathbf{x}_i))}{\sum_{i=1}^{N} w_i^{(m)}}\)</span></p>
+<p>The approximation is then updated:</p>
+<p><span class="math display">\[f_m (\mathbf{x}_i) = f_{m-1} (\mathbf{x}_i) + \beta_m G_m (\mathbf{x}_i)\]</span></p>
+<p>Which causes the weights for the next iteration to be:</p>
+<span class="math display">\[\begin{aligned}
+w^{(m + 1)}_i &amp;= e^{-y_i f_{m} (\mathbf{x}_i)}\\
+&amp;= e^{-y_i (f_{m - 1} (\mathbf{x}_i) + \beta_m G_m (\mathbf{x}_i))}\\
+&amp;= e^{-y_i f_{m-1}(\mathbf{x}_i)} e^{-y_i \beta_m G_m (\mathbf{x}_i)}\\
+&amp;= w^{(m)}_{i} e^{-y_i \beta_m G_m (\mathbf{x}_i)}
+\end{aligned}\]</span>
+<p>Notice here, <span class="math inline">\(-y_i G_m (x_i) = 2 I[y_i \neq G_m (\mathbf{x}_i)] - 1\)</span>:</p>
+<p><span class="math display">\[\implies w^{(m + 1)}_i = w^{(m)}_{i} e^{\alpha_m I[y_i \neq G_m(\mathbf{x}_i)]} e^{-\beta_m }\]</span></p>
+<p>Where, <span class="math inline">\(\alpha_m = 2 \beta_m\)</span> is the <span class="math inline">\(\alpha_m\)</span> in Adaboost algorithm, and <span class="math inline">\(e^{-\beta_m}\)</span> has no effect on weights because it is just a constant multiplying every sample.</p>
+<h3 id="conclusion">Conclusion</h3>
+<p>Thus, we can think of Adaboost algorithm as stagewise additive modeling with basis function as a weak classifier (Minimizing the misclassification rate to have slightly better misclassification rate than random classifier) and exponential loss function.</p>
+<h1 id="ref">Ref</h1>
+<p>ESLII Chapter 10</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1542,127 +1754,6 @@ P(Y=1 | X=\mathbf{x}) \leq 0.5, \quad 0
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/18/cnn/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/18/cnn/" class="post-title-link" itemprop="url">Backpropagation in CNN</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-07-18 17:39:39" itemprop="dateCreated datePublished" datetime="2021-07-18T17:39:39+08:00">2021-07-18</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-09-07 13:50:28" itemprop="dateModified" datetime="2021-09-07T13:50:28+08:00">2021-09-07</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DL/" itemprop="url" rel="index"><span itemprop="name">DL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DL/CNN/" itemprop="url" rel="index"><span itemprop="name">CNN</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/07/18/cnn/" class="post-meta-item leancloud_visitors" data-flag-title="Backpropagation in CNN" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>5.5k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>5 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="backpropagation-in-convolutional-neural-networks">Backpropagation In Convolutional Neural Networks</h1>
-<h2 id="cross-correlation">Cross Correlation</h2>
-<p>Given an input image <span class="math inline">\(I\)</span> and a filter <span class="math inline">\(K\)</span> of dimensions <span class="math inline">\(k_1 \times k_2\)</span>, then the cross correlation operation is defined as:</p>
-<p><span class="math display">\[(I \otimes K)_{ij} = \sum^{k_2 - 1}_{m=0}\sum^{k_1 - 1}_{n=0} I(i + m, j + n)K(m, n)\]</span></p>
-<h2 id="convolution">Convolution</h2>
-<p><span class="math display">\[(I * K)^{d}_{ij} = \sum^{k_2 - 1}_{m=0}\sum^{k_1 - 1}_{n=0} I(i - m, j - n)K(m, n)\]</span></p>
-<p>which is equivalent to <code>cross correlation</code> with flipped kernel (i.e flipped 180 degree)</p>
-<p><span class="math display">\[(I * K)_{ij} = \sum^{k_2 - 1}_{m=0}\sum^{k_1 - 1}_{n=0} I(i + m, j + n) \text{ rot}_{180}(K(m, n))\]</span></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/07/18/cnn/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1687,13 +1778,13 @@ P(Y=1 | X=\mathbf{x}) \leq 0.5, \quad 0
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">737k</span>
+    <span title="Symbols count total">743k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">11:10</span>
+    <span title="Reading time total">11:16</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
