@@ -86,7 +86,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">99</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">101</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -162,7 +162,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-count">101</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -215,6 +215,260 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/19/decision-trees/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/19/decision-trees/" class="post-title-link" itemprop="url">Decision Trees</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-19 16:31:33" itemprop="dateCreated datePublished" datetime="2021-07-19T16:31:33+08:00">2021-07-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-26 16:19:50" itemprop="dateModified" datetime="2021-07-26T16:19:50+08:00">2021-07-26</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/07/19/decision-trees/" class="post-meta-item leancloud_visitors" data-flag-title="Decision Trees" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>9.3k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>8 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="decision-trees-cart">Decision Trees (CART)</h1>
+<p>Tree based methods partition the feature space into a set of rectangles, and then fit a simple model (i.e constant) in each one. We focus on CART in this post.</p>
+<p>Suppose we have dataset <span class="math inline">\(D = \{(\mathbf{x}_1, y_1) , ...., (\mathbf{x}_N, y_N) ;\; \mathbf{x}_i \in \mathbb{R}^d\}\)</span>. The algorithm needs to automatically decide on the <strong>splitting variables</strong> and <strong>splitting points</strong> and also what shape the tree should have.</p>
+<h2 id="regression-trees">Regression Trees</h2>
+<p>In this scenario, our response variable <span class="math inline">\(Y\)</span> is continuous. Suppose first that we have a partition into <span class="math inline">\(M\)</span> regions <span class="math inline">\(R_1, ...., R_M\)</span> and we define the <strong>model prediction</strong> as:</p>
+<p><span class="math display">\[\hat{y} = \sum^{M}_{m=1} c_m I[\mathbf{x}_i \in R_m]\]</span></p>
+<p>By minimizing the mean square loss <span class="math inline">\(\frac{1}{2} \frac{1}{N} \sum^{N}_{i=1} (y_i - \hat{y}_i)^2\)</span>, we have:</p>
+<span class="math display">\[\begin{aligned}
+\frac{\partial L}{\partial c_m} &amp;= \frac{1}{N}\sum^{N}_{i=1} (y_i -  \sum^{M}_{m=1} c_m I[\mathbf{x}_i \in R_m]) I[\mathbf{x}_i \in R_m]\\
+&amp;= \frac{1}{N_m}\sum^{N}_{i=1} (y_i I[\mathbf{x}_i \in R_m]) - c_m\\
+\implies \hat{c}_m &amp;= \frac{1}{N_m}\sum^{N}_{i=1} (y_i I[\mathbf{x}_i \in R_m])
+\end{aligned}\]</span>
+<p>Thus, the best estimate <span class="math inline">\(\hat{c}_m\)</span> in each region is the <strong>average training responses</strong> in that region w.r.t mean square error:</p>
+<p><span class="math display">\[\hat{c}_m = \frac{1}{N_m} \sum^{N}_{i=1} y_i I[\mathbf{x}_i \in R_m]\]</span></p>
+<p>Where <span class="math inline">\(N_m = \sum^{N}_{i=1} I[\mathbf{x}_i \in R_m]\)</span>, is total training examples in region <span class="math inline">\(R_m\)</span>.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/19/decision-trees/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/19/heaps/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/19/heaps/" class="post-title-link" itemprop="url">Heaps</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-19 13:31:28" itemprop="dateCreated datePublished" datetime="2021-07-19T13:31:28+08:00">2021-07-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-24 23:09:20" itemprop="dateModified" datetime="2021-07-24T23:09:20+08:00">2021-07-24</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/CS-Basics/" itemprop="url" rel="index"><span itemprop="name">CS Basics</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/07/19/heaps/" class="post-meta-item leancloud_visitors" data-flag-title="Heaps" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>5.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="heaps">Heaps</h1>
+<p>The <code>binary heap</code> data structure is an array object that we can view as a nearly complete binary tree. Each node of the tree corresponds to an element of the array. The tree is completely filled on all levels except possibly the lowes, which is filled from the left up to a point that is <strong>the elements in the subarray <span class="math inline">\(A[\lfloor \frac{n}{2} \rfloor + 1 ... n]\)</span></strong> are all leaves.</p>
+<p>An array <span class="math inline">\(A\)</span> that represents a heap is an object with two attributes:</p>
+<ol type="1">
+<li><span class="math inline">\(A.length\)</span>: gives the number of elements in the array. <span class="math inline">\(A[1:A.length]\)</span>.</li>
+<li><span class="math inline">\(A.heap\_size\)</span>: gives how many elements in the heap are stored within array <span class="math inline">\(A\)</span>. <span class="math inline">\(A[1:A.heap\_size:A.length]\)</span></li>
+</ol>
+<p>Given the index <span class="math inline">\(i\)</span> of a node, we can easily compute the indices of its parent, left child and right child by:</p>
+<ol type="1">
+<li><code>parent</code>: <span class="math inline">\(\lfloor \frac{i}{2} \rfloor\)</span> (by shifting right 1 bit <code>i &gt;&gt; 1</code>)</li>
+<li><code>left child</code>: <span class="math inline">\(2i\)</span> (by shifting left 1 bit <code>i &lt;&lt; 1</code>)</li>
+<li><code>right child</code>: <span class="math inline">\(2i + 1\)</span> (by shifting left 1 bit and add 1 <code>i &lt;&lt; 1 + 1</code>)</li>
+</ol>
+<p>There are two types of binary heap:</p>
+<ol type="1">
+<li><code>Max heap</code>: satisfies the <code>max heap property</code> that for every node <span class="math inline">\(i\)</span> other than the root <span class="math inline">\(A[parent(i)] \geq A[i]\)</span>, that is the maximum value in the array is stored in the root and the subtree rooted at a node contains values no larger than that contained at the node itself (heap sorts).</li>
+<li><code>Min heap</code>: satisfies the <code>min heap property</code> that is organized in the opposite way, for every node <span class="math inline">\(i\)</span> other than the root <span class="math inline">\(A[parent(i) \leq A[i]]\)</span> (priority queues)</li>
+</ol>
+<p><br></p>
+<p><img src="/images/algo/heap_1.png" width="600px"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Heap</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, A, heap_size</span>):</span></span><br><span class="line">        <span class="comment"># A may not be a heap, call build_min_heap or build_max_heap to convert this instance to heap</span></span><br><span class="line">        <span class="keyword">assert</span> <span class="built_in">isinstance</span>(A, <span class="built_in">list</span>)</span><br><span class="line">        self.heap_size = heap_size</span><br><span class="line">        self.length = <span class="built_in">len</span>(A)</span><br><span class="line">        self._A = A</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">left</span>(<span class="params">self, i</span>):</span></span><br><span class="line">        <span class="keyword">return</span> i &lt;&lt; <span class="number">1</span></span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">right</span>(<span class="params">self, i</span>):</span></span><br><span class="line">        <span class="keyword">return</span> i &lt;&lt; <span class="number">1</span> + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parent</span>(<span class="params">self, i</span>):</span></span><br><span class="line">        <span class="keyword">return</span> i &gt;&gt; <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span>(<span class="params">self, index</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self._A[index]</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">append</span>(<span class="params">self, val</span>):</span></span><br><span class="line">        self._A.append(val)</span><br><span class="line">        </span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/19/heaps/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1341,218 +1595,8 @@ h_i = \max({\mathbf{w}^i}^T \mathbf{x}, 0) =
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/06/28/semi-mdp/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/28/semi-mdp/" class="post-title-link" itemprop="url">semi-mdp</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-06-28 15:32:46" itemprop="dateCreated datePublished" datetime="2021-06-28T15:32:46+08:00">2021-06-28</time>
-    </span>
-
-  
-    <span id="/2021/06/28/semi-mdp/" class="post-meta-item leancloud_visitors" data-flag-title="semi-mdp" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>0</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/06/25/instrinsic-motivation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/25/instrinsic-motivation/" class="post-title-link" itemprop="url">Intrinsic Motivation</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-06-25 15:15:02" itemprop="dateCreated datePublished" datetime="2021-06-25T15:15:02+08:00">2021-06-25</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-07-03 22:28:35" itemprop="dateModified" datetime="2021-07-03T22:28:35+08:00">2021-07-03</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/Basics/" itemprop="url" rel="index"><span itemprop="name">Basics</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/06/25/instrinsic-motivation/" class="post-meta-item leancloud_visitors" data-flag-title="Intrinsic Motivation" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>5.7k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>5 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="intrinsically-motivated-reinforcement-learning">Intrinsically Motivated Reinforcement Learning</h1>
-<h2 id="definitions">Definitions</h2>
-<h3 id="extrinsic-motivation">Extrinsic Motivation</h3>
-<p>Being moved to do something because of some specific rewarding outcome.</p>
-<h3 id="intrinsic-motivation">Intrinsic Motivation</h3>
-<p>Being moved to do something because it is inherently enjoyable. Intrinsic motivation leads organisms to engage in exploration, play and other behavior driven by curiosity in the absence of explicit reward.</p>
-<h3 id="behavior-intrinsically-motivated">Behavior Intrinsically Motivated</h3>
-<p>Psychologists call behavior intrinsically motivated when it is engaged in for its own sake rather than as a step toward solving a specific problem of clear practical value.</p>
-<h2 id="reinforcement-learning-of-skills">Reinforcement Learning of Skills</h2>
-<p><img src="/images/RL/papers/imrl_1.png" width="600"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/06/25/instrinsic-motivation/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 <script src="/js/comments.js"></script>
 </div>
@@ -1575,13 +1619,13 @@ h_i = \max({\mathbf{w}^i}^T \mathbf{x}, 0) =
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">762k</span>
+    <span title="Symbols count total">783k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">11:33</span>
+    <span title="Reading time total">11:52</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

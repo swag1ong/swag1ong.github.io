@@ -86,7 +86,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">99</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">101</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -162,7 +162,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">99</span>
+          <span class="site-state-item-count">101</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -255,7 +255,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-02-27 13:09:10" itemprop="dateModified" datetime="2022-02-27T13:09:10+08:00">2022-02-27</time>
+        <time title="Modified: 2022-03-14 21:21:36" itemprop="dateModified" datetime="2022-03-14T21:21:36+08:00">2022-03-14</time>
       </span>
 
   
@@ -273,7 +273,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>1.5k</span>
+      <span>1.6k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -300,6 +300,7 @@
 <li><a href="/2021/05/11/probability/" title="Probability (1)">Probability (1)</a></li>
 <li><a href="/2021/05/11/probability-2/" title="Probability (2)">Probability (2)</a></li>
 <li><a href="/2021/07/15/probability-3/" title="Probability (3)">Probability (3)</a></li>
+<li><a href="/2022/03/10/rigorous-probability-1/" title="Advanced Probability (1)">Advanced Probability (1)</a></li>
 <li><a href="/2021/05/14/calculus/" title="Calculus (1)">Calculus (1)</a></li>
 <li><a href="/2021/07/06/cal-2/" title="Calculus (2)">Calculus (2)</a></li>
 <li><a href="/2021/07/18/cnn/" title="Backpropagation in CNN">Backpropagation in CNN</a></li>
@@ -310,6 +311,7 @@
 <li><a href="/2022/01/06/real-analysis-4/" title="Real Analysis (4)">Real Analysis (4)</a></li>
 <li><a href="/2022/02/13/mira/" title="Measure Integral and Real Analysis (1)">Measure Integral and Real Analysis (1)</a></li>
 <li><a href="/2022/02/27/mira-2/" title="Measure Integral and Real Analysis (2)">Measure Integral and Real Analysis (2)</a></li>
+<li><a href="/2022/03/14/mira-3/" title="Measure Integral and Real Analysis (3)">Measure Integral and Real Analysis (3)</a></li>
 <li><a href="/2021/11/15/time-series-1/" title="Time Series (1)">Time Series (1)</a></li>
 <li><a href="/2021/11/19/time-series-2/" title="Time Series (2)">Time Series (2)</a></li>
 <li><a href="/2022/01/06/linear-algebra/" title="Linear Algebra (1)">Linear Algebra (1)</a></li>
@@ -428,6 +430,487 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2022/03/14/mira-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/03/14/mira-3/" class="post-title-link" itemprop="url">Measure Integral and Real Analysis (3)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-03-14 21:04:16" itemprop="dateCreated datePublished" datetime="2022-03-14T21:04:16+08:00">2022-03-14</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2022-03-19 14:43:53" itemprop="dateModified" datetime="2022-03-19T14:43:53+08:00">2022-03-19</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2022/03/14/mira-3/" class="post-meta-item leancloud_visitors" data-flag-title="Measure Integral and Real Analysis (3)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>8.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>8 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="measure-integral-and-real-analysis-3">Measure Integral and Real Analysis (3)</h1>
+<h2 id="banach-spaces">Banach Spaces</h2>
+<h3 id="metric-spaces">Metric Spaces</h3>
+<h4 id="definition-6.1-metric-space">Definition 6.1: Metric Space</h4>
+<p>A <strong>metric</strong> oon a nonempty set <span class="math inline">\(V\)</span> is a function <span class="math inline">\(d: V \times V \rightarrow [0, \infty)\)</span> s.t:</p>
+<ul>
+<li><span class="math inline">\(d(f, f) = 0, \; \forall f \in V\)</span>.</li>
+<li>If <span class="math inline">\(f, g \in V\)</span> and <span class="math inline">\(d(f, g) = 0\)</span>, then <span class="math inline">\(f = g\)</span>.</li>
+<li><span class="math inline">\(d(f, g) = d(g, f), \; \forall f, g \in V\)</span>.</li>
+<li><span class="math inline">\(d(f, h) \leq d(f, g) + f(g, h), \; \forall f, g, h \in V\)</span>. (Triangle inequality)</li>
+</ul>
+<p>A <strong>metric space</strong> is a pair <span class="math inline">\((V, d)\)</span>, where <span class="math inline">\(V\)</span> is a nonempty set adn <span class="math inline">\(d\)</span> is a metric on <span class="math inline">\(V\)</span>.</p>
+<p><br></p>
+<h4 id="definition-6.3-open-ball-bf-r-closed-ball-barbf-r">Definition 6.3: Open Ball; <span class="math inline">\(B(f, r)\)</span>; Closed Ball <span class="math inline">\(\bar{B}(f, r)\)</span></h4>
+<p>Suppose <span class="math inline">\((V, d)\)</span> is a metric space, <span class="math inline">\(f \in V\)</span> and <span class="math inline">\(r &gt; 0\)</span>:</p>
+<ul>
+<li>The <strong>open ball</strong> centered at <span class="math inline">\(f\)</span> with radius <span class="math inline">\(r\)</span> is denoted <span class="math inline">\(B(f, r)\)</span> and is defined by: <span class="math display">\[B(f, r) = \{g \in V: d(f, g) &lt;  r\}\]</span></li>
+<li>The <strong>closed ball</strong> centered at <span class="math inline">\(f\)</span> with radius <span class="math inline">\(r\)</span> is denoted <span class="math inline">\(\bar{B}(f, r)\)</span> and is defined by: <span class="math display">\[\bar{B}(f, r) = \{g \in V: d(f, g) \leq r\}\]</span></li>
+</ul>
+<p><br></p>
+<h4 id="definition-6.4-open">Definition 6.4: Open</h4>
+<p>A subset <span class="math inline">\(G\)</span> of a metric space <span class="math inline">\(V\)</span> is called <strong>open</strong> if for every <span class="math inline">\(f \in G\)</span>, there exists <span class="math inline">\(r &gt; 0\)</span> s.t <span class="math inline">\(B(f, r) \subseteq G\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-6.5-open-balls-are-open">Theorem 6.5: Open balls are Open</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a metric space, <span class="math inline">\(f \in V\)</span>, and <span class="math inline">\(r &gt; 0\)</span>. Then <span class="math inline">\(B(f, r)\)</span> is an open subset of <span class="math inline">\(V\)</span>.</p>
+<h5 id="proof-of-theorem-6.5">Proof of Theorem 6.5:</h5>
+<p>Suppose <span class="math inline">\(g \in B(f, r)\)</span>. We need to show there exists an open ball centered at <span class="math inline">\(g\)</span> with radius <span class="math inline">\(k\)</span> s.t <span class="math inline">\(B(g, k) \subseteq B(f, r)\)</span>. Let <span class="math inline">\(k = r - d(f, g)\)</span>, and <span class="math inline">\(h \in B(g, r - d(f, g))\)</span>, then:</p>
+<p><span class="math display">\[d(f, h) \leq d(f, g) + d(g, h) &lt; d(f, g) + r - d(f, g) = r\]</span></p>
+<p>Thus, <span class="math inline">\(h \in B(f, r), \; \forall h \in B(g, k)\)</span>, so <span class="math inline">\(B(f, r)\)</span> is open.</p>
+<p><br></p>
+<h4 id="definition-6.6-closed">Definition 6.6: Closed</h4>
+<p>A subset of a metric space <span class="math inline">\(V\)</span> is called <strong>closed</strong> if its complement in <span class="math inline">\(V\)</span> is open.</p>
+<p><br></p>
+<h4 id="definition-6.7-closure-bare">Definition 6.7: Closure; <span class="math inline">\(\bar{E}\)</span></h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a metric space and <span class="math inline">\(E \subseteq V\)</span>. The <strong>closure</strong> of <span class="math inline">\(E\)</span>, denoted <span class="math inline">\(\bar{E}\)</span>, is defined by:</p>
+<p><span class="math display">\[\bar{E} = \{g \in V: B(g, \epsilon) \cap E \neq \emptyset \; \forall \epsilon &gt; 0\}\]</span></p>
+<p><br></p>
+<h4 id="definition-6.8-limit-in-metric-space-lim_k-rightarrow-infty-f_k">Definition 6.8: Limit in Metric Space; <span class="math inline">\(\lim_{k \rightarrow \infty} f_k\)</span></h4>
+<p>Suppose <span class="math inline">\((V, d)\)</span> is a metric space, <span class="math inline">\(f_1, f_2, ...\)</span> is a sequence in <span class="math inline">\(V\)</span>, and <span class="math inline">\(f \in V\)</span>. Then:</p>
+<p><span class="math display">\[\lim_{k\rightarrow \infty} f_k = f\]</span></p>
+<p>means</p>
+<p><span class="math display">\[\lim_{k \rightarrow \infty} d(f, f_k) = 0\]</span></p>
+<p><br></p>
+<h4 id="theorem-6.9-closure">Theorem 6.9: Closure</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a metric space and <span class="math inline">\(E \subseteq V\)</span>. Then:</p>
+<ol type="a">
+<li><span class="math inline">\(\bar{E} = \{g \in V: \text{there exist $f_1, f_2, ...$ in $E$ s.t $\lim_{k \rightarrow \infty} f_k = g$}\}\)</span></li>
+<li><span class="math inline">\(\bar{E}\)</span> is the intersection of all closed subsets of <span class="math inline">\(V\)</span> that contains <span class="math inline">\(E\)</span>.</li>
+<li><span class="math inline">\(\bar{E}\)</span> is a closed subset of <span class="math inline">\(V\)</span>.</li>
+<li><span class="math inline">\(E\)</span> is closed if and ony if <span class="math inline">\(\bar{E} = E\)</span>.</li>
+<li><span class="math inline">\(E\)</span> is closed if and only if <span class="math inline">\(E\)</span> contains the limit of every convergent sequence of elements of <span class="math inline">\(E\)</span>.</li>
+</ol>
+<p><br></p>
+<h4 id="definition-6.10-continuous">Definition 6.10: Continuous</h4>
+<p>Suppose <span class="math inline">\((V, d_v)\)</span> and <span class="math inline">\((W, d_w)\)</span> are metric spaces and <span class="math inline">\(T: V \rightarrow W\)</span> is a function.</p>
+<ul>
+<li><p>For <span class="math inline">\(f \in V\)</span>, the function <span class="math inline">\(T\)</span> is called <strong>continuous</strong> at <span class="math inline">\(f\)</span> if for every <span class="math inline">\(\epsilon &gt; 0\)</span>, there exists <span class="math inline">\(\delta &gt; 0\)</span> s.t: <span class="math display">\[d_w (T(f), T(g)) &lt; \epsilon\]</span></p>
+<p>for all <span class="math inline">\(g \in V\)</span> amd <span class="math inline">\(d_v(f, g) &lt; \epsilon\)</span>.</p></li>
+<li><p>The function <span class="math inline">\(T\)</span> is called <strong>continuous</strong> if <span class="math inline">\(T\)</span> is continuous at <span class="math inline">\(f\)</span> for every <span class="math inline">\(f \in V\)</span>.</p></li>
+</ul>
+<p><br></p>
+<h4 id="theorem-6.11-equivalent-conditions-for-continuity">Theorem 6.11: Equivalent Conditions for Continuity</h4>
+<p>Suppose <span class="math inline">\(V, W\)</span> are metric spaces and <span class="math inline">\(T: V \rightarrow W\)</span> is a function. Then the following are equivalent:</p>
+<ol type="a">
+<li><span class="math inline">\(T\)</span> is continuous.</li>
+<li><span class="math inline">\(\lim_{k \rightarrow \infty} f_k = f \in V \implies \lim_{k \rightarrow \infty} T(f_k) = T(f) \in W\)</span>.</li>
+<li><span class="math inline">\(T^{-1} (G)\)</span> is an open subset of <span class="math inline">\(V\)</span> for every open set <span class="math inline">\(G \subseteq W\)</span>.</li>
+<li><span class="math inline">\(T^{-1} (F)\)</span> is a closed subset of <span class="math inline">\(V\)</span> for every closed set <span class="math inline">\(F \subseteq W\)</span>.</li>
+</ol>
+<p><br></p>
+<h4 id="definition-6.12-cauchy-sequence">Definition 6.12: Cauchy Sequence</h4>
+<p>A sequence <span class="math inline">\(f_1, f_2, ...\)</span> in a metric space <span class="math inline">\((V, d)\)</span> is called a <strong>Cauchy sequence</strong> if for every <span class="math inline">\(\epsilon &gt; 0\)</span>, there exists <span class="math inline">\(n \in \mathbb{Z}^+\)</span> s.t <span class="math inline">\(d(f_i, f_k) &lt; \epsilon\)</span> for all integers <span class="math inline">\(j \geq n\)</span> and <span class="math inline">\(k \geq n\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-6.13-every-convergent-sequence-is-a-cauchy-sequence">Theorem 6.13: Every Convergent Sequence is a Cauchy Sequence</h4>
+<p>Every convergent sequence in a metric space is a Cauchy seqeunce.</p>
+<p><br></p>
+<h4 id="definition-6.14-complete-metric-space">Definition 6.14: Complete Metric Space</h4>
+<p>A metric space <span class="math inline">\(V\)</span> is called <strong>complete</strong> if every Cauchy sequence in <span class="math inline">\(V\)</span> converges to some element of <span class="math inline">\(V\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-6.16-connection-between-complete-and-closed">Theorem 6.16: Connection Between Complete and Closed</h4>
+<ol type="a">
+<li>A complete subset of a metric space is closed.</li>
+<li>A closed subset of a complete metric space is complete.</li>
+</ol>
+<h5 id="proof-of-theorem-6.16">Proof of Theorem 6.16:</h5>
+<p>To prove a, assume <span class="math inline">\(U \subseteq V\)</span> is a complete subset of a metric space <span class="math inline">\((V, d)\)</span>, then for convergent sequence <span class="math inline">\(f_1, f_2, ... \in U\)</span>, we have the limit <span class="math inline">\(f \in V\)</span>, which implies the set is closed.</p>
+<p>To prove b, assume <span class="math inline">\(U \subseteq V\)</span> is a closed subset of a complete metric space <span class="math inline">\(V\)</span>, then for cauchy sequence <span class="math inline">\(f_1, f_2, ... \in U\)</span>, we also have <span class="math inline">\(f_1, f_2, ... \in V\)</span>. Since <span class="math inline">\(V\)</span> is complete, <span class="math inline">\(f_1, f_2, ..\)</span> has a limit <span class="math inline">\(f \in V\)</span>, since <span class="math inline">\(U\)</span> is closed, <span class="math inline">\(f \in U\)</span>.</p>
+<p><br></p>
+<h3 id="vector-spaces">Vector Spaces</h3>
+<p>If <span class="math inline">\(z_1, z_2, ...\)</span> is a sequence of complex numbers and <span class="math inline">\(L \in \mathbb{C}\)</span>, then:</p>
+<p><span class="math display">\[\lim_{k \rightarrow} z_k = L \implies \lim_{k \rightarrow \infty} |z_k - L| = 0\]</span></p>
+<p>IFF</p>
+<p><span class="math display">\[\lim_{k\rightarrow \infty} Re(z_k) = Re(L), \quad \quad \lim_{k\rightarrow \infty} Im(z_k) = Im(L)\]</span></p>
+<h4 id="definition-6.19-measurable-complex-valued-function">Definition 6.19: Measurable Complex-Valued Function</h4>
+<p>Suppose <span class="math inline">\((X, S)\)</span> is a measurable space. A function <span class="math inline">\(f: X \rightarrow \mathbb{C}\)</span> is called <span class="math inline">\(S\)</span>-measurable if <span class="math inline">\(Re(f)\)</span> and <span class="math inline">\(Im(f)\)</span> are both <span class="math inline">\(S\)</span>-measurable functions.</p>
+<p>The following are equivalent:</p>
+<ol type="1">
+<li><span class="math inline">\(f\)</span> is <span class="math inline">\(S\)</span>-measurable.</li>
+<li><span class="math inline">\(f^{-1}(G) \in S\)</span> for every open set <span class="math inline">\(G \in \mathbb{R}^2\)</span>.</li>
+<li><span class="math inline">\(f^{-1}(B) \in S\)</span> for every Borel set <span class="math inline">\(B \in \mathbb{B}_2\)</span>.</li>
+</ol>
+<p><br></p>
+<h4 id="theorem-6.20-fp-is-measurable-if-f-is-measurable">Theorem 6.20: <span class="math inline">\(|f|^p\)</span> is Measurable If <span class="math inline">\(f\)</span> is Measurable</h4>
+<p>Suppose <span class="math inline">\((X, S)\)</span> is a measurable space, <span class="math inline">\(f: X \rightarrow \mathbb{C}\)</span> is an <span class="math inline">\(S\)</span>-measurable function, and <span class="math inline">\(0 &lt; p &lt; \infty\)</span>. Then <span class="math inline">\(|f|^p\)</span> is an <span class="math inline">\(S\)</span>-measurable function.</p>
+<p><br></p>
+<h4 id="definition-6.21-integral-of-a-complex-valued-function-int-f-dmu">Definition 6.21: Integral of a Complex-valued Function; <span class="math inline">\(\int f d\mu\)</span></h4>
+<p>Suppose <span class="math inline">\((X, S, \mu)\)</span> is a measure space and <span class="math inline">\(f: X \rightarrow \mathbb{C}\)</span> is an <span class="math inline">\(S\)</span>-mearuable function with <span class="math inline">\(\int |f| d\mu &lt; \infty\)</span> (<span class="math inline">\(f \in L^1(\mu)\)</span>) Then <span class="math inline">\(\int f d\mu\)</span> is defined by:</p>
+<p><span class="math display">\[\int f d\mu = \int (Re(f)) d\mu + i\int (Im (f)) d\mu\]</span></p>
+<p>And</p>
+<p><span class="math display">\[\int (f + g) d\mu = \int f d\mu + \int g d\mu\]</span></p>
+<p><span class="math display">\[\int \alpha f d\mu = \alpha \int f d\mu\]</span></p>
+<p>where <span class="math inline">\(f, g\)</span> are S-measurable complex valued functions s.t the integrals are defined, and <span class="math inline">\(\alpha \in \mathbb{C}\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-6.22-bound-on-the-absolute-value-of-an-integral">Theorem 6.22: Bound on the Absolute Value of an Integral</h4>
+<p>Suppose <span class="math inline">\((X, S, \mu)\)</span> is a measure space and <span class="math inline">\(f: X \rightarrow \mathbb{C}\)</span> is an <span class="math inline">\(S\)</span>-measurable function s.t <span class="math inline">\(\int |f| d\mu &lt; \infty\)</span>. Then:</p>
+<p><span class="math display">\[|\int f d\mu| \leq \int |f| d\mu\]</span></p>
+<p><br></p>
+<h4 id="theorem-6.24-integral-of-complex-conjugate-of-a-function">Theorem 6.24: Integral of Complex Conjugate of a Function</h4>
+<p><span class="math display">\[\int \bar{f} d\mu = \overline{\int f d\mu}\]</span></p>
+<p>for every measure <span class="math inline">\(\mu\)</span> and every <span class="math inline">\(f \in L^1 (\mu)\)</span></p>
+<p><br></p>
+<h3 id="normed-vector-space">Normed Vector Space</h3>
+<h4 id="definition-6.33-norm-normed-vector-space">Definition 6.33: Norm; Normed Vector Space</h4>
+<p>A <strong>norm</strong> on a vector space <span class="math inline">\(V\)</span> over $ $ is a function <span class="math inline">\(\|\cdot\|: V \rightarrow [0, \infty)\)</span> s.t:</p>
+<ul>
+<li><span class="math inline">\(\|f\| = 0\)</span> IFF <span class="math inline">\(f = 0\)</span> (<strong>positive definite</strong>)</li>
+<li><span class="math inline">\(\|\alpha f\| = |\alpha| \|f\|\)</span> (<strong>Homogeneity</strong>)</li>
+<li><span class="math inline">\(\|f + g\| \leq \|f\| + \|g\|, \; \forall f,g \in V\)</span> (<strong>Triangle Inequality</strong>)</li>
+</ul>
+<p>A <strong>normed vector space</strong> is a pair <span class="math inline">\((V, \|\cdot\|)\)</span>, wehre <span class="math inline">\(V\)</span> is a vetor space and <span class="math inline">\(\|\cdot\|\)</span> is a norm on <span class="math inline">\(V\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-6.36-normed-vector-spaces-are-metric-spaces">Theorem 6.36: Normed Vector Spaces are Metric Spaces</h4>
+<p>Suppose <span class="math inline">\((V, \|\cdot\|)\)</span> is a normed vector space. Define <span class="math inline">\(d: V \times V \rightarrow [0, \infty)\)</span> by:</p>
+<p><span class="math display">\[d(f, g) = \|f - g\|\]</span></p>
+<p>Then <span class="math inline">\(d\)</span> is a metric on <span class="math inline">\(V\)</span>.</p>
+<p>So in the context of normed vector space:</p>
+<p><span class="math display">\[\lim_{k\rightarrow \infty} f_k = f \Longleftrightarrow \lim_{k \rightarrow k} \|f_k - f\| = 0\]</span></p>
+<p>A sequence <span class="math inline">\(f_1, f_2, ...\)</span> in a normed vector space <span class="math inline">\((V, \|\cdot\|)\)</span> is a Cauchy sequence if for every <span class="math inline">\(\epsilon &gt; 0\)</span>, there exits <span class="math inline">\(n \in \mathbb{Z}^+\)</span> s.t <span class="math inline">\(\forall k, j \in \mathbb{Z}^+ \geq n\)</span>, <span class="math inline">\(\|f_k - f_j\| &lt; \epsilon\)</span>.</p>
+<p><br></p>
+<h4 id="definition-6.37-banach-space">Definition 6.37: Banach Space</h4>
+<p>A complete normed vector space is called a <strong>Banach space</strong>.</p>
+<p>In other words, a normed vector space is a Banach space, if every cauchy sequence in <span class="math inline">\(V\)</span> converges to some element of <span class="math inline">\(V\)</span>.</p>
+<p><br></p>
+<h4 id="definition-6.40-infinite-sum-in-a-normed-vector-space">Definition 6.40: Infinite Sum in a Normed Vector Space</h4>
+<p>Suppose <span class="math inline">\(g_1, g_2, ...\)</span> is a sequence in a normed vector space <span class="math inline">\(V\)</span>. Then <span class="math inline">\(\sum^{\infty}_{k=1} g_k\)</span> is defined by:</p>
+<p><span class="math display">\[\sum^{\infty}_{k=1} g_k = \lim_{n \rightarrow \infty} \sum^n_{k=1} g_k\]</span></p>
+<p>If this limit exists, in which case the infinite series is said to <strong>converge</strong>.</p>
+<p><br></p>
+<h4 id="theorem-6.41">Theorem 6.41:</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a normed vector space. Then <span class="math inline">\(V\)</span> is a banach space IFF <span class="math inline">\(\sum^{\infty}_{k=1} g_k\)</span> converges for every sequence <span class="math inline">\(g_1, g_2, ...\)</span> in <span class="math inline">\(V\)</span> s.t <span class="math inline">\(\sum^{\infty}_{k=1} \|g_k\| &lt; \epsilon\)</span></p>
+<p><br></p>
+<h4 id="definition-6.43-bounded-linear-map-t-bv-w">Definition 6.43: Bounded Linear Map; <span class="math inline">\(\|T\|\)</span>; <span class="math inline">\(B(V, W)\)</span></h4>
+<p>Suppose <span class="math inline">\(V, W\)</span> are normed vector spaces over the same field <span class="math inline">\(\mathbb{F}\)</span> and <span class="math inline">\(T: V \rightarrow W\)</span> is a linear map.</p>
+<ul>
+<li>The norm of <span class="math inline">\(T\)</span>, denoted <span class="math inline">\(\|T\|\)</span>, is defined by: <span class="math display">\[\|T\| = \sup\{\|T(f)\|: f\in V, \; \|f\| \leq 1\}\]</span></li>
+<li><span class="math inline">\(T\)</span> is called <strong>bounded</strong> if <span class="math inline">\(\|T\| &lt; \infty\)</span>.</li>
+<li>The set of bounded linear maps from <span class="math inline">\(V\)</span> to <span class="math inline">\(W\)</span> is denoted <span class="math inline">\(B(V, W)\)</span>.</li>
+</ul>
+<p><br></p>
+<h4 id="theorem-6.46-cdot-is-a-norm-on-bv-w">Theorem 6.46: <span class="math inline">\(\|\cdot\|\)</span> is a Norm on <span class="math inline">\(B(V, W)\)</span></h4>
+<p>Suppose <span class="math inline">\(V, W\)</span> are normed vector spaces, <span class="math inline">\(\|\cdot\|\)</span> is defined above. Then <span class="math inline">\(\forall S, T \in B(V, W), \alpha \in \mathbb{F}\)</span>:</p>
+<ul>
+<li><span class="math inline">\(\|S + T\| \leq \|S\| + \|T\|\)</span></li>
+<li><span class="math inline">\(\|\alpha T\| = |\alpha|\|T\|\)</span> Furthermore, the function <span class="math inline">\(\|\cdot\|\)</span> is a norm on <span class="math inline">\(B(V, W)\)</span></li>
+</ul>
+<p><br></p>
+<h4 id="theorem-6.471-equivalence-conditions-for-norm-of-linear-maps">Theorem 6.47(1): Equivalence Conditions For Norm of Linear Maps</h4>
+<p>All Definitions below are equivalent for normed vector spaces <span class="math inline">\(V, W\)</span>, <span class="math inline">\(V \neq \{0\}\)</span>, <span class="math inline">\(T: V \rightarrow W\)</span>:</p>
+<ol type="1">
+<li><span class="math inline">\(\|T\| = \sup\{\|T(f)\|: f\in V, \; \|f\| \leq 1\}\)</span></li>
+<li><span class="math inline">\(\|T\| = \sup\{\|T(f)\|: f\in V, \; \|f\| = 1\}\)</span></li>
+<li><span class="math inline">\(\|T\| = \inf \{c \in [0, \infty): \|T(f)\| \leq c\|f\|, \forall f \in V\}\)</span></li>
+<li><span class="math inline">\(\|T\| = \sup\{\frac{\|T(f)\|}{\|f\|}: f \in V, \; f \neq 0\}\)</span></li>
+</ol>
+<p>This conditions implies that:</p>
+<p><span class="math display">\[\|T(f)\| \leq \|T\|\|f\|, \; \forall f\in V\]</span></p>
+<p><br></p>
+<h4 id="theorem-6.47-bv-w-is-a-banach-space-if-w-is-a-banach-space">Theorem 6.47: <span class="math inline">\(B(V, W)\)</span> is a Banach Space IF <span class="math inline">\(W\)</span> is a Banach Space</h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a normed vector space and <span class="math inline">\(W\)</span> is a Banach Space. Then <span class="math inline">\(B(V, W)\)</span> is a Banach space.</p>
+<p><br></p>
+<h4 id="theorem-6.48-continuity-is-equivalent-to-boundedness-for-linear-maps">Theorem 6.48: Continuity is Equivalent to Boundedness for Linear Maps</h4>
+<p>A linear map from one normed vector space to another normed vector space is continuous IFF its bounded.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2022/03/10/rigorous-probability-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/03/10/rigorous-probability-1/" class="post-title-link" itemprop="url">Rigorous Probability (1)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-03-10 08:35:59" itemprop="dateCreated datePublished" datetime="2022-03-10T08:35:59+08:00">2022-03-10</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2022-03-19 16:33:20" itemprop="dateModified" datetime="2022-03-19T16:33:20+08:00">2022-03-19</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2022/03/10/rigorous-probability-1/" class="post-meta-item leancloud_visitors" data-flag-title="Rigorous Probability (1)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>5.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="a-first-look-at-rigorous-probability-theory-1">A First Look at Rigorous Probability Theory (1)</h1>
+<h2 id="probability-triples">Probability Triples</h2>
+<h3 id="basic-definition">Basic Definition</h3>
+<p>We define a <strong>probability triple or (probability) measure space or probability space</strong> to be a triple <span class="math inline">\((\Omega, F, P)\)</span>, where:</p>
+<ul>
+<li>The <strong>sample space</strong> <span class="math inline">\(\Omega\)</span> is any non-empty set.</li>
+<li><span class="math inline">\(F\)</span> is <span class="math inline">\(\sigma\)</span>-algebra on <span class="math inline">\(\Omega\)</span>:
+<ul>
+<li>This is a collection of all <strong>events or measurable sets</strong>. These are the subsets <span class="math inline">\(A \subseteq \Omega\)</span> for which <span class="math inline">\(P(A)\)</span> is well-defined. It may not contain all subsets of <span class="math inline">\(\Omega\)</span>, though we still expect it to contain most of the subsets that come up naturally.</li>
+</ul></li>
+<li>The <strong>probability measure</strong> <span class="math inline">\(P: F \rightarrow [0, 1]\)</span>, with <span class="math inline">\(P(\Omega) = 1\)</span> s.t <span class="math inline">\(P\)</span> is <strong>countably additive</strong>.</li>
+</ul>
+<p><br></p>
+<h3 id="constructing-probability-triples">Constructing Probability Triples</h3>
+<h4 id="theorem-2.21-discrete-probability-space-construction">Theorem 2.21: Discrete Probability Space Construction</h4>
+<p>Let <span class="math inline">\(\Omega\)</span> be a finite or countable non-empty set. Let <span class="math inline">\(p: \Omega \rightarrow [0, 1]\)</span> be any function satisfying:</p>
+<p><span class="math display">\[\sum_{w \in \Omega} p(w) = 1\]</span></p>
+<p>Then there is a valid probability triple <span class="math inline">\((\Omega, F, P)\)</span> where <span class="math inline">\(F\)</span> is the collection of all subsets of <span class="math inline">\(\Omega\)</span> and for <span class="math inline">\(A \in F\)</span>, <span class="math inline">\(P(A) = \sum_{w \in A} p (w)\)</span></p>
+<blockquote>
+<h5 id="example-2.2.2-uniform-distribution">Example 2.2.2: Uniform Distribution</h5>
+<p>Let <span class="math inline">\(\Omega\)</span> be any finite non-empty set, <span class="math inline">\(F\)</span> be the collection of all subsets of <span class="math inline">\(\Omega\)</span>, and <span class="math inline">\(P(A) = \frac{|A|}{|\Omega|}\)</span> for all <span class="math inline">\(A \in F\)</span> (<span class="math inline">\(|A|\)</span> is the cardinality of the set <span class="math inline">\(A\)</span>). Then <span class="math inline">\((\Omega, F, P)\)</span> is a valid probability triple, called the <strong>uniform distribution on <span class="math inline">\(\Omega\)</span>, written <span class="math inline">\(Uniform(\Omega)\)</span></strong>.</p>
+</blockquote>
+<p><br></p>
+<h4 id="definition-2.2.3-semi-algebra">Definition 2.2.3: Semi-Algebra</h4>
+<p>A collection <span class="math inline">\(J\)</span> is called <strong>semi-algebra</strong> of subsets of <span class="math inline">\(\Omega\)</span> if:</p>
+<ol type="1">
+<li><span class="math inline">\(\emptyset, \Omega \in J\)</span></li>
+<li>If <span class="math inline">\(X_1, X_2, ..., X_n \in J\)</span>, then <span class="math inline">\(\bigcap^{n}_{i=1} X_i \in J\)</span></li>
+<li><span class="math inline">\(\forall X \in J\)</span>, there exists disjoint sets <span class="math inline">\(X_1, ...., X_n \in J\)</span>, s.t <span class="math inline">\(\bigcup^{n}_{i=1} X_i = \Omega / X\)</span></li>
+</ol>
+<p><br></p>
+<h4 id="theorem-2.3.1-the-extension-theorem">Theorem 2.3.1: The Extension Theorem</h4>
+<p>Let <span class="math inline">\(J\)</span> be a <strong>semi-algebra</strong> of subsets of <span class="math inline">\(\Omega\)</span>. Let <span class="math inline">\(P: J \rightarrow [0, 1]\)</span> with <span class="math inline">\(P(\emptyset) = 0\)</span> and <span class="math inline">\(P(\Omega) = 1\)</span>, satisfying the finite superadditivity property that:</p>
+<p><span class="math display">\[P(\bigcup^k_{i=1} A_i) \leq  \sum^k_{i=1} P(A_i)\]</span></p>
+<p>Where <span class="math inline">\(A_1, ..., A_k \in J\)</span> and <span class="math inline">\(\bigcup^k_{i=1} A_i \in J\)</span> and <span class="math inline">\(\{A_i\}\)</span> are disjoint.</p>
+<p>And also the countable monotonicity property that:</p>
+<p><span class="math display">\[P(A) \leq \sum^{\infty}_{n=1} P(A_n)\]</span></p>
+<p>for <span class="math inline">\(A, A_1, A_2, .... \in J\)</span> with <span class="math inline">\(A \subseteq \bigcup^{\infty}_{n=1} A_n\)</span></p>
+<p>Then there is a <span class="math inline">\(\sigma-\)</span>algebra <span class="math inline">\(M \supseteq J\)</span> and a <strong>countably additive</strong> probability measure <span class="math inline">\(P^*\)</span> on <span class="math inline">\(M\)</span> s.t <span class="math inline">\(P^*(A) = P(A), \;\forall A \in J\)</span>. Thus, <span class="math inline">\((\Omega, M, P^*)\)</span> is a valid probability triple:</p>
+<p><span class="math display">\[P^{*} (A) = \inf_{A_1, A_2, ... \in J} \sum^{\infty}_{i=1} P(A_i)\]</span></p>
+<p>Where <span class="math inline">\(A \subseteq \bigcup_i A_i\)</span> and <span class="math inline">\(A \subseteq \Omega\)</span>.</p>
+<p><strong>This theorem provides a way to construct complicated probability triples on a full <span class="math inline">\(\sigma-\)</span>algebra, using only probability defined on the much simpler subsets.</strong></p>
+<p><br></p>
+<h4 id="lemma-2.3.5-p-is-an-extension-of-p">Lemma 2.3.5 <span class="math inline">\(P^*\)</span> is an extension of <span class="math inline">\(P\)</span></h4>
+<p><span class="math inline">\(P^*\)</span> is an extension of <span class="math inline">\(P\)</span>, <span class="math inline">\(P^* (A) = P(A)\)</span> for all <span class="math inline">\(A \in J\)</span>.</p>
+<h5 id="proof-of-lemma-2.3.5">Proof of Lemma 2.3.5:</h5>
+<p>By monotonicity of <span class="math inline">\(P\)</span>:</p>
+<p><span class="math display">\[P(A) \leq \inf_{A_1, ...} \sum_{n} P(A_n) = P^* (A)\]</span></p>
+<p>Let <span class="math inline">\(A_1 = A\)</span> and <span class="math inline">\(A_2, ... = \emptyset\)</span>, then:</p>
+<p><span class="math display">\[P(A) = \sum_{n} P(A_n) \geq P^*(A)\]</span></p>
+<p><br></p>
+<h4 id="lemma-2.3.6-p-is-countably-subadditive">Lemma 2.3.6: <span class="math inline">\(P^*\)</span> is Countably Subadditive</h4>
+<p><span class="math inline">\(P^*\)</span> is countably subadditive:</p>
+<p><span class="math display">\[P^*(\bigcup^\infty_{n=1} B_n) \leq \sum^\infty_{n=1} P^*(B_n),  \; \forall B_1, B_2, ... \subseteq \Omega\]</span></p>
+<p><br></p>
+<h2 id="further-probabilistic-foundations">Further Probabilistic Foundations</h2>
+<h3 id="random-variables">Random Variables</h3>
+<p>If we think of a sample space <span class="math inline">\(\Omega\)</span> as the set of all possible random outcomes of some experiment, then a <strong>random variable</strong> assigns a numerical value to each of these outcomes.</p>
+<h4 id="definition-3.1.1-random-variables">Definition 3.1.1: Random Variables</h4>
+<p>Given a probability triple <span class="math inline">\((\Omega, F, P)\)</span>, a <strong>random variable</strong> is a function <span class="math inline">\(X: \Omega \rightarrow \mathbb{R}\)</span>, s.t:</p>
+<p><span class="math display">\[\{w \in \Omega; X(w) \leq x\} \in F, \;\forall x \in \mathbb{R}\]</span></p>
+<p>This is equivalently saying that:</p>
+<p><span class="math display">\[X^{-1}((-\infty, x]) \in F, \; x \in \mathbb{R}\]</span></p>
+<p>Which is the definition of being <span class="math inline">\(F\)</span>-measurable. Thus, <span class="math inline">\(X\)</span> must be <span class="math inline">\(F\)</span>-measurable.</p>
+<p><br></p>
+<h4 id="theorem-3.1.5-functions-of-random-variables">Theorem 3.1.5: Functions of Random Variables</h4>
+<ol type="1">
+<li>If <span class="math inline">\(X = I_{A}\)</span> is the indicator of some event <span class="math inline">\(A \in F\)</span>, then <span class="math inline">\(X\)</span> is a random variable.</li>
+<li>If <span class="math inline">\(X, Y\)</span> are random variables and <span class="math inline">\(c \in \mathbb{R}\)</span>, then <span class="math inline">\(X + c, cX, X^2, X + Y, XY\)</span> are all random variables.</li>
+<li>If <span class="math inline">\(Z_1, Z_2, ....\)</span> are random variables s.t <span class="math inline">\(\lim_{n \rightarrow \infty} Z_n(w)\)</span> exists for each <span class="math inline">\(w \in \Omega\)</span>, and <span class="math inline">\(Z(w) = \lim_{n \rightarrow \infty} Z_n(w)\)</span>, then <span class="math inline">\(Z\)</span> is also a random variable.</li>
+</ol>
+<p><br></p>
+<h4 id="theorem-3.1.8-continuity-implies-borel-measurable">Theorem 3.1.8: Continuity <span class="math inline">\(\implies\)</span> Borel-Measurable</h4>
+<p>If <span class="math inline">\(f\)</span> is a continuous function or a piecewise-continuous function, then <span class="math inline">\(f\)</span> is Borel-measurable.</p>
+<p><br></p>
+<h4 id="remark-3.1.10">Remark 3.1.10:</h4>
+<p>More generally, one could consider a random variable which mapped <span class="math inline">\(\Omega\)</span> to an arbitrary second measurable space, i.e. to some second non-empty set <span class="math inline">\(\Omega^\prime\)</span> with its own collection <span class="math inline">\(F^\prime\)</span> of measurable subsets. We would then have: <span class="math inline">\(X: \Omega \rightarrow \Omega^\prime\)</span>, with condition <span class="math inline">\(X^{-1}(A^{\prime}) \in F,\;\forall A^{\prime} \in F\)</span>.</p>
+<p><br></p>
+<h3 id="independence">Independence</h3>
+<h4 id="definition-3.2.1-independence-of-events">Definition 3.2.1: Independence of Events</h4>
+<p>A possibly-infinite collection <span class="math inline">\(\{A_{\alpha}\}_{\alpha \in I}\)</span> of events is said to be independent if for each <span class="math inline">\(j \in \mathbb{N}\)</span> and each distinct <strong>finite</strong> choice <span class="math inline">\(\alpha_1, \alpha_2, ...., \alpha_j \in I\)</span>, we have:</p>
+<p><span class="math display">\[P(A_{\alpha_1} \cap A_{\alpha_2} \cap ... \cap A_{\alpha_j}) = P(A_{\alpha_1})P(A_{\alpha_2})....P(A_{\alpha_j})\]</span></p>
+<p>If <span class="math inline">\(\{A_{\alpha}\}_{\alpha \in I}\)</span> of events is independent, so is <span class="math inline">\(\{A^C_{\alpha}\}_{\alpha \in I}\)</span></p>
+<p><br></p>
+<h4 id="definition-3.2.2-independence-of-random-variables">Definition 3.2.2: Independence of Random Variables</h4>
+<p>A collection of possibly-infinite random variables <span class="math inline">\(\{X_{\alpha}\}_{\alpha \in I}\)</span> are independent if for all <span class="math inline">\(j \in \mathbb{N}\)</span>, for all distinct <span class="math inline">\(\alpha_1, ..., \alpha_j \in I\)</span>, and for all Borel sets <span class="math inline">\(S_1, ..., S_j\)</span>, we have:</p>
+<p><span class="math display">\[P(X_{\alpha_1} \in S_1, ...., X_{\alpha_{j}} \in S_j) = P(X_{\alpha_1})P(X_{\alpha_2})....P(X_{\alpha_j})\]</span></p>
+<p><br></p>
+<h4 id="theorem-3.2.3-functions-of-independent-random-variables">Theorem 3.2.3: Functions of Independent Random Variables</h4>
+<p>Let <span class="math inline">\(X, Y\)</span> be independent random variables. Let <span class="math inline">\(f, g: \mathbb{R} \rightarrow \mathbb{R}\)</span> be Borel-measurable functions. Then the random variables <span class="math inline">\(f(X)\)</span> and <span class="math inline">\(g(Y)\)</span> are independent.</p>
+<p><br></p>
+<h4 id="theorem-3.2.4-independence-of-joint-probability">Theorem 3.2.4: Independence of Joint Probability</h4>
+<p>Let <span class="math inline">\(X, Y\)</span> be two random variables defined jointly on some probability triple <span class="math inline">\((\Omega, F, P)\)</span>. Then <span class="math inline">\(X, Y\)</span> are <strong>independent</strong> IFF <span class="math inline">\(P(X \leq x, Y \leq y) = P(X \leq x) P(Y \leq y), \forall x, y \in \mathbb{R}\)</span>.</p>
+<p><br></p>
+<h3 id="continuity-of-probabilities">Continuity of Probabilities</h3>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2022/02/27/mira-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -459,7 +942,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-03-07 22:50:23" itemprop="dateModified" datetime="2022-03-07T22:50:23+08:00">2022-03-07</time>
+        <time title="Modified: 2022-03-12 16:34:59" itemprop="dateModified" datetime="2022-03-12T16:34:59+08:00">2022-03-12</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -486,14 +969,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>25k</span>
+      <span>32k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>23 mins.</span>
+      <span>29 mins.</span>
     </span>
 </div>
 
@@ -591,7 +1074,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-03-06 11:18:44" itemprop="dateModified" datetime="2022-03-06T11:18:44+08:00">2022-03-06</time>
+        <time title="Modified: 2022-03-08 21:48:29" itemprop="dateModified" datetime="2022-03-08T21:48:29+08:00">2022-03-08</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1311,275 +1794,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2022/01/06/linear-algebra/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/01/06/linear-algebra/" class="post-title-link" itemprop="url">linear-algebra</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-01-06 08:29:19" itemprop="dateCreated datePublished" datetime="2022-01-06T08:29:19+08:00">2022-01-06</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-03-06 11:42:51" itemprop="dateModified" datetime="2022-03-06T11:42:51+08:00">2022-03-06</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2022/01/06/linear-algebra/" class="post-meta-item leancloud_visitors" data-flag-title="linear-algebra" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>9.4k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>9 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="linear-algebra-1">Linear Algebra (1)</h1>
-<p>All the notes precisely follows <strong>Linear Algebra Done Right by Sheldon Axler</strong></p>
-<h2 id="vector-spaces">Vector Spaces</h2>
-<h3 id="complex-numbers">Complex Numbers</h3>
-<h4 id="definition-1.1-complex-numbers">Definition 1.1: Complex Numbers</h4>
-<ol type="1">
-<li>A <strong>Complex Number</strong> is an order pair <span class="math inline">\((a, b)\)</span>, where <span class="math inline">\(a, b \in \mathbb{R}\)</span>.</li>
-<li><strong>Addition and multiplication</strong> is defined as: <span class="math display">\[x + y = (a + b) + (c + d) = (a + c, b + d)\]</span> <span class="math display">\[xy = (a + b) (c + d) = (ac - bd, ad + bc)\]</span></li>
-<li><span class="math inline">\(i = (0, 1)\)</span> and <span class="math inline">\(i^2 = (0, 1) (0, 1) = -1\)</span></li>
-<li>Every complex number can be written as <span class="math display">\[x = (a, b) = (a, 0) + (0, b) = (a, 0) + (b, 0)(0, 1) = a + bi\]</span></li>
-<li>The set of all complex numbers is denoted by <span class="math inline">\(\mathbb{C}\)</span>: <span class="math display">\[\mathbb{C} = \{a + bi: a, b \in \mathbb{R}\}\]</span></li>
-<li><strong>Addition and multiplication</strong> on <span class="math inline">\(\mathbb{C}\)</span> are defined by <span class="math display">\[(a + bi) + (c + di) = (a + c) + (b + d)i\]</span> <span class="math display">\[(a + bi) (c + di) = (ac - bd) + (ad + bc)i\]</span></li>
-</ol>
-<p><span class="math inline">\(a, c, b, d \in \mathbb{R}\)</span></p>
-<p>If <span class="math inline">\(a \in \mathbb{R}\)</span>, we identify <span class="math inline">\(a + 0i\)</span> with the real number <span class="math inline">\(a\)</span>. Thus we can think of <span class="math inline">\(\mathbb{R}\)</span> as a subset of <span class="math inline">\(\mathbb{C}\)</span>.</p>
-<h4 id="definition-1.2-conjugate">Definition 1.2: Conjugate</h4>
-<p>If <span class="math inline">\(a, b\)</span> are real and <span class="math inline">\(z = a + bi\)</span>, then the complex number <span class="math inline">\(\bar{z} = a - bi\)</span> is called the <strong>conjugate</strong> of <span class="math inline">\(z\)</span>. The numbers <span class="math inline">\(a, b\)</span> are the real part and the imaginary part of <span class="math inline">\(z\)</span> respectively:</p>
-<p><span class="math display">\[a = Re(z), \quad \quad b = Im(z)\]</span></p>
-<h4 id="theorem-1.3a">Theorem 1.3A</h4>
-<p>If <span class="math inline">\(z\)</span> and <span class="math inline">\(w\)</span> are complex, then</p>
-<ol type="1">
-<li><span class="math inline">\(\overline{z + w} = \bar{z} + \bar{w}\)</span></li>
-<li><span class="math inline">\(\overline{zw} = \bar{z}\bar{w}\)</span></li>
-<li><span class="math inline">\(z + \bar{z} = 2Re(z),\quad z - \bar{z} = 2i Im(z)\)</span></li>
-<li>If <span class="math inline">\(z = a + bi\)</span>, <span class="math inline">\(z \bar{z} = a^2 + b^2\)</span> is real and positive.</li>
-<li><span class="math inline">\(|z| = \sqrt{z\bar{z}} = \sqrt{a^2 + b^2}\)</span> is unique.</li>
-<li><span class="math inline">\(|zw| = |z||w|\)</span></li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/01/06/linear-algebra/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2022/01/01/real-analysis-3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/01/01/real-analysis-3/" class="post-title-link" itemprop="url">Real Analysis (3)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-01-01 10:33:24" itemprop="dateCreated datePublished" datetime="2022-01-01T10:33:24+08:00">2022-01-01</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-03-06 11:19:30" itemprop="dateModified" datetime="2022-03-06T11:19:30+08:00">2022-03-06</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2022/01/01/real-analysis-3/" class="post-meta-item leancloud_visitors" data-flag-title="Real Analysis (3)" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>14k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>13 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="real-analysis-3">Real Analysis (3)</h1>
-<h2 id="basic-topology-of-mathbbr">Basic Topology of <span class="math inline">\(\mathbb{R}\)</span></h2>
-<h3 id="open-and-closed-sets">Open and Closed Sets</h3>
-<h4 id="definition-3.2.1-open">Definition 3.2.1: Open</h4>
-<p>A set <span class="math inline">\(O \subseteq \mathbb{R}\)</span> is <strong>open</strong> if for all points <span class="math inline">\(a \in O\)</span> there exists an <span class="math inline">\(\epsilon-neighborhood V_{\epsilon} (a) \subseteq O\)</span>.</p>
-<blockquote>
-<p><span class="math inline">\(\mathbb{R}\)</span> is open <span class="math inline">\(\emptyset\)</span> is open</p>
-</blockquote>
-<h4 id="theorem-3.2.3">Theorem 3.2.3</h4>
-<ol type="1">
-<li>The union of an arbitrary collection of open sets is open.</li>
-<li>The intersection of a finite collection of open sets is open.</li>
-</ol>
-<h4 id="definition-3.2.4-limit-point">Definition 3.2.4: Limit Point</h4>
-<p>A point <span class="math inline">\(x\)</span> is a <strong>limit point</strong> of a set <span class="math inline">\(A\)</span> if every <span class="math inline">\(\epsilon-neighborhood V_{\epsilon} (x)\)</span> of <span class="math inline">\(x\)</span> intersects the set <span class="math inline">\(A\)</span> at some point other than <span class="math inline">\(x\)</span>. Limit points may not be in <span class="math inline">\(A\)</span>, consider the end points of open sets.</p>
-<h4 id="theorem-3.2.5">Theorem 3.2.5</h4>
-<p>A point <span class="math inline">\(x\)</span> is a <strong>limit point</strong> of a set <span class="math inline">\(A\)</span> if and only if <span class="math inline">\(x = \lim_{n \rightarrow \infty} a_n\)</span> for some sequence <span class="math inline">\((a_n)\)</span> contained in <span class="math inline">\(A\)</span> satisfying <span class="math inline">\(a_n \neq x, \; \forall n \in \mathbb{N}\)</span></p>
-<h4 id="definition-3.2.6-isolated-point">Definition 3.2.6: Isolated Point</h4>
-<p>A point <span class="math inline">\(a \in A\)</span> is an <strong>isolated point</strong> of <span class="math inline">\(A\)</span> if it is not a limit point of <span class="math inline">\(A\)</span>. Isolated point is always in <span class="math inline">\(A\)</span>.</p>
-<h4 id="definition-3.2.7-closed-set">Definition 3.2.7: Closed Set</h4>
-<p>A set <span class="math inline">\(F \subseteq \mathbb{R}\)</span> is <strong>closed</strong> if it contains all its limit points. Topologically speaking, a closed set is one where convergent sequences within the set have limits that are also in the set.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/01/01/real-analysis-3/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 <script src="/js/comments.js"></script>
 </div>
@@ -1602,13 +1818,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">762k</span>
+    <span title="Symbols count total">783k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">11:33</span>
+    <span title="Reading time total">11:52</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

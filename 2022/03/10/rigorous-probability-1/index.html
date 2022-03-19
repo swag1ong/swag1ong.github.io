@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="A First Look at Rigorous Probability Theory (1) Probability Triples Basic Definition We define a probability triple or (probability) measure space or probability space to be a triple \((\Omega, F,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rigorous Probability (1)">
+<meta property="og:url" content="https://swag1ong.github.io/2022/03/10/rigorous-probability-1/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="A First Look at Rigorous Probability Theory (1) Probability Triples Basic Definition We define a probability triple or (probability) measure space or probability space to be a triple \((\Omega, F,">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-03-10T00:35:59.000Z">
+<meta property="article:modified_time" content="2022-03-19T08:33:20.979Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="RL Basics">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2022/03/10/rigorous-probability-1/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2022&#x2F;03&#x2F;10&#x2F;rigorous-probability-1&#x2F;&quot;,&quot;path&quot;:&quot;2022&#x2F;03&#x2F;10&#x2F;rigorous-probability-1&#x2F;&quot;,&quot;title&quot;:&quot;Rigorous Probability (1)&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>Rigorous Probability (1) | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">101</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#a-first-look-at-rigorous-probability-theory-1"><span class="nav-number">1.</span> <span class="nav-text">A First Look at Rigorous Probability Theory (1)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#probability-triples"><span class="nav-number">1.1.</span> <span class="nav-text">Probability Triples</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#basic-definition"><span class="nav-number">1.1.1.</span> <span class="nav-text">Basic Definition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#constructing-probability-triples"><span class="nav-number">1.1.2.</span> <span class="nav-text">Constructing Probability Triples</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-2.21-discrete-probability-space-construction"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Theorem 2.21: Discrete Probability Space Construction</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#example-2.2.2-uniform-distribution"><span class="nav-number">1.1.2.1.1.</span> <span class="nav-text">Example 2.2.2: Uniform Distribution</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-2.2.3-semi-algebra"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">Definition 2.2.3: Semi-Algebra</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-2.3.1-the-extension-theorem"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">Theorem 2.3.1: The Extension Theorem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lemma-2.3.5-p-is-an-extension-of-p"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">Lemma 2.3.5 \(P^*\) is an extension of \(P\)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-lemma-2.3.5"><span class="nav-number">1.1.2.4.1.</span> <span class="nav-text">Proof of Lemma 2.3.5:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lemma-2.3.6-p-is-countably-subadditive"><span class="nav-number">1.1.2.5.</span> <span class="nav-text">Lemma 2.3.6: \(P^*\) is Countably Subadditive</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#further-probabilistic-foundations"><span class="nav-number">1.2.</span> <span class="nav-text">Further Probabilistic Foundations</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#random-variables"><span class="nav-number">1.2.1.</span> <span class="nav-text">Random Variables</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.1.1-random-variables"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Definition 3.1.1: Random Variables</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.1.5-functions-of-random-variables"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Theorem 3.1.5: Functions of Random Variables</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.1.8-continuity-implies-borel-measurable"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">Theorem 3.1.8: Continuity \(\implies\) Borel-Measurable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#remark-3.1.10"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">Remark 3.1.10:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#independence"><span class="nav-number">1.2.2.</span> <span class="nav-text">Independence</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.2.1-independence-of-events"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">Definition 3.2.1: Independence of Events</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.2.2-independence-of-random-variables"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">Definition 3.2.2: Independence of Random Variables</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.2.3-functions-of-independent-random-variables"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">Theorem 3.2.3: Functions of Independent Random Variables</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.2.4-independence-of-joint-probability"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">Theorem 3.2.4: Independence of Joint Probability</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#continuity-of-probabilities"><span class="nav-number">1.2.3.</span> <span class="nav-text">Continuity of Probabilities</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">101</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2022/03/10/rigorous-probability-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Rigorous Probability (1)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-03-10 08:35:59" itemprop="dateCreated datePublished" datetime="2022-03-10T08:35:59+08:00">2022-03-10</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2022-03-19 16:33:20" itemprop="dateModified" datetime="2022-03-19T16:33:20+08:00">2022-03-19</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2022/03/10/rigorous-probability-1/" class="post-meta-item leancloud_visitors" data-flag-title="Rigorous Probability (1)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>5.5k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="a-first-look-at-rigorous-probability-theory-1">A First Look at Rigorous Probability Theory (1)</h1>
+<h2 id="probability-triples">Probability Triples</h2>
+<h3 id="basic-definition">Basic Definition</h3>
+<p>We define a <strong>probability triple or (probability) measure space or probability space</strong> to be a triple <span class="math inline">\((\Omega, F, P)\)</span>, where:</p>
+<ul>
+<li>The <strong>sample space</strong> <span class="math inline">\(\Omega\)</span> is any non-empty set.</li>
+<li><span class="math inline">\(F\)</span> is <span class="math inline">\(\sigma\)</span>-algebra on <span class="math inline">\(\Omega\)</span>:
+<ul>
+<li>This is a collection of all <strong>events or measurable sets</strong>. These are the subsets <span class="math inline">\(A \subseteq \Omega\)</span> for which <span class="math inline">\(P(A)\)</span> is well-defined. It may not contain all subsets of <span class="math inline">\(\Omega\)</span>, though we still expect it to contain most of the subsets that come up naturally.</li>
+</ul></li>
+<li>The <strong>probability measure</strong> <span class="math inline">\(P: F \rightarrow [0, 1]\)</span>, with <span class="math inline">\(P(\Omega) = 1\)</span> s.t <span class="math inline">\(P\)</span> is <strong>countably additive</strong>.</li>
+</ul>
+<p><br></p>
+<h3 id="constructing-probability-triples">Constructing Probability Triples</h3>
+<h4 id="theorem-2.21-discrete-probability-space-construction">Theorem 2.21: Discrete Probability Space Construction</h4>
+<p>Let <span class="math inline">\(\Omega\)</span> be a finite or countable non-empty set. Let <span class="math inline">\(p: \Omega \rightarrow [0, 1]\)</span> be any function satisfying:</p>
+<p><span class="math display">\[\sum_{w \in \Omega} p(w) = 1\]</span></p>
+<p>Then there is a valid probability triple <span class="math inline">\((\Omega, F, P)\)</span> where <span class="math inline">\(F\)</span> is the collection of all subsets of <span class="math inline">\(\Omega\)</span> and for <span class="math inline">\(A \in F\)</span>, <span class="math inline">\(P(A) = \sum_{w \in A} p (w)\)</span></p>
+<blockquote>
+<h5 id="example-2.2.2-uniform-distribution">Example 2.2.2: Uniform Distribution</h5>
+<p>Let <span class="math inline">\(\Omega\)</span> be any finite non-empty set, <span class="math inline">\(F\)</span> be the collection of all subsets of <span class="math inline">\(\Omega\)</span>, and <span class="math inline">\(P(A) = \frac{|A|}{|\Omega|}\)</span> for all <span class="math inline">\(A \in F\)</span> (<span class="math inline">\(|A|\)</span> is the cardinality of the set <span class="math inline">\(A\)</span>). Then <span class="math inline">\((\Omega, F, P)\)</span> is a valid probability triple, called the <strong>uniform distribution on <span class="math inline">\(\Omega\)</span>, written <span class="math inline">\(Uniform(\Omega)\)</span></strong>.</p>
+</blockquote>
+<p><br></p>
+<h4 id="definition-2.2.3-semi-algebra">Definition 2.2.3: Semi-Algebra</h4>
+<p>A collection <span class="math inline">\(J\)</span> is called <strong>semi-algebra</strong> of subsets of <span class="math inline">\(\Omega\)</span> if:</p>
+<ol type="1">
+<li><span class="math inline">\(\emptyset, \Omega \in J\)</span></li>
+<li>If <span class="math inline">\(X_1, X_2, ..., X_n \in J\)</span>, then <span class="math inline">\(\bigcap^{n}_{i=1} X_i \in J\)</span></li>
+<li><span class="math inline">\(\forall X \in J\)</span>, there exists disjoint sets <span class="math inline">\(X_1, ...., X_n \in J\)</span>, s.t <span class="math inline">\(\bigcup^{n}_{i=1} X_i = \Omega / X\)</span></li>
+</ol>
+<p><br></p>
+<h4 id="theorem-2.3.1-the-extension-theorem">Theorem 2.3.1: The Extension Theorem</h4>
+<p>Let <span class="math inline">\(J\)</span> be a <strong>semi-algebra</strong> of subsets of <span class="math inline">\(\Omega\)</span>. Let <span class="math inline">\(P: J \rightarrow [0, 1]\)</span> with <span class="math inline">\(P(\emptyset) = 0\)</span> and <span class="math inline">\(P(\Omega) = 1\)</span>, satisfying the finite superadditivity property that:</p>
+<p><span class="math display">\[P(\bigcup^k_{i=1} A_i) \leq  \sum^k_{i=1} P(A_i)\]</span></p>
+<p>Where <span class="math inline">\(A_1, ..., A_k \in J\)</span> and <span class="math inline">\(\bigcup^k_{i=1} A_i \in J\)</span> and <span class="math inline">\(\{A_i\}\)</span> are disjoint.</p>
+<p>And also the countable monotonicity property that:</p>
+<p><span class="math display">\[P(A) \leq \sum^{\infty}_{n=1} P(A_n)\]</span></p>
+<p>for <span class="math inline">\(A, A_1, A_2, .... \in J\)</span> with <span class="math inline">\(A \subseteq \bigcup^{\infty}_{n=1} A_n\)</span></p>
+<p>Then there is a <span class="math inline">\(\sigma-\)</span>algebra <span class="math inline">\(M \supseteq J\)</span> and a <strong>countably additive</strong> probability measure <span class="math inline">\(P^*\)</span> on <span class="math inline">\(M\)</span> s.t <span class="math inline">\(P^*(A) = P(A), \;\forall A \in J\)</span>. Thus, <span class="math inline">\((\Omega, M, P^*)\)</span> is a valid probability triple:</p>
+<p><span class="math display">\[P^{*} (A) = \inf_{A_1, A_2, ... \in J} \sum^{\infty}_{i=1} P(A_i)\]</span></p>
+<p>Where <span class="math inline">\(A \subseteq \bigcup_i A_i\)</span> and <span class="math inline">\(A \subseteq \Omega\)</span>.</p>
+<p><strong>This theorem provides a way to construct complicated probability triples on a full <span class="math inline">\(\sigma-\)</span>algebra, using only probability defined on the much simpler subsets.</strong></p>
+<p><br></p>
+<h4 id="lemma-2.3.5-p-is-an-extension-of-p">Lemma 2.3.5 <span class="math inline">\(P^*\)</span> is an extension of <span class="math inline">\(P\)</span></h4>
+<p><span class="math inline">\(P^*\)</span> is an extension of <span class="math inline">\(P\)</span>, <span class="math inline">\(P^* (A) = P(A)\)</span> for all <span class="math inline">\(A \in J\)</span>.</p>
+<h5 id="proof-of-lemma-2.3.5">Proof of Lemma 2.3.5:</h5>
+<p>By monotonicity of <span class="math inline">\(P\)</span>:</p>
+<p><span class="math display">\[P(A) \leq \inf_{A_1, ...} \sum_{n} P(A_n) = P^* (A)\]</span></p>
+<p>Let <span class="math inline">\(A_1 = A\)</span> and <span class="math inline">\(A_2, ... = \emptyset\)</span>, then:</p>
+<p><span class="math display">\[P(A) = \sum_{n} P(A_n) \geq P^*(A)\]</span></p>
+<p><br></p>
+<h4 id="lemma-2.3.6-p-is-countably-subadditive">Lemma 2.3.6: <span class="math inline">\(P^*\)</span> is Countably Subadditive</h4>
+<p><span class="math inline">\(P^*\)</span> is countably subadditive:</p>
+<p><span class="math display">\[P^*(\bigcup^\infty_{n=1} B_n) \leq \sum^\infty_{n=1} P^*(B_n),  \; \forall B_1, B_2, ... \subseteq \Omega\]</span></p>
+<p><br></p>
+<h2 id="further-probabilistic-foundations">Further Probabilistic Foundations</h2>
+<h3 id="random-variables">Random Variables</h3>
+<p>If we think of a sample space <span class="math inline">\(\Omega\)</span> as the set of all possible random outcomes of some experiment, then a <strong>random variable</strong> assigns a numerical value to each of these outcomes.</p>
+<h4 id="definition-3.1.1-random-variables">Definition 3.1.1: Random Variables</h4>
+<p>Given a probability triple <span class="math inline">\((\Omega, F, P)\)</span>, a <strong>random variable</strong> is a function <span class="math inline">\(X: \Omega \rightarrow \mathbb{R}\)</span>, s.t:</p>
+<p><span class="math display">\[\{w \in \Omega; X(w) \leq x\} \in F, \;\forall x \in \mathbb{R}\]</span></p>
+<p>This is equivalently saying that:</p>
+<p><span class="math display">\[X^{-1}((-\infty, x]) \in F, \; x \in \mathbb{R}\]</span></p>
+<p>Which is the definition of being <span class="math inline">\(F\)</span>-measurable. Thus, <span class="math inline">\(X\)</span> must be <span class="math inline">\(F\)</span>-measurable.</p>
+<p><br></p>
+<h4 id="theorem-3.1.5-functions-of-random-variables">Theorem 3.1.5: Functions of Random Variables</h4>
+<ol type="1">
+<li>If <span class="math inline">\(X = I_{A}\)</span> is the indicator of some event <span class="math inline">\(A \in F\)</span>, then <span class="math inline">\(X\)</span> is a random variable.</li>
+<li>If <span class="math inline">\(X, Y\)</span> are random variables and <span class="math inline">\(c \in \mathbb{R}\)</span>, then <span class="math inline">\(X + c, cX, X^2, X + Y, XY\)</span> are all random variables.</li>
+<li>If <span class="math inline">\(Z_1, Z_2, ....\)</span> are random variables s.t <span class="math inline">\(\lim_{n \rightarrow \infty} Z_n(w)\)</span> exists for each <span class="math inline">\(w \in \Omega\)</span>, and <span class="math inline">\(Z(w) = \lim_{n \rightarrow \infty} Z_n(w)\)</span>, then <span class="math inline">\(Z\)</span> is also a random variable.</li>
+</ol>
+<p><br></p>
+<h4 id="theorem-3.1.8-continuity-implies-borel-measurable">Theorem 3.1.8: Continuity <span class="math inline">\(\implies\)</span> Borel-Measurable</h4>
+<p>If <span class="math inline">\(f\)</span> is a continuous function or a piecewise-continuous function, then <span class="math inline">\(f\)</span> is Borel-measurable.</p>
+<p><br></p>
+<h4 id="remark-3.1.10">Remark 3.1.10:</h4>
+<p>More generally, one could consider a random variable which mapped <span class="math inline">\(\Omega\)</span> to an arbitrary second measurable space, i.e. to some second non-empty set <span class="math inline">\(\Omega^\prime\)</span> with its own collection <span class="math inline">\(F^\prime\)</span> of measurable subsets. We would then have: <span class="math inline">\(X: \Omega \rightarrow \Omega^\prime\)</span>, with condition <span class="math inline">\(X^{-1}(A^{\prime}) \in F,\;\forall A^{\prime} \in F\)</span>.</p>
+<p><br></p>
+<h3 id="independence">Independence</h3>
+<h4 id="definition-3.2.1-independence-of-events">Definition 3.2.1: Independence of Events</h4>
+<p>A possibly-infinite collection <span class="math inline">\(\{A_{\alpha}\}_{\alpha \in I}\)</span> of events is said to be independent if for each <span class="math inline">\(j \in \mathbb{N}\)</span> and each distinct <strong>finite</strong> choice <span class="math inline">\(\alpha_1, \alpha_2, ...., \alpha_j \in I\)</span>, we have:</p>
+<p><span class="math display">\[P(A_{\alpha_1} \cap A_{\alpha_2} \cap ... \cap A_{\alpha_j}) = P(A_{\alpha_1})P(A_{\alpha_2})....P(A_{\alpha_j})\]</span></p>
+<p>If <span class="math inline">\(\{A_{\alpha}\}_{\alpha \in I}\)</span> of events is independent, so is <span class="math inline">\(\{A^C_{\alpha}\}_{\alpha \in I}\)</span></p>
+<p><br></p>
+<h4 id="definition-3.2.2-independence-of-random-variables">Definition 3.2.2: Independence of Random Variables</h4>
+<p>A collection of possibly-infinite random variables <span class="math inline">\(\{X_{\alpha}\}_{\alpha \in I}\)</span> are independent if for all <span class="math inline">\(j \in \mathbb{N}\)</span>, for all distinct <span class="math inline">\(\alpha_1, ..., \alpha_j \in I\)</span>, and for all Borel sets <span class="math inline">\(S_1, ..., S_j\)</span>, we have:</p>
+<p><span class="math display">\[P(X_{\alpha_1} \in S_1, ...., X_{\alpha_{j}} \in S_j) = P(X_{\alpha_1})P(X_{\alpha_2})....P(X_{\alpha_j})\]</span></p>
+<p><br></p>
+<h4 id="theorem-3.2.3-functions-of-independent-random-variables">Theorem 3.2.3: Functions of Independent Random Variables</h4>
+<p>Let <span class="math inline">\(X, Y\)</span> be independent random variables. Let <span class="math inline">\(f, g: \mathbb{R} \rightarrow \mathbb{R}\)</span> be Borel-measurable functions. Then the random variables <span class="math inline">\(f(X)\)</span> and <span class="math inline">\(g(Y)\)</span> are independent.</p>
+<p><br></p>
+<h4 id="theorem-3.2.4-independence-of-joint-probability">Theorem 3.2.4: Independence of Joint Probability</h4>
+<p>Let <span class="math inline">\(X, Y\)</span> be two random variables defined jointly on some probability triple <span class="math inline">\((\Omega, F, P)\)</span>. Then <span class="math inline">\(X, Y\)</span> are <strong>independent</strong> IFF <span class="math inline">\(P(X \leq x, Y \leq y) = P(X \leq x) P(Y \leq y), \forall x, y \in \mathbb{R}\)</span>.</p>
+<p><br></p>
+<h3 id="continuity-of-probabilities">Continuity of Probabilities</h3>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\05\03\MDP\" rel="bookmark">MDP</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\05\03\bellman-equations\" rel="bookmark">Bellman Equations</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\05\03\bellman-optimality-equations\" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\05\18\cheat-sheet\" rel="bookmark">Cheat Sheet</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\05\03\dp\" rel="bookmark">Dynamic Programming</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/RL-Basics/" rel="tag"># RL Basics</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/02/27/mira-2/" rel="prev" title="Measure Integral and Real Analysis (2)">
+                  <i class="fa fa-chevron-left"></i> Measure Integral and Real Analysis (2)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/03/14/mira-3/" rel="next" title="Measure Integral and Real Analysis (3)">
+                  Measure Integral and Real Analysis (3) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">783k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">11:52</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>
