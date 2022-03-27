@@ -22,15 +22,15 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
 
 <script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
-<meta name="description" content="A First Look at Rigorous Probability Theory (1) Probability Triples Basic Definition We define a probability triple or (probability) measure space or probability space to be a triple \((\Omega, F,">
+<meta name="description" content="A First Look at Rigorous Probability Theory (1) Preliminaries Supremums and Infimums Definition 1.1: Limit Inferior and Limit Superior of Sequence The limit inferior of a sequence \((a_n)\) is def">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Rigorous Probability (1)">
 <meta property="og:url" content="https://swag1ong.github.io/2022/03/10/rigorous-probability-1/index.html">
 <meta property="og:site_name" content="GoGoGogo!">
-<meta property="og:description" content="A First Look at Rigorous Probability Theory (1) Probability Triples Basic Definition We define a probability triple or (probability) measure space or probability space to be a triple \((\Omega, F,">
+<meta property="og:description" content="A First Look at Rigorous Probability Theory (1) Preliminaries Supremums and Infimums Definition 1.1: Limit Inferior and Limit Superior of Sequence The limit inferior of a sequence \((a_n)\) is def">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-03-10T00:35:59.000Z">
-<meta property="article:modified_time" content="2022-03-19T08:33:20.979Z">
+<meta property="article:modified_time" content="2022-03-21T14:35:44.000Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta property="article:tag" content="RL Basics">
 <meta name="twitter:card" content="summary">
@@ -152,7 +152,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#a-first-look-at-rigorous-probability-theory-1"><span class="nav-number">1.</span> <span class="nav-text">A First Look at Rigorous Probability Theory (1)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#probability-triples"><span class="nav-number">1.1.</span> <span class="nav-text">Probability Triples</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#basic-definition"><span class="nav-number">1.1.1.</span> <span class="nav-text">Basic Definition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#constructing-probability-triples"><span class="nav-number">1.1.2.</span> <span class="nav-text">Constructing Probability Triples</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-2.21-discrete-probability-space-construction"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Theorem 2.21: Discrete Probability Space Construction</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#example-2.2.2-uniform-distribution"><span class="nav-number">1.1.2.1.1.</span> <span class="nav-text">Example 2.2.2: Uniform Distribution</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-2.2.3-semi-algebra"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">Definition 2.2.3: Semi-Algebra</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-2.3.1-the-extension-theorem"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">Theorem 2.3.1: The Extension Theorem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lemma-2.3.5-p-is-an-extension-of-p"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">Lemma 2.3.5 \(P^*\) is an extension of \(P\)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-lemma-2.3.5"><span class="nav-number">1.1.2.4.1.</span> <span class="nav-text">Proof of Lemma 2.3.5:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lemma-2.3.6-p-is-countably-subadditive"><span class="nav-number">1.1.2.5.</span> <span class="nav-text">Lemma 2.3.6: \(P^*\) is Countably Subadditive</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#further-probabilistic-foundations"><span class="nav-number">1.2.</span> <span class="nav-text">Further Probabilistic Foundations</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#random-variables"><span class="nav-number">1.2.1.</span> <span class="nav-text">Random Variables</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.1.1-random-variables"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Definition 3.1.1: Random Variables</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.1.5-functions-of-random-variables"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Theorem 3.1.5: Functions of Random Variables</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.1.8-continuity-implies-borel-measurable"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">Theorem 3.1.8: Continuity \(\implies\) Borel-Measurable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#remark-3.1.10"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">Remark 3.1.10:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#independence"><span class="nav-number">1.2.2.</span> <span class="nav-text">Independence</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.2.1-independence-of-events"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">Definition 3.2.1: Independence of Events</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.2.2-independence-of-random-variables"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">Definition 3.2.2: Independence of Random Variables</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.2.3-functions-of-independent-random-variables"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">Theorem 3.2.3: Functions of Independent Random Variables</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.2.4-independence-of-joint-probability"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">Theorem 3.2.4: Independence of Joint Probability</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#continuity-of-probabilities"><span class="nav-number">1.2.3.</span> <span class="nav-text">Continuity of Probabilities</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#a-first-look-at-rigorous-probability-theory-1"><span class="nav-number">1.</span> <span class="nav-text">A First Look at Rigorous Probability Theory (1)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#preliminaries"><span class="nav-number">1.1.</span> <span class="nav-text">Preliminaries</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#supremums-and-infimums"><span class="nav-number">1.1.1.</span> <span class="nav-text">Supremums and Infimums</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-1.1-limit-inferior-and-limit-superior-of-sequence"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">Definition 1.1: Limit Inferior and Limit Superior of Sequence</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-1.2-the-tail-of-convergent-theorem-trends-to-zero"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">Theorem 1.2: The Tail of Convergent Theorem Trends to Zero</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#probability-triples"><span class="nav-number">1.2.</span> <span class="nav-text">Probability Triples</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#basic-definition"><span class="nav-number">1.2.1.</span> <span class="nav-text">Basic Definition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#constructing-probability-triples"><span class="nav-number">1.2.2.</span> <span class="nav-text">Constructing Probability Triples</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-2.21-discrete-probability-space-construction"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">Theorem 2.21: Discrete Probability Space Construction</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#example-2.2.2-uniform-distribution"><span class="nav-number">1.2.2.1.1.</span> <span class="nav-text">Example 2.2.2: Uniform Distribution</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-2.2.3-semi-algebra"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">Definition 2.2.3: Semi-Algebra</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-2.3.1-the-extension-theorem"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">Theorem 2.3.1: The Extension Theorem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lemma-2.3.5-p-is-an-extension-of-p"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">Lemma 2.3.5 \(P^*\) is an extension of \(P\)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-lemma-2.3.5"><span class="nav-number">1.2.2.4.1.</span> <span class="nav-text">Proof of Lemma 2.3.5:</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lemma-2.3.6-p-is-countably-subadditive"><span class="nav-number">1.2.2.5.</span> <span class="nav-text">Lemma 2.3.6: \(P^*\) is Countably Subadditive</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#further-probabilistic-foundations"><span class="nav-number">1.3.</span> <span class="nav-text">Further Probabilistic Foundations</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#random-variables"><span class="nav-number">1.3.1.</span> <span class="nav-text">Random Variables</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.1.1-random-variables"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">Definition 3.1.1: Random Variables</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.1.5-functions-of-random-variables"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">Theorem 3.1.5: Functions of Random Variables</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.1.8-continuity-implies-borel-measurable"><span class="nav-number">1.3.1.3.</span> <span class="nav-text">Theorem 3.1.8: Continuity \(\implies\) Borel-Measurable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#remark-3.1.10"><span class="nav-number">1.3.1.4.</span> <span class="nav-text">Remark 3.1.10:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#independence"><span class="nav-number">1.3.2.</span> <span class="nav-text">Independence</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.2.1-independence-of-events"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">Definition 3.2.1: Independence of Events</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.2.2-independence-of-random-variables"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">Definition 3.2.2: Independence of Random Variables</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.2.3-functions-of-independent-random-variables"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">Theorem 3.2.3: Functions of Independent Random Variables</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.2.4-independence-of-joint-probability"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">Theorem 3.2.4: Independence of Joint Probability</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#continuity-of-probabilities"><span class="nav-number">1.3.3.</span> <span class="nav-text">Continuity of Probabilities</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.3.1-continuity-of-probability"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">Theorem 3.3.1: Continuity of Probability</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#limit-events"><span class="nav-number">1.3.4.</span> <span class="nav-text">Limit Events</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.4.0-infinitely-often-almost-always"><span class="nav-number">1.3.4.1.</span> <span class="nav-text">Definition 3.4.0: Infinitely Often, Almost Always</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.4.1"><span class="nav-number">1.3.4.2.</span> <span class="nav-text">Theorem 3.4.1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-3.4.2-the-borel-cantlli-lemma"><span class="nav-number">1.3.4.3.</span> <span class="nav-text">Theorem 3.4.2: The Borel-Cantlli Lemma</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tail-fields"><span class="nav-number">1.3.5.</span> <span class="nav-text">Tail Fields</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-3.5.0-tail-fields"><span class="nav-number">1.3.5.1.</span> <span class="nav-text">Definition 3.5.0: Tail Fields</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#expected-values"><span class="nav-number">1.4.</span> <span class="nav-text">Expected Values</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#simple-random-variables"><span class="nav-number">1.4.1.</span> <span class="nav-text">Simple Random Variables</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-4.1.1-simple-random-variables"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">Definition 4.1.1: Simple Random Variables</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-4.1.2-expected-value-of-simple-random-variables"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">Theorem 4.1.2: Expected Value of Simple Random Variables</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reference"><span class="nav-number">2.</span> <span class="nav-text">Reference</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -262,7 +262,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-03-19 16:33:20" itemprop="dateModified" datetime="2022-03-19T16:33:20+08:00">2022-03-19</time>
+        <time title="Modified: 2022-03-21 22:35:44" itemprop="dateModified" datetime="2022-03-21T22:35:44+08:00">2022-03-21</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -289,14 +289,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>5.5k</span>
+      <span>8.6k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>5 mins.</span>
+      <span>8 mins.</span>
     </span>
 </div>
 
@@ -308,6 +308,18 @@
     
     <div class="post-body" itemprop="articleBody">
         <h1 id="a-first-look-at-rigorous-probability-theory-1">A First Look at Rigorous Probability Theory (1)</h1>
+<h2 id="preliminaries">Preliminaries</h2>
+<h3 id="supremums-and-infimums">Supremums and Infimums</h3>
+<h4 id="definition-1.1-limit-inferior-and-limit-superior-of-sequence">Definition 1.1: Limit Inferior and Limit Superior of Sequence</h4>
+<p>The <strong>limit inferior</strong> of a sequence <span class="math inline">\((a_n)\)</span> is defined as:</p>
+<p><span class="math display">\[\lim\inf_n a_n = \lim_{n \rightarrow \infty} \inf_{k \geq n} a_n\]</span></p>
+<p>and the <strong>limit superior</strong> of the sequence is defined as:</p>
+<p><span class="math display">\[\lim\sup_n a_n = \lim_{n \rightarrow \infty} \inf_{k \geq n} a_n\]</span></p>
+<p>Furthermore, <span class="math inline">\(\lim_n a_n\)</span> exists IFF <span class="math inline">\(\lim\sup_n a_n = \lim \inf_n a_n\)</span></p>
+<p><br></p>
+<h4 id="theorem-1.2-the-tail-of-convergent-theorem-trends-to-zero">Theorem 1.2: The Tail of Convergent Theorem Trends to Zero</h4>
+<p>Let <span class="math inline">\((a_n)\)</span> be a sequence of real numbers. Let <span class="math inline">\(\sum^{\infty}_{n=1} a_n\)</span> be a convergent series and <span class="math inline">\(N \in \mathbb{Z}^+\)</span> be a positive integer, then:</p>
+<p><span class="math display">\[\lim_{N \rightarrow \infty} \sum^{\infty}_{n=N} a_n = 0\]</span></p>
 <h2 id="probability-triples">Probability Triples</h2>
 <h3 id="basic-definition">Basic Definition</h3>
 <p>We define a <strong>probability triple or (probability) measure space or probability space</strong> to be a triple <span class="math inline">\((\Omega, F, P)\)</span>, where:</p>
@@ -402,6 +414,59 @@
 <p>Let <span class="math inline">\(X, Y\)</span> be two random variables defined jointly on some probability triple <span class="math inline">\((\Omega, F, P)\)</span>. Then <span class="math inline">\(X, Y\)</span> are <strong>independent</strong> IFF <span class="math inline">\(P(X \leq x, Y \leq y) = P(X \leq x) P(Y \leq y), \forall x, y \in \mathbb{R}\)</span>.</p>
 <p><br></p>
 <h3 id="continuity-of-probabilities">Continuity of Probabilities</h3>
+<p>Given a probability triple <span class="math inline">\((\Omega, F, P)\)</span>, and events <span class="math inline">\(A, A_1, A_2, .... \in F\)</span>, we write <span class="math inline">\(\{A_n\}\uparrow A\)</span> to mean $A_1 A_2 .... $ and <span class="math inline">\(\bigcup^{\infty}_{n=1}A_n = A\)</span>, similarly, <span class="math inline">\(\{A_n\}\downarrow A\)</span> to mean that <span class="math inline">\(A_1 \supseteq A_2 \supseteq ....\)</span> or <span class="math inline">\(\{A^c\} \uparrow A^c\)</span> and <span class="math inline">\(\bigcap^{\infty}_{n=1} A_n = A\)</span>.</p>
+<h4 id="theorem-3.3.1-continuity-of-probability">Theorem 3.3.1: Continuity of Probability</h4>
+<p>If <span class="math inline">\(\{A_n\} \uparrow A\)</span> or <span class="math inline">\(\{A_n\} \downarrow A\)</span>, then <span class="math inline">\(\lim_{n \rightarrow \infty} P(A_n) = P(A)\)</span></p>
+<p><br></p>
+<h3 id="limit-events">Limit Events</h3>
+<h4 id="definition-3.4.0-infinitely-often-almost-always">Definition 3.4.0: Infinitely Often, Almost Always</h4>
+<p>Given events <span class="math inline">\(A_1, A_2, ... \in F\)</span>, we define <strong>infinitely many</strong>:</p>
+<p><span class="math display">\[\lim\sup_n A_n = \lim_{n \rightarrow \infty} \bigcup^{\infty}_{k=n} A_n = \bigcap^{\infty}_{n=1}\bigcup^{\infty}_{k=n} A_k\]</span></p>
+<p><span class="math display">\[w \in \bigcap^{\infty}_{n=1}\bigcup^{\infty}_{k=n} A_k \implies \forall N \geq 1, \exists k \geq N \text{ s.t } w \in A_n\]</span></p>
+<p>This is equivalently saying that:</p>
+<p><span class="math display">\[\{x: \text{ $x$ in infinitely many $A_n$}\}\]</span></p>
+<p>and <strong>almost always</strong>:</p>
+<p><span class="math display">\[\lim\inf_n A_n = \lim_{n \rightarrow \infty} \bigcap^{\infty}_{k=n} A_n = \bigcup^{\infty}_{n=1}\bigcap^{\infty}_{k=n} A_k\]</span></p>
+<p><span class="math display">\[w \in \bigcup^{\infty}_{n=1}\bigcap^{\infty}_{k=n} A_k \implies \exists N \geq 1, \text{ s.t } \forall k \geq N, w \in A_n\]</span></p>
+<p>This is equivalently saying that:</p>
+<p><span class="math display">\[\{x: \text{ $x$ in all $A_n$ except for finitely many $n$}\}\]</span></p>
+<p><br></p>
+<h4 id="theorem-3.4.1">Theorem 3.4.1</h4>
+<p>We always have:</p>
+<p><span class="math display">\[P(\lim\inf_n A_n) \leq \lim\inf_n P(A_n) \leq \lim\sup_n P(A_n) \leq P(\lim\sup_n A_n)\]</span></p>
+<p><br></p>
+<h4 id="theorem-3.4.2-the-borel-cantlli-lemma">Theorem 3.4.2: The Borel-Cantlli Lemma</h4>
+<p>Let <span class="math inline">\(A_1, A_2, ... \in F\)</span>.</p>
+<ol type="1">
+<li>If <span class="math inline">\(\sum^{\infty}_{n=1} P(A_n) &lt; \infty\)</span>, then <span class="math inline">\(P(\lim\sup_n A_n) = 0\)</span>.</li>
+<li>If <span class="math inline">\(\sum^{\infty}_{n=1} P(A_n) = \infty\)</span> and <span class="math inline">\(\{A_n\}\)</span> are independent, then <span class="math inline">\(P(\lim\sup_n A_n) = 1\)</span>.</li>
+</ol>
+<p><br></p>
+<h3 id="tail-fields">Tail Fields</h3>
+<h4 id="definition-3.5.0-tail-fields">Definition 3.5.0: Tail Fields</h4>
+<p>Given a sequence of events <span class="math inline">\(A_1, A_2, ...\)</span>, we define their <strong>tail field</strong> by:</p>
+<p><span class="math display">\[\tau = \bigcap^{\infty}_{n=1} \sigma(A_n, A_{n+1}, ....)\]</span></p>
+<p>where <span class="math inline">\(\sigma(\cdot)\)</span> is the smallest sigma algebra that contains all sets <span class="math inline">\(A_1, A_2, ...\)</span></p>
+<p><br></p>
+<h2 id="expected-values">Expected Values</h2>
+<h3 id="simple-random-variables">Simple Random Variables</h3>
+<h4 id="definition-4.1.1-simple-random-variables">Definition 4.1.1: Simple Random Variables</h4>
+<p>A random variable <span class="math inline">\(X\)</span> is <strong>simple</strong> if <span class="math inline">\(range(X)\)</span> is finite, where <span class="math inline">\(range(X) := \{X(\omega): \omega \in \Omega \}\)</span>.</p>
+<p>If <span class="math inline">\(X\)</span> is a simple random variable that takes finite values <span class="math inline">\(x_1, ...., x_n\)</span>, then we can write it as simple function:</p>
+<p><span class="math display">\[X = \sum^n_{i=1} a_i I_{A_i}\]</span></p>
+<p>where <span class="math inline">\(A_i = \{\omega: X(\omega) = a_i\} = X^{-1}(\{a_i\})\)</span></p>
+<p><br></p>
+<h4 id="theorem-4.1.2-expected-value-of-simple-random-variables">Theorem 4.1.2: Expected Value of Simple Random Variables</h4>
+<p>For a simple random variable X = ^n_{i=1} a_i I_{A_i}$, we define its <strong>expected value</strong> or <strong>expectation</strong> or <strong>mean</strong> by:</p>
+<p><span class="math display">\[E(X) = \sum^n_{i=1} x_i P(A_i)\]</span></p>
+<p>That is,</p>
+<p><span class="math display">\[E(\sum^n_{i=1} a_i I_{A_i}) = \sum^n_{i=1} x_i P(A_i)\]</span></p>
+<p><span class="math inline">\(\{A_i\}\)</span> is a finite partition of <span class="math inline">\(\Omega\)</span></p>
+<h1 id="reference">Reference</h1>
+<ol type="1">
+<li>Definition 1.1 https://www.youtube.com/watch?v=PZ0UhM9IB_k</li>
+<li>Theorem 1.2 https://proofwiki.org/wiki/Tail_of_Convergent_Series_tends_to_Zero#:~:text=%E2%88%9E%E2%88%91n%3DNan%20is%20convergent,convergent%20series%20tends%20to%20zero.</li>
+</ol>
 
     </div>
 
@@ -415,16 +480,16 @@
       <div class="popular-posts-title"><a href="\2021\05\03\MDP\" rel="bookmark">MDP</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2021\05\03\bellman-equations\" rel="bookmark">Bellman Equations</a></div>
-    </li>
-    <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2021\05\03\bellman-optimality-equations\" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="\2021\05\18\cheat-sheet\" rel="bookmark">Cheat Sheet</a></div>
+      <div class="popular-posts-title"><a href="\2021\05\03\bellman-equations\" rel="bookmark">Bellman Equations</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="\2021\05\03\dp\" rel="bookmark">Dynamic Programming</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2021\05\18\cheat-sheet\" rel="bookmark">Cheat Sheet</a></div>
     </li>
   </ul>
 
@@ -478,13 +543,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">783k</span>
+    <span title="Symbols count total">794k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">11:52</span>
+    <span title="Reading time total">12:02</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
