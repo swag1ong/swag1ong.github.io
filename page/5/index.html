@@ -86,7 +86,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">101</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">102</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -162,7 +162,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">101</span>
+          <span class="site-state-item-count">102</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -215,6 +215,160 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/19/gbdt/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/19/gbdt/" class="post-title-link" itemprop="url">GBDT</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-19 16:31:40" itemprop="dateCreated datePublished" datetime="2021-07-19T16:31:40+08:00">2021-07-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-28 11:22:10" itemprop="dateModified" datetime="2021-07-28T11:22:10+08:00">2021-07-28</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/07/19/gbdt/" class="post-meta-item leancloud_visitors" data-flag-title="GBDT" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>4.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="gradient-boosting-decision-trees">Gradient Boosting Decision Trees</h1>
+<h2 id="boosting-trees">Boosting Trees</h2>
+<p>Regression and classification trees partition the space of all joint predictor variable values into disjoint regions <span class="math inline">\(R_j, \; j=1, 2, ...., J\)</span> as represented by the terminal nodes of the tree. A constant <span class="math inline">\(c_j\)</span> is assigned to each such region and the prediction rule is:</p>
+<p><span class="math display">\[\mathbf{x} \in R_j \implies f(\mathbf{x}) = c_j\]</span></p>
+<p>Thus, a tree can be formally expressed as:</p>
+<p><span class="math display">\[T(\mathbf{x}; \boldsymbol{\theta}) = \sum^{J}_{j=1} c_j I[\mathbf{x} \in R_j]\]</span></p>
+<p>with parameters <span class="math inline">\(\theta = \{R_j, c_j\}^J_1\)</span>. The parameters are found by iteratively solving minimizing problem:</p>
+<ol type="1">
+<li>Given <span class="math inline">\(R_j\)</span>, we solve <span class="math inline">\(\hat{c}_j\)</span> by simply taking the average or majority class.</li>
+<li><span class="math inline">\(R_j\)</span> is found by iterating over all possible pairs of feature and splitting point.</li>
+</ol>
+<p>The boosted tree model is a sum of such trees induced in a forward stagewise manner:</p>
+<p><span class="math display">\[f_M (\mathbf{x}) = \sum^{M}_{m=1} T(\mathbf{x}; \; \boldsymbol{\theta}_m)\]</span></p>
+<p>At each step, one must solve:</p>
+<p><span class="math display">\[\hat{\boldsymbol{\theta}}_m = \underset{\boldsymbol{\theta}_m}{\arg\min} \sum^{N}_{i=1} L(y_i, f_{m-1} (\mathbf{x}_i) + T(\mathbf{x}_i; \; \boldsymbol{\theta}_m))\]</span></p>
+<h2 id="gradient-boosting">Gradient Boosting</h2>
+<p>In general, it is hard to directly take partial derivatives w.r.t the tree's parameters, thus, we take partial derivatives of tree predictions <span class="math inline">\(f(\mathbf{x}_i)\)</span>.</p>
+<p>Fast approximate algorithms for solving the above problem with any differentiable loss criterion can be derived by analogy to numerical optimization. We first start with general case. The loss in using <span class="math inline">\(\mathbf{f}\)</span> to predict <span class="math inline">\(y\)</span> on the training data is:</p>
+<p><span class="math display">\[L(\mathbf{f}) = \sum^{N}_{i=1} L(y_i, f(\mathbf{x}_i))\]</span></p>
+<p>The goal is to minimize <span class="math inline">\(L(\mathbf{x}_i)\)</span> w.r.t <span class="math inline">\(f\)</span>, where here <span class="math inline">\(f(\mathbf{x})\)</span> is constrained to be a sum of trees <span class="math inline">\(f_M (\mathbf{x})\)</span>.</p>
+<p>We first start with general case where <span class="math inline">\(f\)</span> can be any parameters or numbers. In this case, we have <span class="math inline">\(N\)</span> samples, thus, <span class="math inline">\(\mathbf{f} = \{f(\mathbf{x}_1), ...., f(\mathbf{x}_N)\} \in \mathbb{R}^N\)</span>.</p>
+<p>Then, the gradient of objective w.r.t <span class="math inline">\(\mathbf{f} = \mathbf{f}_{m-1}\)</span> which is the current model is:</p>
+<p><span class="math display">\[\mathbf{g}_m = \nabla_{\mathbf{f}} L(\mathbf{f}) = \; &lt;\frac{\partial L(\mathbf{f})}{\partial f(\mathbf{x}_1)}, ...., \frac{\partial L(\mathbf{f})}{\partial f(\mathbf{x}_N)}&gt;\]</span></p>
+<p>Then this gradient points at the direction of <strong>steepest increase</strong>, it tells us how we can change our current predictions to increase our loss. Since we want to minimize the objective, we would like to adjust our current predictions to the direction of <strong>steepest decrease</strong>:</p>
+<p><span class="math display">\[\mathbf{h}_m = - \rho_m \mathbf{g}_m\]</span></p>
+<p>Where <span class="math inline">\(\rho_m\)</span> is the step size for current model and it is minimizer of:</p>
+<p><span class="math display">\[\rho_m = \underset{\rho}{\arg\min} \; L(\mathbf{f}_{m-1} - \rho\mathbf{g}_m)\]</span></p>
+<p>The current solution is then updated as</p>
+<p><span class="math display">\[\mathbf{f}_{m} = f_{m-1} - \rho_m\mathbf{g}_m\]</span></p>
+<p><strong>If fitting the training data (minimizing the loss) is our ultimate goal</strong>, then the above update rule can solve our problem by adding the negative gradient at each iteration. However, our ultimate goal is to generalize to new data, copying and pasting training data exactly is not what we want. One possible solution is to learn the update <span class="math inline">\(- \rho_m\mathbf{g}_m\)</span> by fitting a simple decision tree:</p>
+<p><span class="math display">\[\hat{\boldsymbol{\theta}}_m = \underset{\boldsymbol{\theta}}{\arg\min} \sum^{N}_{i=1} (-g_{im} - T(x_i; \; \boldsymbol{\theta}))^2\]</span></p>
+<p>That is, we fit a regression tree <span class="math inline">\(T\)</span> to the negative gradient values.</p>
+<p><img src='/images/ML/gbdt_1.png' width="600"></p>
+<h3 id="algorithm">Algorithm</h3>
+<p><img src='/images/ML/gbdt_2.png' width="600"></p>
+<ol type="1">
+<li>We first start by a constant model (model that predict constants) which is a single terminal node tree.</li>
+<li>For all samples new targets are generated to be the negative gradient of the loss function w.r.t the current model prediction <span class="math inline">\(\mathbf{f}_{m-1}\)</span>.</li>
+<li>Fit a regression tree to minimize the MSE between new target (negative gradient) and current prediction.</li>
+</ol>
+<h2 id="discussions">Discussions</h2>
+<h3 id="regularization">Regularization</h3>
+<p>For numbers of gradient boosting rounds <span class="math inline">\(M\)</span>, the loss can be made arbitrarily small. However, fitting the data too well can lead to overfitting which degrades the risk on future predictions.</p>
+<h4 id="shrinkage">Shrinkage</h4>
+<p>Controlling the value of <span class="math inline">\(M\)</span> is not the only possible regularization strategy, we can add penalty terms to the loss function that penalize large <span class="math inline">\(M\)</span> or we can weight subsequent trees. The simplest implementation of shrinkage in the context of boosting is to scale the contribution of each tree by a factor of <span class="math inline">\(0 &lt; v &lt; 1\)</span>, when it is added to the current approximation:</p>
+<p><span class="math display">\[f_m (\mathbf{x}) = f_{m-1}(\mathbf{x}) + v \sum^{J}_{j=1} c_{jm} I[\mathbf{x} \in R_{jm}]\]</span></p>
+<p>The parameter <span class="math inline">\(v\)</span> can be regarded as controlling the <strong>learning rate</strong> of the boosting procedure. Smaller values of <span class="math inline">\(v\)</span> result in larger training error for the same number of iterations <span class="math inline">\(M\)</span> but might have better generalization. Thus, both <span class="math inline">\(v\)</span> and <span class="math inline">\(M\)</span> control prediction risk on the training data. <span class="math inline">\(v\)</span> and <span class="math inline">\(M\)</span> tradeoff each other, therefore in practice, it is best to set <span class="math inline">\(v\)</span> small and control <span class="math inline">\(M\)</span> by early stopping.</p>
+<h4 id="subsampling">Subsampling</h4>
+<p>We know that bootstrap averaging (bagging) improves the performance of a noisy classifier through averaging (reduce variance). We can exploit the same idea in gradient boosting.</p>
+<p>At each iteration, we sample a fraction <span class="math inline">\(\eta\)</span> of the training observations without replacement, and grow the next tree using that subsample. A typical value of <span class="math inline">\(\eta\)</span> is 0.5, although for large sample size <span class="math inline">\(N\)</span>, we can have smaller <span class="math inline">\(\eta\)</span>.</p>
+<h1 id="ref">Ref</h1>
+<p>https://www.ccs.neu.edu/home/vip/teach/MLcourse/4_boosting/slides/gradient_boosting.pdf</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1482,119 +1636,6 @@ V -  \prod_{\mathbf{F}, \mu} T^{\pi}V &amp;= \prod_{\mathbf{F}, \mu} V - \prod_{
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/05/LReLU/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/05/LReLU/" class="post-title-link" itemprop="url">LReLU</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-07-05 15:36:00" itemprop="dateCreated datePublished" datetime="2021-07-05T15:36:00+08:00">2021-07-05</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-07-22 10:48:12" itemprop="dateModified" datetime="2021-07-22T10:48:12+08:00">2021-07-22</time>
-      </span>
-
-  
-    <span id="/2021/07/05/LReLU/" class="post-meta-item leancloud_visitors" data-flag-title="LReLU" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>1k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="rectifier-nonlinearities-improve-neural-network-acoustic-models">Rectifier Nonlinearities Improve Neural Network Acoustic Models</h1>
-<h2 id="background">Background</h2>
-<p>A single hidden unit's activation <span class="math inline">\(h^{i}\)</span> is given by:</p>
-<p><span class="math display">\[h^{(i)} = \sigma ({\mathbf{w}^i}^T \mathbf{x})\]</span></p>
-<p>Where <span class="math inline">\(\sigma (\cdot)\)</span> is the tanh function.</p>
-<p>Some drawbacks of tanh:</p>
-<ol type="1">
-<li>Vanishing gradient problem when lower layers of a DNN have gradients of nearly 0 because higher layer units are nearly saturated at <span class="math inline">\(-1\)</span> or <span class="math inline">\(1\)</span>.</li>
-<li>Does not produce a sparse representation in the sense of hard zero sparsity when using tanh.</li>
-</ol>
-<p>ReLU addresses the vanishing gradient problem because activate units will constantly have gradient of 1. It also provides sparse representation which is useful in classification. <strong>However, an inactivate unit may never activate because gradient-based optimization algorithm will not adjust the weights of a unit that never activates initially.</strong> Thus, we might expect the learning to be slow.</p>
-<h2 id="leaky-relu">Leaky ReLU</h2>
-<p>LReLU allows for a small, non-zero gradient when the unit is saturated and not active:</p>
-<p><span class="math display">\[
-h_i = \max({\mathbf{w}^i}^T \mathbf{x}, 0) = 
-\begin{cases}
-{\mathbf{w}^i}^T \mathbf{x}, \quad &amp; {\mathbf{w}^i}^T \mathbf{x} &gt; 0\\
-0.01{\mathbf{w}^i}^T \mathbf{x}, \quad &amp; {\mathbf{w}^i}^T \mathbf{x} \leq 0\\
-\end{cases}
-\]</span></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1619,13 +1660,13 @@ h_i = \max({\mathbf{w}^i}^T \mathbf{x}, 0) =
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">794k</span>
+    <span title="Symbols count total">799k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">12:02</span>
+    <span title="Reading time total">12:07</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
