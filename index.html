@@ -454,10 +454,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2022-03-30 21:17:23 / Modified: 22:05:13" itemprop="dateCreated datePublished" datetime="2022-03-30T21:17:23+08:00">2022-03-30</time>
+      <time title="Created: 2022-03-30 21:17:23" itemprop="dateCreated datePublished" datetime="2022-03-30T21:17:23+08:00">2022-03-30</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2022-04-03 16:47:54" itemprop="dateModified" datetime="2022-04-03T16:47:54+08:00">2022-04-03</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -483,14 +489,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>1.4k</span>
+      <span>4.7k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>4 mins.</span>
     </span>
 </div>
 
@@ -534,6 +540,84 @@
 <h4 id="definition-8.7-orthogonal">Definition 8.7: Orthogonal</h4>
 <p>Two elements of an inner product space are called <strong>orthogonal</strong> if their inner product equals <span class="math inline">\(0\)</span>.</p>
 <p><br></p>
+<h4 id="definition-8.24-distance-from-a-point-to-a-set">Definition 8.24: Distance from a Point to a Set</h4>
+<p>Suppose <span class="math inline">\(U\)</span> is a nonempty subset of a normed vector space <span class="math inline">\(V\)</span> and <span class="math inline">\(f \in V\)</span>. The <strong>distance</strong> from <span class="math inline">\(f\)</span> to <span class="math inline">\(U\)</span>, denoted <span class="math inline">\(distance(f, U)\)</span>, is defined by:</p>
+<p><span class="math display">\[distance(f, U) = \inf\{\|f - g\|: g \in U\}\]</span></p>
+<p><br></p>
+<h4 id="definition-8.25-convex">Definition 8.25: Convex</h4>
+<ul>
+<li>A subset of a vector space is called <strong>convex</strong> if the subset contains the line segment connecting each pair of the points in it.</li>
+<li>More precisely, suppose <span class="math inline">\(V\)</span> is a vector space and <span class="math inline">\(U \subseteq V\)</span>. Then <span class="math inline">\(U\)</span> is called <strong>convex</strong> if: <span class="math display">\[(1 - t) f + t g \in U, \; \forall t \in [0, 1], f, g \in U\]</span></li>
+</ul>
+<p><br></p>
+<h4 id="theorem-8.28-distance-to-a-closed-convex-set-is-attained-in-a-hilbert-space">Theorem 8.28: Distance to a Closed Convex Set is Attained in a Hilbert Space</h4>
+<ul>
+<li>The distance from an element of a Hilbert space to a nonempty closed convex set is attained by a unique element of the nonempty closed convex set.</li>
+<li>More specifically, suppose <span class="math inline">\(V\)</span> is a <strong>Hilbert space</strong>, <span class="math inline">\(f \in V\)</span>, and <span class="math inline">\(U\)</span> is a nonempty closed convex subset of <span class="math inline">\(V\)</span>. Then there exists a unique <span class="math inline">\(g \in U\)</span> s.t: <span class="math display">\[\|f - g\| = distance(f, U)\]</span></li>
+</ul>
+<p><br></p>
+<h4 id="definition-8.34-orthogonal-projection-p_u">Definition 8.34: Orthogonal Projection; <span class="math inline">\(P_U\)</span></h4>
+<p>Suppose <span class="math inline">\(U\)</span> is a nonempty closed convex subset of a <strong>Hilbert space</strong> <span class="math inline">\(V\)</span>. Then <strong>orthogonal projection</strong> of <span class="math inline">\(V\)</span> onto <span class="math inline">\(U\)</span> is the function <span class="math inline">\(P_U: V \rightarrow V\)</span> defined by setting <span class="math inline">\(P_U(f)\)</span> equal to the unique element of <span class="math inline">\(U\)</span> that is closest to <span class="math inline">\(f\)</span>.</p>
+<p>This definition only makes sense because of <code>theorem 8.28</code>.</p>
+<p><br></p>
+<h4 id="theorem-8.37-orthogonal-projection-onto-closed-subspace">Theorem 8.37: Orthogonal Projection onto Closed Subspace</h4>
+<p>Suppose <span class="math inline">\(U\)</span> is a closed subspace of <strong>Hilbert space</strong> <span class="math inline">\(V\)</span> and <span class="math inline">\(f \in V\)</span>. Then:</p>
+<ol type="a">
+<li><span class="math inline">\(f - P_U(f)\)</span> is orthogonal to <span class="math inline">\(g\)</span> for every <span class="math inline">\(g \in U\)</span>.</li>
+<li>If <span class="math inline">\(h \in U\)</span> and <span class="math inline">\(f - h\)</span> is orthogonal to <span class="math inline">\(g\)</span> for every <span class="math inline">\(g \in U\)</span>, then <span class="math inline">\(h = P_U(f)\)</span>.</li>
+<li><span class="math inline">\(P_U: V \rightarrow V\)</span> is a linear map.</li>
+<li><span class="math inline">\(\|P_U (f)\| \leq \|f\|\)</span>, with equality IFF <span class="math inline">\(f \in U\)</span>.</li>
+</ol>
+<p><br></p>
+<h4 id="definition-8.38-orthogonal-complement-uperp">Definition 8.38: Orthogonal Complement; <span class="math inline">\(U^\perp\)</span></h4>
+<p>Suppose <span class="math inline">\(U\)</span> is a subset of an <strong>inner product space</strong> <span class="math inline">\(V\)</span>. The <strong>orthogonal complement</strong> of <span class="math inline">\(U\)</span> is denoted by <span class="math inline">\(U^\perp\)</span> and is defined by:</p>
+<p><span class="math display">\[U^{\perp} = \{h \in V: &lt;g, h&gt; = 0, \; \forall g \in U\}\]</span></p>
+<p>In other words, the orthogonal complement of a subset <span class="math inline">\(U\)</span> of an inner product space <span class="math inline">\(V\)</span> is the set of elements of <span class="math inline">\(V\)</span> that are orthogonal to every element of <span class="math inline">\(U\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-8.40-properties-of-orthogonal-complement">Theorem 8.40: Properties of Orthogonal Complement</h4>
+<p>Suppose <span class="math inline">\(U\)</span> is a subset of an <strong>inner product space</strong> <span class="math inline">\(V\)</span>. Then</p>
+<ol type="a">
+<li><span class="math inline">\(U^\perp\)</span> is a closed subspace of <span class="math inline">\(V\)</span>.</li>
+<li><span class="math inline">\(U \cap U^\perp \subseteq \{0\}\)</span>.</li>
+<li>If <span class="math inline">\(W \subseteq U\)</span>, then <span class="math inline">\(U^\perp \subseteq W^\perp\)</span>.</li>
+<li><span class="math inline">\(\bar{U}^{\perp} = U^{\perp}\)</span></li>
+<li><span class="math inline">\(U \subseteq (U^{\perp})^\perp\)</span></li>
+</ol>
+<p><br></p>
+<h4 id="theorem-8.41-orthogonal-complement-of-the-orthogonal-complement">Theorem 8.41: Orthogonal Complement of the Orthogonal Complement</h4>
+<p>Suppose <span class="math inline">\(U\)</span> is a subspace of a Hilbert space <span class="math inline">\(V\)</span>. Then:</p>
+<p><span class="math display">\[\overline{U} = (U^\perp)^\perp\]</span></p>
+<p>As a special case, if <span class="math inline">\(U\)</span> is a closed subspace of a Hilbert space <span class="math inline">\(V\)</span>, then:</p>
+<p><span class="math display">\[U = (U^\perp)^\perp\]</span></p>
+<p><br></p>
+<h4 id="theorem-8.42-necessary-and-sufficient-condition-for-a-subspace-to-be-dense">Theorem 8.42: Necessary and Sufficient Condition for a Subspace to be Dense</h4>
+<p>Suppose <span class="math inline">\(U\)</span> is a subspace of a Hilbert space <span class="math inline">\(V\)</span>. Then:</p>
+<p><span class="math display">\[\overline{U} = V\]</span></p>
+<p>IFF</p>
+<p><span class="math display">\[U^\perp = \{0\}\]</span></p>
+<p><br></p>
+<h4 id="theorem-8.43-orthogonal-decomposition">Theorem 8.43: Orthogonal Decomposition</h4>
+<p>Suppose <span class="math inline">\(U\)</span> is a <strong>closed subspace</strong> of a Hilbert space <span class="math inline">\(V\)</span>. Then every element <span class="math inline">\(f \in V\)</span> can be uniquely written in the form:</p>
+<p><span class="math display">\[f = g + h\]</span></p>
+<p>where <span class="math inline">\(g \in U\)</span> and <span class="math inline">\(h \in U^\perp\)</span>. Furthermore, <span class="math inline">\(g = P_U (f)\)</span> and <span class="math inline">\(h = f - P_U(f)\)</span>.</p>
+<p><br></p>
+<h4 id="definition-8.44-identity-map-i">Definition 8.44: Identity Map; <span class="math inline">\(I\)</span></h4>
+<p>Suppose <span class="math inline">\(V\)</span> is a vector space. The <strong>identity map</strong> <span class="math inline">\(I\)</span> is the linear map from <span class="math inline">\(V\)</span> to <span class="math inline">\(V\)</span> defined by:</p>
+<p><span class="math display">\[I(f) = f\]</span></p>
+<p>for <span class="math inline">\(f \in V\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-8.45-range-and-null-space-of-orthogonal-projections">Theorem 8.45: Range and Null Space of Orthogonal Projections</h4>
+<p>Suppose <span class="math inline">\(U\)</span> is a closed subspace of a Hilbert space <span class="math inline">\(V\)</span>. Then:</p>
+<ol type="a">
+<li><span class="math inline">\(\text{range}(P_U) = U\)</span> and <span class="math inline">\(\text{null}(P_U) = U^\perp\)</span>.</li>
+<li><span class="math inline">\(\text{range}(P_{U^\perp}) = U^\perp\)</span> and <span class="math inline">\(\text{null}(P_{U^\perp}) = U\)</span>.</li>
+<li><span class="math inline">\(P_{U^\perp} = I - P_U\)</span>.</li>
+</ol>
+<p><br></p>
+<h4 id="theorem-8.47-riesz-representation-theorem">Theorem 8.47: Riesz Representation Theorem</h4>
+<p>Suppose <span class="math inline">\(\varphi\)</span> is a bounded linear functional on a Hilbert space <span class="math inline">\(V\)</span>. Then there exists a unique <span class="math inline">\(h \in V\)</span> s.t:</p>
+<p><span class="math display">\[\varphi(f) = &lt;f, h&gt;\]</span></p>
+<p>for all <span class="math inline">\(f \in V\)</span>. Furthermore, <span class="math inline">\(\|\varphi\| = \|h\|\)</span>.</p>
 
       
     </div>
@@ -2086,13 +2170,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">799k</span>
+    <span title="Symbols count total">803k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">12:07</span>
+    <span title="Reading time total">12:10</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
