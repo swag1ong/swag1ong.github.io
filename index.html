@@ -462,7 +462,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-04-07 22:59:59" itemprop="dateModified" datetime="2022-04-07T22:59:59+08:00">2022-04-07</time>
+        <time title="Modified: 2022-04-12 21:54:24" itemprop="dateModified" datetime="2022-04-12T21:54:24+08:00">2022-04-12</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -489,14 +489,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>12k</span>
+      <span>15k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>11 mins.</span>
+      <span>14 mins.</span>
     </span>
 </div>
 
@@ -750,8 +750,52 @@
 <li><span class="math inline">\(\sin (x) \sin(y) = \frac{\cos(x - y) - \cos(x + y)}{2}\)</span></li>
 <li><span class="math inline">\(\cos(x)\cos(y) = \frac{\cos(x - y) + \cos(x + y)}{2}\)</span></li>
 <li><span class="math inline">\(e^{it} = \cos(t) + i \sin(t)\)</span></li>
+<li><span class="math inline">\(\overline{e^{it}} = e^{-it}\)</span></li>
+<li><span class="math inline">\(z^n = e^{int}\)</span>, this is a function on <span class="math inline">\(\partial \mathbf{D}\)</span>.</li>
+<li><span class="math inline">\(\overline{z^n} = e^{-int}\)</span></li>
 </ul>
 <h3 id="fourier-series-and-poisson-integral">Fourier Series and Poisson Integral</h3>
+<h4 id="definition-11.3-mathbfd-partial-mathbfd">Definition 11.3: <span class="math inline">\(\mathbf{D}, \partial \mathbf{D}\)</span></h4>
+<ul>
+<li><span class="math inline">\(\mathbf{D}\)</span> denotes the open unit disk in the complex plane: <span class="math display">\[\mathbf{D} = \{w \in \mathbb{C}: |w| &lt; 1\}\]</span></li>
+<li><span class="math inline">\(\partial \mathbf{D}\)</span> is the unit circle in the complex plane: <span class="math display">\[\partial \mathbf{D} = \{z \in \mathbb{C}: \|z\| = 1\}\]</span></li>
+</ul>
+<p><span class="math inline">\(e^{it} = \cos(t) + i \sin(t)\)</span> is a one to one map of <span class="math inline">\((-\pi, \pi]\)</span> onto <span class="math inline">\(\partial \mathbf{D}\)</span>.</p>
+<p><br></p>
+<h4 id="definition-11.4-measurable-subsets-of-partial-mathbfd-sigma">Definition 11.4: Measurable Subsets of <span class="math inline">\(\partial \mathbf{D}\)</span>; <span class="math inline">\(\sigma\)</span></h4>
+<ul>
+<li>A subset <span class="math inline">\(E\)</span> of <span class="math inline">\(\partial \mathbf{D}\)</span> is <strong>measurable</strong> if <span class="math inline">\(\{t \in (-\pi, \pi]: e^{it} \in E\}\)</span> is a Borel subset of <span class="math inline">\(\mathbb{R}\)</span> or <span class="math inline">\((e^{it})^{-1}(E) \subseteq B(\mathbb{R})\)</span>.</li>
+<li><span class="math inline">\(\sigma\)</span> is the measureon the measurable subsets of <span class="math inline">\(\partial \mathbf{D}\)</span> obtained by transferring Lebesgue measure from <span class="math inline">\((-\pi, \pi]\)</span> to <span class="math inline">\(\partial \mathbf{D}\)</span>, normalized so that <span class="math inline">\(\sigma(\partial \mathbf{D}) = 1\)</span>. In other words, if <span class="math inline">\(E \subseteq \partial \mathbf{D}\)</span> is measurable, then: <span class="math display">\[\sigma(E) = \frac{|\{t \in (-\pi, \pi]: e^{it} \in E\}|}{2\pi}\]</span></li>
+</ul>
+<p>So we can write the Lebesgue integral on <span class="math inline">\(\partial \mathbf{D}\)</span>:</p>
+<p><span class="math display">\[\int_{\partial \mathbf{D}} f d\sigma = \int^\pi_{-\pi} f(e^{it}) \frac{dt}{2\pi}\]</span></p>
+<p>for all measurable functions <span class="math inline">\(f: \partial \mathbf{D} \rightarrow \mathbb{C}\)</span> that above integrals make sense.</p>
+<p><br></p>
+<h4 id="definition-11.5-lp-partial-mathbfd">Definition 11.5: <span class="math inline">\(L^p (\partial \mathbf{D})\)</span></h4>
+<p>For <span class="math inline">\(1 \leq p \leq \infty\)</span>, define <span class="math inline">\(L^p(\partial \mathbf{D})\)</span> to mean the complex version of <span class="math inline">\(L^p(\sigma)\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-11.6-orthonormal-family-in-l2-partial-mathbfd">Theorem 11.6: Orthonormal Family in <span class="math inline">\(L^2 (\partial \mathbf{D})\)</span></h4>
+<p><span class="math inline">\(\{z^n\}_{n \in \mathbb{Z}}\)</span> is an orthonormal family in <span class="math inline">\(L^2(\partial \mathbf{D})\)</span>.</p>
+<p><br></p>
+<h4 id="definition-11.7-fourier-coefficient-hatfn-fourier-seires">Definition 11.7: Fourier Coefficient; <span class="math inline">\(\hat{f}(n)\)</span>; Fourier Seires</h4>
+<p>Suppose <span class="math inline">\(f \in L^1(\partial \mathbf{D})\)</span></p>
+<ul>
+<li>For <span class="math inline">\(n \in \mathbb{Z}\)</span>, the <span class="math inline">\(n\)</span>th <strong>Fourier coefficient</strong> of <span class="math inline">\(f\)</span> is denoted <span class="math inline">\(\hat{f}(n)\)</span> and is defined by: <span class="math display">\[\hat{f}(n) = \int_{\partial \mathbf{D}} f(z) \bar{z^n} d\sigma(z) = \int^\pi_{-\pi} f(e^{it}) e^{-int} \frac{dt}{2\pi}\]</span></li>
+<li>The <strong>Fourier Series</strong> of <span class="math inline">\(f\)</span> is the formal sum: <span class="math display">\[\sum^\infty_{n=-\infty} \hat{f}(n) z^n\]</span></li>
+</ul>
+<p><br></p>
+<h4 id="theorem-11.9-algebraic-properties-of-fourier-coefficients">Theorem 11.9: Algebraic Properties of Fourier Coefficients</h4>
+<p>Suppose <span class="math inline">\(f, g \in L^1(\partial \mathbf{D})\)</span> and <span class="math inline">\(n \in \mathbb{Z}\)</span>. Then:</p>
+<ol type="a">
+<li><span class="math inline">\(\widehat{f + g}(n) = \hat{f}(n) + \widehat{g}(n)\)</span></li>
+<li><span class="math inline">\(\widehat{\alpha f}(n) = \alpha \hat{f}(n)\)</span> for all <span class="math inline">\(\alpha \in \mathbb{C}\)</span></li>
+<li><span class="math inline">\(|\hat{f}(n)| \leq \|f\|_1\)</span></li>
+</ol>
+<p>from <span class="math inline">\(a, b\)</span>, we can say that for each <span class="math inline">\(n \in \mathbb{Z}\)</span>, the function that maps from <span class="math inline">\(L^1(\partial \mathbf{D}) \rightarrow \mathbb{R} := f \mapsto \hat{f}(n)\)</span> is a linear functional.</p>
+<p><br></p>
+<h4 id="theorem-11.10-riemann-lebesgue-lemma">Theorem 11.10: Riemann-Lebesgue Lemma</h4>
+<p>Suppose <span class="math inline">\(f \in L^1(\partial \mathbf{D})\)</span>, then:</p>
+<p><span class="math display">\[\lim_{n \pm \infty} \hat{f}(n) = 0\]</span></p>
 <h2 id="ref">REF</h2>
 <h3 id="rkhs">RKHS</h3>
 <p>https://www.math.unipd.it/~demarchi/TAA1718/RKHS_presentazione.pdf</p>
@@ -2310,13 +2354,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">810k</span>
+    <span title="Symbols count total">813k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">12:17</span>
+    <span title="Reading time total">12:19</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
