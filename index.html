@@ -462,7 +462,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-04-12 21:54:24" itemprop="dateModified" datetime="2022-04-12T21:54:24+08:00">2022-04-12</time>
+        <time title="Modified: 2022-04-17 22:19:32" itemprop="dateModified" datetime="2022-04-17T22:19:32+08:00">2022-04-17</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -489,14 +489,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>15k</span>
+      <span>18k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>14 mins.</span>
+      <span>16 mins.</span>
     </span>
 </div>
 
@@ -795,7 +795,62 @@
 <p><br></p>
 <h4 id="theorem-11.10-riemann-lebesgue-lemma">Theorem 11.10: Riemann-Lebesgue Lemma</h4>
 <p>Suppose <span class="math inline">\(f \in L^1(\partial \mathbf{D})\)</span>, then:</p>
-<p><span class="math display">\[\lim_{n \pm \infty} \hat{f}(n) = 0\]</span></p>
+<p><span class="math display">\[\lim_{n \rightarrow \infty} \hat{f}(n) = 0\]</span></p>
+<p><br></p>
+<h4 id="definition-11.241-periodic-function">Definition 11.24(1): Periodic Function</h4>
+<p>A function <span class="math inline">\(f\)</span> is said to be periodic with period <span class="math inline">\(T\)</span> if:</p>
+<p><span class="math display">\[f(x) = f(x + T)\]</span></p>
+<p><br></p>
+<h4 id="theorem-11.242-derivative-of-a-periodic-function">Theorem 11.24(2): Derivative of a Periodic Function</h4>
+<p>The derivative of a periodic function is periodic.</p>
+<p><br></p>
+<h4 id="definition-11.24-tildef-k-times-continuously-differentiable-fk">Definition 11.24: <span class="math inline">\(\tilde{f}\)</span>; <span class="math inline">\(k\)</span> times continuously differentiable; <span class="math inline">\(f^{[k]}\)</span></h4>
+<p>Suppose <span class="math inline">\(f: \partial \mathbf{D} \rightarrow \mathbb{C}\)</span> is a complex-valued function on <span class="math inline">\(\partial \mathbf{D}\)</span> and <span class="math inline">\(k \in \mathbb{Z}^+ \cup \{0\}\)</span>.</p>
+<ul>
+<li><p>Define <span class="math inline">\(\tilde{f}: \mathbb{R} \rightarrow \mathbb{C}\)</span> by <span class="math inline">\(\tilde{f}(t) = f(e^{it})\)</span> (This is similar to <span class="math inline">\(g: \mathbb{R} \rightarrow \partial \mathbf{D}\)</span>, <span class="math inline">\(g(t) = e^{it}\)</span>, <span class="math inline">\(\tilde{f} = f \circ g\)</span>).</p></li>
+<li><p><span class="math inline">\(f\)</span> is called <span class="math inline">\(k\)</span> times <strong>continuously differentiable</strong> if <span class="math inline">\(\tilde{f}\)</span> is <span class="math inline">\(k\)</span> times differentiable everywhere on <span class="math inline">\(\mathbb{R}\)</span> and its <span class="math inline">\(k\)</span>th-derivative <span class="math inline">\(\tilde{f}^{(k)}: \mathbb{R} \rightarrow \mathbb{C}\)</span> is continuous.</p></li>
+<li><p>If <span class="math inline">\(f\)</span> is <span class="math inline">\(k\)</span>-times continuously differentiable, then <span class="math inline">\(f^[k]: \partial \mathbf{D} \rightarrow \mathbb{C}\)</span> is defined by: <span class="math display">\[f^{[k]}(e^{it}) = \tilde{f}^{(k)}(t)\]</span></p>
+<p>for <span class="math inline">\(t \in \mathbb{R}\)</span>. Here <span class="math inline">\(\tilde{f}^{(0)}\)</span> is defined to be <span class="math inline">\(\tilde{f}\)</span>, which means that <span class="math inline">\(f^{[0]} = f\)</span></p></li>
+</ul>
+<p><br></p>
+<h4 id="theorem-11.26-fourier-coefficients-of-differentiable-functions">Theorem 11.26: Fourier Coefficients of Differentiable Functions</h4>
+<p>Suppose <span class="math inline">\(k \in \mathbb{Z}^+\)</span> and <span class="math inline">\(f: \partial \mathbf{D} \rightarrow \mathbb{C}\)</span> is <span class="math inline">\(k\)</span> times continuously differentiable. Then:</p>
+<p><span class="math display">\[\widehat{f^{[k]} (n)} = i^kn^k \widehat{f}(n)\]</span></p>
+<p>for every <span class="math inline">\(n \in \mathbb{Z}\)</span></p>
+<p><br></p>
+<h4 id="theorem-11.27-fourier-series-of-twice-continuous-differentiable-functions-converge">Theorem 11.27: Fourier Series of Twice Continuous Differentiable Functions Converge</h4>
+<p>Suppose <span class="math inline">\(f: \partial \mathbf{D} \rightarrow \mathbb{C}\)</span> is twice continuously differentiable. Then:</p>
+<p><span class="math display">\[f(z) = \sum^\infty_{n = -\infty} \widehat{f}(n) z^n\]</span></p>
+<p>for all <span class="math inline">\(z \in \partial \mathbf{D}\)</span>. Furthermore, the partial sum <span class="math inline">\(\sum^{M}_{n = -K} \widehat{f}(n) z^n\)</span> converge uniformly on <span class="math inline">\(\partial \mathbf{D}\)</span> to <span class="math inline">\(f\)</span> as <span class="math inline">\(K, M \rightarrow \infty\)</span></p>
+<p><br></p>
+<h3 id="fourier-series-and-lp-of-unit-circle">Fourier Series and <span class="math inline">\(L^p\)</span> of Unit Circle</h3>
+<h4 id="theorem-11.30-orthonormal-basis-of-l2partial-mathbfd">Theorem 11.30: Orthonormal Basis of <span class="math inline">\(L^2(\partial \mathbf{D})\)</span></h4>
+<p>The family <span class="math inline">\(\{z^n\}_{n \in \mathbb{Z}}\)</span> is an orthonormal basis of <span class="math inline">\(L^2(\partial \mathbf{D})\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-11.31-convergence-of-fourier-series-in-the-norm-of-l2partial-mathbfd">Theorem 11.31: Convergence of Fourier Series in the Norm of <span class="math inline">\(L^2(\partial \mathbf{D})\)</span></h4>
+<p>Suppose <span class="math inline">\(f \in L^2(\partial \mathbf{D})\)</span>. Then:</p>
+<p><span class="math display">\[f = \sum^\infty_{n=-\infty} \widehat{f}(n)z^n\]</span></p>
+<p>where the infinite sum converges to <span class="math inline">\(f\)</span> in the norm of <span class="math inline">\(L^2(\partial \mathbf{D})\)</span>.</p>
+<p><br></p>
+<h3 id="fourier-transform">Fourier Transform</h3>
+<h4 id="definition-11.47-fourier-transform-hatf">Definition 11.47: Fourier Transform; <span class="math inline">\(\hat{f}\)</span></h4>
+<p>For <span class="math inline">\(f \in L^1(\mathbb{R})\)</span>, the <strong>Fourier transform</strong> of <span class="math inline">\(f\)</span> is the function <span class="math inline">\(\hat{f}: \mathbb{R} \rightarrow \mathbb{C}\)</span> defined by:</p>
+<p><span class="math display">\[\hat{f}(t) = \int^{\infty}_{-\infty} f(x) e^{-2\pi itx} dx = \int_{\mathbb{R}} g d\lambda\]</span></p>
+<p>where <span class="math inline">\(g(x) = f(x)e^{-2\pi itx}\)</span>. The <span class="math inline">\(2\pi\)</span> in <span class="math inline">\(e^{-2\pi itx}\)</span> is a normalization constant, without it, we will not have <span class="math inline">\(\|\hat{f}\|_2 = \|f\|_2\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-11.49-riemann-lebesgue-lemma">Theorem 11.49: Riemann-Lebesgue Lemma</h4>
+<p>Suppose <span class="math inline">\(f \in L^1(\mathbb{R})\)</span>. Then <span class="math inline">\(\hat{f}\)</span> is uniformly continuous on <span class="math inline">\(\mathbb{R}\)</span>. Furthermore:</p>
+<p><span class="math display">\[\|\hat{f}\|_{\infty} \leq \|f\|_1\]</span></p>
+<p>and</p>
+<p><span class="math display">\[\lim_{t \rightarrow \pm \infty} \hat{f}(t) = 0\]</span></p>
+<p><br></p>
+<h4 id="theorem-11.50-derivative-of-a-fourier-transform">Theorem 11.50: Derivative of a Fourier Transform</h4>
+<p>Suppose <span class="math inline">\(f \in L^1(\mathbb{R})\)</span>. Define <span class="math inline">\(g: \mathbb{R} \rightarrow \mathbb{C}\)</span> by <span class="math inline">\(g(x) = x f(x)\)</span>. If <span class="math inline">\(g \in L^1(\mathbb{R})\)</span>, then <span class="math inline">\(\hat{f}\)</span> is a continuously differentiable function on <span class="math inline">\(\mathbb{R}\)</span> amd</p>
+<p><span class="math display">\[(\hat{f})^\prime(t) = -2\pi i \hat{g}(t)\]</span></p>
+<p>for all <span class="math inline">\(t \in \mathbb{R}\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-11.54-fourier-transform-of-a-derivative">Theorem 11.54: Fourier Transform of a Derivative</h4>
+<p>Suppose <span class="math inline">\(f \in L^1(\mathbb{R})\)</span> is a continuously differentiable function and <span class="math inline">\(f^\prime \in L^1(\mathbb{R})\)</span></p>
 <h2 id="ref">REF</h2>
 <h3 id="rkhs">RKHS</h3>
 <p>https://www.math.unipd.it/~demarchi/TAA1718/RKHS_presentazione.pdf</p>
@@ -2354,13 +2409,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">813k</span>
+    <span title="Symbols count total">816k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">12:19</span>
+    <span title="Reading time total">12:22</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
