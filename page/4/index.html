@@ -86,7 +86,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">102</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">103</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -162,7 +162,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">102</span>
+          <span class="site-state-item-count">103</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -215,6 +215,135 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/29/momentum/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/29/momentum/" class="post-title-link" itemprop="url">Momentum</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-07-29 10:37:44 / Modified: 14:25:49" itemprop="dateCreated datePublished" datetime="2021-07-29T10:37:44+08:00">2021-07-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DL/" itemprop="url" rel="index"><span itemprop="name">DL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DL/Techniques/" itemprop="url" rel="index"><span itemprop="name">Techniques</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/07/29/momentum/" class="post-meta-item leancloud_visitors" data-flag-title="Momentum" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>3.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="momentum">Momentum</h1>
+<p>While SGD remains a very popular optimization strategy, learning with it can be slow. The method of momentum is designed to accelerate learning, especially in the face of <strong>high curvature</strong> (large change of direction of the curve in small amount time), <strong>small but consistent gradients</strong> (flat surface) or <strong>noisy gradients</strong> (with high variance). The momentum algorithm accumulates an exponentially decaying moving average of past gradients and continues to move in their direction.</p>
+<p><br></p>
+<p>The momentum algorithm introduces several variables:</p>
+<ol type="1">
+<li>A vector <span class="math inline">\(\mathbf{v}\)</span> that plays a role of velocity (with direction and speed). The velocity is set to an exponentially decaying average of the negative gradient.</li>
+<li>A hyparameter <span class="math inline">\(\alpha \in [0, 1)\)</span> determins how quickly the contributions of previous gradients exponentially decay.</li>
+</ol>
+<p>The update rule is given by:</p>
+<p><span class="math display">\[\mathbf{v} \leftarrow \alpha \mathbf{v} - \epsilon \nabla_{\boldsymbol{\theta}} (\frac{1}{N} \sum^{N}_{i=1} L(\mathbf{f} (\mathbf{x}_i; \; \boldsymbol{\theta}), \mathbf{y}_i))\]</span></p>
+<p><span class="math display">\[\boldsymbol{\theta} \rightarrow \boldsymbol{\theta} + \mathbf{v}\]</span></p>
+<p>Previously, in SGD, the size of the step was simply the norm of the gradient multiplied by the learning rate:</p>
+<p><span class="math display">\[\epsilon \nabla_{\boldsymbol{\theta}} (\frac{1}{N} \sum^{N}_{i=1} L(\mathbf{f} (\mathbf{x}_i; \; \boldsymbol{\theta}), \mathbf{y}_i))\]</span></p>
+<p>Now the size of the step depends on <strong>how large and how aligned a sequence of gradients</strong> are. The step size is <strong>largest</strong> when many successive gradients point in exactly the same direction. If the momentum algorithm always observe gradient <span class="math inline">\(\mathbf{g}\)</span>, then it will accelerate in the direction of <span class="math inline">\(-\mathbf{g}\)</span>:</p>
+<p><span class="math display">\[\mathbf{v}_1 \leftarrow - \epsilon \mathbf{g}\]</span></p>
+<p><span class="math display">\[\mathbf{v}_2 \leftarrow -\mathbf{g} \epsilon(\alpha + 1)\]</span></p>
+<p><span class="math display">\[\mathbf{v}_N \leftarrow -\mathbf{g} \epsilon \sum^{N-1}_{i=0} \alpha^i\]</span></p>
+<p><span class="math display">\[\implies \|\mathbf{v}_{\infty}\| = \frac{\epsilon \|\mathbf{g}\|}{1 - \alpha}\]</span></p>
+<p>The terminal velocity will have speed <span class="math inline">\(\frac{\epsilon \|\mathbf{g}\|}{1 - \alpha} \gg \epsilon \|\mathbf{g}\|\)</span>. This makes sense because if we receive consistent small gradients, we would like to take larger steps because we are confident we are in the right direction. One the other hand, consistently changing direction gradients (high curvature) would cause the gradient to be small to allow convergence.</p>
+<p><img src='/images/ML/momentum_1.png' width="600"></p>
+<h2 id="nesterov-momentum">Nesterov Momentum</h2>
+<p>Nesterov Momentum is inspired by Nesterov's accelerated gradient method, the update rules in this case are given by:</p>
+<p><span class="math display">\[\mathbf{v} \leftarrow \alpha \mathbf{v} - \epsilon \nabla_{\boldsymbol{\theta}} (\frac{1}{N} \sum^{N}_{i=1} L(\mathbf{f} (\mathbf{x}_i; \; \boldsymbol{\theta} + \alpha \mathbf{v}), \mathbf{y}_i))\]</span></p>
+<p><span class="math display">\[\boldsymbol{\theta} \rightarrow \boldsymbol{\theta} + \mathbf{v}\]</span></p>
+<p>This is similar to momentum, but before taking the gradient, we first take one step forward using previous velocity, then we take the gradient there and adjust velocity accordingly. We can also think of this as attempting to add a <strong>correlation factor</strong> to the standard method of momentum.</p>
+<p><img src='/images/ML/momentum_2.png' width="600"></p>
+<h1 id="implementation">Implementation</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SGD</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, lr, model_vars</span>):</span></span><br><span class="line">        self.model_vars = model_vars</span><br><span class="line">        self.lr = lr</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span>(<span class="params">self, grad</span>):</span></span><br><span class="line">        <span class="keyword">for</span> i, v <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.model_vars):</span><br><span class="line">            self.model_vars[i] = v - self.lr * grad[i]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self.model_vars</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Momentum</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, lr, model_vars, alpha=<span class="number">0.9</span></span>):</span></span><br><span class="line">        self.lr = lr</span><br><span class="line">        self.model_vars = model_vars</span><br><span class="line">        self.alpha = alpha</span><br><span class="line">        self.v = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span>(<span class="params">self, grad</span>):</span></span><br><span class="line">        <span class="keyword">for</span> i, v <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.model_vars):</span><br><span class="line">            self.v = self.v * self.alpha - self.lr * grad[i]</span><br><span class="line">            self.model_vars[i] = self.model_vars[i] + self.v</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self.model_vars</span><br></pre></td></tr></table></figure>
+<h1 id="ref">Ref</h1>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1596,134 +1725,6 @@ BB^T \mathbf{x} &amp;= \lambda \mathbf{x}\\
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/19/logistic-regression/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/19/logistic-regression/" class="post-title-link" itemprop="url">Logistic Regression</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-07-19 16:32:07" itemprop="dateCreated datePublished" datetime="2021-07-19T16:32:07+08:00">2021-07-19</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-08-09 17:48:42" itemprop="dateModified" datetime="2021-08-09T17:48:42+08:00">2021-08-09</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/07/19/logistic-regression/" class="post-meta-item leancloud_visitors" data-flag-title="Logistic Regression" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>5.4k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>5 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="logistic-regression">Logistic Regression</h1>
-<p>Suppose we have training examples <span class="math inline">\(D = \{(\mathbf{x}_1, y_1), ...., (\mathbf{x}_N, y_N); \; \mathbf{x}_i \in \mathbb{R}^d\}\)</span>, our goal is to make decision about the class of new input <span class="math inline">\(\mathbf{x}\)</span>. The logistic regression does this by learning from a training set, a vector of bias and a matrix of weights.</p>
-<h2 id="binary-class">Binary-Class</h2>
-<p>In binary class problem, our target <span class="math inline">\(Y\)</span> takes values <span class="math inline">\(\{0, 1\}\)</span>. To model the distribution <span class="math inline">\(P(Y | \mathbf{X}; \; \mathbf{w}, b)\)</span>, we apply sigmoid function on the dot product of weights and inputs which transform the output to a value between <span class="math inline">\([0, 1]\)</span> (one criteria for probability):</p>
-<p><span class="math display">\[z = \mathbf{x}^T \mathbf{w} + b\]</span></p>
-<p><span class="math display">\[y = \sigma(z)\]</span></p>
-<p>To make sure that class random variable <span class="math inline">\(Y\)</span>'s conditional pmf sums to 1:</p>
-<p><span class="math display">\[P(Y=1 | X=\mathbf{x} ;\; \mathbf{w}, b) = \frac{1}{1 + e^{-z}} = p\]</span></p>
-<p><span class="math display">\[P(Y=0 | X=\mathbf{x} ;\; \mathbf{w}, b) = 1 - \frac{1}{1 + e^{-z}} = \frac{e^{-z}}{1 + e^{-z}} = 1 - p\]</span></p>
-<p>Then, it is equivalently to express this conditional pmf as Bernoulli pmf:</p>
-<p><span class="math display">\[p_{Y|\mathbf{X}} (y | \mathbf{x}; \; \mathbf{w}, b) = p^y + (1 - p)^{1 - y}\]</span></p>
-<p>If we have the conditional pmf of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X= \mathbf{x}\)</span>, then we can use simple decision rule to make decisions:</p>
-<p><span class="math display">\[
-\hat{y} =
-\begin{cases}
-P(Y=1 | X=\mathbf{x}) &gt; 0.5, \quad 1\\
-P(Y=1 | X=\mathbf{x}) \leq 0.5, \quad 0
-\end{cases}
-\]</span></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/07/19/logistic-regression/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1748,13 +1749,13 @@ P(Y=1 | X=\mathbf{x}) \leq 0.5, \quad 0
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">824k</span>
+    <span title="Symbols count total">837k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">12:29</span>
+    <span title="Reading time total">12:40</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
