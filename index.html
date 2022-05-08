@@ -1522,7 +1522,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-05-03 16:40:27" itemprop="dateModified" datetime="2022-05-03T16:40:27+08:00">2022-05-03</time>
+        <time title="Modified: 2022-05-08 22:54:33" itemprop="dateModified" datetime="2022-05-08T22:54:33+08:00">2022-05-08</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1549,14 +1549,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>28k</span>
+      <span>31k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>25 mins.</span>
+      <span>28 mins.</span>
     </span>
 </div>
 
@@ -1823,7 +1823,7 @@
 <p><br></p>
 <h4 id="theorem-1.64-product-measure-bernoulli-measure">Theorem 1.64: Product Measure, Bernoulli Measure</h4>
 <p>Let <span class="math inline">\(E\)</span> be a finite nonempty set (possible outcomes), and <span class="math inline">\(\Omega = E^\mathbb{N}\)</span> (space of <span class="math inline">\(E\)</span>-valued sequence, infinite repeats of the experiment). Let <span class="math inline">\((p_e)_{e \in E}\)</span> be a probability vector. Then there exists a unique probability measure <span class="math inline">\(\mu\)</span> on <span class="math inline">\(\sigma (\mathbf{A}) = B(\Omega)\)</span> s.t:</p>
-<p><span class="math display">\[\mu([\omega_1, ...., \omega_n]) = \prod^n_{i=1} p_{\omega_i} \quad \forall \omega_1, ..., \omega_n \in E, n \in \mahtbb{N}\]</span></p>
+<p><span class="math display">\[\mu([\omega_1, ...., \omega_n]) = \prod^n_{i=1} p_{\omega_i} \quad \forall \omega_1, ..., \omega_n \in E, n \in \mathbb{N}\]</span></p>
 <p><span class="math inline">\(\mu\)</span> is called the <strong>product measure or Bernoulli measure on <span class="math inline">\(\Omega\)</span></strong> with weights <span class="math inline">\((p_e)_{e \in E}\)</span>, we write:</p>
 <p><span class="math display">\[(\sum_{e \in E} p_e \delta_e)^{otimes \mathbb{N}} := \mu\]</span></p>
 <p>The <span class="math inline">\(\sigma\)</span>-algebra <span class="math inline">\((2^E)^{\otimes \mathbb{N}} := \sigma(\mathbf{A})\)</span> is called the product <span class="math inline">\(\sigma\)</span>-algebra on <span class="math inline">\(\Omega\)</span>.</p>
@@ -1921,6 +1921,13 @@
 <p>for <span class="math inline">\(x = (x_1, ...., x_n) \in \mathbb{R}^n\)</span></p>
 <p>for some integrable function <span class="math inline">\(f: \mathbb{R}^n \rightarrow [0, \infty)\)</span>, then <span class="math inline">\(f\)</span> is called the <strong>density</strong> of the distribution.</p>
 <p><br></p>
+<h4 id="definition-1.107-almost-surely">Definition 1.107: Almost Surely</h4>
+<p>Let <span class="math inline">\((\Omega, \mathbf{A}, P)\)</span> be a probability space, Let <span class="math inline">\(F \subseteq \mathbf{A}\)</span> be an event. If <span class="math inline">\(P(F^c) = 0\)</span>, then <span class="math inline">\(F\)</span> is said to happen almost surely.</p>
+<p><br></p>
+<h4 id="definition-1.108-almost-sure-equality-of-random-variables">Definition 1.108: Almost Sure Equality of Random Variables</h4>
+<p>Two jointly random variables <span class="math inline">\(X, Y\)</span> are said to be <strong>equal almost surely</strong>, or equal with probability <span class="math inline">\(1\)</span>, designated as <span class="math inline">\(X = Y\)</span> a.s IFF:</p>
+<p><span class="math display">\[P(\{\omega \in \Omega: X(\omega) \neq Y(\omega)\}) = 0\]</span></p>
+<p>It can be shown that <span class="math inline">\(X = Y\)</span> a.s IFF the events <span class="math inline">\(X^{-1}(B)\)</span> and <span class="math inline">\(Y^{-1}(B)\)</span> are equal almost surely for each Borel set <span class="math inline">\(B \in B(\mathbb{R})\)</span>.</p>
 <h3 id="integration">Integration</h3>
 <p>Notations for special cases:</p>
 <ul>
@@ -1968,12 +1975,50 @@
 <p>For any <span class="math inline">\(i \in I\)</span>, let <span class="math inline">\(X_i\)</span> be a real random variable. For any finite subset <span class="math inline">\(J \in I\)</span>, let</p>
 <p><span class="math display">\[F_J := F_{(X_j)_{j \in J}}: \mathbb{R}^j \rightarrow [0, 1], \quad x \mapsto P(X_j \leq x_j \; \forall j \in J) = P(\bigcap_{j \in J} X^{-1}_j ((-\infty, x_j]))\]</span></p>
 <p>Then <span class="math inline">\(F_j\)</span> is called the <strong>joint distribution function</strong> of <span class="math inline">\((X_j)_{j \in J}\)</span>. The probability measure <span class="math inline">\(P_{(X_j)_{j \in J}}\)</span> on <span class="math inline">\(\mathbb{R}^J\)</span> is called the <strong>joint distribution</strong> of <span class="math inline">\((X_j)_{j \in J}\)</span>.</p>
-<h3 id="expected-value">Expected Value</h3>
-<h4 id="definition-1.5.3-expected-value">Definition 1.5.3: Expected Value</h4>
-<p>Let <span class="math inline">\(X\)</span> be a real-valued random variable:</p>
+<p><br></p>
+<h4 id="theorem-2.21-independent-family-of-random-variables">Theorem 2.21: Independent Family of Random Variables</h4>
+<p>A family of real random variable <span class="math inline">\(\{X_i\}_{i \in I}\)</span> is <strong>independent</strong> if and only if, for every finite <span class="math inline">\(J \subseteq I\)</span> and every <span class="math inline">\(x = (x_j)_{j \in J} \in \mathbb{R}^J\)</span>:</p>
+<p><span class="math display">\[F_J (x) = \prod_{j \in J} F_{j} (x_j)\]</span></p>
+<p><br></p>
+<h4 id="theorem-2.22-independent-family-of-continuous-random-variables">Theorem 2.22: Independent Family of Continuous Random Variables</h4>
+<p>In addition to the assumptions of Theorem 2.21, we assume that any <span class="math inline">\(F_j\)</span> has continuous density <span class="math inline">\(f_j = f_{(X_j)_{j \in J}}\)</span> (The joint density of <span class="math inline">\((X_j)_{j \in J}\)</span>). That is, there exists a continuous map <span class="math inline">\(f_J: \mathbb{R}^J \rightarrow [0, \infty)\)</span> s.t:</p>
+<p><span class="math display">\[F_J (x) = \int^{x_{j_1}}_{-\infty} .... \int^{x_{j_n}}_{-\infty} f_J(t_1, ..., t_n) d(t_1, ...., t_n), \quad \forall x \in \mathbb{R}^J\]</span></p>
+<p>Where <span class="math inline">\(J = \{j_1, ..., j_n\}\)</span>. In this case, the family <span class="math inline">\((X_i)_{i in I}\)</span> is independent if and only if, for any finite <span class="math inline">\(J \subseteq I\)</span>:</p>
+<p><span class="math display">\[f_J (x) = \prod_{j \in J} f_j (x_j) \; \forall x \in \mathbb{R}^J\]</span></p>
+<p><br></p>
+<h3 id="generating-functions">Generating Functions</h3>
+<h4 id="definition-3.1-probability-generating-function">Definition 3.1: Probability Generating Function</h4>
+<p>Let <span class="math inline">\(X\)</span> be an <span class="math inline">\(\mathbb{N}_0\)</span>-valued random variable (natural number with 0, 0^0 = 1). The <strong>probability generating function</strong> of <span class="math inline">\(P_X\)</span> is the map <span class="math inline">\(\psi_{P_X} = \psi_{X}\)</span> defined by:</p>
+<p><span class="math display">\[\psi _X: [0, 1] \rightarrow [0, 1], \; z \mapsto \sum^\infty_{n=0} P(X = n)z^n\]</span></p>
+<p><br></p>
+<h4 id="theorem-3.2-properties-of-pgf">Theorem 3.2: Properties of PGF</h4>
+<ol type="1">
+<li><span class="math inline">\(\psi_X\)</span> is <strong>continuous</strong> on <span class="math inline">\([0, 1]\)</span> and infinitly often continuously differentiable on <span class="math inline">\((0, 1)\)</span>. For <span class="math inline">\(n \in \mathbb{N}\)</span>, the nth derivative <span class="math inline">\(\psi^{(n)}_X\)</span> fulfills: <span class="math display">\[\lim_{z \rightarrow 1-} \psi^{(n)}_X (z) = \sum^\infty_{k=1} P(X = k) k(k - 1) .... (k - n - 1)\]</span> where both sides can equal <span class="math inline">\(\infty\)</span>.</li>
+<li>The distribution <span class="math inline">\(P_X\)</span> is uniquely determined by <span class="math inline">\(\psi_X\)</span>.</li>
+</ol>
+<p><br></p>
+<h3 id="moments-and-law-of-large-numbers">Moments and Law of Large Numbers</h3>
+<h4 id="definition-5.1-moments">Definition 5.1: Moments</h4>
+<p>Let <span class="math inline">\(X\)</span> be a <strong>real</strong>-valued random variable:</p>
 <ul>
-<li>If <span class="math inline">\(X \in L^1(P)\)</span>, then <span class="math inline">\(X\)</span> is called integrable and we call: <span class="math display">\[E[X] := \int X dP\]</span> The expectation or mean of <span class="math inline">\(X\)</span>. If <span class="math inline">\(E[X] = 0\)</span>, then <span class="math inline">\(X\)</span> is called <strong>centered</strong>.</li>
+<li>If <span class="math inline">\(X \in L^1(P)\)</span>, then <span class="math inline">\(X\)</span> is called integrable and we call: <span class="math display">\[E[X] := \int X dP\]</span> The <strong>expectation or mean</strong> of <span class="math inline">\(X\)</span>. If <span class="math inline">\(E[X] = 0\)</span>, then <span class="math inline">\(X\)</span> is called <strong>centered</strong>.</li>
+<li>If <span class="math inline">\(n \in \mathbb{N}\)</span> and <span class="math inline">\(X \in L^n (P)\)</span>, then the quantities: <span class="math display">\[m_k := E[X^k], \quad M_k := E[|X|^k], \quad \forall k = 1, ...., n\]</span> are called the <span class="math inline">\(k\)</span>th <strong>moments</strong> and <span class="math inline">\(k\)</span>th <strong>absolute moments</strong>, respectively, of <span class="math inline">\(X\)</span>.</li>
+<li>If <span class="math inline">\(X \in L^2(P)\)</span>, then <span class="math inline">\(X\)</span> is called <strong>square integrable</strong> and: <span class="math display">\[Var[X] := E[X^2] - E[X]^2\]</span> is the <strong>variance</strong> of <span class="math inline">\(X\)</span>. The number <span class="math inline">\(\sigma := \sqrt{Var[X]}\)</span> is called <strong>standard deviation</strong> of <span class="math inline">\(X\)</span>. Formally, we sometimes write <span class="math inline">\(Var[X] = \infty\)</span> if <span class="math inline">\(E[X^2] = \infty\)</span>.</li>
+<li>If <span class="math inline">\(X, Y \in L^2(P)\)</span>, then we define the <strong>covariance</strong>of <span class="math inline">\(X, Y\)</span> by: <span class="math display">\[Cov[X, Y] := E[(X - E[X])(Y - E[Y])]\]</span> <span class="math inline">\(X, Y\)</span> are called <strong>uncorrelated</strong> if <span class="math inline">\(Cov[X, Y] = 0\)</span> and <strong>correlated</strong> o.w.</li>
 </ul>
+<p><br></p>
+<h4 id="theorem-5.3-rules-of-expectations">Theorem 5.3: Rules of Expectations</h4>
+<p>Let <span class="math inline">\(X, Y, X_n, Z_n, n \in \mathbb{N}\)</span>, be <strong>real</strong> integrable random variables on <span class="math inline">\((\Omega, \mathbf{A}, P)\)</span></p>
+<ol type="1">
+<li>If <span class="math inline">\(P_X = P_Y\)</span>, then <span class="math inline">\(E[X] = E[Y]\)</span>.</li>
+<li><strong>Linearity</strong>: Let <span class="math inline">\(c \in \mathbb{R}\)</span>. Then <span class="math inline">\(cX \in L^1(P)\)</span> and <span class="math inline">\(X + Y \in L^1(P)\)</span> as well as: <span class="math display">\[E[cX] = cE[X], \quad E[X + Y] = E[X] + E[Y]\]</span></li>
+<li>If <span class="math inline">\(X \geq 0\)</span> almost surely, then: <span class="math display">\[E[X] = 0 \Longleftrightarrow X = 0 \text{ almost surely}\]</span></li>
+<li><strong>Monotonicity</strong>: If <span class="math inline">\(X \leq Y\)</span> almost surely, then <span class="math inline">\(E[X] \leq E[Y]\)</span> with equality if and only if <span class="math inline">\(X = Y\)</span> almost surely.</li>
+<li><strong>Triangle Inequality</strong>: <span class="math inline">\(|E[X]| \leq E[|X|]\)</span></li>
+<li>If <span class="math inline">\(X_n \geq 0\)</span> a.s for all <span class="math inline">\(n \in \mathbb{N}\)</span>, then <span class="math inline">\(E[\sum^\infty_{n=1} X_n] = \sum^\infty_{n=1}E[X_n]\)</span>.</li>
+<li>If <span class="math inline">\(Z_n \uparrow Z\)</span> for some <span class="math inline">\(Z\)</span>, then <span class="math inline">\(E[Z] = \lim_{n \rightarrow \infty} E[Z_n] \in (-\infty, \infty]\)</span>.</li>
+</ol>
+<p><br></p>
 <h4 id="theorem-1.6.9-change-of-variable">Theorem 1.6.9: Change of Variable</h4>
 <p>Let <span class="math inline">\((\Omega, \mathbf{A})\)</span> and <span class="math inline">\((\Omega^\prime, \mathbf{A}^\prime)\)</span> be measurable spaces, let <span class="math inline">\(\mu\)</span> be a measure on <span class="math inline">\((\Omega, \mathbf{A})\)</span> and let <span class="math inline">\(X: \Omega \rightarrow \Omega^\prime\)</span> be measurable. Let <span class="math inline">\(\mu^\prime = \mu \circ X^{-1}\)</span> be the image measure of <span class="math inline">\(\mu\)</span> under the map <span class="math inline">\(X\)</span>. Assume that <span class="math inline">\(f: \Omega^\prime \rightarrow \mathbb{\bar{R}}\)</span> is <span class="math inline">\(\mu^\prime\)</span>-integrable, then:</p>
 <p><span class="math display">\[f \circ X \in L^1(\mu)\]</span></p>
@@ -2698,13 +2743,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">837k</span>
+    <span title="Symbols count total">840k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">12:40</span>
+    <span title="Reading time total">12:43</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
