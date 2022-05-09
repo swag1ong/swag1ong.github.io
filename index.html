@@ -1522,7 +1522,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-05-08 22:54:33" itemprop="dateModified" datetime="2022-05-08T22:54:33+08:00">2022-05-08</time>
+        <time title="Modified: 2022-05-09 22:19:22" itemprop="dateModified" datetime="2022-05-09T22:19:22+08:00">2022-05-09</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1549,14 +1549,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>31k</span>
+      <span>32k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>28 mins.</span>
+      <span>30 mins.</span>
     </span>
 </div>
 
@@ -1997,14 +1997,15 @@
 <li>The distribution <span class="math inline">\(P_X\)</span> is uniquely determined by <span class="math inline">\(\psi_X\)</span>.</li>
 </ol>
 <p><br></p>
-<h3 id="moments-and-law-of-large-numbers">Moments and Law of Large Numbers</h3>
+<h2 id="moments-and-law-of-large-numbers">Moments and Law of Large Numbers</h2>
+<h3 id="moments">Moments</h3>
 <h4 id="definition-5.1-moments">Definition 5.1: Moments</h4>
 <p>Let <span class="math inline">\(X\)</span> be a <strong>real</strong>-valued random variable:</p>
 <ul>
 <li>If <span class="math inline">\(X \in L^1(P)\)</span>, then <span class="math inline">\(X\)</span> is called integrable and we call: <span class="math display">\[E[X] := \int X dP\]</span> The <strong>expectation or mean</strong> of <span class="math inline">\(X\)</span>. If <span class="math inline">\(E[X] = 0\)</span>, then <span class="math inline">\(X\)</span> is called <strong>centered</strong>.</li>
 <li>If <span class="math inline">\(n \in \mathbb{N}\)</span> and <span class="math inline">\(X \in L^n (P)\)</span>, then the quantities: <span class="math display">\[m_k := E[X^k], \quad M_k := E[|X|^k], \quad \forall k = 1, ...., n\]</span> are called the <span class="math inline">\(k\)</span>th <strong>moments</strong> and <span class="math inline">\(k\)</span>th <strong>absolute moments</strong>, respectively, of <span class="math inline">\(X\)</span>.</li>
 <li>If <span class="math inline">\(X \in L^2(P)\)</span>, then <span class="math inline">\(X\)</span> is called <strong>square integrable</strong> and: <span class="math display">\[Var[X] := E[X^2] - E[X]^2\]</span> is the <strong>variance</strong> of <span class="math inline">\(X\)</span>. The number <span class="math inline">\(\sigma := \sqrt{Var[X]}\)</span> is called <strong>standard deviation</strong> of <span class="math inline">\(X\)</span>. Formally, we sometimes write <span class="math inline">\(Var[X] = \infty\)</span> if <span class="math inline">\(E[X^2] = \infty\)</span>.</li>
-<li>If <span class="math inline">\(X, Y \in L^2(P)\)</span>, then we define the <strong>covariance</strong>of <span class="math inline">\(X, Y\)</span> by: <span class="math display">\[Cov[X, Y] := E[(X - E[X])(Y - E[Y])]\]</span> <span class="math inline">\(X, Y\)</span> are called <strong>uncorrelated</strong> if <span class="math inline">\(Cov[X, Y] = 0\)</span> and <strong>correlated</strong> o.w.</li>
+<li>If <span class="math inline">\(X, Y \in L^2(P)\)</span>, then we define the <strong>covariance</strong> of <span class="math inline">\(X, Y\)</span> by: <span class="math display">\[Cov[X, Y] := E[(X - E[X])(Y - E[Y])]\]</span> <span class="math display">\[Cov[X, Y] = E[XY] - E[X]E[Y]\]</span> <span class="math inline">\(X, Y\)</span> are called <strong>uncorrelated</strong> if <span class="math inline">\(Cov[X, Y] = 0\)</span> and <strong>correlated</strong> o.w.</li>
 </ul>
 <p><br></p>
 <h4 id="theorem-5.3-rules-of-expectations">Theorem 5.3: Rules of Expectations</h4>
@@ -2018,6 +2019,36 @@
 <li>If <span class="math inline">\(X_n \geq 0\)</span> a.s for all <span class="math inline">\(n \in \mathbb{N}\)</span>, then <span class="math inline">\(E[\sum^\infty_{n=1} X_n] = \sum^\infty_{n=1}E[X_n]\)</span>.</li>
 <li>If <span class="math inline">\(Z_n \uparrow Z\)</span> for some <span class="math inline">\(Z\)</span>, then <span class="math inline">\(E[Z] = \lim_{n \rightarrow \infty} E[Z_n] \in (-\infty, \infty]\)</span>.</li>
 </ol>
+<p><br></p>
+<h4 id="theorem-5.4-independent-random-variables-are-uncorrelated">Theorem 5.4: Independent Random Variables are Uncorrelated</h4>
+<p>Let <span class="math inline">\(X, Y \in L^1(P)\)</span> be independent. Then <span class="math inline">\((XY) \in L^1(P)\)</span> and <span class="math inline">\(E[XY] = E[X]E[Y]\)</span>. In particular, independent random variables are <strong>uncorrelated</strong>.</p>
+<p><br></p>
+<h4 id="theorem-5.6-variance-is-non-negative">Theorem 5.6: Variance is Non-negative</h4>
+<p>Let <span class="math inline">\(X \in L^2 (P)\)</span>. Then:</p>
+<ol type="1">
+<li><span class="math inline">\(Var[X] = E[(X - E[X])^2] \geq 0\)</span></li>
+<li><span class="math inline">\(Var[X] = 0 \Longleftrightarrow X = E[X]\)</span> a.s</li>
+<li>The map <span class="math inline">\(f: \mathbb{R} \rightarrow \mathbb{R}, x \mapsto E[(X - x)^2]\)</span> is minimal at <span class="math inline">\(x_0 = E[X]\)</span> with <span class="math inline">\(f(E[X]) = Var[X]\)</span></li>
+</ol>
+<p><br></p>
+<h4 id="theorem-5.7-covariance-as-inner-product">Theorem 5.7: Covariance as Inner product</h4>
+<p>The map <span class="math inline">\(Cov: L^2(P) \times L^2(P) \rightarrow \mathbb{R}\)</span> is a positive semidefinite symmetric bilinear form (Inner product) and <span class="math inline">\(Cov[X, Y] = 0\)</span> if <span class="math inline">\(Y\)</span> is a.s constant. In detail, Let <span class="math inline">\(X_1, ....., X_m\)</span>, <span class="math inline">\(Y_1, ...., Y_m \in L^2(P)\)</span> and <span class="math inline">\(\alpha_1, ...., \alpha_m, \beta_1, ...., \beta_n \in \mathbb{R}\)</span> as well as <span class="math inline">\(d, e \in \mathbb{R}\)</span>. Then:</p>
+<p><span class="math display">\[Cov[d + \sum^m_{i=1} \alpha_i X_i, e + \sum^n_{i=1} \beta_j Y_j] = \sum_{i, j} \alpha_i \alpha_j Cov[X_i, Y_j]\]</span></p>
+<p>In particular, <span class="math inline">\(Var[\alpha X] = \alpha^2 Var[X]\)</span> and the <strong>Bienayme formula</strong> holds:</p>
+<p><span class="math display">\[Var[\sum^m_{i=1} X_i] = \sum^m_{i=1} Var[X_i] + \sum^m_{i, j = 1, i\neq j} Cov[X_i, Y_j]\]</span></p>
+<p>For uncorrelated <span class="math inline">\(X_1, ..., X_m\)</span>, we have <span class="math inline">\(Var[\sum^{m}_{i=1} X_i] = \sum^m_{i=1} Var[X_i]\)</span></p>
+<p><br></p>
+<h4 id="theorem-5.8-cauchy-schwarz-inequality">Theorem 5.8: Cauchy-Schwarz Inequality</h4>
+<p>If <span class="math inline">\(X, Y \in L^2(P)\)</span>, then</p>
+<p><span class="math display">\[(Cov[X, Y])^2 \leq Var[X]Var[Y]\]</span></p>
+<p>Equality holds if and only if there are <span class="math inline">\(a, b c \in \mathbb{R}\)</span> with <span class="math inline">\(|a| + |b| + |c| &gt; 0\)</span> and such that <span class="math inline">\(aX + bY + c = 0\)</span> a.s.</p>
+<p><br></p>
+<h3 id="weak-law-of-large-numbers">Weak Law of Large Numbers</h3>
+<h4 id="theorem-5.11-markov-inequality-chebyshev-inequality">Theorem 5.11: Markov inequality, Chebyshev Inequality</h4>
+<p>Let <span class="math inline">\(X\)</span> be a random variable and let <span class="math inline">\(f: [0, \infty) \rightarrow [0, \infty)\)</span> be monotone increasing. Then for any <span class="math inline">\(\epsilon &gt; 0\)</span> with <span class="math inline">\(f(\epsilon) &gt; 0\)</span>, the <strong>Markov inequality</strong> holds:</p>
+<p><span class="math display">\[P[|X| \geq \epsilon] \leq \frac{E[f(|X|)]}{f(\epsilon)}\]</span></p>
+<p>In particular if <span class="math inline">\(f(x) = x^2\)</span>, we get <span class="math inline">\(P[|X| \geq \epsilon] \leq \frac{E[X^2]}{\epsilon^2}\)</span>. In particular, if <span class="math inline">\(X \in L^2(P)\)</span>, the <strong>Chebyshev inequality</strong> holds:</p>
+<p><span class="math display">\[P[|X - E[X]| \geq \epsilon] \leq \frac{Var[X]}{\epsilon^2}\]</span></p>
 <p><br></p>
 <h4 id="theorem-1.6.9-change-of-variable">Theorem 1.6.9: Change of Variable</h4>
 <p>Let <span class="math inline">\((\Omega, \mathbf{A})\)</span> and <span class="math inline">\((\Omega^\prime, \mathbf{A}^\prime)\)</span> be measurable spaces, let <span class="math inline">\(\mu\)</span> be a measure on <span class="math inline">\((\Omega, \mathbf{A})\)</span> and let <span class="math inline">\(X: \Omega \rightarrow \Omega^\prime\)</span> be measurable. Let <span class="math inline">\(\mu^\prime = \mu \circ X^{-1}\)</span> be the image measure of <span class="math inline">\(\mu\)</span> under the map <span class="math inline">\(X\)</span>. Assume that <span class="math inline">\(f: \Omega^\prime \rightarrow \mathbb{\bar{R}}\)</span> is <span class="math inline">\(\mu^\prime\)</span>-integrable, then:</p>
@@ -2743,13 +2774,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">840k</span>
+    <span title="Symbols count total">842k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">12:43</span>
+    <span title="Reading time total">12:45</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
