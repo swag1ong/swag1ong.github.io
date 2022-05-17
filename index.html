@@ -454,10 +454,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2022-05-02 11:32:04 / Modified: 11:40:46" itemprop="dateCreated datePublished" datetime="2022-05-02T11:32:04+08:00">2022-05-02</time>
+      <time title="Created: 2022-05-02 11:32:04" itemprop="dateCreated datePublished" datetime="2022-05-02T11:32:04+08:00">2022-05-02</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2022-05-17 07:51:14" itemprop="dateModified" datetime="2022-05-17T07:51:14+08:00">2022-05-17</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -1522,7 +1528,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-05-09 22:19:22" itemprop="dateModified" datetime="2022-05-09T22:19:22+08:00">2022-05-09</time>
+        <time title="Modified: 2022-05-17 09:12:21" itemprop="dateModified" datetime="2022-05-17T09:12:21+08:00">2022-05-17</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1549,14 +1555,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>32k</span>
+      <span>37k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>30 mins.</span>
+      <span>34 mins.</span>
     </span>
 </div>
 
@@ -1997,6 +2003,45 @@
 <li>The distribution <span class="math inline">\(P_X\)</span> is uniquely determined by <span class="math inline">\(\psi_X\)</span>.</li>
 </ol>
 <p><br></p>
+<h2 id="convergence-theorem">Convergence Theorem</h2>
+<p>Assume <span class="math inline">\((\Omega, \mathbf{A}, \mu)\)</span> is a <span class="math inline">\(\sigma\)</span>-finite measure space. <span class="math inline">\((E, d)\)</span> is a separable metric space.</p>
+<h3 id="almost-sure-and-measure-convergence">Almost Sure and Measure Convergence</h3>
+<h4 id="theorem-6.1">Theorem 6.1</h4>
+<p>Let <span class="math inline">\(f, g: \Omega \rightarrow E\)</span> be <span class="math inline">\(\mathbf{A}-B(E)\)</span> measurable. Then the map <span class="math inline">\(H: \Omega \rightarrow [0, \infty), \omega \mapsto d(f(\omega), g(\omega))\)</span> is <span class="math inline">\(\mathbf{A}-B([0, \infty))\)</span>-measurable.</p>
+<h4 id="definition-6.2-converges-in-mu-converges-almost-everywhere">Definition 6.2: Converges in <span class="math inline">\(\mu\)</span>, Converges Almost Everywhere</h4>
+<p>Let <span class="math inline">\(f, f_1, .... : \Omega \rightarrow E\)</span> be measurable w.r.t <span class="math inline">\(\mathbf{A}-B(E)\)</span> (<span class="math inline">\(\{d(f_1, f_n) &gt; 0\} := \{\omega: d(f_1(\omega), f_n(\omega)) &gt; 0\}\)</span>). Then, we say that <span class="math inline">\((f_n)_{n \in \mathbb{N}}\)</span> converges to <span class="math inline">\(f\)</span>:</p>
+<ol type="1">
+<li>In <span class="math inline">\(\mu\)</span>-measure, symbolically <span class="math inline">\(f_n \overset{\mu}{\to} f\)</span>, if <span class="math inline">\(\forall \epsilon \geq 0\)</span>:
+<ul>
+<li>Globally: <span class="math display">\[\lim_{n \rightarrow \infty}\mu(\{d(f, f_n) &gt; \epsilon\}) = 0\]</span></li>
+<li>Locally, <span class="math inline">\(\forall A \in \mathbf{A}\)</span> and <span class="math inline">\(\mu(A) &lt; \infty\)</span>: <span class="math display">\[\lim_{n \rightarrow \infty}\mu(\{\omega \in A: d(f(\omega), f_n (\omega))) &gt; \epsilon\}) = 0\]</span></li>
+<li>If <span class="math inline">\(\mu(X) &lt; \infty\)</span>, above two definitions are equivalent [4]</li>
+<li>If <span class="math inline">\(\mu\)</span> is a probability measure, then convergence above is called <strong>convergence in probability</strong>: <span class="math display">\[\lim_{n \rightarrow \infty} P(|f - f_n| &gt; \epsilon) = 0\]</span></li>
+</ul></li>
+<li><span class="math inline">\(\mu\)</span>-almost everywhere, symbolically <span class="math inline">\(f_n \overset{a.e}{\to} f\)</span>, if there exists a <span class="math inline">\(\mu\)</span>-null set <span class="math inline">\(N \in \mathbf{A}\)</span> s.t: <span class="math display">\[\lim_{n \rightarrow \infty}d(f(\omega), f_n(\omega)) = 0, \quad \forall \omega \in \Omega / N\]</span>
+<ul>
+<li>If <span class="math inline">\(\mu\)</span> is a probability measure, then convergence the sequence <strong>convergence almost surely</strong> if (<span class="math inline">\(|\cdot|\)</span> is a metric on <span class="math inline">\(\mathbb{R}\)</span>): <span class="math display">\[P(\lim_{n \rightarrow \infty} |f - f_n| = 0) = 1\]</span></li>
+</ul></li>
+<li>Almost everywhere convergence implies convergence in measure.</li>
+</ol>
+<p><br></p>
+<h4 id="definition-6.8-mean-convergence">Definition 6.8: Mean Convergence</h4>
+<p>Let <span class="math inline">\(f, f_1, .... \in L^1(\mu)\)</span>. We say that the sequence <span class="math inline">\((f_n)_{n \in \mathbb{N}}\)</span> <strong>converges in mean</strong> to <span class="math inline">\(f\)</span>:</p>
+<p><span class="math display">\[f_n \overset{L^1}{\to}f\]</span></p>
+<p>if <span class="math inline">\(\lim_{n \rightarrow \infty} \|f_n - f\|_1 = 0\)</span>. If <span class="math inline">\(\mu\)</span> is a probability measure, then converges in mean can be written as:</p>
+<p><span class="math display">\[\lim_{n \rightarrow \infty} E[|f_n - f|] = 0\]</span></p>
+<ul>
+<li>If <span class="math inline">\(f_n \overset{L^1}{\to}f\)</span>, then in particular <span class="math inline">\(\lim_{n \rightarrow \infty}\int f_n d\mu = \int f d\mu\)</span></li>
+<li>Mean convergence implies convergence in measure.</li>
+</ul>
+<p><br></p>
+<h4 id="definition-6.12-fast-convergence">Definition 6.12: Fast Convergence</h4>
+<p>Let <span class="math inline">\((E, d)\)</span> be a separable metric space. In order for the sequence <span class="math inline">\((f_n)_{n \in \mathbb{N}}\)</span> of measurable maps <span class="math inline">\(\Omega \rightarrow E\)</span> to converge <strong>almost everywhere</strong>, it is sufficient that one of the following conditions holds:</p>
+<ul>
+<li><span class="math inline">\(E = \mathbb{R}\)</span> and there is a <span class="math inline">\(p \in [1, \infty)\)</span> with <span class="math inline">\(f_n \in L^p(\mu)\)</span> for all <span class="math inline">\(n \in \mathbb{N}\)</span> and there is an <span class="math inline">\(f \in L^p(\mu)\)</span> with <span class="math inline">\(\sum^\infty_{n=1} \|f_n - f\|_p &lt; \infty\)</span>.</li>
+<li>There is a measurable <span class="math inline">\(f\)</span> with <span class="math inline">\(\sum^\infty_{n=1} \mu(A \cap \{d(f, f_n) &gt; \epsilon\}) &lt; \infty\)</span> for all <span class="math inline">\(\epsilon &gt; 0\)</span> and for all <span class="math inline">\(A \in \mathbf{A}\)</span> with <span class="math inline">\(\mu(A) &lt; \infty\)</span>. In both cases, we have <span class="math inline">\(f_n \overset{a.e}{\to} f\)</span>.</li>
+</ul>
+<p><br></p>
 <h2 id="moments-and-law-of-large-numbers">Moments and Law of Large Numbers</h2>
 <h3 id="moments">Moments</h3>
 <h4 id="definition-5.1-moments">Definition 5.1: Moments</h4>
@@ -2046,10 +2091,38 @@
 <h3 id="weak-law-of-large-numbers">Weak Law of Large Numbers</h3>
 <h4 id="theorem-5.11-markov-inequality-chebyshev-inequality">Theorem 5.11: Markov inequality, Chebyshev Inequality</h4>
 <p>Let <span class="math inline">\(X\)</span> be a random variable and let <span class="math inline">\(f: [0, \infty) \rightarrow [0, \infty)\)</span> be monotone increasing. Then for any <span class="math inline">\(\epsilon &gt; 0\)</span> with <span class="math inline">\(f(\epsilon) &gt; 0\)</span>, the <strong>Markov inequality</strong> holds:</p>
-<p><span class="math display">\[P[|X| \geq \epsilon] \leq \frac{E[f(|X|)]}{f(\epsilon)}\]</span></p>
+<p><span class="math display">\[P(|X| \geq \epsilon) \leq \frac{E[f(|X|)]}{f(\epsilon)}\]</span></p>
 <p>In particular if <span class="math inline">\(f(x) = x^2\)</span>, we get <span class="math inline">\(P[|X| \geq \epsilon] \leq \frac{E[X^2]}{\epsilon^2}\)</span>. In particular, if <span class="math inline">\(X \in L^2(P)\)</span>, the <strong>Chebyshev inequality</strong> holds:</p>
-<p><span class="math display">\[P[|X - E[X]| \geq \epsilon] \leq \frac{Var[X]}{\epsilon^2}\]</span></p>
+<p><span class="math display">\[P(|X - E[X]| \geq \epsilon) \leq \frac{Var[X]}{\epsilon^2}\]</span></p>
 <p><br></p>
+<h4 id="definition-5.12-weak-and-strong-law-of-large-numbers">Definition 5.12: Weak and Strong Law of Large Numbers</h4>
+<p>Let <span class="math inline">\((X_n)_{n \in \mathbb{N}}\)</span> be a sequence of real random variables in <span class="math inline">\(L^1(P)\)</span> and let <span class="math inline">\(\tilde{S}_n = \sum^n_{i=1} (X_i - E[X_i])\)</span></p>
+<ul>
+<li>We say that <span class="math inline">\((X)_{n \in \mathbb{N}}\)</span> fulfills the <strong>weak law of large numbers</strong> if: <span class="math display">\[\lim_{n \rightarrow \infty} P(|\frac{1}{n} \tilde{S}_n| &gt; \epsilon)= 0, \; \forall \epsilon &gt; 0\]</span></li>
+<li>We say that <span class="math inline">\((X_n)_{n \in \mathbb{N}}\)</span> fulfills the <strong>strong law of large numbers</strong> if:
+<ul>
+<li><span class="math display">\[P(\lim\sup_{n \rightarrow \infty} |\frac{1}{n} \tilde{S}_n| = 0) = 1\]</span></li>
+<li><span class="math display">\[P(\lim\sup_{n \rightarrow \infty} \{\omega \in \Omega: |\frac{1}{n} \tilde{S}_n (\omega)| &gt; \epsilon\}) = 0\]</span></li>
+<li><span class="math display">\[P(\lim_{n \rightarrow \infty} X_n = X) = 1 := P(\{\omega \in \Omega: \lim_{n \rightarrow \infty} X_n(\omega) = X(\omega)\}) = 1\]</span></li>
+</ul></li>
+</ul>
+<p><br></p>
+<h4 id="theorem-5.14-uncorrelated-random-variables-with-finite-variance-fulfills-wlln">Theorem 5.14: Uncorrelated Random Variables with Finite Variance Fulfills WLLN</h4>
+<p>Let <span class="math inline">\(X_1, X_2, .....\)</span> be uncorrelated random variables in <span class="math inline">\(L^2(P)\)</span> with <span class="math inline">\(V:= \sup_{n \in \mathbb{N}} Var[X_n] &lt; \infty\)</span>. Then <span class="math inline">\((X_n)_{n \in \mathbb{N}}\)</span> fulfills the <strong>weak law of large numbers</strong>. More precisely, for any <span class="math inline">\(\epsilon &gt; 0\)</span>:</p>
+<p><span class="math display">\[P(|\frac{1}{n}\tilde{S_n}| \geq \epsilon) \leq \frac{V}{\epsilon^2 n}\]</span></p>
+<p><br></p>
+<h4 id="theorem-5.16-pairwise-independence-finite-variance-and-identically-distributed-fulfills-slln-strong-assumption">Theorem 5.16: Pairwise Independence, Finite Variance and Identically Distributed Fulfills SLLN (Strong Assumption)</h4>
+<p>Let <span class="math inline">\(X_1, .... \in L^2(P)\)</span> be pairwise independent and identically distributed. Then <span class="math inline">\((X_n)_{n \in \mathbb{N}}\)</span> fulfills the strong law of large numbers.</p>
+<p><br></p>
+<h4 id="theorem-5.17-etemadis-strong-law-of-large-numbers-weaker-assumption">Theorem 5.17: Etemadi's Strong Law of Large Numbers (Weaker Assumption)</h4>
+<p>Let <span class="math inline">\(X_1, .... \in L^1(P)\)</span> be pairwise independent and identically distributed. Then <span class="math inline">\((X_n)_{n \in \mathbb{N}}\)</span> fulfills the SLLN.</p>
+<p><br></p>
+<h4 id="definition-5.22-empirical-distirbution-function">Definition 5.22: Empirical Distirbution Function</h4>
+<p>Let <span class="math inline">\(X_1, ....\)</span> be real random variables. The map: <span class="math inline">\(F_n: \mathbb{R} \rightarrow [0, 1], x \mapsto \frac{1}{n} \sum^n_{i=1} \mathbb{1}_{X_i \leq x}\)</span> is called the <strong>empirical distribution function</strong> of <span class="math inline">\(X_1, ...., X_n\)</span>. In other words, given a sequence of samples, we estimate the CDF by counting the number of observations that are less than or equal to <span class="math inline">\(x\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-5.23-glivenko-cantelli">Theorem 5.23: Glivenko-Cantelli</h4>
+<p>Let <span class="math inline">\(X_1, ...\)</span> be i.i.d real random variables with distribution function <span class="math inline">\(F\)</span>, and let <span class="math inline">\(F_n\)</span>, <span class="math inline">\(n \in \mathbb{N}\)</span>, be the empirical distirbution functions. Then:</p>
+<p><span class="math display">\[P(\lim\sup_{n \rightarrow \infty}\sup_{x \in \mathbb{R}} |F_n (x) - F(x)| = 0) = 1\]</span></p>
 <h4 id="theorem-1.6.9-change-of-variable">Theorem 1.6.9: Change of Variable</h4>
 <p>Let <span class="math inline">\((\Omega, \mathbf{A})\)</span> and <span class="math inline">\((\Omega^\prime, \mathbf{A}^\prime)\)</span> be measurable spaces, let <span class="math inline">\(\mu\)</span> be a measure on <span class="math inline">\((\Omega, \mathbf{A})\)</span> and let <span class="math inline">\(X: \Omega \rightarrow \Omega^\prime\)</span> be measurable. Let <span class="math inline">\(\mu^\prime = \mu \circ X^{-1}\)</span> be the image measure of <span class="math inline">\(\mu\)</span> under the map <span class="math inline">\(X\)</span>. Assume that <span class="math inline">\(f: \Omega^\prime \rightarrow \mathbb{\bar{R}}\)</span> is <span class="math inline">\(\mu^\prime\)</span>-integrable, then:</p>
 <p><span class="math display">\[f \circ X \in L^1(\mu)\]</span></p>
@@ -2086,6 +2159,7 @@
 <li>Definition 1.1 https://www.youtube.com/watch?v=PZ0UhM9IB_k</li>
 <li>Theorem 1.2 https://proofwiki.org/wiki/Tail_of_Convergent_Series_tends_to_Zero#:~:text=%E2%88%9E%E2%88%91n%3DNan%20is%20convergent,convergent%20series%20tends%20to%20zero.</li>
 <li>https://www.math.arizona.edu/~tgk/mc/prob_background.pdf</li>
+<li>https://en.wikipedia.org/wiki/Convergence_in_measure#:~:text=If%20%CE%BC%20is%20%CF%83%2Dfinite%2C%20(fn)%20converges,to%20f%20locally%20in%20measure.</li>
 </ol>
 
       
@@ -2774,13 +2848,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">842k</span>
+    <span title="Symbols count total">846k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">12:45</span>
+    <span title="Reading time total">12:49</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
