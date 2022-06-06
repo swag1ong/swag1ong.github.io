@@ -86,7 +86,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">103</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">105</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -162,7 +162,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">103</span>
+          <span class="site-state-item-count">105</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -215,6 +215,250 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/11/19/time-series-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/11/19/time-series-2/" class="post-title-link" itemprop="url">Time Series (2)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-11-19 13:10:49" itemprop="dateCreated datePublished" datetime="2021-11-19T13:10:49+08:00">2021-11-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-11-29 15:08:03" itemprop="dateModified" datetime="2021-11-29T15:08:03+08:00">2021-11-29</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/11/19/time-series-2/" class="post-meta-item leancloud_visitors" data-flag-title="Time Series (2)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>22k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>20 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="time-series-arima">Time Series (ARIMA)</h1>
+<h2 id="autoregressive-moving-average-models-arma">Autoregressive Moving Average Models (ARMA)</h2>
+<h3 id="autoregressive-models">Autoregressive Models</h3>
+<p>Autoregressive models are based on the idea that the current value of the series <span class="math inline">\(X_t\)</span> can be explained as a function of <span class="math inline">\(p\)</span> past values, <span class="math inline">\(X_{t-1}, X_{t-2}, ..., X_{t-p}\)</span> where <span class="math inline">\(p\)</span> determines the number of steps into the past needed to forecast the current value.</p>
+<p>An autoregressive model of order <span class="math inline">\(p\)</span>, abbreviated <span class="math inline">\(AR(p)\)</span> with <span class="math inline">\(E[X_t] = 0\)</span>, is of the form:</p>
+<p><span class="math display">\[X_t = \phi_1 X_{t-1} + \phi_2 X_{t-2} + ... + \phi_p X_{t-p} + W_t\]</span></p>
+<p>Where <span class="math inline">\(X_t\)</span> is stationary, <span class="math inline">\(\phi_1, ..., \phi_p \neq 0\)</span> are constants, <span class="math inline">\(W_t\)</span> is a Gaussian white noise series with mean zero and variance <span class="math inline">\(\sigma^2_w\)</span>. <strong>We assume above equation <span class="math inline">\(X_t\)</span> has mean zero</strong>, if it has non zero mean <span class="math inline">\(\mu\)</span>, we can replace it by:</p>
+<p><span class="math display">\[X_t - \mu = \phi(X_{t-1} - \mu) + \phi_2(X_{t-2} - \mu) + ... + \phi_p (X_{t-p} - \mu) + W_t\]</span> <span class="math display">\[\implies X_t = \alpha + \phi_1 X_{t-1} + \phi_2 X_{t-2} + ... + \phi_p X_{t-p} + W_t\]</span></p>
+<p>Where <span class="math inline">\(\alpha = \mu(1 - \phi_1 - ... - \phi_p)\)</span>.</p>
+<p>We can also use the backshift operator to rewrite the zero mean <span class="math inline">\(AR(p)\)</span> process as:</p>
+<p><span class="math display">\[(1 - \phi_1 B - \phi_2 B^2 - ... - \phi_p B^p) X_t = W_t\]</span></p>
+<p>or using <strong>autoregressive operator</strong>:</p>
+<p><span class="math display">\[\phi(B)X_t = W_t\]</span></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/19/time-series-2/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/11/15/time-series-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/11/15/time-series-1/" class="post-title-link" itemprop="url">Time Series (1)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-11-15 13:10:49" itemprop="dateCreated datePublished" datetime="2021-11-15T13:10:49+08:00">2021-11-15</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-11-19 15:19:43" itemprop="dateModified" datetime="2021-11-19T15:19:43+08:00">2021-11-19</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/11/15/time-series-1/" class="post-meta-item leancloud_visitors" data-flag-title="Time Series (1)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>12k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>11 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="time-series-introduction">Time Series (Introduction)</h1>
+<h2 id="characteristics-of-time-series">Characteristics of Time Series</h2>
+<p>The primary objective of time series analysis is to develop mathematical models that provide plausible descriptions for sample data with time correlations. In order to provide a statistical setting for describing the character of data that seemingly fluctuate in a random fashion over time, we assume a time series can be defined as a collection of random variables indexed according to the order they are obtained in time. In general, a collection of random variables <span class="math inline">\(\{X_t\}\)</span> indexed by <span class="math inline">\(t\)</span> is referred to as a stochastic process. In this text, <span class="math inline">\(t\)</span> will typically be discrete and vary over the integers.</p>
+<p><strong>Example of Series:</strong></p>
+<blockquote>
+<p><strong>White Noise</strong>: A collection of uncorrelated, independent and identically distributed random variables <span class="math inline">\(W_t\)</span> with mean 0 and finite variance <span class="math inline">\(\sigma^2_w\)</span>. A particular useful white noise is Gaussian white noise, that is <span class="math inline">\(W_t \overset{i.i.d}{\sim} N(0, \sigma^2_w)\)</span> <img src="/images/RL/background/ts_1_3_1.png" width="600"></p>
+</blockquote>
+<blockquote>
+<p><strong>Moving Average</strong>: We might replace the white noise series <span class="math inline">\(W_t\)</span> by a moving average that smooths the series: <span class="math display">\[V_t = \frac{1}{3} (W_{t-1} + W_{t} + W_{t+1})\]</span> This introduces a smoother version of white noise series, reflecting the fact that the slower oscillations are more apparent and some of the faster oscillations are taken out. <img src="/images/RL/background/ts_1_3_2.png" width="600"></p>
+</blockquote>
+<blockquote>
+<p><strong>Autoregressions</strong>: Suppose we consider the white noise series <span class="math inline">\(W_t\)</span> as input and calculate the output using the second-order equation: <span class="math display">\[X_t = X_{t-1} - 0.9 X_{t-2} + W_t\]</span> For <span class="math inline">\(t=1, ..., 500\)</span>. We can see the periodic behavior of the series. <img src="/images/RL/background/ts_1_3_3.png" width="600"></p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/15/time-series-1/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1336,295 +1580,6 @@ Where <span class="math inline">\(\gamma (Z_{nk}) = P(Z_{1k} = 1 | \mathbf{D}, \
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/29/adam/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/29/adam/" class="post-title-link" itemprop="url">Adam</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-07-29 10:38:43" itemprop="dateCreated datePublished" datetime="2021-07-29T10:38:43+08:00">2021-07-29</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-07-30 00:01:46" itemprop="dateModified" datetime="2021-07-30T00:01:46+08:00">2021-07-30</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DL/" itemprop="url" rel="index"><span itemprop="name">DL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DL/Techniques/" itemprop="url" rel="index"><span itemprop="name">Techniques</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/07/29/adam/" class="post-meta-item leancloud_visitors" data-flag-title="Adam" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>4.8k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="adam-a-method-for-stochastic-optimization">ADAM: A METHOD FOR STOCHASTIC OPTIMIZATION</h1>
-<p><img src='/images/ML/adam_1.png' width="600"></p>
-<p>Let <span class="math inline">\(F\)</span> be a noisy objective function (stochastic function) defined as <span class="math inline">\(F(\boldsymbol{\theta})\)</span> that is differentiable w.r.t <span class="math inline">\(\boldsymbol{\theta}\)</span>, we are interested in minimizing the expected value of this random function:</p>
-<p><span class="math display">\[\min_{\boldsymbol{\theta}} E_{F}[F(\boldsymbol{\theta})]\]</span></p>
-<p>Let <span class="math inline">\(F_1(\boldsymbol{\theta}), ...., F_{T} (\boldsymbol{\theta})\)</span> be a random sample of <span class="math inline">\(F(\boldsymbol{\theta})\)</span> and let <span class="math inline">\(f_1 (\boldsymbol{\theta}), ..., f_T(\boldsymbol{\theta})\)</span> be the realization of random sample. <strong>This random sample can be forms of mini-batches of data which the distribution does not depend on the parameter <span class="math inline">\(\boldsymbol{\theta}\)</span>.</strong></p>
-<p>Then:</p>
-<p><span class="math display">\[\nabla_{\boldsymbol{\theta}} E_F[F (\boldsymbol{\theta})] = E_F[\nabla_{\boldsymbol{\theta}} F (\boldsymbol{\theta})]\]</span></p>
-<p><br></p>
-<p>Given the individual sample gradient <span class="math inline">\(\nabla_{\boldsymbol{\theta}} f_1 (\boldsymbol{\theta}), ...., \nabla_{\boldsymbol{\theta}} f_T(\boldsymbol{\theta})\)</span>, one way to estimate the expectation of gradient, <span class="math inline">\(E_{F} [\nabla_{\boldsymbol{\theta}} F_t(\boldsymbol{\theta})]\)</span>, is to use stochastic approximation (similar to Momentum):</p>
-<p><span class="math display">\[m_t \leftarrow \beta_1 {m}_{t} + (1 - \beta_1) \nabla_{\boldsymbol{\theta}} f_t(\boldsymbol{\theta})\]</span></p>
-<p>Where <span class="math inline">\(m_t\)</span> is the average up to sample <span class="math inline">\(t\)</span>, and <span class="math inline">\(\beta_1 \in [0, 1)\)</span> is the decay rates.</p>
-<p>At the same time, we can use SA to estimate the second moment of the gradient which is the un-centered variance (This is similar to RMSProp):</p>
-<p><span class="math display">\[v_t \leftarrow \beta_2 {v}_{t} + (1 - \beta_2) \nabla_{\boldsymbol{\theta}} f_t(\boldsymbol{\theta})^2\]</span></p>
-<p>However, these estimates are biased toward 0 if we initialize them to be 0 especially during initial timesteps and especially when the decay rates are small (<span class="math inline">\(\beta_1, \beta_2\)</span> close to 1). Thus, we need to apply bias correction.</p>
-<h2 id="initial-bias-correction">Initial Bias Correction</h2>
-<p>Let <span class="math inline">\(\mathbf{G} = \nabla_{\boldsymbol{\theta}} F\)</span> be the gradient of the stochastic objective <span class="math inline">\(F\)</span>, we wish to estimate its second raw moment using SA of the squared gradient with decay rate <span class="math inline">\(\beta_2\)</span>. Let <span class="math inline">\(\mathbf{G}_1, ...., \mathbf{G}_T\)</span> be random sample of <span class="math inline">\(\mathbf{G}\)</span> that draws from the gradient distribution <span class="math inline">\(P(\mathbf{G})\)</span>. Suppose we initialize our SA procedure at <span class="math inline">\({v}_0 = 0\)</span>, then after <span class="math inline">\(t\)</span> steps, we have:</p>
-<p><span class="math display">\[v_1 = (1 - \beta_2) \mathbf{G}^2_1\]</span></p>
-<p><span class="math display">\[v_2 = \beta_2(1 - \beta_2) \mathbf{G}^2_1 + (1 - \beta_2) \cdot \mathbf{G}^2_2 = \beta_2 (1 - \beta_2) (\mathbf{G}^2_1 + \mathbf{G}^2_2)\]</span></p>
-<p><span class="math display">\[\implies {v}_t = (1 - \beta_2) \sum^{t}_{i=1} \beta^{t - i}_2 \mathbf{G}^2_{i}\]</span></p>
-<p>Where <span class="math inline">\(\mathbf{G}^2 = \|\mathbf{G}\|^2_2\)</span>. We want the SA estimator to be unbiased estimator of second moment of gradient but we know that there is initialization bias (discrepancy) of SA estimator, we denote this discrepancy <span class="math inline">\(\eta\)</span>. Since additive discrepancy can be keep small by assigning less weight to history, we want two sides to be equal:</p>
-<p><span class="math display">\[E_{\mathbf{G}} [\mathbf{G}^2] = E_\mathbf{G}[\mathbf{v}^2_t] + \eta = E_\mathbf{G} [(1 - \beta_2) \sum^{t}_{i=1} \beta_2^{t - i} \mathbf{G}^2_{i}] + \eta\]</span></p>
-<p>However, since <span class="math inline">\(t &lt; \infty\)</span>, we have a proportion bias:</p>
-<span class="math display">\[\begin{aligned}
-E_\mathbf{G}[\mathbf{v}^2_t] + \eta &amp;= E_{\mathbf{G}} [\mathbf{G}^2] (1 - \beta_2)  \sum^{t}_{i=1} \beta_2^{t - i} + \eta\\
-&amp;= E_{\mathbf{G}} [\mathbf{G}^2] (1 - \beta_2)  \sum^{t}_{i=1} \beta_2^{t}(\frac{1}{\beta_2})^i + \eta\\
-&amp;= E_{\mathbf{G}} [\mathbf{G}^2] (1 - \beta_2)  \frac{1}{\beta_2} \sum^{t}_{i=0}\beta_2^{t}(\frac{1}{\beta_2})^i + \eta\\
-&amp;= E_{\mathbf{G}} [\mathbf{G}^2] (1 - \beta_2)  \frac{1}{\beta_2} \beta_2^{t} \frac{\beta^t_2 - 1}{\beta^t_2} \frac{\beta_2}{\beta_2 - 1}+ \eta\\
-&amp;= E_{\mathbf{G}} [\mathbf{G}^2] \underbrace{(1 - \beta^t_2)}_{\text{This term we do not want}} + \eta 
-\end{aligned}\]</span>
-<p>Thus, we can apply a bias correction term on the estimator to correct for this proportion bias <span class="math inline">\(\frac{1}{1 - \beta^t_2}\)</span>.</p>
-<p>The same correction <span class="math inline">\(\frac{1}{1 - \beta^t_1}\)</span>is applied on first moment estimator of the gradient.</p>
-<h2 id="adamax">AdaMax</h2>
-<p>In Adam, the current average gradient estimate <span class="math inline">\(\hat{m}_t\)</span> is scaled inversely to history proportional to the scaled <span class="math inline">\(L^2\)</span> norm of their individual current and past gradients (i.e <span class="math inline">\(\frac{\alpha}{\sqrt{\hat{v}_t} + \epsilon}\)</span>). We can generalize <span class="math inline">\(L^2\)</span> norm to a <span class="math inline">\(L^\infty\)</span> norm based update rule. This leads to a surprisingly simple and stable algorithm:</p>
-<p><img src='/images/ML/adam_2.png' width="600"></p>
-<p><br></p>
-<p>In case of <span class="math inline">\(L^p\)</span> norm, <span class="math inline">\(\mathbf{v}_t\)</span> is defined to be:</p>
-<span class="math display">\[\begin{aligned}
-{v}_t &amp;\leftarrow \beta^p_2  + {v}_t (1 - \beta^p_2) \|\mathbf{G}_i\|^p_p\\
-&amp;\leftarrow (1 - \beta_2^p) \sum^{t}_{i=1} \beta^{p(t - i)}_2 \|\mathbf{G}_i\|^p_p\\
-\end{aligned}\]</span>
-<p>Note define:</p>
-<p><span class="math display">\[u_t = \lim_{p \rightarrow \infty} (v_t)^{\frac{1}{p}}\]</span></p>
-<p>Then:</p>
-<span class="math display">\[\begin{aligned}
-u_t &amp;= \lim_{p \rightarrow \infty} (v_t)^{\frac{1}{p}}\\
-&amp;= \lim_{p \rightarrow \infty} ((1 - \beta_2^p) \sum^{t}_{i=1} \beta^{p(t - i)}_2 \|\mathbf{G}_i\|^p_p)^\frac{1}{p}\\
-&amp;= \lim_{p \rightarrow \infty} (1 - \beta_2^p)^\frac{1}{p} (\sum^{t}_{i=1} \beta^{p(t - i)}_2 \|\mathbf{G}_i\|^p_p)^\frac{1}{p}\\
-&amp;= \lim_{p \rightarrow \infty} (\sum^{t}_{i=1}(\beta^{(t - i)}_2 \|\mathbf{G}_i\|_p)^p)^\frac{1}{p}\\
-&amp;= \| \beta^{(t - i)}_2 \|\mathbf{G}_i\|_{\infty}\|_{\infty}\\
-&amp;= \max(\beta^{(t - 1)}_2 \|\mathbf{G}_1\|_{\infty}, .... , \|\mathbf{G}_t\|_{\infty}) 
-\end{aligned}\]</span>
-<p>Which corresponding to:</p>
-<p><span class="math display">\[u_t \leftarrow \max(\beta_2 u_{t}, \|\mathbf{G}_t\|_{\infty})\]</span></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/29/adaptive-lr/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/29/adaptive-lr/" class="post-title-link" itemprop="url">Basic Adaptive LR Algorithms</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-07-29 10:38:32" itemprop="dateCreated datePublished" datetime="2021-07-29T10:38:32+08:00">2021-07-29</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-08-18 16:12:42" itemprop="dateModified" datetime="2021-08-18T16:12:42+08:00">2021-08-18</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DL/" itemprop="url" rel="index"><span itemprop="name">DL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DL/Techniques/" itemprop="url" rel="index"><span itemprop="name">Techniques</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/07/29/adaptive-lr/" class="post-meta-item leancloud_visitors" data-flag-title="Basic Adaptive LR Algorithms" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>2.6k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="algorithms-with-adaptive-learning-rates">Algorithms with Adaptive Learning Rates</h1>
-<p>Learning rate is reliably one of the hyperparameters that is the most difficult to set because it has a significant impact on model performance. At each iteration, the cost is often highly sensitive to some directions in parameter space and insensitive to others. Momentum solves some of the problems in the cost of introducing another hyperparameter. Thus, it is natural to consider algorithms that have separate learning rate for each parameter and automatically adapt learning rates for each of the parameter.</p>
-<p>The <code>delta-bar-delta</code> algorithm (base on full-batch) is an early heuristic approach to adapting individual learning rates for model parameters during training, it is based on intuitive idea similar to momentum:</p>
-<blockquote>
-<p>If the partial derivative of the loss, with respect to a given model parameter, remains the same sign, then the learning rate should increase, if the partial derivative with respect to the parameter changes sign, then the learning rate should decrease.</p>
-</blockquote>
-<p>We would like to extend the idea to mini-batch scenario.</p>
-<h2 id="adagrad">AdaGrad</h2>
-<p><img src='/images/ML/adagrad_1.png' width="600"></p>
-<p>The <code>AdaGrad</code> algorithm, individually adapts the learning rates of all model parameters by scaling them inversely proportional to square root of the sum of all of their historical squared values:</p>
-<ol type="1">
-<li><p>If <span class="math inline">\(g_1\)</span> is large constantly larger than <span class="math inline">\(g_2\)</span>, then:</p>
-<p><span class="math display">\[\sqrt{r_1} &gt; \sqrt{r_2} \implies \epsilon_1 &lt; \epsilon_2\]</span></p>
-<p>This makes sense because we want to take a small step in the gradient direction when the magnitude of gradient is large, especially when we have noisy gradient. Conversely, we would like to take slightly larger step than large gradient case when we have smaller gradient.</p></li>
-<li><p>If <span class="math inline">\(r_i\)</span> is less than 1, we have increasing learning rate compare to base learning rate:</p>
-<p><span class="math display">\[r_i &lt; 1 \implies \epsilon_i &gt; \epsilon\]</span></p>
-<p>This helps us to get out of the local minimum or flat region of the surface by taking larger steps.</p></li>
-</ol>
-<p>AdaGrad is designed to converge rapidly when applied to a convex optimization problem, so when it finds a convex structure, it can converge rapidly.</p>
-<p>However, in non-convex optimization problem (training neural networks) the accumulated gradient <span class="math inline">\(\mathbf{r}\)</span> starts accumulating at the beginning, <strong>this will introduce excessive decrease in the effective learning in later training steps (at end, we will have large <span class="math inline">\(\mathbf{r}\)</span>, so the learning rates will be small to prevent effective learning in later stages or early large gradients will prevent learning in early stages)</strong>.</p>
-<h2 id="rmsprop">RMSProp</h2>
-<p>The <code>RMSProp</code> algorithm modifies AdaGrad so that it can perform better in non-convex setting by changing the gradient accumulation into an exponentially weighted moving average, so the early accumulation becomes less and less important. This structure helps in non-convex problem by discarding the history from extreme past so when we arrive at a convex bowl, we have sufficiently large learning rate to converge rapidly.</p>
-<p><img src='/images/ML/rmsprop_1.png' width="600"></p>
-<p>The algorithm introduces a new parameter <span class="math inline">\(\rho\)</span> that controls for the weight of accumulated gradient.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1649,13 +1604,13 @@ u_t &amp;= \lim_{p \rightarrow \infty} (v_t)^{\frac{1}{p}}\\
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">846k</span>
+    <span title="Symbols count total">860k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">12:49</span>
+    <span title="Reading time total">13:02</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

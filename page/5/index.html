@@ -86,7 +86,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">103</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">105</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -162,7 +162,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">103</span>
+          <span class="site-state-item-count">105</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -215,6 +215,360 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/19/svm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/19/svm/" class="post-title-link" itemprop="url">SVM</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-19 16:32:20" itemprop="dateCreated datePublished" datetime="2021-07-19T16:32:20+08:00">2021-07-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-09-10 20:11:23" itemprop="dateModified" datetime="2021-09-10T20:11:23+08:00">2021-09-10</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/07/19/svm/" class="post-meta-item leancloud_visitors" data-flag-title="SVM" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>10k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>9 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="support-vector-machine">Support Vector Machine</h1>
+<p>Given dataset <span class="math inline">\(D = \{(\mathbf{x}_1, y_1) ....., (\mathbf{x}_N, y_N); \; \mathbf{x} \in \mathbb{R}^m, \; y_i \in \{-1, 1\}\}\)</span>. Let <span class="math inline">\(\mathbf{w}^T \mathbf{x} + b = 0\)</span> be a hyperplane, we classify a new point <span class="math inline">\(\mathbf{x}_i\)</span> by</p>
+<p><span class="math display">\[
+\hat{y}_i (\mathbf{x}_i) =
+\begin{cases}
+\mathbf{w}^T \mathbf{x}_i + b \geq 0, \quad \;\;\; 1\\
+\mathbf{w}^T \mathbf{x}_i + b &lt; 0, \quad -1\\
+\end{cases}
+\]</span></p>
+<p>Suppose that our data is <strong>linear separable</strong>. Then, <span class="math inline">\(\exists\)</span> at least one possible combination of parameters <span class="math inline">\(\{\mathbf{w}, b\}\)</span>, such that:</p>
+<p><span class="math display">\[\hat{\gamma}_i = y_i \hat{y}_i(\mathbf{x}_i) &gt; 0, \; \forall i=1, ...., N\]</span></p>
+<p>When <span class="math inline">\(y_i = 1\)</span>, a confident classifier would have <span class="math inline">\(\hat{y}_i(\mathbf{x}_i)\)</span> as large as possible. On the other hand, when <span class="math inline">\(y_i = -1\)</span>, the confident classifier would have <span class="math inline">\(\hat{y}_i(\mathbf{x}_i)\)</span> as negative as possible. Thus, we want <span class="math inline">\(\hat{\gamma}_i\)</span> as large as possible, this <span class="math inline">\(\hat{\gamma}_i\)</span> is called <code>functional margin</code> associated with training example for specific set of parameters <span class="math inline">\(\{\mathbf{w}, b\}\)</span>. And <code>functional margin</code> of <span class="math inline">\(\{\mathbf{w}, b\}\)</span> is defined as minimum of these functions margins:</p>
+<p><span class="math display">\[\hat{\gamma} = \min_{i=1, ..., N} \hat{\gamma}_i\]</span></p>
+<p><strong>In support vector machines the decision boundary is chosen to be the one for which the functional margin (confidence) is maximized.</strong></p>
+<h2 id="distance-to-plane">Distance to Plane</h2>
+<p>Let <span class="math inline">\(\mathbf{x}_i\)</span> be a sample that has label <span class="math inline">\(y_i = 1\)</span>, thus, it is on the positive side of the hyperplane <span class="math inline">\(\mathbf{w}^T \mathbf{x} + b = 0\)</span>. Define <span class="math inline">\(r\)</span> to be the shortest distance between point <span class="math inline">\(\mathbf{x}_i\)</span> and the hyperplane. Then <span class="math inline">\(r\)</span> is the distance between <span class="math inline">\(\mathbf{x}_i\)</span> to its projection on the hyperplane <span class="math inline">\(\mathbf{x}^{\prime}_i\)</span>.</p>
+<p><img src='/images/ML/svm_1.png' width="600"></p>
+<p>Since <span class="math inline">\(\mathbf{w}\)</span> is the normal vector that is orthogonal to the plane and <span class="math inline">\(\frac{\mathbf{w}}{\|\mathbf{w}\|_2}\)</span> is the unit vector that represents its direction. We can write the <span class="math inline">\(r\)</span> as:</p>
+<p><span class="math display">\[\mathbf{x}_i - \mathbf{x}^{\prime}_i = r \frac{\mathbf{w}}{\|\mathbf{w}\|_2}\]</span></p>
+<p><span class="math display">\[\implies r = \frac{\mathbf{x}_i - \mathbf{x}^{\prime}_i}{\frac{\mathbf{w}}{\|\mathbf{w}\|_2}}\]</span></p>
+<h2 id="goal">Goal</h2>
+<p>The concept of the margin is intuitively simple: it is the distance of the separating hyperplane to the closest examples in the dataset, assuming that our dataset is <strong>linearly separable.</strong> That is:</p>
+<span class="math display">\[\begin{aligned}
+&amp;\max \quad &amp;&amp; \hat{\gamma}\\
+&amp;\;\text{s.t} \quad &amp;&amp;y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq \hat{\gamma} \quad \quad \forall i=1, ...., N
+\end{aligned}\]</span>
+<p>This optimization problem is unbounded, because one can make the functional margin large by simply scaling the parameters by a constant <span class="math inline">\(c\)</span>, <span class="math inline">\(\{c\mathbf{w}, cb\}\)</span>:</p>
+<p><span class="math display">\[y_i (c\mathbf{w}^T \mathbf{x}_i + cb) &gt; y_i (\mathbf{w}^T \mathbf{x}_i + b) = \hat{\gamma}\]</span></p>
+<p>This has no effect on the decision plane because:</p>
+<p><span class="math display">\[\mathbf{w}^T \mathbf{x}_i + b = c\mathbf{w}^T \mathbf{x}_i + cb = 0\]</span></p>
+<p>Thus, we need to transform the optimization problem to <strong>maximize the distance between the samples and decision boundary</strong> instead of maximizing functional margin. Suppose we let all functional margins to be at least 1 (can easily achieve by multiplying parameters by a constant):</p>
+<p><span class="math display">\[y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq 1\]</span></p>
+<p><span class="math display">\[\implies \mathbf{w}^T \mathbf{x}_i + b \geq 1\]</span></p>
+<p><span class="math display">\[\implies \mathbf{w}^T \mathbf{x}_i + b \leq -1\]</span></p>
+<p>Then, for point <span class="math inline">\(\mathbf{x}_i\)</span> on <span class="math inline">\(\mathbf{w}^T \mathbf{x}_i + b = 1\)</span>, we have its distance to the decision plane:</p>
+<p><span class="math display">\[\mathbf{w}^T \mathbf{x}_i + b - r \frac{\|\mathbf{w}\|^2_2}{\|\mathbf{w}\|_2} = 0\]</span></p>
+<p><span class="math display">\[\implies r = \frac{1}{\|\mathbf{w}\|}\]</span></p>
+<p>Then, we can formulate our objective as:</p>
+<span class="math display">\[\begin{aligned}
+&amp;\max_{\mathbf{w}, b} \quad &amp;&amp; \frac{1}{\|\mathbf{w}\|_2}\\
+&amp;\;\text{s.t} \quad &amp;&amp;y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq 1 \quad \quad \forall i=1, ...., N
+\end{aligned}\]</span>
+<p>Which is equivalent to:</p>
+<span class="math display">\[\begin{aligned}
+&amp;\min_{\mathbf{w}, b} \quad &amp;&amp; \frac{1}{2}\|\mathbf{w}\|^2_2\\
+&amp;\;\text{s.t} \quad &amp;&amp;y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq 1 \quad \quad \forall i=1, ...., N
+\end{aligned}\]</span>
+<p><br></p>
+<p><img src='/images/ML/svm_2.png' width="600"></p>
+<h2 id="soft-margin-svm">Soft Margin SVM</h2>
+<h3 id="slack-variables">Slack Variables</h3>
+<p>Notice, in the above formulation, we have hard constraints on the margins which do not allow misclassification of points. However, in real world, data points are rarely linear separable and there will be outliers in the dataset, we may wish to allow some examples to be on the wrong side of the hyperplane or to have margin less than 1 .</p>
+<p><img src='/images/ML/svm_3.png' width="600"></p>
+<p>To resolve this problem, we can introduce slack variables one for each data point to relax the hard constraints:</p>
+<p><span class="math display">\[y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq 1 - \xi_i\]</span> <span class="math display">\[\quad\xi_i \geq 0, \; \; \forall i=1, ...., N\]</span></p>
+<p>To encourage correct classification of the samples, we add <span class="math inline">\(\xi_i\)</span> to the objective:</p>
+<span class="math display">\[\begin{aligned}
+&amp;\min_{\mathbf{w}, b, \boldsymbol{\xi}} \quad &amp;&amp; \frac{1}{2}\|\mathbf{w}\|^2_2 + C\sum^{N}_{n=1} \xi_i\\
+&amp;\;\text{s.t} \quad &amp;&amp;y_i (\mathbf{w}^T \mathbf{x}_i + b) \geq 1 - \xi_i  \quad &amp;&amp;&amp;\forall i=1, ...., N\\
+&amp; &amp;&amp; \xi_i \geq 0, &amp;&amp;&amp;\forall i=1, ...., N
+\end{aligned}\]</span>
+<p>Thus, sample points are now permitted to have margin less than 1, and if an example <span class="math inline">\(\mathbf{x}_i\)</span> has slack variable greater than 0, we would have penalty in the objective function <span class="math inline">\(C\xi_i\)</span>. The parameter <span class="math inline">\(C\)</span> controls the relative weighting between the twin goals of making the <span class="math inline">\(\|\mathbf{w}\|\)</span> small and of ensuring that most examples have functional margin at least 1.</p>
+<p><br></p>
+<h3 id="dual-problem">Dual Problem</h3>
+<p>Using <strong>Lagrange Multiplier</strong>, we can transform the constrained problem into an unconstrained concave problem:</p>
+<p><span class="math display">\[\max_{\boldsymbol{\alpha}, \boldsymbol{\eta}}\;\min_{\mathbf{w}, b, \boldsymbol{\xi}} \; \frac{1}{2}\|\mathbf{w}\|^2_2 + C\sum^{N}_{n=1} \xi_i - \sum^N_{i=1} \alpha_i [y_i (\mathbf{w}^T \mathbf{x}_i + b) - 1 + \xi_i] - \sum^{N}_{i=1} \eta_i \xi_i\]</span></p>
+<p>Where the inner minimization is the dual function and the maximization w.r.t <span class="math inline">\(\alpha\)</span> is called dual problem.</p>
+<h3 id="kkt">KKT</h3>
+<p>For an unconstrained convex optimization problem, we know we are at global minimum if the gradient is zero. The KKT conditions are the equivalent conditions for the global minimum of a constrained convex optimization problem. <span class="math inline">\(\forall i=1, ...., N\)</span>:</p>
+<ol type="1">
+<li><p><strong>Stationarity</strong>, If the strong duality holds, <span class="math inline">\((\mathbf{w}^*, \boldsymbol{\alpha}^*)\)</span> is optimal, then <span class="math inline">\(\mathbf{w}^*\)</span> minimizes <span class="math inline">\(L(\mathbf{w}^*, \boldsymbol{\alpha}^*)\)</span> (same for <span class="math inline">\(b^*, \xi^*\)</span> which are formulated as constraints in the dual problem):</p>
+<p><span class="math display">\[\nabla_{\mathbf{w}} L(\mathbf{w}^*, \boldsymbol{\alpha}^*) = 0\]</span> <span class="math display">\[\implies \mathbf{w}^* = \sum_{i=1}^{n} \alpha^*_i y_i \mathbf{x}_i\]</span></p></li>
+<li><p><strong>Complementary Slackness</strong>: <span class="math display">\[\alpha_i [y_i (\mathbf{w}^T \mathbf{x}_i + b) - 1 + \xi_i] = 0\]</span></p></li>
+<li><p><strong>Primal Feasibility</strong>: <span class="math display">\[y_i (\mathbf{w}^T \mathbf{x}_i + b) - 1 + \xi_i \geq 0\]</span> <span class="math display">\[\eta_i\xi_i = 0\]</span></p></li>
+<li><p><strong>Dual Feasibility</strong>: <span class="math display">\[\alpha_i, \eta_i, \xi_i \geq 0\]</span></p></li>
+</ol>
+<h4 id="solving-dual-problem">Solving Dual Problem</h4>
+<p>We now solve for the dual function by fixing <span class="math inline">\(\{\alpha_i\, \eta_i\}\)</span> (satisfying Stationarity condition):</p>
+<p><span class="math display">\[\min_{\mathbf{w}, b, \boldsymbol{\xi}} \frac{1}{2}\|\mathbf{w}\|^2_2 + C\sum^{N}_{n=1} \xi_i - \sum^N_{i=1} \alpha_i [y_i (\mathbf{w}^T \mathbf{x}_i + b) - 1 + \xi_i] - \sum^{N}_{i=1} \eta_i \xi_i\]</span></p>
+<span class="math display">\[\begin{aligned}
+&amp; \frac{\partial L(\mathbf{w}, b, \boldsymbol{\xi})}{\partial \mathbf{w}} = \mathbf{w} - \sum_{i=1}^{n} \alpha_i y_i \mathbf{x}_i = 0 \\
+&amp; \implies \mathbf{w}^* = \sum_{i=1}^{n} \alpha_i y_i \mathbf{x}_i \\
+&amp; \frac{\partial L(\mathbf{w},, b, \boldsymbol{\xi})}{\partial b} =\sum_{i=1}^{n} \alpha_i y_i = 0 \\
+&amp; \implies \sum_{i=1}^{n} \alpha_i y_i = 0 \\
+&amp; \frac{\partial L(\mathbf{w}, b, \boldsymbol{\xi})}{\partial \xi_n} = C - \alpha_n - \eta_n = 0 \\
+&amp; \implies \alpha_n = C - \eta_n
+\end{aligned}\]</span>
+<p>Substitute back to the original equation, we obtain the dual function:</p>
+<p><span class="math display">\[g(\boldsymbol{\alpha}) = -\frac{1}{2}\sum_{i=1}^{N}\sum_{k=1}^{N}\alpha_i \alpha_k {\mathbf{x}_i}^T \mathbf{x}_k y_i y_k + \sum_{i=1}^{N} \alpha_i\]</span></p>
+<p>Then, we have the dual problem:</p>
+<span class="math display">\[\begin{aligned}
+&amp; \underset{\boldsymbol{\alpha}}{\text{max}}
+&amp; &amp;  g(\boldsymbol{\alpha}) = -\frac{1}{2}\sum_{i=1}^{N}\sum_{k=1}^{N}\alpha_i \alpha_k {\mathbf{x}_i}^T \mathbf{x}_k y_i y_k + \sum_{i=1}^{N} \alpha_i\\
+&amp; \text{subject to}
+&amp; &amp; 0 \leq \alpha_i \leq C \\
+&amp; &amp; &amp; \sum_{i=1}^{n} \alpha_i y_i = 0 \\
+\end{aligned}\]</span>
+<p>This is a quadratic programming problem that we can solve using quadratic programming.</p>
+<h3 id="interpretation">Interpretation</h3>
+<p>We could conclude:</p>
+<ol type="1">
+<li><p>if <span class="math inline">\(0 &lt; \alpha_i &lt; C \implies y_i(w^T x_i + b) = 1 - \xi_i\)</span> Since <span class="math inline">\(\alpha_i = C - \mu_i, \mu_i \geq 0\)</span>, we have <span class="math inline">\(\xi_i =0 \implies\)</span> the points are with <span class="math inline">\(0 &lt; \alpha_i &lt; C\)</span> are on the margin</p></li>
+<li><p>if <span class="math inline">\(\alpha_i = C\)</span></p>
+<ul>
+<li><span class="math inline">\(0 &lt; \xi_i &lt; 1\)</span>: the points are inside the margin on the correct side</li>
+<li><span class="math inline">\(\xi_i = 1\)</span>: the points are on the decision boundary</li>
+<li><span class="math inline">\(\xi_i &gt; 1\)</span>: the points are inside the wrong side of the margin and misclassified</li>
+</ul></li>
+<li><p>if <span class="math inline">\(\alpha_i = 0\)</span>, the points are not support vectors, have no affect on the weight.</p></li>
+</ol>
+<p>After finding the optimal values for <span class="math inline">\(\boldsymbol{\alpha}\)</span>, we obtain optimal <span class="math inline">\(\mathbf{w}^*\)</span> by solving:</p>
+<p><span class="math display">\[\mathbf{w}^* = \sum_{i=1}^{n} \alpha^*_i y_i \mathbf{x}_i\]</span></p>
+<p>We obtain optimal <span class="math inline">\(b^*\)</span> by realizing that the points on the margins have <span class="math inline">\(0 &lt; \alpha_i &lt; C\)</span>. Let <span class="math inline">\(\mathbf{x}_i\)</span> be one of those points, then:</p>
+<p><span class="math display">\[{\mathbf{w^*}}^T \mathbf{x}_i + b = y_i\]</span></p>
+<p>Let <span class="math inline">\(M\)</span> be the set of all points that lies exactly on the margin, a more stable solution is obtained by averaging over all points:</p>
+<p><span class="math display">\[b^* = \frac{1}{N_m} \sum^{N_m}_{i=1} (y_i - {\mathbf{w^*}}^T\mathbf{x}_i)\]</span></p>
+<h2 id="kernel-tricks">Kernel Tricks</h2>
+<h1 id="implementation">Implementation</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> cvxopt <span class="keyword">import</span> matrix, solvers</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> qpsolvers <span class="keyword">import</span> solve_qp</span><br><span class="line"><span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> SVC</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SVM</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, c=<span class="number">1</span>, kernel=<span class="string">&#x27;linear&#x27;</span></span>):</span></span><br><span class="line">        self.c = c</span><br><span class="line">        self.kernel = kernel</span><br><span class="line">        self.b = <span class="literal">None</span></span><br><span class="line">        self.dual_coef_ = <span class="literal">None</span></span><br><span class="line">        self.decision_matrix = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span>(<span class="params">self, X, y</span>):</span></span><br><span class="line">        n, d = X.shape</span><br><span class="line">        y = y.reshape(-<span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">        yyt = np.matmul(y, y.T)</span><br><span class="line">        P = np.zeros((n, n))</span><br><span class="line">        q = matrix(-np.ones((n, <span class="number">1</span>)))</span><br><span class="line">        a = matrix(y.T, tc=<span class="string">&#x27;d&#x27;</span>)</span><br><span class="line">        b = matrix([<span class="number">0.0</span>])</span><br><span class="line">        G = matrix(np.row_stack([np.diag([-<span class="number">1</span>] * n), np.diag([<span class="number">1</span>] * n)]), tc=<span class="string">&#x27;d&#x27;</span>)</span><br><span class="line">        h = matrix(np.row_stack([np.array([<span class="number">0</span>] * n).reshape(n, <span class="number">1</span>),</span><br><span class="line">                                 np.array([self.c] * n).reshape(n, <span class="number">1</span>)]), tc=<span class="string">&#x27;d&#x27;</span>)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">                P[i][j] = self.apply_kernel(X[i], X[j])</span><br><span class="line"></span><br><span class="line">        P = matrix(P * yyt)</span><br><span class="line">        alpha = np.array(solvers.qp(P, q, G, h , a, b)[<span class="string">&#x27;x&#x27;</span>])</span><br><span class="line">        alpha[alpha &lt; np.mean(alpha) * <span class="number">0.1</span>] = <span class="number">0</span></span><br><span class="line">        temp_x = np.column_stack([X, alpha, y])</span><br><span class="line">        m = temp_x[(temp_x[:, -<span class="number">2</span>] &gt; <span class="number">0</span>) &amp; (temp_x[:, -<span class="number">2</span>] &lt; self.c)]</span><br><span class="line">        N_m = <span class="built_in">len</span>(m)</span><br><span class="line">        self.decision_matrix = m[:, :-<span class="number">2</span>]</span><br><span class="line">        self.b = <span class="number">0</span></span><br><span class="line">        self.dual_coef_ = m[:, -<span class="number">1</span>] * m[:, -<span class="number">2</span>]</span><br><span class="line"></span><br><span class="line">        <span class="comment">## get b</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(N_m):</span><br><span class="line">            self.b += m[i, -<span class="number">1</span>]</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(N_m):</span><br><span class="line">                self.b -= m[j, -<span class="number">2</span>] * m[j, -<span class="number">1</span>] * self.apply_kernel(m[i, :-<span class="number">2</span>], m[j, :-<span class="number">2</span>])</span><br><span class="line"></span><br><span class="line">        self.b = self.b / N_m</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">apply_kernel</span>(<span class="params">self, x_1, x_2</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.kernel == <span class="string">&#x27;linear&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span> np.dot(x_1, x_2)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">decision_function</span>(<span class="params">self, X</span>):</span></span><br><span class="line">        pred_results = np.array([])</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(X)):</span><br><span class="line">            pred = self.b</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(self.decision_matrix)):</span><br><span class="line">                pred += self.dual_coef_[j] * self.apply_kernel(X[i], self.decision_matrix[j])</span><br><span class="line"></span><br><span class="line">            pred_results = np.append(pred_results, pred)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> pred_results</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, X</span>):</span></span><br><span class="line">        pred_results = self.decision_function(X)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> np.where(pred_results &gt;= <span class="number">0</span>, <span class="number">1</span>, -<span class="number">1</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="ref">Ref</h1>
+<p>https://www.ccs.neu.edu/home/vip/teach/MLcourse/6_SVM_kernels/lecture_notes/svm/svm.pdf</p>
+<p>http://www.cs.cmu.edu/~guestrin/Class/10701-S06/Slides/svms-s06.pdf</p>
+<p>MML book</p>
+<p>Lagrangian Duality for Dummies, David Knowles</p>
+<p>PRML Chapter 7</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/19/naive-bayes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/19/naive-bayes/" class="post-title-link" itemprop="url">Naive Bayes</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-19 16:32:15" itemprop="dateCreated datePublished" datetime="2021-07-19T16:32:15+08:00">2021-07-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-24 23:06:03" itemprop="dateModified" datetime="2021-07-24T23:06:03+08:00">2021-07-24</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/07/19/naive-bayes/" class="post-meta-item leancloud_visitors" data-flag-title="Naive Bayes" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>7.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>7 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="naive-bayes">Naive Bayes</h1>
+<p>Suppose our training set consists of data samples <span class="math inline">\(D = \{(\mathbf{x}_1, y_1), ...., (\mathbf{x}_N, y_N)\}, \; \mathbf{x_i} \in \mathbb{R}^d\)</span>, where <span class="math inline">\(D = \{(\mathbf{x}_i, y_i)\}\)</span> are realizations of a random sample that follows unknown joint distribution <span class="math inline">\(P(\mathbf{X}, Y)\)</span>.</p>
+<p><strong>Assumptions</strong>:</p>
+<ol type="1">
+<li><p><strong>Features are conditionally independent (Naive bayes assumption)</strong>: <span class="math display">\[P(\mathbf{X} | Y) = \prod^{d}_{j=1} P(X_j | Y)\]</span></p></li>
+<li><p><strong>MLE assumption</strong>: Random sample is identically distributed.</p></li>
+<li><p><strong>Positional independence</strong>: The position of features does not matter (used in Multinomial case).</p></li>
+</ol>
+<p>By applying bayes rule (applying on distribution <span class="math inline">\(P (\cdot)\)</span> to make things general), we have:</p>
+<p><span class="math display">\[P(Y | \mathbf{X}) = \frac{P(\mathbf{X}, Y)}{P(\mathbf{X})} = \frac{P(\mathbf{X} | Y) P(Y)}{P(\mathbf{X})}\]</span></p>
+<p>By substituting the assumption:</p>
+<p><span class="math display">\[P(Y | \mathbf{X}) = \frac{\prod^{d}_{j=1} P(X_j | Y)P(Y)}{P(\mathbf{X})}\]</span></p>
+<p>Since the probability distribution <span class="math inline">\(P(\mathbf{X})\)</span> characterised by <span class="math inline">\(F_{\mathbf{X}}(\mathbf{x})\)</span> is constant for any given <span class="math inline">\(\mathbf{x}\)</span>, we can drop it from the equation because it only changes <span class="math inline">\(P(Y | \mathbf{X})\)</span> by a proportion:</p>
+<p><span class="math display">\[P(Y | \mathbf{X}) \propto P(Y) \prod^{d}_{j=1} P(X_j | Y)\]</span></p>
+<p>Our goal is to find a class <span class="math inline">\(\hat{y}\)</span> that maximize the probability given input <span class="math inline">\(\mathbf{X} = \mathbf{x}\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+\hat{y} = \underset{y}{\arg\max} \sum^{d}_{j=1} \log P_{X_j|Y}(x_j | y) + \log P_{Y}(y)
+\end{aligned}\]</span>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/19/naive-bayes/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1387,259 +1741,6 @@ V -  \prod_{\mathbf{F}, \mu} T^{\pi}V &amp;= \prod_{\mathbf{F}, \mu} V - \prod_{
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/08/knapsack/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/08/knapsack/" class="post-title-link" itemprop="url">knapsack</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-07-08 22:40:37" itemprop="dateCreated datePublished" datetime="2021-07-08T22:40:37+08:00">2021-07-08</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-07-09 22:23:51" itemprop="dateModified" datetime="2021-07-09T22:23:51+08:00">2021-07-09</time>
-      </span>
-
-  
-    <span id="/2021/07/08/knapsack/" class="post-meta-item leancloud_visitors" data-flag-title="knapsack" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>2.8k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="knapsack-problem">knapsack Problem</h1>
-<h2 id="knapsack-problem-1">0–1 knapsack problem</h2>
-<p>Given weights and values of <span class="math inline">\(n\)</span> items, put these items in a knapsack of capacity <span class="math inline">\(W\)</span> to get the maximum total value in the knapsack.</p>
-<p><span class="math inline">\(f(i, j):\)</span> using only first <span class="math inline">\(i\)</span> items, with maximum capacity of <span class="math inline">\(j\)</span>, the maximum total value you can get.</p>
-<p>Then, we can write our base cases:</p>
-<ul>
-<li><span class="math inline">\(f(0, :) = 0\)</span></li>
-<li><span class="math inline">\(f(:, 0) = 0\)</span></li>
-</ul>
-<p>0 items have values 0 and no items can be put into knapsack with capacity of 0.</p>
-<p>At <span class="math inline">\(f(i, j)\)</span>, comparing it to <span class="math inline">\(f(i - 1, j)\)</span>, we can choose to include item <span class="math inline">\(i\)</span> or not. So, we can write out of transition function <span class="math inline">\(f(i, j)\)</span>:</p>
-<ol type="1">
-<li><p>If there is still extra capacity for item <span class="math inline">\(i\)</span> with total capacity <span class="math inline">\(j\)</span> (i.e <span class="math inline">\(sum(weights[: i + 1]) \leq j)\)</span>), then we can just simply add values of item <span class="math inline">\(i\)</span>. <span class="math display">\[f(i, j) = f(i - 1, j) + values(i)\]</span></p></li>
-<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> and the current weight <span class="math inline">\(weight[i] &gt; j\)</span>, then we only need to keep the previous maximum values because the item <span class="math inline">\(i\)</span> won't fit whatsoever: <span class="math display">\[f(i, j) = f(i - 1, j)\]</span></p></li>
-<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> but <span class="math inline">\(weight[i] \leq j\)</span>, then we can choose to include this item and discard some past items, or move on without considering this item:</p>
-<ol type="1">
-<li><p>The total values if we include this item (<span class="math inline">\(\text{current value } + \text{ The maximum value we can get after we fill the capacity j with i}\)</span> (we need to <code>exclude</code> the current item)): <span class="math display">\[\text{total}_{include} = values[i] + f(i - 1, j - weights[i])\]</span></p></li>
-<li><p>The maximum value exclude current item: <span class="math display">\[f(i - 1, j)\]</span></p></li>
-</ol>
-<p>By taking the maximum over these two, we have:</p>
-<p><span class="math display">\[f(i, j) = \max(f(i - 1, j), \; values[i] + f(i - 1, j - weights[i]))\]</span></p></li>
-</ol>
-<h2 id="unbounded-knapsack-problem">Unbounded knapsack problem</h2>
-<p>Given a knapsack weight <span class="math inline">\(W\)</span> and a set of <span class="math inline">\(n\)</span> items with certain value <span class="math inline">\(v_i\)</span> and weight <span class="math inline">\(w_i\)</span>, we need to calculate the maximum amount that could make up this quantity exactly. This is different from classical Knapsack problem, here we are allowed to use unlimited number of instances of an item.</p>
-<p><span class="math inline">\(f(i, j):\)</span> using only first <span class="math inline">\(i\)</span> items, with maximum capacity of <span class="math inline">\(j\)</span>, the maximum total value you can get.</p>
-<p>Then, we can write our base cases:</p>
-<ul>
-<li><span class="math inline">\(f(0, :) = 0\)</span></li>
-<li><span class="math inline">\(f(:, 0) = 0\)</span></li>
-</ul>
-<p>0 items have values 0 and no items can be put into knapsack with capacity of 0.</p>
-<p>At <span class="math inline">\(f(i, j)\)</span>, comparing it to <span class="math inline">\(f(i - 1, j)\)</span>, we can choose to include item <span class="math inline">\(i\)</span> or not. So, we can write out of transition function <span class="math inline">\(f(i, j)\)</span>:</p>
-<ol type="1">
-<li><p>If there is still extra capacity for item <span class="math inline">\(i\)</span> with total capacity <span class="math inline">\(j\)</span> (i.e <span class="math inline">\(sum(weights[: i + 1]) \leq j)\)</span>), then we can just simply add values of item <span class="math inline">\(i\)</span>. <span class="math display">\[f(i, j) = f(i - 1, j) + values(i)\]</span></p></li>
-<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> and the current weight <span class="math inline">\(weight[i] &gt; j\)</span>, then we only need to keep the previous maximum values because the item <span class="math inline">\(i\)</span> won't fit whatsoever: <span class="math display">\[f(i, j) = f(i - 1, j)\]</span></p></li>
-<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> but <span class="math inline">\(weight[i] \leq j\)</span>, then we can choose to include this item and discard some past items, or move on without considering this item:</p>
-<ol type="1">
-<li><p>The total values if we include this item (<span class="math inline">\(\text{current value } + \text{ The maximum value we have can get after we fill the capacity j with i}\)</span> (we need to <code>include</code> the current item)): <span class="math display">\[\text{total}_{include} = values[i] + f(i, j - weights[i])\]</span></p></li>
-<li><p>The maximum value exclude current item: <span class="math display">\[f(i - 1, j)\]</span></p></li>
-</ol>
-<p>By taking the maximum over these two, we have:</p>
-<p><span class="math display">\[f(i, j) = \max(f(i - 1, j), \; values[i] + f(i, j - weights[i]))\]</span></p></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/06/cal-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/06/cal-2/" class="post-title-link" itemprop="url">Calculus (2)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-07-06 22:09:59" itemprop="dateCreated datePublished" datetime="2021-07-06T22:09:59+08:00">2021-07-06</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-07-12 22:59:17" itemprop="dateModified" datetime="2021-07-12T22:59:17+08:00">2021-07-12</time>
-      </span>
-
-  
-    <span id="/2021/07/06/cal-2/" class="post-meta-item leancloud_visitors" data-flag-title="Calculus (2)" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>8.2k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>7 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="multivariate-calculus-2">Multivariate Calculus (2)</h1>
-<h2 id="double-integrals">Double Integrals</h2>
-<h3 id="double-integrals-over-rectangles">Double Integrals over Rectangles</h3>
-<p>In a similar manner as definite integral, we consider a function <span class="math inline">\(f\)</span> of two variables defined on a closed rectangle:</p>
-<p><span class="math display">\[R = [a, b] \times [c, d] = \{(x, y, z) \in \mathbb{R}^2 | a \leq x \leq b, c \leq y \leq d\}\]</span></p>
-<p>and we first suppose that <span class="math inline">\(f(x, y) \leq 0\)</span>. The graph of <span class="math inline">\(f\)</span> is a surface with equation <span class="math inline">\(z = f(x, y)\)</span>. Let <span class="math inline">\(S\)</span> be the solid that lies above <span class="math inline">\(R\)</span> and under the graph of <span class="math inline">\(f\)</span>:</p>
-<p><span class="math display">\[S = \{(x, y, z) \in \mathbb{R}^3 | a \leq x \leq b, c \leq y \leq d, 0 \leq z \leq f(x, y)\}\]</span></p>
-<p>We first divide the <span class="math inline">\(R\)</span> into subrectangles. We accomplish this by dividing the interval <span class="math inline">\([a, b]\)</span> into <span class="math inline">\(m\)</span> subintervals <span class="math inline">\([x_{i-1}, x_{i}]\)</span> of equal width <span class="math inline">\(\Delta x = \frac{(b - a)}{m}\)</span> and dividing <span class="math inline">\([c, d]\)</span> into <span class="math inline">\(n\)</span> subintervals <span class="math inline">\([y_{j - 1}, y_j]\)</span> of equal width <span class="math inline">\(\Delta y = \frac{(d - c)}{n}\)</span>. Then the subrectangles are defined as:</p>
-<p><span class="math display">\[R_{i, j} = [x_{i - 1}, x_i] \times [y_{j - 1}, y_j] = \{(x, y) | x_{i - 1} \leq x \leq x_i, y_{j - 1} \leq y leq y_j\}\]</span></p>
-<p>Then the area of individual subrectangle is:</p>
-<p><span class="math display">\[\Delta A = \Delta x \Delta y\]</span></p>
-<p>If we choose a sample point <span class="math inline">\((x^{*}_{i, j}, y^{*}_{i, j}) \in R_{i, j}\)</span>, then we can approximate the part of <span class="math inline">\(S\)</span> that lies above each <span class="math inline">\(R_{i, j}\)</span> (The volume) by a column with height <span class="math inline">\(f(x^{*}_{i, j}, y^{*}_{i, j})\)</span> and base area <span class="math inline">\(\Delta A\)</span>. The volume of the column:</p>
-<p><span class="math display">\[f(x^{*}_{i, j}, y^{*}_{i, j})\Delta A\]</span></p>
-<p><img src='/images/cal/15_1_2.png' width="600"></p>
-<p>Then the volume (<strong>only when <span class="math inline">\(f(x, y) \leq 0 \; \forall (x, y) \in S\)</span></strong>) of <span class="math inline">\(S\)</span> can be approximated:</p>
-<p><span class="math display">\[V \approx \sum^{m}_{i=1} \sum^{n}_{j=1}f(x^{*}_{i, j}, y^{*}_{i, j})\Delta A\]</span></p>
-<p>This sum is called <code>double Riemann sum</code>.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/07/06/cal-2/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1664,13 +1765,13 @@ V -  \prod_{\mathbf{F}, \mu} T^{\pi}V &amp;= \prod_{\mathbf{F}, \mu} V - \prod_{
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">846k</span>
+    <span title="Symbols count total">860k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">12:49</span>
+    <span title="Reading time total">13:02</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

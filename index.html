@@ -86,7 +86,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">103</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">105</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -162,7 +162,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">103</span>
+          <span class="site-state-item-count">105</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -255,7 +255,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-03-30 21:18:21" itemprop="dateModified" datetime="2022-03-30T21:18:21+08:00">2022-03-30</time>
+        <time title="Modified: 2022-05-29 13:40:28" itemprop="dateModified" datetime="2022-05-29T13:40:28+08:00">2022-05-29</time>
       </span>
 
   
@@ -273,14 +273,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>1.6k</span>
+      <span>1.7k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>2 mins.</span>
     </span>
 </div>
 
@@ -301,6 +301,7 @@
 <li><a href="/2021/05/11/probability-2/" title="Probability (2)">Probability (2)</a></li>
 <li><a href="/2021/07/15/probability-3/" title="Probability (3)">Probability (3)</a></li>
 <li><a href="/2022/03/10/rigorous-probability-1/" title="Advanced Probability (1)">Advanced Probability (1)</a></li>
+<li><a href="/2022/05/02/rigorous-probability-2/" title="Advanced Probability (2)">Advanced Probability (2)</a></li>
 <li><a href="/2021/05/14/calculus/" title="Calculus (1)">Calculus (1)</a></li>
 <li><a href="/2021/07/06/cal-2/" title="Calculus (2)">Calculus (2)</a></li>
 <li><a href="/2021/07/18/cnn/" title="Backpropagation in CNN">Backpropagation in CNN</a></li>
@@ -315,6 +316,7 @@
 <li><a href="/2022/03/30/mira-4/" title="Measure Integral and Real Analysis (4)">Measure Integral and Real Analysis (4)</a></li>
 <li><a href="/2021/11/15/time-series-1/" title="Time Series (1)">Time Series (1)</a></li>
 <li><a href="/2021/11/19/time-series-2/" title="Time Series (2)">Time Series (2)</a></li>
+<li><a href="/2022/05/28/time-series-3/" title="Time Series (3)">Time Series (3)</a></li>
 <li><a href="/2022/01/06/linear-algebra/" title="Linear Algebra (1)">Linear Algebra (1)</a></li>
 <li><a href="/2022/01/09/linear-algebra-2/" title="Linear Algebra (2)">Linear Algebra (2)</a></li>
 <li><a href="/2022/01/19/linear-algebra-3/" title="Linear Algebra (3)">Linear Algebra (3)</a></li>
@@ -431,6 +433,298 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2022/06/06/variational-inference/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/06/06/variational-inference/" class="post-title-link" itemprop="url">variational_inference</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-06-06 21:51:54 / Modified: 21:58:04" itemprop="dateCreated datePublished" datetime="2022-06-06T21:51:54+08:00">2022-06-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2022/06/06/variational-inference/" class="post-meta-item leancloud_visitors" data-flag-title="variational_inference" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>2.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="variational-inference-a-review-for-statisticians">Variational Inference: A Review for Statisticians</h1>
+<h2 id="general-problem-setting">General Problem Setting:</h2>
+<p>Consider a joint density of latent variables <span class="math inline">\(\mathbf{z} = z_{1:m}\)</span> and observations <span class="math inline">\(\mathbf{x} = x_{1:n}\)</span>:</p>
+<p><span class="math display">\[p(\mathbf{z}, \mathbf{x}) = p(\mathbf{z}) p(\mathbf{x}|\mathbf{z})\]</span></p>
+<p>The main idea behind variational inference is to use optimization to compute the conditional density of the latent variables given the observations:</p>
+<p><span class="math display">\[p(\mathbf{z} | \mathbf{x}) = \frac{p(\mathbf{z}) p(\mathbf{x}|\mathbf{z})}{p(\mathbf{x})}\]</span></p>
+<p>This conditional can be used to produce point or interval estimates of the latent variables, form predictive densities of new data <span class="math inline">\(p(x^* | \mathbf{x})\)</span> and more.</p>
+<p>The quantity:</p>
+<p><span class="math display">\[p(\mathbf{x}) = \int_\mathbf{z} p(\mathbf{z}, \mathbf{x}) d\mathbf{z}\]</span></p>
+<p>is called the evidence, for many models, the evidence integral is unavailable in closed form or requires exponential time to compute.</p>
+<h3 id="evidence-lower-bound">Evidence Lower Bound</h3>
+<p>In variational inference, we specify a family <span class="math inline">\(\Theta\)</span> of densities over the latent variables. Each <span class="math inline">\(q(\mathbf{z})\)</span> is a candidate approximation to the exact conditional. Our goal is to find the best candidate, the one closest in KL divergence to the exact conditional. Inference now amounts to solving the following optimization problem:</p>
+<p><span class="math display">\[q^*(\mathbf{z}) = \arg\min_{q(\mathbf{z}) \in \Theta} KL(q(\mathbf{z}) \;||\; p(\mathbf{z} | \mathbf{x})) = \int_{z} q(\mathbf{z})\log\frac{q(\mathbf{z})}{p(\mathbf{z}| \mathbf{x})} = E_{\mathbf{z} \sim q(\mathbf{z})}[\log q(\mathbf{z})] - E_{\mathbf{z} \sim q(\mathbf{z})}[\log p(\mathbf{z} | \mathbf{x})] = E_{\mathbf{z} \sim q(\mathbf{z})}[\log q(\mathbf{z})] - E_{\mathbf{z} \sim q(\mathbf{z})}[\log p(\mathbf{z}, \mathbf{x})] + \log p(\mathbf{x})\]</span></p>
+<p>However, this objective is not computable because it requires computing the evidence <span class="math inline">\(\log p(\mathbf{x})\)</span>. Since we cannot compute KL, we optimize an alternative objective that is equivalent ot the KL up to an added constant:</p>
+<p><span class="math display">\[ELBO(q) = E_{\mathbf{z} \sim q(\mathbf{z})} [\log p(\mathbf{z}, \mathbf{x})] - E_{\mathbf{z} \sim q(\mathbf{z})}[\log q(\mathbf{z})]\]</span></p>
+<p>This function is called the evidence lower bound (ELBO), <strong>ELBO is the negative KL divergence plus a constant <span class="math inline">\(\log p(\mathbf{x})\)</span> w.r.t <span class="math inline">\(q(\mathbf{z})\)</span></strong>. Maximizing ELBO is equivalent to minimizing the KL divergence.</p>
+<p><br></p>
+<h4 id="property-1-elbo-is-the-balance-between-likelihood-and-prior">Property 1: ELBO is the Balance Between Likelihood and Prior</h4>
+<p>Continue from above equation of <span class="math inline">\(ELBO(q)\)</span>, we can rewrite it as (<span class="math inline">\(E[\cdot] := E_{\mathbf{z} \sim q(\mathbf{z})}[\cdot]\)</span>):</p>
+<p><span class="math display">\[ELBO(q) = E[\log p(\mathbf{z})] - E[\log q(\mathbf{z})] + E[\log p(\mathbf{x} | \mathbf{z})] = -KL(q(\mathbf{z}) | p(\mathbf{z})) + E[\log p(\mathbf{x} | \mathbf{z})]\]</span></p>
+<p>In order to find a <span class="math inline">\(q(\mathbf{z})\)</span> that maximize ELBO, we have to maximize the expected log likelihood of the data given the hidden variables and minimize the distance to the prior (so the prior acts as a regularizer).</p>
+<h4 id="property-2-elbo-is-the-lower-bound-of-the-log-evidence">Property 2: ELBO is the Lower Bound of the Log Evidence</h4>
+<p>ELBO lower bounds the log evidence:</p>
+<p><span class="math display">\[\log p(\mathbf{x}) = KL(q(\mathbf{z}) \;||\; p(\mathbf{z} | \mathbf{x})) \geq ELBO (q), \quad \quad \forall q \in \Theta\]</span></p>
+<h2 id="ref">REF</h2>
+<p>https://arxiv.org/pdf/2205.14415.pdf</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2022/05/28/time-series-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/05/28/time-series-3/" class="post-title-link" itemprop="url">time-series-3</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-05-28 10:51:22" itemprop="dateCreated datePublished" datetime="2022-05-28T10:51:22+08:00">2022-05-28</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2022-06-01 22:53:41" itemprop="dateModified" datetime="2022-06-01T22:53:41+08:00">2022-06-01</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2022/05/28/time-series-3/" class="post-meta-item leancloud_visitors" data-flag-title="time-series-3" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>3.6k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="time-series-3">Time Series (3)</h1>
+<h2 id="spectral-analysis-and-filtering">Spectral Analysis and Filtering</h2>
+<p>We define a cycle as one complete period of a sine or cosine function defined over a unit time interval:</p>
+<p><span class="math display">\[X_t = A\cos(2\pi\omega t + \phi) \quad \quad (4.1)\]</span></p>
+<p>for <span class="math inline">\(t = 0, \pm 1, \pm 2, ...\)</span>, where:</p>
+<ul>
+<li><span class="math inline">\(\omega\)</span> is a <strong>frequency index</strong>, defined in cycles per unit time, so if <span class="math inline">\(\omega = 2\)</span>, for every 1 time unit, we have <span class="math inline">\(2\)</span> cycles, this is fixed.</li>
+<li><span class="math inline">\(A\)</span> determining the height or <strong>amplitude</strong> of the function, this is <strong>random</strong>.</li>
+<li><span class="math inline">\(\phi\)</span> determining the <strong>start point</strong> of the cosine function, this is <strong>random</strong>.</li>
+</ul>
+<p><br></p>
+<p>Using the trigonometric identity, we can write above equation as:</p>
+<p><span class="math display">\[X_t = U_1 \cos (2 \pi \omega t) + U_2 \sin (2 \pi \omega t) \quad \quad (4.2)\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(U_1 = A \cos \phi\)</span> is often taken to be normally distributed random variable.</li>
+<li><span class="math inline">\(U_2 = - A \sin \phi\)</span> is often taken to be normally distributed random variable.</li>
+<li><span class="math inline">\(A = \sqrt{U_1^2 + U_2^2}\)</span></li>
+<li><span class="math inline">\(\phi = \tan^{-1} (-\frac{U_2}{U_1})\)</span></li>
+</ul>
+<p><br></p>
+<p>Now consider a generalization of above equation that allows mixtures of periodic series with multiple frequencies and amplitudes:</p>
+<p><span class="math display">\[X_t = \sum^q_{k=1} [U_{k_1} \cos(2\pi\omega_k t) + U_{k_2}\sin (2\pi\omega_k t)] \quad \quad (4.3)\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(U_{k_1}, U_{k_2}\)</span>, for <span class="math inline">\(k = 1, 2, ...., q\)</span> are independent zero-mean random variables with variances <span class="math inline">\(\sigma^2_k\)</span></li>
+<li><span class="math inline">\(\omega_k\)</span> are distinct frequencies</li>
+<li><span class="math inline">\(\gamma(h) = \sum^q_{k=1} \sigma^2_k \cos(2\pi \omega_k h) \quad \quad (4.4)\)</span></li>
+<li><span class="math inline">\(\gamma(0) = \sum^{q}_{k=1} \sigma^2_k\)</span>, the variance of the process is the sum of each individual parts.</li>
+</ul>
+<p><br></p>
+<h3 id="the-spectral-density">The Spectral Density</h3>
+<h4 id="theorem-c1">Theorem C1:</h4>
+<p>A function <span class="math inline">\(\gamma(h)\)</span>, for <span class="math inline">\(h = 0, \pm 1, \pm 2, ...\)</span> is <strong>non-negative-definite</strong> IFF it can be expressed as:</p>
+<p><span class="math display">\[\gamma(h) = \int^{\frac{1}{2}}_{-\frac{1}{2}}e^{2\pi i \omega h} dF(\omega)\]</span></p>
+<p>where <span class="math inline">\(F(\cdot)\)</span> is non-decreasing. The function <span class="math inline">\(F(\cdot)\)</span> is right continuous, bounded in <span class="math inline">\([-\frac{1}{2}, \frac{1}{2}]\)</span>, and uniquely determined by the conditions <span class="math inline">\(F(-\frac{1}{2}) = 0, F(\frac{1}{2}) = \gamma(0)\)</span></p>
+<p><br></p>
+<h4 id="theorem-c2">Theorem C2</h4>
+<p>If <span class="math inline">\(X_t\)</span> is a mean-zero stationary process, with spectral distribution <span class="math inline">\(F(\omega)\)</span> as given</p>
+<p><br></p>
+<h4 id="property-4.1-spectral-representation-of-a-stationary-process">Property 4.1: Spectral Representation of a Stationary Process</h4>
+<p>In non-technical terms, Theorem C2 states taht any stationary time series may be thought of, approximately, as the random superposition of sines and cosines oscillating at various frequencies.</p>
+<p><br></p>
+<h4 id="property-4.2-spectral-density">Property 4.2: Spectral Density</h4>
+<p>If the autocovariance function, <span class="math inline">\(\gamma(h)\)</span>, of a stationary process satisfies:</p>
+<p><span class="math display">\[\sum^\infty_{h=-\infty} |\gamma(h)| &lt; \infty \quad \quad (4.10)\]</span></p>
+<p>then it has the representation:</p>
+<p><span class="math display">\[\gamma(h) = \int^{\frac{1}{2}}_{-\frac{1}{2}}e^{2\pi i \omega h} f(\omega)d\omega \quad \quad h = 0, \pm 1, \pm 2, ... \quad \quad (4.11)\]</span></p>
+<p>as the inverse transform of the spectral density, which has the representation:</p>
+<p><span class="math display">\[f(\omega) = \sum^\infty_{h=-\infty} \gamma(h) e^{-2\pi i \omega h} \quad \quad -\frac{1}{2}\leq \omega \leq \frac{1}{2} \quad \quad (4.12)\]</span></p>
+<p><span class="math inline">\(f(\omega)\)</span> is called the spectral density.</p>
+<p><br></p>
+<p>Since <span class="math inline">\(f(\omega) = f(- \omega)\)</span>, we can see that the spectral density is an even function of period one. Because of the evenness, we will typically only plot <span class="math inline">\(f(\omega)\)</span> for <span class="math inline">\(\omega \geq 0\)</span>. In addition, putting <span class="math inline">\(h=0\)</span>, we have:</p>
+<p><span class="math display">\[\gamma(0) = Var[X_t] = \int^{\frac{1}{2}}_{-\frac{1}{2}} f(\omega) d\omega\]</span></p>
+<p>which expresses the total variance as the integrated spectral density over all of the frequencies. <strong>When the conditions in property 4.2 are satisfied, the autocovariance function <span class="math inline">\(\gamma(h)\)</span> and the spectral density function <span class="math inline">\(f(\omega)\)</span> contain the same information</strong>.</p>
+<p><br></p>
+<h4 id="definition-4.1-discrete-fourier-transform-dft">Definition 4.1 Discrete Fourier Transform (DFT)</h4>
+<p>Given data <span class="math inline">\(x_t, ...., x_n\)</span>, we define the <strong>discrete Fourier transform (DFT)</strong> to be:</p>
+<p><span class="math display">\[d(\omega_j) = \frac{1}{\sqrt{n}} \sum^n_{t=1} x_t e^{-2\pi i \omega_j t}\]</span></p>
+<p>for <span class="math inline">\(j = 0, 1, ...., n - 1\)</span>, the frequencies <span class="math inline">\(\omega_j = \frac{j}{n}\)</span> are called the <strong>Fourier or Fundamental frequencies</strong>.</p>
+<p>For a inverse DFT, we have:</p>
+<p><span class="math display">\[x_t = \frac{1}{\sqrt{n}} \sum^{n-1}_{j=0} d(\omega_j) e^{2\pi i \omega_j t}\]</span></p>
+<p><br></p>
+<h4 id="definition-4.2-periodogram">Definition 4.2: Periodogram</h4>
+<p>Given data <span class="math inline">\(x_1, ...., x_n\)</span>, we define the periodogram to be:</p>
+<p><span class="math display">\[I(\omega_j) = |d(\omega_j)|^2 = d(\omega_j)\overline{d(\omega_j)}\]</span></p>
+<p>for <span class="math inline">\(j = 0, 1, 2, ...., n - 1\)</span>.</p>
+<p>Notice that <span class="math inline">\(I(0) = n \bar{x}^2\)</span> where <span class="math inline">\(\bar{x}\)</span> is the sample mean.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2022/05/02/rigorous-probability-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -462,7 +756,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-05-17 07:51:14" itemprop="dateModified" datetime="2022-05-17T07:51:14+08:00">2022-05-17</time>
+        <time title="Modified: 2022-05-28 09:55:42" itemprop="dateModified" datetime="2022-05-28T09:55:42+08:00">2022-05-28</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -489,14 +783,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>313</span>
+      <span>6.9k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>6 mins.</span>
     </span>
 </div>
 
@@ -508,11 +802,121 @@
     
     <div class="post-body" itemprop="articleBody">
           <h1 id="rigorous-probability-2">Rigorous Probability (2)</h1>
-<h2 id="independence">Independence</h2>
-<h3 id="independence-of-events">Independence of Events</h3>
-<h4 id="definition-2.3-independence-of-events">Definition 2.3: Independence of Events</h4>
-<p>Let <span class="math inline">\(I\)</span> be an arbitrary index set and let <span class="math inline">\((A_i)_{i \in I}\)</span> be an arbitrary family of events. The family <span class="math inline">\((A_i)_{i\in I}\)</span> is called <strong>independent</strong> if for any finite subset <span class="math inline">\(J \subseteq I\)</span> the product formula holds:</p>
-<p><span class="math display">\[P(\bigcap_{j \in J}) = \prod_{j \in J} P(A_j)\]</span></p>
+<h2 id="conditional-expectations">Conditional Expectations</h2>
+<h3 id="elementary-conditional-probabilities">Elementary Conditional Probabilities</h3>
+<h4 id="definition-8.2-conditional-probability">Definition 8.2 Conditional Probability</h4>
+<p>Let <span class="math inline">\((\Omega, \mathbb{A}, P)\)</span> be a probability space adn <span class="math inline">\(B \in \mathbb{A}\)</span>. We define the <strong>conditional probability</strong> given <span class="math inline">\(B\)</span> for any <span class="math inline">\(A \in \mathbb{A}\)</span> by:</p>
+<p><span class="math display">\[P(A | B) = \frac{P(A \cap B)}{P(B)}\]</span></p>
+<p>with <span class="math inline">\(P(B) &gt; 0\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-8.4-pcdot-b-is-a-probability-measure">Theorem 8.4: <span class="math inline">\(P(\cdot | B)\)</span> is a Probability Measure</h4>
+<p>If <span class="math inline">\(P(B) &gt; 0\)</span>, then <span class="math inline">\(P(\cdot | B)\)</span> is a probability measure on <span class="math inline">\((\Omega, \mathbb{A})\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-8.5-conditional-probability-of-independent-events">Theorem 8.5: Conditional Probability of Independent Events</h4>
+<p>Let <span class="math inline">\(A, B \in \mathbb{A}\)</span> with <span class="math inline">\(P(A), P(B) &gt; 0\)</span>. Then, belows are equivalent:</p>
+<ol type="1">
+<li><span class="math inline">\(A, B\)</span> are independent.</li>
+<li><span class="math inline">\(P(A | B) = P(A)\)</span></li>
+<li><span class="math inline">\(P(B | A) = P(B)\)</span></li>
+</ol>
+<p><br></p>
+<h4 id="theorem-8.6-summation-formula-law-of-total-probability">Theorem 8.6: Summation Formula (Law of Total Probability)</h4>
+<p>Let <span class="math inline">\(I\)</span> be a countable set and let <span class="math inline">\((B_i)_{i \in I} \in \mathbf{A}\)</span> be disjoint sets with <span class="math inline">\(P[\bigcup_{i \in I} B_i] = 1\)</span>. Then, for any <span class="math inline">\(A \in \mathbb{A}\)</span>:</p>
+<p><span class="math display">\[P(A) = \sum_{i \in I} P(A | B_i) P(B_i)\]</span></p>
+<p>If <span class="math inline">\(X\)</span> is a continuous random variable, then:</p>
+<p><span class="math display">\[P(A) = \int P(A | X=x) f(x) dx\]</span></p>
+<p><br></p>
+<h4 id="theorem-8.7-bayess-formula">Theorem 8.7: Bayes's Formula</h4>
+<p>Let <span class="math inline">\(I\)</span> be a countable set and let <span class="math inline">\((B_i)_{i \in I} \in \mathbf{A}\)</span> be pairwise disjoint sets with <span class="math inline">\(P(B_i) = 1\)</span>. Then, for any <span class="math inline">\(A \in \mathbb{A}\)</span> with <span class="math inline">\(P(A) &gt; 0\)</span> and any <span class="math inline">\(k \in I\)</span>,</p>
+<p><span class="math display">\[P(B_k | A) = \frac{P(A | B_k) P(B_k)}{\sum_{i \in I} P(A | B_i) P(B_i)}\]</span></p>
+<p><br></p>
+<h4 id="definition-8.9-condition-on-event">Definition 8.9: Condition on Event</h4>
+<p>Let <span class="math inline">\(X \in L^1(P)\)</span> and <span class="math inline">\(A \in \mathbf{A}\)</span>. Then we define:</p>
+<p><span class="math display">\[E[X | A] := \int X(\omega) P(d\omega | A) = \frac{E[\mathbb{I}_A X]}{P(A)}\]</span></p>
+<p>given <span class="math inline">\(P(A) &gt; 0\)</span>. Clearly <span class="math inline">\(P(B | A) = \int \mathbb{I}_B dP(\cdot | A) = E[\mathbb{I}_B | A]\)</span></p>
+<p><br></p>
+<h4 id="definition-8.10-condition-on-sigma-algebra-of-disjoint-events">Definition 8.10: Condition on Sigma Algebra of Disjoint Events</h4>
+<p>Let <span class="math inline">\(I\)</span> be a countable set and let <span class="math inline">\((B_i)_{i \in I}\)</span> be pairwise disjoint events with <span class="math inline">\(\bigcup_{i \in I} B_i = \Omega\)</span>. We define <span class="math inline">\(F := \sigma(B_i, i \in I)\)</span>. For <span class="math inline">\(X \in L^1(P)\)</span>, we define a map <span class="math inline">\(E[X | F]: \Omega \rightarrow \mathbb{R}\)</span> by:</p>
+<p><span class="math display">\[E[X | F](\omega) = E[X | B_i] \quad \text{ IFF } \quad \omega \in B_i\]</span></p>
+<p><br></p>
+<h4 id="theorem-8.10-properties-of-ex-f">Theorem 8.10: Properties of <span class="math inline">\(E[X | F]\)</span></h4>
+<p>The map <span class="math inline">\(E[X | F]\)</span> has the following properties:</p>
+<ul>
+<li><span class="math inline">\(E[X | F]\)</span> is <span class="math inline">\(F\)</span>-measurable.</li>
+<li><span class="math inline">\(E[X | F] \in L^1(P)\)</span>, and for any <span class="math inline">\(A \in F\)</span>, we have: <span class="math display">\[\int_A E[X | F] dP = \int_A X dP\]</span></li>
+</ul>
+<p><br></p>
+<h3 id="conditional-expectation">Conditional Expectation</h3>
+<p>All the equalities involving conditional expectations are only up to equality a.s. And we will write it explicitly.</p>
+<h4 id="definition-8.11-conditional-expectation">Definition 8.11: Conditional Expectation</h4>
+<p>Let <span class="math inline">\(F \subseteq \mathbf{A}\)</span> be a sub-<span class="math inline">\(\sigma\)</span>-algebra (A <span class="math inline">\(\sigma\)</span>-algebra contained in <span class="math inline">\(\mathbf{A}\)</span>). Any random variable <span class="math inline">\(Y\)</span> is called a <strong>conditional expectation</strong> of <span class="math inline">\(X\)</span> given <span class="math inline">\(F\)</span>, symbolically <span class="math inline">\(E[X | F] := Y\)</span>, if:</p>
+<ol type="1">
+<li><span class="math inline">\(Y\)</span> is <span class="math inline">\(F\)</span>-measurable.</li>
+<li>For any <span class="math inline">\(A \in F\)</span>, we have <span class="math inline">\(E[\mathbb{I}_A X] = E[\mathbb{I}_A Y]\)</span>.</li>
+</ol>
+<p>For <span class="math inline">\(B \in \mathbf{A}\)</span>, <span class="math inline">\(P(B | F) := E[\mathbb{I}_B | F]\)</span> is called a <strong>conditional probability</strong> of <span class="math inline">\(B\)</span> given the <span class="math inline">\(\sigma\)</span>-algebra <span class="math inline">\(F\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-8.12-existence-and-uniqueness-of-conditional-expectation">Theorem 8.12: Existence and Uniqueness of Conditional Expectation</h4>
+<p><span class="math inline">\(E[X | F]\)</span> exists and is unique (up to equality almost surely).</p>
+<p><br></p>
+<h4 id="definition-8.13-conditional-expectation-with-r.v">Definition 8.13: Conditional Expectation with R.V</h4>
+<p>If <span class="math inline">\(Y\)</span> is a random variable and <span class="math inline">\(X \in L^1(P)\)</span>, then we define <span class="math inline">\(E[X | Y] := E[X | \sigma(Y)]\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-8.14-properties-of-the-conditional-expectation">Theorem 8.14: Properties of the Conditional Expectation</h4>
+<p>Let <span class="math inline">\((\Omega, \mathbf{A}, P)\)</span> and let <span class="math inline">\(X\)</span> be as above. Let <span class="math inline">\(G \subseteq F \subseteq \mathbf{A}\)</span> be <span class="math inline">\(\sigma\)</span>-algebras and let <span class="math inline">\(Y \in L^1(\Omega, \mathbf{A}, P)\)</span>. Then:</p>
+<ol type="1">
+<li><strong>Linearity</strong>: <span class="math display">\[E[\lambda E + Y | F] = \lambda E[X | F] + E[Y | F]\]</span></li>
+<li><strong>Monotonicity</strong>: If <span class="math inline">\(X \geq Y\)</span> a.s, then <span class="math inline">\(E[X | F] \geq E[Y | F]\)</span>.</li>
+<li>If <span class="math inline">\(E[|XY|] &lt; \infty\)</span>, and <span class="math inline">\(Y\)</span> is <strong>measurable</strong> w.r.t <span class="math inline">\(F\)</span>, then: <span class="math display">\[E[XY | F] = YE[X | F], \quad E[Y | F] = E[Y | Y] = Y\]</span></li>
+<li><strong>Tower Property</strong>: <span class="math display">\[E[E[X | F] | G] = E[E[X | G] | F] = E[X | G]\]</span></li>
+<li><strong>Triangle inequality</strong>: <span class="math display">\[E[|X| | F] \geq |E[X | F]|\]</span></li>
+<li><strong>Independence</strong>: if <span class="math inline">\(\sigma(X)\)</span> and <span class="math inline">\(F\)</span> are independent, then <span class="math inline">\(E[X | F] = E[X]\)</span>.</li>
+<li>If <span class="math inline">\(P(A) \in \{0, 1\}\)</span> for any <span class="math inline">\(A \in F\)</span>, then <span class="math inline">\(E[X | F] = E[X]\)</span>.</li>
+<li><strong>Dominated Convergence</strong>: Assume <span class="math inline">\(Y \in L^1(P)\)</span>, <span class="math inline">\(Y \geq 0\)</span> and <span class="math inline">\((X_n)_{n \in \mathbb{N}}\)</span> is a sequence of random variables with <span class="math inline">\(|X_n| \leq Y\)</span> for <span class="math inline">\(n \in \mathbb{N}\)</span> and s.t <span class="math inline">\(P(\lim_{n \rightarrow \infty} X_n = X) = 1\)</span>. Then: <span class="math display">\[\lim_{n \rightarrow \infty} E[X_n | F] = E[X | F] , \;\text{ a. s and in $L^1(P)$}\]</span></li>
+</ol>
+<p><strong>Intuitively, <span class="math inline">\(E[X | F]\)</span> is the best prediction we can make for the value of <span class="math inline">\(X\)</span> if we only have the information of the <span class="math inline">\(\sigma-\)</span>algebra <span class="math inline">\(F\)</span>. If <span class="math inline">\(\sigma(X) \subseteq F\)</span>, then <span class="math inline">\(E[X | F] = X\)</span>, that is, the knowledge of <span class="math inline">\(F\)</span> give all information on <span class="math inline">\(X\)</span>.</strong></p>
+<p><br></p>
+<h4 id="theorem-8.17-conditional-expectation-as-orthogonal-projection">Theorem 8.17: Conditional Expectation as Orthogonal Projection</h4>
+<p>Let <span class="math inline">\(F \subseteq \mathbf{A}\)</span> be a <span class="math inline">\(\sigma\)</span>-algebra and let <span class="math inline">\(X\)</span> be a random variable with <span class="math inline">\(E[X^2] &lt; \infty\)</span>. Then <span class="math inline">\(E[X | F]\)</span> is the <strong>orthogonal projection</strong> of <span class="math inline">\(X\)</span> on <span class="math inline">\(L^2((\Omega, F, P))\)</span>. That is, for any <span class="math inline">\(F\)</span>-measurable <span class="math inline">\(Y\)</span> with <span class="math inline">\(E[Y^2] &lt; \infty\)</span>:</p>
+<p><span class="math display">\[\int (X - Y)^2 dP \geq \int (X - E[X | F])^2 dP = Proj_{(L^2((\Omega, F, P)))}(X)\]</span></p>
+<p>In other words:</p>
+<p><span class="math display">\[E[(X - Y)^2] \geq E[(X - E[X | F])^2]\]</span></p>
+<p>with equality IFF <span class="math inline">\(Y = E[X | F]\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-8.20-jensens-inequality-for-conditional-expectation">Theorem 8.20: Jensen's Inequality for Conditional Expectation</h4>
+<p>Let <span class="math inline">\(I \in \mathbb{R}\)</span> be an interval, let <span class="math inline">\(\psi: I \rightarrow \mathbb{R}\)</span> be <strong>convex</strong> and let <span class="math inline">\(X\)</span> be an <span class="math inline">\(I\)</span>-valued random variable on <span class="math inline">\((\Omega, \mathbf{A}, P)\)</span>. Further, let <span class="math inline">\(E[|X|] &lt; \infty\)</span> and let <span class="math inline">\(F \subseteq \mathbf{A}\)</span> be a <span class="math inline">\(\sigma\)</span>-algebra. Then:</p>
+<p><span class="math display">\[\infty \geq E[\psi(X) | F] \geq \psi (E[X | F])\]</span></p>
+<p><br></p>
+<h4 id="theorem-8.21">Theorem 8.21:</h4>
+<p>let <span class="math inline">\(p \in [1, \infty)\)</span> and let <span class="math inline">\(F \subseteq \mathbf{A}\)</span> be a sub-<span class="math inline">\(\sigma\)</span>-algebra. Then the map:</p>
+<p><span class="math display">\[L^p ((\Omega, \mathbf{A}, P)) \rightarrow L^p((\Omega, F, P)), \quad X \mapsto E[X | F]\]</span></p>
+<p>is a <strong>contraction</strong> mapping. (<span class="math inline">\(\|E[X | F]\|_p \leq \|X\|_p\)</span>) and thus continuous. Hence, for <span class="math inline">\(X, X_1, .... \in L^p(\Omega, \mathbf{A}, P)\)</span> with <span class="math inline">\(\lim_{n \rightarrow \infty}\|X_n - X\|_p = 0\)</span>:</p>
+<p><span class="math display">\[\lim_{n \rightarrow \infty}\|E[X_n | F] - E[X | F]\|_p = 0\]</span></p>
+<p><br></p>
+<h4 id="definition-8.24">Definition 8.24:</h4>
+<p>Let <span class="math inline">\(Y \in L^1(P)\)</span> and <span class="math inline">\(X: (\Omega, \mathbf{A}) \to (E, \varepsilon)\)</span>. We define the conditional expectation of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X = x\)</span> by <span class="math inline">\(E[Y | X=x] := \psi(x)\)</span>, where <span class="math inline">\(\psi(X) = E[Y | X]\)</span> is a <span class="math inline">\(\varepsilon-B(\mathbb{R})\)</span> measurable function.</p>
+<p>Analogously, define <span class="math inline">\(P(A | X=x) = E[\mathbb{I}_A | X = x], \; \forall A \in \mathbf{A}\)</span></p>
+<p><br></p>
+<h4 id="definition-8.25-transition-kernel-markove-kernel">Definition 8.25: Transition Kernel, Markove Kernel</h4>
+<p>Let <span class="math inline">\((\Omega_1, \mathbf{A}_1), (\Omega_2, \mathbf{A}_2)\)</span> be measurable spaces. A map <span class="math inline">\(k: \Omega_1 \times \mathbf{A}_2 \rightarrow [0, \infty]\)</span> is called a <span class="math inline">\(\sigma\)</span>-finite <strong>transition</strong> kernel (from <span class="math inline">\(\Omega_1\)</span> to <span class="math inline">\(\Omega_2\)</span>) if:</p>
+<ol type="1">
+<li><span class="math inline">\(\omega_1 \mapsto k(\omega_1, A_2)\)</span> is <span class="math inline">\(\mathbf{A}_1\)</span>-measurable for any <span class="math inline">\(A_2 \in \mathbf{A}_2\)</span>.</li>
+<li><span class="math inline">\(A_2 \mapsto k(\omega_1, A_2)\)</span> is a <span class="math inline">\(\sigma\)</span>-finite meausre on <span class="math inline">\((\Omega_2, \mathbf{A}_2)\)</span> for any <span class="math inline">\(\omega_1 \in \Omega_1\)</span>.</li>
+</ol>
+<p>if the second condition is a probability measure for all <span class="math inline">\(\omega_1 \in \Omega_1\)</span>, then <span class="math inline">\(k\)</span> is called <strong>stochastic kernel</strong> or <strong>Markov kernel</strong>. If in the second condition, we also have <span class="math inline">\(k(\omega_2, \Omega_2) \leq 1\)</span> for any <span class="math inline">\(\omega_1 \in \Omega_1\)</span>, then <span class="math inline">\(k\)</span> is called <strong>sub-Markov</strong>.</p>
+<p><br></p>
+<h4 id="definition-8.28-regular-conditional-distribution">Definition 8.28: Regular Conditional Distribution</h4>
+<p>Let <span class="math inline">\(Y\)</span> be a random variable with values in a measurable space <span class="math inline">\((E, \varepsilon)\)</span> and let <span class="math inline">\(F \subseteq \mathbf{A}\)</span> be a sub-<span class="math inline">\(\sigma\)</span>-algebra. A stochastic kernel <span class="math inline">\(k_{Y, F}\)</span> from <span class="math inline">\((\Omega, F)\)</span> is called a <strong>regular conditional distribution</strong> of <span class="math inline">\(Y\)</span> given <span class="math inline">\(F\)</span> if:</p>
+<p><span class="math display">\[k_{Y, F} (\omega, B) = P(\{Y \in B\} | F) (\omega)\]</span></p>
+<p>for <span class="math inline">\(P\)</span>-almost all <span class="math inline">\(\omega \in \Omega\)</span> and for all <span class="math inline">\(B \in \varepsilon\)</span>, that is, if:</p>
+<p><span class="math display">\[\int \mathbb{I}_{B} (Y) \mathbb{I}_A dP = \int k_{Y, F} (\cdot, B) \mathbb{I}_A d P, \quad \forall A \in F, \; B \in \varepsilon\]</span></p>
+<p>Consider a special case where <span class="math inline">\(F = \sigma(X)\)</span> for a random variable <span class="math inline">\(X\)</span> with its values in an arbitrary measurable space <span class="math inline">\((E^\prime, \varepsilon^\prime)\)</span>. Then the stochastic kernel:</p>
+<p><span class="math display">\[(x, A) \mapsto k_{Y, X} (x, A) = P(\{Y \in A\} | X = x) = k_{Y, \sigma(X)} (X^{-1}(x), A)\]</span></p>
+<p>is called a regular conditional distribution of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-8.29-regular-conditional-distribution-in-mathbbr">Theorem 8.29: Regular Conditional Distribution in <span class="math inline">\(\mathbb{R}\)</span></h4>
+<p>Let <span class="math inline">\(Y: (\Omega, \mathbf{A}) \to (\mathbb{R}, B(\mathbb{R}))\)</span> be real-valued. Then there exists a regular conditional distribution <span class="math inline">\(k_{Y, F}\)</span> of <span class="math inline">\(Y\)</span> given <span class="math inline">\(F\)</span>.</p>
+<p><br></p>
 
       
     </div>
@@ -1528,7 +1932,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-05-17 09:12:21" itemprop="dateModified" datetime="2022-05-17T09:12:21+08:00">2022-05-17</time>
+        <time title="Modified: 2022-05-18 08:37:26" itemprop="dateModified" datetime="2022-05-18T08:37:26+08:00">2022-05-18</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1555,7 +1959,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>37k</span>
+      <span>38k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -2123,6 +2527,18 @@
 <h4 id="theorem-5.23-glivenko-cantelli">Theorem 5.23: Glivenko-Cantelli</h4>
 <p>Let <span class="math inline">\(X_1, ...\)</span> be i.i.d real random variables with distribution function <span class="math inline">\(F\)</span>, and let <span class="math inline">\(F_n\)</span>, <span class="math inline">\(n \in \mathbb{N}\)</span>, be the empirical distirbution functions. Then:</p>
 <p><span class="math display">\[P(\lim\sup_{n \rightarrow \infty}\sup_{x \in \mathbb{R}} |F_n (x) - F(x)| = 0) = 1\]</span></p>
+<p><br></p>
+<h4 id="definition-5.25-entropy">Definition 5.25: Entropy</h4>
+<p>Let <span class="math inline">\(p = (p_e)_{e \in E}\)</span> (<span class="math inline">\(p_e = P_X(e) = f_X (e)\)</span> the PMF of <span class="math inline">\(X\)</span> at <span class="math inline">\(e\)</span>) be a probability distribution on the countable set <span class="math inline">\(E\)</span>. For <span class="math inline">\(b &gt; 0\)</span>, define:</p>
+<p><span class="math display">\[H_b (p) := - \sum_{e \in E} p_e \log_b (p_e)\]</span></p>
+<p>with the convention <span class="math inline">\(0 \log_b (0) := 0\)</span>. We call <span class="math inline">\(H(p) := H_e(p)\)</span> (e = 2.71) the <strong>entropy</strong> and <span class="math inline">\(H_2(p)\)</span> the <strong>binary entropy</strong> of <span class="math inline">\(p\)</span>.</p>
+<p>Note that for infinite <span class="math inline">\(E\)</span>, the entropy need note be finite.</p>
+<p><br></p>
+<h4 id="lemma-5.26-entropy-inequality">Lemma 5.26: Entropy Inequality</h4>
+<p>Let <span class="math inline">\(b, p\)</span> be defined as above, let <span class="math inline">\(q\)</span> be a sub-probability distribution, that is <span class="math inline">\(q_e \geq 0\)</span> for all <span class="math inline">\(e \in E\)</span> and <span class="math inline">\(\sum_{e \in E} q_e \leq 1\)</span>. Then:</p>
+<p><span class="math display">\[H_b (p) \leq - \sum_{e \in E} p_e \log_{b} (q_e)\]</span></p>
+<p>with equality if and only if <span class="math inline">\(H_b (p) = \infty\)</span> or <span class="math inline">\(q = p\)</span>.</p>
+<p><br></p>
 <h4 id="theorem-1.6.9-change-of-variable">Theorem 1.6.9: Change of Variable</h4>
 <p>Let <span class="math inline">\((\Omega, \mathbf{A})\)</span> and <span class="math inline">\((\Omega^\prime, \mathbf{A}^\prime)\)</span> be measurable spaces, let <span class="math inline">\(\mu\)</span> be a measure on <span class="math inline">\((\Omega, \mathbf{A})\)</span> and let <span class="math inline">\(X: \Omega \rightarrow \Omega^\prime\)</span> be measurable. Let <span class="math inline">\(\mu^\prime = \mu \circ X^{-1}\)</span> be the image measure of <span class="math inline">\(\mu\)</span> under the map <span class="math inline">\(X\)</span>. Assume that <span class="math inline">\(f: \Omega^\prime \rightarrow \mathbb{\bar{R}}\)</span> is <span class="math inline">\(\mu^\prime\)</span>-integrable, then:</p>
 <p><span class="math display">\[f \circ X \in L^1(\mu)\]</span></p>
@@ -2160,6 +2576,7 @@
 <li>Theorem 1.2 https://proofwiki.org/wiki/Tail_of_Convergent_Series_tends_to_Zero#:~:text=%E2%88%9E%E2%88%91n%3DNan%20is%20convergent,convergent%20series%20tends%20to%20zero.</li>
 <li>https://www.math.arizona.edu/~tgk/mc/prob_background.pdf</li>
 <li>https://en.wikipedia.org/wiki/Convergence_in_measure#:~:text=If%20%CE%BC%20is%20%CF%83%2Dfinite%2C%20(fn)%20converges,to%20f%20locally%20in%20measure.</li>
+<li>https://kconrad.math.uconn.edu/blurbs/analysis/entropypost.pdf</li>
 </ol>
 
       
@@ -2558,272 +2975,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2022/01/25/linear-algebra-4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/01/25/linear-algebra-4/" class="post-title-link" itemprop="url">Linear Algebra (4)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-01-25 20:54:30" itemprop="dateCreated datePublished" datetime="2022-01-25T20:54:30+08:00">2022-01-25</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-03-06 11:18:22" itemprop="dateModified" datetime="2022-03-06T11:18:22+08:00">2022-03-06</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2022/01/25/linear-algebra-4/" class="post-meta-item leancloud_visitors" data-flag-title="Linear Algebra (4)" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>20k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>18 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="linear-algebra-4">Linear Algebra (4)</h1>
-<h2 id="inner-product-spaces">Inner Product Spaces</h2>
-<p><strong>If <span class="math inline">\(\lambda\)</span> is a complex number, then we define <span class="math inline">\(\lambda \geq 0\)</span> to be real number and nonnegative.</strong></p>
-<h3 id="inner-products-and-norms">Inner Products and Norms</h3>
-<p>For <span class="math inline">\(z \in \mathbb{F}^n\)</span>, we define the norm of <span class="math inline">\(z\)</span> w.r.t Euclidian inner product by:</p>
-<p><span class="math display">\[\|z\| = \sqrt{|z_1|^2 + ... + |z_n|^2}\]</span></p>
-<p>Where <span class="math inline">\(|z_1|^2 = z\bar{z} = a^2 + b^2\)</span></p>
-<h4 id="definition-6.2-dot-product">Definition 6.2: Dot Product</h4>
-<p>For <span class="math inline">\(x, y \in \mathbb{R}^n\)</span>, the <strong>dot product</strong> of <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>, denoted <span class="math inline">\(x \cdot y\)</span>, is defined by:</p>
-<p><span class="math display">\[x \cdot y = x_1y_1 + ... + x_ny_n\]</span></p>
-<p>where <span class="math inline">\(x=(x_1, ..., x_n), y=(y_1, ..., y_n)\)</span></p>
-<p>It has the following properties:</p>
-<ol type="1">
-<li><span class="math inline">\(x \cdot x \geq 0, \; \forall x \in \mathbb{R}^n\)</span></li>
-<li><span class="math inline">\(x \cdot x = 0\)</span> IFF <span class="math inline">\(x = 0\)</span></li>
-<li>For <span class="math inline">\(y \in \mathbb{R}^n\)</span> fixed, the map from <span class="math inline">\(\mathbb{R}^n \rightarrow \mathbb{R}\)</span> that sends <span class="math inline">\(x \in \mathbb{R}^n\)</span> to <span class="math inline">\(x \cdot y\)</span> is linear.</li>
-<li><span class="math inline">\(x \cdot y = y \cdot x, \; \forall x, y \in \mathbb{R}^n\)</span></li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/01/25/linear-algebra-4/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2022/01/19/linear-algebra-3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/01/19/linear-algebra-3/" class="post-title-link" itemprop="url">Linear Algebra (3)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-01-19 22:25:07" itemprop="dateCreated datePublished" datetime="2022-01-19T22:25:07+08:00">2022-01-19</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-03-06 11:18:15" itemprop="dateModified" datetime="2022-03-06T11:18:15+08:00">2022-03-06</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2022/01/19/linear-algebra-3/" class="post-meta-item leancloud_visitors" data-flag-title="Linear Algebra (3)" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>15k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>14 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="linear-algebra-3">Linear Algebra (3)</h1>
-<h2 id="polynomials">Polynomials</h2>
-<h3 id="complex-conjugate-and-absolute-value">Complex Conjugate and Absolute Value</h3>
-<h4 id="definition-4.2-rez-imz">Definition 4.2: <span class="math inline">\(Re(z)\)</span>, <span class="math inline">\(Im(z)\)</span></h4>
-<p>Suppose <span class="math inline">\(z = a + b_i\)</span>, where <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are real numbers.</p>
-<ul>
-<li>The <strong>real part</strong> of <span class="math inline">\(z\)</span>, denoted <span class="math inline">\(Re(z)\)</span>, is defined by <span class="math inline">\(Re(z) = a\)</span>.</li>
-<li>The <strong>imaginary part</strong> of <span class="math inline">\(z\)</span>, denoted <span class="math inline">\(Im(z)\)</span>, is defined by <span class="math inline">\(Im(z) = b\)</span>.</li>
-</ul>
-<p>Thus for every complex number <span class="math inline">\(z\)</span>, we have:</p>
-<p><span class="math display">\[z = Re(z) + Im(z) i\]</span></p>
-<h4 id="definition-4.3-complex-conjugate-barz-absolute-value-z.">Definition 4.3: Complex Conjugate, <span class="math inline">\(\bar{z}\)</span>, absolute value, |z|.</h4>
-<p>Suppose <span class="math inline">\(z \in \mathbb{C}\)</span>:</p>
-<ul>
-<li>The <strong>complex conjugate</strong> of <span class="math inline">\(z \in \mathbb{C}\)</span>, denoted <span class="math inline">\(\bar{z}\)</span>, is defined by: <span class="math display">\[\bar{z} = Re(z) - Im(z)i\]</span></li>
-<li>The <strong>absolute value</strong> of a complex number <span class="math inline">\(z\)</span>, denoted <span class="math inline">\(|z|\)</span>, is defined by: <span class="math display">\[|z| = \sqrt{(Re (z))^2 + (Im (z))^2}\]</span></li>
-</ul>
-<h4 id="theorem-4.5-properties-of-complex-numbers">Theorem 4.5: Properties of Complex Numbers</h4>
-<p>Suppose <span class="math inline">\(w, z \in \mathbb{C}\)</span>. Then:</p>
-<ul>
-<li><strong>Sum of <span class="math inline">\(z\)</span> and <span class="math inline">\(\bar{z}\)</span></strong>: <span class="math display">\[z + \bar{z} = 2 Re(z)\]</span></li>
-<li><strong>Difference of <span class="math inline">\(z\)</span> and <span class="math inline">\(\bar{z}\)</span></strong>: <span class="math display">\[z - \bar{z} = 2(Im (z)) i\]</span></li>
-<li><strong>Product of <span class="math inline">\(z\)</span> and <span class="math inline">\(\bar{z}\)</span></strong>: <span class="math display">\[z \bar{z} = |z|^2\]</span></li>
-<li><strong>Additive and Multiplicative of Complex Conjugate</strong>: <span class="math display">\[\overline{w + z} = \bar{w} + \bar{z}, \quad \overline{wz} = \bar{w}\bar{z}\]</span></li>
-<li><strong>Conjugate of Conjugate</strong>: <span class="math display">\[\bar{\bar{z}} = z\]</span></li>
-<li><strong>Real and Imaginary Parts are Bounded by <span class="math inline">\(|z|\)</span></strong>: <span class="math display">\[|Re (z)| \leq |z|, \quad |Im(z)| \leq |z|\]</span></li>
-<li><strong>Absolute Value of the Complex Conjugate</strong>: <span class="math display">\[|\bar{z}| = |z|\]</span></li>
-<li><strong>Multiplicative of Absolute Value</strong> <span class="math display">\[|wz| = |w||z|\]</span></li>
-<li><strong>Triangle Inequality</strong>: <span class="math display">\[|w + z| \leq |w| + |z|\]</span></li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/01/19/linear-algebra-3/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -2848,13 +2999,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">846k</span>
+    <span title="Symbols count total">860k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">12:49</span>
+    <span title="Reading time total">13:02</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

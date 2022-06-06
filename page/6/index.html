@@ -86,7 +86,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">103</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">105</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -162,7 +162,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">103</span>
+          <span class="site-state-item-count">105</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -215,6 +215,259 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/08/knapsack/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/08/knapsack/" class="post-title-link" itemprop="url">knapsack</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-08 22:40:37" itemprop="dateCreated datePublished" datetime="2021-07-08T22:40:37+08:00">2021-07-08</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-09 22:23:51" itemprop="dateModified" datetime="2021-07-09T22:23:51+08:00">2021-07-09</time>
+      </span>
+
+  
+    <span id="/2021/07/08/knapsack/" class="post-meta-item leancloud_visitors" data-flag-title="knapsack" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>2.8k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="knapsack-problem">knapsack Problem</h1>
+<h2 id="knapsack-problem-1">0–1 knapsack problem</h2>
+<p>Given weights and values of <span class="math inline">\(n\)</span> items, put these items in a knapsack of capacity <span class="math inline">\(W\)</span> to get the maximum total value in the knapsack.</p>
+<p><span class="math inline">\(f(i, j):\)</span> using only first <span class="math inline">\(i\)</span> items, with maximum capacity of <span class="math inline">\(j\)</span>, the maximum total value you can get.</p>
+<p>Then, we can write our base cases:</p>
+<ul>
+<li><span class="math inline">\(f(0, :) = 0\)</span></li>
+<li><span class="math inline">\(f(:, 0) = 0\)</span></li>
+</ul>
+<p>0 items have values 0 and no items can be put into knapsack with capacity of 0.</p>
+<p>At <span class="math inline">\(f(i, j)\)</span>, comparing it to <span class="math inline">\(f(i - 1, j)\)</span>, we can choose to include item <span class="math inline">\(i\)</span> or not. So, we can write out of transition function <span class="math inline">\(f(i, j)\)</span>:</p>
+<ol type="1">
+<li><p>If there is still extra capacity for item <span class="math inline">\(i\)</span> with total capacity <span class="math inline">\(j\)</span> (i.e <span class="math inline">\(sum(weights[: i + 1]) \leq j)\)</span>), then we can just simply add values of item <span class="math inline">\(i\)</span>. <span class="math display">\[f(i, j) = f(i - 1, j) + values(i)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> and the current weight <span class="math inline">\(weight[i] &gt; j\)</span>, then we only need to keep the previous maximum values because the item <span class="math inline">\(i\)</span> won't fit whatsoever: <span class="math display">\[f(i, j) = f(i - 1, j)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> but <span class="math inline">\(weight[i] \leq j\)</span>, then we can choose to include this item and discard some past items, or move on without considering this item:</p>
+<ol type="1">
+<li><p>The total values if we include this item (<span class="math inline">\(\text{current value } + \text{ The maximum value we can get after we fill the capacity j with i}\)</span> (we need to <code>exclude</code> the current item)): <span class="math display">\[\text{total}_{include} = values[i] + f(i - 1, j - weights[i])\]</span></p></li>
+<li><p>The maximum value exclude current item: <span class="math display">\[f(i - 1, j)\]</span></p></li>
+</ol>
+<p>By taking the maximum over these two, we have:</p>
+<p><span class="math display">\[f(i, j) = \max(f(i - 1, j), \; values[i] + f(i - 1, j - weights[i]))\]</span></p></li>
+</ol>
+<h2 id="unbounded-knapsack-problem">Unbounded knapsack problem</h2>
+<p>Given a knapsack weight <span class="math inline">\(W\)</span> and a set of <span class="math inline">\(n\)</span> items with certain value <span class="math inline">\(v_i\)</span> and weight <span class="math inline">\(w_i\)</span>, we need to calculate the maximum amount that could make up this quantity exactly. This is different from classical Knapsack problem, here we are allowed to use unlimited number of instances of an item.</p>
+<p><span class="math inline">\(f(i, j):\)</span> using only first <span class="math inline">\(i\)</span> items, with maximum capacity of <span class="math inline">\(j\)</span>, the maximum total value you can get.</p>
+<p>Then, we can write our base cases:</p>
+<ul>
+<li><span class="math inline">\(f(0, :) = 0\)</span></li>
+<li><span class="math inline">\(f(:, 0) = 0\)</span></li>
+</ul>
+<p>0 items have values 0 and no items can be put into knapsack with capacity of 0.</p>
+<p>At <span class="math inline">\(f(i, j)\)</span>, comparing it to <span class="math inline">\(f(i - 1, j)\)</span>, we can choose to include item <span class="math inline">\(i\)</span> or not. So, we can write out of transition function <span class="math inline">\(f(i, j)\)</span>:</p>
+<ol type="1">
+<li><p>If there is still extra capacity for item <span class="math inline">\(i\)</span> with total capacity <span class="math inline">\(j\)</span> (i.e <span class="math inline">\(sum(weights[: i + 1]) \leq j)\)</span>), then we can just simply add values of item <span class="math inline">\(i\)</span>. <span class="math display">\[f(i, j) = f(i - 1, j) + values(i)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> and the current weight <span class="math inline">\(weight[i] &gt; j\)</span>, then we only need to keep the previous maximum values because the item <span class="math inline">\(i\)</span> won't fit whatsoever: <span class="math display">\[f(i, j) = f(i - 1, j)\]</span></p></li>
+<li><p>If there is no extra capacity for item <span class="math inline">\(i\)</span> at <span class="math inline">\(j\)</span> but <span class="math inline">\(weight[i] \leq j\)</span>, then we can choose to include this item and discard some past items, or move on without considering this item:</p>
+<ol type="1">
+<li><p>The total values if we include this item (<span class="math inline">\(\text{current value } + \text{ The maximum value we have can get after we fill the capacity j with i}\)</span> (we need to <code>include</code> the current item)): <span class="math display">\[\text{total}_{include} = values[i] + f(i, j - weights[i])\]</span></p></li>
+<li><p>The maximum value exclude current item: <span class="math display">\[f(i - 1, j)\]</span></p></li>
+</ol>
+<p>By taking the maximum over these two, we have:</p>
+<p><span class="math display">\[f(i, j) = \max(f(i - 1, j), \; values[i] + f(i, j - weights[i]))\]</span></p></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/06/cal-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/06/cal-2/" class="post-title-link" itemprop="url">Calculus (2)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-06 22:09:59" itemprop="dateCreated datePublished" datetime="2021-07-06T22:09:59+08:00">2021-07-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-12 22:59:17" itemprop="dateModified" datetime="2021-07-12T22:59:17+08:00">2021-07-12</time>
+      </span>
+
+  
+    <span id="/2021/07/06/cal-2/" class="post-meta-item leancloud_visitors" data-flag-title="Calculus (2)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>8.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>7 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="multivariate-calculus-2">Multivariate Calculus (2)</h1>
+<h2 id="double-integrals">Double Integrals</h2>
+<h3 id="double-integrals-over-rectangles">Double Integrals over Rectangles</h3>
+<p>In a similar manner as definite integral, we consider a function <span class="math inline">\(f\)</span> of two variables defined on a closed rectangle:</p>
+<p><span class="math display">\[R = [a, b] \times [c, d] = \{(x, y, z) \in \mathbb{R}^2 | a \leq x \leq b, c \leq y \leq d\}\]</span></p>
+<p>and we first suppose that <span class="math inline">\(f(x, y) \leq 0\)</span>. The graph of <span class="math inline">\(f\)</span> is a surface with equation <span class="math inline">\(z = f(x, y)\)</span>. Let <span class="math inline">\(S\)</span> be the solid that lies above <span class="math inline">\(R\)</span> and under the graph of <span class="math inline">\(f\)</span>:</p>
+<p><span class="math display">\[S = \{(x, y, z) \in \mathbb{R}^3 | a \leq x \leq b, c \leq y \leq d, 0 \leq z \leq f(x, y)\}\]</span></p>
+<p>We first divide the <span class="math inline">\(R\)</span> into subrectangles. We accomplish this by dividing the interval <span class="math inline">\([a, b]\)</span> into <span class="math inline">\(m\)</span> subintervals <span class="math inline">\([x_{i-1}, x_{i}]\)</span> of equal width <span class="math inline">\(\Delta x = \frac{(b - a)}{m}\)</span> and dividing <span class="math inline">\([c, d]\)</span> into <span class="math inline">\(n\)</span> subintervals <span class="math inline">\([y_{j - 1}, y_j]\)</span> of equal width <span class="math inline">\(\Delta y = \frac{(d - c)}{n}\)</span>. Then the subrectangles are defined as:</p>
+<p><span class="math display">\[R_{i, j} = [x_{i - 1}, x_i] \times [y_{j - 1}, y_j] = \{(x, y) | x_{i - 1} \leq x \leq x_i, y_{j - 1} \leq y leq y_j\}\]</span></p>
+<p>Then the area of individual subrectangle is:</p>
+<p><span class="math display">\[\Delta A = \Delta x \Delta y\]</span></p>
+<p>If we choose a sample point <span class="math inline">\((x^{*}_{i, j}, y^{*}_{i, j}) \in R_{i, j}\)</span>, then we can approximate the part of <span class="math inline">\(S\)</span> that lies above each <span class="math inline">\(R_{i, j}\)</span> (The volume) by a column with height <span class="math inline">\(f(x^{*}_{i, j}, y^{*}_{i, j})\)</span> and base area <span class="math inline">\(\Delta A\)</span>. The volume of the column:</p>
+<p><span class="math display">\[f(x^{*}_{i, j}, y^{*}_{i, j})\Delta A\]</span></p>
+<p><img src='/images/cal/15_1_2.png' width="600"></p>
+<p>Then the volume (<strong>only when <span class="math inline">\(f(x, y) \leq 0 \; \forall (x, y) \in S\)</span></strong>) of <span class="math inline">\(S\)</span> can be approximated:</p>
+<p><span class="math display">\[V \approx \sum^{m}_{i=1} \sum^{n}_{j=1}f(x^{*}_{i, j}, y^{*}_{i, j})\Delta A\]</span></p>
+<p>This sum is called <code>double Riemann sum</code>.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/06/cal-2/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1223,228 +1476,6 @@ Q_{\theta} (s_t, a_t) &amp;= r_t + \gamma E[Q_{\theta} (s_{t+1}, a_{t+1}) | s_t,
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/06/23/kaiming-init/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/23/kaiming-init/" class="post-title-link" itemprop="url">Kaiming Initialization</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-06-23 15:36:03" itemprop="dateCreated datePublished" datetime="2021-06-23T15:36:03+08:00">2021-06-23</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-08-18 15:07:36" itemprop="dateModified" datetime="2021-08-18T15:07:36+08:00">2021-08-18</time>
-      </span>
-
-  
-    <span id="/2021/06/23/kaiming-init/" class="post-meta-item leancloud_visitors" data-flag-title="Kaiming Initialization" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>8.5k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>8 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="delving-deep-into-rectifiers-surpassing-human-level-performance-on-imagenet-classification">Delving Deep into Rectifiers: Surpassing Human-Level Performance on ImageNet Classification</h1>
-<h2 id="prelu">PReLU</h2>
-<h3 id="parametric-rectifiers">Parametric Rectifiers</h3>
-<p>Formally, we consider an activation function defined as: <span class="math display">\[
-f(y_i)=
-\begin{cases}
-y_i, \quad &amp; y_i &gt; 0\\
-a_i y_i, \quad &amp; y_i \leq 0\\
-\end{cases}
-\]</span></p>
-<p>Here <span class="math inline">\(y_i\)</span> is the input of the nonlinear activation <span class="math inline">\(f\)</span> on the <span class="math inline">\(i\)</span>th channel, and <span class="math inline">\(a_i\)</span> is a coefficient controlling the slop of the negative part of the function. The subscript <span class="math inline">\(i\)</span> in <span class="math inline">\(a_i\)</span> indicates that we allow the nonlinear activation to vary on different channels. When <span class="math inline">\(a_i = 0\)</span>, it becomes ReLU. When <span class="math inline">\(a_i\)</span> is small and fixed value, we have <code>LReLU</code>. When <span class="math inline">\(a_i\)</span> is a learnable parameter, we call this <code>Parametric ReLU (PReLU)</code>.</p>
-<p><img src='/images/ML/kaiming_init.png' width="600"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/06/23/kaiming-init/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/06/22/alex-net/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/22/alex-net/" class="post-title-link" itemprop="url">Alex Net</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-06-22 13:00:54 / Modified: 15:08:55" itemprop="dateCreated datePublished" datetime="2021-06-22T13:00:54+08:00">2021-06-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DL/" itemprop="url" rel="index"><span itemprop="name">DL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DL/CNN/" itemprop="url" rel="index"><span itemprop="name">CNN</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/06/22/alex-net/" class="post-meta-item leancloud_visitors" data-flag-title="Alex Net" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>6.2k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>6 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="imagenet-classification-with-deep-convolutional-neural-networks">ImageNet Classification with Deep Convolutional Neural Networks</h1>
-<h2 id="the-dataset-image-preprocessing">The dataset, Image preprocessing</h2>
-<p>ImageNet is a dataset of over 15 million labeled high-resolutoin images. It consists of variable-resolution images, while the network requires a constant input dimensionality. Therefore, we down-sampled the images to a fixed resolution of <span class="math inline">\(256 \times 256\)</span>. Given a rectangular image, we first rescaled the image such that the shorter side was of length 256, and then cropped out the central <span class="math inline">\(256 \times 256\)</span> patch from the resulting image. We did not pre-process the images in any other way, except for subtracting the mean activity over the training set for each pixel (normalize each input pixel). So we trained our network on the centered raw RGB values of the pixels.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/06/22/alex-net/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1469,13 +1500,13 @@ a_i y_i, \quad &amp; y_i \leq 0\\
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">846k</span>
+    <span title="Symbols count total">860k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">12:49</span>
+    <span title="Reading time total">13:02</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
