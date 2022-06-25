@@ -30,7 +30,7 @@
 <meta property="og:description" content="Time Series (3) Spectral Analysis and Filtering We define a cycle as one complete period of a sine or cosine function defined over a unit time interval: \[X_t &#x3D; A\cos(2\pi\omega t + \phi) \quad \quad">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-05-28T02:51:22.000Z">
-<meta property="article:modified_time" content="2022-06-01T14:53:41.806Z">
+<meta property="article:modified_time" content="2022-06-17T12:32:43.671Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta property="article:tag" content="RL Basics">
 <meta name="twitter:card" content="summary">
@@ -91,7 +91,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">105</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">107</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -152,7 +152,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#time-series-3"><span class="nav-number">1.</span> <span class="nav-text">Time Series (3)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#spectral-analysis-and-filtering"><span class="nav-number">1.1.</span> <span class="nav-text">Spectral Analysis and Filtering</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#the-spectral-density"><span class="nav-number">1.1.1.</span> <span class="nav-text">The Spectral Density</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-c1"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">Theorem C1:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-c2"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">Theorem C2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#property-4.1-spectral-representation-of-a-stationary-process"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">Property 4.1: Spectral Representation of a Stationary Process</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#property-4.2-spectral-density"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">Property 4.2: Spectral Density</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-4.1-discrete-fourier-transform-dft"><span class="nav-number">1.1.1.5.</span> <span class="nav-text">Definition 4.1 Discrete Fourier Transform (DFT)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-4.2-periodogram"><span class="nav-number">1.1.1.6.</span> <span class="nav-text">Definition 4.2: Periodogram</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#time-series-3"><span class="nav-number">1.</span> <span class="nav-text">Time Series (3)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#spectral-analysis-and-filtering"><span class="nav-number">1.1.</span> <span class="nav-text">Spectral Analysis and Filtering</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#the-spectral-density"><span class="nav-number">1.1.1.</span> <span class="nav-text">The Spectral Density</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-c1"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">Theorem C1:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-c2"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">Theorem C2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#property-4.1-spectral-representation-of-a-stationary-process"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">Property 4.1: Spectral Representation of a Stationary Process</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#property-4.2-spectral-density"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">Property 4.2: Spectral Density</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-4.1-discrete-fourier-transform-dft"><span class="nav-number">1.1.1.5.</span> <span class="nav-text">Definition 4.1 Discrete Fourier Transform (DFT)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-4.2-periodogram"><span class="nav-number">1.1.1.6.</span> <span class="nav-text">Definition 4.2: Periodogram</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#state-space-models"><span class="nav-number">1.2.</span> <span class="nav-text">State Space Models</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#linear-gaussian-model"><span class="nav-number">1.2.1.</span> <span class="nav-text">Linear Gaussian Model</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#filtering-smoothing-forecasting"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Filtering, Smoothing, Forecasting</span></a></li></ol></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -168,7 +168,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">105</span>
+          <span class="site-state-item-count">107</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -262,7 +262,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-06-01 22:53:41" itemprop="dateModified" datetime="2022-06-01T22:53:41+08:00">2022-06-01</time>
+        <time title="Modified: 2022-06-17 20:32:43" itemprop="dateModified" datetime="2022-06-17T20:32:43+08:00">2022-06-17</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -289,14 +289,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>3.6k</span>
+      <span>5.3k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
+      <span>5 mins.</span>
     </span>
 </div>
 
@@ -328,6 +328,7 @@
 <li><span class="math inline">\(\phi = \tan^{-1} (-\frac{U_2}{U_1})\)</span></li>
 </ul>
 <p><br></p>
+<span id="more"></span>
 <p>Now consider a generalization of above equation that allows mixtures of periodic series with multiple frequencies and amplitudes:</p>
 <p><span class="math display">\[X_t = \sum^q_{k=1} [U_{k_1} \cos(2\pi\omega_k t) + U_{k_2}\sin (2\pi\omega_k t)] \quad \quad (4.3)\]</span></p>
 <p>Where:</p>
@@ -375,6 +376,45 @@
 <p><span class="math display">\[I(\omega_j) = |d(\omega_j)|^2 = d(\omega_j)\overline{d(\omega_j)}\]</span></p>
 <p>for <span class="math inline">\(j = 0, 1, 2, ...., n - 1\)</span>.</p>
 <p>Notice that <span class="math inline">\(I(0) = n \bar{x}^2\)</span> where <span class="math inline">\(\bar{x}\)</span> is the sample mean.</p>
+<p><br></p>
+<h2 id="state-space-models">State Space Models</h2>
+<p>In general, the state space model is characterized by two principles.</p>
+<ul>
+<li>There is a hidden or latent process <span class="math inline">\(X_t\)</span> called the state process, the state process is assumed to be a Markov process, this means that the feature <span class="math inline">\(\{X_s: s &gt; t\}\)</span> and the past <span class="math inline">\(\{X_s: s &lt; t\}\)</span> are independent conditional on the present <span class="math inline">\(X_t\)</span>.</li>
+<li>The observations <span class="math inline">\(Y_t\)</span> are independent given the states <span class="math inline">\(X_t\)</span>.</li>
+</ul>
+<p>This means that the dependence among the observations is generated by current states <span class="math inline">\(X_t\)</span>.</p>
+<h3 id="linear-gaussian-model">Linear Gaussian Model</h3>
+<p>The <strong>linear Gaussian state space model</strong> or <strong>Dynamic linear model</strong>, in its basic form, employs an order one, <span class="math inline">\(p\)</span>-dimensional vector autoregression as the <strong>state equation</strong>,</p>
+<p><span class="math display">\[X_t = \Phi X_{t-1} + W_t\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(W_t\)</span> are <span class="math inline">\(p \times 1\)</span> i.i.d, zero mean normal vectors with covariance matrix <span class="math inline">\(Q\)</span>, <span class="math inline">\(W_t \overset{i.i.d}{\sim} N_p(\boldsymbol{0}, Q)\)</span>.</li>
+<li>The process starts with a normal vector <span class="math inline">\(X_0 \sim N_p(\boldsymbol{\mu_0}, \Sigma_0)\)</span>.</li>
+<li><span class="math inline">\(p\)</span> is called <strong>state dimension</strong>.</li>
+</ul>
+<p><br></p>
+<p>We assume we do not observe the state vector <span class="math inline">\(X_t\)</span> directly, but only a noisy version of it called <strong>observation equation</strong>:</p>
+<p><span class="math display">\[Y_t = A_t X_t + v_t\]</span></p>
+<p>Where</p>
+<ul>
+<li><span class="math inline">\(A_t\)</span> is a <span class="math inline">\(q \times p\)</span> <strong>measurement or observation matrix</strong>.</li>
+<li><span class="math inline">\(Y_t\)</span> is <span class="math inline">\(q \times 1\)</span> which <span class="math inline">\(q\)</span> can be larger or smaller than <span class="math inline">\(p\)</span>.</li>
+<li><span class="math inline">\(V_t \overset{i.i.d}{\sim} N_q(\boldsymbol{0}, R)\)</span> is the additive observation noise.</li>
+</ul>
+<p><br></p>
+<h4 id="filtering-smoothing-forecasting">Filtering, Smoothing, Forecasting</h4>
+<p>A primary aim of any analysis involving the state space model, would be to produce estimators for the underlying unobserved signal <span class="math inline">\(X_t\)</span>, given the data <span class="math inline">\(y_{1:s} = \{y_1, ...., y_s\}\)</span> to time <span class="math inline">\(s\)</span>, when:</p>
+<ul>
+<li><span class="math inline">\(s &lt; t\)</span>, the problem is called <strong>forecasting</strong>.</li>
+<li><span class="math inline">\(s = t\)</span>, the problem is called <strong>filtering</strong>.</li>
+<li><span class="math inline">\(s &gt; t\)</span>, the problem is called <strong>smoothing</strong>.</li>
+</ul>
+<p>Notations throughout this chapter:</p>
+<ul>
+<li><span class="math inline">\(x_t^s = E[X_t | y_{1:s}]\)</span></li>
+<li><span class="math inline">\(P^s_{t1, t2} = E[(X_{t_1} - x^s_{t_1}) (X_{t_2} - x^s_{t_2})^T)]\)</span>, when <span class="math inline">\(t_1 = t_2\)</span>, we write <span class="math inline">\(P^s_{t1}\)</span></li>
+</ul>
 
     </div>
 
@@ -394,10 +434,10 @@
       <div class="popular-posts-title"><a href="/2021/05/03/bellman-optimality-equations/" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/05/03/dp/" rel="bookmark">Dynamic Programming</a></div>
+      <div class="popular-posts-title"><a href="/2021/05/18/cheat-sheet/" rel="bookmark">Cheat Sheet</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/05/18/cheat-sheet/" rel="bookmark">Cheat Sheet</a></div>
+      <div class="popular-posts-title"><a href="/2021/05/14/calculus/" rel="bookmark">Calculus (1)</a></div>
     </li>
   </ul>
 
@@ -411,8 +451,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2022/05/02/rigorous-probability-2/" rel="prev" title="Rigorous Probability (1)">
-                  <i class="fa fa-chevron-left"></i> Rigorous Probability (1)
+                <a href="/2022/05/02/rigorous-probability-2/" rel="prev" title="Rigorous Probability (2)">
+                  <i class="fa fa-chevron-left"></i> Rigorous Probability (2)
                 </a>
             </div>
             <div class="post-nav-item">
@@ -451,13 +491,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">860k</span>
+    <span title="Symbols count total">865k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">13:02</span>
+    <span title="Reading time total">13:07</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

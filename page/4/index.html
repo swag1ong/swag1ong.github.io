@@ -86,7 +86,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">105</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">107</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -162,7 +162,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">105</span>
+          <span class="site-state-item-count">107</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -215,6 +215,281 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/08/06/attention/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/08/06/attention/" class="post-title-link" itemprop="url">Attention</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-08-06 15:25:09" itemprop="dateCreated datePublished" datetime="2021-08-06T15:25:09+08:00">2021-08-06</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-10-08 12:49:35" itemprop="dateModified" datetime="2021-10-08T12:49:35+08:00">2021-10-08</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DL/" itemprop="url" rel="index"><span itemprop="name">DL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DL/RNN/" itemprop="url" rel="index"><span itemprop="name">RNN</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/08/06/attention/" class="post-meta-item leancloud_visitors" data-flag-title="Attention" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>4.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>4 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="neural-machine-translation-by-jointly-learning-to-align-and-translate">Neural Machine Translation By Jointly Learning to Align and Translate</h1>
+<p>One problem with traditional encoder-decoder structure is that a neural network needs to be able to compress all the necessary information of a source sentence into a <strong>fixed-length</strong> vector <span class="math inline">\(\mathbf{c}\)</span>. <code>Attention</code> does not attempt to encode a whole input sentence into a single fixed-length vector. Instead, it encodes the input sentence into a sequence of vectors and chooses a subset of these vectors adaptively while decoding the translation.</p>
+<h2 id="background-rnn-encoder-decoder">Background: RNN Encoder-Decoder</h2>
+<p>In the Encoder-Decoder framework, an encoder reads the input sentence, a sequence of vectors <span class="math inline">\(\mathbf{x} = (\mathbf{x}_1, ...., \mathbf{x}_{T_x})\)</span>, into a fixed length context vector <span class="math inline">\(\mathbf{c}\)</span>:</p>
+<p><span class="math display">\[\mathbf{h}_t = f(\mathbf{x}_t, \mathbf{h}_{t-1})\]</span> <span class="math display">\[\mathbf{c} = q(\mathbf{h}_{1}, ...., \mathbf{h}_{T_x})\]</span></p>
+<p>Where <span class="math inline">\(f\)</span> and <span class="math inline">\(q\)</span> are non-linear functions. Typically, <span class="math inline">\(q\)</span> is the identity function defined as <span class="math inline">\(q(\mathbf{h}_{1}, ...., \mathbf{h}_{T_x}) = \mathbf{h}_{T_x}\)</span>.</p>
+<p>The decoder is often trained to predict the next word <span class="math inline">\(\mathbf{y}_{t^{\prime}}\)</span> given all the previous predicted words <span class="math inline">\(\{\hat{\mathbf{y}}_1, ..., \hat{\mathbf{y}}_{t^{\prime} - 1}\}\)</span>. In training step <span class="math inline">\(t\)</span>, we can use feed the true target value <span class="math inline">\(\mathbf{y}_{t-1}\)</span>. Then, in training of decoder, we are maximizing the log joint conditional probability (minimize the sum of per time step cross entropy):</p>
+<p><span class="math display">\[L = \sum^{T_y}_{t=1} L^{t}\]</span> <span class="math display">\[-L = P_{\mathbf{Y}}(\mathbf{y}) = \sum^{T_y}_{t=1} P_{\mathbf{Y_t} | \mathbf{Y_1} ,...., \mathbf{Y_{t-1}}, \mathbf{c}}(\mathbf{y}_t | \{\mathbf{y}_{1}, ...., \mathbf{y}_{t-1}, \mathbf{c}\})\]</span></p>
+<p>Where in RNN, each conditional probability distribution <span class="math inline">\(P_{\mathbf{Y_t} | \mathbf{Y_1} ,...., \mathbf{Y_{t-1}}, \mathbf{c}}\)</span> is model as <span class="math inline">\(g(\mathbf{y}_{t-1}, \mathbf{s}_t, \mathbf{c})\)</span>.</p>
+<h2 id="learning-to-align-and-translate">Learning to Align and Translate</h2>
+<p><code>Attention</code> contains bidirectional RNN as an encoder and a decoder that emulates searching through a source sentence during decoding a tranlation.</p>
+<h3 id="decoder-general-description">Decoder: General Description</h3>
+<p>In the new model, we define each conditional distribution as:</p>
+<p><span class="math display">\[\hat{P}_{\mathbf{Y_t} | \mathbf{Y_1} ,...., \mathbf{Y_{t-1}}, \mathbf{c}} \triangleq g(\mathbf{y}_{t-1}, \mathbf{s}_t, \mathbf{c}_t)\]</span></p>
+<p>Notice here, we have different <span class="math inline">\(\mathbf{c}_t\)</span> for each time step <span class="math inline">\(t\)</span>.</p>
+<p>The context vector <span class="math inline">\(\mathbf{c}_i\)</span> depends on a sequence of <code>annotations</code> <span class="math inline">\((\mathbf{h}_1, ....., \mathbf{h}_{T_x})\)</span> which contains information about the whole input sequence (similar to hidden units in encoder) with a strong focus on the parts surrounding the <span class="math inline">\(i\)</span>th word of the input sequence.</p>
+<p>The context vector <span class="math inline">\(\mathbf{c}_i\)</span> is, then computed as a weighted sum of these annotations <span class="math inline">\(\mathbf{h}_{i}\)</span>:</p>
+<p><span class="math display">\[\mathbf{c}_i = \sum^{T_x}_{j=1} \alpha_{ij} \mathbf{h}_j\]</span></p>
+<p><span class="math display">\[\alpha_{ij} = \frac{\exp^{e_{ij}}}{\sum^{T_x}_{k=1} \exp^{e_{ik}}}\]</span></p>
+<p>Where</p>
+<p><span class="math display">\[e_{ij} = a(\mathbf{s}_{i-1}, \mathbf{h}_j)\]</span></p>
+<p>is an <code>alignment model</code> which scores how well the inputs around position <span class="math inline">\(j\)</span> and the output at position <span class="math inline">\(i\)</span> match. This model <span class="math inline">\(a\)</span> is parameterized by a MLP which is jointly trained with all the other components of the proposed system. The score is based on the RNN decoder's hidden state <span class="math inline">\(\mathbf{s}_{i-1}\)</span> and the <span class="math inline">\(j\)</span>th annotation <span class="math inline">\(\mathbf{h}_j\)</span> of the input sentence. <strong>It reflects the importance of each annotation vector <span class="math inline">\(\mathbf{h}_j\)</span> with respect to the previous hidden state <span class="math inline">\(\mathbf{s}_{i-1}\)</span> in deciding the current state <span class="math inline">\(\mathbf{s}_i\)</span> and generating prediction <span class="math inline">\(\hat{\mathbf{y}}_i\)</span></strong>.</p>
+<p>We can think the approach of taking a weighted sum of all the annotations as computing an expected annotation, where the expectation is over possible alignments (<span class="math inline">\(\alpha_{ij}\)</span>). In other words, let <span class="math inline">\(\alpha_{ij}\)</span> be a probability that the target word <span class="math inline">\(\mathbf{y}_i\)</span> is aligned to, or translated from a source input word <span class="math inline">\(\mathbf{x}_{j}\)</span>. <strong>Then, the <span class="math inline">\(i\)</span>th context vector <span class="math inline">\(\mathbf{c}_i\)</span> is the expected value of annotations (input sequence) distributed according to probability distribution defined by <span class="math inline">\(\alpha_{ij}\)</span>.</strong></p>
+<p>Intuitively, this implements a mechanism of <strong>attention</strong> in the decoder. The decoder decides parts of the source sentence to pay attention to. By letting the decoder have an attention mechanism, we relieve the encoder from the burden of having to encode all information in the source sentence into a fixed length vector.</p>
+<h3 id="encoder-bidirectional-rnn-for-annotating-sequences">Encoder: Bidirectional RNN for Annotating Sequences</h3>
+<p>A bidirectional RNN consists of forward and backward RNNs. The forward RNN <span class="math inline">\(\overset{\rightarrow}{f}\)</span> reads the input sequence from the front and has <strong>forward hidden units <span class="math inline">\(\{\overset{\rightarrow}{\mathbf{h}}_1, ...., \overset{\rightarrow}{\mathbf{h}}_{T_x}\}\)</span></strong>. <span class="math inline">\(\overset{\leftarrow}{f}\)</span> reads the sequence in the reverse order (from <span class="math inline">\(\mathbf{x}_{T_x}\)</span> to <span class="math inline">\(\mathbf{x}_1\)</span>), resulting in a sequence of <strong>backward hidden units <span class="math inline">\(\{\overset{\leftarrow}{\mathbf{h}}_1, ...., \overset{\leftarrow}{\mathbf{h}}_{T_x}\}\)</span></strong>.</p>
+<p>The <strong>annotation</strong> vector <span class="math inline">\(\mathbf{h}_j\)</span> is then calculated by concatenating the forward hidden state <span class="math inline">\(\overset{\rightarrow}{\mathbf{h}}_j\)</span> and the backward hidden state <span class="math inline">\(\overset{\leftarrow}{\mathbf{h}}_j\)</span>:</p>
+<p><span class="math display">\[\mathbf{h}_j = [\overset{\rightarrow}{\mathbf{h}}_j, \overset{\leftarrow}{\mathbf{h}}_j]\]</span></p>
+<p>This sequence of annotations is used by the decoder and the alignment model later to compute the context vector <span class="math inline">\(\mathbf{c}_{i}\)</span>.</p>
+<h1 id="effective-approaches-to-attention-based-neural-machine-translation">Effective Approaches to Attention-based Neural Machine Translation</h1>
+<h1 id="long-short-term-memory-networks-for-machine-reading">Long Short-Term Memory-Networks for Machine Reading</h1>
+<h1 id="ref">Ref</h1>
+<p>https://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html#self-attention</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/08/02/rnn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/08/02/rnn/" class="post-title-link" itemprop="url">RNN</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-08-02 13:09:55" itemprop="dateCreated datePublished" datetime="2021-08-02T13:09:55+08:00">2021-08-02</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-08-25 14:17:31" itemprop="dateModified" datetime="2021-08-25T14:17:31+08:00">2021-08-25</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DL/" itemprop="url" rel="index"><span itemprop="name">DL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DL/RNN/" itemprop="url" rel="index"><span itemprop="name">RNN</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/08/02/rnn/" class="post-meta-item leancloud_visitors" data-flag-title="RNN" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>13k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>11 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="recurrent-neural-network">Recurrent Neural Network</h1>
+<h2 id="introduction">Introduction</h2>
+<p>Consider the recurrent equation:</p>
+<p><span class="math display">\[\mathbf{s}^{t} = f(\mathbf{s}^{t-1}; \; \boldsymbol{\theta})\]</span></p>
+<p>For a finite time step <span class="math inline">\(\tau\)</span>, this equation can be unfolded by applying the definition <span class="math inline">\(\tau - 1\)</span> times:</p>
+<p><span class="math display">\[f(f(....f(\mathbf{s}^{1}; \; \boldsymbol{\theta}) ... ; \; \boldsymbol{\theta}) ; \; \boldsymbol{\theta})\]</span></p>
+<p>Then, this expression can now be represented as a DAG because it no longer involves recurrence:</p>
+<p><img src="/images/ML/rnn_1.png" width="600"></p>
+<p>Notice here, the parameters <span class="math inline">\(\boldsymbol{\theta}\)</span> are shared. The idea extends smoothly to:</p>
+<p><span class="math display">\[\mathbf{s}^{t} = f(\mathbf{s}^{t-1}, \mathbf{x}^{t}; \; \boldsymbol{\theta})\]</span></p>
+<p>We can see that now, <span class="math inline">\(s^{t}\)</span> contains information about the whole past <span class="math inline">\(\mathbf{x}^1 , ....., \mathbf{x}^t\)</span></p>
+<p>Many Recurrent Neural Networks use similar idea to express their hidden units:</p>
+<span class="math display">\[\begin{aligned}
+\mathbf{h}^t &amp;= f(\mathbf{h}^{t-1}, \mathbf{x}^t ; \; \boldsymbol{\theta})\\
+&amp;= g^t (\mathbf{x}^1 , ....., \mathbf{x}^t)
+\end{aligned}\]</span>
+<p>Typically, RNN will have output layers to output predictions at given timesteps. When the recurrent network is trained to perform a task that requires predicting the future from the past, the network typically learns to use <span class="math inline">\(\mathbf{h}^t\)</span> to give a lossy summary of past sequence up to time <span class="math inline">\(t\)</span>. The summary is lossy because we are mapping <span class="math inline">\(\mathbf{x}^1 , ....., \mathbf{x}^t\)</span> to a fixed length <span class="math inline">\(\mathbf{h}^t\)</span></p>
+<p><img src="/images/ML/rnn_2.png" width="600"></p>
+<p>The unfolded structure has several advantages:</p>
+<ol type="1">
+<li>The learned model <span class="math inline">\(f\)</span> is defined as transition from hidden units (input) <span class="math inline">\(h^{t - 1}\)</span> to <span class="math inline">\(h^{t}\)</span> (output) regardless the value of time <span class="math inline">\(t\)</span>. Thus, we can have one model for different lengths of sequences.</li>
+<li>The parameters <span class="math inline">\(\boldsymbol{\theta}\)</span> are shared.</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/08/02/rnn/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1356,310 +1631,6 @@ w^{(m + 1)}_i &amp;= e^{-y_i f_{m} (\mathbf{x}_i)}\\
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/19/k-means/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/19/k-means/" class="post-title-link" itemprop="url">K-Means</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-07-19 16:32:37" itemprop="dateCreated datePublished" datetime="2021-07-19T16:32:37+08:00">2021-07-19</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-08-19 15:11:17" itemprop="dateModified" datetime="2021-08-19T15:11:17+08:00">2021-08-19</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/07/19/k-means/" class="post-meta-item leancloud_visitors" data-flag-title="K-Means" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>3.8k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="k-means">K-Means</h1>
-<p>Considering the problem of identifying groups, or clusters of data points in a multidimensional space.</p>
-<p>Suppose we have a dataset <span class="math inline">\(\mathbf{x}_1, ....., \mathbf{x}_N\)</span> consisting of <span class="math inline">\(N\)</span> observations of a random <span class="math inline">\(D\)</span> dimensional euclidean variable <span class="math inline">\(\mathbf{x}\)</span>. <strong>Our goal is to partition these points in to <span class="math inline">\(K\)</span> clusters</strong>.</p>
-<p>A cluster <span class="math inline">\(k\)</span> contains:</p>
-<ol type="1">
-<li><strong>Cluster center</strong>: <span class="math inline">\(\boldsymbol{\mu}_k \in \mathbb{R}^{D}\)</span>.</li>
-<li><strong>Assignment indicator variables</strong>: <span class="math inline">\(\mathbf{r}_{n} \in \mathbb{R}^{K}, \; r_{nk} \in \{0, 1\}\)</span>, one for each data point and each dimension <span class="math inline">\(k\)</span> indicates whether the data point <span class="math inline">\(\mathbf{x}_n\)</span> belongs to cluster <span class="math inline">\(k\)</span></li>
-</ol>
-<p>So we can reformulate our goal to be: <strong>find an assignment of data points to clusters, as well as a set of cluster centers <span class="math inline">\(\{\boldsymbol{\mu}_k\}^{K}_{k=1}\)</span>, such that the sum of squares of the distances of each data point to its closest cluster center is a minimum.</strong> In equation, our objective is:</p>
-<p><span class="math display">\[J(\mathbf{x}; \; \{\boldsymbol{\mu}_{k}, \mathbf{r}_{nk}\}) = \sum^{N}_{n=1}\sum^{K}_{k=1} r_{nk} \|\mathbf{x}_n - \boldsymbol{\mu}_k\|^2_2\]</span></p>
-<p>Where the distance measure here is the L2 norm.</p>
-<p>Thus, we want to find parameters <span class="math inline">\(\{\boldsymbol{\mu}_{k}, \mathbf{r}_{nk}\}\)</span> such that the objective is minimized.</p>
-<h2 id="algorithm">Algorithm</h2>
-<ol type="1">
-<li>Initialize <span class="math inline">\(\boldsymbol{\mu}_k, \; \forall \; k=1, ...., K\)</span></li>
-<li>Given <span class="math inline">\(\{\boldsymbol{\mu}_k\}\)</span>, minimize <span class="math inline">\(J\)</span> w.r.t <span class="math inline">\(\{\mathbf{r}_{n}\}\)</span></li>
-<li>Given <span class="math inline">\(\{\mathbf{r}_{n}\}\)</span>, minimize <span class="math inline">\(J\)</span> w.r.t <span class="math inline">\(\{\boldsymbol{\mu}_k\}\)</span></li>
-<li>Repeat 2, 3 until converges</li>
-</ol>
-<p><strong>For phase 2</strong>:</p>
-<p>Given the cluster centers, it is obvious that if we assign each point to the closest cluster center, we have the minimum objective:</p>
-<p><span class="math display">\[
-r_{nk}=
-\begin{cases}
-1, \quad \text{if }\; k = \underset{k}{\arg\min} \|\mathbf{x}_n - \boldsymbol{\mu}_k\|^2_2\\
-0, \quad o.w\\
-\end{cases}
-\]</span></p>
-<p><strong>For phase 3</strong>:</p>
-<p>Given the assignments, since the objective is convex, we can take gradient and solve for the optimal <span class="math inline">\(\boldsymbol{\mu}_k\)</span>:</p>
-<p><span class="math display">\[\frac{\partial J}{\partial \boldsymbol{\mu}_k} = \sum^{N}_{n=1} -2 r_{nk} \mathbf{x}_n + 2\boldsymbol{\mu}_k \sum^{N}_{n=1} r_{nk} = 0\]</span></p>
-<p><span class="math display">\[\implies \boldsymbol{\mu}_k \sum^{N}_{n=1} r_{nk} = \sum^{N}_{n=1} r_{nk} \mathbf{x}_n\]</span></p>
-<p><span class="math display">\[\implies \boldsymbol{\mu}_k = \frac{\sum^{N}_{n=1} r_{nk} \mathbf{x}_n}{\sum^{N}_{n=1} r_{nk}}\]</span></p>
-<p><span class="math inline">\(\sum^{N}_{n=1} r_{nk} \mathbf{x}_n\)</span> is the sum of all points that belongs to cluster <span class="math inline">\(k\)</span> and <span class="math inline">\(\sum^{N}_{n=1} r_{nk}\)</span> is the count of points in cluster <span class="math inline">\(k\)</span>, so the new <span class="math inline">\(\boldsymbol{\mu}_k\)</span> is just the <strong>sample mean</strong> of the points in cluster <span class="math inline">\(k\)</span>.</p>
-<h2 id="convergence">Convergence</h2>
-<p>Since:</p>
-<ol type="1">
-<li><span class="math inline">\(\{\boldsymbol{\mu}_{k}, \mathbf{r}_{nk}\}\)</span> can only take finite values (i.e they are derived from finite subsets of data and uniquely defined for each subset).</li>
-<li>At each step, we minimize the objective (i.e we either decrease or maintain the objective).</li>
-<li>The cost function is bounded below zero.</li>
-<li>Ties are broken consistently.</li>
-</ol>
-<p>Thus, the algorithm can only take a finite number of non-decreasing steps before terminating at a local minimum.</p>
-<h2 id="implementation">Implementation</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">KMeans</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, k=<span class="number">2</span>, max_iteration=<span class="number">10</span>, init_method=<span class="string">&#x27;random&#x27;</span></span>):</span></span><br><span class="line">        self.k = k</span><br><span class="line">        self.max_iteration = max_iteration</span><br><span class="line">        self.init_method = init_method</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit_transform</span>(<span class="params">self, x: np.array</span>):</span></span><br><span class="line">        n, d = x.shape</span><br><span class="line">        curr_mu = self._init_mu(x)</span><br><span class="line">        curr_iter = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> curr_iter &lt;= self.max_iteration:</span><br><span class="line">            r_matrix = np.zeros((n, self.k))</span><br><span class="line">            <span class="comment"># step one, map each instance to cluster center muk</span></span><br><span class="line">            <span class="keyword">for</span> sample <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">                distance = []</span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(self.k):</span><br><span class="line">                    distance.append(np.linalg.norm(x[sample] - curr_mu[j]))</span><br><span class="line"></span><br><span class="line">                mu_assigned = np.argmin(distance)</span><br><span class="line">                r_matrix[sample][mu_assigned] = <span class="number">1</span></span><br><span class="line">                </span><br><span class="line">            <span class="comment"># step two calculate new mu_k</span></span><br><span class="line">            prev_mu = curr_mu.copy()</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(self.k):</span><br><span class="line">                curr_mu[j] = np.mean(x[r_matrix[:, j] == <span class="number">1</span>], axis=<span class="number">0</span>)</span><br><span class="line">                </span><br><span class="line">            <span class="comment"># check stopping criteria</span></span><br><span class="line">            <span class="keyword">if</span> np.linalg.norm(prev_mu - curr_mu) == <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">            curr_iter += <span class="number">1</span></span><br><span class="line">            </span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;finished k-means algorithm, on iteration <span class="subst">&#123;curr_iter&#125;</span>&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> r_matrix, curr_mu</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_init_mu</span>(<span class="params">self, x</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.init_method == <span class="string">&#x27;random&#x27;</span>:</span><br><span class="line">            col_max = x.<span class="built_in">max</span>(axis=<span class="number">0</span>)</span><br><span class="line">            col_min = x.<span class="built_in">min</span>(axis=<span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> (col_max - col_min) * np.random.random_sample((self.k, x.shape[<span class="number">1</span>])) + col_min</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">elif</span> self.init_method == <span class="string">&#x27;random_points&#x27;</span>:</span><br><span class="line">            random_int = np.random.randint(<span class="number">0</span>, x.shape[<span class="number">0</span>], size=self.k)</span><br><span class="line">            <span class="keyword">return</span> x[random_int]</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/19/pca/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/19/pca/" class="post-title-link" itemprop="url">PCA</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-07-19 16:32:26" itemprop="dateCreated datePublished" datetime="2021-07-19T16:32:26+08:00">2021-07-19</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-08-26 16:46:58" itemprop="dateModified" datetime="2021-08-26T16:46:58+08:00">2021-08-26</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/07/19/pca/" class="post-meta-item leancloud_visitors" data-flag-title="PCA" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>3.6k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="principal-component-analysis">Principal Component Analysis</h1>
-<p>Let <span class="math inline">\([\mathbf{X}_1 ... \mathbf{X}_N]\)</span> be a <span class="math inline">\(p \times N\)</span> matrix of random sample where <span class="math inline">\(\mathbf{X}_i \in \mathbb{R}^p\)</span>. The sample mean <span class="math inline">\(\mathbf{M}\)</span> of the random sample is defined as:</p>
-<p><span class="math display">\[\mathbf{M} = \frac{1}{N} \sum^{N}_{i=1} \mathbf{X}_{i}\]</span></p>
-<p>Let <span class="math inline">\(\hat{\mathbf{X}}_k\)</span> be the centered random vector for <span class="math inline">\(k = 1, ...., N\)</span>:</p>
-<p><span class="math display">\[\hat{\mathbf{X}}_k = \mathbf{X}_k - \mathbf{M}\]</span></p>
-<p>Then we can defined the centered random sample matrix as:</p>
-<p><span class="math display">\[B = [\hat{\mathbf{X}}_1 ... \hat{\mathbf{X}}_N]_{[p\times N]}\]</span></p>
-<p>The sample covariance matrix <span class="math inline">\(S\)</span> is then:</p>
-<p><span class="math display">\[S = [\frac{1}{N} BB^T]_{[p\times p]}\]</span></p>
-<p>We can easily show that <span class="math inline">\(S\)</span> is positive semi-definite. Assume that <span class="math inline">\(\mathbf{x} &gt; 0\)</span>:</p>
-<span class="math display">\[\begin{aligned}
-BB^T \mathbf{x} &amp;= \lambda \mathbf{x}\\
-\implies \mathbf{x}^T BB^T \mathbf{x} &amp;= \lambda \mathbf{x}^T \mathbf{x}\\
-\implies \frac{\mathbf{x}^T BB^T \mathbf{x}}{\mathbf{x}^T \mathbf{x}} &amp;= \lambda
-\end{aligned}\]</span>
-<p>Let <span class="math inline">\(\mathbf{A} = B^T\mathbf{x}\)</span>, then:</p>
-<p><span class="math display">\[\frac{\mathbf{A}^T \mathbf{A}}{\mathbf{x}^T \mathbf{x}} = \lambda\]</span></p>
-<p>Since, <span class="math inline">\(\mathbf{A}^T \mathbf{A} \geq 0\)</span> for any vector <span class="math inline">\(A\)</span>, similar for <span class="math inline">\(\mathbf{x}^T \mathbf{x}\)</span>, then:</p>
-<p><span class="math display">\[\lambda \geq 0\]</span></p>
-<p>Since, <span class="math inline">\(S\)</span> is symmetric and <span class="math inline">\(\lambda \geq 0\)</span> for all eigenvalues of <span class="math inline">\(S\)</span>, we can conclude that <span class="math inline">\(S\)</span> is <strong>positive semi-definite</strong>.</p>
-<p>The <strong>total variance</strong> in the data is:</p>
-<p><span class="math display">\[tr(S)\]</span></p>
-<h2 id="pca">PCA</h2>
-<p><strong>The goal of PCA is to find an orthogonal <span class="math inline">\(p \times p\)</span> matrix <span class="math inline">\(P = [\mathbf{u}_1 .... \mathbf{u}_p]\)</span> that determines a change of variable, <span class="math inline">\(\mathbf{X} = P\mathbf{Y}\)</span> with the property that the features of <span class="math inline">\(\mathbf{Y}\)</span> are uncorrelated and are arranged in order of decreasing variance.</strong></p>
-<p>Assume the <span class="math inline">\(\mathbf{X}\)</span> is already being centered, that is <span class="math inline">\(B = [\mathbf{X}_1 .... \mathbf{X}_N]\)</span>, then <span class="math inline">\(\mathbf{Y}\)</span> is also centered since <span class="math inline">\(P \neq 0\)</span>:</p>
-<p><span class="math display">\[E[\mathbf{X}] = P\cdot E[\mathbf{Y}] = 0\]</span></p>
-<p>Then the sample covariance matrix of <span class="math inline">\(\mathbf{Y}\)</span> is:</p>
-<p><span class="math display">\[S_Y = \frac{1}{N-1}[P^{-1}\mathbf{X}_1 .... P^{-1}\mathbf{X}_N] [P^{-1}\mathbf{X}_1 .... P^{-1}\mathbf{X}_N]^T\]</span></p>
-<p><span class="math display">\[\implies S_{\mathbf{Y}} = \frac{1}{N-1} P^{T}BB^{T}P = P^{T} S_{\mathbf{X}} P\]</span></p>
-<p>So the desired orthogonal matrix is the one that makes <span class="math inline">\(\hat{Cov}[Y_i, Y_j] = 0, \; \forall i \neq j\)</span> (features are uncorrelated), which means that the we want the sample covariance matrix <span class="math inline">\(S_Y\)</span> to be diagonal.</p>
-<p><br></p>
-<p>Let <span class="math inline">\(D\)</span> be a diagonal matrix with eigenvalues of <span class="math inline">\(S_{\mathbf{X}}\)</span>, <span class="math inline">\(\lambda_1 ,...., \lambda_p\)</span> on the diagonal s.t <span class="math inline">\(\lambda_1 \geq \lambda_2 \geq ..... \lambda_p \geq 0\)</span>, let <span class="math inline">\(P\)</span> be an orthogonal matrix whose columns are the corresponding unit eigenvectors <span class="math inline">\(\mathbf{u}_1, ....., \mathbf{u}_p\)</span> (Symmetric matrices have property that the eigenspaces are mutually orthogonal, in the sense that eigenvectors corresponding to different eigenvalues are orthogonal). Then, we can use <span class="math inline">\(P\)</span> and <span class="math inline">\(\mathbf{X}\)</span> to represent <span class="math inline">\(Y\)</span>, and the sample covariance matrix is:</p>
-<p><span class="math display">\[S_{\mathbf{X}} = PDP^T \implies P^{-1} S_{\mathbf{X}} P = D\]</span></p>
-<p>Thus, <span class="math inline">\(S_{\mathbf{Y}} = D\)</span>.</p>
-<p>Then, the eigenvectors <span class="math inline">\(\mathbf{u}_1, ...., \mathbf{u}_p\)</span> are called <code>Principal Components</code> of the data. The first PC is the eigenvector corresponding to the largest eigenvalue of <span class="math inline">\(S_{\mathbf{X}}\)</span>.</p>
-<p>The result transformation is defiend as:</p>
-<p><span class="math display">\[P^{T} \mathbf{X} = \mathbf{Y}\]</span></p>
-<p><span class="math display">\[
-\mathbf{Y} = 
-\begin{bmatrix}
-\mathbf{u}^T_1 \mathbf{X} \\
-.\\
-.\\
-.\\
-\mathbf{u}^T_p \mathbf{X}\\
-\end{bmatrix}
-\]</span></p>
-<h2 id="total-variance">Total Variance</h2>
-<p>It can be shown that the PCA transformation does not change the total variance of the data, that is the total variance of the data is the sum of eigenvalues:</p>
-<p><span class="math display">\[tr(S_{\mathbf{Y}}) = tr(D)\]</span></p>
-<p>This is only true when we are dealing with sample covariance matrix,</p>
-<h1 id="implementation">Implementation</h1>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pca</span>(<span class="params">X, k=<span class="number">2</span></span>):</span></span><br><span class="line">    u, s, vt = np.linalg.svd(X, full_matrices=<span class="literal">False</span>)</span><br><span class="line">    xv = u * s</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> xv[:, :k]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">normalize</span>(<span class="params">X</span>):</span></span><br><span class="line">    n, d = X.shape</span><br><span class="line">    x_trans = X.copy()</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(d):</span><br><span class="line">        <span class="comment"># normalization</span></span><br><span class="line">        x_trans[:, j] = (X[:, j] - X[:, j].mean()) / X[:, j].std()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> x_trans</span><br></pre></td></tr></table></figure>
-<h1 id="ref">Ref</h1>
-<p>https://stats.stackexchange.com/questions/266864/why-is-the-sum-of-eigenvalues-of-a-pca-equal-to-the-original-variance-of-the-dat</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1684,13 +1655,13 @@ BB^T \mathbf{x} &amp;= \lambda \mathbf{x}\\
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">860k</span>
+    <span title="Symbols count total">865k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">13:02</span>
+    <span title="Reading time total">13:07</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

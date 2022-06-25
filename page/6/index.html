@@ -86,7 +86,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">105</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">107</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -162,7 +162,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">105</span>
+          <span class="site-state-item-count">107</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -215,6 +215,400 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/13/vfa-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/13/vfa-2/" class="post-title-link" itemprop="url">Value Function Approximation (2)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-13 22:00:16" itemprop="dateCreated datePublished" datetime="2021-07-13T22:00:16+08:00">2021-07-13</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-08-31 11:42:09" itemprop="dateModified" datetime="2021-08-31T11:42:09+08:00">2021-08-31</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/VFA/" itemprop="url" rel="index"><span itemprop="name">VFA</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/07/13/vfa-2/" class="post-meta-item leancloud_visitors" data-flag-title="Value Function Approximation (2)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>13k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>12 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="value-function-approximation-algorithms">Value Function Approximation (Algorithms)</h1>
+<h2 id="approximate-value-iteration">Approximate Value Iteration</h2>
+<h3 id="population-version">Population Version</h3>
+<p>Recall that the procedure for VI is:</p>
+<p><span class="math display">\[V_{k+1} \leftarrow T^{\pi}V_{k}\]</span> <span class="math display">\[V_{k+1} \leftarrow T^{*}V_{k}\]</span></p>
+<p>One way to develop its approximation version is to perform each step only approximately (i.e find <span class="math inline">\(V_{k+1} \in \mathbf{F}\)</span>) such that:</p>
+<p><span class="math display">\[V_{k+1} \approx TV_{k}\]</span></p>
+<p>Where <span class="math inline">\(T\)</span> can be <span class="math inline">\(T^*\)</span> or <span class="math inline">\(T^\pi\)</span>.</p>
+<p>We start from a <span class="math inline">\(V_0 \in \mathbf{F}\)</span>, and then at each iteration <span class="math inline">\(k\)</span> of AVI, we solve (i.e <span class="math inline">\(p\)</span> is often 2):</p>
+<p><span class="math display">\[V_{k+1} \leftarrow \underset{V \in \mathbf{F}}{\arg\min} \|V - TV_{k}\|^p_{p, \mu}\]</span></p>
+<p>At each iteration, <span class="math inline">\(TV_k\)</span> (our target) may not be within <span class="math inline">\(\mathbf{F}\)</span> anymore even though <span class="math inline">\(V_{k} \in \mathbf{F}\)</span>, we may have some approximation error at each iteration of AVI. The amount of error depends on how expressive <span class="math inline">\(\mathbf{F}\)</span> is and how much <span class="math inline">\(T\)</span> can push a function within <span class="math inline">\(\mathbf{F}\)</span> outside that space.</p>
+<h3 id="batch-version">Batch Version</h3>
+<p>The objective of AVI cannot be computed because:</p>
+<ul>
+<li><span class="math inline">\(\mu\)</span> is unknown</li>
+<li>Environment <span class="math inline">\(R, P\)</span> is often not available, thus <span class="math inline">\(TQ_k\)</span> cannot be computed.</li>
+</ul>
+<p>If we have samples in the form of <span class="math inline">\((X, A, R, X^{\prime})\)</span>, we can compute the unbiased sample of <span class="math inline">\(TQ_k\)</span>:</p>
+<p><span class="math display">\[\hat{T}^{\pi}Q_k = R + \gamma Q(X^{\prime}, A^{\prime})\]</span> <span class="math display">\[\hat{T}^{*} Q_k = R + \gamma \max_{a^{\prime} \in A} Q(X^{\prime}, a^{\prime}) \]</span></p>
+<p>Where <span class="math inline">\(A^{\prime} \sim \pi(\cdot | X^{\prime})\)</span></p>
+<p><br></p>
+<p><strong>The question is: can we replace <span class="math inline">\(TQ_k\)</span> with <span class="math inline">\(\hat{T}Q_k\)</span>?</strong></p>
+Given any <span class="math inline">\(Z = (X, A)\)</span>
+<span class="math display">\[\begin{aligned}
+E_{\hat{T}Q_k}[|Q(Z) - \hat{T}Q_k (Z)|^2 | Z] &amp;= E_{\hat{T}Q_k}[|Q(Z) - TQ_k (Z) + TQ_k (Z) - \hat{T}Q_k (Z)|^2 | Z]\\
+&amp;= E_{\hat{T}Q_k}[|Q(Z) - TQ_k (Z)|^2 | Z] + E_{\hat{T}Q_k}[|TQ_k (Z) - \hat{T}Q_k(Z)|^2 | Z] + 2 E_{\hat{T}Q_k}[(Q(Z) - TQ_k (Z))(TQ_k (Z) - \hat{T}Q_k (Z)) | Z]\\
+&amp;= E_{\hat{T}Q_k}[|Q(Z) - TQ_k (Z)|^2 | Z] + E_{\hat{T}Q_k}[|TQ_k (Z) - \hat{T}Q_k(Z)|^2 | Z]
+\end{aligned}\]</span>
+<p>Since <span class="math inline">\(Z \sim \mu\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+E_{\mu} [E_{\hat{T}Q_k}[|Q(Z) - TQ_k (Z)|^2 | Z] + E_{\hat{T}Q_k}[|TQ_k (Z) - \hat{T}Q_k(Z)|^2 | Z]] &amp;= E_{\mu, \hat{T}Q_k} [|Q(Z) - TQ_k (Z)|^2] + E_{\mu, \hat{T}Q_k} [|TQ_k (Z) - \hat{T}Q_k(Z)|^2]\\
+&amp;= \|Q(Z) - TQ_k (Z)\|^2_{2, \mu} + E_{\mu} [Var[\hat{T}Q_k (Z) | Z]]
+\end{aligned}\]</span>
+<p>Since the expectation of variance term does not depend on <span class="math inline">\(Q\)</span>, the solution to the surrogate objective is the same as the original objective:</p>
+<p><span class="math display">\[\underset{Q \in \mathbf{F}}{\arg\min} \; E_{\mu, \hat{T}Q_k}[|Q(Z) - \hat{T}Q_k (Z)|^2] = \underset{Q \in \mathbf{F}}{\arg\min} \; \|Q(Z) - TQ_k (Z)\|^2_{2, \mu}\]</span></p>
+<p>Similar to ERM, we do not know the environment dynamics <span class="math inline">\(R, P\)</span> and distribution <span class="math inline">\(\mu\)</span>. We can use samples and estimate the expectation:</p>
+<p><span class="math display">\[\frac{1}{N} \sum^{N}_{i=1} |Q(X_i, A_i) - \hat{T}Q_k (X_i, A_i)|^2 = \|Q - \hat{T}Q_k\|^2_{2, D_n}\]</span></p>
+<p><strong>This is the basis of DQN</strong>.</p>
+<h2 id="bellman-residual-minimization">Bellman Residual Minimization</h2>
+<h3 id="population-version-1">Population Version</h3>
+<p>Recall that:</p>
+<p><span class="math display">\[V = T^{\pi}V \implies V = V^{\pi}\]</span></p>
+<p>Under FA, we may not achieve this exact equality, instead:</p>
+<p><span class="math display">\[V \approx V^{\pi}\]</span></p>
+<p>Thus, we can formulate our objective:</p>
+<p><span class="math display">\[V = \underset{V \in \mathbf{F}}{\arg\min} \|V - T^{\pi}V\|^p_{p, \mu} = \|BR(V)\|^p_{p, \mu}\]</span></p>
+<p>By minimizing this objective (<span class="math inline">\(p\)</span> is usually 2), we have <code>Bellman Residual Minimization</code>.</p>
+<p>This procedure is different from AVI in that we do not mimic the iterative process of VI (which is convergent in the exact case without any FA), but instead directly go for the solution of fixed-point equation (<span class="math inline">\(V - T^{\pi}V\)</span> instead of <span class="math inline">\(V - T^{\pi}V_k\)</span>).</p>
+<p><img src='/images/RL/vfa/brm_1.png' width="600"></p>
+<p>If there exists a <span class="math inline">\(V \in \mathbf{F}\)</span> that makes <span class="math inline">\(\|V - T^{\pi}V\|^2_{2, \mu} = 0\)</span> and if we assume <span class="math inline">\(\mu(x) &gt; 0, \; \forall x \in \chi\)</span>, we can conclude that <span class="math inline">\(V(x) = V^{\pi}(x), \; \forall x \in \chi\)</span> so <span class="math inline">\(V = V^{\pi}\)</span>.</p>
+<h3 id="batch-version-1">Batch Version</h3>
+<p>Similar to AVI, we may want to replace <span class="math inline">\(TV\)</span> or <span class="math inline">\(TQ\)</span> by <span class="math inline">\(\hat{T}Q\)</span>. Thus, our empirical objective is:</p>
+<p><span class="math display">\[Q = \underset{Q \in \mathbf{F}}{\arg\min} \frac{1}{N} \sum^N_{i=1} |Q(X_i, A_i) - \hat{T}^{\pi} Q (X_i, A_i)|^2 = \|Q - \hat{T}^{\pi}Q\|^2_{2, D_n}\]</span></p>
+<p>Using <span class="math inline">\(D_n = \{(X_i, A_i, R_i, X^{\prime}_i)\}^N_{i=1}\)</span></p>
+<p>We can see that <span class="math inline">\(Q\)</span> appears in both <span class="math inline">\(\hat{T}^{\pi}Q\)</span> and <span class="math inline">\(Q\)</span>, which is different from AVI and ERM. <strong>This causes an issue: the minimizer of <span class="math inline">\(\|Q - T^{\pi}Q\|^2_{2, \mu}\)</span> and <span class="math inline">\(\|Q - \hat{T}^{\pi}Q\|^2_{2, \mu}\)</span> are not necessarily the same for stochastic dynamics.</strong></p>
+<p><br></p>
+<p>To see this, for any <span class="math inline">\(Q\)</span> and <span class="math inline">\(Z = (X, A)\)</span> we compute:</p>
+<p><span class="math display">\[E_{\hat{T}^{\pi}Q} [|Q(Z) - \hat{T}Q(Z)|^2 | Z]\]</span></p>
+<p>Then:</p>
+<span class="math display">\[\begin{aligned}
+E_{\hat{T}^{\pi}Q}[|Q(Z) - \hat{T}^{\pi}Q (Z)|^2 | Z] &amp;= E_{\hat{T}^{\pi}Q}[|Q(Z) - T^{\pi}Q (Z) + T^{\pi}Q (Z) - \hat{T}^{\pi}Q (Z)|^2 | Z]\\
+&amp;= E_{\hat{T}^{\pi}Q}[|Q(Z) - T^{\pi}Q (Z)|^2 | Z] + E_{\hat{T}^{\pi}Q}[|T^{\pi}Q (Z) - \hat{T}^{\pi}Q(Z)|^2 | Z] + 2 E_{\hat{T}^{\pi}Q}[(Q(Z) - T^{\pi}Q (Z))(T^{\pi}Q (Z) - \hat{T}^{\pi}Q (Z)) | Z]\\
+&amp;= E_{\hat{T}^{\pi}Q}[|Q(Z) - T^{\pi}Q (Z)|^2 | Z] + E_{\hat{T}^{\pi}Q}[|T^{\pi}Q (Z) - \hat{T}^{\pi}Q(Z)|^2 | Z]
+\end{aligned}\]</span>
+<p>Since <span class="math inline">\(Z \sim \mu\)</span>, the first term is:</p>
+<p><span class="math display">\[E_{\hat{T}^{\pi}Q, \mu}[|Q(Z) - T^{\pi}Q (Z)|^2] = \|Q - T^{\pi}Q\|^2_{2, \mu}\]</span></p>
+<p>The second term is:</p>
+<p><span class="math display">\[E_{\mu}[E_{\hat{T}^{\pi}Q}[|T^{\pi}Q (Z) - \hat{T}^{\pi}Q(Z)|^2 | Z]] = E_{\mu}[Var[\hat{T}^{\pi}Q(Z) | Z]]\]</span></p>
+<p>We can see that the variance term <span class="math inline">\(Var[\hat{T}^{\pi}Q(Z)\)</span> depends on <span class="math inline">\(Q\)</span>, <strong>as we minimize the objective w.r.t <span class="math inline">\(Q\)</span> in stochastic dynamical systems (for deterministic ones, it is zero)</strong>, we have $ E_{}[Var[^{}Q(Z) | Z]] $, so the minimizer of the batch version objective is not the same as population version for BRM in stochastic dynamics.</p>
+<h2 id="projected-bellman-error">Projected Bellman Error</h2>
+<p>From BRM, we know that even though <span class="math inline">\(V \in \mathbf{F}\)</span>, <span class="math inline">\(T^{\pi} V\)</span> may not be in <span class="math inline">\(\mathbf{F}\)</span>. Thus, a good approximator <span class="math inline">\(V \in \mathbf{F}\)</span> should have distance to <span class="math inline">\(T^{\pi}V\)</span> small. Thus, we want to find <span class="math inline">\(V \in \mathbf{F}\)</span> such that <span class="math inline">\(V\)</span> is the projection of <span class="math inline">\(T^{\pi}V\)</span> onto the space <span class="math inline">\(\mathbf{F}\)</span>.</p>
+<p><img src='/images/RL/vfa/pbe_1.png' width="600"></p>
+<p>We want to find a <span class="math inline">\(V \in \mathbf{F}\)</span> such that:</p>
+<p><span class="math display">\[V = \prod_{\mathbf{F}, \mu} T^{\pi}V\]</span></p>
+<p>Where <span class="math inline">\(\prod_{\mathbf{F}, \mu}\)</span> is the projection operator.</p>
+<p>TRhe projectio operator <span class="math inline">\(\prod_{\mathbf{F}, \mu}\)</span> is a linear operator that takes <span class="math inline">\(V \in B(\chi)\)</span> and maps it to closest point on <span class="math inline">\(F\)</span> measured according to its <span class="math inline">\(L_{2} (\mu)\)</span> norm:</p>
+<p><span class="math display">\[\prod_{\mathbf{F}, \mu} V \triangleq \underset{V^{\prime} \in \mathbf{F}}{\arg\min} \|V^{\prime} - V\|^2_{2, \mu}\]</span></p>
+<p>It has some properties:</p>
+<ol type="1">
+<li>The projection belongs to function space <span class="math inline">\(\mathbf{F}\)</span>: <span class="math display">\[\prod_{\mathbf{F}, \mu} V \in \mathbf{F}\]</span></li>
+<li>If <span class="math inline">\(V \in \mathbf{F}\)</span>, the projection is itself: <span class="math display">\[V \in \mathbf{F} \implies \prod_{\mathbf{F}, \mu} V = V\]</span></li>
+<li>The projection operator onto a subspace is a non-expansion: <span class="math display">\[\|\prod_{\mathbf{F}, \mu} V_1 - \prod_{\mathbf{F}, \mu} V_2\|^2_{2, \mu} \leq \|V_1 - V_2\|^2_{2, \mu}\]</span></li>
+</ol>
+<h3 id="population-version-2">Population Version</h3>
+<p>We can define a loss function based on <span class="math inline">\(V = \prod_{\mathbf{F}, \mu} T^{\pi}V\)</span>:</p>
+<p><span class="math display">\[\|V - \prod_{\mathbf{F}, \mu} T^{\pi}V\|^2_{2, \mu}\]</span></p>
+<p>This is called <code>Projected Bellman Error</code> or <code>Mean Square Projected Bellman Error</code>.</p>
+<p>We find the value function by solving the following optimization problem:</p>
+<p><span class="math display">\[V = \underset{V \in \mathbf{F}}{\arg\min} \|V - \prod_{\mathbf{F}, \mu} T^{\pi}V\|^2_{2, \mu}\]</span></p>
+<p>Since <span class="math inline">\(V \in \mathbf{F}\)</span>, the projection operator is linear:</p>
+<span class="math display">\[\begin{aligned}
+V -  \prod_{\mathbf{F}, \mu} T^{\pi}V &amp;= \prod_{\mathbf{F}, \mu} V - \prod_{\mathbf{F}, \mu} T^{\pi}V\\
+&amp;= \prod_{\mathbf{F}, \mu} (V - T^{\pi}V)\\
+&amp;= - \prod_{\mathbf{F}, \mu} (T^{\pi}V - V)\\
+&amp;= - \prod_{\mathbf{F}, \mu} (BR(V))
+\end{aligned}\]</span>
+<p>So the objective can be rewritten as:</p>
+<p><span class="math display">\[V = \underset{V \in \mathbf{F}}{\arg\min}  \|\prod_{\mathbf{F}, \mu} BR(V)\|^2_{2, \mu}\]</span></p>
+<p>Which is the norm of the projection of the Bellman Residual onto <span class="math inline">\(\mathbf{F}\)</span>.</p>
+<p><br></p>
+<p>We can think of solving the projected bellman error objective as solving the <strong>two coupled optimization problems</strong>:</p>
+<ol type="1">
+<li>Find the projection point given value function <span class="math inline">\(V^{\prime}\)</span>: <span class="math display">\[V^{\prime\prime} = \underset{V^{\prime\prime} \in \mathbf{F}}{\arg\min} \|V^{\prime\prime} - T^{\pi}V^{\prime}\|^2_{2, \mu}\]</span></li>
+<li>Find the value function <span class="math inline">\(V^{\prime}\)</span> on <span class="math inline">\(\mathbf{F}\)</span> that is closest to the projection point <span class="math inline">\(V^{\prime\prime}\)</span>: <span class="math display">\[V^{\prime} = \underset{V^{\prime} \in \mathbf{F}}{\arg\min} \|V^{\prime} - V^{\prime\prime}\|^2_{2, \mu}\]</span></li>
+</ol>
+<h3 id="least-square-temporal-difference-learning-population-version">Least Square Temporal Difference Learning (Population Version)</h3>
+<p>If <span class="math inline">\(\mathbf{F}\)</span> is a linear FA with basis functions <span class="math inline">\(\phi_1, ...., \phi_p\)</span>:</p>
+<p><span class="math display">\[\mathbf{F}: \{x \rightarrow \boldsymbol{\phi}(x)^T \mathbf{w}; \; \mathbf{w} \in \mathbb{R}^p\}\]</span></p>
+<p>We can find a direct solution to the PBE objective, that is we want to find <span class="math inline">\(V \in \mathbf{F}\)</span> s.t:</p>
+<p><span class="math display">\[V = \prod_{\mathbf{F}, \mu} T^{\pi}V\]</span></p>
+<p>We assume that:</p>
+<ul>
+<li><span class="math inline">\(\chi\)</span> is finite and <span class="math inline">\(|\chi| = N\)</span>, <span class="math inline">\(N \gg p\)</span>, each <span class="math inline">\(\boldsymbol{\phi}_i = [\phi_i(x_1) .... \phi_i(x_N)]^T\)</span> is a <span class="math inline">\(N\)</span>-dimentional vector.</li>
+</ul>
+<p>Then, we define <span class="math inline">\(\Phi_{N\times p}\)</span> as the matrix of concatenating all features:</p>
+<p><span class="math display">\[\Phi = [\boldsymbol{\phi}_1 .... \boldsymbol{\phi}_p]_{N\times p}\]</span></p>
+<p>The value function <span class="math inline">\(V \in \mathbf{F}\)</span> is then:</p>
+<p><span class="math display">\[V_{N \times 1} = \Phi_{N\times p} \mathbf{w}_{p \times 1}\]</span></p>
+<p>Our <strong>goal</strong> is to find a weight vector <span class="math inline">\(\mathbf{w} \in \mathbb{R}^p\)</span> such that:</p>
+<p><span class="math display">\[V = \prod_{\mathbf{F}, \mu} T^{\pi}V \implies \Phi\mathbf{w} = \prod_{\mathbf{F}, \mu} T^{\pi}(\Phi \mathbf{w})\]</span></p>
+<p>Let <span class="math inline">\(M = \text{diag}(\mu)\)</span>, since:</p>
+<p><span class="math display">\[\|V\|^2_{2, \mu} = &lt;V, V&gt;_{\mu} = \sum_{x \in \chi} |V(x)|^2\mu(x) = V^TMV\]</span></p>
+<p><span class="math display">\[&lt;V_1, V_2&gt;_{\mu} = \sum_{x \in \chi} V_1(x)V_2(x) = V^T_1 M V_2\]</span></p>
+<p>Then, the projection operator onto the linear <span class="math inline">\(\mathbf{F}\)</span> would be:</p>
+<span class="math display">\[\begin{aligned}
+\prod_{\mathbf{F}, \mu} V &amp;= \underset{V^{\prime} \in \mathbf{F}}{\arg\min}\|V^{\prime} - V\|^2_{2, \mu}\\
+&amp;= \underset{\mathbf{w} \in \mathbb{R}^p}{\arg\min}\|\Phi\mathbf{w} - V\|^2_{2, \mu}\\
+&amp;= \underset{\mathbf{w} \in \mathbb{R}^p}{\arg\min} (\Phi\mathbf{w} - V)^T M (\Phi\mathbf{w} - V)
+\end{aligned}\]</span>
+<p>By taking the derivative and setting it to zero (assuming that <span class="math inline">\(\Phi^TM\Phi\)</span> is invertible):</p>
+<p><span class="math display">\[\frac{\partial \prod_{\mathbf{F}, \mu} V}{\partial \mathbf{w}} = \Phi^TM(\Phi\mathbf{w} - V) = 0\]</span> <span class="math display">\[\implies \mathbf{w^{*}} = (\Phi^TM\Phi)^{-1}\Phi^TMV\]</span></p>
+<p>Then the projection is:</p>
+<p><span class="math display">\[\prod_{\mathbf{F}, \mu} V = \Phi \mathbf{w} = \Phi (\Phi^TM\Phi)^{-1}\Phi^TMV\]</span></p>
+<p>Since <span class="math inline">\(T^{\pi} V = r^{\pi} (x) + \gamma \sum_{x \in \chi, a \in \mathbf{A}}P^{\pi}(x^{\prime} | x, a) \pi(a | s) V(x^{\prime})\)</span>, we can write it in vector form for all states:</p>
+<p><span class="math display">\[(T^{\pi}V)_{N\times 1} = \mathbf{r}^{\pi}_{N \times 1} + \gamma P^{\pi}_{N\times N} V_{N \times 1}\]</span> <span class="math display">\[\implies (T^{\pi}\Phi\mathbf{w})_{N\times 1} = \mathbf{r}^{\pi}_{N \times 1} + \gamma P^{\pi}_{N\times N} \Phi_{N\times p}\mathbf{w}_{p \times 1}\]</span></p>
+<p>Substitute the equation of <span class="math inline">\(T^{\pi}\Phi\mathbf{w}\)</span> into <span class="math inline">\(V\)</span> in the projection equation:</p>
+<p><span class="math display">\[\prod_{\mathbf{F}, \mu} T^{\pi}\Phi\mathbf{w} = \Phi \mathbf{w} = \Phi (\Phi^TM\Phi)^{-1}\Phi^TM(T^{\pi}\Phi\mathbf{w})\]</span> <span class="math display">\[\implies \Phi \mathbf{w} = [\Phi (\Phi^TM\Phi)^{-1}\Phi^TM][\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w}]\]</span></p>
+<p>Multiply both sides by <span class="math inline">\(\Phi^T M\)</span> and simply:</p>
+<p><span class="math display">\[\Phi^T M \Phi \mathbf{w} = [\Phi^T M\Phi (\Phi^TM\Phi)^{-1}\Phi^TM][\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w}]\]</span> <span class="math display">\[\implies \Phi^T M \Phi \mathbf{w} = \Phi^TM[\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w}]\]</span> <span class="math display">\[\implies \Phi^T M \Phi \mathbf{w} - \Phi^TM[\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w}] = 0\]</span> <span class="math display">\[\implies  \Phi^T M[\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w} - \Phi \mathbf{w}] = 0\]</span> <span class="math display">\[\implies \mathbf{w}_{TD} = [\Phi^T M (\Phi - \gamma P^{\pi}\Phi)]^{-1}\Phi^T M \mathbf{r}^{\pi}\]</span></p>
+<p>The solution <span class="math inline">\(\mathbf{w}_{TD}\)</span> is called <code>Least Square Temporal Difference Method (LSTD)</code>.</p>
+<p>Notice that the term <span class="math inline">\(\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w} - \Phi \mathbf{w} = T^{\pi} V - V = BR(V)\)</span>. Hence:</p>
+<p><span class="math display">\[\Phi^TM (BR(V)) = 0\]</span> <span class="math display">\[\implies &lt;\mathbf{\phi}_i, BR(V)&gt; = 0\]</span></p>
+<p>Thus, <strong>LSTD</strong> finds a <span class="math inline">\(\mathbf{w}\)</span> s.t the <strong>Bellman Residual is orthogonal</strong> to the basis of <span class="math inline">\(\mathbf{F}\)</span> which is exactly what we want.</p>
+<h3 id="batch-version-2">Batch Version</h3>
+<p>We have showed that the solution to <span class="math inline">\(V = \prod_{\mathbf{F}, \mu} T^{\pi}V\)</span> with linear FA <span class="math inline">\(V = \Phi\mathbf{w}\)</span> is:</p>
+<p><span class="math display">\[\mathbf{w}_{TD} = A^{-1}_{p\times p} \mathbf{b}_{p \times 1}\]</span></p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(A^{-1} = \Phi^T M (\Phi - \gamma P^{\pi}\Phi)]^{-1}\)</span></li>
+<li><span class="math inline">\(\mathbf{b} = \Phi^T M \mathbf{r}^{\pi}\)</span></li>
+</ul>
+<p>Expand <span class="math inline">\(A\)</span> and <span class="math inline">\(\mathbf{b}\)</span> in terms of summations, we have:</p>
+<p><span class="math display">\[A_{ij} = \sum^{N}_{n=1} \Phi^T_{in} \mu(n) (\Phi - \gamma P^{\pi}\Phi)_{ij}\]</span> <span class="math display">\[b_i = \sum^N_{n=1} \Phi^T_{in} \mu(n) r^{\pi}_n\]</span></p>
+<p>Thus, in terms of current state <span class="math inline">\(x\)</span> and next state <span class="math inline">\(x^{\prime}\)</span>:</p>
+<p><span class="math display">\[A = \sum_{x \in \chi} \mu (x) \boldsymbol{\phi} (x) [\boldsymbol{\phi}(x) - \gamma \sum_{x^{\prime} \in \chi} P^{\pi}(x^{\prime} | x)\boldsymbol{\phi}(x^{\prime})]^T = E_{\mu}[\boldsymbol{\phi}(X) [\boldsymbol{\phi}(X) - \gamma E_{P^{\pi}}[\boldsymbol{\phi} (X^{\prime})]]^T]\]</span></p>
+<p><span class="math display">\[\mathbf{b} = \sum_{x \in \chi} \mu(x) \boldsymbol{\phi} (x) r^{\pi}(x) = E_{\mu} [\boldsymbol{\phi}(X)r^{\pi}(X)]\]</span></p>
+<p>Given data set <span class="math inline">\(D_n = \{X_i, R_i, X^{\prime}_i\}^{M}_{i=1}\)</span> with <span class="math inline">\(X_i \sim \mu\)</span>, <span class="math inline">\(X^{\prime} \sim P^{\pi}(\cdot | X_i)\)</span> and <span class="math inline">\(R_i \sim R^{\pi}(\cdot | X_i)\)</span>, we define the empirical estimator <span class="math inline">\(\hat{A}_n, \hat{ \mathbf{b}}_n\)</span> as:</p>
+<p><span class="math display">\[\hat{A}_n = \frac{1}{M} \sum^{M}_{i=1} \boldsymbol{\phi}(X_i) [\boldsymbol{\phi}(X_i) - \gamma \boldsymbol{\phi} (X^{\prime}_i)]^T\]</span> <span class="math display">\[\hat{\mathbf{b}}_n = \frac{1}{M} \sum^{M}_{i=1} \boldsymbol{\phi}(X)R_i\]</span></p>
+<p><br></p>
+<p>We can use LSTD to define an approximate policy iteration procedure to obtain a close to optimal policy (LSPI):</p>
+<p><img src='/images/RL/vfa/lstd_1.png' width="600"></p>
+<h2 id="semi-gradient-td">Semi-Gradient TD</h2>
+<p>Suppose that we know the true value function <span class="math inline">\(V^{\pi}\)</span> and we want to find an approximation <span class="math inline">\(\hat{V}\)</span>, parameterized by <span class="math inline">\(\mathbf{w}\)</span>. The population loss:</p>
+<p><span class="math display">\[V = \underset{\hat{V} \in \mathbf{F}}{\arg\min} \frac{1}{2}\|V^{\pi} - \hat{V}\|^2_{2, \mu}\]</span></p>
+<p>Using samples <span class="math inline">\(X_t \sim \mu\)</span>, we can define an SGD procedure that updates <span class="math inline">\(\mathbf{w}_t\)</span> as follows:</p>
+<span class="math display">\[\begin{aligned}
+\mathbf{w}_{t+1} &amp;\leftarrow \mathbf{w}_t - \alpha_t \nabla_{\mathbf{w}_t} [\frac{1}{2} |V^{\pi} (X_t) - \hat{V}(X_t; \mathbf{w}_t)|^2]\\
+&amp;= \mathbf{w}_t + \alpha_t (V^{\pi} (X_t) - \hat{V}(X_t; \mathbf{w}_t))\nabla_{\mathbf{w}_t} \hat{V}(X_t; \mathbf{w}_t)
+\end{aligned}\]</span>
+<p>If we select proper step size <span class="math inline">\(\alpha_t\)</span>, then the SGD converges to the stationary point.</p>
+<p>When we do not know <span class="math inline">\(V^{\pi}\)</span>, we can use bootstrapped estimate (TD estimate <span class="math inline">\(\hat{T}^{\pi}V_t\)</span>) instead:</p>
+<p><span class="math display">\[\mathbf{w}_{t+1} \leftarrow \mathbf{w}_t + \alpha_t (\hat{T}^{\pi}V_t - \hat{V}(X_t; \mathbf{w}_t))\nabla_{\mathbf{w}_t} \hat{V}(X_t; \mathbf{w}_t)\]</span> <span class="math display">\[\mathbf{w}_{t+1} \leftarrow \mathbf{w}_t + \alpha_t (R_t + \hat{V}(X^{\prime}_t; \mathbf{w}_t) - \hat{V}(X_t; \mathbf{w}_t))\nabla_{\mathbf{w}_t} \hat{V}(X_t; \mathbf{w}_t)\]</span></p>
+<p><strong>The substitution of <span class="math inline">\(V^{\pi}(X_t)\)</span> with <span class="math inline">\(\hat{T}^{\pi}V_t (X_t)\)</span> does not follow from the SGD of any loss function. The TD update is note a true SGD update, that is, we call it a semi-gradient update.</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/13/leet-code-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/13/leet-code-4/" class="post-title-link" itemprop="url">LeetCode(4)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-13 17:13:43" itemprop="dateCreated datePublished" datetime="2021-07-13T17:13:43+08:00">2021-07-13</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-25 18:15:48" itemprop="dateModified" datetime="2021-07-25T18:15:48+08:00">2021-07-25</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Others/" itemprop="url" rel="index"><span itemprop="name">Others</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/07/13/leet-code-4/" class="post-meta-item leancloud_visitors" data-flag-title="LeetCode(4)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>16k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>15 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><strong>题目库: <code>[94, 144, 145, 226, 110,   105, 107, 543, 113, 116, 129, 108, 617, 404, 222, 'jz40', 912, 1046, 451, 703, 206, 2 , 21, 19, 692, 24, 83, 82, 876, 328, 143, 86, 61, 92, 160]</code></strong></p>
+<h1 id="trees">Trees</h1>
+<h2 id="easy">94 Easy</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inorderTraversal</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span></span><br><span class="line">        out = []</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">inorder</span>(<span class="params">root</span>):</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">                <span class="keyword">return</span> </span><br><span class="line"></span><br><span class="line">            inorder(root.left)</span><br><span class="line">            out.append(root.val)</span><br><span class="line">            inorder(root.right)</span><br><span class="line">        </span><br><span class="line">        inorder(root)</span><br><span class="line">        <span class="keyword">return</span> out</span><br></pre></td></tr></table></figure>
+<h2 id="easy-1">144 Easy</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">preorderTraversal</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span></span><br><span class="line">        out = []</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">preorder</span>(<span class="params">node</span>):</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            </span><br><span class="line">            out.append(node.val)</span><br><span class="line">            preorder(node.left)</span><br><span class="line">            preorder(node.right)</span><br><span class="line">        </span><br><span class="line">        preorder(root)</span><br><span class="line">        <span class="keyword">return</span> out</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/13/leet-code-4/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1137,345 +1531,6 @@ h_i = \max({\mathbf{w}^i}^T \mathbf{x}, 0) =
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/06/24/VGG/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/24/VGG/" class="post-title-link" itemprop="url">VGG (Under Construction)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-06-24 11:21:43" itemprop="dateCreated datePublished" datetime="2021-06-24T11:21:43+08:00">2021-06-24</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-25 14:42:27" itemprop="dateModified" datetime="2021-06-25T14:42:27+08:00">2021-06-25</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DL/" itemprop="url" rel="index"><span itemprop="name">DL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DL/CNN/" itemprop="url" rel="index"><span itemprop="name">CNN</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/06/24/VGG/" class="post-meta-item leancloud_visitors" data-flag-title="VGG (Under Construction)" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>3.1k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="very-deep-convolutional-networks-for-large-scale-image-recognition">Very Deep Convolutional Networks For Large-Scale Image Recognition</h1>
-<h2 id="generic-architecture">Generic Architecture</h2>
-<ol type="1">
-<li>Inputs are <span class="math inline">\(224 \times 224\)</span> RGB images with zero mean for each pixel.</li>
-<li>The convolutional layers have small filter sizes (<span class="math inline">\(3 \times 3\)</span>), one architecture with <span class="math inline">\(1 \times 1\)</span> filters (Network C).</li>
-<li>Padding 1 and stride 1 to maintain the original image size.</li>
-<li>5 max pooling layers with <span class="math inline">\(2 \times 2\)</span> window and stride 2.</li>
-<li>2 fully connected layers each with 4096 units, and the final fc output layer with 1000 units.</li>
-<li>ReLU activation function.</li>
-</ol>
-<h2 id="configurations">Configurations</h2>
-<ol type="1">
-<li><p>the shallowest network has 11 weight layers (8 conv layers and 3 FC layers), the deepest network has 19 weight layers (16 conv layers and 3 FC layers)</p></li>
-<li><p>The width of conv layers are relative small, starting from 64 in the first layer and then increasing by a factor of 2 each max-pooling layer, until it reaches 512.</p></li>
-</ol>
-<p><img src="/images/ML/vgg_1.png" width="600"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/06/24/VGG/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/06/23/td3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/06/23/td3/" class="post-title-link" itemprop="url">td3</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-06-23 15:57:36" itemprop="dateCreated datePublished" datetime="2021-06-23T15:57:36+08:00">2021-06-23</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-07-17 11:34:48" itemprop="dateModified" datetime="2021-07-17T11:34:48+08:00">2021-07-17</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/PG/" itemprop="url" rel="index"><span itemprop="name">PG</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/06/23/td3/" class="post-meta-item leancloud_visitors" data-flag-title="td3" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>10k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>9 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="addressing-function-approximation-error-in-actor-critic-methods">Addressing Function Approximation Error in Actor-Critic Methods</h1>
-<p>As in function approximation with discrete action space, overestimation property also exists in continuous control setting.</p>
-<h2 id="background">Background</h2>
-<p>The return is defined as the discounted sum of rewards:</p>
-<p><span class="math display">\[R_t = \sum^{T}_{i=t} \gamma^{i - t} r(s_i, a_i)\]</span></p>
-<p>The objective of RL is to find the optimal policy <span class="math inline">\(\pi_{\phi}\)</span> with parameters <span class="math inline">\(\phi\)</span> which is defined as:</p>
-<p><span class="math display">\[J(\phi) = E_{s_i \sim P_{\pi_\phi}, a_i \sim \pi_{\phi}} [R_0]\]</span></p>
-<p>In DPG, the policy's (actor) parameter can be updated:</p>
-<p><span class="math display">\[\nabla_{\phi} J(\phi) = E_{s_i \sim \rho_{\pi_\phi}} [\nabla_{\phi} \pi_{\phi} \nabla_{a} Q^{\pi_{\phi}} (s, a) |_{a = \pi_{\phi}(s)}]\]</span></p>
-<p>Where the critic is the action value function:</p>
-<p><span class="math display">\[Q^{\pi_{\phi}} (s, a) = E_{s_i \sim P_{\pi_{\phi}}, a_i \sim \pi_{\phi}}[R_t | s, a] = \underbrace{r}_{\text{ reward is deterministic so the expectation is itself }} + \gamma E_{s^{\prime}, a^{\prime}} [Q^{\pi} (s^{\prime}, a^{\prime}) | s, a]\]</span></p>
-<p>In large state space, the critic can be approached using FA methods for example DQN (Approximate value iteration) in an off policy fashion (replay buffer):</p>
-<p><span class="math display">\[Q_{k + 1} = {\arg\min}_{Q} \|Q - \hat{T}^{\pi_{\phi}} Q_{k}\|^2_{\rho_{\pi_{\phi}}}\]</span></p>
-<p>with <span class="math inline">\(Q_{k}\)</span> parameterized by a target network <span class="math inline">\(Q_{\theta^{\prime}}\)</span>, so the target <span class="math inline">\(\hat{T}^{\pi_{\phi}} Q_{\theta^{\prime}}\)</span> can be write as:</p>
-<p><span class="math display">\[\hat{T}^{\pi_{\phi}} Q_{\theta^{\prime}} = r + \gamma Q_{\theta^{\prime}} (s^{\prime}, a^{\prime}), \quad \quad a^{\prime} \sim \pi_{\phi} (\cdot | s^{\prime})\]</span></p>
-<p>In terms of DDPG with delayed parameters to provide stability, the delayed target <span class="math inline">\(\hat{T}^{\pi_{\phi^{\prime}}} Q_{\theta^{\prime}}\)</span> is used instead:</p>
-<p><span class="math display">\[\hat{T}^{\pi_{\phi^{\prime}}} Q_{\theta^{\prime}} = r + \gamma Q_{\theta^{\prime}} (s^{\prime}, a^{\prime}), \quad \quad a^{\prime} \sim \pi_{\phi^{\prime}} (\cdot | s^{\prime})\]</span></p>
-<p>The weights of a target network are either updated periodically to exactly match the weights of the current network or by some portion as in DDPG.</p>
-<h2 id="overestimation-bias">Overestimation Bias</h2>
-<p>In Q-learning with discrete actions, if the target is susceptible to error <span class="math inline">\(\epsilon\)</span>, then the maximum over the value alonge with its error will generally be greater than the true maximum even the error <span class="math inline">\(\epsilon\)</span> has zero mean:</p>
-<p><span class="math display">\[E_{\epsilon} [\max_{a^{\prime}} (Q(s^{\prime}, a^{\prime}) + \epsilon)] \geq \max_{a^{\prime}} Q(s^{\prime}, a^{\prime})\]</span></p>
-<p>This issue extends to actor critic setting where policy is updated via gradient descent.</p>
-<h3 id="overestimation-bias-in-actor-critic">Overestimation Bias in Actor-Critic</h3>
-<p>Assumptions:</p>
-<ol type="1">
-<li>Policy is updated using DPG.</li>
-<li><span class="math inline">\(Z_1, Z_2\)</span> are chosen to normalize the gradient (i.e <span class="math inline">\(Z^{-1} \|E[\cdot]\| = 1\)</span>, only provides direction)</li>
-</ol>
-<p><br></p>
-<p>Given current policy parameters <span class="math inline">\(\phi\)</span>, let:</p>
-<ol type="1">
-<li><p><span class="math inline">\(\phi_{approx}\)</span> be the parameters from the actor update induced by the maximization of the approximate critic <span class="math inline">\(Q_{\theta} (s, a)\)</span>. The resulting policy is <span class="math inline">\(\pi_{approx}\)</span>. <span class="math display">\[\phi_{approx} = \phi + \frac{\alpha}{Z_1} E_{s \sim \rho_{\pi_{\phi}}} [\nabla_{\phi} \pi_{\phi} \nabla_{a} Q_{\theta} (s, a) |_{a = \pi_{\phi}(s)}]\]</span></p></li>
-<li><p><span class="math inline">\(\phi_{true}\)</span> be the parameters from the hypothetical actor update with respect to the true underlying value function <span class="math inline">\(Q^{\pi_{\phi}} (s, a)\)</span> (which is unknown during training). The resulting policy is <span class="math inline">\(\pi_{true}\)</span>. <span class="math display">\[\phi_{true} = \phi + \frac{\alpha}{Z_2} E_{s \sim \rho_{\pi_{\phi}}} [\nabla_{\phi} \pi_{\phi} \nabla_{a} Q^{\pi_{\phi}} (s, a) |_{a = \pi_{\phi}(s)}]\]</span></p></li>
-</ol>
-<p>Since gradient always point at the direction of maximum increase locally, so:</p>
-<ol type="1">
-<li><p><span class="math inline">\(\exists \epsilon_1\)</span>, such that if <span class="math inline">\(\alpha \leq \epsilon_1\)</span>, then the approximate value of <span class="math inline">\(\pi_{approx}\)</span> will be bounded by the approximate value of <span class="math inline">\(\pi_{true}\)</span>: <span class="math display">\[E[Q_{\theta} (s, \pi_{approx} (s))] \geq E[Q_{\theta} (s, \pi_{true} (s))]\]</span></p></li>
-<li><p><span class="math inline">\(\exists \epsilon_2\)</span>, such that if <span class="math inline">\(\alpha \leq \epsilon_2\)</span>, then the true value of <span class="math inline">\(\pi_{approx}\)</span> will be bounded by the true value of <span class="math inline">\(\pi_{true}\)</span>: <span class="math display">\[E[Q^{\pi_{\phi}} (s, \pi_{true} (s))] \geq E[Q^{\pi_{\phi}} (s, \pi_{approx} (s))]\]</span></p></li>
-</ol>
-<p>If: <span class="math display">\[E[Q_{\theta} (s, \pi_{true} (s))] \geq E[Q^{\pi_{\phi}} (s, \pi_{true} (s))]\]</span></p>
-<p>which means in expectation the approximated value function is greater than the true value function w.r.t policy <span class="math inline">\(\pi_{true}\)</span> (e.g for some state action pair (<span class="math inline">\(s, \pi_{true} (s)\)</span>)), the approximate value is much larger than the true value). At the same time, if <span class="math inline">\(\alpha &lt; \min(\epsilon_1, \epsilon_2)\)</span>, then: <span class="math display">\[E[Q_{\theta} (s, \pi_{approx} (s))] \geq E[Q^{\pi_{\phi}} (s, \pi_{approx} (s))]\]</span></p>
-<p><strong>This implies that our policy improvement based on approximate value function would over-estimate certain actions and lead to sub-optimal policies.</strong></p>
-<p><br></p>
-<p>Consequences of overestimation:</p>
-<ol type="1">
-<li>Overestimation may develop into a more significant bias over many updates if left unchecked.</li>
-<li>Inaccurate value estimate may lead to poor policy updates.</li>
-</ol>
-<p><strong>Feedback loops of actor and critic is prone to overestimation because suboptimal actions may highly rated by suboptimal critic and reinforcing the suboptimal action in the next policy update</strong>.</p>
-<h3 id="clipped-double-q-learning-for-actor-critic-solution">Clipped Double Q-learning for Actor-Critic (Solution)</h3>
-<p>In DDQN, the target is estimated using the greedy action from current value network rather than current target network. In an actor-critic setting (DPG), the update is:</p>
-<p><span class="math display">\[y = r + Q_{\theta^{\prime}} (s^{\prime}, \pi_{\phi} (s^{\prime}))\]</span></p>
-<p>However, slow-changing policy in actor-critic, the current and target networks were too similar to make an independent estimation and offered little improvement.</p>
-<p>Instead, we can go back and use similar formulation as Double Q-learning with a pair of actors <span class="math inline">\((\pi_{\phi_1}, \pi_{\phi_2})\)</span> and critics <span class="math inline">\((Q_{\theta_1}, Q_{\theta_2})\)</span> where <span class="math inline">\(\pi_{\phi_1}\)</span> is optimized w.r.t <span class="math inline">\(Q_{\phi_1}\)</span> and <span class="math inline">\(\pi_{\phi_2}\)</span> is optimized w.r.t <span class="math inline">\(Q_{\phi_2}\)</span>:</p>
-<p><span class="math display">\[y_1 = r + \gamma Q_{\theta^{\prime}_2} (s^{\prime}, \pi_{\phi_1} (s^{\prime}))\]</span> <span class="math display">\[y_2 = r + \gamma Q_{\theta^{\prime}_1} (s^{\prime}, \pi_{\phi_2} (s^{\prime}))\]</span></p>
-<p><br></p>
-<p><img src='/images/RL/pg/td3.png' width="600"></p>
-<p>From above plot we can see that Double Q-learning AC is more effective, but it does not entirely eliminate the over-estimation. One cause can be the shared replay buffer, as a result, for some state <span class="math inline">\(s\)</span>, we would have <span class="math inline">\(Q_{\theta_2} (s, \pi_{\phi_1} (s)) &gt; Q_{\theta_1} (s, \pi_{\phi_1} (s))\)</span>. This is problematic because we know that <span class="math inline">\(Q_{\theta_1} (s, \pi_{\phi_1} (s))\)</span> will generally overestimate the true value, the overestimation is exaggerated.</p>
-<p>One solution is to simply upper-bound the less biased value estimate <span class="math inline">\(Q_{\theta_2}\)</span> by the biased estimate <span class="math inline">\(Q_{\theta_1}\)</span>:</p>
-<p><span class="math display">\[y_1 = r + \gamma \min_{i=1, 2} Q_{\theta^{\prime}_{i}} (s^{\prime}, \pi_{\phi_1} (s^{\prime}))\]</span></p>
-<p>This algorithm is called <code>Clipped Double Q-learning</code> algorithm. With Clipped Double Q-learning, exaggeration of overestimation is eliminated. However, underestimation bias could occur.</p>
-<p>In implementation, computational costs can be reduced by using a single actor optimized w.r.t <span class="math inline">\(Q_{\theta_1}\)</span>. We then use the same target <span class="math inline">\(y_2=y_1\)</span> for <span class="math inline">\(Q_{\theta_2}\)</span>. If <span class="math inline">\(Q_{\theta_2} &gt; Q_{\theta_1}\)</span> then the update is identical to the standard update and induces no additional bias. If <span class="math inline">\(Q_{\theta_2} &lt; Q_{\theta_1}\)</span>, this suggests overestimation has occurred.</p>
-<h2 id="addressing-variance">Addressing Variance</h2>
-<p>Besides impact on overestimation bias, high variance estimates provide a noisy gradient for the policy update which reduces learning speed and hurt performance in practice.</p>
-<p>Since we never really learn <span class="math inline">\(Q^{\pi}\)</span> exactly (we learn <span class="math inline">\(Q_{\theta}\)</span> instead), there will always be some TD error in each update :</p>
-<span class="math display">\[\begin{aligned}
-r + \gamma E[Q_{\theta} (s^{\prime}, a^{\prime}) | s, a] - E[\delta(s, a) | s, a] &amp;= \gamma E[Q_{\theta} (s^{\prime}, a^{\prime}) | s, a] - \gamma E[Q_{\theta} (s^{\prime}, a^{\prime}) | s, a] + Q_{\theta} (s, a)\\
-&amp;= Q_{\theta} (s, a)
-\end{aligned}\]</span>
-<p>Then:</p>
-<span class="math display">\[\begin{aligned}
-Q_{\theta} (s_t, a_t) &amp;= r_t + \gamma E[Q_{\theta} (s_{t+1}, a_{t+1}) | s_t, a_t] - E[\delta_{t} | s_t, a_t]\\
-&amp;= r_t + \gamma E[r_{t+1} + \gamma E[Q_{\theta} (s_{t+2}, a_{t+2}) | s_{t+1}, a_{t+1}] - E[\delta_{t+1} | s_{t+1}, a_{t+1}] | s_t, a_t] - E[\delta_{t} | s_t, a_t]\\
-&amp; = E_{s_i \sim P_{\pi}, a_i \sim \pi} [\sum^{T}_{i=t} \gamma^{i - t} (r_i - \delta_i)]
-\end{aligned}\]</span>
-<p>Thus, the value function we estimate <span class="math inline">\(Q_{\theta} (s_t, a_t)\)</span>, approximates the expected return minus the expected discounted sume of future TD-errors instead of the expected return <span class="math inline">\(Q^{\pi}\)</span>.</p>
-<p>If the value estimate (sample of <span class="math inline">\(Q_{\theta}\)</span>) is a function of future reward and estimation error, it follows that the variance of the estimate will be proportional to the variance of future reward and estimation error. <strong>If the variance for <span class="math inline">\(\gamma^{i} (r_i - \delta_i)\)</span> is large, then the accumulative variance will be large especially when gamma is large.</strong></p>
-<h3 id="target-networks-and-delayed-policy-updates">Target Networks and Delayed Policy Updates</h3>
-<p><img src='/images/RL/pg/td_4.png' width="600"></p>
-<p>One way to reduce the estimation error is to delay each update to the target network. Consider the graph above:</p>
-<ol type="1">
-<li>If <span class="math inline">\(\tau = 1\)</span>, we obtain batch semi-gradient TD algorithm for updating the critic, which may have high variance.</li>
-<li>If <span class="math inline">\(\tau &lt; 1\)</span>, we obtain approximate value iteration.</li>
-</ol>
-<p>If target networks can be used to reduce the error over multiple updates, and policy updates on high-error states cause divergent behavior, then the policy network should be updated at a lower frequency than the value network, to first minimize error before introducing a policy update.</p>
-<p>Thus, <code>delaying policy updates</code> can be helpful in minimizing the estimation error by updating the policy and target networks after a fixed number of updates <span class="math inline">\(d\)</span> to the critic. To ensure the TD-error remains small, target network is also slowly updated by <span class="math inline">\(\theta^{\prime} \leftarrow \tau \theta + (1 - \tau) \theta^{\prime}\)</span>.</p>
-<h3 id="target-policy-smoothing-regularization">Target Policy Smoothing Regularization</h3>
-<p>Since deterministic policies can overfit to narrow peaks in the value estimate, a regularization strategy is used for deep value learning, target policy smoothing which mimics the learning update from SARSA. The idea is that <strong>similar actions should have similar value</strong> (reduce the variance of target):</p>
-<p><span class="math display">\[y = r + E_{\epsilon} [Q_{\theta^{\prime}} (s^{\prime}, \pi_{\phi^{\prime}} (s^{\prime}) + \epsilon)]\]</span></p>
-<p>In practice, we can approximate this expectation over actions (<span class="math inline">\(\pi_{\phi^{\prime}} (s^{\prime}) + \epsilon\)</span>) by adding a small amount of random noise to the target policy and averaging over mini-batches:</p>
-<p><span class="math display">\[y = r + \gamma Q_{\theta^{\prime}} (s^{\prime}, \pi_{\phi^{\prime}} (s^{\prime}) + \epsilon)\]</span></p>
-<p><span class="math display">\[\epsilon \sim clip(N(0, \sigma), -c, c)\]</span></p>
-<p>Where noise is clipped to have it close to the original action (make sure it is a small area around original action).</p>
-<h2 id="algorithm">Algorithm</h2>
-<p><img src='/images/RL/pg/td_5.png' width="600"></p>
-<h2 id="conclusion">Conclusion</h2>
-<p>The paper focus on resolve overestimation error in actor critic setting (DPG) and discusses that failure can occur due to the interplay between the actor and critic updates. Value estimates diverge through overestimation when the policy is poor, and the policy will become poor if the value estimate itself is inaccurate (high variance).</p>
-<p>Solutions:</p>
-<ol type="1">
-<li><p>Overestimation Error in value estimation: using clipped double Q-learning to estimate the target value <span class="math inline">\(y_1, y_2\)</span> <span class="math display">\[y_1 = r + \gamma \min_{i=1, 2} Q_{\theta^{\prime}_{i}} (s^{\prime}, \pi_{\phi^{\prime}} (s^{\prime}))\]</span> <span class="math display">\[y_2 = y_1\]</span></p></li>
-<li><p>Estimation Error (TD error) and High Variance in value estimation: By using delayed policy and value updates with target networks, we have more stable and more accurate estimate of the value function by updating the value function several times.</p></li>
-<li><p>Overfitting in Value estimation: by forcing the value estimate to be similar for similar actions, we smooth out the value estimation. <span class="math display">\[y = r + \gamma Q_{\theta^{\prime}} (s^{\prime}, \pi_{\phi^{\prime}} (s^{\prime}) + \epsilon)\]</span> <span class="math display">\[\epsilon \sim clip(N(0, \sigma), -c, c)\]</span></p></li>
-</ol>
-<p>The general structure of the algorithm follows DDPG.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1500,13 +1555,13 @@ Q_{\theta} (s_t, a_t) &amp;= r_t + \gamma E[Q_{\theta} (s_{t+1}, a_{t+1}) | s_t,
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">860k</span>
+    <span title="Symbols count total">865k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">13:02</span>
+    <span title="Reading time total">13:07</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

@@ -86,7 +86,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">105</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">107</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -162,7 +162,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">105</span>
+          <span class="site-state-item-count">107</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -215,6 +215,257 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/05/16/q-learning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/05/16/q-learning/" class="post-title-link" itemprop="url">Q-Learning</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-05-16 20:50:37" itemprop="dateCreated datePublished" datetime="2021-05-16T20:50:37+08:00">2021-05-16</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-08-18 18:26:12" itemprop="dateModified" datetime="2021-08-18T18:26:12+08:00">2021-08-18</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/TD/" itemprop="url" rel="index"><span itemprop="name">TD</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/05/16/q-learning/" class="post-meta-item leancloud_visitors" data-flag-title="Q-Learning" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>6.8k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="temporal-difference-learning-for-control-q-learning">Temporal Difference Learning for Control: Q-Learning</h1>
+<p>We can use TD-like methods for the problem of control too. Consider any <span class="math inline">\(Q\)</span>. Let <span class="math inline">\(X^{\prime} \sim P(\cdot | X, A)\)</span> and <span class="math inline">\(R \sim R(\cdot | X, A)\)</span> and define:</p>
+<p><span class="math display">\[Y = R + \gamma max_{a^{\prime} \in A} Q(X^{\prime}, a^{\prime})\]</span></p>
+<p>We have:</p>
+<p><span class="math display">\[E[Y | X=x, A=a] = r(x, a) + \gamma \int P(dx^{\prime} | x, a) max_{a^{\prime} \in A} Q(x^{\prime}, a^{\prime}) = T^{*} Q (x, a)\]</span></p>
+<p>So, <span class="math inline">\(Y\)</span> is an unbiased estimate of <span class="math inline">\(T^{*} Q (x, a)\)</span>. Let's define the <code>empirical Bellman optimality operator</code> <span class="math inline">\(\hat{T}^{*} Q (x, a)\)</span>:</p>
+<p><span class="math display">\[T^{*} Q (x, a) = Y = R + \gamma max_{a^{\prime} \in A} Q(X^{\prime}, a^{\prime})\]</span></p>
+<p>We can write the SA update rule for estimating <span class="math inline">\(Q^{*}\)</span> as:</p>
+<p><span class="math display">\[Q_{t+1} (X_t, A_t) \leftarrow Q_t(X_t, A_t) + \alpha_t (X_t, A_t) [R_t + \gamma max_{a^{\prime} \in A} Q_t (X^{\prime}_t, a^{\prime}) - Q_t(X_t, A_t)]\]</span></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/05/16/q-learning/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/05/15/td/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/05/15/td/" class="post-title-link" itemprop="url">Temporal Difference Learning</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-05-15 17:30:15" itemprop="dateCreated datePublished" datetime="2021-05-15T17:30:15+08:00">2021-05-15</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-06-15 13:41:14" itemprop="dateModified" datetime="2021-06-15T13:41:14+08:00">2021-06-15</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/TD/" itemprop="url" rel="index"><span itemprop="name">TD</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/05/15/td/" class="post-meta-item leancloud_visitors" data-flag-title="Temporal Difference Learning" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>5.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="learning-from-stream-of-data-temporal-difference-learning-methods">Learning From Stream of Data (Temporal Difference Learning Methods)</h1>
+<p>We can see that from MC algorithm, in order to update <span class="math inline">\(\hat{Q^{\pi}}_{k+1} (x, a)\)</span>, we need to calculate the entire <span class="math inline">\(\hat{G^{\pi}_{k}}\)</span> which involves sum over product of rewards. If each episode is long or even continuous, the calculation of <span class="math inline">\(\hat{G^{\pi}_{k}}\)</span> will be hard or impossible. In general, MC is agnostic to the MDP structure, if the problem is an MDP, it does not benefit from the recursive property of the value functions.</p>
+<p>TD methods benefit from the structure of the MDP even if we do not know the environment dynamics <span class="math inline">\(P\)</span> and <span class="math inline">\(R\)</span>.</p>
+<h2 id="td-for-policy-evaluation">TD for Policy Evaluation</h2>
+<p>We first focus on VI for PE: at each state <span class="math inline">\(x\)</span>, the procedure is:</p>
+<p><span class="math display">\[V_{k+1} (x) = T^{\pi} V_{k} (x) = r^{\pi} (x) + \gamma \int P(dx^{\prime} | x, a) \pi(da | x) V_{k} (x^{\prime})\]</span></p>
+<p>If we do not know <span class="math inline">\(r^{\pi}, P\)</span>, we cannot compute this. Suppose that we have n samples starting from state <span class="math inline">\(x\)</span>, <span class="math inline">\(A_i \sim \pi(\cdot | x), X^{\prime}_i \sim P(\cdot | x, A_i), R_i \sim R(\cdot | x, A_i)\)</span>, using these samples and <span class="math inline">\(V_{k}\)</span>, we compute:</p>
+<p><span class="math display">\[Y_i = R_i + \gamma V_{k} (X_i^{\prime})\]</span></p>
+<p>Now, notice that:</p>
+<p><span class="math display">\[E[R_i | X=x] = r^{\pi} (x)\]</span></p>
+<p>and</p>
+<p><span class="math display">\[E[V_{k} (X^{\prime}_i) | X=x] = \int P(dx^{\prime} | x, a) \pi(da | x)V_{k} (x^{\prime})\]</span></p>
+<p>so the r.v $Y_i (x) $ (emphasis starting from state <span class="math inline">\(x\)</span> )satisfies:</p>
+<p><span class="math display">\[E[Y_i | X=x] = E[R_i + \gamma V_{k} (X_i^{\prime}) | X=x] = E[R_i | X=x] + \gamma E[V_{k} (X_i^{\prime}) | X=x] = T^{\pi} V_{k} (x)\]</span></p>
+<p>This implies that <span class="math inline">\(Y_i\)</span> is an unbiased estimator of <span class="math inline">\(T^{\pi} V_{k}\)</span> evaluated at <span class="math inline">\(x\)</span>. Thus, we can use a sample mean of <span class="math inline">\(Y_i\)</span> starting from <span class="math inline">\(x\)</span> to estimate <span class="math inline">\(T^{\pi} V_k (x)\)</span>, or we can use SA procedure.</p>
+<p><span class="math display">\[T^{\pi}V^{t+1}_{k} (x) \leftarrow  (1 - \alpha_t) T^{\pi}V^{t}_{k} (x) + \alpha Y_i\]</span></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/05/15/td/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1202,246 +1453,6 @@ Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \ha
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/05/06/DPG/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/06/DPG/" class="post-title-link" itemprop="url">Deterministic Policy Gradient</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-05-06 10:20:16" itemprop="dateCreated datePublished" datetime="2021-05-06T10:20:16+08:00">2021-05-06</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-06-16 19:55:13" itemprop="dateModified" datetime="2021-06-16T19:55:13+08:00">2021-06-16</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/PG/" itemprop="url" rel="index"><span itemprop="name">PG</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/05/06/DPG/" class="post-meta-item leancloud_visitors" data-flag-title="Deterministic Policy Gradient" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>10k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>10 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="deterministic-policy-gradient-algorithms">Deterministic Policy Gradient Algorithms</h1>
-<h2 id="introduction">Introduction</h2>
-<p>In traditional policy gradient algorithms, policy is parametrized by a probability distribution <span class="math inline">\(\pi_{\theta} (a | s) = P[a | s; \theta]\)</span> that stochastically selects action <span class="math inline">\(a\)</span> in state <span class="math inline">\(s\)</span> according to parameter vector <span class="math inline">\(\theta\)</span>. In this paper, the authors consider deterministic policies <span class="math inline">\(a = \mu_{\theta} (s)\)</span>.</p>
-<p>From a practical viewpoint, there is a crucial difference between the stochastic and deterministic policy gradients. In the stochastic case, the policy gradient integrates over both state and action spaces, whereas in the deterministic case it only integrates over the state space:</p>
-<p><span class="math display">\[E_{X\sim \rho^{\pi_\theta}A \sim \pi_{\theta}} [\nabla log \pi(A | X) Q^{\pi_{\theta}} (X, A)]\]</span></p>
-<p>Thus, <strong>computing deterministic policies may require less samples</strong>.</p>
-<p>An off-policy learning scheme is introduced here to ensure adequate exploration (i.e The basic idea is to choose actions according to a stochastic behaviour policy).</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/05/06/DPG/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/05/03/policy-iteration/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/03/policy-iteration/" class="post-title-link" itemprop="url">Policy Iteration</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-05-03 22:49:30" itemprop="dateCreated datePublished" datetime="2021-05-03T22:49:30+08:00">2021-05-03</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-05-05 21:46:11" itemprop="dateModified" datetime="2021-05-05T21:46:11+08:00">2021-05-05</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/DP/" itemprop="url" rel="index"><span itemprop="name">DP</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/05/03/policy-iteration/" class="post-meta-item leancloud_visitors" data-flag-title="Policy Iteration" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>3.8k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="policy-iteration">Policy Iteration</h1>
-<p>A different approach is based on the iterative application of:</p>
-<ol type="1">
-<li>Policy Evaluation: Given a policy <span class="math inline">\(\pi_k\)</span>, compute <span class="math inline">\(V^{\pi_k}, Q^{\pi_k}\)</span></li>
-<li>Policy Improvement: Find a new policy <span class="math inline">\(\pi_{k+1}\)</span> that is better than <span class="math inline">\(\pi_{k}\)</span>, i.e., <span class="math inline">\(V^{\pi_{k+1}} \geq V^{\pi_k}\)</span> (with a strict inequality in at least one state, unless at convergence)</li>
-</ol>
-<p><img src='/images/RL/dp/policy_iteration.png'></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/05/03/policy-iteration/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1466,13 +1477,13 @@ Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \ha
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">860k</span>
+    <span title="Symbols count total">865k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">13:02</span>
+    <span title="Reading time total">13:07</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

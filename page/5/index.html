@@ -86,7 +86,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">105</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">107</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -162,7 +162,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">105</span>
+          <span class="site-state-item-count">107</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -215,6 +215,310 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/19/k-means/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/19/k-means/" class="post-title-link" itemprop="url">K-Means</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-19 16:32:37" itemprop="dateCreated datePublished" datetime="2021-07-19T16:32:37+08:00">2021-07-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-08-19 15:11:17" itemprop="dateModified" datetime="2021-08-19T15:11:17+08:00">2021-08-19</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/07/19/k-means/" class="post-meta-item leancloud_visitors" data-flag-title="K-Means" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>3.8k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="k-means">K-Means</h1>
+<p>Considering the problem of identifying groups, or clusters of data points in a multidimensional space.</p>
+<p>Suppose we have a dataset <span class="math inline">\(\mathbf{x}_1, ....., \mathbf{x}_N\)</span> consisting of <span class="math inline">\(N\)</span> observations of a random <span class="math inline">\(D\)</span> dimensional euclidean variable <span class="math inline">\(\mathbf{x}\)</span>. <strong>Our goal is to partition these points in to <span class="math inline">\(K\)</span> clusters</strong>.</p>
+<p>A cluster <span class="math inline">\(k\)</span> contains:</p>
+<ol type="1">
+<li><strong>Cluster center</strong>: <span class="math inline">\(\boldsymbol{\mu}_k \in \mathbb{R}^{D}\)</span>.</li>
+<li><strong>Assignment indicator variables</strong>: <span class="math inline">\(\mathbf{r}_{n} \in \mathbb{R}^{K}, \; r_{nk} \in \{0, 1\}\)</span>, one for each data point and each dimension <span class="math inline">\(k\)</span> indicates whether the data point <span class="math inline">\(\mathbf{x}_n\)</span> belongs to cluster <span class="math inline">\(k\)</span></li>
+</ol>
+<p>So we can reformulate our goal to be: <strong>find an assignment of data points to clusters, as well as a set of cluster centers <span class="math inline">\(\{\boldsymbol{\mu}_k\}^{K}_{k=1}\)</span>, such that the sum of squares of the distances of each data point to its closest cluster center is a minimum.</strong> In equation, our objective is:</p>
+<p><span class="math display">\[J(\mathbf{x}; \; \{\boldsymbol{\mu}_{k}, \mathbf{r}_{nk}\}) = \sum^{N}_{n=1}\sum^{K}_{k=1} r_{nk} \|\mathbf{x}_n - \boldsymbol{\mu}_k\|^2_2\]</span></p>
+<p>Where the distance measure here is the L2 norm.</p>
+<p>Thus, we want to find parameters <span class="math inline">\(\{\boldsymbol{\mu}_{k}, \mathbf{r}_{nk}\}\)</span> such that the objective is minimized.</p>
+<h2 id="algorithm">Algorithm</h2>
+<ol type="1">
+<li>Initialize <span class="math inline">\(\boldsymbol{\mu}_k, \; \forall \; k=1, ...., K\)</span></li>
+<li>Given <span class="math inline">\(\{\boldsymbol{\mu}_k\}\)</span>, minimize <span class="math inline">\(J\)</span> w.r.t <span class="math inline">\(\{\mathbf{r}_{n}\}\)</span></li>
+<li>Given <span class="math inline">\(\{\mathbf{r}_{n}\}\)</span>, minimize <span class="math inline">\(J\)</span> w.r.t <span class="math inline">\(\{\boldsymbol{\mu}_k\}\)</span></li>
+<li>Repeat 2, 3 until converges</li>
+</ol>
+<p><strong>For phase 2</strong>:</p>
+<p>Given the cluster centers, it is obvious that if we assign each point to the closest cluster center, we have the minimum objective:</p>
+<p><span class="math display">\[
+r_{nk}=
+\begin{cases}
+1, \quad \text{if }\; k = \underset{k}{\arg\min} \|\mathbf{x}_n - \boldsymbol{\mu}_k\|^2_2\\
+0, \quad o.w\\
+\end{cases}
+\]</span></p>
+<p><strong>For phase 3</strong>:</p>
+<p>Given the assignments, since the objective is convex, we can take gradient and solve for the optimal <span class="math inline">\(\boldsymbol{\mu}_k\)</span>:</p>
+<p><span class="math display">\[\frac{\partial J}{\partial \boldsymbol{\mu}_k} = \sum^{N}_{n=1} -2 r_{nk} \mathbf{x}_n + 2\boldsymbol{\mu}_k \sum^{N}_{n=1} r_{nk} = 0\]</span></p>
+<p><span class="math display">\[\implies \boldsymbol{\mu}_k \sum^{N}_{n=1} r_{nk} = \sum^{N}_{n=1} r_{nk} \mathbf{x}_n\]</span></p>
+<p><span class="math display">\[\implies \boldsymbol{\mu}_k = \frac{\sum^{N}_{n=1} r_{nk} \mathbf{x}_n}{\sum^{N}_{n=1} r_{nk}}\]</span></p>
+<p><span class="math inline">\(\sum^{N}_{n=1} r_{nk} \mathbf{x}_n\)</span> is the sum of all points that belongs to cluster <span class="math inline">\(k\)</span> and <span class="math inline">\(\sum^{N}_{n=1} r_{nk}\)</span> is the count of points in cluster <span class="math inline">\(k\)</span>, so the new <span class="math inline">\(\boldsymbol{\mu}_k\)</span> is just the <strong>sample mean</strong> of the points in cluster <span class="math inline">\(k\)</span>.</p>
+<h2 id="convergence">Convergence</h2>
+<p>Since:</p>
+<ol type="1">
+<li><span class="math inline">\(\{\boldsymbol{\mu}_{k}, \mathbf{r}_{nk}\}\)</span> can only take finite values (i.e they are derived from finite subsets of data and uniquely defined for each subset).</li>
+<li>At each step, we minimize the objective (i.e we either decrease or maintain the objective).</li>
+<li>The cost function is bounded below zero.</li>
+<li>Ties are broken consistently.</li>
+</ol>
+<p>Thus, the algorithm can only take a finite number of non-decreasing steps before terminating at a local minimum.</p>
+<h2 id="implementation">Implementation</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">KMeans</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, k=<span class="number">2</span>, max_iteration=<span class="number">10</span>, init_method=<span class="string">&#x27;random&#x27;</span></span>):</span></span><br><span class="line">        self.k = k</span><br><span class="line">        self.max_iteration = max_iteration</span><br><span class="line">        self.init_method = init_method</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit_transform</span>(<span class="params">self, x: np.array</span>):</span></span><br><span class="line">        n, d = x.shape</span><br><span class="line">        curr_mu = self._init_mu(x)</span><br><span class="line">        curr_iter = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> curr_iter &lt;= self.max_iteration:</span><br><span class="line">            r_matrix = np.zeros((n, self.k))</span><br><span class="line">            <span class="comment"># step one, map each instance to cluster center muk</span></span><br><span class="line">            <span class="keyword">for</span> sample <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">                distance = []</span><br><span class="line">                <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(self.k):</span><br><span class="line">                    distance.append(np.linalg.norm(x[sample] - curr_mu[j]))</span><br><span class="line"></span><br><span class="line">                mu_assigned = np.argmin(distance)</span><br><span class="line">                r_matrix[sample][mu_assigned] = <span class="number">1</span></span><br><span class="line">                </span><br><span class="line">            <span class="comment"># step two calculate new mu_k</span></span><br><span class="line">            prev_mu = curr_mu.copy()</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(self.k):</span><br><span class="line">                curr_mu[j] = np.mean(x[r_matrix[:, j] == <span class="number">1</span>], axis=<span class="number">0</span>)</span><br><span class="line">                </span><br><span class="line">            <span class="comment"># check stopping criteria</span></span><br><span class="line">            <span class="keyword">if</span> np.linalg.norm(prev_mu - curr_mu) == <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">            curr_iter += <span class="number">1</span></span><br><span class="line">            </span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&#x27;finished k-means algorithm, on iteration <span class="subst">&#123;curr_iter&#125;</span>&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> r_matrix, curr_mu</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_init_mu</span>(<span class="params">self, x</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.init_method == <span class="string">&#x27;random&#x27;</span>:</span><br><span class="line">            col_max = x.<span class="built_in">max</span>(axis=<span class="number">0</span>)</span><br><span class="line">            col_min = x.<span class="built_in">min</span>(axis=<span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> (col_max - col_min) * np.random.random_sample((self.k, x.shape[<span class="number">1</span>])) + col_min</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">elif</span> self.init_method == <span class="string">&#x27;random_points&#x27;</span>:</span><br><span class="line">            random_int = np.random.randint(<span class="number">0</span>, x.shape[<span class="number">0</span>], size=self.k)</span><br><span class="line">            <span class="keyword">return</span> x[random_int]</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/19/pca/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/19/pca/" class="post-title-link" itemprop="url">PCA</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-19 16:32:26" itemprop="dateCreated datePublished" datetime="2021-07-19T16:32:26+08:00">2021-07-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-08-26 16:46:58" itemprop="dateModified" datetime="2021-08-26T16:46:58+08:00">2021-08-26</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/07/19/pca/" class="post-meta-item leancloud_visitors" data-flag-title="PCA" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>3.6k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="principal-component-analysis">Principal Component Analysis</h1>
+<p>Let <span class="math inline">\([\mathbf{X}_1 ... \mathbf{X}_N]\)</span> be a <span class="math inline">\(p \times N\)</span> matrix of random sample where <span class="math inline">\(\mathbf{X}_i \in \mathbb{R}^p\)</span>. The sample mean <span class="math inline">\(\mathbf{M}\)</span> of the random sample is defined as:</p>
+<p><span class="math display">\[\mathbf{M} = \frac{1}{N} \sum^{N}_{i=1} \mathbf{X}_{i}\]</span></p>
+<p>Let <span class="math inline">\(\hat{\mathbf{X}}_k\)</span> be the centered random vector for <span class="math inline">\(k = 1, ...., N\)</span>:</p>
+<p><span class="math display">\[\hat{\mathbf{X}}_k = \mathbf{X}_k - \mathbf{M}\]</span></p>
+<p>Then we can defined the centered random sample matrix as:</p>
+<p><span class="math display">\[B = [\hat{\mathbf{X}}_1 ... \hat{\mathbf{X}}_N]_{[p\times N]}\]</span></p>
+<p>The sample covariance matrix <span class="math inline">\(S\)</span> is then:</p>
+<p><span class="math display">\[S = [\frac{1}{N} BB^T]_{[p\times p]}\]</span></p>
+<p>We can easily show that <span class="math inline">\(S\)</span> is positive semi-definite. Assume that <span class="math inline">\(\mathbf{x} &gt; 0\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+BB^T \mathbf{x} &amp;= \lambda \mathbf{x}\\
+\implies \mathbf{x}^T BB^T \mathbf{x} &amp;= \lambda \mathbf{x}^T \mathbf{x}\\
+\implies \frac{\mathbf{x}^T BB^T \mathbf{x}}{\mathbf{x}^T \mathbf{x}} &amp;= \lambda
+\end{aligned}\]</span>
+<p>Let <span class="math inline">\(\mathbf{A} = B^T\mathbf{x}\)</span>, then:</p>
+<p><span class="math display">\[\frac{\mathbf{A}^T \mathbf{A}}{\mathbf{x}^T \mathbf{x}} = \lambda\]</span></p>
+<p>Since, <span class="math inline">\(\mathbf{A}^T \mathbf{A} \geq 0\)</span> for any vector <span class="math inline">\(A\)</span>, similar for <span class="math inline">\(\mathbf{x}^T \mathbf{x}\)</span>, then:</p>
+<p><span class="math display">\[\lambda \geq 0\]</span></p>
+<p>Since, <span class="math inline">\(S\)</span> is symmetric and <span class="math inline">\(\lambda \geq 0\)</span> for all eigenvalues of <span class="math inline">\(S\)</span>, we can conclude that <span class="math inline">\(S\)</span> is <strong>positive semi-definite</strong>.</p>
+<p>The <strong>total variance</strong> in the data is:</p>
+<p><span class="math display">\[tr(S)\]</span></p>
+<h2 id="pca">PCA</h2>
+<p><strong>The goal of PCA is to find an orthogonal <span class="math inline">\(p \times p\)</span> matrix <span class="math inline">\(P = [\mathbf{u}_1 .... \mathbf{u}_p]\)</span> that determines a change of variable, <span class="math inline">\(\mathbf{X} = P\mathbf{Y}\)</span> with the property that the features of <span class="math inline">\(\mathbf{Y}\)</span> are uncorrelated and are arranged in order of decreasing variance.</strong></p>
+<p>Assume the <span class="math inline">\(\mathbf{X}\)</span> is already being centered, that is <span class="math inline">\(B = [\mathbf{X}_1 .... \mathbf{X}_N]\)</span>, then <span class="math inline">\(\mathbf{Y}\)</span> is also centered since <span class="math inline">\(P \neq 0\)</span>:</p>
+<p><span class="math display">\[E[\mathbf{X}] = P\cdot E[\mathbf{Y}] = 0\]</span></p>
+<p>Then the sample covariance matrix of <span class="math inline">\(\mathbf{Y}\)</span> is:</p>
+<p><span class="math display">\[S_Y = \frac{1}{N-1}[P^{-1}\mathbf{X}_1 .... P^{-1}\mathbf{X}_N] [P^{-1}\mathbf{X}_1 .... P^{-1}\mathbf{X}_N]^T\]</span></p>
+<p><span class="math display">\[\implies S_{\mathbf{Y}} = \frac{1}{N-1} P^{T}BB^{T}P = P^{T} S_{\mathbf{X}} P\]</span></p>
+<p>So the desired orthogonal matrix is the one that makes <span class="math inline">\(\hat{Cov}[Y_i, Y_j] = 0, \; \forall i \neq j\)</span> (features are uncorrelated), which means that the we want the sample covariance matrix <span class="math inline">\(S_Y\)</span> to be diagonal.</p>
+<p><br></p>
+<p>Let <span class="math inline">\(D\)</span> be a diagonal matrix with eigenvalues of <span class="math inline">\(S_{\mathbf{X}}\)</span>, <span class="math inline">\(\lambda_1 ,...., \lambda_p\)</span> on the diagonal s.t <span class="math inline">\(\lambda_1 \geq \lambda_2 \geq ..... \lambda_p \geq 0\)</span>, let <span class="math inline">\(P\)</span> be an orthogonal matrix whose columns are the corresponding unit eigenvectors <span class="math inline">\(\mathbf{u}_1, ....., \mathbf{u}_p\)</span> (Symmetric matrices have property that the eigenspaces are mutually orthogonal, in the sense that eigenvectors corresponding to different eigenvalues are orthogonal). Then, we can use <span class="math inline">\(P\)</span> and <span class="math inline">\(\mathbf{X}\)</span> to represent <span class="math inline">\(Y\)</span>, and the sample covariance matrix is:</p>
+<p><span class="math display">\[S_{\mathbf{X}} = PDP^T \implies P^{-1} S_{\mathbf{X}} P = D\]</span></p>
+<p>Thus, <span class="math inline">\(S_{\mathbf{Y}} = D\)</span>.</p>
+<p>Then, the eigenvectors <span class="math inline">\(\mathbf{u}_1, ...., \mathbf{u}_p\)</span> are called <code>Principal Components</code> of the data. The first PC is the eigenvector corresponding to the largest eigenvalue of <span class="math inline">\(S_{\mathbf{X}}\)</span>.</p>
+<p>The result transformation is defiend as:</p>
+<p><span class="math display">\[P^{T} \mathbf{X} = \mathbf{Y}\]</span></p>
+<p><span class="math display">\[
+\mathbf{Y} = 
+\begin{bmatrix}
+\mathbf{u}^T_1 \mathbf{X} \\
+.\\
+.\\
+.\\
+\mathbf{u}^T_p \mathbf{X}\\
+\end{bmatrix}
+\]</span></p>
+<h2 id="total-variance">Total Variance</h2>
+<p>It can be shown that the PCA transformation does not change the total variance of the data, that is the total variance of the data is the sum of eigenvalues:</p>
+<p><span class="math display">\[tr(S_{\mathbf{Y}}) = tr(D)\]</span></p>
+<p>This is only true when we are dealing with sample covariance matrix,</p>
+<h1 id="implementation">Implementation</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pca</span>(<span class="params">X, k=<span class="number">2</span></span>):</span></span><br><span class="line">    u, s, vt = np.linalg.svd(X, full_matrices=<span class="literal">False</span>)</span><br><span class="line">    xv = u * s</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> xv[:, :k]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">normalize</span>(<span class="params">X</span>):</span></span><br><span class="line">    n, d = X.shape</span><br><span class="line">    x_trans = X.copy()</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(d):</span><br><span class="line">        <span class="comment"># normalization</span></span><br><span class="line">        x_trans[:, j] = (X[:, j] - X[:, j].mean()) / X[:, j].std()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> x_trans</span><br></pre></td></tr></table></figure>
+<h1 id="ref">Ref</h1>
+<p>https://stats.stackexchange.com/questions/266864/why-is-the-sum-of-eigenvalues-of-a-pca-equal-to-the-original-variance-of-the-dat</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1347,400 +1651,6 @@ P(Y=1 | X=\mathbf{x}) \leq 0.5, \quad 0
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/13/vfa-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/13/vfa-2/" class="post-title-link" itemprop="url">Value Function Approximation (2)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-07-13 22:00:16" itemprop="dateCreated datePublished" datetime="2021-07-13T22:00:16+08:00">2021-07-13</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-08-31 11:42:09" itemprop="dateModified" datetime="2021-08-31T11:42:09+08:00">2021-08-31</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/VFA/" itemprop="url" rel="index"><span itemprop="name">VFA</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/07/13/vfa-2/" class="post-meta-item leancloud_visitors" data-flag-title="Value Function Approximation (2)" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>13k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>12 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="value-function-approximation-algorithms">Value Function Approximation (Algorithms)</h1>
-<h2 id="approximate-value-iteration">Approximate Value Iteration</h2>
-<h3 id="population-version">Population Version</h3>
-<p>Recall that the procedure for VI is:</p>
-<p><span class="math display">\[V_{k+1} \leftarrow T^{\pi}V_{k}\]</span> <span class="math display">\[V_{k+1} \leftarrow T^{*}V_{k}\]</span></p>
-<p>One way to develop its approximation version is to perform each step only approximately (i.e find <span class="math inline">\(V_{k+1} \in \mathbf{F}\)</span>) such that:</p>
-<p><span class="math display">\[V_{k+1} \approx TV_{k}\]</span></p>
-<p>Where <span class="math inline">\(T\)</span> can be <span class="math inline">\(T^*\)</span> or <span class="math inline">\(T^\pi\)</span>.</p>
-<p>We start from a <span class="math inline">\(V_0 \in \mathbf{F}\)</span>, and then at each iteration <span class="math inline">\(k\)</span> of AVI, we solve (i.e <span class="math inline">\(p\)</span> is often 2):</p>
-<p><span class="math display">\[V_{k+1} \leftarrow \underset{V \in \mathbf{F}}{\arg\min} \|V - TV_{k}\|^p_{p, \mu}\]</span></p>
-<p>At each iteration, <span class="math inline">\(TV_k\)</span> (our target) may not be within <span class="math inline">\(\mathbf{F}\)</span> anymore even though <span class="math inline">\(V_{k} \in \mathbf{F}\)</span>, we may have some approximation error at each iteration of AVI. The amount of error depends on how expressive <span class="math inline">\(\mathbf{F}\)</span> is and how much <span class="math inline">\(T\)</span> can push a function within <span class="math inline">\(\mathbf{F}\)</span> outside that space.</p>
-<h3 id="batch-version">Batch Version</h3>
-<p>The objective of AVI cannot be computed because:</p>
-<ul>
-<li><span class="math inline">\(\mu\)</span> is unknown</li>
-<li>Environment <span class="math inline">\(R, P\)</span> is often not available, thus <span class="math inline">\(TQ_k\)</span> cannot be computed.</li>
-</ul>
-<p>If we have samples in the form of <span class="math inline">\((X, A, R, X^{\prime})\)</span>, we can compute the unbiased sample of <span class="math inline">\(TQ_k\)</span>:</p>
-<p><span class="math display">\[\hat{T}^{\pi}Q_k = R + \gamma Q(X^{\prime}, A^{\prime})\]</span> <span class="math display">\[\hat{T}^{*} Q_k = R + \gamma \max_{a^{\prime} \in A} Q(X^{\prime}, a^{\prime}) \]</span></p>
-<p>Where <span class="math inline">\(A^{\prime} \sim \pi(\cdot | X^{\prime})\)</span></p>
-<p><br></p>
-<p><strong>The question is: can we replace <span class="math inline">\(TQ_k\)</span> with <span class="math inline">\(\hat{T}Q_k\)</span>?</strong></p>
-Given any <span class="math inline">\(Z = (X, A)\)</span>
-<span class="math display">\[\begin{aligned}
-E_{\hat{T}Q_k}[|Q(Z) - \hat{T}Q_k (Z)|^2 | Z] &amp;= E_{\hat{T}Q_k}[|Q(Z) - TQ_k (Z) + TQ_k (Z) - \hat{T}Q_k (Z)|^2 | Z]\\
-&amp;= E_{\hat{T}Q_k}[|Q(Z) - TQ_k (Z)|^2 | Z] + E_{\hat{T}Q_k}[|TQ_k (Z) - \hat{T}Q_k(Z)|^2 | Z] + 2 E_{\hat{T}Q_k}[(Q(Z) - TQ_k (Z))(TQ_k (Z) - \hat{T}Q_k (Z)) | Z]\\
-&amp;= E_{\hat{T}Q_k}[|Q(Z) - TQ_k (Z)|^2 | Z] + E_{\hat{T}Q_k}[|TQ_k (Z) - \hat{T}Q_k(Z)|^2 | Z]
-\end{aligned}\]</span>
-<p>Since <span class="math inline">\(Z \sim \mu\)</span>:</p>
-<span class="math display">\[\begin{aligned}
-E_{\mu} [E_{\hat{T}Q_k}[|Q(Z) - TQ_k (Z)|^2 | Z] + E_{\hat{T}Q_k}[|TQ_k (Z) - \hat{T}Q_k(Z)|^2 | Z]] &amp;= E_{\mu, \hat{T}Q_k} [|Q(Z) - TQ_k (Z)|^2] + E_{\mu, \hat{T}Q_k} [|TQ_k (Z) - \hat{T}Q_k(Z)|^2]\\
-&amp;= \|Q(Z) - TQ_k (Z)\|^2_{2, \mu} + E_{\mu} [Var[\hat{T}Q_k (Z) | Z]]
-\end{aligned}\]</span>
-<p>Since the expectation of variance term does not depend on <span class="math inline">\(Q\)</span>, the solution to the surrogate objective is the same as the original objective:</p>
-<p><span class="math display">\[\underset{Q \in \mathbf{F}}{\arg\min} \; E_{\mu, \hat{T}Q_k}[|Q(Z) - \hat{T}Q_k (Z)|^2] = \underset{Q \in \mathbf{F}}{\arg\min} \; \|Q(Z) - TQ_k (Z)\|^2_{2, \mu}\]</span></p>
-<p>Similar to ERM, we do not know the environment dynamics <span class="math inline">\(R, P\)</span> and distribution <span class="math inline">\(\mu\)</span>. We can use samples and estimate the expectation:</p>
-<p><span class="math display">\[\frac{1}{N} \sum^{N}_{i=1} |Q(X_i, A_i) - \hat{T}Q_k (X_i, A_i)|^2 = \|Q - \hat{T}Q_k\|^2_{2, D_n}\]</span></p>
-<p><strong>This is the basis of DQN</strong>.</p>
-<h2 id="bellman-residual-minimization">Bellman Residual Minimization</h2>
-<h3 id="population-version-1">Population Version</h3>
-<p>Recall that:</p>
-<p><span class="math display">\[V = T^{\pi}V \implies V = V^{\pi}\]</span></p>
-<p>Under FA, we may not achieve this exact equality, instead:</p>
-<p><span class="math display">\[V \approx V^{\pi}\]</span></p>
-<p>Thus, we can formulate our objective:</p>
-<p><span class="math display">\[V = \underset{V \in \mathbf{F}}{\arg\min} \|V - T^{\pi}V\|^p_{p, \mu} = \|BR(V)\|^p_{p, \mu}\]</span></p>
-<p>By minimizing this objective (<span class="math inline">\(p\)</span> is usually 2), we have <code>Bellman Residual Minimization</code>.</p>
-<p>This procedure is different from AVI in that we do not mimic the iterative process of VI (which is convergent in the exact case without any FA), but instead directly go for the solution of fixed-point equation (<span class="math inline">\(V - T^{\pi}V\)</span> instead of <span class="math inline">\(V - T^{\pi}V_k\)</span>).</p>
-<p><img src='/images/RL/vfa/brm_1.png' width="600"></p>
-<p>If there exists a <span class="math inline">\(V \in \mathbf{F}\)</span> that makes <span class="math inline">\(\|V - T^{\pi}V\|^2_{2, \mu} = 0\)</span> and if we assume <span class="math inline">\(\mu(x) &gt; 0, \; \forall x \in \chi\)</span>, we can conclude that <span class="math inline">\(V(x) = V^{\pi}(x), \; \forall x \in \chi\)</span> so <span class="math inline">\(V = V^{\pi}\)</span>.</p>
-<h3 id="batch-version-1">Batch Version</h3>
-<p>Similar to AVI, we may want to replace <span class="math inline">\(TV\)</span> or <span class="math inline">\(TQ\)</span> by <span class="math inline">\(\hat{T}Q\)</span>. Thus, our empirical objective is:</p>
-<p><span class="math display">\[Q = \underset{Q \in \mathbf{F}}{\arg\min} \frac{1}{N} \sum^N_{i=1} |Q(X_i, A_i) - \hat{T}^{\pi} Q (X_i, A_i)|^2 = \|Q - \hat{T}^{\pi}Q\|^2_{2, D_n}\]</span></p>
-<p>Using <span class="math inline">\(D_n = \{(X_i, A_i, R_i, X^{\prime}_i)\}^N_{i=1}\)</span></p>
-<p>We can see that <span class="math inline">\(Q\)</span> appears in both <span class="math inline">\(\hat{T}^{\pi}Q\)</span> and <span class="math inline">\(Q\)</span>, which is different from AVI and ERM. <strong>This causes an issue: the minimizer of <span class="math inline">\(\|Q - T^{\pi}Q\|^2_{2, \mu}\)</span> and <span class="math inline">\(\|Q - \hat{T}^{\pi}Q\|^2_{2, \mu}\)</span> are not necessarily the same for stochastic dynamics.</strong></p>
-<p><br></p>
-<p>To see this, for any <span class="math inline">\(Q\)</span> and <span class="math inline">\(Z = (X, A)\)</span> we compute:</p>
-<p><span class="math display">\[E_{\hat{T}^{\pi}Q} [|Q(Z) - \hat{T}Q(Z)|^2 | Z]\]</span></p>
-<p>Then:</p>
-<span class="math display">\[\begin{aligned}
-E_{\hat{T}^{\pi}Q}[|Q(Z) - \hat{T}^{\pi}Q (Z)|^2 | Z] &amp;= E_{\hat{T}^{\pi}Q}[|Q(Z) - T^{\pi}Q (Z) + T^{\pi}Q (Z) - \hat{T}^{\pi}Q (Z)|^2 | Z]\\
-&amp;= E_{\hat{T}^{\pi}Q}[|Q(Z) - T^{\pi}Q (Z)|^2 | Z] + E_{\hat{T}^{\pi}Q}[|T^{\pi}Q (Z) - \hat{T}^{\pi}Q(Z)|^2 | Z] + 2 E_{\hat{T}^{\pi}Q}[(Q(Z) - T^{\pi}Q (Z))(T^{\pi}Q (Z) - \hat{T}^{\pi}Q (Z)) | Z]\\
-&amp;= E_{\hat{T}^{\pi}Q}[|Q(Z) - T^{\pi}Q (Z)|^2 | Z] + E_{\hat{T}^{\pi}Q}[|T^{\pi}Q (Z) - \hat{T}^{\pi}Q(Z)|^2 | Z]
-\end{aligned}\]</span>
-<p>Since <span class="math inline">\(Z \sim \mu\)</span>, the first term is:</p>
-<p><span class="math display">\[E_{\hat{T}^{\pi}Q, \mu}[|Q(Z) - T^{\pi}Q (Z)|^2] = \|Q - T^{\pi}Q\|^2_{2, \mu}\]</span></p>
-<p>The second term is:</p>
-<p><span class="math display">\[E_{\mu}[E_{\hat{T}^{\pi}Q}[|T^{\pi}Q (Z) - \hat{T}^{\pi}Q(Z)|^2 | Z]] = E_{\mu}[Var[\hat{T}^{\pi}Q(Z) | Z]]\]</span></p>
-<p>We can see that the variance term <span class="math inline">\(Var[\hat{T}^{\pi}Q(Z)\)</span> depends on <span class="math inline">\(Q\)</span>, <strong>as we minimize the objective w.r.t <span class="math inline">\(Q\)</span> in stochastic dynamical systems (for deterministic ones, it is zero)</strong>, we have $ E_{}[Var[^{}Q(Z) | Z]] $, so the minimizer of the batch version objective is not the same as population version for BRM in stochastic dynamics.</p>
-<h2 id="projected-bellman-error">Projected Bellman Error</h2>
-<p>From BRM, we know that even though <span class="math inline">\(V \in \mathbf{F}\)</span>, <span class="math inline">\(T^{\pi} V\)</span> may not be in <span class="math inline">\(\mathbf{F}\)</span>. Thus, a good approximator <span class="math inline">\(V \in \mathbf{F}\)</span> should have distance to <span class="math inline">\(T^{\pi}V\)</span> small. Thus, we want to find <span class="math inline">\(V \in \mathbf{F}\)</span> such that <span class="math inline">\(V\)</span> is the projection of <span class="math inline">\(T^{\pi}V\)</span> onto the space <span class="math inline">\(\mathbf{F}\)</span>.</p>
-<p><img src='/images/RL/vfa/pbe_1.png' width="600"></p>
-<p>We want to find a <span class="math inline">\(V \in \mathbf{F}\)</span> such that:</p>
-<p><span class="math display">\[V = \prod_{\mathbf{F}, \mu} T^{\pi}V\]</span></p>
-<p>Where <span class="math inline">\(\prod_{\mathbf{F}, \mu}\)</span> is the projection operator.</p>
-<p>TRhe projectio operator <span class="math inline">\(\prod_{\mathbf{F}, \mu}\)</span> is a linear operator that takes <span class="math inline">\(V \in B(\chi)\)</span> and maps it to closest point on <span class="math inline">\(F\)</span> measured according to its <span class="math inline">\(L_{2} (\mu)\)</span> norm:</p>
-<p><span class="math display">\[\prod_{\mathbf{F}, \mu} V \triangleq \underset{V^{\prime} \in \mathbf{F}}{\arg\min} \|V^{\prime} - V\|^2_{2, \mu}\]</span></p>
-<p>It has some properties:</p>
-<ol type="1">
-<li>The projection belongs to function space <span class="math inline">\(\mathbf{F}\)</span>: <span class="math display">\[\prod_{\mathbf{F}, \mu} V \in \mathbf{F}\]</span></li>
-<li>If <span class="math inline">\(V \in \mathbf{F}\)</span>, the projection is itself: <span class="math display">\[V \in \mathbf{F} \implies \prod_{\mathbf{F}, \mu} V = V\]</span></li>
-<li>The projection operator onto a subspace is a non-expansion: <span class="math display">\[\|\prod_{\mathbf{F}, \mu} V_1 - \prod_{\mathbf{F}, \mu} V_2\|^2_{2, \mu} \leq \|V_1 - V_2\|^2_{2, \mu}\]</span></li>
-</ol>
-<h3 id="population-version-2">Population Version</h3>
-<p>We can define a loss function based on <span class="math inline">\(V = \prod_{\mathbf{F}, \mu} T^{\pi}V\)</span>:</p>
-<p><span class="math display">\[\|V - \prod_{\mathbf{F}, \mu} T^{\pi}V\|^2_{2, \mu}\]</span></p>
-<p>This is called <code>Projected Bellman Error</code> or <code>Mean Square Projected Bellman Error</code>.</p>
-<p>We find the value function by solving the following optimization problem:</p>
-<p><span class="math display">\[V = \underset{V \in \mathbf{F}}{\arg\min} \|V - \prod_{\mathbf{F}, \mu} T^{\pi}V\|^2_{2, \mu}\]</span></p>
-<p>Since <span class="math inline">\(V \in \mathbf{F}\)</span>, the projection operator is linear:</p>
-<span class="math display">\[\begin{aligned}
-V -  \prod_{\mathbf{F}, \mu} T^{\pi}V &amp;= \prod_{\mathbf{F}, \mu} V - \prod_{\mathbf{F}, \mu} T^{\pi}V\\
-&amp;= \prod_{\mathbf{F}, \mu} (V - T^{\pi}V)\\
-&amp;= - \prod_{\mathbf{F}, \mu} (T^{\pi}V - V)\\
-&amp;= - \prod_{\mathbf{F}, \mu} (BR(V))
-\end{aligned}\]</span>
-<p>So the objective can be rewritten as:</p>
-<p><span class="math display">\[V = \underset{V \in \mathbf{F}}{\arg\min}  \|\prod_{\mathbf{F}, \mu} BR(V)\|^2_{2, \mu}\]</span></p>
-<p>Which is the norm of the projection of the Bellman Residual onto <span class="math inline">\(\mathbf{F}\)</span>.</p>
-<p><br></p>
-<p>We can think of solving the projected bellman error objective as solving the <strong>two coupled optimization problems</strong>:</p>
-<ol type="1">
-<li>Find the projection point given value function <span class="math inline">\(V^{\prime}\)</span>: <span class="math display">\[V^{\prime\prime} = \underset{V^{\prime\prime} \in \mathbf{F}}{\arg\min} \|V^{\prime\prime} - T^{\pi}V^{\prime}\|^2_{2, \mu}\]</span></li>
-<li>Find the value function <span class="math inline">\(V^{\prime}\)</span> on <span class="math inline">\(\mathbf{F}\)</span> that is closest to the projection point <span class="math inline">\(V^{\prime\prime}\)</span>: <span class="math display">\[V^{\prime} = \underset{V^{\prime} \in \mathbf{F}}{\arg\min} \|V^{\prime} - V^{\prime\prime}\|^2_{2, \mu}\]</span></li>
-</ol>
-<h3 id="least-square-temporal-difference-learning-population-version">Least Square Temporal Difference Learning (Population Version)</h3>
-<p>If <span class="math inline">\(\mathbf{F}\)</span> is a linear FA with basis functions <span class="math inline">\(\phi_1, ...., \phi_p\)</span>:</p>
-<p><span class="math display">\[\mathbf{F}: \{x \rightarrow \boldsymbol{\phi}(x)^T \mathbf{w}; \; \mathbf{w} \in \mathbb{R}^p\}\]</span></p>
-<p>We can find a direct solution to the PBE objective, that is we want to find <span class="math inline">\(V \in \mathbf{F}\)</span> s.t:</p>
-<p><span class="math display">\[V = \prod_{\mathbf{F}, \mu} T^{\pi}V\]</span></p>
-<p>We assume that:</p>
-<ul>
-<li><span class="math inline">\(\chi\)</span> is finite and <span class="math inline">\(|\chi| = N\)</span>, <span class="math inline">\(N \gg p\)</span>, each <span class="math inline">\(\boldsymbol{\phi}_i = [\phi_i(x_1) .... \phi_i(x_N)]^T\)</span> is a <span class="math inline">\(N\)</span>-dimentional vector.</li>
-</ul>
-<p>Then, we define <span class="math inline">\(\Phi_{N\times p}\)</span> as the matrix of concatenating all features:</p>
-<p><span class="math display">\[\Phi = [\boldsymbol{\phi}_1 .... \boldsymbol{\phi}_p]_{N\times p}\]</span></p>
-<p>The value function <span class="math inline">\(V \in \mathbf{F}\)</span> is then:</p>
-<p><span class="math display">\[V_{N \times 1} = \Phi_{N\times p} \mathbf{w}_{p \times 1}\]</span></p>
-<p>Our <strong>goal</strong> is to find a weight vector <span class="math inline">\(\mathbf{w} \in \mathbb{R}^p\)</span> such that:</p>
-<p><span class="math display">\[V = \prod_{\mathbf{F}, \mu} T^{\pi}V \implies \Phi\mathbf{w} = \prod_{\mathbf{F}, \mu} T^{\pi}(\Phi \mathbf{w})\]</span></p>
-<p>Let <span class="math inline">\(M = \text{diag}(\mu)\)</span>, since:</p>
-<p><span class="math display">\[\|V\|^2_{2, \mu} = &lt;V, V&gt;_{\mu} = \sum_{x \in \chi} |V(x)|^2\mu(x) = V^TMV\]</span></p>
-<p><span class="math display">\[&lt;V_1, V_2&gt;_{\mu} = \sum_{x \in \chi} V_1(x)V_2(x) = V^T_1 M V_2\]</span></p>
-<p>Then, the projection operator onto the linear <span class="math inline">\(\mathbf{F}\)</span> would be:</p>
-<span class="math display">\[\begin{aligned}
-\prod_{\mathbf{F}, \mu} V &amp;= \underset{V^{\prime} \in \mathbf{F}}{\arg\min}\|V^{\prime} - V\|^2_{2, \mu}\\
-&amp;= \underset{\mathbf{w} \in \mathbb{R}^p}{\arg\min}\|\Phi\mathbf{w} - V\|^2_{2, \mu}\\
-&amp;= \underset{\mathbf{w} \in \mathbb{R}^p}{\arg\min} (\Phi\mathbf{w} - V)^T M (\Phi\mathbf{w} - V)
-\end{aligned}\]</span>
-<p>By taking the derivative and setting it to zero (assuming that <span class="math inline">\(\Phi^TM\Phi\)</span> is invertible):</p>
-<p><span class="math display">\[\frac{\partial \prod_{\mathbf{F}, \mu} V}{\partial \mathbf{w}} = \Phi^TM(\Phi\mathbf{w} - V) = 0\]</span> <span class="math display">\[\implies \mathbf{w^{*}} = (\Phi^TM\Phi)^{-1}\Phi^TMV\]</span></p>
-<p>Then the projection is:</p>
-<p><span class="math display">\[\prod_{\mathbf{F}, \mu} V = \Phi \mathbf{w} = \Phi (\Phi^TM\Phi)^{-1}\Phi^TMV\]</span></p>
-<p>Since <span class="math inline">\(T^{\pi} V = r^{\pi} (x) + \gamma \sum_{x \in \chi, a \in \mathbf{A}}P^{\pi}(x^{\prime} | x, a) \pi(a | s) V(x^{\prime})\)</span>, we can write it in vector form for all states:</p>
-<p><span class="math display">\[(T^{\pi}V)_{N\times 1} = \mathbf{r}^{\pi}_{N \times 1} + \gamma P^{\pi}_{N\times N} V_{N \times 1}\]</span> <span class="math display">\[\implies (T^{\pi}\Phi\mathbf{w})_{N\times 1} = \mathbf{r}^{\pi}_{N \times 1} + \gamma P^{\pi}_{N\times N} \Phi_{N\times p}\mathbf{w}_{p \times 1}\]</span></p>
-<p>Substitute the equation of <span class="math inline">\(T^{\pi}\Phi\mathbf{w}\)</span> into <span class="math inline">\(V\)</span> in the projection equation:</p>
-<p><span class="math display">\[\prod_{\mathbf{F}, \mu} T^{\pi}\Phi\mathbf{w} = \Phi \mathbf{w} = \Phi (\Phi^TM\Phi)^{-1}\Phi^TM(T^{\pi}\Phi\mathbf{w})\]</span> <span class="math display">\[\implies \Phi \mathbf{w} = [\Phi (\Phi^TM\Phi)^{-1}\Phi^TM][\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w}]\]</span></p>
-<p>Multiply both sides by <span class="math inline">\(\Phi^T M\)</span> and simply:</p>
-<p><span class="math display">\[\Phi^T M \Phi \mathbf{w} = [\Phi^T M\Phi (\Phi^TM\Phi)^{-1}\Phi^TM][\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w}]\]</span> <span class="math display">\[\implies \Phi^T M \Phi \mathbf{w} = \Phi^TM[\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w}]\]</span> <span class="math display">\[\implies \Phi^T M \Phi \mathbf{w} - \Phi^TM[\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w}] = 0\]</span> <span class="math display">\[\implies  \Phi^T M[\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w} - \Phi \mathbf{w}] = 0\]</span> <span class="math display">\[\implies \mathbf{w}_{TD} = [\Phi^T M (\Phi - \gamma P^{\pi}\Phi)]^{-1}\Phi^T M \mathbf{r}^{\pi}\]</span></p>
-<p>The solution <span class="math inline">\(\mathbf{w}_{TD}\)</span> is called <code>Least Square Temporal Difference Method (LSTD)</code>.</p>
-<p>Notice that the term <span class="math inline">\(\mathbf{r}^{\pi} + \gamma P^{\pi} \Phi\mathbf{w} - \Phi \mathbf{w} = T^{\pi} V - V = BR(V)\)</span>. Hence:</p>
-<p><span class="math display">\[\Phi^TM (BR(V)) = 0\]</span> <span class="math display">\[\implies &lt;\mathbf{\phi}_i, BR(V)&gt; = 0\]</span></p>
-<p>Thus, <strong>LSTD</strong> finds a <span class="math inline">\(\mathbf{w}\)</span> s.t the <strong>Bellman Residual is orthogonal</strong> to the basis of <span class="math inline">\(\mathbf{F}\)</span> which is exactly what we want.</p>
-<h3 id="batch-version-2">Batch Version</h3>
-<p>We have showed that the solution to <span class="math inline">\(V = \prod_{\mathbf{F}, \mu} T^{\pi}V\)</span> with linear FA <span class="math inline">\(V = \Phi\mathbf{w}\)</span> is:</p>
-<p><span class="math display">\[\mathbf{w}_{TD} = A^{-1}_{p\times p} \mathbf{b}_{p \times 1}\]</span></p>
-<p>Where:</p>
-<ul>
-<li><span class="math inline">\(A^{-1} = \Phi^T M (\Phi - \gamma P^{\pi}\Phi)]^{-1}\)</span></li>
-<li><span class="math inline">\(\mathbf{b} = \Phi^T M \mathbf{r}^{\pi}\)</span></li>
-</ul>
-<p>Expand <span class="math inline">\(A\)</span> and <span class="math inline">\(\mathbf{b}\)</span> in terms of summations, we have:</p>
-<p><span class="math display">\[A_{ij} = \sum^{N}_{n=1} \Phi^T_{in} \mu(n) (\Phi - \gamma P^{\pi}\Phi)_{ij}\]</span> <span class="math display">\[b_i = \sum^N_{n=1} \Phi^T_{in} \mu(n) r^{\pi}_n\]</span></p>
-<p>Thus, in terms of current state <span class="math inline">\(x\)</span> and next state <span class="math inline">\(x^{\prime}\)</span>:</p>
-<p><span class="math display">\[A = \sum_{x \in \chi} \mu (x) \boldsymbol{\phi} (x) [\boldsymbol{\phi}(x) - \gamma \sum_{x^{\prime} \in \chi} P^{\pi}(x^{\prime} | x)\boldsymbol{\phi}(x^{\prime})]^T = E_{\mu}[\boldsymbol{\phi}(X) [\boldsymbol{\phi}(X) - \gamma E_{P^{\pi}}[\boldsymbol{\phi} (X^{\prime})]]^T]\]</span></p>
-<p><span class="math display">\[\mathbf{b} = \sum_{x \in \chi} \mu(x) \boldsymbol{\phi} (x) r^{\pi}(x) = E_{\mu} [\boldsymbol{\phi}(X)r^{\pi}(X)]\]</span></p>
-<p>Given data set <span class="math inline">\(D_n = \{X_i, R_i, X^{\prime}_i\}^{M}_{i=1}\)</span> with <span class="math inline">\(X_i \sim \mu\)</span>, <span class="math inline">\(X^{\prime} \sim P^{\pi}(\cdot | X_i)\)</span> and <span class="math inline">\(R_i \sim R^{\pi}(\cdot | X_i)\)</span>, we define the empirical estimator <span class="math inline">\(\hat{A}_n, \hat{ \mathbf{b}}_n\)</span> as:</p>
-<p><span class="math display">\[\hat{A}_n = \frac{1}{M} \sum^{M}_{i=1} \boldsymbol{\phi}(X_i) [\boldsymbol{\phi}(X_i) - \gamma \boldsymbol{\phi} (X^{\prime}_i)]^T\]</span> <span class="math display">\[\hat{\mathbf{b}}_n = \frac{1}{M} \sum^{M}_{i=1} \boldsymbol{\phi}(X)R_i\]</span></p>
-<p><br></p>
-<p>We can use LSTD to define an approximate policy iteration procedure to obtain a close to optimal policy (LSPI):</p>
-<p><img src='/images/RL/vfa/lstd_1.png' width="600"></p>
-<h2 id="semi-gradient-td">Semi-Gradient TD</h2>
-<p>Suppose that we know the true value function <span class="math inline">\(V^{\pi}\)</span> and we want to find an approximation <span class="math inline">\(\hat{V}\)</span>, parameterized by <span class="math inline">\(\mathbf{w}\)</span>. The population loss:</p>
-<p><span class="math display">\[V = \underset{\hat{V} \in \mathbf{F}}{\arg\min} \frac{1}{2}\|V^{\pi} - \hat{V}\|^2_{2, \mu}\]</span></p>
-<p>Using samples <span class="math inline">\(X_t \sim \mu\)</span>, we can define an SGD procedure that updates <span class="math inline">\(\mathbf{w}_t\)</span> as follows:</p>
-<span class="math display">\[\begin{aligned}
-\mathbf{w}_{t+1} &amp;\leftarrow \mathbf{w}_t - \alpha_t \nabla_{\mathbf{w}_t} [\frac{1}{2} |V^{\pi} (X_t) - \hat{V}(X_t; \mathbf{w}_t)|^2]\\
-&amp;= \mathbf{w}_t + \alpha_t (V^{\pi} (X_t) - \hat{V}(X_t; \mathbf{w}_t))\nabla_{\mathbf{w}_t} \hat{V}(X_t; \mathbf{w}_t)
-\end{aligned}\]</span>
-<p>If we select proper step size <span class="math inline">\(\alpha_t\)</span>, then the SGD converges to the stationary point.</p>
-<p>When we do not know <span class="math inline">\(V^{\pi}\)</span>, we can use bootstrapped estimate (TD estimate <span class="math inline">\(\hat{T}^{\pi}V_t\)</span>) instead:</p>
-<p><span class="math display">\[\mathbf{w}_{t+1} \leftarrow \mathbf{w}_t + \alpha_t (\hat{T}^{\pi}V_t - \hat{V}(X_t; \mathbf{w}_t))\nabla_{\mathbf{w}_t} \hat{V}(X_t; \mathbf{w}_t)\]</span> <span class="math display">\[\mathbf{w}_{t+1} \leftarrow \mathbf{w}_t + \alpha_t (R_t + \hat{V}(X^{\prime}_t; \mathbf{w}_t) - \hat{V}(X_t; \mathbf{w}_t))\nabla_{\mathbf{w}_t} \hat{V}(X_t; \mathbf{w}_t)\]</span></p>
-<p><strong>The substitution of <span class="math inline">\(V^{\pi}(X_t)\)</span> with <span class="math inline">\(\hat{T}^{\pi}V_t (X_t)\)</span> does not follow from the SGD of any loss function. The TD update is note a true SGD update, that is, we call it a semi-gradient update.</strong></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/13/leet-code-4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/13/leet-code-4/" class="post-title-link" itemprop="url">LeetCode(4)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-07-13 17:13:43" itemprop="dateCreated datePublished" datetime="2021-07-13T17:13:43+08:00">2021-07-13</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-07-25 18:15:48" itemprop="dateModified" datetime="2021-07-25T18:15:48+08:00">2021-07-25</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Others/" itemprop="url" rel="index"><span itemprop="name">Others</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/07/13/leet-code-4/" class="post-meta-item leancloud_visitors" data-flag-title="LeetCode(4)" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>16k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>15 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><strong>题目库: <code>[94, 144, 145, 226, 110,   105, 107, 543, 113, 116, 129, 108, 617, 404, 222, 'jz40', 912, 1046, 451, 703, 206, 2 , 21, 19, 692, 24, 83, 82, 876, 328, 143, 86, 61, 92, 160]</code></strong></p>
-<h1 id="trees">Trees</h1>
-<h2 id="easy">94 Easy</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inorderTraversal</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span></span><br><span class="line">        out = []</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">inorder</span>(<span class="params">root</span>):</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">                <span class="keyword">return</span> </span><br><span class="line"></span><br><span class="line">            inorder(root.left)</span><br><span class="line">            out.append(root.val)</span><br><span class="line">            inorder(root.right)</span><br><span class="line">        </span><br><span class="line">        inorder(root)</span><br><span class="line">        <span class="keyword">return</span> out</span><br></pre></td></tr></table></figure>
-<h2 id="easy-1">144 Easy</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">preorderTraversal</span>(<span class="params">self, root: TreeNode</span>) -&gt; <span class="type">List</span>[<span class="built_in">int</span>]:</span></span><br><span class="line">        out = []</span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">preorder</span>(<span class="params">node</span>):</span></span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> node:</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">            </span><br><span class="line">            out.append(node.val)</span><br><span class="line">            preorder(node.left)</span><br><span class="line">            preorder(node.right)</span><br><span class="line">        </span><br><span class="line">        preorder(root)</span><br><span class="line">        <span class="keyword">return</span> out</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/07/13/leet-code-4/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1765,13 +1675,13 @@ V -  \prod_{\mathbf{F}, \mu} T^{\pi}V &amp;= \prod_{\mathbf{F}, \mu} V - \prod_{
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">860k</span>
+    <span title="Symbols count total">865k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">13:02</span>
+    <span title="Reading time total">13:07</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
