@@ -1037,7 +1037,7 @@ Where <span class="math inline">\(\gamma (Z_{nk}) = P(Z_{1k} = 1 | \mathbf{D}, \
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-06-25 16:58:08" itemprop="dateModified" datetime="2022-06-25T16:58:08+08:00">2022-06-25</time>
+        <time title="Modified: 2022-06-28 23:30:45" itemprop="dateModified" datetime="2022-06-28T23:30:45+08:00">2022-06-28</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1064,14 +1064,14 @@ Where <span class="math inline">\(\gamma (Z_{nk}) = P(Z_{1k} = 1 | \mathbf{D}, \
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>13k</span>
+      <span>17k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>12 mins.</span>
+      <span>15 mins.</span>
     </span>
 </div>
 
@@ -1103,7 +1103,7 @@ Where <span class="math inline">\(\gamma (Z_{nk}) = P(Z_{1k} = 1 | \mathbf{D}, \
 <p>A probabilistic graphical model consists of:</p>
 <ol type="1">
 <li><strong>Nodes</strong>: each random variable (or group of random variables) is represented as a node in the graph</li>
-<li><strong>Edges (links)</strong>: links express probabilistic relationship between these random variables.
+<li><strong>Edges (links)</strong>: links express probabilistic relationship between these random variables, the edges encode our intuition about the way the world works.
 <ul>
 <li><strong>Directed graphical models</strong>: in which the edges of the graphs have a particular directionality indicated by arrows (Bayesian networks). Directed graphs are useful for expressing causal relationships between random variables.</li>
 <li><strong>Undirected graphical models</strong>: in which the edges of the graph do not carry arrows and have no directional significance (Markov random fields). Undirected graphs are better suited to expressing soft constraints between random variables.</li>
@@ -1111,6 +1111,15 @@ Where <span class="math inline">\(\gamma (Z_{nk}) = P(Z_{1k} = 1 | \mathbf{D}, \
 </ol>
 <p>The graph then captures the way in which the joint distribution over all of the random variables can be decomposed into a product of factors each depending only on a subset of the variables.</p>
 <h2 id="bayesian-networks">Bayesian Networks</h2>
+<p>The DAG of random variables can be viewed in two very different ways (Also strongly equivalent):</p>
+<ul>
+<li>As a data structure that provides the skeleton for representing a joint distribution compactly in a factorized way.</li>
+<li>As a compact representation for a set of conditional independence assumptions about a distribution.</li>
+</ul>
+<blockquote>
+<p><strong>We can view the graph as encoding a generative sampling process executed by nature, where the value for each variable is selected by nature using a distribution that depends only on its parents. In other words, each variable is a stochastic function of its parents.</strong></p>
+</blockquote>
+<h3 id="bayesian-network-represents-a-joint-distribution-compactly-in-a-factorized-way">Bayesian Network Represents a Joint Distribution Compactly in a Factorized Way</h3>
 <p>Consider first an arbitrary joint distribution defined by <span class="math inline">\(P(\mathbf{Z})\)</span> over random vector <span class="math inline">\(\mathbf{Z} = &lt;A, B, C&gt;\)</span>, by product rule, we have:</p>
 <p><span class="math display">\[P(\mathbf{Z}) = P(C| A, B) P(A, B) = P(C | A, B) P(B | A) P(A)\]</span></p>
 <p>We now represent the right-hand side in terms of a simgple graphical model as follows:</p>
@@ -1129,7 +1138,7 @@ Where <span class="math inline">\(\gamma (Z_{nk}) = P(Z_{1k} = 1 | \mathbf{D}, \
 <p><span class="math display">\[P(\mathbf{X}) = \prod^K_{k=1} P(X_k | \text{Parent}(X_k))\]</span></p>
 <p>Where <span class="math inline">\(\text{Parent}(X_k)\)</span> denotes the set of parents of <span class="math inline">\(X_k\)</span>.</p>
 <p>Notice that, the directed graphs that we are considering are subject to an important restriction namely that there must be <strong>no</strong> directed cycles, that is, we are working with <code>directed acyclic graphs</code> or DAGs.</p>
-<h3 id="example-generative-models">Example: Generative Models</h3>
+<h4 id="example-generative-models">Example: Generative Models</h4>
 <p>There are many situations in which we wish to draw samples from a given probability distribution. One technique which is particularly relevant to graphical models is called <code>ancestral sampling</code>.</p>
 <p>Consider a joint distribution <span class="math inline">\(P(\mathbf{X}), \mathbf{X} = &lt;X_1, ...., X_K&gt;\)</span> that factorizes into a DAG. We shall suppose that the variables have been ordered from <span class="math inline">\(X_1\)</span> to <span class="math inline">\(X_K\)</span>, in other words each node has a higher index than any of its parents. Our goal is to draw samples <span class="math inline">\(\hat{X}_1, ..., \hat{X}_K\)</span> from the joint distribution.</p>
 <p>To do this, we start from <span class="math inline">\(X_1\)</span>, and draw sample <span class="math inline">\(\hat{X}_1\)</span> from the distribution <span class="math inline">\(P(X_1)\)</span>. We then work through each of the nodes in order, so that for node <span class="math inline">\(n\)</span> we draw a sample from the conditional distribution <span class="math inline">\(P(X_n | \text{Parent}(X_n))\)</span>, in which the parent variables have been set to their sampled values.</p>
@@ -1141,6 +1150,39 @@ Where <span class="math inline">\(\gamma (Z_{nk}) = P(Z_{1k} = 1 | \mathbf{D}, \
 </blockquote>
 </blockquote>
 <p>The graphical model captures causal process by which the observed data was generated. For this reason, such models are often called <code>generative models</code>.</p>
+<p><br></p>
+<h3 id="independence-in-bayesian-networks">Independence in Bayesian Networks</h3>
+<p><strong>Our intuition tells us that the parents of a variable “shield” it from probabilistic influence that is causal in nature. In other words, once I know the value of the parents, no information relating directly or indirectly to its parents or other ancestors can influence my beliefs about it. However, information about its descendants can change my beliefs about it, via an evidential reasoning process.</strong></p>
+<h4 id="bayesian-network-semantics">Bayesian Network Semantics</h4>
+<h5 id="definition-3.1-bayesian-network-structure">Definition 3.1: Bayesian Network Structure</h5>
+<p>A Bayesian network structure <span class="math inline">\(G\)</span> is a directed acyclic graph whose nodes represent random variables <span class="math inline">\(X_1, ...., X_n\)</span>. Let <span class="math inline">\(Pa^{G}_{X_i}\)</span> denote the parents of <span class="math inline">\(X_i\)</span> in <span class="math inline">\(G\)</span>, and <span class="math inline">\(\text{NonDescendants}_{X_i}\)</span> denote the variables in the graph that are not descendants of <span class="math inline">\(X_i\)</span>. Then <span class="math inline">\(G\)</span> encodes the following set of <strong>conditional independence assumptions</strong>, called <strong>local independence</strong>, and denoted by <span class="math inline">\(I_l (G)\)</span>:</p>
+<p><span class="math display">\[I_l (G) = \{\text{For each variable $X_i$: ($X_i \perp \text{NonDescendants}_{X_i} | Pa^G_{X_i}$})\}\]</span></p>
+<p>In other words, the local independence state that each node <span class="math inline">\(X_i\)</span> is conditionally independent of its non-descendants given its parents.</p>
+<p><br></p>
+<h3 id="graphs-and-distributions">Graphs and Distributions</h3>
+<p>We now show that the previous two definitions of BN are equivalent. That is, <strong>a distribution <span class="math inline">\(P\)</span> satisfies the local independence associated with a graph <span class="math inline">\(G\)</span> IFF <span class="math inline">\(P\)</span> is representable as a set of CPDs associated with the graph <span class="math inline">\(G\)</span>.</strong></p>
+<h4 id="i-maps">I-Maps</h4>
+<h4 id="definition-3.2-independencies-in-p">Definition 3.2: Independencies in <span class="math inline">\(P\)</span></h4>
+<p>Let <span class="math inline">\(P\)</span> be a distribution over <span class="math inline">\(\mathbf{X}\)</span>. We define <span class="math inline">\(I(P)\)</span> to be the set of independence assertions of the form <span class="math inline">\((\mathbf{X} \perp \mathbf{Y} | \mathbf{Z})\)</span></p>
+<p><br></p>
+<h4 id="definition-3.3-i-map">Definition 3.3: I-Map</h4>
+<p>Let <span class="math inline">\(K\)</span> be any graph object associated with a set of independencies <span class="math inline">\(I(K)\)</span>. We say that <span class="math inline">\(K\)</span> is an I-map for a set of independencies <span class="math inline">\(I\)</span> if <span class="math inline">\(I(K) \subseteq I\)</span>.</p>
+<p>We now say that <span class="math inline">\(G\)</span> is a I-map for <span class="math inline">\(P\)</span> if <span class="math inline">\(G\)</span> is an I-map for <span class="math inline">\(I(P)\)</span>. That is <span class="math inline">\(I(G) \subseteq I(P)\)</span>.</p>
+<p><br></p>
+<p>That is, for <span class="math inline">\(G\)</span> to be an I-map of <span class="math inline">\(P\)</span>, it is necessary that <span class="math inline">\(G\)</span> does not mis-lead us regarding independencies in <span class="math inline">\(P\)</span>: any dependence that <span class="math inline">\(G\)</span> asserts must also hold in <span class="math inline">\(P\)</span>. Conversely, <span class="math inline">\(P\)</span> may have additional independencies that are not reflected in <span class="math inline">\(G\)</span>.</p>
+<p><br></p>
+<h3 id="i-map-to-factorization">I-Map to Factorization</h3>
+<p>A BN structure <span class="math inline">\(G\)</span> encodes a set of conditional independence assumptions, every distribution for which <span class="math inline">\(G\)</span> is an I-map must satisfy these assumptions.</p>
+<h4 id="definition-3.4-factorization-chain-rule-of-bayesian-network">Definition 3.4: Factorization (Chain Rule of Bayesian Network)</h4>
+<p>Let <span class="math inline">\(G\)</span> be a BN graph over the variables <span class="math inline">\(X_1, ...., X_n\)</span>. We say that a distribution <span class="math inline">\(P\)</span> over the same space factorizes according to <span class="math inline">\(G\)</span> if <span class="math inline">\(P\)</span> can be expressed as a product:</p>
+<p><span class="math display">\[P(X_1, ...., X_n) = \prod^n_{i=1} P(X_i | Pa^G_{X_i})\]</span></p>
+<p><br></p>
+<h4 id="definition-3.5-bayesian-network">Definition 3.5: Bayesian Network</h4>
+<p>A Bayesian network is a pair <span class="math inline">\(B = (G, P)\)</span> where <span class="math inline">\(P\)</span> factorizes over <span class="math inline">\(G\)</span>, and where <span class="math inline">\(P\)</span> is specified as a set of CPDs associated with <span class="math inline">\(G\)</span>'s nodes. The distribution <span class="math inline">\(P\)</span> is often annotated <span class="math inline">\(P_B\)</span>.</p>
+<p><br></p>
+<h4 id="theorem-3.1-i-map-factorization">Theorem 3.1: I-Map Factorization</h4>
+<p>Let <span class="math inline">\(G\)</span> be a BN structure over a set of random variables <span class="math inline">\(\mathbb{X}\)</span>, and let <span class="math inline">\(P\)</span> be a joint distribution over the same space. If <span class="math inline">\(G\)</span> is a I-map for <span class="math inline">\(P\)</span>, then <span class="math inline">\(P\)</span> factorizes according to <span class="math inline">\(G\)</span> (can be written in the form as in definition 3.4).</p>
+<p><br></p>
 <h2 id="conditional-independence-1">Conditional Independence</h2>
 <p>An important concept for probability distributions over multiple variables is that of <strong>conditional independence</strong>. Consider three random variables <span class="math inline">\(A, B, C\)</span> and suppose that the conditional distribution of <span class="math inline">\(A\)</span>, given <span class="math inline">\(B, C\)</span> is such that it does not depend on the value of <span class="math inline">\(B\)</span>, so that:</p>
 <p><span class="math display">\[P(A | B, C) = P(A | C)\]</span></p>
@@ -1619,13 +1661,13 @@ Where <span class="math inline">\(\gamma (Z_{nk}) = P(Z_{1k} = 1 | \mathbf{D}, \
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">865k</span>
+    <span title="Symbols count total">869k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">13:07</span>
+    <span title="Reading time total">13:10</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
