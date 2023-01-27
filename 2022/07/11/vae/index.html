@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="1xbHmVEsS5Fta14x1d1FXkHFr93LRr1pMxipdYVcNI4">
+  <meta name="baidu-site-verification" content="code-Srzz2vTuzA">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="next-config" data-name="main" type="application/json">{&quot;hostname&quot;:&quot;swag1ong.github.io&quot;,&quot;root&quot;:&quot;&#x2F;&quot;,&quot;images&quot;:&quot;&#x2F;images&quot;,&quot;scheme&quot;:&quot;Gemini&quot;,&quot;version&quot;:&quot;8.4.0&quot;,&quot;exturl&quot;:false,&quot;sidebar&quot;:{&quot;position&quot;:&quot;left&quot;,&quot;display&quot;:&quot;post&quot;,&quot;padding&quot;:18,&quot;offset&quot;:12},&quot;copycode&quot;:false,&quot;bookmark&quot;:{&quot;enable&quot;:false,&quot;color&quot;:&quot;#222&quot;,&quot;save&quot;:&quot;auto&quot;},&quot;fancybox&quot;:false,&quot;mediumzoom&quot;:false,&quot;lazyload&quot;:false,&quot;pangu&quot;:false,&quot;comments&quot;:{&quot;style&quot;:&quot;tabs&quot;,&quot;active&quot;:null,&quot;storage&quot;:true,&quot;lazyload&quot;:false,&quot;nav&quot;:null},&quot;motion&quot;:{&quot;enable&quot;:true,&quot;async&quot;:false,&quot;transition&quot;:{&quot;post_block&quot;:&quot;fadeIn&quot;,&quot;post_header&quot;:&quot;fadeInDown&quot;,&quot;post_body&quot;:&quot;fadeInDown&quot;,&quot;coll_header&quot;:&quot;fadeInLeft&quot;,&quot;sidebar&quot;:&quot;fadeInUp&quot;}},&quot;prism&quot;:false,&quot;i18n&quot;:{&quot;placeholder&quot;:&quot;Searching...&quot;,&quot;empty&quot;:&quot;We didn&#39;t find any results for the search: ${query}&quot;,&quot;hits_time&quot;:&quot;${hits} results found in ${time} ms&quot;,&quot;hits&quot;:&quot;${hits} results found&quot;},&quot;path&quot;:&quot;&#x2F;search.xml&quot;,&quot;localsearch&quot;:{&quot;enable&quot;:true,&quot;trigger&quot;:&quot;auto&quot;,&quot;top_n_per_article&quot;:3,&quot;unescape&quot;:false,&quot;preload&quot;:true}}</script>
+<meta name="description" content="Variational Autoencoders Generative modeling is a broad area of machine learning which deals with models of distributions \(P(X)\), defined over datapoints \(X\) in some potentially high-dimensional s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VAE">
+<meta property="og:url" content="https://swag1ong.github.io/2022/07/11/vae/index.html">
+<meta property="og:site_name" content="GoGoGogo!">
+<meta property="og:description" content="Variational Autoencoders Generative modeling is a broad area of machine learning which deals with models of distributions \(P(X)\), defined over datapoints \(X\) in some potentially high-dimensional s">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/vae_1.png">
+<meta property="article:published_time" content="2022-07-11T13:06:28.000Z">
+<meta property="article:modified_time" content="2022-07-18T13:02:10.503Z">
+<meta property="article:author" content="Zhu, Zhaoyang">
+<meta property="article:tag" content="Machine Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://swag1ong.github.io/images/RL/background/vae_1.png">
+
+
+<link rel="canonical" href="https://swag1ong.github.io/2022/07/11/vae/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{&quot;sidebar&quot;:&quot;&quot;,&quot;isHome&quot;:false,&quot;isPost&quot;:true,&quot;lang&quot;:&quot;en&quot;,&quot;comments&quot;:true,&quot;permalink&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&#x2F;2022&#x2F;07&#x2F;11&#x2F;vae&#x2F;&quot;,&quot;path&quot;:&quot;2022&#x2F;07&#x2F;11&#x2F;vae&#x2F;&quot;,&quot;title&quot;:&quot;VAE&quot;}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">&quot;&quot;</script>
+<title>VAE | GoGoGogo!</title><script src="/js/config.js"></script>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?852b005027c5efa81663f6f5c4c5b7fd"></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">GoGoGogo!</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">109</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
+        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>Sitemap</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#variational-autoencoders"><span class="nav-number">1.</span> <span class="nav-text">Variational Autoencoders</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#setting-up-the-objective"><span class="nav-number">1.1.</span> <span class="nav-text">Setting up the Objective</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#optimize-the-objective"><span class="nav-number">1.2.</span> <span class="nav-text">Optimize the Objective</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Zhu, Zhaoyang"
+      src="/images/others/favicon.jpeg">
+  <p class="site-author-name" itemprop="name">Zhu, Zhaoyang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">109</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/swag1ong" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;swag1ong" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:zhaoyang.zhu@mail.utoronto.ca" title="E-Mail → mailto:zhaoyang.zhu@mail.utoronto.ca" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.linkedin.com/in/zhuzhaoyangzzyu0616" title="Linkedin → https:&#x2F;&#x2F;www.linkedin.com&#x2F;in&#x2F;zhuzhaoyangzzyu0616" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkedin</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2022/07/11/vae/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          VAE
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-07-11 21:06:28" itemprop="dateCreated datePublished" datetime="2022-07-11T21:06:28+08:00">2022-07-11</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2022-07-18 21:02:10" itemprop="dateModified" datetime="2022-07-18T21:02:10+08:00">2022-07-18</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2022/07/11/vae/" class="post-meta-item leancloud_visitors" data-flag-title="VAE" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>3.8k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="variational-autoencoders">Variational Autoencoders</h1>
+<p>Generative modeling is a broad area of machine learning which deals with models of distributions <span class="math inline">\(P(X)\)</span>, defined over datapoints <span class="math inline">\(X\)</span> in some potentially high-dimensional space <span class="math inline">\(\mathbf{X}\)</span>. For example, images are popular kind of data for which we might create generative models, the job of the generative model is to capture the dependencies between pixels and model the joint distribution between them. One straight forward kind of generative model is simply to compute the probability measure <span class="math inline">\(P(X)\)</span> numerically, given a <span class="math inline">\(X\)</span>, we can tell the probability that <span class="math inline">\(X\)</span> is a real image from the distribution. But we often care about producing more examples that are like those already in a database, that is, we can formalize the setup by saying that:</p>
+<p>we get examples <span class="math inline">\(X\)</span> distributed according ot some unknown distribution <span class="math inline">\(P_{gt} (X)\)</span>, and our goal is to learn a model <span class="math inline">\(P\)</span> which we can sample from , such that <span class="math inline">\(P\)</span> is as similar as possible to <span class="math inline">\(P_{gt}\)</span>.</p>
+<p>Formally, say we have a vector of latent variables <span class="math inline">\(\mathbf{z}\)</span> that have values in some high-dimensional space <span class="math inline">\(\mathbf{Z}\)</span> which we can easily sample according to some probability density function <span class="math inline">\(P(\mathbf{z})\)</span> defined over <span class="math inline">\(\mathbf{Z}\)</span>. Then, say we have a family of deterministic functions <span class="math inline">\(f(\mathbf{z}; \theta)\)</span>, parameterized by a vector <span class="math inline">\(\theta\)</span> values in some space <span class="math inline">\(\Theta\)</span>, where:</p>
+<p><span class="math display">\[f(\mathbf{z}; \theta);\quad f: \mathbf{Z} \times \Theta \rightarrow \mathbf{X}\]</span></p>
+<p><span class="math inline">\(f\)</span> is deterministic, but if <span class="math inline">\(\mathbf{z}\)</span> is random, then <span class="math inline">\(f(\mathbf{z}; \theta) := f(\cdot; \theta) \circ \mathbf{z}\)</span> is a random variable with values in <span class="math inline">\(\mathbf{X}\)</span>. <strong>We wish to optimize <span class="math inline">\(\theta\)</span> s.t we can sample <span class="math inline">\(\mathbf{z}\)</span> from <span class="math inline">\(P(\mathbf{z})\)</span> and with high probability <span class="math inline">\(f(\mathbf{z}; \theta)\)</span> will be like the <span class="math inline">\(X\)</span>s' in our datasets.</strong> That is, we aim to maximize the probability of each <span class="math inline">\(X\)</span> in the training set under the entire generative process (Maximize the likelihood):</p>
+<p><span class="math display">\[P(X) = \int P(X| \mathbf{z}; \theta) P(\mathbf{z}) d\mathbf{z} \quad \quad (1)\]</span></p>
+<p>The intuition behind this framework: If the model is likely to produce training examples, then it is likely to produce similar samples and unlikely to produce dissimilar ones.</p>
+<p><br></p>
+<p>In VAE, conditional density <span class="math inline">\(P(X | \mathbf{z};\theta)\)</span> is often parameterized by Multivariate Gaussian (with parameterized mean function, we can approach <span class="math inline">\(X\)</span> for some <span class="math inline">\(\mathbf{z}\)</span>, gradually making the training data more likely under the generative model.):</p>
+<p><span class="math display">\[P(X | \mathbf{z}; \theta) = N(X | f(\mathbf{z}\; \theta), \sigma^2 I)\]</span></p>
+<p>But it is not required to be Gaussian, if <span class="math inline">\(X\)</span> is binary, <span class="math inline">\(P(X | \mathbf{z})\)</span> might be a Bernoulli, <strong>the important property is simply that <span class="math inline">\(P(X | \mathbf{z})\)</span> can be computed and is continuous in <span class="math inline">\(\theta\)</span>.</strong></p>
+<p><br></p>
+<h2 id="setting-up-the-objective">Setting up the Objective</h2>
+<p>How can we estimate equation 1 using sampling? In practice, for most <span class="math inline">\(\mathbf{z}\)</span>, <span class="math inline">\(P(X | \mathbf{z})\)</span> will be nearly zero, so it contributes nothing to <span class="math inline">\(P(X)\)</span>. The key idea behind the VAE is to attempt to sample values <span class="math inline">\(\mathbf{z}\)</span> that are likely to have produced <span class="math inline">\(X\)</span>, and compute <span class="math inline">\(P(X)\)</span> from there. This means we need a new function <span class="math inline">\(Q(\mathbf{z} | X)\)</span> which can take a value of <span class="math inline">\(X\)</span> and give us a distribution over <span class="math inline">\(\mathbf{z}\)</span> values that are likely to produce <span class="math inline">\(X\)</span>. Thus, computing <span class="math inline">\(E_{ \mathbf{z} \sim Q} [P(X | \mathbf{z})]\)</span> is much easier than <span class="math inline">\(E_{ \mathbf{z} \sim P( \mathbf{z})}[P(X | \mathbf{z})]\)</span>.</p>
+<p>The KL divergence between <span class="math inline">\(Q(\mathbf{z} | X)\)</span> and <span class="math inline">\(P(\mathbf{z} | X)\)</span> is:</p>
+<p><span class="math display">\[D[Q(\mathbf{z} | X) || P(\mathbf{z} | X)] = E_{z \sim Q} [\log Q(\mathbf{z} | X) - \log P(\mathbf{z} | X)]\]</span></p>
+<p>Use bayes rule:</p>
+<p><span class="math display">\[\log P(X) - D[Q(\mathbf{z} | X) || P(\mathbf{z} | X)] = E_{z \sim Q} [\log P(X | \mathbf{z})] - D[Q(\mathbf{z} | X) || P(\mathbf{z})]\]</span></p>
+<p><strong>Starting from left-hand side, we are maximizing the log evidence while simultaneously minimizing the distribution regularization term. The right-hand side (ELBO) is similar to auto-encoder, where we map <span class="math inline">\(X \rightarrow \mathbf{z}\)</span> using <span class="math inline">\(Q\)</span>, then decode back to <span class="math inline">\(X\)</span> using <span class="math inline">\(P\)</span>.</strong></p>
+<p>The right-hand side can be optimized using gradient decent.</p>
+<p><br></p>
+<h2 id="optimize-the-objective">Optimize the Objective</h2>
+<p>How can we optimize the right-hand side (ELBO) ? we first need to be a bit more specific about the form that <span class="math inline">\(Q(\mathbf{z} | X)\)</span> will take. The usual choice is to say that <span class="math inline">\(Q(\mathbf{z} | X) = N(\mathbf{z} | \mu(X), \Sigma(X))\)</span>, in practice, <span class="math inline">\(\mu, \Sigma\)</span> are parametrized using NN.</p>
+<p><img src="/images/RL/background/vae_1.png" width="600"></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">Related Posts</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/07/19/adaboost/" rel="bookmark">Adaboost</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/07/19/decision-trees/" rel="bookmark">Decision Trees</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2022/06/12/gaussian-process/" rel="bookmark">gaussian-process</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/07/21/em/" rel="bookmark">EM</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2021/07/19/gbdt/" rel="bookmark">GBDT</a></div>
+    </li>
+  </ul>
+
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/06/12/gaussian-process/" rel="prev" title="gaussian-process">
+                  <i class="fa fa-chevron-left"></i> gaussian-process
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/07/18/convex-opt/" rel="next" title="convex-opt">
+                  convex-opt <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments utterances-container"></div><script src="/js/comments.js"></script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2021 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhu, Zhaoyang</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="Symbols count total">878k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="Reading time total">13:18</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script size="300" alpha="0.3" zIndex="-1" src="https://cdn.jsdelivr.net/npm/ribbon.js@1.0.2/dist/ribbon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+  
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{&quot;enable&quot;:true,&quot;app_id&quot;:&quot;gPOc95wWW2Hwp2pkVSAAz28m-MdYXbMMI&quot;,&quot;app_key&quot;:&quot;7Sf65xCHXfEEdBvu29UHSYdV&quot;,&quot;server_url&quot;:&quot;https:&#x2F;&#x2F;swag1ong.github.io&quot;,&quot;security&quot;:true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{&quot;enable&quot;:true,&quot;tags&quot;:&quot;none&quot;,&quot;js&quot;:&quot;https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;mathjax@3.1.4&#x2F;es5&#x2F;tex-mml-chtml.js&quot;}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<script class="next-config" data-name="utterances" type="application/json">{&quot;enable&quot;:true,&quot;repo&quot;:&quot;swag1ong&#x2F;swag1ong.github.io&quot;,&quot;issue_term&quot;:&quot;pathname&quot;,&quot;theme&quot;:&quot;github-light&quot;,&quot;pathname&quot;:&quot;pathname&quot;}</script>
+<script src="/js/third-party/comments/utterances.js"></script>
+
+</body>
+</html>
