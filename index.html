@@ -464,7 +464,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2023-04-01 19:37:03" itemprop="dateModified" datetime="2023-04-01T19:37:03+08:00">2023-04-01</time>
+        <time title="Modified: 2023-05-09 23:23:32" itemprop="dateModified" datetime="2023-05-09T23:23:32+08:00">2023-05-09</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -491,14 +491,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>11k</span>
+      <span>15k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>10 mins.</span>
+      <span>14 mins.</span>
     </span>
 </div>
 
@@ -659,6 +659,7 @@
 <li><span class="math inline">\(f(\delta x) \rightarrow \delta^{-1} \hat{f}(\delta^{-1}\xi), \;\; \forall h \in \mathbb{R}\)</span></li>
 <li><span class="math inline">\(f^{\prime}(x) \rightarrow 2\pi i \xi \hat{f}(\xi)\)</span></li>
 <li><span class="math inline">\(-2\pi i x f(x) \rightarrow \frac{d}{d\xi} \hat{f}(\xi)\)</span></li>
+<li><span class="math inline">\(\hat{\bar{f}} (x) = \overline{\hat{f}(-\xi)}\)</span></li>
 </ul>
 <h4 id="theorem-5.2">Theorem 5.2</h4>
 <p>If <span class="math inline">\(f \in S(\mathbb{R})\)</span>, then <span class="math inline">\(\hat{f} \in S(\mathbb{R})\)</span>.</p>
@@ -697,6 +698,93 @@
 <p><span class="math display">\[F^*(\hat{f}) (x) = f(x)\]</span></p>
 <h4 id="theorem-5.10-fourier-transform-is-a-bijective-mapping-on-the-schwartz-space">Theorem 5.10: Fourier Transform is a Bijective Mapping on the Schwartz Space</h4>
 <p>The Fourier transform is a bijective mapping on the Schwartz space.</p>
+<h4 id="theorem-5.11-convolutions-of-schwartz-functions">Theorem 5.11: Convolutions of Schwartz Functions</h4>
+<p>If <span class="math inline">\(f, g \in S(\mathbb{R})\)</span>, then:</p>
+<ol type="1">
+<li><span class="math inline">\(f * g \in S(\mathbb{R})\)</span></li>
+<li><span class="math inline">\(f * g = g * f\)</span></li>
+<li><span class="math inline">\((\widehat{f * g}) (\xi) = \hat{f}(\xi)\hat{g}(\xi)\)</span></li>
+</ol>
+<h4 id="inner-product-in-schwartz-space">Inner Product in Schwartz Space</h4>
+<p>The Schwartz space can be equipped with a Hermitian inner product:</p>
+<p><span class="math display">\[&lt;f, g&gt; = \int^{\infty}_{-\infty} f(x) \bar{g}(x) dx\]</span></p>
+<p>whose associated norm is:</p>
+<p><span class="math display">\[\|f\| = \sqrt{\int^{\infty}_{-\infty} |f(x)|^2 dx}\]</span></p>
+<h4 id="theorem-5.12-plancherel-the-norm-of-fourier-transform-preserves">Theorem 5.12: Plancherel, The Norm of Fourier Transform Preserves</h4>
+<p>If <span class="math inline">\(f \in S(\mathbb{R})\)</span> then <span class="math inline">\(\|\hat{f}\| = \|f\|\)</span></p>
+<h4 id="extension-to-functions-of-moderate-decrease">Extension to Functions of Moderate Decrease</h4>
+<p>All properties hold for <span class="math inline">\(f \in M(\mathbb{R})\)</span></p>
+<h4 id="monomial-xalpha">Monomial <span class="math inline">\(x^\alpha\)</span></h4>
+<p>Given a <span class="math inline">\(d\)</span>-tuple <span class="math inline">\(\alpha = (\alpha_1, ...., \alpha_d)\)</span> of non-negative integers (<strong>multi-index</strong>), the <strong>monomial</strong> <span class="math inline">\(x^\alpha\)</span> is defined by:</p>
+<p><span class="math display">\[x^\alpha = x_1^{\alpha_1} x_2^{\alpha_2} ... x_d^{\alpha_d}\]</span></p>
+<h4 id="rotation-in-mathbbrd">Rotation in <span class="math inline">\(\mathbb{R}^d\)</span></h4>
+<p>A <strong>rotation</strong> in <span class="math inline">\(\mathbb{R}^d\)</span> is a linear transformation <span class="math inline">\(R: \mathbb{R}^d \rightarrow \mathbb{R}^d\)</span> which preserves the inner product. In the other words,</p>
+<ul>
+<li><span class="math inline">\(R(ax + by) = aR(x) + bR(y) \;\; \forall x, y \in \mathbb{R}^d, \; a, b \in \mathbb{R}\)</span></li>
+<li><span class="math inline">\(R(x) \cdot R(y) = x \cdot y, \;\; \forall x, y \in \mathbb{R}^d\)</span></li>
+</ul>
+<p>If <span class="math inline">\(\det{(R)} = 1\)</span>, <span class="math inline">\(R\)</span> is a <strong>proper rotation</strong>, otherwise, we say that <span class="math inline">\(R\)</span> is an <strong>improper rotation</strong>.</p>
+<h4 id="rapid-decreasing-of-complex-function-on-mathbbrd">Rapid Decreasing of Complex Function on <span class="math inline">\(\mathbb{R}^d\)</span></h4>
+<p>A continuous complex-valued function <span class="math inline">\(f\)</span> on <span class="math inline">\(\mathbb{R}^d\)</span> is said to be <strong>rapidly decreasing</strong> if for every multi-index <span class="math inline">\(\alpha\)</span> the function <span class="math inline">\(|x^\alpha f(x)|\)</span> is bounded. Equivalently, a continuous function is of rapid decrease if:</p>
+<p><span class="math display">\[\sup_{x \in \mathbb{R}^d} |x|^k |f(x)| &lt; \infty, \quad\quad \forall k = 0, 1, 2, ...\]</span></p>
+<p>Given a function of rapid decrease, we define:</p>
+<p><span class="math display">\[\int_{\mathbb{R}^d} f(x) dx = \lim_{N \rightarrow \infty} \int_{Q_N} f(x) dx\]</span></p>
+<p>Where <span class="math inline">\(Q_N\)</span> denotes the closed cube centered at the origin, with sides of length <span class="math inline">\(N\)</span> parallel to the coordinate axis, that is,</p>
+<p><span class="math display">\[Q_N = \{x \in \mathbb{R}^d: |x_i| \leq \frac{N}{2} \quad \quad i = 1, ..., d\}\]</span></p>
+<p>Actually, the limit exists if we can show that <span class="math inline">\(f\)</span> is continuous and</p>
+<p><span class="math display">\[\sup_{x \in \mathbb{R}^d} |x|^{d + \epsilon} |f(x)| &lt; \infty, \quad \text{for some $\epsilon &gt; 0$}\]</span></p>
+<p>If the function <span class="math inline">\(f\)</span> satisfies the condition with <span class="math inline">\(\epsilon = 1\)</span>, we say that the function is <strong>moderate decrease</strong> on <span class="math inline">\(\mathbb{R}^d\)</span>.</p>
+<h4 id="properties-of-moderate-decreasing-functions">Properties of Moderate Decreasing Functions</h4>
+<p>If <span class="math inline">\(f\)</span> is of moderate decrease, then:</p>
+<ol type="1">
+<li>Translation Invariant:</li>
+</ol>
+<p><span class="math display">\[\int_{\mathbb{R}^d} f(x + h) dx = \int_{\mathbb{R}^d} f(x) dx \quad \forall h \in \mathbb{R}^d\]</span></p>
+<ol start="2" type="1">
+<li>Scaling Invariant:</li>
+</ol>
+<p><span class="math display">\[\delta^d \int_{\mathbb{R}^d} f(\delta x) dx = \int_{\mathbb{R}^d} f(x) dx \quad \forall \delta &gt; 0\]</span></p>
+<ol start="3" type="1">
+<li>Rotation Invariant:</li>
+</ol>
+<p><span class="math display">\[\int_{\mathbb{R}^d} f(R(x)) dx = \int_{\mathbb{R}^d} f(x) \quad \text{$\forall$ rotation $R$}\]</span></p>
+<h4 id="schwartz-space-in-mathbbrd">Schwartz Space in <span class="math inline">\(\mathbb{R}^d\)</span></h4>
+<p>The <strong>Schwartz space</strong> <span class="math inline">\(S(\mathbb{R}^d)\)</span> consists of all indefinitely differentiable functions <span class="math inline">\(f\)</span> on <span class="math inline">\(\mathbb{R}^d\)</span> such that</p>
+<p><span class="math display">\[\sup_{x \in \mathbb{R}^d} |x^\alpha (\frac{\partial }{\partial x})^\beta f(x)| &lt; \infty\]</span></p>
+<p>for every multi-index <span class="math inline">\(\alpha, \beta\)</span>. In other words, <span class="math inline">\(f\)</span> and all its derivative are required to be rapidly decreasing.</p>
+<h4 id="fourier-transform-on-mathbbrd">Fourier Transform on <span class="math inline">\(\mathbb{R}^d\)</span></h4>
+<p>The Fourier transform of a Schwartz function <span class="math inline">\(f\)</span> is defined by:</p>
+<p><span class="math display">\[\hat{f}(\xi) = \int_{\mathbb{R}^d} f(x) e^{-2\pi ix \cdot \xi} dx \quad \quad \text{for } \xi \in \mathbb{R}^d\]</span></p>
+<p>This resembles with the formula in one-dimension, except we have dot product between <span class="math inline">\(\xi\)</span> and <span class="math inline">\(x\)</span> now.</p>
+<h4 id="properties-of-fourier-transform-in-mathbbrd">Properties of Fourier Transform in <span class="math inline">\(\mathbb{R}^d\)</span></h4>
+<p>Let <span class="math inline">\(f \in \mathbb{R}^d\)</span></p>
+<ol type="1">
+<li><span class="math inline">\(f(x + h) \rightarrow \hat{f}(\xi) e^{2\pi i \xi \cdot h}, \quad h \in \mathbb{R}^d\)</span></li>
+<li><span class="math inline">\(f(x) e^{-2\pi i x h} \rightarrow \hat{f} (\xi + h), \quad h \in \mathbb{R}^d\)</span></li>
+<li><span class="math inline">\(f(\delta x) \rightarrow \delta^{-d} \hat{f}(\delta^{-1} \xi), \quad \delta &gt; 0\)</span></li>
+<li><span class="math inline">\((\frac{\partial }{\partial x})^\alpha f(x) \rightarrow (2\pi i \xi)^\alpha \hat{f}(\xi)\)</span></li>
+<li><span class="math inline">\((-2\pi i x)^\alpha f(x) \rightarrow (\frac{\partial }{\partial x})^\alpha \hat{f}(\xi)\)</span></li>
+<li><span class="math inline">\(f(Rx) \rightarrow \hat{f}(R\xi), \quad R \text{ is a rotation}\)</span></li>
+</ol>
+<h4 id="fourier-inversion-in-mathbbrd">Fourier Inversion in <span class="math inline">\(\mathbb{R}^d\)</span></h4>
+<p>Suppose <span class="math inline">\(f \in S(\mathbb{R}^d)\)</span>. Then:</p>
+<p><span class="math display">\[f(x) = \int_{\mathbb{R}^d} \hat{f}(\xi) e^{2\pi i x \cdot \xi} d\xi\]</span></p>
+<p>Moreover</p>
+<p><span class="math display">\[\int_{\mathbb{R}^d} |\hat{f}(x)|^2 d\xi = \int_{\mathbb{R}^d} |f(x)|^2 dx\]</span></p>
+<p><br></p>
+<h3 id="finite-fourier-analysis">Finite Fourier Analysis</h3>
+<h4 id="the-group-zn">The group <span class="math inline">\(Z(N)\)</span></h4>
+<p>Let <span class="math inline">\(N\)</span> be a positive integer. A complex number <span class="math inline">\(z\)</span> is an <span class="math inline">\(N^{th}\)</span> <strong>root of unity</strong> if <span class="math inline">\(z^N = 1\)</span>. The set of <span class="math inline">\(N^{th}\)</span> roots of unity is precisely:</p>
+<p><span class="math display">\[\{1, e^{2\pi i / N}, e^{2\pi i 2 / N}, ...., e^{2\pi i (N - 1) / N}\}\]</span></p>
+<p>This is uniform partition of the circle.</p>
+<p><img src='/images/RL/background/fa_7_1_1.png' width="600"></p>
+<p>The set has the following properties:</p>
+<ol type="1">
+<li>If <span class="math inline">\(z, w \in Z(N)\)</span>, then <span class="math inline">\(zw \in Z(N)\)</span> and <span class="math inline">\(zw = wz\)</span></li>
+<li><span class="math inline">\(1 \in Z(N)\)</span></li>
+<li>If <span class="math inline">\(z \in Z(N)\)</span>, then <span class="math inline">\(z^{-1} = \frac{1}{z} \in Z(N)\)</span> and <span class="math inline">\(z z^{-1} = 1\)</span></li>
+</ol>
+<p>The group <span class="math inline">\(Z(N)\)</span> is equivalent to the group of <strong>integers modulo <span class="math inline">\(N\)</span></strong> which contains integers $0 n + m $</p>
 
       
     </div>
@@ -1695,13 +1783,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">889k</span>
+    <span title="Symbols count total">893k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">13:28</span>
+    <span title="Reading time total">13:32</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

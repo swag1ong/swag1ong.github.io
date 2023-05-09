@@ -30,8 +30,9 @@
 <meta property="og:description" content="Base on Fourier Analysis: an Introduction by Elias M. Stein &amp; Rami Shakarchi Fourier Analysis (1) Basic Properties of Fourier Series Key Takeaway Preliminary Useful Identities  \(e^{ix} &#x3D; \cos(x)">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://swag1ong.github.io/images/RL/background/fa_4_1.png">
+<meta property="og:image" content="https://swag1ong.github.io/images/RL/background/fa_7_1_1.png">
 <meta property="article:published_time" content="2023-01-27T03:42:50.000Z">
-<meta property="article:modified_time" content="2023-04-01T11:37:03.980Z">
+<meta property="article:modified_time" content="2023-05-09T15:23:32.270Z">
 <meta property="article:author" content="Zhu, Zhaoyang">
 <meta property="article:tag" content="RL Basics">
 <meta name="twitter:card" content="summary">
@@ -154,7 +155,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#fourier-analysis-1"><span class="nav-number">1.</span> <span class="nav-text">Fourier Analysis (1)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#basic-properties-of-fourier-series"><span class="nav-number">1.1.</span> <span class="nav-text">Basic Properties of Fourier Series</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#key-takeaway"><span class="nav-number">1.1.1.</span> <span class="nav-text">Key Takeaway</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#preliminary"><span class="nav-number">1.1.2.</span> <span class="nav-text">Preliminary</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#useful-identities"><span class="nav-number">1.1.3.</span> <span class="nav-text">Useful Identities</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#complex-trigonometric-polynomial"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">Complex Trigonometric Polynomial</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#everywhere-continuous-functions"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">Everywhere continuous functions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#piecewise-continuous-functions"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">Piecewise continuous functions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#riemann-integrable-functions"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">Riemann integrable functions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#functions-on-the-circle"><span class="nav-number">1.1.3.5.</span> <span class="nav-text">Functions on the circle</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#main-definitions"><span class="nav-number">1.1.4.</span> <span class="nav-text">Main Definitions</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#def-1.1.1-fourier-coefficient-and-fourier-series-of-a-function"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">Def 1.1.1: Fourier Coefficient and Fourier Series of a Function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#def-1.1.2-dirichlet-kernel"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">Def 1.1.2: Dirichlet Kernel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#def-1.1.3-poisson-kernel"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">Def 1.1.3: Poisson Kernel</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#uniqueness-of-fourier-series"><span class="nav-number">1.1.5.</span> <span class="nav-text">Uniqueness of Fourier Series</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-2.1-continuous-points-have-value-zero-when-all-fourier-coefficients-are-zeros"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">Theorem 2.1 Continuous points have value zero when all Fourier coefficients are zeros</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-2.2"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">Corollary 2.2:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-2.3-if-series-of-fourier-coefficients-converges-absolutely-then-fourier-series-converges-to-f"><span class="nav-number">1.1.5.3.</span> <span class="nav-text">Theorem 2.3: If series of Fourier Coefficients converges absolutely, then Fourier Series converges to \(f\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ck"><span class="nav-number">1.1.5.4.</span> <span class="nav-text">\(C^k\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#convolution"><span class="nav-number">1.1.5.5.</span> <span class="nav-text">Convolution</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#partial-sums-of-fourier-series-of-2pi-periodic-function-as-convolution"><span class="nav-number">1.1.5.6.</span> <span class="nav-text">Partial Sums of Fourier Series of \(2\pi\) periodic function as Convolution</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#proposition-3.1"><span class="nav-number">1.1.5.7.</span> <span class="nav-text">Proposition 3.1:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#good-kernels"><span class="nav-number">1.1.5.8.</span> <span class="nav-text">Good Kernels</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-4.1-approximation-to-identity"><span class="nav-number">1.1.5.9.</span> <span class="nav-text">Theorem 4.1: Approximation to Identity</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#convergence-of-fourier-series"><span class="nav-number">1.1.6.</span> <span class="nav-text">Convergence of Fourier Series</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mean-square-convergence-on-circle"><span class="nav-number">1.1.6.1.</span> <span class="nav-text">Mean-square Convergence on Circle</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fourier-transform"><span class="nav-number">1.1.7.</span> <span class="nav-text">Fourier Transform</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#elementary-theory-of-the-fourier-transform"><span class="nav-number">1.1.7.1.</span> <span class="nav-text">Elementary Theory of The Fourier Transform</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.1-properties-of-improper-integral"><span class="nav-number">1.1.7.2.</span> <span class="nav-text">Theorem 5.1: Properties of Improper Integral</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-of-the-fourier-transform"><span class="nav-number">1.1.7.3.</span> <span class="nav-text">Definition of the Fourier transform</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#the-schwartz-space"><span class="nav-number">1.1.7.4.</span> <span class="nav-text">The Schwartz Space</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fourier-transform-on-s"><span class="nav-number">1.1.7.5.</span> <span class="nav-text">Fourier Transform on \(S\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.2"><span class="nav-number">1.1.7.6.</span> <span class="nav-text">Theorem 5.2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gaussians-e-ax2-are-good-kernels"><span class="nav-number">1.1.7.7.</span> <span class="nav-text">Gaussians (\(e^{-ax^2}\)) are Good Kernels</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.4-the-fourier-transform-of-e-pi-x2-is-itself"><span class="nav-number">1.1.7.8.</span> <span class="nav-text">Theorem 5.4 The Fourier Transform of \(e^{-\pi x^2}\) is itself</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.5"><span class="nav-number">1.1.7.9.</span> <span class="nav-text">Theorem 5.5</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-5.5"><span class="nav-number">1.1.7.9.1.</span> <span class="nav-text">Proof of Theorem 5.5</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.6-k_delta_delta-0-is-a-family-of-good-kernels"><span class="nav-number">1.1.7.10.</span> <span class="nav-text">Theorem 5.6: \(\{K_{\delta}\}_{\delta &gt; 0}\) is a Family of Good Kernels</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#convolution-on-mathbbr"><span class="nav-number">1.1.7.11.</span> <span class="nav-text">Convolution on \(\mathbb{R}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.7"><span class="nav-number">1.1.7.12.</span> <span class="nav-text">Theorem 5.7</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#the-fourier-inversion"><span class="nav-number">1.1.7.13.</span> <span class="nav-text">The Fourier Inversion</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.8-the-multiplication-formula"><span class="nav-number">1.1.7.14.</span> <span class="nav-text">Theorem 5.8: The Multiplication Formula</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.9-fourier-inversion"><span class="nav-number">1.1.7.15.</span> <span class="nav-text">Theorem 5.9: Fourier Inversion</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.10-fourier-transform-is-a-bijective-mapping-on-the-schwartz-space"><span class="nav-number">1.1.7.16.</span> <span class="nav-text">Theorem 5.10: Fourier Transform is a Bijective Mapping on the Schwartz Space</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#fourier-analysis-1"><span class="nav-number">1.</span> <span class="nav-text">Fourier Analysis (1)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#basic-properties-of-fourier-series"><span class="nav-number">1.1.</span> <span class="nav-text">Basic Properties of Fourier Series</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#key-takeaway"><span class="nav-number">1.1.1.</span> <span class="nav-text">Key Takeaway</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#preliminary"><span class="nav-number">1.1.2.</span> <span class="nav-text">Preliminary</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#useful-identities"><span class="nav-number">1.1.3.</span> <span class="nav-text">Useful Identities</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#complex-trigonometric-polynomial"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">Complex Trigonometric Polynomial</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#everywhere-continuous-functions"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">Everywhere continuous functions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#piecewise-continuous-functions"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">Piecewise continuous functions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#riemann-integrable-functions"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">Riemann integrable functions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#functions-on-the-circle"><span class="nav-number">1.1.3.5.</span> <span class="nav-text">Functions on the circle</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#main-definitions"><span class="nav-number">1.1.4.</span> <span class="nav-text">Main Definitions</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#def-1.1.1-fourier-coefficient-and-fourier-series-of-a-function"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">Def 1.1.1: Fourier Coefficient and Fourier Series of a Function</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#def-1.1.2-dirichlet-kernel"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">Def 1.1.2: Dirichlet Kernel</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#def-1.1.3-poisson-kernel"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">Def 1.1.3: Poisson Kernel</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#uniqueness-of-fourier-series"><span class="nav-number">1.1.5.</span> <span class="nav-text">Uniqueness of Fourier Series</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-2.1-continuous-points-have-value-zero-when-all-fourier-coefficients-are-zeros"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">Theorem 2.1 Continuous points have value zero when all Fourier coefficients are zeros</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#corollary-2.2"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">Corollary 2.2:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-2.3-if-series-of-fourier-coefficients-converges-absolutely-then-fourier-series-converges-to-f"><span class="nav-number">1.1.5.3.</span> <span class="nav-text">Theorem 2.3: If series of Fourier Coefficients converges absolutely, then Fourier Series converges to \(f\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ck"><span class="nav-number">1.1.5.4.</span> <span class="nav-text">\(C^k\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#convolution"><span class="nav-number">1.1.5.5.</span> <span class="nav-text">Convolution</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#partial-sums-of-fourier-series-of-2pi-periodic-function-as-convolution"><span class="nav-number">1.1.5.6.</span> <span class="nav-text">Partial Sums of Fourier Series of \(2\pi\) periodic function as Convolution</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#proposition-3.1"><span class="nav-number">1.1.5.7.</span> <span class="nav-text">Proposition 3.1:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#good-kernels"><span class="nav-number">1.1.5.8.</span> <span class="nav-text">Good Kernels</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-4.1-approximation-to-identity"><span class="nav-number">1.1.5.9.</span> <span class="nav-text">Theorem 4.1: Approximation to Identity</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#convergence-of-fourier-series"><span class="nav-number">1.1.6.</span> <span class="nav-text">Convergence of Fourier Series</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mean-square-convergence-on-circle"><span class="nav-number">1.1.6.1.</span> <span class="nav-text">Mean-square Convergence on Circle</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fourier-transform"><span class="nav-number">1.1.7.</span> <span class="nav-text">Fourier Transform</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#elementary-theory-of-the-fourier-transform"><span class="nav-number">1.1.7.1.</span> <span class="nav-text">Elementary Theory of The Fourier Transform</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.1-properties-of-improper-integral"><span class="nav-number">1.1.7.2.</span> <span class="nav-text">Theorem 5.1: Properties of Improper Integral</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#definition-of-the-fourier-transform"><span class="nav-number">1.1.7.3.</span> <span class="nav-text">Definition of the Fourier transform</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#the-schwartz-space"><span class="nav-number">1.1.7.4.</span> <span class="nav-text">The Schwartz Space</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fourier-transform-on-s"><span class="nav-number">1.1.7.5.</span> <span class="nav-text">Fourier Transform on \(S\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.2"><span class="nav-number">1.1.7.6.</span> <span class="nav-text">Theorem 5.2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gaussians-e-ax2-are-good-kernels"><span class="nav-number">1.1.7.7.</span> <span class="nav-text">Gaussians (\(e^{-ax^2}\)) are Good Kernels</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.4-the-fourier-transform-of-e-pi-x2-is-itself"><span class="nav-number">1.1.7.8.</span> <span class="nav-text">Theorem 5.4 The Fourier Transform of \(e^{-\pi x^2}\) is itself</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.5"><span class="nav-number">1.1.7.9.</span> <span class="nav-text">Theorem 5.5</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#proof-of-theorem-5.5"><span class="nav-number">1.1.7.9.1.</span> <span class="nav-text">Proof of Theorem 5.5</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.6-k_delta_delta-0-is-a-family-of-good-kernels"><span class="nav-number">1.1.7.10.</span> <span class="nav-text">Theorem 5.6: \(\{K_{\delta}\}_{\delta &gt; 0}\) is a Family of Good Kernels</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#convolution-on-mathbbr"><span class="nav-number">1.1.7.11.</span> <span class="nav-text">Convolution on \(\mathbb{R}\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.7"><span class="nav-number">1.1.7.12.</span> <span class="nav-text">Theorem 5.7</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#the-fourier-inversion"><span class="nav-number">1.1.7.13.</span> <span class="nav-text">The Fourier Inversion</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.8-the-multiplication-formula"><span class="nav-number">1.1.7.14.</span> <span class="nav-text">Theorem 5.8: The Multiplication Formula</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.9-fourier-inversion"><span class="nav-number">1.1.7.15.</span> <span class="nav-text">Theorem 5.9: Fourier Inversion</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.10-fourier-transform-is-a-bijective-mapping-on-the-schwartz-space"><span class="nav-number">1.1.7.16.</span> <span class="nav-text">Theorem 5.10: Fourier Transform is a Bijective Mapping on the Schwartz Space</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.11-convolutions-of-schwartz-functions"><span class="nav-number">1.1.7.17.</span> <span class="nav-text">Theorem 5.11: Convolutions of Schwartz Functions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#inner-product-in-schwartz-space"><span class="nav-number">1.1.7.18.</span> <span class="nav-text">Inner Product in Schwartz Space</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#theorem-5.12-plancherel-the-norm-of-fourier-transform-preserves"><span class="nav-number">1.1.7.19.</span> <span class="nav-text">Theorem 5.12: Plancherel, The Norm of Fourier Transform Preserves</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#extension-to-functions-of-moderate-decrease"><span class="nav-number">1.1.7.20.</span> <span class="nav-text">Extension to Functions of Moderate Decrease</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#monomial-xalpha"><span class="nav-number">1.1.7.21.</span> <span class="nav-text">Monomial \(x^\alpha\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rotation-in-mathbbrd"><span class="nav-number">1.1.7.22.</span> <span class="nav-text">Rotation in \(\mathbb{R}^d\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rapid-decreasing-of-complex-function-on-mathbbrd"><span class="nav-number">1.1.7.23.</span> <span class="nav-text">Rapid Decreasing of Complex Function on \(\mathbb{R}^d\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#properties-of-moderate-decreasing-functions"><span class="nav-number">1.1.7.24.</span> <span class="nav-text">Properties of Moderate Decreasing Functions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#schwartz-space-in-mathbbrd"><span class="nav-number">1.1.7.25.</span> <span class="nav-text">Schwartz Space in \(\mathbb{R}^d\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fourier-transform-on-mathbbrd"><span class="nav-number">1.1.7.26.</span> <span class="nav-text">Fourier Transform on \(\mathbb{R}^d\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#properties-of-fourier-transform-in-mathbbrd"><span class="nav-number">1.1.7.27.</span> <span class="nav-text">Properties of Fourier Transform in \(\mathbb{R}^d\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#fourier-inversion-in-mathbbrd"><span class="nav-number">1.1.7.28.</span> <span class="nav-text">Fourier Inversion in \(\mathbb{R}^d\)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#finite-fourier-analysis"><span class="nav-number">1.1.8.</span> <span class="nav-text">Finite Fourier Analysis</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#the-group-zn"><span class="nav-number">1.1.8.1.</span> <span class="nav-text">The group \(Z(N)\)</span></a></li></ol></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -264,7 +265,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2023-04-01 19:37:03" itemprop="dateModified" datetime="2023-04-01T19:37:03+08:00">2023-04-01</time>
+        <time title="Modified: 2023-05-09 23:23:32" itemprop="dateModified" datetime="2023-05-09T23:23:32+08:00">2023-05-09</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -291,14 +292,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>11k</span>
+      <span>15k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>10 mins.</span>
+      <span>14 mins.</span>
     </span>
 </div>
 
@@ -459,6 +460,7 @@
 <li><span class="math inline">\(f(\delta x) \rightarrow \delta^{-1} \hat{f}(\delta^{-1}\xi), \;\; \forall h \in \mathbb{R}\)</span></li>
 <li><span class="math inline">\(f^{\prime}(x) \rightarrow 2\pi i \xi \hat{f}(\xi)\)</span></li>
 <li><span class="math inline">\(-2\pi i x f(x) \rightarrow \frac{d}{d\xi} \hat{f}(\xi)\)</span></li>
+<li><span class="math inline">\(\hat{\bar{f}} (x) = \overline{\hat{f}(-\xi)}\)</span></li>
 </ul>
 <h4 id="theorem-5.2">Theorem 5.2</h4>
 <p>If <span class="math inline">\(f \in S(\mathbb{R})\)</span>, then <span class="math inline">\(\hat{f} \in S(\mathbb{R})\)</span>.</p>
@@ -497,6 +499,93 @@
 <p><span class="math display">\[F^*(\hat{f}) (x) = f(x)\]</span></p>
 <h4 id="theorem-5.10-fourier-transform-is-a-bijective-mapping-on-the-schwartz-space">Theorem 5.10: Fourier Transform is a Bijective Mapping on the Schwartz Space</h4>
 <p>The Fourier transform is a bijective mapping on the Schwartz space.</p>
+<h4 id="theorem-5.11-convolutions-of-schwartz-functions">Theorem 5.11: Convolutions of Schwartz Functions</h4>
+<p>If <span class="math inline">\(f, g \in S(\mathbb{R})\)</span>, then:</p>
+<ol type="1">
+<li><span class="math inline">\(f * g \in S(\mathbb{R})\)</span></li>
+<li><span class="math inline">\(f * g = g * f\)</span></li>
+<li><span class="math inline">\((\widehat{f * g}) (\xi) = \hat{f}(\xi)\hat{g}(\xi)\)</span></li>
+</ol>
+<h4 id="inner-product-in-schwartz-space">Inner Product in Schwartz Space</h4>
+<p>The Schwartz space can be equipped with a Hermitian inner product:</p>
+<p><span class="math display">\[&lt;f, g&gt; = \int^{\infty}_{-\infty} f(x) \bar{g}(x) dx\]</span></p>
+<p>whose associated norm is:</p>
+<p><span class="math display">\[\|f\| = \sqrt{\int^{\infty}_{-\infty} |f(x)|^2 dx}\]</span></p>
+<h4 id="theorem-5.12-plancherel-the-norm-of-fourier-transform-preserves">Theorem 5.12: Plancherel, The Norm of Fourier Transform Preserves</h4>
+<p>If <span class="math inline">\(f \in S(\mathbb{R})\)</span> then <span class="math inline">\(\|\hat{f}\| = \|f\|\)</span></p>
+<h4 id="extension-to-functions-of-moderate-decrease">Extension to Functions of Moderate Decrease</h4>
+<p>All properties hold for <span class="math inline">\(f \in M(\mathbb{R})\)</span></p>
+<h4 id="monomial-xalpha">Monomial <span class="math inline">\(x^\alpha\)</span></h4>
+<p>Given a <span class="math inline">\(d\)</span>-tuple <span class="math inline">\(\alpha = (\alpha_1, ...., \alpha_d)\)</span> of non-negative integers (<strong>multi-index</strong>), the <strong>monomial</strong> <span class="math inline">\(x^\alpha\)</span> is defined by:</p>
+<p><span class="math display">\[x^\alpha = x_1^{\alpha_1} x_2^{\alpha_2} ... x_d^{\alpha_d}\]</span></p>
+<h4 id="rotation-in-mathbbrd">Rotation in <span class="math inline">\(\mathbb{R}^d\)</span></h4>
+<p>A <strong>rotation</strong> in <span class="math inline">\(\mathbb{R}^d\)</span> is a linear transformation <span class="math inline">\(R: \mathbb{R}^d \rightarrow \mathbb{R}^d\)</span> which preserves the inner product. In the other words,</p>
+<ul>
+<li><span class="math inline">\(R(ax + by) = aR(x) + bR(y) \;\; \forall x, y \in \mathbb{R}^d, \; a, b \in \mathbb{R}\)</span></li>
+<li><span class="math inline">\(R(x) \cdot R(y) = x \cdot y, \;\; \forall x, y \in \mathbb{R}^d\)</span></li>
+</ul>
+<p>If <span class="math inline">\(\det{(R)} = 1\)</span>, <span class="math inline">\(R\)</span> is a <strong>proper rotation</strong>, otherwise, we say that <span class="math inline">\(R\)</span> is an <strong>improper rotation</strong>.</p>
+<h4 id="rapid-decreasing-of-complex-function-on-mathbbrd">Rapid Decreasing of Complex Function on <span class="math inline">\(\mathbb{R}^d\)</span></h4>
+<p>A continuous complex-valued function <span class="math inline">\(f\)</span> on <span class="math inline">\(\mathbb{R}^d\)</span> is said to be <strong>rapidly decreasing</strong> if for every multi-index <span class="math inline">\(\alpha\)</span> the function <span class="math inline">\(|x^\alpha f(x)|\)</span> is bounded. Equivalently, a continuous function is of rapid decrease if:</p>
+<p><span class="math display">\[\sup_{x \in \mathbb{R}^d} |x|^k |f(x)| &lt; \infty, \quad\quad \forall k = 0, 1, 2, ...\]</span></p>
+<p>Given a function of rapid decrease, we define:</p>
+<p><span class="math display">\[\int_{\mathbb{R}^d} f(x) dx = \lim_{N \rightarrow \infty} \int_{Q_N} f(x) dx\]</span></p>
+<p>Where <span class="math inline">\(Q_N\)</span> denotes the closed cube centered at the origin, with sides of length <span class="math inline">\(N\)</span> parallel to the coordinate axis, that is,</p>
+<p><span class="math display">\[Q_N = \{x \in \mathbb{R}^d: |x_i| \leq \frac{N}{2} \quad \quad i = 1, ..., d\}\]</span></p>
+<p>Actually, the limit exists if we can show that <span class="math inline">\(f\)</span> is continuous and</p>
+<p><span class="math display">\[\sup_{x \in \mathbb{R}^d} |x|^{d + \epsilon} |f(x)| &lt; \infty, \quad \text{for some $\epsilon &gt; 0$}\]</span></p>
+<p>If the function <span class="math inline">\(f\)</span> satisfies the condition with <span class="math inline">\(\epsilon = 1\)</span>, we say that the function is <strong>moderate decrease</strong> on <span class="math inline">\(\mathbb{R}^d\)</span>.</p>
+<h4 id="properties-of-moderate-decreasing-functions">Properties of Moderate Decreasing Functions</h4>
+<p>If <span class="math inline">\(f\)</span> is of moderate decrease, then:</p>
+<ol type="1">
+<li>Translation Invariant:</li>
+</ol>
+<p><span class="math display">\[\int_{\mathbb{R}^d} f(x + h) dx = \int_{\mathbb{R}^d} f(x) dx \quad \forall h \in \mathbb{R}^d\]</span></p>
+<ol start="2" type="1">
+<li>Scaling Invariant:</li>
+</ol>
+<p><span class="math display">\[\delta^d \int_{\mathbb{R}^d} f(\delta x) dx = \int_{\mathbb{R}^d} f(x) dx \quad \forall \delta &gt; 0\]</span></p>
+<ol start="3" type="1">
+<li>Rotation Invariant:</li>
+</ol>
+<p><span class="math display">\[\int_{\mathbb{R}^d} f(R(x)) dx = \int_{\mathbb{R}^d} f(x) \quad \text{$\forall$ rotation $R$}\]</span></p>
+<h4 id="schwartz-space-in-mathbbrd">Schwartz Space in <span class="math inline">\(\mathbb{R}^d\)</span></h4>
+<p>The <strong>Schwartz space</strong> <span class="math inline">\(S(\mathbb{R}^d)\)</span> consists of all indefinitely differentiable functions <span class="math inline">\(f\)</span> on <span class="math inline">\(\mathbb{R}^d\)</span> such that</p>
+<p><span class="math display">\[\sup_{x \in \mathbb{R}^d} |x^\alpha (\frac{\partial }{\partial x})^\beta f(x)| &lt; \infty\]</span></p>
+<p>for every multi-index <span class="math inline">\(\alpha, \beta\)</span>. In other words, <span class="math inline">\(f\)</span> and all its derivative are required to be rapidly decreasing.</p>
+<h4 id="fourier-transform-on-mathbbrd">Fourier Transform on <span class="math inline">\(\mathbb{R}^d\)</span></h4>
+<p>The Fourier transform of a Schwartz function <span class="math inline">\(f\)</span> is defined by:</p>
+<p><span class="math display">\[\hat{f}(\xi) = \int_{\mathbb{R}^d} f(x) e^{-2\pi ix \cdot \xi} dx \quad \quad \text{for } \xi \in \mathbb{R}^d\]</span></p>
+<p>This resembles with the formula in one-dimension, except we have dot product between <span class="math inline">\(\xi\)</span> and <span class="math inline">\(x\)</span> now.</p>
+<h4 id="properties-of-fourier-transform-in-mathbbrd">Properties of Fourier Transform in <span class="math inline">\(\mathbb{R}^d\)</span></h4>
+<p>Let <span class="math inline">\(f \in \mathbb{R}^d\)</span></p>
+<ol type="1">
+<li><span class="math inline">\(f(x + h) \rightarrow \hat{f}(\xi) e^{2\pi i \xi \cdot h}, \quad h \in \mathbb{R}^d\)</span></li>
+<li><span class="math inline">\(f(x) e^{-2\pi i x h} \rightarrow \hat{f} (\xi + h), \quad h \in \mathbb{R}^d\)</span></li>
+<li><span class="math inline">\(f(\delta x) \rightarrow \delta^{-d} \hat{f}(\delta^{-1} \xi), \quad \delta &gt; 0\)</span></li>
+<li><span class="math inline">\((\frac{\partial }{\partial x})^\alpha f(x) \rightarrow (2\pi i \xi)^\alpha \hat{f}(\xi)\)</span></li>
+<li><span class="math inline">\((-2\pi i x)^\alpha f(x) \rightarrow (\frac{\partial }{\partial x})^\alpha \hat{f}(\xi)\)</span></li>
+<li><span class="math inline">\(f(Rx) \rightarrow \hat{f}(R\xi), \quad R \text{ is a rotation}\)</span></li>
+</ol>
+<h4 id="fourier-inversion-in-mathbbrd">Fourier Inversion in <span class="math inline">\(\mathbb{R}^d\)</span></h4>
+<p>Suppose <span class="math inline">\(f \in S(\mathbb{R}^d)\)</span>. Then:</p>
+<p><span class="math display">\[f(x) = \int_{\mathbb{R}^d} \hat{f}(\xi) e^{2\pi i x \cdot \xi} d\xi\]</span></p>
+<p>Moreover</p>
+<p><span class="math display">\[\int_{\mathbb{R}^d} |\hat{f}(x)|^2 d\xi = \int_{\mathbb{R}^d} |f(x)|^2 dx\]</span></p>
+<p><br></p>
+<h3 id="finite-fourier-analysis">Finite Fourier Analysis</h3>
+<h4 id="the-group-zn">The group <span class="math inline">\(Z(N)\)</span></h4>
+<p>Let <span class="math inline">\(N\)</span> be a positive integer. A complex number <span class="math inline">\(z\)</span> is an <span class="math inline">\(N^{th}\)</span> <strong>root of unity</strong> if <span class="math inline">\(z^N = 1\)</span>. The set of <span class="math inline">\(N^{th}\)</span> roots of unity is precisely:</p>
+<p><span class="math display">\[\{1, e^{2\pi i / N}, e^{2\pi i 2 / N}, ...., e^{2\pi i (N - 1) / N}\}\]</span></p>
+<p>This is uniform partition of the circle.</p>
+<p><img src='/images/RL/background/fa_7_1_1.png' width="600"></p>
+<p>The set has the following properties:</p>
+<ol type="1">
+<li>If <span class="math inline">\(z, w \in Z(N)\)</span>, then <span class="math inline">\(zw \in Z(N)\)</span> and <span class="math inline">\(zw = wz\)</span></li>
+<li><span class="math inline">\(1 \in Z(N)\)</span></li>
+<li>If <span class="math inline">\(z \in Z(N)\)</span>, then <span class="math inline">\(z^{-1} = \frac{1}{z} \in Z(N)\)</span> and <span class="math inline">\(z z^{-1} = 1\)</span></li>
+</ol>
+<p>The group <span class="math inline">\(Z(N)\)</span> is equivalent to the group of <strong>integers modulo <span class="math inline">\(N\)</span></strong> which contains integers $0 n + m $</p>
 
     </div>
 
@@ -510,13 +599,13 @@
       <div class="popular-posts-title"><a href="/2021/05/03/MDP/" rel="bookmark">MDP</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/05/03/bellman-equations/" rel="bookmark">Bellman Equations</a></div>
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-optimality-equations/" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/2021/05/14/calculus/" rel="bookmark">Calculus (1)</a></div>
     </li>
     <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/05/03/bellman-optimality-equations/" rel="bookmark">Bellman Equations for Optimal Value Functions</a></div>
+      <div class="popular-posts-title"><a href="/2021/05/03/bellman-equations/" rel="bookmark">Bellman Equations</a></div>
     </li>
     <li class="popular-posts-item">
       <div class="popular-posts-title"><a href="/2022/07/18/convex-opt/" rel="bookmark">convex-opt</a></div>
@@ -573,13 +662,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">889k</span>
+    <span title="Symbols count total">893k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">13:28</span>
+    <span title="Reading time total">13:32</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
