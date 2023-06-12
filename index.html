@@ -464,7 +464,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2023-05-10 22:47:46" itemprop="dateModified" datetime="2023-05-10T22:47:46+08:00">2023-05-10</time>
+        <time title="Modified: 2023-06-12 23:14:29" itemprop="dateModified" datetime="2023-06-12T23:14:29+08:00">2023-06-12</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -491,14 +491,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>17k</span>
+      <span>19k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>15 mins.</span>
+      <span>18 mins.</span>
     </span>
 </div>
 
@@ -806,10 +806,68 @@
 <li>If <span class="math inline">\(z \in Z(N)\)</span>, then <span class="math inline">\(z^{-1} = \frac{1}{z} \in Z(N)\)</span> and <span class="math inline">\(z z^{-1} = 1\)</span></li>
 </ol>
 <p>The group <span class="math inline">\(Z(N)\)</span> is equivalent to the group of <strong>integers modulo <span class="math inline">\(N\)</span></strong> which contains integers $0 n + m $</p>
+<p>Let <span class="math inline">\(V, W\)</span> denote the vector spaces of complexed-valued functions on the group of integers modulo <span class="math inline">\(N\)</span> and the <span class="math inline">\(N\)</span>th roots of unity. Then, the identification given above carries over to <span class="math inline">\(V, W\)</span> as follows:</p>
+<p><span class="math display">\[F(k) \longleftrightarrow f(e^{2\pi i k/N})\]</span></p>
+<p>Where <span class="math inline">\(F\)</span> is a function on <span class="math inline">\(V\)</span> and <span class="math inline">\(f\)</span> is a function on the <span class="math inline">\(W\)</span>. These spaces can be represented as <span class="math inline">\(\mathbb{Z}(N)\)</span>, because they are equivalent.</p>
+<h4 id="orthogonal-bases-in-mathbbzn">Orthogonal Bases in <span class="math inline">\(\mathbb{Z}(N)\)</span></h4>
+<p>The family <span class="math inline">\(\{e_{0}, ...., e_{N-1}\}\)</span> is an orthogonal basis of vector space <span class="math inline">\(\mathbb{Z}(N)\)</span> equipped with inner product</p>
+<p><span class="math display">\[&lt;F, G&gt; = \sum^{N-1}_{k=0} F(k) \overline{G(k)}\]</span></p>
+<p>and corresponding norm:</p>
+<p><span class="math display">\[\|F\| = \sqrt{\sum^{N-1}_{k=0} F(k) \overline{F(k)}} =  \sqrt{\sum^{N-1}_{k=0} |F(k)|^2}\]</span></p>
+<p>where:</p>
+<p><span class="math display">\[e_{l} (k) = e^{2\pi i lk/n}\]</span></p>
+<p>and: <span class="math display">\[
+&lt;e_m, e_l&gt;  =
+\begin{cases}
+N &amp; \quad \text{If $m = l$} \\
+0 &amp; \quad \text{If $m \neq l$}
+\end{cases}
+\]</span></p>
+<p>Since all <span class="math inline">\(e_l\)</span> has norm <span class="math inline">\(\sqrt{N}\)</span>, if we normalize it by <span class="math inline">\(\frac{1}{\sqrt{N}}\)</span>, we will have an orthnormal basis <span class="math inline">\(\{e^*_0, ...., e^*_{N-1}\}\)</span>:</p>
+<p><span class="math display">\[e^*_l = \frac{1}{\sqrt{N}} e_l\]</span></p>
+<p>Thus, for any <span class="math inline">\(F \in V\)</span>, we have:</p>
+<p><span class="math display">\[F = \sum^{N-1}_{n=0} &lt;F, e^*_n&gt; e^*_n\]</span></p>
+<p>and</p>
+<p><span class="math display">\[\|F\|^2 = \sum^{N-1}_{n=0} |&lt;F, e^*_n&gt;|^2\]</span></p>
+<h4 id="fourier-coefficient-in-mathbbzn">Fourier Coefficient in <span class="math inline">\(\mathbb{Z}(N)\)</span></h4>
+<p>Define <span class="math inline">\(n\)</span>th Fourier Coefficient of <span class="math inline">\(F\)</span> by:</p>
+<p><span class="math display">\[a_n = \frac{1}{N} &lt;F, e_n&gt; = \frac{1}{N} \sum^{N-1}_{k=0} F(k) e^{-2\pi i k n /N}\]</span></p>
+<p>At the same time:</p>
+<p><span class="math display">\[a_n = \frac{1}{\sqrt{N}} &lt;F, e^*_n&gt;\]</span></p>
+<p>The function <span class="math inline">\(\hat{F}(n) = a_n\)</span> is the Fourier transform of <span class="math inline">\(F\)</span> on <span class="math inline">\(\mathbb{Z}(N)\)</span>.</p>
+<h4 id="inversion-formula">Inversion Formula</h4>
+<p>If <span class="math inline">\(F\)</span> is a function on <span class="math inline">\(\mathbb{Z}(N)\)</span>, then:</p>
+<p><span class="math display">\[F(k) = \sum^{N-1}_{n=0} &lt;F, e^*_n&gt; e^*_n = \sum^{N-1}_{n=0} a_n e^{2\pi i n k / N} = \sum^{N-1}_{n=0} \hat{F}(n) e^{2\pi i n k / N}\]</span></p>
+<p>It is possible to recover the Fourier inversion on the circle for sufficiently smooth function by letting <span class="math inline">\(N \rightarrow \infty\)</span> in the finite model <span class="math inline">\(\mathbb{Z}(N)\)</span>.</p>
+<h4 id="discrete-fourier-transform">Discrete Fourier Transform</h4>
+<p>When a signal is discrete and periodic, we don't need the continuous Fourier Transform. Instead, we use discrete Fourier Transform or DFT. Suppose our signal is <span class="math inline">\(a_n\)</span> for <span class="math inline">\(n = 0, ...., N-1\)</span> and <span class="math inline">\(a_n = a_{n + jN}\)</span> ofr all <span class="math inline">\(n, j\)</span>. The DFT of <span class="math inline">\(a\)</span>, also known as the <strong>spectrum</strong> of <span class="math inline">\(a\)</span> is <span class="math inline">\(F(n)\)</span>:</p>
+<p><span class="math display">\[\hat{F}(k) = A_k =  &lt;a, e_k&gt; = \sum^{N-1}_{n=0} e^{-2\pi i kn / N} a_n\]</span></p>
+<p>The sequence <span class="math inline">\(a_n\)</span> is the inverse discrete Fourier Transform of the sequence <span class="math inline">\(A_k\)</span>:</p>
+<p><span class="math display">\[a_n = \frac{1}{N}\sum^{N-1}_{k=0} &lt;a, e_k&gt; e_k =  \frac{1}{N} \sum^{N-1}_{k=0} \hat{F}(k) e^{2\pi i n k / N}\]</span></p>
+<h5 id="two-point-dft">Two Point DFT</h5>
+<p><span class="math inline">\(N = 2\)</span>, <span class="math inline">\(e_1 (k) = e^{-i \pi} = -1, \forall k\)</span>, then:</p>
+<p><span class="math display">\[A_k = (-1)^{kn} a_n = a_0 - (-1)^k a_1\]</span></p>
+<p>Thus,</p>
+<p><span class="math display">\[A_0 = a_0 + a_1\]</span> <span class="math display">\[A_1 = a_0 - a_1\]</span></p>
+<p><span class="math display">\[
+A
+=
+\begin{bmatrix}
+1 &amp; 1\\
+1 &amp; -1 
+\end{bmatrix}
+\begin{bmatrix}
+a_0 \\
+a_1
+\end{bmatrix}
+\]</span></p>
+<h5 id="four-point-dft">Four Point DFT</h5>
+<p><img src='/images/RL/background/dft.png' width="600"></p>
 <h1 id="ref">REF</h1>
 <ol type="1">
 <li>https://sites.millersville.edu/bikenaga/math-proof/relations/relations.html</li>
 <li>https://math.libretexts.org/Bookshelves/Combinatorics_and_Discrete_Mathematics/Elementary_Number_Theory_(Barrus_and_Clark)/01%3A_Chapters/1.21%3A_Residue_Classes_and_the_Integers_Modelo_m</li>
+<li>Fourier Transforms and the ast Fourier Transform (FFT) Algorithm</li>
 </ol>
 
       
@@ -1809,13 +1867,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">895k</span>
+    <span title="Symbols count total">897k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">13:33</span>
+    <span title="Reading time total">13:36</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
