@@ -86,7 +86,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">110</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">111</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -162,7 +162,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-count">111</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -215,6 +215,125 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/05/20/prior-exp-replay/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/05/20/prior-exp-replay/" class="post-title-link" itemprop="url">Prioritized Experience Replay</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-05-20 10:17:30" itemprop="dateCreated datePublished" datetime="2021-05-20T10:17:30+08:00">2021-05-20</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-05-21 10:59:36" itemprop="dateModified" datetime="2021-05-21T10:59:36+08:00">2021-05-21</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/05/20/prior-exp-replay/" class="post-meta-item leancloud_visitors" data-flag-title="Prioritized Experience Replay" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>5.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="prioritized-experience-replay">Prioritized Experience Replay</h1>
+<h2 id="introduction">Introduction</h2>
+<p>In simplest form, RL agents observe a stream of experience and discard incoming data immediately, after a single update. Two issues with this are:</p>
+<ol type="1">
+<li>Strongly correlated updates that break the i.i.d assumptions of most stochastic-gradient-based algorithms</li>
+<li>The rapid forgetting of possibly rare experiences that would be useful later on (ie. some rare actions, rare states etc)</li>
+</ol>
+<p>Experience replay addresses both of these issues. In general, it can reduce the amount of experience required to learn, and replace it with more computation and more memory.</p>
+<p>However, RL gant can learn more effectively from some transitions than from others. Transitions may be more or less surprising, redundant, or task-relevant. Some transitions may not be immediately useful to the agent but might become so when the agent competence increases. Prioritized replay memory liberates agents from considering transitions uniformly. In particular, the authers propose to more frequently reply transitions with high <strong>expected learning progress</strong>, as measured by the magnitude of their TD error (on expectation, it is the <strong>BR</strong>). The bias will be corrected with importance sampling, loss of diversity will be alleviated with stochastic optimization.</p>
+<p>Using a replay memory leads to design choices at two levels: which experiences to store, and which experiences to replay (and how to do so). This paper addresses only the latter: <code>making the most effective use of the replay memory for learning</code>.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/05/20/prior-exp-replay/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1331,129 +1450,8 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/05/11/probability/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/11/probability/" class="post-title-link" itemprop="url">Probability (1)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-05-11 19:06:51" itemprop="dateCreated datePublished" datetime="2021-05-11T19:06:51+08:00">2021-05-11</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-07-12 23:58:01" itemprop="dateModified" datetime="2021-07-12T23:58:01+08:00">2021-07-12</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/05/11/probability/" class="post-meta-item leancloud_visitors" data-flag-title="Probability (1)" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>16k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>14 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="probability-background-1">Probability Background (1)</h1>
-<h2 id="sets">Sets</h2>
-<p>A set is a collection of objects, which are the elements of set. If S is a set and <span class="math inline">\(x\)</span> is an element of <span class="math inline">\(S\)</span>, we write <span class="math inline">\(x \in S\)</span>. If <span class="math inline">\(x\)</span> is not an element of <span class="math inline">\(S\)</span>, we write <span class="math inline">\(x \notin S\)</span>. A set can have no elements, in which case it is called the empty set, denoted by <span class="math inline">\(\emptyset\)</span>.</p>
-<h3 id="finite-countable-uncountable">Finite, Countable, Uncountable</h3>
-<p>If <span class="math inline">\(S\)</span> contains a finite number of elements, say <span class="math inline">\(x_1, x_2, ..., x_n\)</span>, we write it as list of the elements in braces:</p>
-<p><span class="math display">\[S = \{x_1, x_2, ...., x_n\}\]</span></p>
-<p>if <span class="math inline">\(S\)</span> contains countable infinitely many elements <span class="math inline">\(x_1, x_2, ...\)</span>, we can write:</p>
-<p><span class="math display">\[S = \{x_1, x_2, ... \}\]</span></p>
-<p><span class="math inline">\(S\)</span> is countable infinite, if the set is countable but has infinitely many elements. However, a set with uncountable elements can not be written down in a list.</p>
-<p>We can denote set of all <span class="math inline">\(x\)</span> that have certain property <span class="math inline">\(P\)</span>:</p>
-<p><span class="math display">\[\{x | x \text{ satisfies } P\}\]</span></p>
-<p>ie. the set of even integers can be written as <span class="math inline">\(\{k | k/2 \text{ is integer}\}\)</span>, <span class="math inline">\(\{x | 0 \leq x \leq 1\}\)</span> (uncountable)</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/05/11/probability/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 <script src="/js/comments.js"></script>
 </div>
@@ -1476,13 +1474,13 @@ Q (s, a) + \delta (s, a; \pi) &amp;= Q(s, a) + \hat{T}^{\pi} Q(s, a) - Q(s, a)\\
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">897k</span>
+    <span title="Symbols count total">900k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">13:36</span>
+    <span title="Reading time total">13:38</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

@@ -86,7 +86,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">110</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">111</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -162,7 +162,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">110</span>
+          <span class="site-state-item-count">111</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -255,7 +255,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-05-29 13:40:28" itemprop="dateModified" datetime="2022-05-29T13:40:28+08:00">2022-05-29</time>
+        <time title="Modified: 2023-06-27 21:11:13" itemprop="dateModified" datetime="2023-06-27T21:11:13+08:00">2023-06-27</time>
       </span>
 
   
@@ -322,6 +322,7 @@
 <li><a href="/2022/01/19/linear-algebra-3/" title="Linear Algebra (3)">Linear Algebra (3)</a></li>
 <li><a href="/2022/01/25/linear-algebra-4/" title="Linear Algebra (4)">Linear Algebra (4)</a></li>
 <li><a href="/2022/02/04/linear-algebra-5/" title="Linear Algebra (5)">Linear Algebra (5)</a></li>
+<li><a href="/2023/01/27/fourier-analysis/" title="Fourier Analysis">Fourier Analysis</a></li>
 </ol>
 <p><strong>Some RL backgrounds</strong>:</p>
 <ol type="1">
@@ -433,6 +434,122 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2023/06/26/gnn-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/06/26/gnn-1/" class="post-title-link" itemprop="url">gnn_1</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-06-26 21:09:18" itemprop="dateCreated datePublished" datetime="2023-06-26T21:09:18+08:00">2023-06-26</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2023-06-27 20:51:59" itemprop="dateModified" datetime="2023-06-27T20:51:59+08:00">2023-06-27</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2023/06/26/gnn-1/" class="post-meta-item leancloud_visitors" data-flag-title="gnn_1" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>2.8k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="graph-neural-network-1">Graph Neural Network (1)</h1>
+<h2 id="what-is-graph">What is Graph</h2>
+<p>A Graph <span class="math inline">\(\mathcal{G} = (\mathcal{V}, \mathcal{E})\)</span> is defined by a set of nodes <span class="math inline">\(\mathcal{V}\)</span> and a set of edges <span class="math inline">\(\mathcal{E}\)</span> between these nodes. We denote an edge going from node <span class="math inline">\(u \in \mathcal{V}\)</span> to node <span class="math inline">\(v \in \mathcal{V}\)</span> as <span class="math inline">\((u, v) \in \mathcal{E}\)</span>. A <strong>simple graph</strong> has at most one edge between each pair of nodes, no edges between a node and itself and the edges are all <strong>undirected</strong> (i.e., <span class="math inline">\((u, v) \in \mathcal{E} \longleftrightarrow (v, u) \in \mathcal{E}\)</span>).</p>
+<p>A convenient way to represent graphs is through an <strong>adjacency matrix</strong> <span class="math inline">\(\mathbf{A} \in \mathbb{R}^{|\mathcal{V}| \times |\mathcal{V}|}\)</span>. We can then represent the presence of edges as entries in this matrix: <span class="math inline">\(\mathbf{A}[u, v] = 1\)</span> if <span class="math inline">\((u, v) \in \mathcal{E}\)</span>, <span class="math inline">\(0\)</span> otherwise. If the graph contains only undirected edges then <span class="math inline">\(\mathbf{A}\)</span> will be a symmetric matrix. Some graphs can also have <strong>weighted edges</strong>, where the entries in the adjacency matrix are arbitrary real-values rather than <span class="math inline">\(\{0, 1\}\)</span>.</p>
+<h3 id="multi-relational-graphs">Multi-relational Graphs</h3>
+<p>Beyond weighted, directed, undirected edges, we also consider graphs that have different <strong>types</strong> of edges. In this case, we can construct the edge notation to include an edge or relation type <span class="math inline">\(\tau\)</span>, that is <span class="math inline">\((u, \tau, v) \in \mathcal{E}\)</span>, and we can define one adjacency matrix <span class="math inline">\(\mathbf{A}_\tau\)</span> per edge type. We call such graphs <strong>multi-relational</strong>. The entire graph can be summarized by an adjacency tensor <span class="math inline">\(\mathcal{A} \in \mathbb{R}^{|\mathcal{V}| \times |\mathcal{R}| \times |\mathcal{V}|}\)</span> where <span class="math inline">\(\mathcal{R}\)</span> is the set of relations. There are two important subsets of multi-relational graphs:</p>
+<ol type="1">
+<li><strong>Heterogeneous graphs</strong>: In heterogeneous graphs, nodes also have types, that is we can partition the set of nodes into disjoint sets: <span class="math inline">\(\mathcal{V} = \mathcal{V}_1 \bigcup \mathcal{V}_2 \bigcup .... \bigcup \mathcal{V}_k\)</span> where <span class="math inline">\(\mathcal{V}_i \bigcap \mathcal{V}_j = \emptyset, \quad \forall i \neq j\)</span>. Edges in heterogeneous graphs generally satisfy constraints according to the node types. For example, <span class="math inline">\((u, \tau_i, v) \in \mathcal{E} \implies u \in \mathcal{V}_j, \; v \in \mathcal{V}_k\)</span>, the edge of type <span class="math inline">\(\tau_i\)</span> only connects nodes with type <span class="math inline">\(\mathcal{V}_i\)</span> and <span class="math inline">\(\mathcal{V}_j\)</span>. <strong>Multipartite</strong> graphs are special case of heterogeneous graphs, where edges can only connect nodes that have different types, <span class="math inline">\((u, \tau_i, v) \in \mathcal{E} \implies u \in \mathcal{V}_j, v \in \mathcal{V}_k \cap j \neq k\)</span>.</li>
+<li><strong>Multiplex graphs</strong>: In multiplex graphs we assume the graphs can be decomposed into a set of <span class="math inline">\(k\)</span> layers. Every node is assumed to belong to every layer, and each layer corresponds to a unique relation, representing the <strong>intra-layer</strong> edge type for that layer (edge relation between nodes in the same layer). We assume that <strong>inter-layer</strong> edges types can exist, which connect the same node across layers (edge relation between different layers of the same node).</li>
+</ol>
+<h3 id="feature-information">Feature Information</h3>
+<p>There are also <strong>attribute</strong> or <strong>feature</strong> information associated with a graph. Most often are node-level attributes that we represent with a feature matrix <span class="math inline">\(\mathbf{X}^{|\mathcal{V}| \times m}\)</span> (The order of nodes is consistent with the adjacency matrix).</p>
+<h1 id="ref">REF</h1>
+<p>Graph Representation Learning By William L. Hamilton</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2023/01/27/fourier-analysis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -464,7 +581,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2023-06-12 23:14:29" itemprop="dateModified" datetime="2023-06-12T23:14:29+08:00">2023-06-12</time>
+        <time title="Modified: 2023-06-27 21:13:26" itemprop="dateModified" datetime="2023-06-27T21:13:26+08:00">2023-06-27</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -572,304 +689,14 @@
 <p><span class="math display">\[\lim_{N\rightarrow \infty} S_N (f) (\theta) = f(\theta)\]</span></p>
 <p>uniformly in <span class="math inline">\(\theta\)</span>.</p>
 <p><strong>What conditions on f would guarantee the absolute convergence of its Fourier series? As it turns out, the smoothness of f is directly related to the decay of the Fourier coefficients, and in general, the smoother the function, the faster this decay. As a result, we can expect that relatively smooth functions equal their Fourier series.</strong></p>
-<h4 id="ck"><span class="math inline">\(C^k\)</span></h4>
-<p>We say that <span class="math inline">\(f\)</span> belongs to the <strong>class</strong> <span class="math inline">\(C^k\)</span> if <span class="math inline">\(f\)</span> is <span class="math inline">\(k\)</span> times continuously differentiable. This is a way to describe the <strong>smoothness</strong> of a function.</p>
-<h4 id="convolution">Convolution</h4>
-<p>Given two <span class="math inline">\(2\pi\)</span>-periodic integrable functions <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> on <span class="math inline">\(\mathbb{R}\)</span>, we define their <strong>convolution</strong> <span class="math inline">\(f * g\)</span> on <span class="math inline">\([-\pi, \pi]\)</span> by:</p>
-<p><span class="math display">\[(f * g) (x) = \frac{1}{2\pi} \int^{\pi}_{-\pi} f(y) g(x - y) dy\]</span></p>
-<p>For <span class="math inline">\(2\pi\)</span>-periodic functions, these two forms are equivalent:</p>
-<p><span class="math display">\[(f * g) (x) = \frac{1}{2\pi} \int^{\pi}_{-\pi} f(x - y) g(y) dy\]</span></p>
-<p>Loosely speaking, convolutions correspond to "weighted averages", if <span class="math inline">\(g = 1\)</span>, then <span class="math inline">\(f * g (x) = \frac{1}{2\pi} \int^\pi_{-\pi} f(y) dy\)</span> is a constant that represents the average value of <span class="math inline">\(f\)</span> on the circle.</p>
-<h4 id="partial-sums-of-fourier-series-of-2pi-periodic-function-as-convolution">Partial Sums of Fourier Series of <span class="math inline">\(2\pi\)</span> periodic function as Convolution</h4>
-<p>Given a <span class="math inline">\(2\pi\)</span>-periodic integrable function <span class="math inline">\(f\)</span>, the Fourier Series of <span class="math inline">\(f\)</span> can be expressed as:</p>
-<p><span class="math display">\[S_N(f) (x) = \frac{1}{2\pi} \int^\pi_{-\pi} f(y) (\sum^N_{n=-N} e^{in(x - y)}) dy = (f * D_N) (x)\]</span></p>
-<p>where <span class="math inline">\(D_N(x)\)</span> is the Dirichlet kernel.</p>
-<h4 id="proposition-3.1">Proposition 3.1:</h4>
-<p>Suppose that <span class="math inline">\(f, g, h\)</span> are <span class="math inline">\(2\pi\)</span> periodic integrable functions. Then:</p>
-<ol type="1">
-<li><span class="math inline">\(f * (g + h) = (f * g) + (f * h)\)</span> (linearity)</li>
-<li><span class="math inline">\((cf) * g = c(f * g) = f * (cg), \;\;\forall c \in \mathbb{C}\)</span> (commutativity)</li>
-<li><span class="math inline">\(f * g = g * f\)</span></li>
-<li><span class="math inline">\((f * g) * h = f * (g * h)\)</span> (associativity)</li>
-<li><span class="math inline">\((f * g)\)</span> is continuous. (The convolution of two integrable function is more regular.)</li>
-<li><span class="math inline">\(\widehat{f * g} (n) = \hat{f}(n) \hat{g}(n)\)</span></li>
-</ol>
-<h4 id="good-kernels">Good Kernels</h4>
-<p>A family of kernels <span class="math inline">\(\{K_n(x)\}^\infty_{n=1}\)</span> <strong>on the circle</strong> is said to be a family of <strong>good kernels</strong> if it satisfies the following properties:</p>
-<ol type="1">
-<li>For all <span class="math inline">\(n \geq 1\)</span>, (The average value on the circle is 1) <span class="math display">\[\frac{1}{2\pi} \int^{\pi}_{-\pi} K_n(x) dx = 1\]</span></li>
-<li>There exists <span class="math inline">\(M &gt; 0\)</span> s.t for all <span class="math inline">\(n \geq 1\)</span> (The integral is bounded), <span class="math display">\[\int^\pi_{-\pi} |K_n(x)|dx \leq M\]</span></li>
-<li>For every <span class="math inline">\(\delta &gt; 0\)</span>, <span class="math display">\[\int_{\delta \leq |x|\leq \pi} |K_n(x)|dx \rightarrow 0, \;\; \text{as} \; n \rightarrow \infty\]</span></li>
-</ol>
-<h4 id="theorem-4.1-approximation-to-identity">Theorem 4.1: Approximation to Identity</h4>
-<p>Let <span class="math inline">\(\{K_n\}^\infty_{n=1}\)</span> be a family of good kernels, and <span class="math inline">\(f\)</span> an integrable function <strong>on the circle</strong>. Then,</p>
-<p><span class="math display">\[\lim_{n \rightarrow \infty} (f * K_n) (x) = f(x)\]</span></p>
-<p>whenever <span class="math inline">\(f\)</span> is continuous at <span class="math inline">\(x\)</span>. if <span class="math inline">\(f\)</span> is continuous everywhere, then the above limit is uniform. Because of this result, the family <span class="math inline">\(\{K_n\}\)</span> is sometimes referred to as an <strong>approximation to the identity</strong>.</p>
-<p><img src='/images/RL/background/fa_4_1.png' width="600"></p>
-<p>The Dirichlet kernel satisfies condition 1 of the good kernel but does not satisfy condition 2:</p>
-<p><span class="math display">\[D_N(x) \geq c\log N\]</span></p>
-<p><br></p>
-<h3 id="convergence-of-fourier-series">Convergence of Fourier Series</h3>
-<h4 id="mean-square-convergence-on-circle">Mean-square Convergence on Circle</h4>
-<p>If <span class="math inline">\(f\)</span> is integrable on the circle, then:</p>
-<p><span class="math display">\[\frac{1}{2\pi} \int^{2\pi}_{0} |f(\theta) - S_N(f)(\theta)|^2 d\theta \rightarrow 0, \;\; n \rightarrow \infty\]</span></p>
-<p>or</p>
-<p><span class="math display">\[\lim_{N \rightarrow \infty} E[(f - S_N(f))^2]\]</span></p>
-<p><br></p>
-<h3 id="fourier-transform">Fourier Transform</h3>
-<p>The theory of Fourier series applies to functions on the circle. In this section we develop an analogous theory for functions on the entire real line which are non-periodic. Roughly speaking, the Fourier Transform is a continuous version of the Fourier coefficients. The Fourier inversion formula is a continuous version of the Fourier series.</p>
-<h4 id="elementary-theory-of-the-fourier-transform">Elementary Theory of The Fourier Transform</h4>
-<p>Given the notion of the integral of a function on a closed and bounded interval, the most natural extension of this definition to continuous functions over <span class="math inline">\(\mathbb{R}\)</span> is:</p>
-<p><span class="math display">\[\int^\infty_{-\infty} f(x)dx = \lim_{N \rightarrow \infty} \int^N_{-N} f(x) dx\]</span></p>
-<p>The limit may not exists (e.g., $f(x ) = 1 $), but if we let <span class="math inline">\(f\)</span> decay enough as <span class="math inline">\(|x| \rightarrow \infty\)</span>, it will exist.</p>
-<p>A function <span class="math inline">\(f\)</span> defined on <span class="math inline">\(\mathbb{R}\)</span> is said to be of <strong>moderate decreasing</strong> if <span class="math inline">\(f\)</span> is continuous and there exists a constant <span class="math inline">\(A &gt; 0\)</span> so that:</p>
-<p><span class="math display">\[|f(x)| \leq \frac{A}{1 + x^{1 + \epsilon}}, \;\; \forall x \in \mathbb{R}\]</span></p>
-<p>The function of moderate decreasing is bounded (by <span class="math inline">\(A\)</span>) and decays at infinity at least as fast as <span class="math inline">\(1 / x^2\)</span>, we denote the set of all moderate decreasing functions as <span class="math inline">\(M(\mathbb{R})\)</span>, we can show that it is a <strong>vector space</strong> over <span class="math inline">\(\mathbb{C}\)</span>.</p>
-<p>If the function is moderate decreasing, then we can be sure that the limit exists and the sequence of integral converges.</p>
-<h4 id="theorem-5.1-properties-of-improper-integral">Theorem 5.1: Properties of Improper Integral</h4>
-<p>The integral of a function of <strong>moderate decrease</strong> (i.e., <span class="math inline">\(f \in M(\mathbb{R})\)</span>) satisfies the following properties:</p>
-<ol type="1">
-<li><strong>Linearity</strong>: If <span class="math inline">\(f, g \in M(\mathbb{R})\)</span> and <span class="math inline">\(a, b \in \mathbb{C}\)</span>, then: <span class="math display">\[\int^\infty_{-\infty} (af(x) + bg(x))dx = a\int^\infty_{-\infty} f(x)dx + b\int^\infty_{-\infty} g(x)dx\]</span></li>
-<li><strong>Translation Invariance</strong>: For every <span class="math inline">\(h \in \mathbb{R}\)</span> we have: <span class="math display">\[\int^\infty_{-\infty} f(x - h) dx = \int^\infty_{-\infty} f(x) dx\]</span></li>
-<li><strong>Scaling under dilations</strong>: If <span class="math inline">\(\delta &gt; 0\)</span>, then: <span class="math display">\[\delta \int^\infty_{-\infty} f(\delta x)dx = \int^\infty_{-\infty} f(x) dx\]</span></li>
-<li><strong>Continuity</strong>: If <span class="math inline">\(f \in M(\mathbb{R})\)</span>, then: <span class="math display">\[\int^\infty_{-\infty} |f(x - h) - f(x)| dx \rightarrow 0, \;\; \text{as } h \rightarrow 0\]</span></li>
-</ol>
-<h4 id="definition-of-the-fourier-transform">Definition of the Fourier transform</h4>
-<p>If <span class="math inline">\(f \in M(\mathbb{R})\)</span>, we define the <strong>Fourier transform</strong> for <span class="math inline">\(\xi \in \mathbb{R}\)</span> by:</p>
-<p><span class="math display">\[\hat{f}(\xi) = \int^{\infty}_{-\infty} f(x) e^{-2\pi \xi x i} dx\]</span></p>
-<p>Notice that, <span class="math inline">\(\hat{f}\)</span> is <strong>continuous</strong> and <strong>bounded</strong>, <span class="math inline">\(|e^{-2\pi \xi x i}| = 1\)</span>.</p>
-<h4 id="the-schwartz-space">The Schwartz Space</h4>
-<p>The <strong>Schwartz space</strong> on <span class="math inline">\(\mathbb{R}\)</span> consists of the set of all indefinitely differentiable functions <span class="math inline">\(f\)</span> so that <span class="math inline">\(f\)</span> and all its derivatives <span class="math inline">\(f^\prime, f^{\prime\prime}, ...., f^{l}, ...\)</span> are <strong>rapidly decreasing</strong>, in the sense that:</p>
-<p><span class="math display">\[\sup_{x \in \mathbb{R}} |x|^k |f^{l} (x)| &lt; \infty, \;\; \forall k, l &gt; 0\]</span></p>
-<p>We denote this space by <span class="math inline">\(S = S(\mathbb{R})\)</span>:</p>
-<ul>
-<li><span class="math inline">\(S\)</span> is a vector space</li>
-<li>If <span class="math inline">\(f \in \mathbb{R}\)</span>, then <span class="math inline">\(f^{\prime} \in S(\mathbb{R})\)</span> (closed under differentiation), <span class="math inline">\(x f(x) \in \mathbb{R}\)</span> (closed under polynomial).</li>
-<li><span class="math inline">\(f(x) = e^{-ax^2}, \; a &gt; 0\)</span> is an example of the elements in <span class="math inline">\(S\)</span>.</li>
-</ul>
-<p><br></p>
-<h4 id="fourier-transform-on-s">Fourier Transform on <span class="math inline">\(S\)</span></h4>
-<p>The <strong>Fourier Transform</strong> of a function <span class="math inline">\(f \in S(\mathbb{R})\)</span>, <span class="math inline">\(F(f) = \hat{f}: S(\mathbb{R}) \rightarrow S(\mathbb{R})\)</span> is defined by:</p>
-<p><span class="math display">\[\hat{f}(\xi) = \int^{\infty}_{-\infty} f(x) e^{-2\pi i x \xi} dx\]</span></p>
-<p>Some properties hold for <strong>Fourier Transform</strong> of a function <span class="math inline">\(f \in S(\mathbb{R})\)</span>, we denote the fourier transform of <span class="math inline">\(f\)</span> by:</p>
-<p><span class="math display">\[f(x) \rightarrow \hat{f}(\xi)\]</span></p>
-<ul>
-<li><span class="math inline">\(f(x + h) \rightarrow \hat{f}(\xi) e^{2\pi i h \xi}, \;\; \forall h \in \mathbb{R}\)</span></li>
-<li><span class="math inline">\(f(x) e^{-2\pi i x h} \rightarrow \hat{f} (\xi + h), \;\; \forall h \in \mathbb{R}\)</span></li>
-<li><span class="math inline">\(f(\delta x) \rightarrow \delta^{-1} \hat{f}(\delta^{-1}\xi), \;\; \forall h \in \mathbb{R}\)</span></li>
-<li><span class="math inline">\(f^{\prime}(x) \rightarrow 2\pi i \xi \hat{f}(\xi)\)</span></li>
-<li><span class="math inline">\(-2\pi i x f(x) \rightarrow \frac{d}{d\xi} \hat{f}(\xi)\)</span></li>
-<li><span class="math inline">\(\hat{\bar{f}} (x) = \overline{\hat{f}(-\xi)}\)</span></li>
-</ul>
-<h4 id="theorem-5.2">Theorem 5.2</h4>
-<p>If <span class="math inline">\(f \in S(\mathbb{R})\)</span>, then <span class="math inline">\(\hat{f} \in S(\mathbb{R})\)</span>.</p>
-<p><br></p>
-<h4 id="gaussians-e-ax2-are-good-kernels">Gaussians (<span class="math inline">\(e^{-ax^2}\)</span>) are Good Kernels</h4>
-<p><span class="math display">\[\int^{\infty}_{-\infty} e^{-\pi x^2} dx = 1\]</span></p>
-<h4 id="theorem-5.4-the-fourier-transform-of-e-pi-x2-is-itself">Theorem 5.4 The Fourier Transform of <span class="math inline">\(e^{-\pi x^2}\)</span> is itself</h4>
-<p>If <span class="math inline">\(f(x) = e^{-\pi x^2}\)</span>, then <span class="math inline">\(\hat{f}(\xi) = f(\xi)\)</span></p>
-<h4 id="theorem-5.5">Theorem 5.5</h4>
-<p>If <span class="math inline">\(\delta &gt; 0\)</span> and <span class="math inline">\(K_{\delta} (x) = \delta^{-\frac{1}{2}} e^{\frac{-\pi x^2}{\delta}}\)</span>, then <span class="math inline">\(\hat{K}_{\delta}(\xi) = e^{-\pi \delta \xi^2}\)</span></p>
-<h5 id="proof-of-theorem-5.5">Proof of Theorem 5.5</h5>
-<p><span class="math display">\[K_{\delta} (x) = \delta^{-\frac{1}{2}} e^{\frac{-\pi x^2}{\delta}} = \delta^{-\frac{1}{2}}f(\delta^{-\frac{1}{2}} x)\]</span></p>
-<p>where <span class="math inline">\(f(\delta^{-\frac{1}{2}} x) = e^{-\pi \frac{x^2}{\delta}}\)</span></p>
-<p>Then:</p>
-<p><span class="math display">\[\hat{K}_\delta(x) = \delta^{\frac{1}{2}}\hat{f}^\prime(\delta^{\frac{1}{2}}\xi) = e^{-\pi \delta \xi^2}\]</span></p>
-<p><br></p>
-<h4 id="theorem-5.6-k_delta_delta-0-is-a-family-of-good-kernels">Theorem 5.6: <span class="math inline">\(\{K_{\delta}\}_{\delta &gt; 0}\)</span> is a Family of Good Kernels</h4>
-<p><span class="math inline">\(\{K_{\delta} (x)\}_{\delta \in \mathbb{R^+}} = \delta^{-\frac{1}{2}} e^{\frac{-\pi x^2}{\delta}}\)</span> is a family of good kernels as <span class="math inline">\(\delta \rightarrow 0\)</span>.</p>
-<p><br></p>
-<h4 id="convolution-on-mathbbr">Convolution on <span class="math inline">\(\mathbb{R}\)</span></h4>
-<p>If <span class="math inline">\(f, g \in S(\mathbb{R})\)</span>, then the <strong>convolution</strong> is defined by:</p>
-<p><span class="math display">\[(f * g) (x) = \int^{\infty}_{-\infty} f(x - t) g(t) dt\]</span></p>
-<p>for a fixed value <span class="math inline">\(x\)</span>, the function <span class="math inline">\(f(x - t) g(t)\)</span> is <strong>rapid decrease</strong> in <span class="math inline">\(t\)</span>.</p>
-<h4 id="theorem-5.7">Theorem 5.7</h4>
-<p>If <span class="math inline">\(f \in S(\mathbb{R})\)</span>, then</p>
-<p><span class="math display">\[(f * K_{\delta}) (x) \rightarrow f(x), \;\; \text{uniformly in $x$ as $\delta \rightarrow 0$}\]</span></p>
-<p><br></p>
-<h4 id="the-fourier-inversion">The Fourier Inversion</h4>
-<h4 id="theorem-5.8-the-multiplication-formula">Theorem 5.8: The Multiplication Formula</h4>
-<p>If <span class="math inline">\(f, g \in S(\mathbb{R})\)</span>, then</p>
-<p><span class="math display">\[\int^{\infty}_{-\infty} f(x)\hat{g}(x) dx = \int^{\infty}_{-\infty} \hat{f}(y) g(y) dy\]</span></p>
-<h4 id="theorem-5.9-fourier-inversion">Theorem 5.9: Fourier Inversion</h4>
-<p>If <span class="math inline">\(f \in S(\mathbb{R})\)</span>, we define the inversion <span class="math inline">\(F^* (\hat{f}) : S(\mathbb{R}) \rightarrow S(\mathbb{R})\)</span> by</p>
-<p><span class="math display">\[F^* (\hat{f}) (x)= \int^{\infty}_{-\infty} \hat{f}(\xi) e^{2\pi i x\xi} dx\]</span></p>
-<p>Then:</p>
-<p><span class="math display">\[F^*(\hat{f}) (x) = f(x)\]</span></p>
-<h4 id="theorem-5.10-fourier-transform-is-a-bijective-mapping-on-the-schwartz-space">Theorem 5.10: Fourier Transform is a Bijective Mapping on the Schwartz Space</h4>
-<p>The Fourier transform is a bijective mapping on the Schwartz space.</p>
-<h4 id="theorem-5.11-convolutions-of-schwartz-functions">Theorem 5.11: Convolutions of Schwartz Functions</h4>
-<p>If <span class="math inline">\(f, g \in S(\mathbb{R})\)</span>, then:</p>
-<ol type="1">
-<li><span class="math inline">\(f * g \in S(\mathbb{R})\)</span></li>
-<li><span class="math inline">\(f * g = g * f\)</span></li>
-<li><span class="math inline">\((\widehat{f * g}) (\xi) = \hat{f}(\xi)\hat{g}(\xi)\)</span></li>
-</ol>
-<h4 id="inner-product-in-schwartz-space">Inner Product in Schwartz Space</h4>
-<p>The Schwartz space can be equipped with a Hermitian inner product:</p>
-<p><span class="math display">\[&lt;f, g&gt; = \int^{\infty}_{-\infty} f(x) \bar{g}(x) dx\]</span></p>
-<p>whose associated norm is:</p>
-<p><span class="math display">\[\|f\| = \sqrt{\int^{\infty}_{-\infty} |f(x)|^2 dx}\]</span></p>
-<h4 id="theorem-5.12-plancherel-the-norm-of-fourier-transform-preserves">Theorem 5.12: Plancherel, The Norm of Fourier Transform Preserves</h4>
-<p>If <span class="math inline">\(f \in S(\mathbb{R})\)</span> then <span class="math inline">\(\|\hat{f}\| = \|f\|\)</span></p>
-<h4 id="extension-to-functions-of-moderate-decrease">Extension to Functions of Moderate Decrease</h4>
-<p>All properties hold for <span class="math inline">\(f \in M(\mathbb{R})\)</span></p>
-<h4 id="monomial-xalpha">Monomial <span class="math inline">\(x^\alpha\)</span></h4>
-<p>Given a <span class="math inline">\(d\)</span>-tuple <span class="math inline">\(\alpha = (\alpha_1, ...., \alpha_d)\)</span> of non-negative integers (<strong>multi-index</strong>), the <strong>monomial</strong> <span class="math inline">\(x^\alpha\)</span> is defined by:</p>
-<p><span class="math display">\[x^\alpha = x_1^{\alpha_1} x_2^{\alpha_2} ... x_d^{\alpha_d}\]</span></p>
-<h4 id="rotation-in-mathbbrd">Rotation in <span class="math inline">\(\mathbb{R}^d\)</span></h4>
-<p>A <strong>rotation</strong> in <span class="math inline">\(\mathbb{R}^d\)</span> is a linear transformation <span class="math inline">\(R: \mathbb{R}^d \rightarrow \mathbb{R}^d\)</span> which preserves the inner product. In the other words,</p>
-<ul>
-<li><span class="math inline">\(R(ax + by) = aR(x) + bR(y) \;\; \forall x, y \in \mathbb{R}^d, \; a, b \in \mathbb{R}\)</span></li>
-<li><span class="math inline">\(R(x) \cdot R(y) = x \cdot y, \;\; \forall x, y \in \mathbb{R}^d\)</span></li>
-</ul>
-<p>If <span class="math inline">\(\det{(R)} = 1\)</span>, <span class="math inline">\(R\)</span> is a <strong>proper rotation</strong>, otherwise, we say that <span class="math inline">\(R\)</span> is an <strong>improper rotation</strong>.</p>
-<h4 id="rapid-decreasing-of-complex-function-on-mathbbrd">Rapid Decreasing of Complex Function on <span class="math inline">\(\mathbb{R}^d\)</span></h4>
-<p>A continuous complex-valued function <span class="math inline">\(f\)</span> on <span class="math inline">\(\mathbb{R}^d\)</span> is said to be <strong>rapidly decreasing</strong> if for every multi-index <span class="math inline">\(\alpha\)</span> the function <span class="math inline">\(|x^\alpha f(x)|\)</span> is bounded. Equivalently, a continuous function is of rapid decrease if:</p>
-<p><span class="math display">\[\sup_{x \in \mathbb{R}^d} |x|^k |f(x)| &lt; \infty, \quad\quad \forall k = 0, 1, 2, ...\]</span></p>
-<p>Given a function of rapid decrease, we define:</p>
-<p><span class="math display">\[\int_{\mathbb{R}^d} f(x) dx = \lim_{N \rightarrow \infty} \int_{Q_N} f(x) dx\]</span></p>
-<p>Where <span class="math inline">\(Q_N\)</span> denotes the closed cube centered at the origin, with sides of length <span class="math inline">\(N\)</span> parallel to the coordinate axis, that is,</p>
-<p><span class="math display">\[Q_N = \{x \in \mathbb{R}^d: |x_i| \leq \frac{N}{2} \quad \quad i = 1, ..., d\}\]</span></p>
-<p>Actually, the limit exists if we can show that <span class="math inline">\(f\)</span> is continuous and</p>
-<p><span class="math display">\[\sup_{x \in \mathbb{R}^d} |x|^{d + \epsilon} |f(x)| &lt; \infty, \quad \text{for some $\epsilon &gt; 0$}\]</span></p>
-<p>If the function <span class="math inline">\(f\)</span> satisfies the condition with <span class="math inline">\(\epsilon = 1\)</span>, we say that the function is <strong>moderate decrease</strong> on <span class="math inline">\(\mathbb{R}^d\)</span>.</p>
-<h4 id="properties-of-moderate-decreasing-functions">Properties of Moderate Decreasing Functions</h4>
-<p>If <span class="math inline">\(f\)</span> is of moderate decrease, then:</p>
-<ol type="1">
-<li>Translation Invariant:</li>
-</ol>
-<p><span class="math display">\[\int_{\mathbb{R}^d} f(x + h) dx = \int_{\mathbb{R}^d} f(x) dx \quad \forall h \in \mathbb{R}^d\]</span></p>
-<ol start="2" type="1">
-<li>Scaling Invariant:</li>
-</ol>
-<p><span class="math display">\[\delta^d \int_{\mathbb{R}^d} f(\delta x) dx = \int_{\mathbb{R}^d} f(x) dx \quad \forall \delta &gt; 0\]</span></p>
-<ol start="3" type="1">
-<li>Rotation Invariant:</li>
-</ol>
-<p><span class="math display">\[\int_{\mathbb{R}^d} f(R(x)) dx = \int_{\mathbb{R}^d} f(x) \quad \text{$\forall$ rotation $R$}\]</span></p>
-<h4 id="schwartz-space-in-mathbbrd">Schwartz Space in <span class="math inline">\(\mathbb{R}^d\)</span></h4>
-<p>The <strong>Schwartz space</strong> <span class="math inline">\(S(\mathbb{R}^d)\)</span> consists of all indefinitely differentiable functions <span class="math inline">\(f\)</span> on <span class="math inline">\(\mathbb{R}^d\)</span> such that</p>
-<p><span class="math display">\[\sup_{x \in \mathbb{R}^d} |x^\alpha (\frac{\partial }{\partial x})^\beta f(x)| &lt; \infty\]</span></p>
-<p>for every multi-index <span class="math inline">\(\alpha, \beta\)</span>. In other words, <span class="math inline">\(f\)</span> and all its derivative are required to be rapidly decreasing.</p>
-<h4 id="fourier-transform-on-mathbbrd">Fourier Transform on <span class="math inline">\(\mathbb{R}^d\)</span></h4>
-<p>The Fourier transform of a Schwartz function <span class="math inline">\(f\)</span> is defined by:</p>
-<p><span class="math display">\[\hat{f}(\xi) = \int_{\mathbb{R}^d} f(x) e^{-2\pi ix \cdot \xi} dx \quad \quad \text{for } \xi \in \mathbb{R}^d\]</span></p>
-<p>This resembles with the formula in one-dimension, except we have dot product between <span class="math inline">\(\xi\)</span> and <span class="math inline">\(x\)</span> now.</p>
-<h4 id="properties-of-fourier-transform-in-mathbbrd">Properties of Fourier Transform in <span class="math inline">\(\mathbb{R}^d\)</span></h4>
-<p>Let <span class="math inline">\(f \in \mathbb{R}^d\)</span></p>
-<ol type="1">
-<li><span class="math inline">\(f(x + h) \rightarrow \hat{f}(\xi) e^{2\pi i \xi \cdot h}, \quad h \in \mathbb{R}^d\)</span></li>
-<li><span class="math inline">\(f(x) e^{-2\pi i x h} \rightarrow \hat{f} (\xi + h), \quad h \in \mathbb{R}^d\)</span></li>
-<li><span class="math inline">\(f(\delta x) \rightarrow \delta^{-d} \hat{f}(\delta^{-1} \xi), \quad \delta &gt; 0\)</span></li>
-<li><span class="math inline">\((\frac{\partial }{\partial x})^\alpha f(x) \rightarrow (2\pi i \xi)^\alpha \hat{f}(\xi)\)</span></li>
-<li><span class="math inline">\((-2\pi i x)^\alpha f(x) \rightarrow (\frac{\partial }{\partial x})^\alpha \hat{f}(\xi)\)</span></li>
-<li><span class="math inline">\(f(Rx) \rightarrow \hat{f}(R\xi), \quad R \text{ is a rotation}\)</span></li>
-</ol>
-<h4 id="fourier-inversion-in-mathbbrd">Fourier Inversion in <span class="math inline">\(\mathbb{R}^d\)</span></h4>
-<p>Suppose <span class="math inline">\(f \in S(\mathbb{R}^d)\)</span>. Then:</p>
-<p><span class="math display">\[f(x) = \int_{\mathbb{R}^d} \hat{f}(\xi) e^{2\pi i x \cdot \xi} d\xi\]</span></p>
-<p>Moreover</p>
-<p><span class="math display">\[\int_{\mathbb{R}^d} |\hat{f}(x)|^2 d\xi = \int_{\mathbb{R}^d} |f(x)|^2 dx\]</span></p>
-<p><br></p>
-<h3 id="finite-fourier-analysis">Finite Fourier Analysis</h3>
-<h4 id="binary-relation">Binary Relation</h4>
-<p>A <strong>binary (two element) relation</strong> from a set <span class="math inline">\(X\)</span> to a set <span class="math inline">\(Y\)</span> is a subset of the cartesian product <span class="math inline">\(X \times Y\)</span>, where <span class="math inline">\(X\)</span> is called domain and <span class="math inline">\(Y\)</span> is called the codomain. If an ordered pair <span class="math inline">\((x, y)\)</span> is in a relation <span class="math inline">\(R\)</span>, then the relation holds true for <span class="math inline">\((x, y)\)</span>. A binary relation on a set <span class="math inline">\(S\)</span> is a subset of the cartesian product <span class="math inline">\(S \times S\)</span>. We use <span class="math inline">\(xRy\)</span> or <span class="math inline">\(x \sim y\)</span> to denote the ordered pair <span class="math inline">\((x, y)\)</span> is in relation <span class="math inline">\(R\)</span>.</p>
-<blockquote>
-<p>If <span class="math inline">\(S = \{1, 2, 3\}\)</span> then <span class="math inline">\(x &lt; y\)</span> on <span class="math inline">\(S\)</span> is a relation <span class="math inline">\(R = \{(1, 2), (2, 3)\}\)</span>.</p>
-</blockquote>
-<h4 id="equivalence-class-and-equivalence-relation">Equivalence Class and Equivalence Relation</h4>
-<p>A relation <span class="math inline">\(\sim\)</span> on a set <span class="math inline">\(S\)</span> is an equivalence relation if:</p>
-<ol type="1">
-<li>(Reflexivity) <span class="math inline">\(s \sim s \; \forall s \in S\)</span>.</li>
-<li>(Symmetry) <span class="math inline">\(\forall \; s, t \in S\)</span>, if <span class="math inline">\(s \sim t\)</span>, then <span class="math inline">\(t \sim s\)</span>.</li>
-<li>(Transitivity) <span class="math inline">\(\forall \; s, t, u \in S\)</span>, if <span class="math inline">\(s \sim t\)</span> and <span class="math inline">\(t \sim u\)</span>, then <span class="math inline">\(s \sim u\)</span>.</li>
-</ol>
-<p>An equivalence relation is meant to capture the idea of things "being the same" for the purposes of a given discussion.</p>
-<h4 id="congruent-mod-n">Congruent mod <span class="math inline">\(n\)</span></h4>
-<p>Let <span class="math inline">\(n \in \mathbb{Z}^+\)</span> be a positive integer, integers <span class="math inline">\(x, y\)</span> are <strong>congruent mod <span class="math inline">\(n\)</span></strong> if <span class="math inline">\(x - y\)</span> is divisible by <span class="math inline">\(n\)</span>. Congruent mod <span class="math inline">\(n\)</span> is an equivalence relation on <span class="math inline">\(\mathbb{Z}\)</span>.</p>
-<h4 id="residue-class">Residue Class</h4>
-<p>A residue class <span class="math inline">\(R(r)\)</span> is a complete set of integers that are congruent modulo <span class="math inline">\(n\)</span> with reminder <span class="math inline">\(r\)</span> (ie. <span class="math inline">\(a = kn + r \implies a \in R(r), \; k \in \mathbb{Z}, n \in \mathbb{Z}^+, 0 \leq r \in \mathbb{Z} leq n - 1\)</span>). In module <span class="math inline">\(n\)</span>, there are exactly <span class="math inline">\(n\)</span> different residue classes.</p>
-<p><img src='/images/RL/background/fa_7_1_2.png' width="600"></p>
-<h4 id="binary-operation">Binary Operation</h4>
-<p>A binary operation on a set <span class="math inline">\(S\)</span> is a mapping of the elements of the Cartesian product <span class="math inline">\(S \times S\)</span> to <span class="math inline">\(S\)</span>:</p>
-<p><span class="math display">\[f: S \times S \rightarrow S\]</span></p>
-<h4 id="the-group-zn">The group <span class="math inline">\(Z(N)\)</span></h4>
-<p>Let <span class="math inline">\(N\)</span> be a positive integer. A complex number <span class="math inline">\(z\)</span> is an <span class="math inline">\(N^{th}\)</span> <strong>root of unity</strong> if <span class="math inline">\(z^N = 1\)</span>. The set of <span class="math inline">\(N^{th}\)</span> roots of unity is precisely:</p>
-<p><span class="math display">\[\{1, e^{2\pi i / N}, e^{2\pi i 2 / N}, ...., e^{2\pi i (N - 1) / N}\}\]</span></p>
-<p>This is uniform partition of the circle.</p>
-<p><img src='/images/RL/background/fa_7_1_1.png' width="600"></p>
-<p>The set has the following properties:</p>
-<ol type="1">
-<li>If <span class="math inline">\(z, w \in Z(N)\)</span>, then <span class="math inline">\(zw \in Z(N)\)</span> and <span class="math inline">\(zw = wz\)</span></li>
-<li><span class="math inline">\(1 \in Z(N)\)</span></li>
-<li>If <span class="math inline">\(z \in Z(N)\)</span>, then <span class="math inline">\(z^{-1} = \frac{1}{z} \in Z(N)\)</span> and <span class="math inline">\(z z^{-1} = 1\)</span></li>
-</ol>
-<p>The group <span class="math inline">\(Z(N)\)</span> is equivalent to the group of <strong>integers modulo <span class="math inline">\(N\)</span></strong> which contains integers $0 n + m $</p>
-<p>Let <span class="math inline">\(V, W\)</span> denote the vector spaces of complexed-valued functions on the group of integers modulo <span class="math inline">\(N\)</span> and the <span class="math inline">\(N\)</span>th roots of unity. Then, the identification given above carries over to <span class="math inline">\(V, W\)</span> as follows:</p>
-<p><span class="math display">\[F(k) \longleftrightarrow f(e^{2\pi i k/N})\]</span></p>
-<p>Where <span class="math inline">\(F\)</span> is a function on <span class="math inline">\(V\)</span> and <span class="math inline">\(f\)</span> is a function on the <span class="math inline">\(W\)</span>. These spaces can be represented as <span class="math inline">\(\mathbb{Z}(N)\)</span>, because they are equivalent.</p>
-<h4 id="orthogonal-bases-in-mathbbzn">Orthogonal Bases in <span class="math inline">\(\mathbb{Z}(N)\)</span></h4>
-<p>The family <span class="math inline">\(\{e_{0}, ...., e_{N-1}\}\)</span> is an orthogonal basis of vector space <span class="math inline">\(\mathbb{Z}(N)\)</span> equipped with inner product</p>
-<p><span class="math display">\[&lt;F, G&gt; = \sum^{N-1}_{k=0} F(k) \overline{G(k)}\]</span></p>
-<p>and corresponding norm:</p>
-<p><span class="math display">\[\|F\| = \sqrt{\sum^{N-1}_{k=0} F(k) \overline{F(k)}} =  \sqrt{\sum^{N-1}_{k=0} |F(k)|^2}\]</span></p>
-<p>where:</p>
-<p><span class="math display">\[e_{l} (k) = e^{2\pi i lk/n}\]</span></p>
-<p>and: <span class="math display">\[
-&lt;e_m, e_l&gt;  =
-\begin{cases}
-N &amp; \quad \text{If $m = l$} \\
-0 &amp; \quad \text{If $m \neq l$}
-\end{cases}
-\]</span></p>
-<p>Since all <span class="math inline">\(e_l\)</span> has norm <span class="math inline">\(\sqrt{N}\)</span>, if we normalize it by <span class="math inline">\(\frac{1}{\sqrt{N}}\)</span>, we will have an orthnormal basis <span class="math inline">\(\{e^*_0, ...., e^*_{N-1}\}\)</span>:</p>
-<p><span class="math display">\[e^*_l = \frac{1}{\sqrt{N}} e_l\]</span></p>
-<p>Thus, for any <span class="math inline">\(F \in V\)</span>, we have:</p>
-<p><span class="math display">\[F = \sum^{N-1}_{n=0} &lt;F, e^*_n&gt; e^*_n\]</span></p>
-<p>and</p>
-<p><span class="math display">\[\|F\|^2 = \sum^{N-1}_{n=0} |&lt;F, e^*_n&gt;|^2\]</span></p>
-<h4 id="fourier-coefficient-in-mathbbzn">Fourier Coefficient in <span class="math inline">\(\mathbb{Z}(N)\)</span></h4>
-<p>Define <span class="math inline">\(n\)</span>th Fourier Coefficient of <span class="math inline">\(F\)</span> by:</p>
-<p><span class="math display">\[a_n = \frac{1}{N} &lt;F, e_n&gt; = \frac{1}{N} \sum^{N-1}_{k=0} F(k) e^{-2\pi i k n /N}\]</span></p>
-<p>At the same time:</p>
-<p><span class="math display">\[a_n = \frac{1}{\sqrt{N}} &lt;F, e^*_n&gt;\]</span></p>
-<p>The function <span class="math inline">\(\hat{F}(n) = a_n\)</span> is the Fourier transform of <span class="math inline">\(F\)</span> on <span class="math inline">\(\mathbb{Z}(N)\)</span>.</p>
-<h4 id="inversion-formula">Inversion Formula</h4>
-<p>If <span class="math inline">\(F\)</span> is a function on <span class="math inline">\(\mathbb{Z}(N)\)</span>, then:</p>
-<p><span class="math display">\[F(k) = \sum^{N-1}_{n=0} &lt;F, e^*_n&gt; e^*_n = \sum^{N-1}_{n=0} a_n e^{2\pi i n k / N} = \sum^{N-1}_{n=0} \hat{F}(n) e^{2\pi i n k / N}\]</span></p>
-<p>It is possible to recover the Fourier inversion on the circle for sufficiently smooth function by letting <span class="math inline">\(N \rightarrow \infty\)</span> in the finite model <span class="math inline">\(\mathbb{Z}(N)\)</span>.</p>
-<h4 id="discrete-fourier-transform">Discrete Fourier Transform</h4>
-<p>When a signal is discrete and periodic, we don't need the continuous Fourier Transform. Instead, we use discrete Fourier Transform or DFT. Suppose our signal is <span class="math inline">\(a_n\)</span> for <span class="math inline">\(n = 0, ...., N-1\)</span> and <span class="math inline">\(a_n = a_{n + jN}\)</span> ofr all <span class="math inline">\(n, j\)</span>. The DFT of <span class="math inline">\(a\)</span>, also known as the <strong>spectrum</strong> of <span class="math inline">\(a\)</span> is <span class="math inline">\(F(n)\)</span>:</p>
-<p><span class="math display">\[\hat{F}(k) = A_k =  &lt;a, e_k&gt; = \sum^{N-1}_{n=0} e^{-2\pi i kn / N} a_n\]</span></p>
-<p>The sequence <span class="math inline">\(a_n\)</span> is the inverse discrete Fourier Transform of the sequence <span class="math inline">\(A_k\)</span>:</p>
-<p><span class="math display">\[a_n = \frac{1}{N}\sum^{N-1}_{k=0} &lt;a, e_k&gt; e_k =  \frac{1}{N} \sum^{N-1}_{k=0} \hat{F}(k) e^{2\pi i n k / N}\]</span></p>
-<h5 id="two-point-dft">Two Point DFT</h5>
-<p><span class="math inline">\(N = 2\)</span>, <span class="math inline">\(e_1 (k) = e^{-i \pi} = -1, \forall k\)</span>, then:</p>
-<p><span class="math display">\[A_k = (-1)^{kn} a_n = a_0 - (-1)^k a_1\]</span></p>
-<p>Thus,</p>
-<p><span class="math display">\[A_0 = a_0 + a_1\]</span> <span class="math display">\[A_1 = a_0 - a_1\]</span></p>
-<p><span class="math display">\[
-A
-=
-\begin{bmatrix}
-1 &amp; 1\\
-1 &amp; -1 
-\end{bmatrix}
-\begin{bmatrix}
-a_0 \\
-a_1
-\end{bmatrix}
-\]</span></p>
-<h5 id="four-point-dft">Four Point DFT</h5>
-<p><img src='/images/RL/background/dft.png' width="600"></p>
-<h1 id="ref">REF</h1>
-<ol type="1">
-<li>https://sites.millersville.edu/bikenaga/math-proof/relations/relations.html</li>
-<li>https://math.libretexts.org/Bookshelves/Combinatorics_and_Discrete_Mathematics/Elementary_Number_Theory_(Barrus_and_Clark)/01%3A_Chapters/1.21%3A_Residue_Classes_and_the_Integers_Modelo_m</li>
-<li>Fourier Transforms and the ast Fourier Transform (FFT) Algorithm</li>
-</ol>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/01/27/fourier-analysis/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1715,136 +1542,8 @@ a_1
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2022/05/02/rigorous-probability-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/05/02/rigorous-probability-2/" class="post-title-link" itemprop="url">Rigorous Probability (2)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-05-02 11:32:04" itemprop="dateCreated datePublished" datetime="2022-05-02T11:32:04+08:00">2022-05-02</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2022-06-17 20:32:43" itemprop="dateModified" datetime="2022-06-17T20:32:43+08:00">2022-06-17</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2022/05/02/rigorous-probability-2/" class="post-meta-item leancloud_visitors" data-flag-title="Rigorous Probability (2)" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>6.9k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>6 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="rigorous-probability-2">Rigorous Probability (2)</h1>
-<h2 id="conditional-expectations">Conditional Expectations</h2>
-<h3 id="elementary-conditional-probabilities">Elementary Conditional Probabilities</h3>
-<h4 id="definition-8.2-conditional-probability">Definition 8.2 Conditional Probability</h4>
-<p>Let <span class="math inline">\((\Omega, \mathbb{A}, P)\)</span> be a probability space adn <span class="math inline">\(B \in \mathbb{A}\)</span>. We define the <strong>conditional probability</strong> given <span class="math inline">\(B\)</span> for any <span class="math inline">\(A \in \mathbb{A}\)</span> by:</p>
-<p><span class="math display">\[P(A | B) = \frac{P(A \cap B)}{P(B)}\]</span></p>
-<p>with <span class="math inline">\(P(B) &gt; 0\)</span>.</p>
-<p><br></p>
-<h4 id="theorem-8.4-pcdot-b-is-a-probability-measure">Theorem 8.4: <span class="math inline">\(P(\cdot | B)\)</span> is a Probability Measure</h4>
-<p>If <span class="math inline">\(P(B) &gt; 0\)</span>, then <span class="math inline">\(P(\cdot | B)\)</span> is a probability measure on <span class="math inline">\((\Omega, \mathbb{A})\)</span>.</p>
-<p><br></p>
-<h4 id="theorem-8.5-conditional-probability-of-independent-events">Theorem 8.5: Conditional Probability of Independent Events</h4>
-<p>Let <span class="math inline">\(A, B \in \mathbb{A}\)</span> with <span class="math inline">\(P(A), P(B) &gt; 0\)</span>. Then, belows are equivalent:</p>
-<ol type="1">
-<li><span class="math inline">\(A, B\)</span> are independent.</li>
-<li><span class="math inline">\(P(A | B) = P(A)\)</span></li>
-<li><span class="math inline">\(P(B | A) = P(B)\)</span></li>
-</ol>
-<p><br></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/05/02/rigorous-probability-2/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 <script src="/js/comments.js"></script>
 </div>
@@ -1867,13 +1566,13 @@ a_1
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">897k</span>
+    <span title="Symbols count total">900k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">13:36</span>
+    <span title="Reading time total">13:38</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
