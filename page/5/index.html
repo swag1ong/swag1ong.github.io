@@ -86,7 +86,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">111</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">113</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -162,7 +162,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-count">113</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -215,6 +215,265 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/29/adaptive-lr/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/29/adaptive-lr/" class="post-title-link" itemprop="url">Basic Adaptive LR Algorithms</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-29 10:38:32" itemprop="dateCreated datePublished" datetime="2021-07-29T10:38:32+08:00">2021-07-29</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-08-18 16:12:42" itemprop="dateModified" datetime="2021-08-18T16:12:42+08:00">2021-08-18</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DL/" itemprop="url" rel="index"><span itemprop="name">DL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DL/Techniques/" itemprop="url" rel="index"><span itemprop="name">Techniques</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/07/29/adaptive-lr/" class="post-meta-item leancloud_visitors" data-flag-title="Basic Adaptive LR Algorithms" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>2.6k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="algorithms-with-adaptive-learning-rates">Algorithms with Adaptive Learning Rates</h1>
+<p>Learning rate is reliably one of the hyperparameters that is the most difficult to set because it has a significant impact on model performance. At each iteration, the cost is often highly sensitive to some directions in parameter space and insensitive to others. Momentum solves some of the problems in the cost of introducing another hyperparameter. Thus, it is natural to consider algorithms that have separate learning rate for each parameter and automatically adapt learning rates for each of the parameter.</p>
+<p>The <code>delta-bar-delta</code> algorithm (base on full-batch) is an early heuristic approach to adapting individual learning rates for model parameters during training, it is based on intuitive idea similar to momentum:</p>
+<blockquote>
+<p>If the partial derivative of the loss, with respect to a given model parameter, remains the same sign, then the learning rate should increase, if the partial derivative with respect to the parameter changes sign, then the learning rate should decrease.</p>
+</blockquote>
+<p>We would like to extend the idea to mini-batch scenario.</p>
+<h2 id="adagrad">AdaGrad</h2>
+<p><img src='/images/ML/adagrad_1.png' width="600"></p>
+<p>The <code>AdaGrad</code> algorithm, individually adapts the learning rates of all model parameters by scaling them inversely proportional to square root of the sum of all of their historical squared values:</p>
+<ol type="1">
+<li><p>If <span class="math inline">\(g_1\)</span> is large constantly larger than <span class="math inline">\(g_2\)</span>, then:</p>
+<p><span class="math display">\[\sqrt{r_1} &gt; \sqrt{r_2} \implies \epsilon_1 &lt; \epsilon_2\]</span></p>
+<p>This makes sense because we want to take a small step in the gradient direction when the magnitude of gradient is large, especially when we have noisy gradient. Conversely, we would like to take slightly larger step than large gradient case when we have smaller gradient.</p></li>
+<li><p>If <span class="math inline">\(r_i\)</span> is less than 1, we have increasing learning rate compare to base learning rate:</p>
+<p><span class="math display">\[r_i &lt; 1 \implies \epsilon_i &gt; \epsilon\]</span></p>
+<p>This helps us to get out of the local minimum or flat region of the surface by taking larger steps.</p></li>
+</ol>
+<p>AdaGrad is designed to converge rapidly when applied to a convex optimization problem, so when it finds a convex structure, it can converge rapidly.</p>
+<p>However, in non-convex optimization problem (training neural networks) the accumulated gradient <span class="math inline">\(\mathbf{r}\)</span> starts accumulating at the beginning, <strong>this will introduce excessive decrease in the effective learning in later training steps (at end, we will have large <span class="math inline">\(\mathbf{r}\)</span>, so the learning rates will be small to prevent effective learning in later stages or early large gradients will prevent learning in early stages)</strong>.</p>
+<h2 id="rmsprop">RMSProp</h2>
+<p>The <code>RMSProp</code> algorithm modifies AdaGrad so that it can perform better in non-convex setting by changing the gradient accumulation into an exponentially weighted moving average, so the early accumulation becomes less and less important. This structure helps in non-convex problem by discarding the history from extreme past so when we arrive at a convex bowl, we have sufficiently large learning rate to converge rapidly.</p>
+<p><img src='/images/ML/rmsprop_1.png' width="600"></p>
+<p>The algorithm introduces a new parameter <span class="math inline">\(\rho\)</span> that controls for the weight of accumulated gradient.</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/29/momentum/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/29/momentum/" class="post-title-link" itemprop="url">Momentum</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-07-29 10:37:44 / Modified: 14:25:49" itemprop="dateCreated datePublished" datetime="2021-07-29T10:37:44+08:00">2021-07-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DL/" itemprop="url" rel="index"><span itemprop="name">DL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/DL/Techniques/" itemprop="url" rel="index"><span itemprop="name">Techniques</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/07/29/momentum/" class="post-meta-item leancloud_visitors" data-flag-title="Momentum" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>3.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="momentum">Momentum</h1>
+<p>While SGD remains a very popular optimization strategy, learning with it can be slow. The method of momentum is designed to accelerate learning, especially in the face of <strong>high curvature</strong> (large change of direction of the curve in small amount time), <strong>small but consistent gradients</strong> (flat surface) or <strong>noisy gradients</strong> (with high variance). The momentum algorithm accumulates an exponentially decaying moving average of past gradients and continues to move in their direction.</p>
+<p><br></p>
+<p>The momentum algorithm introduces several variables:</p>
+<ol type="1">
+<li>A vector <span class="math inline">\(\mathbf{v}\)</span> that plays a role of velocity (with direction and speed). The velocity is set to an exponentially decaying average of the negative gradient.</li>
+<li>A hyparameter <span class="math inline">\(\alpha \in [0, 1)\)</span> determins how quickly the contributions of previous gradients exponentially decay.</li>
+</ol>
+<p>The update rule is given by:</p>
+<p><span class="math display">\[\mathbf{v} \leftarrow \alpha \mathbf{v} - \epsilon \nabla_{\boldsymbol{\theta}} (\frac{1}{N} \sum^{N}_{i=1} L(\mathbf{f} (\mathbf{x}_i; \; \boldsymbol{\theta}), \mathbf{y}_i))\]</span></p>
+<p><span class="math display">\[\boldsymbol{\theta} \rightarrow \boldsymbol{\theta} + \mathbf{v}\]</span></p>
+<p>Previously, in SGD, the size of the step was simply the norm of the gradient multiplied by the learning rate:</p>
+<p><span class="math display">\[\epsilon \nabla_{\boldsymbol{\theta}} (\frac{1}{N} \sum^{N}_{i=1} L(\mathbf{f} (\mathbf{x}_i; \; \boldsymbol{\theta}), \mathbf{y}_i))\]</span></p>
+<p>Now the size of the step depends on <strong>how large and how aligned a sequence of gradients</strong> are. The step size is <strong>largest</strong> when many successive gradients point in exactly the same direction. If the momentum algorithm always observe gradient <span class="math inline">\(\mathbf{g}\)</span>, then it will accelerate in the direction of <span class="math inline">\(-\mathbf{g}\)</span>:</p>
+<p><span class="math display">\[\mathbf{v}_1 \leftarrow - \epsilon \mathbf{g}\]</span></p>
+<p><span class="math display">\[\mathbf{v}_2 \leftarrow -\mathbf{g} \epsilon(\alpha + 1)\]</span></p>
+<p><span class="math display">\[\mathbf{v}_N \leftarrow -\mathbf{g} \epsilon \sum^{N-1}_{i=0} \alpha^i\]</span></p>
+<p><span class="math display">\[\implies \|\mathbf{v}_{\infty}\| = \frac{\epsilon \|\mathbf{g}\|}{1 - \alpha}\]</span></p>
+<p>The terminal velocity will have speed <span class="math inline">\(\frac{\epsilon \|\mathbf{g}\|}{1 - \alpha} \gg \epsilon \|\mathbf{g}\|\)</span>. This makes sense because if we receive consistent small gradients, we would like to take larger steps because we are confident we are in the right direction. One the other hand, consistently changing direction gradients (high curvature) would cause the gradient to be small to allow convergence.</p>
+<p><img src='/images/ML/momentum_1.png' width="600"></p>
+<h2 id="nesterov-momentum">Nesterov Momentum</h2>
+<p>Nesterov Momentum is inspired by Nesterov's accelerated gradient method, the update rules in this case are given by:</p>
+<p><span class="math display">\[\mathbf{v} \leftarrow \alpha \mathbf{v} - \epsilon \nabla_{\boldsymbol{\theta}} (\frac{1}{N} \sum^{N}_{i=1} L(\mathbf{f} (\mathbf{x}_i; \; \boldsymbol{\theta} + \alpha \mathbf{v}), \mathbf{y}_i))\]</span></p>
+<p><span class="math display">\[\boldsymbol{\theta} \rightarrow \boldsymbol{\theta} + \mathbf{v}\]</span></p>
+<p>This is similar to momentum, but before taking the gradient, we first take one step forward using previous velocity, then we take the gradient there and adjust velocity accordingly. We can also think of this as attempting to add a <strong>correlation factor</strong> to the standard method of momentum.</p>
+<p><img src='/images/ML/momentum_2.png' width="600"></p>
+<h1 id="implementation">Implementation</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SGD</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, lr, model_vars</span>):</span></span><br><span class="line">        self.model_vars = model_vars</span><br><span class="line">        self.lr = lr</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span>(<span class="params">self, grad</span>):</span></span><br><span class="line">        <span class="keyword">for</span> i, v <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.model_vars):</span><br><span class="line">            self.model_vars[i] = v - self.lr * grad[i]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self.model_vars</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Momentum</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, lr, model_vars, alpha=<span class="number">0.9</span></span>):</span></span><br><span class="line">        self.lr = lr</span><br><span class="line">        self.model_vars = model_vars</span><br><span class="line">        self.alpha = alpha</span><br><span class="line">        self.v = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span>(<span class="params">self, grad</span>):</span></span><br><span class="line">        <span class="keyword">for</span> i, v <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.model_vars):</span><br><span class="line">            self.v = self.v * self.alpha - self.lr * grad[i]</span><br><span class="line">            self.model_vars[i] = self.model_vars[i] + self.v</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self.model_vars</span><br></pre></td></tr></table></figure>
+<h1 id="ref">Ref</h1>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1469,261 +1728,6 @@ BB^T \mathbf{x} &amp;= \lambda \mathbf{x}\\
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/19/naive-bayes/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/19/naive-bayes/" class="post-title-link" itemprop="url">Naive Bayes</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-07-19 16:32:15" itemprop="dateCreated datePublished" datetime="2021-07-19T16:32:15+08:00">2021-07-19</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-07-24 23:06:03" itemprop="dateModified" datetime="2021-07-24T23:06:03+08:00">2021-07-24</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/07/19/naive-bayes/" class="post-meta-item leancloud_visitors" data-flag-title="Naive Bayes" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>7.2k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>7 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="naive-bayes">Naive Bayes</h1>
-<p>Suppose our training set consists of data samples <span class="math inline">\(D = \{(\mathbf{x}_1, y_1), ...., (\mathbf{x}_N, y_N)\}, \; \mathbf{x_i} \in \mathbb{R}^d\)</span>, where <span class="math inline">\(D = \{(\mathbf{x}_i, y_i)\}\)</span> are realizations of a random sample that follows unknown joint distribution <span class="math inline">\(P(\mathbf{X}, Y)\)</span>.</p>
-<p><strong>Assumptions</strong>:</p>
-<ol type="1">
-<li><p><strong>Features are conditionally independent (Naive bayes assumption)</strong>: <span class="math display">\[P(\mathbf{X} | Y) = \prod^{d}_{j=1} P(X_j | Y)\]</span></p></li>
-<li><p><strong>MLE assumption</strong>: Random sample is identically distributed.</p></li>
-<li><p><strong>Positional independence</strong>: The position of features does not matter (used in Multinomial case).</p></li>
-</ol>
-<p>By applying bayes rule (applying on distribution <span class="math inline">\(P (\cdot)\)</span> to make things general), we have:</p>
-<p><span class="math display">\[P(Y | \mathbf{X}) = \frac{P(\mathbf{X}, Y)}{P(\mathbf{X})} = \frac{P(\mathbf{X} | Y) P(Y)}{P(\mathbf{X})}\]</span></p>
-<p>By substituting the assumption:</p>
-<p><span class="math display">\[P(Y | \mathbf{X}) = \frac{\prod^{d}_{j=1} P(X_j | Y)P(Y)}{P(\mathbf{X})}\]</span></p>
-<p>Since the probability distribution <span class="math inline">\(P(\mathbf{X})\)</span> characterised by <span class="math inline">\(F_{\mathbf{X}}(\mathbf{x})\)</span> is constant for any given <span class="math inline">\(\mathbf{x}\)</span>, we can drop it from the equation because it only changes <span class="math inline">\(P(Y | \mathbf{X})\)</span> by a proportion:</p>
-<p><span class="math display">\[P(Y | \mathbf{X}) \propto P(Y) \prod^{d}_{j=1} P(X_j | Y)\]</span></p>
-<p>Our goal is to find a class <span class="math inline">\(\hat{y}\)</span> that maximize the probability given input <span class="math inline">\(\mathbf{X} = \mathbf{x}\)</span>:</p>
-<span class="math display">\[\begin{aligned}
-\hat{y} = \underset{y}{\arg\max} \sum^{d}_{j=1} \log P_{X_j|Y}(x_j | y) + \log P_{Y}(y)
-\end{aligned}\]</span>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/07/19/naive-bayes/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/19/logistic-regression/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/19/logistic-regression/" class="post-title-link" itemprop="url">Logistic Regression</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-07-19 16:32:07" itemprop="dateCreated datePublished" datetime="2021-07-19T16:32:07+08:00">2021-07-19</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-08-09 17:48:42" itemprop="dateModified" datetime="2021-08-09T17:48:42+08:00">2021-08-09</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/07/19/logistic-regression/" class="post-meta-item leancloud_visitors" data-flag-title="Logistic Regression" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>5.4k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>5 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="logistic-regression">Logistic Regression</h1>
-<p>Suppose we have training examples <span class="math inline">\(D = \{(\mathbf{x}_1, y_1), ...., (\mathbf{x}_N, y_N); \; \mathbf{x}_i \in \mathbb{R}^d\}\)</span>, our goal is to make decision about the class of new input <span class="math inline">\(\mathbf{x}\)</span>. The logistic regression does this by learning from a training set, a vector of bias and a matrix of weights.</p>
-<h2 id="binary-class">Binary-Class</h2>
-<p>In binary class problem, our target <span class="math inline">\(Y\)</span> takes values <span class="math inline">\(\{0, 1\}\)</span>. To model the distribution <span class="math inline">\(P(Y | \mathbf{X}; \; \mathbf{w}, b)\)</span>, we apply sigmoid function on the dot product of weights and inputs which transform the output to a value between <span class="math inline">\([0, 1]\)</span> (one criteria for probability):</p>
-<p><span class="math display">\[z = \mathbf{x}^T \mathbf{w} + b\]</span></p>
-<p><span class="math display">\[y = \sigma(z)\]</span></p>
-<p>To make sure that class random variable <span class="math inline">\(Y\)</span>'s conditional pmf sums to 1:</p>
-<p><span class="math display">\[P(Y=1 | X=\mathbf{x} ;\; \mathbf{w}, b) = \frac{1}{1 + e^{-z}} = p\]</span></p>
-<p><span class="math display">\[P(Y=0 | X=\mathbf{x} ;\; \mathbf{w}, b) = 1 - \frac{1}{1 + e^{-z}} = \frac{e^{-z}}{1 + e^{-z}} = 1 - p\]</span></p>
-<p>Then, it is equivalently to express this conditional pmf as Bernoulli pmf:</p>
-<p><span class="math display">\[p_{Y|\mathbf{X}} (y | \mathbf{x}; \; \mathbf{w}, b) = p^y + (1 - p)^{1 - y}\]</span></p>
-<p>If we have the conditional pmf of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X= \mathbf{x}\)</span>, then we can use simple decision rule to make decisions:</p>
-<p><span class="math display">\[
-\hat{y} =
-\begin{cases}
-P(Y=1 | X=\mathbf{x}) &gt; 0.5, \quad 1\\
-P(Y=1 | X=\mathbf{x}) \leq 0.5, \quad 0
-\end{cases}
-\]</span></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/07/19/logistic-regression/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1737,7 +1741,7 @@ P(Y=1 | X=\mathbf{x}) \leq 0.5, \quad 0
 
 <div class="copyright">
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -1748,13 +1752,13 @@ P(Y=1 | X=\mathbf{x}) \leq 0.5, \quad 0
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">900k</span>
+    <span title="Symbols count total">901k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">13:38</span>
+    <span title="Reading time total">13:39</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

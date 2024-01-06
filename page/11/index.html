@@ -86,7 +86,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">111</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">113</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -162,7 +162,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-count">113</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -215,6 +215,248 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/05/13/Dueling/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/05/13/Dueling/" class="post-title-link" itemprop="url">Dueling Network Architectures for DRL</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-05-13 10:49:54" itemprop="dateCreated datePublished" datetime="2021-05-13T10:49:54+08:00">2021-05-13</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-08-19 17:00:33" itemprop="dateModified" datetime="2021-08-19T17:00:33+08:00">2021-08-19</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/RL/VFA/" itemprop="url" rel="index"><span itemprop="name">VFA</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/05/13/Dueling/" class="post-meta-item leancloud_visitors" data-flag-title="Dueling Network Architectures for DRL" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>6.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="dueling-network-architectures-for-deep-reinforcement-learning">Dueling Network Architectures for Deep Reinforcement Learning</h1>
+<h2 id="introduction">Introduction</h2>
+<p>The authors introduce an innovating neural network architecture that is better suited for model-free RL. This paper advances a new network but uses already published algorithms.</p>
+<p>The proposed architecture is called dueling architecture, explicitly separates the representation of state values and state-dependent action advantages. The architecture consists of two streams that represent the value and advantage functions, while sharing a common convolutional feature learning module. The two streams are combined via a special aggregating layer to produce an estimate of the state-action value function <span class="math inline">\(Q\)</span>. This dueling network should be understood as a single Q network with two streams that replaces the popular single-stream Q-network in existing algorithms such as DQN. The dueling network automatically produces separate estimates of the state value function and advantage function, without any extra supervision.</p>
+<p><img src="/images/RL/papers/dueling_1.png"></p>
+<p>Intuitively, the dueling architecture can learn which states are (or are not) valuable, without having to learn the effect of each action for each state. (by taking the gradient wrt to the input) It can more quickly identify the correct action during policy evaluation as redundant or similar actions are added to the learning problem.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/05/13/Dueling/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/05/11/probability-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/05/11/probability-2/" class="post-title-link" itemprop="url">probability (2)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-05-11 23:50:10" itemprop="dateCreated datePublished" datetime="2021-05-11T23:50:10+08:00">2021-05-11</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-15 23:52:14" itemprop="dateModified" datetime="2021-07-15T23:52:14+08:00">2021-07-15</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/05/11/probability-2/" class="post-meta-item leancloud_visitors" data-flag-title="probability (2)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>16k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>14 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="probability-background-2">Probability Background (2)</h1>
+<h2 id="distribution-of-two-random-variables">Distribution of Two Random Variables</h2>
+<p>Intuitive Example:</p>
+<blockquote>
+<p>Let our experiment be flipping a coin 3 times. Then our sample space <span class="math inline">\(\Omega = \{HHH, THH, TTH, TTT, THT, HTH, HTT, HHT\}\)</span>. Let <span class="math inline">\(X_1\)</span> be the number of head on the first two tosses and <span class="math inline">\(X_2\)</span> be the number of heads on all three tosses. Then, our interest can be represented by the pair of random variables <span class="math inline">\((X_1, X_2)\)</span>, for example <span class="math inline">\((X_1 (HTH), X_2(HTH)) = (1, 2)\)</span>. Continuing this way, <span class="math inline">\(X_1, X_2\)</span> are real-valued functions defined on the sample space <span class="math inline">\(\Omega\)</span>, which take the outcome and map from sample space to ordered number pairs: <span class="math display">\[\mathbb{D} = \{(0, 0), (0, 1), (1, 1), (1, 2), (2, 2), (2, 3)\}\]</span></p>
+<p>One the other hand, we can regard this ordered pair of functions as a vector function <span class="math inline">\(f: \Omega \rightarrow \mathbb{D} \subset \mathbb{R}^2\)</span> defined by <span class="math inline">\(f(x) = &lt;X_1(x), \; X_2(x)&gt;, \quad x \in \Omega\)</span>.</p>
+</blockquote>
+<p><img src="/images/RL/background/prob_33.png" width="600"></p>
+<p>We often denote random vectors using vector notations <span class="math inline">\(\mathbf{X} = (X_1, X_2)^{\prime}\)</span> as a column vector.</p>
+<p>Let <span class="math inline">\(\mathbb{D}\)</span> be the range space of <span class="math inline">\((X_1, X_2)\)</span>. Let <span class="math inline">\(A\)</span> be a subset of <span class="math inline">\(\mathbb{D}\)</span>. We can uniquely define the distribution of this random vector <span class="math inline">\(P_{X_1, X_2}\)</span> in terms of the <code>CDF</code>:</p>
+<p><span class="math display">\[F_{X_1, X_2} (x_1, x_2) = P_{X_1, X_2}((X_1 \leq x_1) \cap (X_2 \leq x_2)) = P_{X_1, X_2}(X_1 \leq x_1, \; X_2 \leq x_2)\]</span></p>
+<p>For all <span class="math inline">\((x_1, x_2) \in \mathbb{R}^2\)</span>. At the same time:</p>
+<p><span class="math display">\[P_{X_1, X_2}(a_1 &lt; X_1 \leq b_1, \; a_2 &lt; X_2 \leq b_2) = F_{X_1, X_2} (b_1, b_2) -  F_{X_1, X_2} (a_1, b_2) -  F_{X_1, X_2} (b_1, a_2) +  F_{X_1, X_2} (a_1, a_2)\]</span></p>
+<p>Hence, all induced probabilities can be formulated in terms of the cdf. We often call this cdf the <code>joint cumulative distribution</code>.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/05/11/probability-2/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1187,241 +1429,6 @@ Z_s &amp;\triangleq r^{a}_{s} + \gamma \max_{\hat{a}}Q^{approx} (s^{\prime}, \ha
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/05/03/bellman-optimality-equations/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/03/bellman-optimality-equations/" class="post-title-link" itemprop="url">Bellman Equations for Optimal Value Functions</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-05-03 18:11:55 / Modified: 22:31:52" itemprop="dateCreated datePublished" datetime="2021-05-03T18:11:55+08:00">2021-05-03</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/Basics/" itemprop="url" rel="index"><span itemprop="name">Basics</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/05/03/bellman-optimality-equations/" class="post-meta-item leancloud_visitors" data-flag-title="Bellman Equations for Optimal Value Functions" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>8.7k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>8 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><em>Please read posts on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> and <a href="/2021/05/03/bellman-equations/" title="Bellman Equations">Bellman Equations</a> prior this post.</em></p>
-<h1 id="bellman-equations-for-optimal-value-functions">Bellman Equations for Optimal Value Functions</h1>
-<p><img src='/images/RL/bellman_equation/optimal_policy_value_func.png'></p>
-<p>So it is natural to ask, does the optimal value function of optimal policy <span class="math inline">\(V^{\pi^*}\)</span> have similar recursive structure? the answer is yes, however, we need to prove this. The proof goes with 3 claims which we will prove later:
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/05/03/bellman-optimality-equations/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/05/03/bellman-equations/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/03/bellman-equations/" class="post-title-link" itemprop="url">Bellman Equations</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-05-03 18:00:42" itemprop="dateCreated datePublished" datetime="2021-05-03T18:00:42+08:00">2021-05-03</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-05-15 17:35:53" itemprop="dateModified" datetime="2021-05-15T17:35:53+08:00">2021-05-15</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/" itemprop="url" rel="index"><span itemprop="name">RL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/RL/Basics/" itemprop="url" rel="index"><span itemprop="name">Basics</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/05/03/bellman-equations/" class="post-meta-item leancloud_visitors" data-flag-title="Bellman Equations" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>1.5k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><em>Please read post on <a href="/2021/05/03/MDP/" title="MDP">MDP</a> prior this post</em></p>
-<h1 id="bellman-equations">Bellman Equations</h1>
-<p>By expanding value functions, we reveal the recursive property of return:</p>
-<p><span class="math display">\[
-\begin{aligned}
-V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
-&amp; = E[R_{t} + \gamma G^{\pi}_{t+1} | X_{t} = x]\\
-&amp; = E_{a \sim \pi(a | s)}[R_{t} | X_{t} = x] + \gamma E[G^{\pi}_{t+1} | X_{t} = x]\\
-&amp; = r^{\pi} (x) + \gamma E[V^{\pi} (X_{t+1}) | X_{t} = x]\\
-\end{aligned}
-\]</span>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/05/03/bellman-equations/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/10/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><span class="page-number current">11</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/12/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1435,7 +1442,7 @@ V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
 
 <div class="copyright">
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -1446,13 +1453,13 @@ V^{\pi} (x) &amp;= E[G^{\pi}_{t} | X_{t} = x]\\
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">900k</span>
+    <span title="Symbols count total">901k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">13:38</span>
+    <span title="Reading time total">13:39</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

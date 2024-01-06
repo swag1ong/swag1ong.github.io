@@ -86,7 +86,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">111</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">113</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -162,7 +162,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-count">113</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -215,6 +215,298 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/11/15/time-series-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/11/15/time-series-1/" class="post-title-link" itemprop="url">Time Series (1)</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-11-15 13:10:49" itemprop="dateCreated datePublished" datetime="2021-11-15T13:10:49+08:00">2021-11-15</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-11-19 15:19:43" itemprop="dateModified" datetime="2021-11-19T15:19:43+08:00">2021-11-19</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Background/" itemprop="url" rel="index"><span itemprop="name">Background</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/11/15/time-series-1/" class="post-meta-item leancloud_visitors" data-flag-title="Time Series (1)" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>12k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>11 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="time-series-introduction">Time Series (Introduction)</h1>
+<h2 id="characteristics-of-time-series">Characteristics of Time Series</h2>
+<p>The primary objective of time series analysis is to develop mathematical models that provide plausible descriptions for sample data with time correlations. In order to provide a statistical setting for describing the character of data that seemingly fluctuate in a random fashion over time, we assume a time series can be defined as a collection of random variables indexed according to the order they are obtained in time. In general, a collection of random variables <span class="math inline">\(\{X_t\}\)</span> indexed by <span class="math inline">\(t\)</span> is referred to as a stochastic process. In this text, <span class="math inline">\(t\)</span> will typically be discrete and vary over the integers.</p>
+<p><strong>Example of Series:</strong></p>
+<blockquote>
+<p><strong>White Noise</strong>: A collection of uncorrelated, independent and identically distributed random variables <span class="math inline">\(W_t\)</span> with mean 0 and finite variance <span class="math inline">\(\sigma^2_w\)</span>. A particular useful white noise is Gaussian white noise, that is <span class="math inline">\(W_t \overset{i.i.d}{\sim} N(0, \sigma^2_w)\)</span> <img src="/images/RL/background/ts_1_3_1.png" width="600"></p>
+</blockquote>
+<blockquote>
+<p><strong>Moving Average</strong>: We might replace the white noise series <span class="math inline">\(W_t\)</span> by a moving average that smooths the series: <span class="math display">\[V_t = \frac{1}{3} (W_{t-1} + W_{t} + W_{t+1})\]</span> This introduces a smoother version of white noise series, reflecting the fact that the slower oscillations are more apparent and some of the faster oscillations are taken out. <img src="/images/RL/background/ts_1_3_2.png" width="600"></p>
+</blockquote>
+<blockquote>
+<p><strong>Autoregressions</strong>: Suppose we consider the white noise series <span class="math inline">\(W_t\)</span> as input and calculate the output using the second-order equation: <span class="math display">\[X_t = X_{t-1} - 0.9 X_{t-2} + W_t\]</span> For <span class="math inline">\(t=1, ..., 500\)</span>. We can see the periodic behavior of the series. <img src="/images/RL/background/ts_1_3_3.png" width="600"></p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/11/15/time-series-1/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/09/16/hmm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/09/16/hmm/" class="post-title-link" itemprop="url">Sequential Data</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-09-16 14:25:15" itemprop="dateCreated datePublished" datetime="2021-09-16T14:25:15+08:00">2021-09-16</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-09-23 14:04:21" itemprop="dateModified" datetime="2021-09-23T14:04:21+08:00">2021-09-23</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/09/16/hmm/" class="post-meta-item leancloud_visitors" data-flag-title="Sequential Data" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>8.6k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>8 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="sequential-data">Sequential Data</h1>
+<p>In some cases, we have i.i.d assumptions to allow use to express the likelihood function as the product over all data points of the probability distribution evaluated at each data point. However, in some cases namely sequential data, we may not have i.i.d samples.</p>
+<h2 id="markov-models">Markov Models</h2>
+<p>To express the sequential dependence of the samples, we can relax the i.i.d assumption and one of the simplest ways to do this is to consider a <code>Markov Model</code>. First of all, without loss of generality, we can use the product rule to express the joint distribution for a sequence of observations in the form:</p>
+<p><span class="math display">\[P(X_1, ...., X_n) = \prod^N_{n=1} P(X_n | X_1, ..., X_{n-1})\]</span></p>
+<p>If we assume that each of the conditional distributions on the right-hand side is independent of all previous observations except the most recent, we obtain the <code>first-order Markov Chain</code>, which can depicted as graphical model:</p>
+<p><img src='/images/ML/hmm_1.png' width="600"></p>
+<p>The joint distribution for a sequence of <span class="math inline">\(N\)</span> observations under this model is given by:</p>
+<p><span class="math display">\[P(X_1, ..., X_N) = P(X_1) \prod^{N}_{n=2} P(X_n | X_{n-1})\]</span></p>
+<p>Thus, if we use such a model to predict the next observation in a sequence, the distribution of predictions will depend only on the value of the immediately preceding observation and will be independent of all earlier observations. In most applications of such models, the conditional distributions <span class="math inline">\(P(X_n | X_{n-1})\)</span> that define the model will be constrained to be equal, corresponding to a assumption of a stationary time series. The model is then known as the <code>homogeneous Markov Chain</code> (All conditional distribution share the same parameters).</p>
+<p>However, first-order Markov model is still restrictive. For many sequential observations, we anticipate that the trends in the data over several successive observations will provide important information in predicting the next value. One way to allow earlier observations to have an influence is to move to higher-order Markov chains, the <code>second-order Markov chain</code> is given by:</p>
+<p><span class="math display">\[P(X_1, ..., X_N) = P(X_1) P(X_2 | X_1) \prod^{N}_{n=3} P(X_n | X_{n-1}, X_{n-2})\]</span></p>
+<p><img src='/images/ML/hmm_2.png' width="600"></p>
+<p>Suppose we wish to build a model for sequences that is not limited by the Markov assumption to any order and yet that can be specified using a limited number of free parameters. We can achieve this by introducing additional latent variables to permit a rich class of models to be constructed out of simple components, as we did with mixture distributions.</p>
+<p>For each observation <span class="math inline">\(\mathbf{X}_n\)</span>, we introduce a corresponding latent random vector <span class="math inline">\(\mathbf{Z}_n\)</span> which may be of different type or dimensionality to the observed variable. We now assume that it is the <strong>latent variables that form a Markov chain</strong>, giving rise to the graphical structure known as <code>state space model</code>. It satisfies the key conditional independence properties that <span class="math inline">\(\mathbf{Z}_{n-1}, \mathbf{Z}_{n+1}\)</span> are independent given <span class="math inline">\(\mathbf{Z}_n\)</span> so that:</p>
+<p><span class="math display">\[\mathbf{Z}_{n+1} \perp \!\!\! \perp \mathbf{Z}_{n-1} \;|\; \mathbf{Z}_n\]</span></p>
+<p>The joint distribution of the model is:</p>
+<p><span class="math display">\[P(\mathbf{X}_1, ...., \mathbf{X}_{N}, \mathbf{Z}_1, ...., \mathbf{Z}_{N}) = P(\mathbf{Z}_1) \prod^N_{n=1} P(\mathbf{X}_n | \mathbf{Z}_n) \prod^{N}_{n=2} P(\mathbf{Z}_n | \mathbf{Z}_{n-1})\]</span></p>
+<p><img src='/images/ML/hmm_3.png' width="600"></p>
+<p>Using the d-separation criterion, we see that there is always a path connecting any two observed variables <span class="math inline">\(\mathbf{X}_n\)</span> and <span class="math inline">\(\mathbf{X}_{n+1}\)</span> via the latent variable, so the predictive distribution <span class="math inline">\(P(\mathbf{X}_{n+1} | \mathbf{X}_{1} , ..., \mathbf{X}_{n})\)</span> does not have any conditional dependence properties so it depends on all previous variables.</p>
+<p>There are two important models for sequential data:</p>
+<ol type="1">
+<li><strong>Hidden Markov Model</strong>: If the latent variables are discrete.</li>
+<li><strong>Linear Dynamical System</strong>: If the latent variables, observed variables are Gaussian with a linear-Gaussian dependence of the conditional distributions on their parents.</li>
+</ol>
+<h2 id="hidden-markov-models">Hidden Markov Models</h2>
+<p>The hidden markov model can be viewed as specific instance of the state space model with discrete latent variables. It can also be viewed as an extension of a mixture model in which the choice of mixture component for each observation is not selected independently but depends on the choice of component for the previous observation.</p>
+<p>It is convenient to use 1-of-<span class="math inline">\(K\)</span> coding scheme for the latent variables <span class="math inline">\(\mathbf{Z}_n\)</span>. We now allow the probability distribution of <span class="math inline">\(\mathbf{Z}_n\)</span> to depend on the state of previous latent variable <span class="math inline">\(\mathbf{Z}_{n-1}\)</span> through a conditional probability distribution <span class="math inline">\(P(\mathbf{Z}_{n} | \mathbf{Z}_{n-1})\)</span>. Since, we want to express the dependency of each element of <span class="math inline">\(\mathbf{Z}_n\)</span> on each element of <span class="math inline">\(\mathbf{Z}_{n-1}\)</span>, we introduce a <span class="math inline">\(K \times K\)</span> matrix of probabilities that we denote by <span class="math inline">\(\mathbf{A}\)</span>, the element of which are known as transition probabilities:</p>
+<p><span class="math display">\[A_{jk} = P(Z_{nk} = 1 | Z_{n-1, j}) = 1\]</span></p>
+<p>And because they are probabilities:</p>
+<p><span class="math display">\[\sum^K_{k=1} A_{jk} = 1\]</span></p>
+<p><span class="math display">\[0 \geq A_{jk} \leq 1\]</span></p>
+<p><img src='/images/ML/hmm_4.png' width="600"></p>
+<p>We can write the conditional distribution explicitly in the form:</p>
+<p><span class="math display">\[P(\mathbf{Z}_{n} | \mathbf{Z}_{n-1}, \mathbf{A}) = \prod^K_{k=1}\prod^{K}_{j=1} A_{jk}^{Z_{nk}Z_{n-1, \;j}}\]</span></p>
+<p>The initial latent node <span class="math inline">\(\mathbf{Z}_1\)</span> is special in that it does not have a parent node, and so it has a marginal distribution <span class="math inline">\(P(\mathbf{Z}_1)\)</span> represented by a vector of probabilities that represents the initial probabilities <span class="math inline">\(\boldsymbol{\pi}\)</span>:</p>
+<p><span class="math display">\[\pi_k = P(Z_{1k} = 1)\]</span> <span class="math display">\[\sum^{K}_{k=1} \pi_k = 1\]</span> <span class="math display">\[P(\mathbf{Z}_1 | \boldsymbol{\pi}) = \prod^K_{k=1} \pi_k^{Z_{1k}}\]</span></p>
+<p>Lastly, the specification of the probabilistic model is completed by defining the conditional distribution of observed variables <span class="math inline">\(P(\mathbf{X}_n | \mathbf{Z}_n, \boldsymbol{\phi})\)</span>, where <span class="math inline">\(\boldsymbol{\phi} = \{\boldsymbol{\phi}_1, ...., \boldsymbol{\phi}_K\}\)</span> is a set of parameters governing the distribution. These distributions are called <code>emissino distribution</code> and might be given by Gaussian if the elements of <span class="math inline">\(\mathbf{X}\)</span> are continues random variables or by conditioanl probability tables if <span class="math inline">\(\mathbf{X}\)</span> are discrete. Since the distribution depends on the values of <span class="math inline">\(\mathbf{Z}\)</span> which has <span class="math inline">\(K\)</span> possible states, We can define the emission distribution as:</p>
+<p><span class="math display">\[P(\mathbf{X}_n | \mathbf{Z}_n, \boldsymbol{\phi}) = \prod^K_{k=1} P(\mathbf{X}_n | \boldsymbol{\phi}_k)^{Z_{nk}}\]</span></p>
+<p>In this case, we focus on <strong>Homogeneous</strong> models for which all the conditional distributions governing the latent variables share the same parameters <span class="math inline">\(\mathbf{A}\)</span> and similarly all of the emission distributions share the same parameters <span class="math inline">\(\boldsymbol{\phi}\)</span>, so the joint distribution is:</p>
+<p><span class="math display">\[P(\mathbf{X}_1, ...., \mathbf{X}_{N}, \mathbf{Z}_1, ...., \mathbf{Z}_{N} | \boldsymbol{\theta}) = P(\mathbf{D}, \mathbf{H} | \boldsymbol{\theta}) = P(\mathbf{Z}_1 | \boldsymbol{\pi}) \prod^N_{n=1} P(\mathbf{X}_n | \mathbf{Z}_n, \boldsymbol{\phi}) \prod^{N}_{n=2} P(\mathbf{Z}_n | \mathbf{Z}_{n-1}, \mathbf{A})\]</span></p>
+<p>Where <span class="math inline">\(\boldsymbol{\theta} = \{\boldsymbol{\pi}, \boldsymbol{\phi}, \boldsymbol{A}\}\)</span></p>
+<h3 id="maximum-likelihood-for-hmm">Maximum Likelihood for HMM</h3>
+<p>If we have observed a dataset <span class="math display">\[\mathbf{D} = \{\mathbf{x}_1, ...., \mathbf{x}_N\}\]</span>, we can determine the parameters of an HMM using maximum likelihood method. The likelihood function is obtained from the joint distribution by marginalizing over the latent variables:</p>
+<p><span class="math display">\[L(\boldsymbol{\theta} ;\; \mathbf{D}) = \sum_{\mathbf{H}} P(\mathbf{D}, \mathbf{H} | \; \boldsymbol{\theta}) = P(\mathbf{D} | \; \boldsymbol{\theta}) = \prod^N_{n=1} P(\mathbf{x}_n |\; \boldsymbol{\theta})\]</span></p>
+<p>This is similar to the mixture distribution with latent variable in EM, we have a summation inside the log for log likelihood which is much difficult to work with, direct maximization of the log likelihood function will therefore lead to complex expressions with no closed-form solutions. Thus, one way to solve the problem is to use <strong>EM algorithm</strong> to find an efficient framework for maximizing the likelihood function in HMM.</p>
+<p>The EM algorithm starts with some initial selection for the model parameters, which we denote by <span class="math inline">\(\boldsymbol{\theta}^{old}\)</span>:</p>
+<ol type="1">
+<li><strong>E step</strong>:
+<ul>
+<li>We take these parameter values and find the posterior distribution of the latent variables: <span class="math display">\[P(\mathbf{H} | \mathbf{X}, \boldsymbol{\theta}^{old})\]</span></li>
+<li>We then evaluate the expectation of complete log likelihood function over the posterior distribution of the latent variables as a function of new parameters <span class="math inline">\(\boldsymbol{\theta}\)</span>: <span class="math display">\[Q(\boldsymbol{\theta}, \boldsymbol{\theta}^{old}) = E_{\mathbf{H} | \mathbf{D}, \boldsymbol{\theta}^{old}}[\ln P(\mathbf{D}, \mathbf{H} | \boldsymbol{\theta}) | \mathbf{D}, \boldsymbol{\theta}^{old}]\]</span></li>
+<li>We can rewrite the log likelihood as:
+<span class="math display">\[\begin{aligned}
+  Q(\boldsymbol{\theta}, \boldsymbol{\theta}^{old}) &amp;= \sum_{\mathbf{H}} P(\mathbf{H} | \mathbf{D}, \boldsymbol{\theta}^{old}) \ln P(\mathbf{D}, \mathbf{H} | \boldsymbol{\theta})\\
+  &amp;= \sum^{K}_{k=1}P(Z_{1k} = 1 | \mathbf{D}, \boldsymbol{\theta}^{old}) \ln P(Z_{1k} = 1| \boldsymbol{\pi}) + \sum^N_{n=2}\sum^{K}_{j=1}\sum^{K}_{k=1} P(Z_{nk}, Z_{n-1, j} | \mathbf{D}, \boldsymbol{\theta}^{old}) \ln P(Z_{nk} | Z_{n-1, j}) + \sum^{N}_{n=1}\sum^{K}_{k=1} P(Z_{nk} = 1 | \mathbf{D}, \boldsymbol{\theta}^{old}) \ln P(\mathbf{X}_n| \boldsymbol{\phi}_k, Z_{nk}=1)\\
+  &amp;= \sum^{K}_{k=1} \gamma(Z_{nk})\ln \pi_k + \sum^N_{n=2}\sum^{K}_{j=1}\sum^{K}_{k=1} \xi(Z_{nk}, Z_{n-1, j})\ln A_{jk} + \sum^{N}_{n=1}\sum^{K}_{k=1} \gamma(Z_{nk}) \ln P(\mathbf{X}_n| \boldsymbol{\phi}_k, Z_{nk}=1)
+  \end{aligned}\]</span>
+Where <span class="math inline">\(\gamma (Z_{nk}) = P(Z_{1k} = 1 | \mathbf{D}, \boldsymbol{\theta}^{old})\)</span> and <span class="math inline">\(\xi(Z_{nk}, Z_{n-1, j}) = P(Z_{nk}, Z_{n-1, j} | \mathbf{D}, \boldsymbol{\theta}^{old}) \ln P(Z_{nk} | Z_{n-1, j})\)</span></li>
+<li><strong>Our goal is to evaluate these posterior probabilities <span class="math inline">\(\gamma, \xi\)</span> efficiently</strong></li>
+</ul></li>
+<li><strong>M step</strong>:
+<ul>
+<li>We maximize <span class="math inline">\(Q(\boldsymbol{\theta}, \boldsymbol{\theta}^{old})\)</span> w.r.t the parameters <span class="math inline">\(\boldsymbol{\theta}\)</span> in which we treat posterior probabilities as constant:</li>
+</ul></li>
+</ol>
+<h1 id="ref">Ref</h1>
+<p>PRML Chapter 13</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1426,265 +1718,6 @@ u_t &amp;= \lim_{p \rightarrow \infty} (v_t)^{\frac{1}{p}}\\
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/29/adaptive-lr/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/29/adaptive-lr/" class="post-title-link" itemprop="url">Basic Adaptive LR Algorithms</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-07-29 10:38:32" itemprop="dateCreated datePublished" datetime="2021-07-29T10:38:32+08:00">2021-07-29</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-08-18 16:12:42" itemprop="dateModified" datetime="2021-08-18T16:12:42+08:00">2021-08-18</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DL/" itemprop="url" rel="index"><span itemprop="name">DL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DL/Techniques/" itemprop="url" rel="index"><span itemprop="name">Techniques</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/07/29/adaptive-lr/" class="post-meta-item leancloud_visitors" data-flag-title="Basic Adaptive LR Algorithms" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>2.6k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="algorithms-with-adaptive-learning-rates">Algorithms with Adaptive Learning Rates</h1>
-<p>Learning rate is reliably one of the hyperparameters that is the most difficult to set because it has a significant impact on model performance. At each iteration, the cost is often highly sensitive to some directions in parameter space and insensitive to others. Momentum solves some of the problems in the cost of introducing another hyperparameter. Thus, it is natural to consider algorithms that have separate learning rate for each parameter and automatically adapt learning rates for each of the parameter.</p>
-<p>The <code>delta-bar-delta</code> algorithm (base on full-batch) is an early heuristic approach to adapting individual learning rates for model parameters during training, it is based on intuitive idea similar to momentum:</p>
-<blockquote>
-<p>If the partial derivative of the loss, with respect to a given model parameter, remains the same sign, then the learning rate should increase, if the partial derivative with respect to the parameter changes sign, then the learning rate should decrease.</p>
-</blockquote>
-<p>We would like to extend the idea to mini-batch scenario.</p>
-<h2 id="adagrad">AdaGrad</h2>
-<p><img src='/images/ML/adagrad_1.png' width="600"></p>
-<p>The <code>AdaGrad</code> algorithm, individually adapts the learning rates of all model parameters by scaling them inversely proportional to square root of the sum of all of their historical squared values:</p>
-<ol type="1">
-<li><p>If <span class="math inline">\(g_1\)</span> is large constantly larger than <span class="math inline">\(g_2\)</span>, then:</p>
-<p><span class="math display">\[\sqrt{r_1} &gt; \sqrt{r_2} \implies \epsilon_1 &lt; \epsilon_2\]</span></p>
-<p>This makes sense because we want to take a small step in the gradient direction when the magnitude of gradient is large, especially when we have noisy gradient. Conversely, we would like to take slightly larger step than large gradient case when we have smaller gradient.</p></li>
-<li><p>If <span class="math inline">\(r_i\)</span> is less than 1, we have increasing learning rate compare to base learning rate:</p>
-<p><span class="math display">\[r_i &lt; 1 \implies \epsilon_i &gt; \epsilon\]</span></p>
-<p>This helps us to get out of the local minimum or flat region of the surface by taking larger steps.</p></li>
-</ol>
-<p>AdaGrad is designed to converge rapidly when applied to a convex optimization problem, so when it finds a convex structure, it can converge rapidly.</p>
-<p>However, in non-convex optimization problem (training neural networks) the accumulated gradient <span class="math inline">\(\mathbf{r}\)</span> starts accumulating at the beginning, <strong>this will introduce excessive decrease in the effective learning in later training steps (at end, we will have large <span class="math inline">\(\mathbf{r}\)</span>, so the learning rates will be small to prevent effective learning in later stages or early large gradients will prevent learning in early stages)</strong>.</p>
-<h2 id="rmsprop">RMSProp</h2>
-<p>The <code>RMSProp</code> algorithm modifies AdaGrad so that it can perform better in non-convex setting by changing the gradient accumulation into an exponentially weighted moving average, so the early accumulation becomes less and less important. This structure helps in non-convex problem by discarding the history from extreme past so when we arrive at a convex bowl, we have sufficiently large learning rate to converge rapidly.</p>
-<p><img src='/images/ML/rmsprop_1.png' width="600"></p>
-<p>The algorithm introduces a new parameter <span class="math inline">\(\rho\)</span> that controls for the weight of accumulated gradient.</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/29/momentum/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/29/momentum/" class="post-title-link" itemprop="url">Momentum</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-07-29 10:37:44 / Modified: 14:25:49" itemprop="dateCreated datePublished" datetime="2021-07-29T10:37:44+08:00">2021-07-29</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DL/" itemprop="url" rel="index"><span itemprop="name">DL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DL/Techniques/" itemprop="url" rel="index"><span itemprop="name">Techniques</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/07/29/momentum/" class="post-meta-item leancloud_visitors" data-flag-title="Momentum" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>3.2k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="momentum">Momentum</h1>
-<p>While SGD remains a very popular optimization strategy, learning with it can be slow. The method of momentum is designed to accelerate learning, especially in the face of <strong>high curvature</strong> (large change of direction of the curve in small amount time), <strong>small but consistent gradients</strong> (flat surface) or <strong>noisy gradients</strong> (with high variance). The momentum algorithm accumulates an exponentially decaying moving average of past gradients and continues to move in their direction.</p>
-<p><br></p>
-<p>The momentum algorithm introduces several variables:</p>
-<ol type="1">
-<li>A vector <span class="math inline">\(\mathbf{v}\)</span> that plays a role of velocity (with direction and speed). The velocity is set to an exponentially decaying average of the negative gradient.</li>
-<li>A hyparameter <span class="math inline">\(\alpha \in [0, 1)\)</span> determins how quickly the contributions of previous gradients exponentially decay.</li>
-</ol>
-<p>The update rule is given by:</p>
-<p><span class="math display">\[\mathbf{v} \leftarrow \alpha \mathbf{v} - \epsilon \nabla_{\boldsymbol{\theta}} (\frac{1}{N} \sum^{N}_{i=1} L(\mathbf{f} (\mathbf{x}_i; \; \boldsymbol{\theta}), \mathbf{y}_i))\]</span></p>
-<p><span class="math display">\[\boldsymbol{\theta} \rightarrow \boldsymbol{\theta} + \mathbf{v}\]</span></p>
-<p>Previously, in SGD, the size of the step was simply the norm of the gradient multiplied by the learning rate:</p>
-<p><span class="math display">\[\epsilon \nabla_{\boldsymbol{\theta}} (\frac{1}{N} \sum^{N}_{i=1} L(\mathbf{f} (\mathbf{x}_i; \; \boldsymbol{\theta}), \mathbf{y}_i))\]</span></p>
-<p>Now the size of the step depends on <strong>how large and how aligned a sequence of gradients</strong> are. The step size is <strong>largest</strong> when many successive gradients point in exactly the same direction. If the momentum algorithm always observe gradient <span class="math inline">\(\mathbf{g}\)</span>, then it will accelerate in the direction of <span class="math inline">\(-\mathbf{g}\)</span>:</p>
-<p><span class="math display">\[\mathbf{v}_1 \leftarrow - \epsilon \mathbf{g}\]</span></p>
-<p><span class="math display">\[\mathbf{v}_2 \leftarrow -\mathbf{g} \epsilon(\alpha + 1)\]</span></p>
-<p><span class="math display">\[\mathbf{v}_N \leftarrow -\mathbf{g} \epsilon \sum^{N-1}_{i=0} \alpha^i\]</span></p>
-<p><span class="math display">\[\implies \|\mathbf{v}_{\infty}\| = \frac{\epsilon \|\mathbf{g}\|}{1 - \alpha}\]</span></p>
-<p>The terminal velocity will have speed <span class="math inline">\(\frac{\epsilon \|\mathbf{g}\|}{1 - \alpha} \gg \epsilon \|\mathbf{g}\|\)</span>. This makes sense because if we receive consistent small gradients, we would like to take larger steps because we are confident we are in the right direction. One the other hand, consistently changing direction gradients (high curvature) would cause the gradient to be small to allow convergence.</p>
-<p><img src='/images/ML/momentum_1.png' width="600"></p>
-<h2 id="nesterov-momentum">Nesterov Momentum</h2>
-<p>Nesterov Momentum is inspired by Nesterov's accelerated gradient method, the update rules in this case are given by:</p>
-<p><span class="math display">\[\mathbf{v} \leftarrow \alpha \mathbf{v} - \epsilon \nabla_{\boldsymbol{\theta}} (\frac{1}{N} \sum^{N}_{i=1} L(\mathbf{f} (\mathbf{x}_i; \; \boldsymbol{\theta} + \alpha \mathbf{v}), \mathbf{y}_i))\]</span></p>
-<p><span class="math display">\[\boldsymbol{\theta} \rightarrow \boldsymbol{\theta} + \mathbf{v}\]</span></p>
-<p>This is similar to momentum, but before taking the gradient, we first take one step forward using previous velocity, then we take the gradient there and adjust velocity accordingly. We can also think of this as attempting to add a <strong>correlation factor</strong> to the standard method of momentum.</p>
-<p><img src='/images/ML/momentum_2.png' width="600"></p>
-<h1 id="implementation">Implementation</h1>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SGD</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, lr, model_vars</span>):</span></span><br><span class="line">        self.model_vars = model_vars</span><br><span class="line">        self.lr = lr</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span>(<span class="params">self, grad</span>):</span></span><br><span class="line">        <span class="keyword">for</span> i, v <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.model_vars):</span><br><span class="line">            self.model_vars[i] = v - self.lr * grad[i]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self.model_vars</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Momentum</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, lr, model_vars, alpha=<span class="number">0.9</span></span>):</span></span><br><span class="line">        self.lr = lr</span><br><span class="line">        self.model_vars = model_vars</span><br><span class="line">        self.alpha = alpha</span><br><span class="line">        self.v = <span class="number">0</span></span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span>(<span class="params">self, grad</span>):</span></span><br><span class="line">        <span class="keyword">for</span> i, v <span class="keyword">in</span> <span class="built_in">enumerate</span>(self.model_vars):</span><br><span class="line">            self.v = self.v * self.alpha - self.lr * grad[i]</span><br><span class="line">            self.model_vars[i] = self.model_vars[i] + self.v</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self.model_vars</span><br></pre></td></tr></table></figure>
-<h1 id="ref">Ref</h1>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1698,7 +1731,7 @@ u_t &amp;= \lim_{p \rightarrow \infty} (v_t)^{\frac{1}{p}}\\
 
 <div class="copyright">
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -1709,13 +1742,13 @@ u_t &amp;= \lim_{p \rightarrow \infty} (v_t)^{\frac{1}{p}}\\
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">900k</span>
+    <span title="Symbols count total">901k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">13:38</span>
+    <span title="Reading time total">13:39</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>

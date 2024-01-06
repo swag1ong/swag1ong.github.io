@@ -86,7 +86,7 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-igloo fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">111</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">113</span></a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">16</span></a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">25</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-address-card fa-fw"></i>About</a></li>
@@ -162,7 +162,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-count">113</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -215,6 +215,261 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/19/naive-bayes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/19/naive-bayes/" class="post-title-link" itemprop="url">Naive Bayes</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-19 16:32:15" itemprop="dateCreated datePublished" datetime="2021-07-19T16:32:15+08:00">2021-07-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-07-24 23:06:03" itemprop="dateModified" datetime="2021-07-24T23:06:03+08:00">2021-07-24</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/07/19/naive-bayes/" class="post-meta-item leancloud_visitors" data-flag-title="Naive Bayes" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>7.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>7 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="naive-bayes">Naive Bayes</h1>
+<p>Suppose our training set consists of data samples <span class="math inline">\(D = \{(\mathbf{x}_1, y_1), ...., (\mathbf{x}_N, y_N)\}, \; \mathbf{x_i} \in \mathbb{R}^d\)</span>, where <span class="math inline">\(D = \{(\mathbf{x}_i, y_i)\}\)</span> are realizations of a random sample that follows unknown joint distribution <span class="math inline">\(P(\mathbf{X}, Y)\)</span>.</p>
+<p><strong>Assumptions</strong>:</p>
+<ol type="1">
+<li><p><strong>Features are conditionally independent (Naive bayes assumption)</strong>: <span class="math display">\[P(\mathbf{X} | Y) = \prod^{d}_{j=1} P(X_j | Y)\]</span></p></li>
+<li><p><strong>MLE assumption</strong>: Random sample is identically distributed.</p></li>
+<li><p><strong>Positional independence</strong>: The position of features does not matter (used in Multinomial case).</p></li>
+</ol>
+<p>By applying bayes rule (applying on distribution <span class="math inline">\(P (\cdot)\)</span> to make things general), we have:</p>
+<p><span class="math display">\[P(Y | \mathbf{X}) = \frac{P(\mathbf{X}, Y)}{P(\mathbf{X})} = \frac{P(\mathbf{X} | Y) P(Y)}{P(\mathbf{X})}\]</span></p>
+<p>By substituting the assumption:</p>
+<p><span class="math display">\[P(Y | \mathbf{X}) = \frac{\prod^{d}_{j=1} P(X_j | Y)P(Y)}{P(\mathbf{X})}\]</span></p>
+<p>Since the probability distribution <span class="math inline">\(P(\mathbf{X})\)</span> characterised by <span class="math inline">\(F_{\mathbf{X}}(\mathbf{x})\)</span> is constant for any given <span class="math inline">\(\mathbf{x}\)</span>, we can drop it from the equation because it only changes <span class="math inline">\(P(Y | \mathbf{X})\)</span> by a proportion:</p>
+<p><span class="math display">\[P(Y | \mathbf{X}) \propto P(Y) \prod^{d}_{j=1} P(X_j | Y)\]</span></p>
+<p>Our goal is to find a class <span class="math inline">\(\hat{y}\)</span> that maximize the probability given input <span class="math inline">\(\mathbf{X} = \mathbf{x}\)</span>:</p>
+<span class="math display">\[\begin{aligned}
+\hat{y} = \underset{y}{\arg\max} \sum^{d}_{j=1} \log P_{X_j|Y}(x_j | y) + \log P_{Y}(y)
+\end{aligned}\]</span>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/19/naive-bayes/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/19/logistic-regression/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/others/favicon.jpeg">
+      <meta itemprop="name" content="Zhu, Zhaoyang">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GoGoGogo!">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/07/19/logistic-regression/" class="post-title-link" itemprop="url">Logistic Regression</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-19 16:32:07" itemprop="dateCreated datePublished" datetime="2021-07-19T16:32:07+08:00">2021-07-19</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-08-09 17:48:42" itemprop="dateModified" datetime="2021-08-09T17:48:42+08:00">2021-08-09</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ML/" itemprop="url" rel="index"><span itemprop="name">ML</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2021/07/19/logistic-regression/" class="post-meta-item leancloud_visitors" data-flag-title="Logistic Regression" title="Views">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">Views: </span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+      </div>
+      <div class="post-meta">
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>5.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="logistic-regression">Logistic Regression</h1>
+<p>Suppose we have training examples <span class="math inline">\(D = \{(\mathbf{x}_1, y_1), ...., (\mathbf{x}_N, y_N); \; \mathbf{x}_i \in \mathbb{R}^d\}\)</span>, our goal is to make decision about the class of new input <span class="math inline">\(\mathbf{x}\)</span>. The logistic regression does this by learning from a training set, a vector of bias and a matrix of weights.</p>
+<h2 id="binary-class">Binary-Class</h2>
+<p>In binary class problem, our target <span class="math inline">\(Y\)</span> takes values <span class="math inline">\(\{0, 1\}\)</span>. To model the distribution <span class="math inline">\(P(Y | \mathbf{X}; \; \mathbf{w}, b)\)</span>, we apply sigmoid function on the dot product of weights and inputs which transform the output to a value between <span class="math inline">\([0, 1]\)</span> (one criteria for probability):</p>
+<p><span class="math display">\[z = \mathbf{x}^T \mathbf{w} + b\]</span></p>
+<p><span class="math display">\[y = \sigma(z)\]</span></p>
+<p>To make sure that class random variable <span class="math inline">\(Y\)</span>'s conditional pmf sums to 1:</p>
+<p><span class="math display">\[P(Y=1 | X=\mathbf{x} ;\; \mathbf{w}, b) = \frac{1}{1 + e^{-z}} = p\]</span></p>
+<p><span class="math display">\[P(Y=0 | X=\mathbf{x} ;\; \mathbf{w}, b) = 1 - \frac{1}{1 + e^{-z}} = \frac{e^{-z}}{1 + e^{-z}} = 1 - p\]</span></p>
+<p>Then, it is equivalently to express this conditional pmf as Bernoulli pmf:</p>
+<p><span class="math display">\[p_{Y|\mathbf{X}} (y | \mathbf{x}; \; \mathbf{w}, b) = p^y + (1 - p)^{1 - y}\]</span></p>
+<p>If we have the conditional pmf of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X= \mathbf{x}\)</span>, then we can use simple decision rule to make decisions:</p>
+<p><span class="math display">\[
+\hat{y} =
+\begin{cases}
+P(Y=1 | X=\mathbf{x}) &gt; 0.5, \quad 1\\
+P(Y=1 | X=\mathbf{x}) \leq 0.5, \quad 0
+\end{cases}
+\]</span></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/07/19/logistic-regression/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1395,247 +1650,6 @@ V -  \prod_{\mathbf{F}, \mu} T^{\pi}V &amp;= \prod_{\mathbf{F}, \mu} V - \prod_{
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/06/cal-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/06/cal-2/" class="post-title-link" itemprop="url">Calculus (2)</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-07-06 22:09:59" itemprop="dateCreated datePublished" datetime="2021-07-06T22:09:59+08:00">2021-07-06</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-07-12 22:59:17" itemprop="dateModified" datetime="2021-07-12T22:59:17+08:00">2021-07-12</time>
-      </span>
-
-  
-    <span id="/2021/07/06/cal-2/" class="post-meta-item leancloud_visitors" data-flag-title="Calculus (2)" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>8.2k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>7 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="multivariate-calculus-2">Multivariate Calculus (2)</h1>
-<h2 id="double-integrals">Double Integrals</h2>
-<h3 id="double-integrals-over-rectangles">Double Integrals over Rectangles</h3>
-<p>In a similar manner as definite integral, we consider a function <span class="math inline">\(f\)</span> of two variables defined on a closed rectangle:</p>
-<p><span class="math display">\[R = [a, b] \times [c, d] = \{(x, y, z) \in \mathbb{R}^2 | a \leq x \leq b, c \leq y \leq d\}\]</span></p>
-<p>and we first suppose that <span class="math inline">\(f(x, y) \leq 0\)</span>. The graph of <span class="math inline">\(f\)</span> is a surface with equation <span class="math inline">\(z = f(x, y)\)</span>. Let <span class="math inline">\(S\)</span> be the solid that lies above <span class="math inline">\(R\)</span> and under the graph of <span class="math inline">\(f\)</span>:</p>
-<p><span class="math display">\[S = \{(x, y, z) \in \mathbb{R}^3 | a \leq x \leq b, c \leq y \leq d, 0 \leq z \leq f(x, y)\}\]</span></p>
-<p>We first divide the <span class="math inline">\(R\)</span> into subrectangles. We accomplish this by dividing the interval <span class="math inline">\([a, b]\)</span> into <span class="math inline">\(m\)</span> subintervals <span class="math inline">\([x_{i-1}, x_{i}]\)</span> of equal width <span class="math inline">\(\Delta x = \frac{(b - a)}{m}\)</span> and dividing <span class="math inline">\([c, d]\)</span> into <span class="math inline">\(n\)</span> subintervals <span class="math inline">\([y_{j - 1}, y_j]\)</span> of equal width <span class="math inline">\(\Delta y = \frac{(d - c)}{n}\)</span>. Then the subrectangles are defined as:</p>
-<p><span class="math display">\[R_{i, j} = [x_{i - 1}, x_i] \times [y_{j - 1}, y_j] = \{(x, y) | x_{i - 1} \leq x \leq x_i, y_{j - 1} \leq y leq y_j\}\]</span></p>
-<p>Then the area of individual subrectangle is:</p>
-<p><span class="math display">\[\Delta A = \Delta x \Delta y\]</span></p>
-<p>If we choose a sample point <span class="math inline">\((x^{*}_{i, j}, y^{*}_{i, j}) \in R_{i, j}\)</span>, then we can approximate the part of <span class="math inline">\(S\)</span> that lies above each <span class="math inline">\(R_{i, j}\)</span> (The volume) by a column with height <span class="math inline">\(f(x^{*}_{i, j}, y^{*}_{i, j})\)</span> and base area <span class="math inline">\(\Delta A\)</span>. The volume of the column:</p>
-<p><span class="math display">\[f(x^{*}_{i, j}, y^{*}_{i, j})\Delta A\]</span></p>
-<p><img src='/images/cal/15_1_2.png' width="600"></p>
-<p>Then the volume (<strong>only when <span class="math inline">\(f(x, y) \leq 0 \; \forall (x, y) \in S\)</span></strong>) of <span class="math inline">\(S\)</span> can be approximated:</p>
-<p><span class="math display">\[V \approx \sum^{m}_{i=1} \sum^{n}_{j=1}f(x^{*}_{i, j}, y^{*}_{i, j})\Delta A\]</span></p>
-<p>This sum is called <code>double Riemann sum</code>.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/07/06/cal-2/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://swag1ong.github.io/2021/07/05/xavier/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/others/favicon.jpeg">
-      <meta itemprop="name" content="Zhu, Zhaoyang">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GoGoGogo!">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/07/05/xavier/" class="post-title-link" itemprop="url">Xavier Initialization</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-07-05 17:35:07" itemprop="dateCreated datePublished" datetime="2021-07-05T17:35:07+08:00">2021-07-05</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-07-08 22:12:05" itemprop="dateModified" datetime="2021-07-08T22:12:05+08:00">2021-07-08</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DL/" itemprop="url" rel="index"><span itemprop="name">DL</span></a>
-        </span>
-          , 
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/DL/Techniques/" itemprop="url" rel="index"><span itemprop="name">Techniques</span></a>
-        </span>
-    </span>
-
-  
-    <span id="/2021/07/05/xavier/" class="post-meta-item leancloud_visitors" data-flag-title="Xavier Initialization" title="Views">
-      <span class="post-meta-item-icon">
-        <i class="far fa-eye"></i>
-      </span>
-      <span class="post-meta-item-text">Views: </span>
-      <span class="leancloud-visitors-count"></span>
-    </span>
-      </div>
-      <div class="post-meta">
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>9.3k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>8 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="understanding-the-difficulty-of-training-deep-feedforward-neural-networks">Understanding the Difficulty of Training Deep Feedforward Neural Networks</h1>
-<p>The analysis is driven by investigative experiments to monitor activations (watching for saturation of hidden units) and gradients, across layers and across training iterations.</p>
-<h2 id="experimental-setting">Experimental Setting</h2>
-<p>Feedforward neural networks with one to five hidden layers, one thousand hidden units per layer and a softmax logistic regression for the output layer are optimized. The cost function is the negative log-liklihood <span class="math inline">\(-\log p_{Y | X}(y | x)\)</span>, where <span class="math inline">\((x, y)\)</span> is the (input image, target class) ordered pair. The neural networks were optimized with stochastic back-propagation on mini-batches of size ten. An average gradient over the mini-batch are used to update parameters <span class="math inline">\(\theta\)</span> in that direction, with <span class="math inline">\(\theta \leftarrow \theta - \epsilon g\)</span>.</p>
-<p>We varied the type of non-linear activation function in the hidden layers:</p>
-<ol type="1">
-<li>Sigmoid: <span class="math inline">\(\frac{1}{(1 + e^{-x})}\)</span></li>
-<li>Hyperbolic tangent: <span class="math inline">\(tanh (x)\)</span></li>
-<li>Softsign: <span class="math inline">\(\frac{x}{(1 + |x|)}\)</span> (similar to tanh but approaches asymptotes much slower, softer slope)</li>
-</ol>
-<p>The initial weights <span class="math inline">\(W_{i, j} \sim U[-\frac{1}{\sqrt{n}}, \frac{1}{\sqrt{n}}]\)</span>, biases are initialized to 0. Where <span class="math inline">\(n\)</span> is the size of the previous layer.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/07/05/xavier/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1649,7 +1663,7 @@ V -  \prod_{\mathbf{F}, \mu} T^{\pi}V &amp;= \prod_{\mathbf{F}, \mu} V - \prod_{
 
 <div class="copyright">
   &copy; 2021 – 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -1660,13 +1674,13 @@ V -  \prod_{\mathbf{F}, \mu} T^{\pi}V &amp;= \prod_{\mathbf{F}, \mu} V - \prod_{
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="Symbols count total">900k</span>
+    <span title="Symbols count total">901k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="Reading time total">13:38</span>
+    <span title="Reading time total">13:39</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
